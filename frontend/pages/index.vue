@@ -1,16 +1,17 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
+    <v-col cols="12" sm="8" md="8">
       <v-card>
         <v-card-title class="headline">
           Welcome to REIMS2
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="text-center">
           <v-btn
             v-for="item in items"
             :key="item.to"
             :to="item.to"
             nuxt
+            class="ma-2"
           >
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.text }}
@@ -22,7 +23,7 @@
 </template>
 
 <script>
-import { mdiFileFindOutline, mdiPlusBox, mdiChartBoxOutline } from '@mdi/js';
+import { mdiFileFindOutline, mdiPlusBox, mdiDatabaseOutline } from '@mdi/js';
 export default {
   layout: 'start',
   data () {
@@ -39,9 +40,9 @@ export default {
           icon: mdiPlusBox
         },
         {
-          text: 'Generate reports',
-          to: 'reports',
-          icon: mdiChartBoxOutline
+          text: 'View data',
+          to: 'data',
+          icon: mdiDatabaseOutline
         }
       ]
     }

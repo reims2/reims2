@@ -5,3 +5,9 @@
     </v-col>
   </v-row>
 </template>
+
+<script>
+export default {
+  title: 'View and analyse data'
+}
+</script>
