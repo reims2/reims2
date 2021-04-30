@@ -8,7 +8,9 @@
     >
       <v-spacer />
       <v-toolbar-title class="text-h5">
-        {{ $vuetify.breakpoint.mobile ? "REIMS" : "Richmond Eyeglass Inventory Matching System" }}
+        <nuxt-link to="/" style="text-decoration: none; color: white;">
+          {{ $vuetify.breakpoint.mobile ? "REIMS" : "Richmond Eyeglass Inventory Matching System" }}
+        </nuxt-link>
       </v-toolbar-title>
       <v-spacer />
       <template #extension>
@@ -29,9 +31,7 @@
       </template>
     </v-app-bar>
     <v-main>
-      <v-container style="max-width: 800px;">
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-main>
     <v-footer
       app
