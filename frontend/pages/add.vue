@@ -95,17 +95,17 @@ export default {
     ]
   }),
   methods: {
-    submit () {
+    submit() {
       this.output = JSON.stringify(this.glass_model) + JSON.stringify(this.eye_model)
     },
-    reset () {
+    reset() {
       this.$refs.form.reset()
       this.output = ''
     },
-    update_eye (model, eye) {
+    update_eye(model, eye) {
       this.eye_model[eye] = model;
     },
-    generate_hint (options) {
+    generate_hint(options) {
       return 'One of ' + options.join(', ');
     }
   },

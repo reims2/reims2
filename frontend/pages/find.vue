@@ -49,7 +49,7 @@
             </div>
           </v-col>
           <v-col cols=12>
-            <div>{{ output }}</div>
+            <div>{{ matches }}</div>
           </v-col>
         </v-row>
       </v-container>
@@ -58,12 +58,12 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 export default {
   data: () => ({
     valid: false,
     glass_type: '',
     eye_model: {},
-    output: '',
     type_data:
       {
         id: 'type',
@@ -72,15 +72,22 @@ export default {
         rules: [v => !!v || 'Item is required']
       }
   }),
+  computed: {
+    ...mapState({
+      matches: state => state.glasses.matches
+    })
+  },
   methods: {
-    submit () {
-      this.output = this.glass_type + ' ' + JSON.stringify(this.eye_model)
+    ...mapActions({
+      philScore: 'glasses/philScore'
+    }),
+    submit() {
+      this.philScore(this.eye_model)
     },
-    reset () {
+    reset() {
       this.$refs.form.reset()
-      this.output = ''
     },
-    update_eye (model, eye) {
+    update_eye(model, eye) {
       this.eye_model[eye] = model;
     }
   },
