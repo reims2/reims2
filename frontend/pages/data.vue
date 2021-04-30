@@ -1,12 +1,18 @@
 <template>
-  <v-container class="mx-10">
-    <v-row>
+  <v-container class="px-2 px-md-10">
+    <v-row dense>
       <v-col class="text-center">
         <v-data-table
+          fixed-header
           :headers="headers"
           :items="glasses"
           :items-per-page="20"
           dense
+          :footer-props="{
+            showFirstLastPage: true,
+            itemsPerPageOptions: [10,20,100,500],
+            showCurrentPage: true
+          }"
         />
       </v-col>
     </v-row>
@@ -22,14 +28,14 @@ export default {
     headers: [
       { value: 'SKU', text: 'SKU' },
       { value: 'TYPE', text: 'TYPE' },
-      { value: 'ODSPHERE', text: 'ODSPHERE' },
-      { value: 'ODCYLINDER', text: 'ODCYLINDER' },
-      { value: 'ODAXIS', text: 'ODAXIS' },
-      { value: 'ODADD', text: 'ODADD' },
-      { value: 'OSSPHERE', text: 'OSSPHERE' },
-      { value: 'OSCYLINDER', text: 'OSCYLINDER' },
-      { value: 'OSAXIS', text: 'OSAXIS' },
-      { value: 'OSADD', text: 'OSADD' },
+      { value: 'ODSPHERE', text: 'OD SPHERE' },
+      { value: 'ODCYLINDER', text: 'OD CYLINDER' },
+      { value: 'ODAXIS', text: 'OD AXIS' },
+      { value: 'ODADD', text: 'OD ADD' },
+      { value: 'OSSPHERE', text: 'OS SPHERE' },
+      { value: 'OSCYLINDER', text: 'OS CYLINDER' },
+      { value: 'OSAXIS', text: 'OS AXIS' },
+      { value: 'OSADD', text: 'OS ADD' },
       { value: 'GENDER', text: 'GENDER' },
       { value: 'MATERIAL', text: 'MATERIAL' },
       { value: 'SIZE', text: 'SIZE' }
