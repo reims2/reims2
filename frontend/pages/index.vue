@@ -35,8 +35,8 @@ export default {
           icon: mdiFileFindOutline
         },
         {
-          text: 'Enter glasses',
-          to: 'enter',
+          text: 'Add glasses',
+          to: 'add',
           icon: mdiPlusBox
         },
         {
