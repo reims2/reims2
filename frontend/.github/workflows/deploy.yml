@@ -11,20 +11,17 @@ env:
   REMOTE_HOST: "ssh://dokku@reims2.duckdns.org"
 
 jobs:
-  wait-for-prev:
+  deploy-frontend:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
-    steps:
-      - name: Wait for previous deploy
-        uses: softprops/turnstyle@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-  deploy-web:
-    runs-on: ubuntu-latest
-    needs: wait-for-prev
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Wait for previous deploy
+        uses: softprops/turnstyle@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Deploy with dokku
         uses: dokku/github-action@master
         with:
