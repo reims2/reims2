@@ -1,6 +1,6 @@
-// import colors from 'vuetify/es5/util/colors'
+import type { NuxtConfig } from '@nuxt/types'
 
-export default {
+const config: NuxtConfig = {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - Reims2',
@@ -94,3 +94,5 @@ export default {
   build: {
   }
 }
+
+export default config
