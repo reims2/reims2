@@ -20,12 +20,21 @@
               </v-col>
               <v-col class="d-flex justify-center">
                 <v-btn
-                  to="/find"
+                  to="/onsite/find"
+                  nuxt
+                  color="primary"
+                  rounded
+                  class="mr-4"
+                >
+                  REIMS on-site app
+                </v-btn>
+                <v-btn
+                  to="/manage/add"
                   nuxt
                   color="primary"
                   rounded
                 >
-                  Open current version of REIMS
+                  REIMS inventory management
                 </v-btn>
               </v-col>
             </v-row>

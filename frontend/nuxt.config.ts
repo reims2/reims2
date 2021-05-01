@@ -3,8 +3,7 @@ import type { NuxtConfig } from '@nuxt/types'
 const config: NuxtConfig = {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - Reims2',
-    title: 'Reims2',
+    titleTemplate: 'Reims2 - %s',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -79,7 +78,12 @@ const config: NuxtConfig = {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      light: true
+      light: true,
+      themes: {
+        light: {
+          primary: '#4527A0' // deep-purple darken-3
+        }
+      }
     },
     defaultAssets: false, // dont use CDNs for libraries
     breakpoint: {
