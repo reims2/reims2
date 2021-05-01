@@ -31,7 +31,7 @@ export default {
   head() {
     return {
       title: 'Inventory management'
-    };
+    }
   }
 }
 </script>

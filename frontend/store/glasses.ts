@@ -1,6 +1,6 @@
 import type { ActionTree, MutationTree } from 'vuex'
 
-import GLASSES from '~/assets/out.json';
+import GLASSES from '~/assets/out.json'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function calculatePhilscore(eyeModel:any, glasses: any[]):any[] {

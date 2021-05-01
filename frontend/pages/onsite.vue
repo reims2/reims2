@@ -18,6 +18,10 @@ export default {
           to: 'find'
         },
         {
+          text: 'Dispense glasses',
+          to: 'dispense'
+        },
+        {
           text: 'More to come',
           to: '/error'
         }
@@ -27,7 +31,7 @@ export default {
   head() {
     return {
       title: 'On-site'
-    };
+    }
   }
 }
 </script>

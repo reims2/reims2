@@ -19,7 +19,7 @@ module.exports = {
     quotes: 'warn', // don't error on double qoutes
     'comma-dangle': 'warn',
     'spaced-comment': 'warn',
-    semi: 'off', // no preference for semicolons at end
+    semi: 'warn', // no preference for semicolons at end
     'no-warning-comments': 'warn',
     'vue/valid-v-slot': 'off', // false positives for vuetify
     'vue/html-quotes': 'off', // doesn't work properly

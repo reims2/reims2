@@ -112,10 +112,10 @@ export default {
       this.output = ''
     },
     update_eye(model, eye) {
-      this.eye_model[eye] = model;
+      this.eye_model[eye] = model
     },
     generate_hint(options) {
-      return 'One of ' + options.join(', ');
+      return 'One of ' + options.join(', ')
     }
   },
   title: 'Enter glasses'

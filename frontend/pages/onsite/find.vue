@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex'
 export default {
   data: () => ({
     valid: false,
@@ -128,7 +128,7 @@ export default {
       this.$refs.form.reset()
     },
     update_eye(model, eye) {
-      this.eye_model[eye] = model;
+      this.eye_model[eye] = model
     }
   },
   title: 'Find glasses'
