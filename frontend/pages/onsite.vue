@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <app-header :items="items" title="REIMS2" />
+    <app-header :items="items" />
     <v-container>
       <NuxtChild keep-alive />
     </v-container>

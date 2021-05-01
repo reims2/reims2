@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="8">
-      <v-card>
+      <v-card class="ma-4">
         <v-card-title class="headline">
           Welcome to REIMS2
         </v-card-title>
@@ -23,18 +23,18 @@
                   to="/onsite/find"
                   nuxt
                   color="primary"
-                  rounded
                   class="mr-4"
                 >
-                  REIMS on-site app
+                  On-site app
                 </v-btn>
+              </v-col>
+              <v-col class="d-flex justify-center">
                 <v-btn
                   to="/manage/add"
                   nuxt
                   color="primary"
-                  rounded
                 >
-                  REIMS inventory management
+                  Inventory management
                 </v-btn>
               </v-col>
             </v-row>
@@ -47,6 +47,10 @@
 
 <script>
 export default {
-  layout: 'start'
+  head() {
+    return {
+      title: 'Start'
+    };
+  }
 }
 </script>

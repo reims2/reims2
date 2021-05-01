@@ -18,7 +18,7 @@
       {{ title }}
     </v-toolbar-title>
 
-    <template #extension>
+    <template v-if="items.length > 0" #extension>
       <v-tabs
         fixed-tabs
         centered
@@ -43,7 +43,7 @@ export default {
   props: {
     items: {
       type: Array,
-      required: true
+      default() { return [] }
     },
     title: {
       type: String,

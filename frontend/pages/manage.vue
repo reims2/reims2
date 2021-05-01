@@ -22,6 +22,10 @@ export default {
         {
           text: 'View data',
           to: 'data'
+        },
+        {
+          text: 'More to come',
+          to: '/error'
         }
       ]
     }

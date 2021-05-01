@@ -1,14 +1,15 @@
 <template>
   <v-app dark>
     <v-main>
-      <nuxt keep-alive />
+      <nuxt />
     </v-main>
     <v-footer
       app
       dark
-      color="indigo"
+      color="primary"
       elevation=4
-      class="justify-center"
+      class="justify-center text-body-2 pa-1"
+      padless
     >
       <span>&copy; {{ new Date().getFullYear() }} Partners for Visual Health</span>
       <span class="px-2">—</span>
