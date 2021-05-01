@@ -1,7 +1,10 @@
 <template>
-  <v-container class="px-2 px-md-10">
-    <v-row dense>
-      <v-col class="text-center">
+  <v-container class="px-2 px-md-10" fluid>
+    <v-row dense class="d-flex justify-center">
+      <v-col class="text-body-2 text--secondary pb-6">
+        You can sort this table by clicking on the column names. Further features will follow.
+      </v-col>
+      <v-col cols=12>
         <v-data-table
           fixed-header
           :headers="headers"

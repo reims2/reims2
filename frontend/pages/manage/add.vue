@@ -1,63 +1,72 @@
 <template>
-  <v-container style="max-width: 800px;">
-    <v-form ref="form" v-model="valid">
-      <v-container>
-        <v-row dense>
-          <v-col
-            v-for="item in general_data"
-            :key="item.label"
-            cols="12"
-            class="py-0 px-4 "
-          >
-            <v-autocomplete
-              v-model="glass_model[item.id]"
-              :items="item.options"
-              :label="item.label"
-              :rules="item.rules"
-              auto-select-first
-              :hint="generate_hint(item.options)"
-              persistent-hint
-            />
-          </v-col>
-          <v-col
-            v-for="eye in ['OD', 'OS']"
-            :key="eye"
-            cols=12
-            md=6
-            class="px-4 pt-4"
-          >
-            <single-eye-input
-              :eye-name="eye"
-              :add-enabled="glass_model['type'] !== 'single'"
-              @update="model => {update_eye(model, eye)}"
-            />
-          </v-col>
-          <v-col cols=12 class="pt-4">
-            <div class="d-flex">
-              <v-btn
-                :disabled="!valid"
-                color="primary"
-                class="mr-4"
-                @click="submit"
-              >
-                Add glasses
-              </v-btn>
-              <v-btn
-                class="mr-4"
+  <v-container fluid>
+    <v-row class="justify-end" dense>
+      <v-col cols=12 md=6>
+        <v-form ref="form" v-model="valid">
+          <v-row dense>
+            <v-col
+              v-for="item in general_data"
+              :key="item.label"
+              cols="12"
+              class="py-0 px-4 "
+            >
+              <v-autocomplete
+                v-model="glass_model[item.id]"
+                :items="item.options"
+                :label="item.label"
+                :rules="item.rules"
+                auto-select-first
+                :hint="generate_hint(item.options)"
+                persistent-hint
+              />
+            </v-col>
+            <v-col
+              v-for="eye in ['OD', 'OS']"
+              :key="eye"
+              cols=12
+              md=6
+              class="px-4 pt-4"
+            >
+              <single-eye-input
+                :eye-name="eye"
+                :add-enabled="glass_model['type'] !== 'single'"
+                @update="model => {update_eye(model, eye)}"
+              />
+            </v-col>
+            <v-col cols=12 class="pt-4">
+              <div class="d-flex">
+                <v-btn
+                  :disabled="!valid"
+                  color="primary"
+                  class="mr-4"
+                  @click="submit"
+                >
+                  Add glasses
+                </v-btn>
+                <v-btn
+                  class="mr-4"
 
-                plain
-                @click="reset"
-              >
-                Clear form
-              </v-btn>
-            </div>
-          </v-col>
-          <v-col cols=12>
-            <div>{{ output }}</div>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-form>
+                  plain
+                  @click="reset"
+                >
+                  Clear form
+                </v-btn>
+              </div>
+            </v-col>
+            <v-col cols=12>
+              <div>{{ output }}</div>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-col>
+      <v-col
+        v-if="!$vuetify.breakpoint.mobile"
+        cols=3
+        class="text-body-2 text--secondary pl-4 pt-8"
+      >
+        This is some additional text describing the features of this page.
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

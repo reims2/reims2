@@ -1,9 +1,7 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <app-header :items="items" />
-    <v-container>
-      <NuxtChild keep-alive />
-    </v-container>
+    <NuxtChild keep-alive />
   </v-container>
 </template>
 

@@ -2,25 +2,26 @@ import type { ActionTree, MutationTree } from 'vuex'
 
 import GLASSES from '~/assets/out.json';
 
-export function calculatePhilscore(eyeModel:any, glasses: any[]):string {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function calculatePhilscore(eyeModel:any, glasses: any[]):any[] {
   // This is just for testing and makes no pratical sense
-  return eyeModel ? JSON.stringify(glasses[0]) : ''
+  return glasses.slice(0, 10).map(obj => ({ ...obj, score: Math.round(Math.random() * 100) / 100 }))
 }
 
 export interface GlassesSatate {
   glasses: any[],
-  matches: string
+  matches: any[]
 }
 export const state = (): GlassesSatate => ({
   glasses: GLASSES,
-  matches: ''
+  matches: []
 })
 
 export const MutationType = {
   SET_MATCHES: 'setMatches'
 }
 export const mutations: MutationTree<GlassesSatate> = {
-  [MutationType.SET_MATCHES]: (state, value: string) => { state.matches = value }
+  [MutationType.SET_MATCHES]: (state, value: any[]) => { state.matches = value }
 }
 
 export const ActionType = {
