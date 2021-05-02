@@ -10,6 +10,7 @@
           <v-row>
             <v-col cols=12>
               <v-text-field
+                ref="firstInput"
                 v-model="sku"
                 label="SKU"
                 :rules="sku_rules"
@@ -17,8 +18,8 @@
                 persistent-hint
               />
             </v-col>
-            <v-col cols=12 class="pt-0">
-              <div v-if="result" class="text-body-2">
+            <v-col v-if="result" cols=12 class="pt-0">
+              <div class="text-body-2">
                 {{ result }}
               </div>
             </v-col>
@@ -52,6 +53,9 @@ export default {
     selected() {
       return this.glasses.filter(el => el.SKU === this.sku)[0]
     }
+  },
+  activated() {
+    setTimeout(() => { this.$refs.firstInput.focus() })
   },
   methods: {
     submit() {

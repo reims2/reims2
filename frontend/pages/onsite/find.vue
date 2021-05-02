@@ -2,13 +2,14 @@
   <v-container fluid>
     <v-row dense class="justify-center">
       <v-col cols=12 md=6>
-        <v-form ref="form" v-model="valid">
+        <v-form ref="form" v-model="valid" @submit.prevent="submit">
           <v-row dense>
             <v-col
               cols="12"
               class="py-0 px-4 "
             >
               <v-autocomplete
+                ref="firstInput"
                 v-model="eye_model[type_data.id]"
                 :items="type_data.options"
                 :label="type_data.label"
@@ -53,12 +54,12 @@
           </v-row>
         </v-form>
       </v-col>
-      <v-col cols=12 md=4 class="px-4">
+      <v-col cols=12 md=4 class="pl-6">
         <div v-if="matches.length == 0" class="text--secondary">
           Enter prescription to display matches
         </div>
         <glass-card
-          v-for="item in matches.slice(0,5)"
+          v-for="item in matches.slice().sort((a,b)=> (a.score > b.score ? -1 : 1)).slice(0,5)"
           :key="item.SKU"
           :glass="item"
         />
@@ -69,6 +70,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+
 export default {
   data: () => ({
     valid: false,
@@ -79,23 +81,7 @@ export default {
         label: 'Type',
         options: ['single', 'bifocal', 'progressive'],
         rules: [v => !!v || 'Item is required']
-      },
-    headers: [
-      { value: 'SKU', text: 'SKU' },
-      { value: 'score', text: 'PHIL SCORE' },
-      { value: 'TYPE', text: 'TYPE' },
-      { value: 'ODSPHERE', text: 'OD SPHERE' },
-      { value: 'ODCYLINDER', text: 'OD CYLINDER' },
-      { value: 'ODAXIS', text: 'OD AXIS' },
-      { value: 'ODADD', text: 'OD ADD' },
-      { value: 'OSSPHERE', text: 'OS SPHERE' },
-      { value: 'OSCYLINDER', text: 'OS CYLINDER' },
-      { value: 'OSAXIS', text: 'OS AXIS' },
-      { value: 'OSADD', text: 'OS ADD' },
-      { value: 'APPEARANCE', text: 'APPEARANCE' },
-      { value: 'MATERIAL', text: 'MATERIAL' },
-      { value: 'SIZE', text: 'SIZE' }
-    ]
+      }
   }),
   computed: {
     ...mapState({
@@ -114,15 +100,20 @@ export default {
       deep: true
     }
   },
+  activated() {
+    setTimeout(() => { this.$refs.firstInput.focus() })
+  },
   methods: {
     ...mapActions({
       philScore: 'glasses/philScore'
     }),
     submit() {
       this.philScore(this.eye_model)
+      setTimeout(() => { this.$refs.firstInput.focus() })
     },
     reset() {
       this.$refs.form.reset()
+      setTimeout(() => { this.$refs.firstInput.focus() })
     },
     update_eye(model, eye) {
       this.eye_model[eye] = model

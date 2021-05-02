@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row class="justify-end" dense>
       <v-col cols=12 md=6>
-        <v-form ref="form" v-model="valid">
+        <v-form ref="form" v-model="valid" @submit.prevent="submit">
           <v-row dense>
             <v-col
               v-for="item in general_data"
@@ -11,6 +11,7 @@
               class="py-0 px-4 "
             >
               <v-autocomplete
+                ref="firstInput"
                 v-model="glass_model[item.id]"
                 :items="item.options"
                 :label="item.label"
@@ -82,7 +83,8 @@ export default {
         id: 'type',
         label: 'Type',
         options: ['single', 'bifocal', 'progressive'],
-        rules: [v => !!v || 'Item is required']
+        rules: [v => !!v || 'Item is required'],
+        first: true
       },
       {
         id: 'size',
@@ -103,9 +105,14 @@ export default {
       }
     ]
   }),
+  activated() {
+    setTimeout(() => { this.$refs.firstInput[0].focus() })
+  },
   methods: {
     submit() {
-      this.output = JSON.stringify(this.glass_model) + JSON.stringify(this.eye_model)
+      if (this.valid) {
+        this.output = JSON.stringify(this.glass_model) + JSON.stringify(this.eye_model)
+      }
     },
     reset() {
       this.$refs.form.reset()

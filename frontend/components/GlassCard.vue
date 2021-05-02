@@ -2,9 +2,20 @@
   <v-card
     outlined
     style="min-width: 250px;"
-    class="my-1"
+    class="mb-2"
   >
     <v-card-title class="text-uppercase">
+      <div v-if="glass.score" class="d-flex align-center">
+        <v-chip
+          class="mr-2 px-2 white--text font-weight-medium"
+          :color="calcColor(glass.score)"
+          small
+          label
+          :ripple="false"
+        >
+          {{ glass.score }}%
+        </v-chip>
+      </div>
       SKU {{ glass.SKU }}: {{ glass.TYPE }} glasses
     </v-card-title>
     <v-card-subtitle class="text--primary pb-2">
@@ -53,11 +64,19 @@
 </template>
 
 <script>
+import * as chroma from '../lib/chroma'
+
 export default {
   props: {
     glass: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    calcColor(val) {
+      const scale = chroma.scale(['#EF6C00', '#009688']).domain([0, 100])
+      return scale(val).hex()
     }
   }
 }
