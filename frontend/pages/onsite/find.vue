@@ -59,7 +59,7 @@
           Enter prescription to display matches
         </div>
         <glass-card
-          v-for="item in matches.slice().sort((a,b)=> (a.score > b.score ? -1 : 1)).slice(0,5)"
+          v-for="item in matches.slice().sort((a,b)=> (a.score > b.score ? 1 : -1)).slice(0,5)"
           :key="item.SKU"
           :glass="item"
         />
