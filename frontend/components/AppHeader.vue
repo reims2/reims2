@@ -26,10 +26,12 @@
         show-arrows
       >
         <v-tab
-          v-for="item in items"
+          v-for="(item, i) in items"
           :key="item.to"
+          v-shortkey="['alt',(i + 1)]"
           :to="item.to"
           nuxt
+          @shortkey="$router.push(item.to)"
         >
           {{ item.text }}
         </v-tab>

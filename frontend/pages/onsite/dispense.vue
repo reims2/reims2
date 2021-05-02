@@ -63,6 +63,7 @@ export default {
         // do dispension
         this.result = 'Successfully dispensed glasses with SKU ' + this.selected.SKU
         this.$refs.form.reset()
+        this.$refs.firstInput.focus()
       } else {
         this.result = 'SKU not found'
       }

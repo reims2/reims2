@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid @keyup.alt.67="console.log('hi')">
     <app-header :items="items" />
     <NuxtChild keep-alive />
   </v-container>

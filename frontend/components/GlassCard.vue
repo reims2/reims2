@@ -69,7 +69,7 @@
       <v-btn
         text
         color="primary"
-        @click="$emit('dispense', $evt)"
+        @click="$emit('dispense', true)"
       >
         Dispense
       </v-btn>
