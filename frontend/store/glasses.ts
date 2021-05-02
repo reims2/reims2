@@ -6,7 +6,10 @@ import GLASSES from '~/assets/out.json'
 export function calculatePhilscore(eyeModel:any, glasses: any[]):any[] {
   // This is just for testing and makes no pratical sense
   if (eyeModel.type) {
-    return glasses.slice(0, 6).map(obj => ({ ...obj, score: Math.round(Math.random() * 1000) / 1000 }))
+    return glasses.slice()
+      .sort(() => 0.5 - Math.random()).slice(0, 6)
+      .map(obj => ({ ...obj, score: Math.round(Math.random() * 1000) / 1000 }))
+      .sort((a, b) => (a.score > b.score ? 1 : -1))
   }
   return []
 }

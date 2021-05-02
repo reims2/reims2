@@ -51,7 +51,7 @@ export default {
       glasses: state => state.glasses.glasses
     }),
     selected() {
-      return this.glasses.filter(el => el.SKU === this.sku)[0]
+      return this.glasses.filter(el => Number(el.SKU) === Number(this.sku))[0]
     }
   },
   activated() {

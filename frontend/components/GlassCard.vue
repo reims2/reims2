@@ -5,7 +5,7 @@
     class="mb-2"
   >
     <v-card-title class="text-uppercase">
-      <div v-if="glass.score" class="d-flex align-center">
+      <div v-if="glass.score != null" class="d-flex align-center">
         <v-chip
           class="mr-2 px-2 white--text font-weight-medium"
           :color="calcColor(glass.score)"
@@ -16,15 +16,11 @@
           {{ glass.score }}
         </v-chip>
       </div>
-      <span class="pr-1 text--secondary">SKU</span> {{ glass.SKU.padStart(4, '0') }}
+      <span class="text--secondary">SKU</span> {{ glass.SKU.padStart(4, '0') }}
+      <span class="pl-2">{{ glass.TYPE }}</span>
     </v-card-title>
     <v-card-subtitle class="text--primary pb-2 d-flex align-center">
       <v-icon small class="mr-1">
-        {{ mdiGlasses }}
-      </v-icon>
-      {{ glass.TYPE }}
-
-      <v-icon small class="ml-3 mr-1">
         {{ mdiRuler }}
       </v-icon>
       {{ glass.SIZE }}

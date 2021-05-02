@@ -5,6 +5,7 @@
     dark
     color="primary"
     short
+    dense
   >
     <v-btn
       icon

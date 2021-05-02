@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row class="justify-end" dense>
       <v-col cols=12 md=6>
-        <v-form ref="form" v-model="valid" @submit.prevent="submit">
+        <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col
               v-for="item in general_data"
@@ -40,13 +40,13 @@
                   :disabled="!valid"
                   color="primary"
                   class="mr-4"
+                  type="submit"
                   @click="submit"
                 >
                   Add glasses
                 </v-btn>
                 <v-btn
                   class="mr-4"
-
                   plain
                   @click="reset"
                 >

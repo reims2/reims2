@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row dense class="justify-center">
       <v-col cols=12 md=6>
-        <v-form ref="form" v-model="valid" @submit.prevent="submit">
+        <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col
               cols="12"
@@ -37,13 +37,13 @@
                   :disabled="!valid"
                   color="primary"
                   class="mr-4"
+                  type="submit"
                   @click="submit"
                 >
                   Search glasses
                 </v-btn>
                 <v-btn
                   class="mr-4"
-
                   plain
                   @click="reset"
                 >
@@ -59,7 +59,7 @@
           Enter prescription to display matches
         </div>
         <glass-card
-          v-for="item in matches.slice().sort((a,b)=> (a.score > b.score ? 1 : -1)).slice(0,5)"
+          v-for="item in matches.slice(0,5)"
           :key="item.SKU"
           :glass="item"
         />
@@ -87,18 +87,6 @@ export default {
     ...mapState({
       matches: state => state.glasses.matches
     })
-  },
-  watch: {
-    eye_model: {
-      handler(val) {
-        if (this.valid) {
-          this.philScore(val)
-        } else {
-          this.philScore({})
-        }
-      },
-      deep: true
-    }
   },
   activated() {
     setTimeout(() => { this.$refs.firstInput.focus() })
