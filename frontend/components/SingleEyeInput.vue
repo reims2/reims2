@@ -22,6 +22,7 @@
           v-model="eye_model['add']"
           label="Add"
           :disabled="!addEnabled"
+          :rules="addEnabled ? eye_rules: []"
           @blur="update"
         />
       </v-col>
@@ -64,7 +65,7 @@ export default {
     ]
   }),
   methods: {
-    update () {
+    update() {
       this.$emit('update', this.eye_model)
     }
   }

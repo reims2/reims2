@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { mdiArrowLeft } from '@mdi/js';
+import { mdiArrowLeft } from '@mdi/js'
 export default {
   props: {
     items: {

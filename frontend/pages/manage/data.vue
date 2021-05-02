@@ -27,7 +27,7 @@ import { mapState } from 'vuex'
 export default {
   title: 'View and analyse data',
   data: () => ({
-    // headers: ['SKU', 'TYPE', 'ODSPHERE', 'ODCYLINDER', 'ODAXIS', 'ODADD', 'OSSPHERE', 'OSCYLINDER', 'OSAXIS', 'OSADD', 'GENDER', 'MATERIAL', 'SIZE']
+    // headers: ['SKU', 'TYPE', 'ODSPHERE', 'ODCYLINDER', 'ODAXIS', 'ODADD', 'OSSPHERE', 'OSCYLINDER', 'OSAXIS', 'OSADD', 'APPEARANCE', 'MATERIAL', 'SIZE']
     headers: [
       { value: 'SKU', text: 'SKU' },
       { value: 'TYPE', text: 'TYPE' },
@@ -39,7 +39,7 @@ export default {
       { value: 'OSCYLINDER', text: 'OS CYLINDER' },
       { value: 'OSAXIS', text: 'OS AXIS' },
       { value: 'OSADD', text: 'OS ADD' },
-      { value: 'GENDER', text: 'GENDER' },
+      { value: 'APPEARANCE', text: 'APPEARANCE' },
       { value: 'MATERIAL', text: 'MATERIAL' },
       { value: 'SIZE', text: 'SIZE' }
     ]

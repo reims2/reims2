@@ -9,7 +9,7 @@
               class="py-0 px-4 "
             >
               <v-autocomplete
-                v-model="glass_type"
+                v-model="eye_model[type_data.id]"
                 :items="type_data.options"
                 :label="type_data.label"
                 :rules="type_data.rules"
@@ -25,12 +25,13 @@
             >
               <single-eye-input
                 :eye-name="eye"
-                :add-enabled="glass_type !== 'single'"
+                :add-enabled="eye_model[type_data.id] !== 'single'"
                 @update="model => {update_eye(model, eye)}"
               />
             </v-col>
             <v-col cols=12 class="pt-4">
-              <div class="d-flex">
+              <div>
+                <div>These are not real matches yet!</div>
                 <v-btn
                   :disabled="!valid"
                   color="primary"
@@ -52,19 +53,14 @@
           </v-row>
         </v-form>
       </v-col>
-    </v-row>
-    <v-row v-if="matches.length > 0" dense class="mt-4">
-      <v-col>
-        These are not real matches yet!
-        <v-data-table
-          :headers="headers"
-          :items="matches"
-          :items-per-page="5"
-          dense
-          hide-default-footer
-          disable-filtering
-          sort-by="score"
-          must-sort
+      <v-col cols=12 md=4 class="px-4">
+        <div v-if="matches.length == 0" class="text--secondary">
+          Enter prescription to display matches
+        </div>
+        <glass-card
+          v-for="item in matches.slice(0,5)"
+          :key="item.SKU"
+          :glass="item"
         />
       </v-col>
     </v-row>
@@ -76,7 +72,6 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data: () => ({
     valid: false,
-    glass_type: '',
     eye_model: {},
     type_data:
       {
@@ -97,7 +92,7 @@ export default {
       { value: 'OSCYLINDER', text: 'OS CYLINDER' },
       { value: 'OSAXIS', text: 'OS AXIS' },
       { value: 'OSADD', text: 'OS ADD' },
-      { value: 'GENDER', text: 'GENDER' },
+      { value: 'APPEARANCE', text: 'APPEARANCE' },
       { value: 'MATERIAL', text: 'MATERIAL' },
       { value: 'SIZE', text: 'SIZE' }
     ]
@@ -112,6 +107,8 @@ export default {
       handler(val) {
         if (this.valid) {
           this.philScore(val)
+        } else {
+          this.philScore({})
         }
       },
       deep: true

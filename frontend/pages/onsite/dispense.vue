@@ -7,30 +7,25 @@
           v-model="valid"
           @submit.prevent="submit"
         >
-          <v-row dense>
-            <v-col
-              cols="12"
-              class="py-0 px-4 "
-            >
+          <v-row>
+            <v-col cols=12>
               <v-text-field
                 v-model="sku"
-                label="SKU to dispense"
+                label="SKU"
                 :rules="sku_rules"
+                :hint="selected? 'Press ENTER to dispense' : null"
+                persistent-hint
               />
-              <div>
-                {{ selected }}
-              </div>
+            </v-col>
+            <v-col cols=12 class="pt-0">
               <div v-if="result" class="text-body-2">
                 {{ result }}
               </div>
-              <v-btn
-                :disabled="!valid"
-                color="primary"
-                class="mr-4"
-                @click="submit"
-              >
-                Dispense glasses
-              </v-btn>
+            </v-col>
+            <v-col>
+              <div class="d-flex flex-shrink-1 justify-start">
+                <glass-card v-if="selected" :glass="selected" @dispense="submit" />
+              </div>
             </v-col>
           </v-row>
         </v-form>

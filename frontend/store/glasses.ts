@@ -5,7 +5,10 @@ import GLASSES from '~/assets/out.json'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function calculatePhilscore(eyeModel:any, glasses: any[]):any[] {
   // This is just for testing and makes no pratical sense
-  return glasses.slice(0, 10).map(obj => ({ ...obj, score: Math.round(Math.random() * 100) / 100 }))
+  if (eyeModel.type) {
+    return glasses.slice(0, 10).map(obj => ({ ...obj, score: Math.round(Math.random() * 100) / 100 }))
+  }
+  return []
 }
 
 export interface GlassesSatate {
