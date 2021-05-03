@@ -13,7 +13,7 @@
     >
       <span>&copy; {{ new Date().getFullYear() }} Partners for Visual Health</span>
       <span class="px-2">—</span>
-      <a href="https://github.com/friends-of-asaprosar" target=”_blank” rel=noopener class="white--text">Source Code</a>
+      <a href="https://github.com/reims2" target=”_blank” rel=noopener class="white--text">Source Code</a>
     </v-footer>
   </v-app>
 </template>
