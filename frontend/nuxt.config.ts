@@ -3,7 +3,7 @@ import type { NuxtConfig } from '@nuxt/types'
 const config: NuxtConfig = {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: 'Reims2 %s',
+    titleTemplate: 'REIMS2 %s',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

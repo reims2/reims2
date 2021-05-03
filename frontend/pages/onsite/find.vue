@@ -101,6 +101,7 @@ export default {
     },
     reset() {
       this.$refs.form.reset()
+      this.philScore({})
       setTimeout(() => { this.$refs.firstInput.focus() })
     },
     update_eye(model, eye) {
