@@ -21,7 +21,9 @@ const config: NuxtConfig = {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     // https://github.com/iFgR/vue-shortkey
-    { src: '@/plugins/vue-shortkey.js', mode: 'client' }
+    { src: '@/plugins/vue-shortkey.js', mode: 'client' },
+    // https://github.com/nuxt-community/pwa-module/issues/239#issuecomment-796807081
+    { src: '~/plugins/pwa-update.js', mode: 'client' }
   ],
 
   ssr: false, // Disable Server Side rendering
@@ -63,8 +65,8 @@ const config: NuxtConfig = {
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
-    manifest: {
-      lang: 'en'
+    meta: {
+      name: 'REIMS2'
     }
   },
 
