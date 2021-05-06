@@ -51,6 +51,7 @@ export default {
     return {
       title: 'Start'
     }
-  }
+  },
+  auth: false
 }
 </script>

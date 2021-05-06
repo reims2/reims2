@@ -57,7 +57,9 @@ const config: NuxtConfig = {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    // https://auth.nuxtjs.org/
+    '@nuxtjs/auth-next'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -75,6 +77,13 @@ const config: NuxtConfig = {
     download: true,
     families: {
       Roboto: true
+    }
+  },
+
+  // https://auth.nuxtjs.org/guide/scheme
+  auth: {
+    strategies: {
+      local: { /* ... */ }
     }
   },
 
@@ -100,6 +109,11 @@ const config: NuxtConfig = {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+
+  router: {
+    // todo enable in future for auth
+    // middleware: ['auth']
   }
 }
 
