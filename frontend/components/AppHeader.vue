@@ -5,7 +5,6 @@
     dark
     color="primary"
     short
-    dense
   >
     <v-btn
       icon
@@ -16,8 +15,19 @@
       <v-icon>{{ mdiArrowLeft }}</v-icon>
     </v-btn>
     <v-toolbar-title class="text-h5">
-      {{ title }}
+      <div>
+        {{ title }}
+      </div>
     </v-toolbar-title>
+    <v-spacer />
+    <v-select
+      v-model="location"
+      :items="locations"
+      dense
+      hide-details
+      style="max-width:150px"
+      class="align-self-end mr-0 mr-md-10"
+    />
 
     <template v-if="items.length > 0" #extension>
       <v-tabs
@@ -55,8 +65,23 @@ export default {
   },
   data() {
     return {
-      mdiArrowLeft
+      mdiArrowLeft,
+      locations: [
+        { text: 'San Miguel', value: 'sm' },
+        { text: 'Santa Ana', value: 'sa' }
+      ]
+    }
+  },
+  computed: {
+    location: {
+      get() {
+        return this.$store.state.location
+      },
+      set(value) {
+        this.$store.commit('setLocation', value)
+      }
     }
   }
+
 }
 </script>

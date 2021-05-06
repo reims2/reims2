@@ -23,7 +23,9 @@ const config: NuxtConfig = {
     // https://github.com/iFgR/vue-shortkey
     { src: '@/plugins/vue-shortkey.js', mode: 'client' },
     // https://github.com/nuxt-community/pwa-module/issues/239#issuecomment-796807081
-    { src: '~/plugins/pwa-update.js', mode: 'client' }
+    { src: '~/plugins/pwa-update.js', mode: 'client' },
+    // https://github.com/robinvdvleuten/vuex-persistedstate#example-with-nuxtjs
+    { src: '~/plugins/persistedState.js', mode: 'client' }
   ],
 
   ssr: false, // Disable Server Side rendering

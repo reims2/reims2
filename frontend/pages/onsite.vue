@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import AppHeader from '~/components/AppHeader.vue'
 
 export default {
@@ -32,6 +33,14 @@ export default {
     return {
       title: 'On-site'
     }
+  },
+  mounted() {
+    this.load()
+  },
+  methods: {
+    ...mapActions({
+      load: 'glasses/loadActiveGlasses'
+    })
   }
 }
 </script>

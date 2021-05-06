@@ -16,6 +16,7 @@
     "@nuxtjs/pwa": "^3.3.5",
     "chroma-js": "2.1.0",
     "core-js": "^3.9.1",
+    "js-cookie": "^2.2.1",
     "nuxt": "^2.15.3",
     "vue-shortkey": "^3.1.7",
     "vuex-persistedstate": "^3.2.0"

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   title: 'View and analyse data',
   data: () => ({
@@ -47,6 +47,14 @@ export default {
   computed: {
     ...mapState({
       glasses: state => state.glasses.glasses
+    })
+  },
+  mounted() {
+    this.load()
+  },
+  methods: {
+    ...mapActions({
+      load: 'glasses/loadActiveGlasses'
     })
   }
 }

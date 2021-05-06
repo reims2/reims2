@@ -19,22 +19,29 @@ export interface GlassesSatate {
   matches: any[]
 }
 export const state = (): GlassesSatate => ({
-  glasses: GLASSES,
+  glasses: [],
   matches: []
 })
 
 export const MutationType = {
+  SET_GLASSES: 'setGlasses',
   SET_MATCHES: 'setMatches'
 }
 export const mutations: MutationTree<GlassesSatate> = {
+  [MutationType.SET_GLASSES]: (state, value: any[]) => { state.glasses = value },
   [MutationType.SET_MATCHES]: (state, value: any[]) => { state.matches = value }
 }
 
 export const ActionType = {
-  PHIL_SCORE: 'philScore'
+  PHIL_SCORE: 'philScore',
+  LOAD_ACTIVE_GLASSES: 'loadActiveGlasses'
 }
 export const actions: ActionTree<GlassesSatate, GlassesSatate> = {
   [ActionType.PHIL_SCORE]({ commit, state }, eyeModel) {
     commit(MutationType.SET_MATCHES, calculatePhilscore(eyeModel, state.glasses))
+  },
+
+  [ActionType.LOAD_ACTIVE_GLASSES]({ commit }) {
+    commit(MutationType.SET_GLASSES, GLASSES)
   }
 }

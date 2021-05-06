@@ -4,7 +4,6 @@ export default async() => {
   const workbox = await window.$workbox
 
   if (!workbox) {
-    console.debug("Workbox couldn't be loaded.")
     return
   }
 
