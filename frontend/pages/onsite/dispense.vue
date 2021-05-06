@@ -11,9 +11,9 @@
             <v-col cols=12>
               <v-text-field
                 ref="firstInput"
-                v-model="sku"
+                v-model.number="sku"
                 label="SKU"
-                :rules="sku_rules"
+                type="number"
                 :hint="selected? 'Press ENTER to dispense' : null"
                 persistent-hint
               />
@@ -41,17 +41,14 @@ export default {
   data: () => ({
     valid: false,
     sku: '',
-    result: null,
-    sku_rules: [
-      v => !isNaN(v) || 'SKU must be numeric'
-    ]
+    result: null
   }),
   computed: {
     ...mapState({
       glasses: state => state.glasses.glasses
     }),
     selected() {
-      return this.glasses.filter(el => Number(el.SKU) === Number(this.sku))[0]
+      return this.glasses.filter(el => Number(el.SKU) === this.sku)[0]
     }
   },
   activated() {
