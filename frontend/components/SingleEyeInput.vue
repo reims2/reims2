@@ -13,7 +13,7 @@
         <v-text-field
           v-model.number="eye_model[item.id]"
           :label="item.label"
-          :rules="eye_rules"
+          :rules="item.rules"
           type="number"
           step="0.25"
           @change="update"
@@ -26,7 +26,7 @@
           type="number"
           step="0.25"
           :disabled="!addEnabled"
-          :rules="addEnabled ? eye_rules: []"
+          :rules="addEnabled ? add_rules: []"
           @change="update"
         />
       </v-col>
@@ -48,22 +48,34 @@ export default {
   },
   data: () => ({
     eye_model: {},
-    eye_rules: [
+    add_rules: [
       v => v === 0 || !!v || 'Item is required',
-      v => (v >= -20 && v <= 20) || 'Item out of range'
+      v => (v >= 0 && v <= 10) || 'Item out of range'
     ],
     eye_data: [
       {
         label: 'Sphere',
-        id: 'sphere'
+        id: 'sphere',
+        rules: [
+          v => v === 0 || !!v || 'Item is required',
+          v => (v >= -50 && v <= 50) || 'Item out of range'
+        ]
       },
       {
         label: 'Cylinder',
-        id: 'cyl'
+        id: 'cyl',
+        rules: [
+          v => v === 0 || !!v || 'Item is required',
+          v => (v >= -8 && v <= 0) || 'Item out of range'
+        ]
       },
       {
         label: 'Axis',
-        id: 'axis'
+        id: 'axis',
+        rules: [
+          v => v === 0 || !!v || 'Item is required',
+          v => (v >= 0 && v <= 180) || 'Item out of range'
+        ]
       }
     ]
   }),

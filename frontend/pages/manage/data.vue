@@ -122,7 +122,7 @@ export default {
     }),
     isInLimits(value, filters) {
       const min = filters.min !== '' && filters.min !== undefined ? filters.min : null
-      const max = filters.min !== '' && filters.min !== undefined ? filters.min : null
+      const max = filters.max !== '' && filters.max !== undefined ? filters.max : null
       if (min != null && max != null) return value >= min && value <= max
       else if (min != null) return value >= min
       else if (max != null) return value <= max
