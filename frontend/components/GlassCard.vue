@@ -17,17 +17,18 @@
         </v-chip>
       </div>
       <span class="text--secondary">SKU</span> {{ glass.sku.padStart(4, '0') }}
-      <span class="pl-2">{{ glass.TYPE }}</span>
+      <span class="pl-1">{{ glass.type }}</span>
     </v-card-title>
     <v-card-subtitle class="text--primary pb-2 d-flex align-center">
       <v-icon small class="mr-1">
         {{ mdiRuler }}
       </v-icon>
-      {{ glass.SIZE }}
+      {{ glass.size }}
 
       <v-icon small class="ml-3 mr-1">
         {{ mdiHumanMaleFemale }}
       </v-icon>
+      {{ glass.appearance }}
     </v-card-subtitle>
     <v-card-text class="py-0">
       <v-container class="text--primary pa-0">
@@ -36,22 +37,22 @@
             <div class="text-subtitle-1">
               OD
             </div>
-            <div><span class="text--secondary">Sphere:</span> {{ glass.ODSPHERE }} D</div>
-            <div><span class="text--secondary">Cyl:</span> {{ glass.ODCYLINDER }}</div>
-            <div><span class="text--secondary">Axis:</span> {{ glass.ODAXIS }}</div>
-            <div v-if="glass.TYPE !== 'single'">
-              <span class="text--secondary">Add:</span> {{ glass.ODADD }} D
+            <div><span class="text--secondary">Sphere:</span> {{ glass.odsphere }} D</div>
+            <div><span class="text--secondary">Cyl:</span> {{ glass.odcylinder }}</div>
+            <div><span class="text--secondary">Axis:</span> {{ glass.odaxis }}</div>
+            <div v-if="glass.type !== 'single'">
+              <span class="text--secondary">Add:</span> {{ glass.odadd }} D
             </div>
           </v-col>
           <v-col cols=6>
             <div class="text-subtitle-1">
               OS
             </div>
-            <div><span class="text--secondary">Sphere:</span> {{ glass.OSSPHERE }} D</div>
-            <div><span class="text--secondary">Cyl:</span> {{ glass.OSCYLINDER }}</div>
-            <div><span class="text--secondary">Axis:</span> {{ glass.OSAXIS }}</div>
-            <div v-if="glass.TYPE !== 'single'">
-              <span class="text--secondary">Add:</span> {{ glass.OSADD }} D
+            <div><span class="text--secondary">Sphere:</span> {{ glass.ossphere }} D</div>
+            <div><span class="text--secondary">Cyl:</span> {{ glass.oscylinder }}</div>
+            <div><span class="text--secondary">Axis:</span> {{ glass.osaxis }}</div>
+            <div v-if="glass.type !== 'single'">
+              <span class="text--secondary">Add:</span> {{ glass.osadd }} D
             </div>
           </v-col>
         </v-row>
