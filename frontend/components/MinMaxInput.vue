@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-end fill-height mb-2">
+  <div class="d-flex align-end fill-height my-2">
     <v-text-field
       v-model="min"
       type="number"

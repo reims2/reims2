@@ -59,7 +59,7 @@ export default {
       },
       {
         label: 'Cylinder',
-        id: 'cylinder'
+        id: 'cyl'
       },
       {
         label: 'Axis',

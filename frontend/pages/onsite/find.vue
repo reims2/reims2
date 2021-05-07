@@ -54,15 +54,24 @@
           </v-row>
         </v-form>
       </v-col>
-      <v-col cols=12 md=4 class="pl-6">
+      <v-col cols=12 md=4 lg=3 class="pl-0 pl-md-6">
         <div v-if="matches.length == 0" class="text--secondary">
           Enter prescription to display matches
         </div>
-        <glass-card
-          v-for="item in matches.slice(0,5)"
-          :key="item.sku"
-          :glass="item"
-        />
+        <div v-else>
+          <glass-card
+            v-for="item in matches.slice(3*(page-1),3*(page-1)+3)"
+            :key="item.sku"
+            :glass="item"
+          />
+          <div class="text-center">
+            <v-pagination
+              v-model="page"
+              :length="3"
+              circle
+            />
+          </div>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -74,6 +83,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data: () => ({
     valid: false,
+    page: 1,
     eye_model: {},
     type_data:
       {
@@ -97,6 +107,7 @@ export default {
     }),
     submit() {
       this.philScore(this.eye_model)
+      this.page = 1
       setTimeout(() => { this.$refs.firstInput.focus() })
     },
     reset() {

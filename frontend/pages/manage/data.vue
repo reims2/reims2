@@ -78,27 +78,38 @@ export default {
     headers() {
       return [
         { value: 'sku', text: 'SKU' },
-        { value: 'type', text: 'TYPE' },
-        { value: 'odsphere', text: 'OD SPHERE' },
-        { value: 'odcylinder', text: 'OD CYLINDER' },
-        { value: 'odaxis', text: 'OD AXIS' },
-        { value: 'odadd', text: 'OD ADD' },
-        { value: 'ossphere', text: 'OS SPHERE' },
-        { value: 'oscylinder', text: 'OS CYLINDER' },
-        { value: 'osaxis', text: 'OS AXIS' },
-        { value: 'osadd', text: 'OS ADD' },
-        { value: 'appearance', text: 'APPEARANCE' },
-        { value: 'size', text: 'SIZE' }
+        { value: 'type', text: 'Type' },
+        { value: 'odsphere', text: 'OD Sphere' },
+        { value: 'odcyl', text: 'OD Cyl' },
+        { value: 'odaxis', text: 'OD Axis' },
+        { value: 'odadd', text: 'OD Add' },
+        { value: 'ossphere', text: 'OS Sphere' },
+        { value: 'oscyl', text: 'OS Cyl' },
+        { value: 'osaxis', text: 'OS Axis' },
+        { value: 'osadd', text: 'OS Add' },
+        { value: 'appearance', text: 'Appearance' },
+        { value: 'size', text: 'Size' }
       ]
     },
     items() {
       return this.glasses.filter((el) => {
         if (this.filterType.length > 0 && !this.filterType.includes(el.type)) return false
-        if (!this.isInLimits(el.odsphere, this.filters.od.sphere)) return false
-        if (!this.isInLimits(el.odcylinder, this.filters.od.cyl)) return false
-        if (!this.isInLimits(el.ossphere, this.filters.os.sphere)) return false
-        if (!this.isInLimits(el.oscylinder, this.filters.os.cyl)) return false
+        if (!this.isInLimits(el.od.sphere, this.filters.od.sphere)) return false
+        if (!this.isInLimits(el.od.cyl, this.filters.od.cyl)) return false
+        if (!this.isInLimits(el.os.sphere, this.filters.os.sphere)) return false
+        if (!this.isInLimits(el.os.cyl, this.filters.os.cyl)) return false
         return true
+      }).map((el) => {
+        // map to flat object for table
+        el.odsphere = el.od.sphere
+        el.odaxis = el.od.axis
+        el.odcyl = el.od.cyl
+        el.odadd = el.od.add
+        el.ossphere = el.os.sphere
+        el.osaxis = el.os.axis
+        el.oscyl = el.os.cyl
+        el.osadd = el.os.add
+        return el
       })
     }
   },

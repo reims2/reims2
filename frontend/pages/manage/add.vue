@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
-    <v-row class="justify-end" dense>
-      <v-col cols=12 md=6>
+    <v-row class="justify-center" dense>
+      <v-col cols=12 md=6 lg=4>
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col
@@ -22,16 +22,16 @@
               />
             </v-col>
             <v-col
-              v-for="eye in ['OD', 'OS']"
-              :key="eye"
+              v-for="eye in eyes"
+              :key="eye.key"
               cols=12
               md=6
               class="px-4 pt-4"
             >
               <single-eye-input
-                :eye-name="eye"
+                :eye-name="eye.text"
                 :add-enabled="glass_model['type'] !== 'single'"
-                @update="model => {update_eye(model, eye)}"
+                @update="model => {update_eye(model, eye.key)}"
               />
             </v-col>
             <v-col cols=12 class="pt-4">
@@ -54,18 +54,34 @@
                 </v-btn>
               </div>
             </v-col>
-            <v-col cols=12>
-              <div>{{ output }}</div>
-            </v-col>
           </v-row>
         </v-form>
       </v-col>
-      <v-col
-        v-if="!$vuetify.breakpoint.mobile"
-        cols=3
-        class="text-body-2 text--secondary pl-4 pt-8"
-      >
-        This is some additional text describing the features of this page.
+      <v-col v-if="last_added.length > 0" cols=12 md=4 lg=3 class="pl-0 pl-md-6">
+        <div class="text-h6 pb-2">
+          Recently added
+        </div>
+        <glass-card
+          v-for="(item, idx) in last_added.slice(0,3)"
+          :key="item.sku || 1"
+          :glass="item"
+          :style="'opacity: ' + (1-idx*0.3)"
+        >
+          <template #actions>
+            <v-btn
+              text
+              color="error"
+            >
+              Remove
+            </v-btn>
+            <v-btn
+              text
+              color="primary"
+            >
+              Edit
+            </v-btn>
+          </template>
+        </glass-card>
       </v-col>
     </v-row>
   </v-container>
@@ -77,12 +93,13 @@ export default {
     valid: false,
     glass_model: {},
     eye_model: {},
+    last_added: [],
     output: '',
     general_data: [
       {
         id: 'type',
         label: 'Type',
-        options: ['single', 'multifocal'],
+        options: ['single', 'bifocal', 'progressive'],
         rules: [v => !!v || 'Item is required'],
         first: true
       },
@@ -98,7 +115,15 @@ export default {
         options: ['neutral', 'feminine', 'masculine'],
         rules: [v => !!v || 'Item is required']
       }
-    ]
+    ],
+    eyes: [{
+      text: 'OD',
+      key: 'od'
+    },
+    {
+      text: 'OS',
+      key: 'os'
+    }]
   }),
   activated() {
     setTimeout(() => { this.$refs.firstInput[0].focus() })
@@ -106,12 +131,19 @@ export default {
   methods: {
     submit() {
       if (this.valid) {
-        this.output = JSON.stringify(this.glass_model) + JSON.stringify(this.eye_model)
+        this.glass_model.sku = Math.floor(Math.random() * 10000)
+        // fixme this is a very weird workaround, thanks js
+        this.glass_model.od = Object.assign({}, this.eye_model.od)
+        this.glass_model.os = Object.assign({}, this.eye_model.os)
+        this.last_added.unshift(this.glass_model)
+        this.reset()
       }
     },
     reset() {
+      this.eye_model = {}
+      this.glass_model = {}
       this.$refs.form.reset()
-      this.output = ''
+      this.$refs.firstInput[0].focus()
     },
     update_eye(model, eye) {
       this.eye_model[eye] = model
