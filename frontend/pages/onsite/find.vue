@@ -60,7 +60,7 @@
         </div>
         <glass-card
           v-for="item in matches.slice(0,5)"
-          :key="item.SKU"
+          :key="item.sku"
           :glass="item"
         />
       </v-col>
@@ -79,7 +79,7 @@ export default {
       {
         id: 'type',
         label: 'Type',
-        options: ['single', 'bifocal', 'progressive'],
+        options: ['single', 'multifocal'],
         rules: [v => !!v || 'Item is required']
       }
   }),

@@ -82,7 +82,7 @@ export default {
       {
         id: 'type',
         label: 'Type',
-        options: ['single', 'bifocal', 'progressive'],
+        options: ['single', 'multifocal'],
         rules: [v => !!v || 'Item is required'],
         first: true
       },
@@ -97,11 +97,6 @@ export default {
         label: 'Appearance',
         options: ['neutral', 'feminine', 'masculine'],
         rules: [v => !!v || 'Item is required']
-      },
-      {
-        id: 'material',
-        label: 'Material',
-        options: ['metal', 'plastic']
       }
     ]
   }),

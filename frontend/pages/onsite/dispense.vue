@@ -48,7 +48,7 @@ export default {
       glasses: state => state.glasses.glasses
     }),
     selected() {
-      return this.glasses.filter(el => Number(el.SKU) === this.sku)[0]
+      return this.glasses.filter(el => Number(el.sku) === this.sku)[0]
     }
   },
   activated() {
@@ -58,7 +58,7 @@ export default {
     submit() {
       if (this.selected) {
         // do dispension
-        this.result = 'Successfully dispensed glasses with SKU ' + this.selected.SKU
+        this.result = 'Successfully dispensed glasses with SKU ' + this.selected.sku
         this.$refs.form.reset()
         this.$refs.firstInput.focus()
       } else {

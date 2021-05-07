@@ -15,7 +15,7 @@
                   type="warning"
                   elevation="2"
                 >
-                  In its current state the UI has no real functions. The displayed data is the example data from 1998-2000.
+                  The UI is a work in progress and is still lacking many features.
                 </v-alert>
               </v-col>
               <v-col class="d-flex justify-center">

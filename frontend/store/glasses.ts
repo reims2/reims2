@@ -41,7 +41,10 @@ export const actions: ActionTree<GlassesSatate, GlassesSatate> = {
     commit(MutationType.SET_MATCHES, calculatePhilscore(eyeModel, state.glasses))
   },
 
-  [ActionType.LOAD_ACTIVE_GLASSES]({ commit }) {
-    commit(MutationType.SET_GLASSES, GLASSES)
+  [ActionType.LOAD_ACTIVE_GLASSES]({ commit, rootState }) {
+    let selectedGlasses
+    if ((rootState as any).location === 'sa') selectedGlasses = GLASSES.filter(el => Number(el.sku) < 5000)
+    else selectedGlasses = GLASSES.filter(el => Number(el.sku) >= 5000)
+    commit(MutationType.SET_GLASSES, selectedGlasses)
   }
 }

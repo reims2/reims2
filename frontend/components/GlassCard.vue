@@ -16,7 +16,7 @@
           {{ glass.score }}
         </v-chip>
       </div>
-      <span class="text--secondary">SKU</span> {{ glass.SKU.padStart(4, '0') }}
+      <span class="text--secondary">SKU</span> {{ glass.sku.padStart(4, '0') }}
       <span class="pl-2">{{ glass.TYPE }}</span>
     </v-card-title>
     <v-card-subtitle class="text--primary pb-2 d-flex align-center">
@@ -28,14 +28,6 @@
       <v-icon small class="ml-3 mr-1">
         {{ mdiHumanMaleFemale }}
       </v-icon>
-      {{ glass.APPEARANCE }}
-
-      <span v-if="glass.MATERIAL">
-        <v-icon small class="ml-3">
-          {{ mdiHammerScrewdriver }}
-        </v-icon>
-        {{ glass.MATERIAL }}
-      </span>
     </v-card-subtitle>
     <v-card-text class="py-0">
       <v-container class="text--primary pa-0">
@@ -78,7 +70,7 @@
 </template>
 
 <script>
-import { mdiRuler, mdiGlasses, mdiHumanMaleFemale, mdiHammerScrewdriver } from '@mdi/js'
+import { mdiRuler, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
 import * as chroma from '../lib/chroma'
 
 export default {
@@ -91,8 +83,7 @@ export default {
   data: () => ({
     mdiRuler,
     mdiGlasses,
-    mdiHumanMaleFemale,
-    mdiHammerScrewdriver
+    mdiHumanMaleFemale
   }),
   methods: {
     calcColor(val) {

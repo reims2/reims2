@@ -11,6 +11,8 @@
           :items="glasses"
           :items-per-page="20"
           dense
+          must-sort
+          sort-by="sku"
           :footer-props="{
             showFirstLastPage: true,
             itemsPerPageOptions: [10,20,100,500],
@@ -27,21 +29,19 @@ import { mapState, mapActions } from 'vuex'
 export default {
   title: 'View and analyse data',
   data: () => ({
-    // headers: ['SKU', 'TYPE', 'ODSPHERE', 'ODCYLINDER', 'ODAXIS', 'ODADD', 'OSSPHERE', 'OSCYLINDER', 'OSAXIS', 'OSADD', 'APPEARANCE', 'MATERIAL', 'SIZE']
     headers: [
-      { value: 'SKU', text: 'SKU' },
-      { value: 'TYPE', text: 'TYPE' },
-      { value: 'ODSPHERE', text: 'OD SPHERE' },
-      { value: 'ODCYLINDER', text: 'OD CYLINDER' },
-      { value: 'ODAXIS', text: 'OD AXIS' },
-      { value: 'ODADD', text: 'OD ADD' },
-      { value: 'OSSPHERE', text: 'OS SPHERE' },
-      { value: 'OSCYLINDER', text: 'OS CYLINDER' },
-      { value: 'OSAXIS', text: 'OS AXIS' },
-      { value: 'OSADD', text: 'OS ADD' },
-      { value: 'APPEARANCE', text: 'APPEARANCE' },
-      { value: 'MATERIAL', text: 'MATERIAL' },
-      { value: 'SIZE', text: 'SIZE' }
+      { value: 'sku', text: 'SKU' },
+      { value: 'type', text: 'TYPE' },
+      { value: 'odsphere', text: 'OD SPHERE' },
+      { value: 'odcylinder', text: 'OD CYLINDER' },
+      { value: 'odaxis', text: 'OD AXIS' },
+      { value: 'odadd', text: 'OD ADD' },
+      { value: 'ossphere', text: 'OS SPHERE' },
+      { value: 'oscylinder', text: 'OS CYLINDER' },
+      { value: 'osaxis', text: 'OS AXIS' },
+      { value: 'osadd', text: 'OS ADD' },
+      { value: 'appearance', text: 'APPEARANCE' },
+      { value: 'size', text: 'SIZE' }
     ]
   }),
   computed: {
