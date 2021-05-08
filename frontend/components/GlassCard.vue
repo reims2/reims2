@@ -32,7 +32,7 @@
       </v-icon>
       {{ glass.appearance }}
     </v-card-subtitle>
-    <v-card-text class="py-0">
+    <v-card-text :class="[noActions ? '' :'py-0']">
       <v-container class="text--primary pa-0">
         <v-row dense>
           <v-col v-for="eye in eyes" :key="eye.key" cols=6>
@@ -67,7 +67,7 @@
         </v-row>
       </v-container>
     </v-card-text>
-    <v-card-actions class="pt-0">
+    <v-card-actions v-if="!noActions" class="pt-0">
       <slot name="actions">
         <v-btn
           text
@@ -90,6 +90,10 @@ export default {
     glass: {
       type: Object,
       required: true
+    },
+    noActions: {
+      type: Boolean,
+      required: false
     }
   },
   data: () => ({

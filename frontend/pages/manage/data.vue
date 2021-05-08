@@ -3,7 +3,7 @@
     <v-row dense class="d-flex justify-center">
       <v-col cols=12>
         <v-data-table
-          fixed-header
+          v-if="!$vuetify.breakpoint.mobile"
           :headers="headers"
           :items="items"
           :items-per-page="20"
@@ -16,7 +16,7 @@
             showCurrentPage: true
           }"
         >
-          <template v-if="!$vuetify.breakpoint.mobile" #body.prepend>
+          <template #body.prepend>
             <tr>
               <td />
               <td>
@@ -49,6 +49,22 @@
             </tr>
           </template>
         </v-data-table>
+        <div v-else class="px-4">
+          <glass-card
+            v-for="item in glasses.slice(glassesPerMobilePage*(page-1),glassesPerMobilePage*(page-1)+glassesPerMobilePage)"
+            :key="item.sku"
+            :glass="item"
+            no-actions
+          />
+          <div class="text-center">
+            <v-pagination
+              v-model="page"
+              :length="Math.ceil(glasses.length/glassesPerMobilePage)"
+              :total-visible="9"
+              circle
+            />
+          </div>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -69,7 +85,9 @@ export default {
         sphere: {},
         cyl: {}
       }
-    }
+    },
+    page: 1,
+    glassesPerMobilePage: 10
   }),
   computed: {
     ...mapState({

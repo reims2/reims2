@@ -9,16 +9,13 @@
   >
     <v-btn
       icon
-      class="hidden-xs-only"
       to="/"
       nuxt
     >
       <v-icon>{{ mdiArrowLeft }}</v-icon>
     </v-btn>
-    <v-toolbar-title class="text-h5">
-      <div>
-        {{ title }}
-      </div>
+    <v-toolbar-title class="text-h5 hidden-xs-only">
+      {{ title }}
     </v-toolbar-title>
     <v-spacer />
     <v-select

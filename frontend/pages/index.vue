@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="8">
-      <v-card class="ma-4">
+    <v-col style="max-width: 700px;">
+      <v-card class="ma-8">
         <v-card-title class="headline">
           Welcome to REIMS2
         </v-card-title>

@@ -22,6 +22,10 @@ export default {
           to: 'data'
         },
         {
+          text: 'Generate reports',
+          to: 'reports'
+        },
+        {
           text: 'More to come',
           to: '/error'
         }
