@@ -14,7 +14,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
-  title: 'View and analyse data',
+  title: 'View all data',
   computed: {
     ...mapState({
       glasses: state => state.glasses.glasses

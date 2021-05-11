@@ -1,7 +1,10 @@
 <template>
   <v-container fluid>
     <v-row dense class="justify-center">
-      <v-col cols=12 md=6>
+      <v-col cols=12 md=6 lg=4>
+        <div class="pb-3 text--secondary">
+          You can dispense, edit or delete glasses here. Enter the SKU to continue.
+        </div>
         <v-form
           ref="form"
           v-model="valid"

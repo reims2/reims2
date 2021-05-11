@@ -4,7 +4,6 @@
     app
     dark
     color="primary"
-    short
     dense
   >
     <v-btn
@@ -24,7 +23,7 @@
       dense
       hide-details
       style="max-width:150px"
-      class="align-self-end mr-0 mr-md-10 mb-2"
+      class="mr-0 mr-md-10 mt-2"
     />
 
     <template v-if="items.length > 0" #extension>

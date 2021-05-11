@@ -19,12 +19,12 @@ export default {
           to: 'find'
         },
         {
-          text: 'Dispense glasses',
-          to: 'dispense'
+          text: 'Edit glasses',
+          to: 'edit'
         },
         {
-          text: 'More to come',
-          to: '/error'
+          text: 'View all glasses',
+          to: 'data'
         }
       ]
     }
