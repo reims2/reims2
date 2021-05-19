@@ -7,7 +7,7 @@ To run the backend, you'll have to type in the following command:
 ./mvnw spring-boot:run
 ```
 Then you can the API Endpoints via:
-http://localhost:9966/friendofasaprosa/api/glasses
+http://localhost:9966/pvh/api/glasses
 
 # Swagger Documentation
-http://localhost:9966/friendofasaprosa/swagger-ui.html
+http://localhost:9966/pvh/swagger-ui.html
