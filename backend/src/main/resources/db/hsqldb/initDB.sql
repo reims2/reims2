@@ -5,20 +5,20 @@ DROP TABLE glasses IF EXISTS;
 
 
 CREATE TABLE eye (
-  id         INTEGER IDENTITY PRIMARY KEY,
+  id         BIGINT IDENTITY PRIMARY KEY,
   sphere VARCHAR(30),
   cylinder VARCHAR(30),
   axis VARCHAR(30),
   add  VARCHAR(30)
 );
 CREATE TABLE glasses (
-     id         INTEGER IDENTITY PRIMARY KEY,
-     SKU VARCHAR(30),
+     id         BIGINT IDENTITY PRIMARY KEY,
+     SKU BIGINT,
      glasses_type VARCHAR(30),
      glasses_size VARCHAR(30),
      appearance  VARCHAR(30),
-     material VARCHAR(30),
      dispensed   BOOLEAN DEFAULT FALSE NOT NULL,
+     location VARCHAR(50),
      OS_ID INTEGER,
      OD_ID INTEGER
 );
