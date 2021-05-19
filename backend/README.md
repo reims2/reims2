@@ -9,5 +9,5 @@ To run the backend, you'll have to type in the following command:
 Then you can the API Endpoints via:
 http://localhost:9966/friendofasaprosa/api/glasses
 
-##Swagger Documentation
+# Swagger Documentation
 http://localhost:9966/friendofasaprosa/swagger-ui.html
