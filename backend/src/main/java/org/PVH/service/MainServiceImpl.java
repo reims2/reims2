@@ -2,8 +2,10 @@ package org.PVH.service;
 
 import java.util.Optional;
 
+import org.PVH.model.Dispense;
 import org.PVH.model.Eye;
 import org.PVH.model.Glasses;
+import org.PVH.repository.DispenseRepository;
 import org.PVH.repository.EyeRepository;
 import org.PVH.repository.GlassesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,13 @@ public class MainServiceImpl implements MainService {
 
     private GlassesRepository glassesRepository;
     private EyeRepository eyeRepository;
+    private DispenseRepository dispenseRepository;
 
     @Autowired
-     public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository) {
+     public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository) {
         this.glassesRepository = glassesRepository;
         this.eyeRepository = eyeRepository;
+        this.dispenseRepository = dispenseRepository;
     }
 
 
@@ -50,7 +54,8 @@ public class MainServiceImpl implements MainService {
     public void saveGlasses(Glasses glasses) throws DataAccessException {
         Eye osid = eyeRepository.save(glasses.getOS());
         Eye odid = eyeRepository.save(glasses.getOD());
-        glassesRepository.saveGlassesWithNextPossibleSKU(glasses, osid, odid);
+        Dispense dispense = dispenseRepository.save(glasses.getDispense());
+        glassesRepository.saveGlassesWithNextPossibleSKU(glasses, osid, odid,dispense);
     }
 
     @Override

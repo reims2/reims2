@@ -21,9 +21,9 @@ public class Glasses extends BaseEntity{
     @Column(name = "location")
     private String location;
 
-
-    @Column(name = "dispensed")
-    private boolean dispensed;
+    @OneToOne
+    @JoinColumn(name = "dispense_id")
+    private Dispense dispense;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "OS_ID")
@@ -67,13 +67,6 @@ public class Glasses extends BaseEntity{
         this.appearance = appearance;
     }
 
-    public boolean isDispensed() {
-        return dispensed;
-    }
-
-    public void setDispensed(boolean dispensed) {
-        this.dispensed = dispensed;
-    }
     public Eye getOS() {
         return OS;
     }
@@ -96,5 +89,13 @@ public class Glasses extends BaseEntity{
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Dispense getDispense() {
+        return dispense;
+    }
+
+    public void setDispense(Dispense dispense) {
+        this.dispense = dispense;
     }
 }

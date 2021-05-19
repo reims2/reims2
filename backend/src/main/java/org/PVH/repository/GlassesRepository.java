@@ -27,7 +27,6 @@ import java.util.Optional;
 public interface GlassesRepository  extends JpaRepository<Glasses, Long>, CustomGlassesRepository {
 
 
-    Page<Glasses> findByDispensed(boolean dispensed, Pageable pageable);
 
     Page<Glasses> findByGlassesTypeAndLocation(String location, String glassesType, Pageable pageable);
 

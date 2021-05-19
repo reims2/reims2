@@ -118,8 +118,8 @@ public class GlassesRestController {
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
-	@RequestMapping(value = "/{glassesId}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<Glasses> updateGlasses(@PathVariable("glassesId") long glassedId, @RequestBody @Valid Glasses glasses, BindingResult bindingResult){
+	@RequestMapping(value = "/{location}/{glassesId}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseEntity<Glasses> updateGlasses(@PathVariable("location") String location, @PathVariable("glassesId") long glassedId, @RequestBody @Valid Glasses glasses, BindingResult bindingResult){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
 		HttpHeaders headers = new HttpHeaders();
 		if(bindingResult.hasErrors() || (glasses == null)){
@@ -127,7 +127,7 @@ public class GlassesRestController {
 			headers.add("errors", errors.toJSON());
 			return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
 		}
-        Optional<Glasses>  currentGlasses = this.mainService.findGlassesById(glassedId);
+        Optional<Glasses>  currentGlasses = this.mainService.findAllByIdAndLocation(glassedId,location);
 		if(currentGlasses.isEmpty()){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -135,10 +135,10 @@ public class GlassesRestController {
 		currentGlasses.get().setGlassesSize(glasses.getGlassesSize());
         currentGlasses.get().setGlassesType(glasses.getGlassesType());
         currentGlasses.get().setAppearance(glasses.getAppearance());
-        currentGlasses.get().setDispensed(glasses.isDispensed());
-        currentGlasses.get().setGlassesSize(glasses.getGlassesSize());
+        currentGlasses.get().setLocation(glasses.getLocation());
         currentGlasses.get().setOD(glasses.getOD());
         currentGlasses.get().setOS(glasses.getOS());
+        currentGlasses.get().setDispense(glasses.getDispense());
         this.mainService.saveGlasses(currentGlasses.get());
 		return new ResponseEntity<Glasses>(currentGlasses.get(), HttpStatus.NO_CONTENT);
 	}
