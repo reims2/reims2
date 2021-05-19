@@ -59,26 +59,20 @@ const config: NuxtConfig = {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/proxy',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://auth.nuxtjs.org/
     '@nuxtjs/auth-next'
   ],
 
-  publicRuntimeConfig: {
-    axios: { // https://axios.nuxtjs.org/options#runtime-config
-      browserBaseURL: process.env.API_URL
-    }
-  },
-
-  privateRuntimeConfig: {
-    axios: { // https://axios.nuxtjs.org/options#runtime-config
-      baseURL: process.env.API_URL
-    }
+  proxy: { // https://axios.nuxtjs.org/options/#proxy
+    '/api/': { target: process.env.API_URL, pathRewrite: { '^/api/': '' } }
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
+    proxy: true,
     progress: true // show loading bar
   },
 

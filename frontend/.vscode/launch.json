@@ -33,7 +33,7 @@
                 "program": "${workspaceFolder}/node_modules/nuxt/bin/nuxt.js"
             },
             "env": {
-                "API_URL": "https://api.reims2.duckdns.org/friendofasaprosa/api" // for AXIOS, change me
+                "API_URL": "https://api.reims2.duckdns.org/pvh/api/" // for AXIOS
             }
         }
     ],

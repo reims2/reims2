@@ -13,6 +13,7 @@
     "@nuxt/typescript-runtime": "^2.1.0",
     "@nuxtjs/auth-next": "5.0.0-1620457172.0cf714c",
     "@nuxtjs/axios": "^5.13.1",
+    "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/pwa": "^3.3.5",
     "chroma-js": "2.1.0",
     "core-js": "^3.12.1",

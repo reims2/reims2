@@ -47,7 +47,7 @@ export const actions: ActionTree<GlassesSatate, GlassesSatate> = {
   },
 
   async [ActionType.LOAD_ACTIVE_GLASSES]({ commit, rootState }) {
-    const data = await this.$axios.$get('/glasses') // fixme ts
+    const data = await this.$axios.$get('/api/glasses') // fixme ts
     let selectedGlasses
     if ((rootState as any).location === 'sa') selectedGlasses = data.filter((el: { sku: any }) => Number(el.sku) < 5000)
     else selectedGlasses = data.filter((el: { sku: any }) => Number(el.sku) >= 5000)
@@ -55,7 +55,7 @@ export const actions: ActionTree<GlassesSatate, GlassesSatate> = {
   },
 
   async [ActionType.ADD_GLASSES]({ commit }, newGlasses:any) {
-    await this.$axios.$post('/glasses', newGlasses) // fixme ts
+    await this.$axios.$post('/api/glasses', newGlasses) // fixme ts
     commit(MutationType.APPEND_LAST_ADDED, newGlasses)
   }
 }

@@ -143,6 +143,7 @@ export default {
         // fixme this is a very weird workaround, thanks js
         this.glass_model.od = Object.assign({}, this.eye_model.od)
         this.glass_model.os = Object.assign({}, this.eye_model.os)
+        this.glass_model.dispense = {} // fixme
         this.addGlasses(this.glass_model)
         this.reset()
       }
