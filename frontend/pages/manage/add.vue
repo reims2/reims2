@@ -30,7 +30,7 @@
             >
               <single-eye-input
                 :eye-name="eye.text"
-                :add-enabled="glass_model['type'] !== 'single'"
+                :add-enabled="glass_model['glassesType'] !== 'single'"
                 @update="model => {update_eye(model, eye.key)}"
               />
             </v-col>
@@ -57,12 +57,12 @@
           </v-row>
         </v-form>
       </v-col>
-      <v-col v-if="last_added.length > 0" cols=12 md=4 lg=3 class="pl-0 pl-md-6">
+      <v-col v-if="lastAdded.length > 0" cols=12 md=4 lg=3 class="pl-0 pl-md-6">
         <div class="text-h6 pb-2">
           Recently added
         </div>
         <glass-card
-          v-for="(item, idx) in last_added.slice(0,3)"
+          v-for="(item, idx) in lastAdded.slice(0,3)"
           :key="item.sku || 1"
           :glass="item"
           :style="'opacity: ' + (1-idx*0.3)"
@@ -88,23 +88,23 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   data: () => ({
     valid: false,
     glass_model: {},
     eye_model: {},
-    last_added: [],
     output: '',
     general_data: [
       {
-        id: 'type',
+        id: 'glassesType',
         label: 'Type',
         options: ['single', 'bifocal', 'progressive'],
         rules: [v => !!v || 'Item is required'],
         first: true
       },
       {
-        id: 'size',
+        id: 'glassesSize',
         label: 'Size',
         options: ['small', 'medium', 'large', 'child'],
         rules: [v => !!v || 'Item is required']
@@ -125,17 +125,25 @@ export default {
       key: 'os'
     }]
   }),
+  computed: {
+    ...mapState({
+      lastAdded: state => state.glasses.lastAdded
+    })
+  },
   activated() {
     setTimeout(() => { this.$refs.firstInput[0].focus() })
   },
   methods: {
+    ...mapActions({
+      addGlasses: 'glasses/addGlasses'
+    }),
     submit() {
       if (this.valid) {
         this.glass_model.sku = Math.floor(Math.random() * 10000)
         // fixme this is a very weird workaround, thanks js
         this.glass_model.od = Object.assign({}, this.eye_model.od)
         this.glass_model.os = Object.assign({}, this.eye_model.os)
-        this.last_added.unshift(this.glass_model)
+        this.addGlasses(this.glass_model)
         this.reset()
       }
     },

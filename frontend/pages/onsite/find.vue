@@ -87,7 +87,7 @@ export default {
     eye_model: {},
     type_data:
       {
-        id: 'type',
+        id: 'glassesType',
         label: 'Type',
         options: ['single', 'multifocal'],
         rules: [v => !!v || 'Item is required']

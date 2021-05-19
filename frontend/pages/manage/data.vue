@@ -3,7 +3,6 @@
     <v-row dense class="d-flex justify-center">
       <v-col cols=12>
         <glasses-table
-          v-col
           :glasses="glasses"
         />
       </v-col>

@@ -33,7 +33,7 @@
           <min-max-input @update="value => {updateFilter(value, 'od', 'sphere')}" />
         </td>
         <td>
-          <min-max-input @update="value => {updateFilter(value, 'od', 'cyl')}" />
+          <min-max-input @update="value => {updateFilter(value, 'od', 'cylinder')}" />
         </td>
         <td />
         <td />
@@ -41,7 +41,7 @@
           <min-max-input @update="value => {updateFilter(value, 'os', 'sphere')}" />
         </td>
         <td>
-          <min-max-input @update="value => {updateFilter(value, 'os', 'cyl')}" />
+          <min-max-input @update="value => {updateFilter(value, 'os', 'cylinder')}" />
         </td>
       </tr>
     </template>
@@ -77,11 +77,11 @@ export default {
     filters: {
       od: {
         sphere: {},
-        cyl: {}
+        cylinder: {}
       },
       os: {
         sphere: {},
-        cyl: {}
+        cylinder: {}
       }
     },
     page: 1,
@@ -91,7 +91,7 @@ export default {
     headers() {
       return [
         { value: 'sku', text: 'SKU' },
-        { value: 'type', text: 'Type' },
+        { value: 'glassesType', text: 'Type' },
         { value: 'odsphere', text: 'OD Sphere' },
         { value: 'odcyl', text: 'OD Cyl' },
         { value: 'odaxis', text: 'OD Axis' },
@@ -101,26 +101,26 @@ export default {
         { value: 'osaxis', text: 'OS Axis' },
         { value: 'osadd', text: 'OS Add' },
         { value: 'appearance', text: 'Appearance' },
-        { value: 'size', text: 'Size' }
+        { value: 'glassesSize', text: 'Size' }
       ]
     },
     items() {
       return this.glasses.filter((el) => {
-        if (this.filterType.length > 0 && !this.filterType.includes(el.type)) return false
+        if (this.filterType.length > 0 && !this.filterType.includes(el.glassesType)) return false
         if (!this.isInLimits(el.od.sphere, this.filters.od.sphere)) return false
-        if (!this.isInLimits(el.od.cyl, this.filters.od.cyl)) return false
+        if (!this.isInLimits(el.od.cylinder, this.filters.od.cylinder)) return false
         if (!this.isInLimits(el.os.sphere, this.filters.os.sphere)) return false
-        if (!this.isInLimits(el.os.cyl, this.filters.os.cyl)) return false
+        if (!this.isInLimits(el.os.cylinder, this.filters.os.cylinder)) return false
         return true
       }).map((el) => {
         // map to flat object for table
         el.odsphere = el.od.sphere
         el.odaxis = el.od.axis
-        el.odcyl = el.od.cyl
+        el.odcyl = el.od.cylinder
         el.odadd = el.od.add
         el.ossphere = el.os.sphere
         el.osaxis = el.os.axis
-        el.oscyl = el.os.cyl
+        el.oscyl = el.os.cylinder
         el.osadd = el.os.add
         return el
       })
@@ -128,6 +128,7 @@ export default {
   },
   methods: {
     isInLimits(value, filters) {
+      value = Number(value)
       const min = filters.min !== '' && filters.min !== undefined ? filters.min : null
       const max = filters.max !== '' && filters.max !== undefined ? filters.max : null
       if (min != null && max != null) return value >= min && value <= max

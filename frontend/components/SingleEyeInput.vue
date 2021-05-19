@@ -63,7 +63,7 @@ export default {
       },
       {
         label: 'Cylinder',
-        id: 'cyl',
+        id: 'cylinder',
         rules: [
           v => v === 0 || !!v || 'Item is required',
           v => (v >= -8 && v <= 0) || 'Item out of range'

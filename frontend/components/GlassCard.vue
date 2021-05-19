@@ -21,11 +21,11 @@
       <v-icon small class="mr-1">
         {{ mdiGlasses }}
       </v-icon>
-      {{ glass.type }}
+      {{ glass.glassesType }}
       <v-icon small class="ml-3 mr-1">
         {{ mdiArrowUpDown }}
       </v-icon>
-      {{ glass.size }}
+      {{ glass.glassesSize }}
 
       <v-icon small class="ml-3 mr-1">
         {{ mdiHumanMaleFemale }}
@@ -49,7 +49,7 @@
               <td class="text--secondary pr-2">
                 Cyl
               </td>
-              <td>{{ formatNumber(glass[eye.key].cyl, 1) }}</td>
+              <td>{{ formatNumber(glass[eye.key].cylinder, 1) }}</td>
             </tr>
             <tr>
               <td class="text--secondary pr-2">
@@ -57,7 +57,7 @@
               </td>
               <td>{{ glass[eye.key].axis }}</td>
             </tr>
-            <tr v-if="glass.type !== 'single'">
+            <tr v-if="glass.glassesType !== 'single'">
               <td class="text--secondary pr-2">
                 Add
               </td>

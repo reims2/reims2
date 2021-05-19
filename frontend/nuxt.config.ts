@@ -38,7 +38,8 @@ const config: NuxtConfig = {
     color: '#1976D2', // blue.darken2
     height: '3px',
     duration: 1000,
-    continuous: true
+    continuous: true,
+    throttle: 50
   },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -64,8 +65,22 @@ const config: NuxtConfig = {
     '@nuxtjs/auth-next'
   ],
 
+  publicRuntimeConfig: {
+    axios: { // https://axios.nuxtjs.org/options#runtime-config
+      browserBaseURL: process.env.API_URL
+    }
+  },
+
+  privateRuntimeConfig: {
+    axios: { // https://axios.nuxtjs.org/options#runtime-config
+      baseURL: process.env.API_URL
+    }
+  },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    progress: true // show loading bar
+  },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
