@@ -1,9 +1,10 @@
 <template>
   <v-data-table
-    v-if="!$vuetify.breakpoint.mobile"
     :headers="headers"
     :items="items"
-    :items-per-page="20"
+    :options.sync="options"
+    :server-items-length="totalItems"
+    :loading="loading"
     dense
     must-sort
     sort-by="sku"
@@ -13,7 +14,7 @@
       showCurrentPage: true
     }"
   >
-    <template #body.prepend>
+    <template v-if="!$vuetify.breakpoint.mobile" #body.prepend>
       <tr>
         <td />
         <td>
@@ -46,32 +47,11 @@
       </tr>
     </template>
   </v-data-table>
-  <div v-else class="px-4">
-    <glass-card
-      v-for="item in glasses.slice(glassesPerMobilePage*(page-1),glassesPerMobilePage*(page-1)+glassesPerMobilePage)"
-      :key="item.sku"
-      :glass="item"
-      no-actions
-    />
-    <div class="text-center">
-      <v-pagination
-        v-model="page"
-        :length="Math.ceil(glasses.length/glassesPerMobilePage)"
-        :total-visible="9"
-        circle
-      />
-    </div>
-  </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
-  props: {
-    glasses: {
-      type: Array,
-      required: true
-    }
-  },
   data: () => ({
     filterType: [],
     filters: {
@@ -84,10 +64,15 @@ export default {
         cylinder: {}
       }
     },
-    page: 1,
-    glassesPerMobilePage: 10
+    options: { itemsPerPage: 20 },
+    loading: false
   }),
   computed: {
+    ...mapState({
+      glasses: state => state.table.items,
+      totalItems: state => state.table.totalItems,
+      location: state => state.location
+    }),
     headers() {
       return [
         { value: 'sku', text: 'SKU' },
@@ -126,7 +111,22 @@ export default {
       })
     }
   },
+  watch: {
+    options: {
+      handler() {
+        this.$nuxt.$loading.start()
+        this.loadItems(this.options)
+      },
+      deep: true
+    },
+    location() {
+      this.loadItems(this.options)
+    }
+  },
   methods: {
+    ...mapActions({
+      loadItems: 'table/loadItems'
+    }),
     isInLimits(value, filters) {
       value = Number(value)
       const min = filters.min !== '' && filters.min !== undefined ? filters.min : null

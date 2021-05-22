@@ -15,12 +15,12 @@ export function calculatePhilscore(eyeModel:any, glasses: any[]):any[] {
 }
 
 export interface GlassesSatate {
-  glasses: any[],
+  allGlasses: any[],
   matches: any[],
   lastAdded: any[]
 }
 export const state = (): GlassesSatate => ({
-  glasses: [],
+  allGlasses: [],
   matches: [],
   lastAdded: []
 })
@@ -31,7 +31,7 @@ export const MutationType = {
   APPEND_LAST_ADDED: 'appendLastAdded'
 }
 export const mutations: MutationTree<GlassesSatate> = {
-  [MutationType.SET_GLASSES]: (state, value: any[]) => { state.glasses = value },
+  [MutationType.SET_GLASSES]: (state, value: any[]) => { state.allGlasses = value },
   [MutationType.SET_MATCHES]: (state, value: any[]) => { state.matches = value },
   [MutationType.APPEND_LAST_ADDED]: (state, value: any) => { state.lastAdded.unshift(value) }
 }
@@ -43,19 +43,19 @@ export const ActionType = {
 }
 export const actions: ActionTree<GlassesSatate, GlassesSatate> = {
   [ActionType.PHIL_SCORE]({ commit, state }, eyeModel) {
-    commit(MutationType.SET_MATCHES, calculatePhilscore(eyeModel, state.glasses))
+    commit(MutationType.SET_MATCHES, calculatePhilscore(eyeModel, state.allGlasses))
   },
 
   async [ActionType.LOAD_ACTIVE_GLASSES]({ commit, rootState }) {
-    const data = await this.$axios.$get('/api/glasses') // fixme ts
-    let selectedGlasses
-    if ((rootState as any).location === 'sa') selectedGlasses = data.filter((el: { sku: any }) => Number(el.sku) < 5000)
-    else selectedGlasses = data.filter((el: { sku: any }) => Number(el.sku) >= 5000)
-    commit(MutationType.SET_GLASSES, selectedGlasses)
+    const data = await this.$axios.$get(`/api/glasses/${(rootState as any).location}`, { params: { size: 1000000 } }) as any // fixme ts
+    commit(MutationType.SET_GLASSES, data.glasses)
   },
 
-  async [ActionType.ADD_GLASSES]({ commit }, newGlasses:any) {
-    await this.$axios.$post('/api/glasses', newGlasses) // fixme ts
+  async [ActionType.ADD_GLASSES]({ commit, rootState }, newGlasses:any) {
+    const request = Object.assign({}, newGlasses)
+    request.dispense = {} // fixme
+    request.location = (rootState as any).location
+    await this.$axios.$post('/api/glasses', request)
     commit(MutationType.APPEND_LAST_ADDED, newGlasses)
   }
 }

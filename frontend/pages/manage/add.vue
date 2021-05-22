@@ -139,7 +139,7 @@ export default {
     }),
     submit() {
       if (this.valid) {
-        this.glass_model.sku = Math.floor(Math.random() * 10000)
+        this.glass_model.sku = Math.floor(Math.random() * 10000) // fixme this is just for testing
         // fixme this is a very weird workaround, thanks js
         this.glass_model.od = Object.assign({}, this.eye_model.od)
         this.glass_model.os = Object.assign({}, this.eye_model.os)

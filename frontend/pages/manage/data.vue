@@ -2,30 +2,17 @@
   <v-container class="px-1 px-lg-10" fluid>
     <v-row dense class="d-flex justify-center">
       <v-col cols=12>
-        <glasses-table
-          :glasses="glasses"
-        />
+        <v-alert type="warning" style="width: fit-content;">
+          Filtering is currently not working and sorting only for a few fields
+        </v-alert>
+        <glasses-table />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
 export default {
-  title: 'View and analyse data',
-  computed: {
-    ...mapState({
-      glasses: state => state.glasses.glasses
-    })
-  },
-  mounted() {
-    this.load()
-  },
-  methods: {
-    ...mapActions({
-      load: 'glasses/loadActiveGlasses'
-    })
-  }
+  title: 'View and analyse data'
 }
 </script>
