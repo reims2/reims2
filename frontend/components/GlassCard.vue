@@ -49,13 +49,13 @@
               <td class="text--secondary pr-2">
                 Cyl
               </td>
-              <td>{{ formatNumber(glass[eye.key].cylinder, 1) }}</td>
+              <td>{{ formatNumber(glass[eye.key].cylinder, 2) }}</td>
             </tr>
             <tr>
               <td class="text--secondary pr-2">
                 Axis
               </td>
-              <td>{{ glass[eye.key].axis }}</td>
+              <td>{{ glass[eye.key].axis.toString().padStart(3,'0') }}</td>
             </tr>
             <tr v-if="glass.glassesType !== 'single'">
               <td class="text--secondary pr-2">

@@ -130,7 +130,17 @@ export default {
       lastAdded: state => state.glasses.lastAdded
     })
   },
+  watch: {
+    lastAdded: {
+      handler() {
+        // reset on successful load
+        this.reset()
+      },
+      deep: true
+    }
+  },
   activated() {
+    // jump to first field if we switch back to this UI
     setTimeout(() => { this.$refs.firstInput[0].focus() })
   },
   methods: {
@@ -139,13 +149,19 @@ export default {
     }),
     submit() {
       if (this.valid) {
+        this.$nuxt.$loading.start()
+
         this.glass_model.sku = Math.floor(Math.random() * 10000) // fixme this is just for testing
-        // fixme this is a very weird workaround, thanks js
-        this.glass_model.od = Object.assign({}, this.eye_model.od)
-        this.glass_model.os = Object.assign({}, this.eye_model.os)
-        this.glass_model.dispense = {} // fixme
+        const newOd = {}
+        const newOs = {}
+        for (const key of Object.keys(this.eye_model.od)) {
+          // copy to new object (thanks js) and convert to Number at once
+          newOd[key] = Number(this.eye_model.od[key])
+          newOs[key] = Number(this.eye_model.os[key])
+        }
+        this.glass_model.od = newOd
+        this.glass_model.os = newOs
         this.addGlasses(this.glass_model)
-        this.reset()
       }
     },
     reset() {
@@ -156,6 +172,11 @@ export default {
     },
     update_eye(model, eye) {
       this.eye_model[eye] = model
+      if (eye === 'od') {
+        if (!this.eye_model.os || Object.keys(this.eye_model.os).length === 0) {
+          // todo prefill right eye with values from left
+        }
+      }
     },
     generate_hint(options) {
       return 'One of ' + options.join(', ')

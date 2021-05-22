@@ -12,10 +12,10 @@
       padless
     >
       <span>&copy; {{ new Date().getFullYear() }}
-        <a href="https://partnersforvisualhealth.org/" target=”_blank” rel=noopener class="white--text">Partners for Visual Health</a>
+        <a href="https://partnersforvisualhealth.org/" tabindex="-1" target=”_blank” rel=noopener class="white--text">Partners for Visual Health</a>
       </span>
       <span class="px-2">—</span>
-      <a href="https://github.com/reims2" target=”_blank” rel=noopener class="white--text">Source Code</a>
+      <a href="https://github.com/reims2" tabindex="-1" target=”_blank” rel=noopener class="white--text">Source Code</a>
     </v-footer>
   </v-app>
 </template>

@@ -36,7 +36,7 @@ const config: NuxtConfig = {
   */
   loading: {
     color: '#1976D2', // blue.darken2
-    height: '3px',
+    height: '5px',
     duration: 1000,
     continuous: true,
     throttle: 50
