@@ -12,14 +12,14 @@ public class Dispense extends BaseEntity {
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modify_date")
-    private Date modify_date;
+    private Date modifyDate;
 
-    public Date getModify_date() {
-        return modify_date;
+    public Date getModifyDate() {
+        return modifyDate;
     }
 
-    public void setModify_date(Date modify_date) {
-        this.modify_date = modify_date;
+    public void setModifyDate(Date modify_date) {
+        this.modifyDate = modify_date;
     }
 
 }

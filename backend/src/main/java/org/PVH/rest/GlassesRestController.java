@@ -50,7 +50,7 @@ public class GlassesRestController {
 	public ResponseEntity<Map<String, Object>> getAllGlassesPage(@RequestParam(required = false) String glassesType,
                                                              @RequestParam(defaultValue = "0") int page,
                                                              @RequestParam(defaultValue = "3") int size,
-                                                             @RequestParam(defaultValue = "SKU,desc") String[] sort,
+                                                             @RequestParam(defaultValue = "sku,desc") String[] sort,
                                                                  @PathVariable("location") String location){
 
         List<Order> orders = new ArrayList<Order>();
@@ -161,7 +161,9 @@ public class GlassesRestController {
         if(currentGlasses.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         currentGlasses.get().setDispensed(dispensed.isDispensed());
+        currentGlasses.get().getDispense().setModifyDate(new Date());
         this.mainService.saveGlasses(currentGlasses.get());
         return new ResponseEntity<DispenseBoolean>(dispensed,HttpStatus.OK);
     }
