@@ -1,6 +1,7 @@
 
 package org.PVH.rest;
 
+import org.PVH.model.DispenseBoolean;
 import org.PVH.model.Glasses;
 import org.PVH.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class GlassesRestController {
                 orders.add(new Order(getSortDirection(_sort[1]), _sort[0]));
             }
         } else {
-            // sort=[field, direction]
+            // sort=[SKU, desc]
             orders.add(new Order(getSortDirection(sort[1]), sort[0]));
         }
         Collection<Glasses> glasses = new ArrayList<Glasses>();
@@ -118,8 +119,8 @@ public class GlassesRestController {
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
-	@RequestMapping(value = "/{location}/{glassesId}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<Glasses> updateGlasses(@PathVariable("location") String location, @PathVariable("glassesId") long glassedId, @RequestBody @Valid Glasses glasses, BindingResult bindingResult){
+	@RequestMapping(value = "/{glassesId}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseEntity<Glasses> updateGlasses(@PathVariable("glassesId") long glassedId, @RequestBody @Valid Glasses glasses, BindingResult bindingResult){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
 		HttpHeaders headers = new HttpHeaders();
 		if(bindingResult.hasErrors() || (glasses == null)){
@@ -127,7 +128,8 @@ public class GlassesRestController {
 			headers.add("errors", errors.toJSON());
 			return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
 		}
-        Optional<Glasses>  currentGlasses = this.mainService.findAllByIdAndLocation(glassedId,location);
+
+        Optional<Glasses>  currentGlasses = this.mainService.findGlassesById(glassedId);
 		if(currentGlasses.isEmpty()){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -136,13 +138,34 @@ public class GlassesRestController {
         currentGlasses.get().setGlassesType(glasses.getGlassesType());
         currentGlasses.get().setAppearance(glasses.getAppearance());
         currentGlasses.get().setLocation(glasses.getLocation());
-        currentGlasses.get().setOD(glasses.getOD());
-        currentGlasses.get().setOS(glasses.getOS());
+        currentGlasses.get().setOd(glasses.getOd());
+        currentGlasses.get().setOs(glasses.getOs());
         currentGlasses.get().setDispense(glasses.getDispense());
         currentGlasses.get().setDispensed(glasses.isDispensed());
         this.mainService.saveGlasses(currentGlasses.get());
 		return new ResponseEntity<Glasses>(currentGlasses.get(), HttpStatus.OK);
 	}
+
+    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+    @RequestMapping(value = "/dispense/{glassesId}", method = RequestMethod.PUT, produces = "application/json")
+    public ResponseEntity<DispenseBoolean> updateDispensed(@PathVariable("glassesId") long glassesId, @RequestBody @Valid DispenseBoolean dispensed, BindingResult bindingResult){
+        BindingErrorsResponse errors = new BindingErrorsResponse();
+        HttpHeaders headers = new HttpHeaders();
+        if(bindingResult.hasErrors()){
+            errors.addAllErrors(bindingResult);
+            headers.add("errors", errors.toJSON());
+            return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<Glasses>  currentGlasses = this.mainService.findGlassesById(glassesId);
+        if(currentGlasses.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        currentGlasses.get().setDispensed(dispensed.isDispensed());
+        this.mainService.saveGlasses(currentGlasses.get());
+        return new ResponseEntity<DispenseBoolean>(dispensed,HttpStatus.OK);
+    }
+
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{glassesId}", method = RequestMethod.DELETE, produces = "application/json")

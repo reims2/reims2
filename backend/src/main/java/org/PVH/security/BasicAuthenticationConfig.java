@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true) // Enable @PreAuthorize method-level security
-@ConditionalOnProperty(name = "petclinic.security.enable", havingValue = "true")
+@ConditionalOnProperty(name = "pvh.security.enable", havingValue = "true")
 public class BasicAuthenticationConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

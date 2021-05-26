@@ -3,12 +3,12 @@ INSERT INTO dispense VALUES (1,'2016-06-22 19:10:25');
 INSERT INTO dispense VALUES (2,'2019-06-22 19:10:25');
 INSERT INTO dispense VALUES (3,'2019-08-15 15:48:19');
 
-INSERT INTO eye VALUES (1, '1', '1', '1','1');
-INSERT INTO eye VALUES (2, '1', '1', '1','1');
-INSERT INTO eye VALUES (3, '1', '1', '1','1');
+INSERT INTO eye VALUES (1, '1', '1', '1','4');
+INSERT INTO eye VALUES (2, '1', '1', '1','3');
+INSERT INTO eye VALUES (3, '1', '1', '1','2');
 INSERT INTO eye VALUES (4, '1', '1', '1','1');
-INSERT INTO eye VALUES (5, '1', '1', '1','1');
-INSERT INTO eye VALUES (6, '1', '1', '1','1');
+INSERT INTO eye VALUES (5, '1', '1', '1','0');
+INSERT INTO eye VALUES (6, '1', '1', '1','-1');
 
 INSERT INTO glasses VALUES (1,4,'single','small','neutral',1,'San',FALSE,1,2);
 

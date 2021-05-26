@@ -52,8 +52,8 @@ public class MainServiceImpl implements MainService {
     @Override
     @Transactional
     public Glasses saveGlasses(Glasses glasses) throws DataAccessException {
-        Eye osid = eyeRepository.save(glasses.getOS());
-        Eye odid = eyeRepository.save(glasses.getOD());
+        Eye osid = eyeRepository.save(glasses.getOs());
+        Eye odid = eyeRepository.save(glasses.getOd());
         Dispense dispense = glasses.getDispense();
         if(glasses.getDispense()!=null) {
             dispenseRepository.save(dispense);

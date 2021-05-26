@@ -7,10 +7,8 @@ import org.PVH.repository.CustomGlassesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
 
@@ -24,7 +22,7 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
         String query = "SELECT g.SKU + 1 AS FirstAvailableId FROM glasses g LEFT JOIN glasses g1 ON g1.SKU = g.SKU + 1 WHERE g1.SKU IS NULL ORDER BY g.SKU LIMIT 0, 1";
         BigDecimal nextSKU = (BigDecimal) entityManager.createNativeQuery(query).getSingleResult();
 
-        glasses.setSKU(nextSKU.longValue());
+        glasses.setSku(nextSKU.longValue());
         entityManager.persist(glasses);
         entityManager.flush();
         return glasses;

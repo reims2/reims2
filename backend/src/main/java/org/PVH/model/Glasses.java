@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Glasses extends BaseEntity{
 
     @Column(name = "SKU")
-    private long SKU;
+    private long sku;
 
     @Column(name = "glasses_type")
     private String glassesType;
@@ -33,11 +33,11 @@ public class Glasses extends BaseEntity{
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "OS_ID")
-    private Eye OS;
+    private Eye os;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "OD_ID")
-    private Eye OD;
+    private Eye od;
 
     public boolean isDispensed() {
         return dispensed;
@@ -47,12 +47,12 @@ public class Glasses extends BaseEntity{
         this.dispensed = dispensed;
     }
 
-    public long getSKU() {
-        return SKU;
+    public long getSku() {
+        return sku;
     }
 
-    public void setSKU(long SKU) {
-        this.SKU = SKU;
+    public void setSku(long SKU) {
+        this.sku = SKU;
     }
 
     public String getGlassesType() {
@@ -79,20 +79,20 @@ public class Glasses extends BaseEntity{
         this.appearance = appearance;
     }
 
-    public Eye getOS() {
-        return OS;
+    public Eye getOs() {
+        return os;
     }
 
-    public void setOS(Eye OS) {
-        this.OS = OS;
+    public void setOs(Eye OS) {
+        this.os = OS;
     }
 
-    public Eye getOD() {
-        return OD;
+    public Eye getOd() {
+        return od;
     }
 
-    public void setOD(Eye OD) {
-        this.OD = OD;
+    public void setOd(Eye OD) {
+        this.od = OD;
     }
 
     public String getLocation() {
