@@ -18,16 +18,16 @@ export default {
           to: 'add'
         },
         {
+          text: 'Edit glasses',
+          to: 'edit'
+        },
+        {
           text: 'View data',
           to: 'data'
         },
         {
           text: 'Generate reports',
           to: 'reports'
-        },
-        {
-          text: 'More to come',
-          to: '/error'
         }
       ]
     }

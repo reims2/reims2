@@ -19,8 +19,8 @@ export default {
           to: 'find'
         },
         {
-          text: 'Edit glasses',
-          to: 'edit'
+          text: 'Dispense glasses',
+          to: 'dispense'
         },
         {
           text: 'View all glasses',

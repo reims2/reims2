@@ -3,7 +3,7 @@
     <v-row dense class="justify-center">
       <v-col cols=12 md=6 lg=4>
         <div class="pb-3 text--secondary">
-          You can dispense, edit or delete glasses here. Enter the SKU to continue.
+          You can edit, delete or dispense glasses here. Input the SKU to continue.
         </div>
         <v-form
           ref="form"
@@ -17,8 +17,6 @@
                 v-model.number="sku"
                 label="SKU"
                 type="number"
-                :hint="selected? 'Press ENTER to dispense' : null"
-                persistent-hint
               />
             </v-col>
             <v-col v-if="result" cols=12 class="pt-0">
@@ -61,7 +59,7 @@ export default {
     submit() {
       if (this.selected) {
         // do dispension
-        this.result = 'Successfully dispensed glasses with SKU ' + this.selected.sku
+        this.result = 'NOT IMPLEMENTED: Successfully edited glasses with SKU ' + this.selected.sku
         this.$refs.form.reset()
         this.$refs.firstInput.focus()
       } else {
