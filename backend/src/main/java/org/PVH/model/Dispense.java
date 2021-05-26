@@ -9,10 +9,16 @@ import java.util.Date;
 @Table(name = "dispense")
 public class Dispense extends BaseEntity {
 
-    @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modify_date")
     private Date modifyDate;
+
+    public Dispense(Date modifyDate){
+        this.modifyDate = modifyDate;
+    }
+    public Dispense() {
+
+    }
 
     public Date getModifyDate() {
         return modifyDate;

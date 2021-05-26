@@ -18,7 +18,7 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
 
     @Override
     @Transactional
-    public Glasses saveGlassesWithNextPossibleSKU(Glasses glasses, Eye OS, Eye OD, Dispense dispense) {
+    public Glasses saveGlassesWithNextPossibleSKU(Glasses glasses) {
         String query = "SELECT g.SKU + 1 AS FirstAvailableId FROM glasses g LEFT JOIN glasses g1 ON g1.SKU = g.SKU + 1 WHERE g1.SKU IS NULL ORDER BY g.SKU LIMIT 0, 1";
         BigDecimal nextSKU = (BigDecimal) entityManager.createNativeQuery(query).getSingleResult();
 

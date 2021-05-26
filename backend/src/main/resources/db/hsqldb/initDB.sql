@@ -14,7 +14,7 @@ CREATE TABLE eye (
 
 CREATE TABLE dispense (
       id         BIGINT IDENTITY PRIMARY KEY,
-      modify_date TIMESTAMP NULL
+      modify_date TIMESTAMP DEFAULT NULL
 );
 CREATE TABLE glasses (
      id         BIGINT IDENTITY PRIMARY KEY,
@@ -22,7 +22,7 @@ CREATE TABLE glasses (
      glasses_type VARCHAR(30),
      glasses_size VARCHAR(30),
      appearance  VARCHAR(30),
-     dispense_id   INTEGER DEFAULT NULL,
+     dispense_id   INTEGER,
      location VARCHAR(50),
      dispensed   BOOLEAN DEFAULT FALSE,
      OS_ID INTEGER,

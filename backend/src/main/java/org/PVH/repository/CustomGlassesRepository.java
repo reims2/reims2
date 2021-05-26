@@ -6,6 +6,6 @@ import org.PVH.model.Glasses;
 
 public interface CustomGlassesRepository {
 
-    Glasses saveGlassesWithNextPossibleSKU(Glasses glasses, Eye OS, Eye OD, Dispense dispense);
+    Glasses saveGlassesWithNextPossibleSKU(Glasses glasses);
 
 }

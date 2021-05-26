@@ -28,7 +28,6 @@ public class Glasses extends BaseEntity{
 
     @OneToOne
     @JoinColumn(name = "dispense_id")
-    @Nullable
     private Dispense dispense;
 
     @ManyToOne(cascade=CascadeType.ALL)

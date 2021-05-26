@@ -54,12 +54,14 @@ public class MainServiceImpl implements MainService {
     public Glasses saveGlasses(Glasses glasses) throws DataAccessException {
         Eye osid = eyeRepository.save(glasses.getOs());
         Eye odid = eyeRepository.save(glasses.getOd());
-        Dispense dispense = glasses.getDispense();
-        if(glasses.getDispense()!=null) {
+        Dispense dispense = new Dispense(null);
+        if(glasses.getDispense()!=null)
+            dispenseRepository.save(glasses.getDispense());
+        else {
             dispenseRepository.save(dispense);
+            glasses.setDispense(dispense);
         }
-
-        return glassesRepository.saveGlassesWithNextPossibleSKU(glasses, osid, odid,dispense);
+        return glassesRepository.saveGlassesWithNextPossibleSKU(glasses);
     }
 
     @Override
