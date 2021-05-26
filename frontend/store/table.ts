@@ -25,8 +25,7 @@ export const ActionType = {
 export const actions: ActionTree<TableState, TableState> = {
 
   async [ActionType.LOAD_ITEMS]({ commit, rootState }, options:any) {
-    let sortOption = options.sortBy[0]
-    sortOption = sortOption === 'sku' ? 'SKU' : sortOption // fixme workaround
+    const sortOption = options.sortBy[0]
     const sortString = sortOption + ',' + (options.sortDesc[0] ? 'desc' : 'asc')
     const data = await this.$axios.$get(`/api/glasses/${(rootState as any).location}`, { params: { size: options.itemsPerPage, page: options.page - 1, sort: sortString } }) as any // fixme ts, and the -1
     commit(MutationType.SET_ITEMS, data.glasses)

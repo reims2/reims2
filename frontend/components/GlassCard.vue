@@ -68,15 +68,7 @@
       </v-container>
     </v-card-text>
     <v-card-actions v-if="!noActions" class="pt-0">
-      <slot name="actions">
-        <v-btn
-          text
-          color="primary"
-          @click="$emit('dispense', true)"
-        >
-          Dispense
-        </v-btn>
-      </slot>
+      <slot name="actions" />
     </v-card-actions>
   </v-card>
 </template>
@@ -93,7 +85,7 @@ export default {
     },
     noActions: {
       type: Boolean,
-      required: false
+      default: false
     }
   },
   data: () => ({

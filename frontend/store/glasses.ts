@@ -39,7 +39,9 @@ export const mutations: MutationTree<GlassesSatate> = {
 export const ActionType = {
   PHIL_SCORE: 'philScore',
   LOAD_ACTIVE_GLASSES: 'loadActiveGlasses',
-  ADD_GLASSES: 'addGlasses'
+  ADD_GLASSES: 'addGlasses',
+  DISPENSE_GLASSES: 'dispense',
+  DELETE_GLASSES: 'delete'
 }
 export const actions: ActionTree<GlassesSatate, GlassesSatate> = {
   [ActionType.PHIL_SCORE]({ commit, state }, eyeModel) {
@@ -53,9 +55,16 @@ export const actions: ActionTree<GlassesSatate, GlassesSatate> = {
 
   async [ActionType.ADD_GLASSES]({ commit, rootState }, newGlasses:any) {
     const request = Object.assign({}, newGlasses)
-    request.dispense = {} // fixme
     request.location = (rootState as any).location
     await this.$axios.$post('/api/glasses', request)
     commit(MutationType.APPEND_LAST_ADDED, newGlasses)
+  },
+
+  async [ActionType.DISPENSE_GLASSES](_state, glassesId: any) {
+    await this.$axios.$put(`/api/glasses/dispense/${glassesId}`, { dispensed: true })
+  },
+
+  async [ActionType.DELETE_GLASSES](_state, glassesId: any) {
+    await this.$axios.$delete(`/api/glasses/${glassesId}`)
   }
 }

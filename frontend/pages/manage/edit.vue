@@ -3,7 +3,7 @@
     <v-row dense class="justify-center">
       <v-col cols=12 md=6 lg=4>
         <div class="pb-3 text--secondary">
-          You can edit, delete or dispense glasses here. Input the SKU to continue.
+          You can edit or delete glasses here. Input the SKU to continue.
         </div>
         <v-form
           ref="form"
@@ -26,7 +26,24 @@
             </v-col>
             <v-col>
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card v-if="selected" :glass="selected" @dispense="submit" />
+                <glass-card v-if="selected" :glass="selected">
+                  <template #actions>
+                    <v-btn
+                      text
+                      color="error"
+                      @click="startDelete"
+                    >
+                      Remove
+                    </v-btn>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="edit"
+                    >
+                      Edit
+                    </v-btn>
+                  </template>
+                </glass-card>
               </div>
             </v-col>
           </v-row>
@@ -37,7 +54,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   data: () => ({
     valid: false,
@@ -56,15 +73,32 @@ export default {
     setTimeout(() => { this.$refs.firstInput.focus() })
   },
   methods: {
-    submit() {
+    ...mapActions({
+      deleteGlasses: 'glasses/delete'
+    }),
+    edit() {
       if (this.selected) {
-        // do dispension
-        this.result = 'NOT IMPLEMENTED: Successfully edited glasses with SKU ' + this.selected.sku
+        // todo do edit
+        this.result = 'NOT IMPLEMENTED: Edited glasses with SKU ' + this.selected.sku
         this.$refs.form.reset()
         this.$refs.firstInput.focus()
       } else {
         this.result = 'SKU not found'
       }
+    },
+    submit() {
+      if (this.selected) {
+        // todo
+      } else {
+        this.result = 'SKU not found'
+      }
+    },
+    startDelete() {
+      // todo some confirmation dialog
+      this.deleteGlasses(this.selected.id)
+      this.result = 'Successfully deleted glasses with SKU ' + this.selected.sku
+      this.$refs.form.reset()
+      this.$refs.firstInput.focus()
     }
   }
 }

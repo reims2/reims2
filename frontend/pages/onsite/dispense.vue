@@ -28,7 +28,17 @@
             </v-col>
             <v-col>
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card v-if="selected" :glass="selected" @dispense="submit" />
+                <glass-card v-if="selected" :glass="selected">
+                  <template #actions>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="submit"
+                    >
+                      Dispense
+                    </v-btn>
+                  </template>
+                </glass-card>
               </div>
             </v-col>
           </v-row>
@@ -39,7 +49,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   data: () => ({
     valid: false,
@@ -58,9 +68,14 @@ export default {
     setTimeout(() => { this.$refs.firstInput.focus() })
   },
   methods: {
+    ...mapActions({
+      dispense: 'glasses/dispense'
+    }),
     submit() {
       if (this.selected) {
         // do dispension
+        console.log(JSON.stringify(this.selected.id))
+        this.dispense(this.selected.id)
         this.result = 'Successfully dispensed glasses with SKU ' + this.selected.sku
         this.$refs.form.reset()
         this.$refs.firstInput.focus()
