@@ -102,19 +102,19 @@ public class GlassesRestController {
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Void> addGlasses(@RequestBody @Valid Glasses glasses, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
+	public ResponseEntity<Glasses> addGlasses(@RequestBody @Valid Glasses glasses, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
 		HttpHeaders headers = new HttpHeaders();
 		if(bindingResult.hasErrors() || (glasses == null)){
 			errors.addAllErrors(bindingResult);
 			headers.add("errors", errors.toJSON());
-			return new ResponseEntity<Void>(headers, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Glasses>(headers, HttpStatus.BAD_REQUEST);
 		}
-		this.mainService.saveGlasses(glasses);
+
         headers.setLocation(ucBuilder.path("/api/glasses/{id}").buildAndExpand(glasses.getId()).toUri());
 
 
-		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<Glasses>(this.mainService.saveGlasses(glasses),HttpStatus.CREATED);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
@@ -131,7 +131,7 @@ public class GlassesRestController {
 		if(currentGlasses.isEmpty()){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-
+        currentGlasses.get().setId(glassedId);
 		currentGlasses.get().setGlassesSize(glasses.getGlassesSize());
         currentGlasses.get().setGlassesType(glasses.getGlassesType());
         currentGlasses.get().setAppearance(glasses.getAppearance());
@@ -139,8 +139,9 @@ public class GlassesRestController {
         currentGlasses.get().setOD(glasses.getOD());
         currentGlasses.get().setOS(glasses.getOS());
         currentGlasses.get().setDispense(glasses.getDispense());
+        currentGlasses.get().setDispensed(glasses.isDispensed());
         this.mainService.saveGlasses(currentGlasses.get());
-		return new ResponseEntity<Glasses>(currentGlasses.get(), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Glasses>(currentGlasses.get(), HttpStatus.OK);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )

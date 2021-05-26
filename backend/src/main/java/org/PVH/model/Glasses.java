@@ -1,5 +1,7 @@
 package org.PVH.model;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 
 @Entity
@@ -21,8 +23,12 @@ public class Glasses extends BaseEntity{
     @Column(name = "location")
     private String location;
 
+    @Column(name = "dispensed")
+    private boolean dispensed;
+
     @OneToOne
     @JoinColumn(name = "dispense_id")
+    @Nullable
     private Dispense dispense;
 
     @ManyToOne(cascade=CascadeType.ALL)
@@ -33,7 +39,13 @@ public class Glasses extends BaseEntity{
     @JoinColumn(name = "OD_ID")
     private Eye OD;
 
+    public boolean isDispensed() {
+        return dispensed;
+    }
 
+    public void setDispensed(boolean dispensed) {
+        this.dispensed = dispensed;
+    }
 
     public long getSKU() {
         return SKU;

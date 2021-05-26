@@ -51,11 +51,15 @@ public class MainServiceImpl implements MainService {
 
     @Override
     @Transactional
-    public void saveGlasses(Glasses glasses) throws DataAccessException {
+    public Glasses saveGlasses(Glasses glasses) throws DataAccessException {
         Eye osid = eyeRepository.save(glasses.getOS());
         Eye odid = eyeRepository.save(glasses.getOD());
-        Dispense dispense = dispenseRepository.save(glasses.getDispense());
-        glassesRepository.saveGlassesWithNextPossibleSKU(glasses, osid, odid,dispense);
+        Dispense dispense = glasses.getDispense();
+        if(glasses.getDispense()!=null) {
+            dispenseRepository.save(dispense);
+        }
+
+        return glassesRepository.saveGlassesWithNextPossibleSKU(glasses, osid, odid,dispense);
     }
 
     @Override
@@ -63,7 +67,6 @@ public class MainServiceImpl implements MainService {
     public void deleteGlasses(Glasses glasses) throws DataAccessException {
         glassesRepository.delete(glasses);
     }
-
     @Override
     public Optional<Glasses> findAllByIdAndLocation(long id,String location) {
         return glassesRepository.findAllByIdAndLocation(id,location);
