@@ -4,11 +4,11 @@ module.exports = {
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
    */
-  title: 'Vuepress Docs Boilerplate',
+  title: 'REIMS2 manual',
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#description
    */
-  description: description,
+  description: 'This is the user documentation for REIMS2',
 
   /**
    * Extra tags to be injected to the page HTML `<head>`
@@ -27,38 +27,25 @@ module.exports = {
    * ref：https://v1.vuepress.vuejs.org/theme/default-theme-config.html
    */
   themeConfig: {
-    repo: '',
-    editLinks: false,
-    docsDir: '',
-    editLinkText: '',
-    lastUpdated: false,
+    repo: 'reims2/reims2-docs',
+    editLinks: true,
+    docsDir: '/',
+    docsBranch: 'main',
+    repoLabel: false,
+    sidebar: [
+      '/',
+      '/test',
+      '/test2'
+    ],
     nav: [
       {
-        text: 'Guide',
-        link: '/guide/',
-      },
-      {
-        text: 'Config',
-        link: '/config/'
-      },
-      {
-        text: 'VuePress',
-        link: 'https://v1.vuepress.vuejs.org'
+        text: 'Partners for Visual Health',
+        link: 'https://partnersforvisualhealth.org/',
       }
-    ],
-    sidebar: {
-      '/guide/': [
-        {
-          title: 'Guide',
-          collapsable: false,
-          children: [
-            '',
-            'using-vue',
-          ]
-        }
-      ],
-    }
+    ]
   },
+
+  base: '/docs/',
 
   /**
    * Apply plugins，ref：https://v1.vuepress.vuejs.org/zh/plugin/
@@ -66,6 +53,12 @@ module.exports = {
   plugins: [
     '@vuepress/plugin-back-to-top',
     '@vuepress/plugin-medium-zoom',
-    'vuepress-plugin-serve'
+    'vuepress-plugin-serve',
+    ['@snowdog/vuepress-plugin-pdf-export', {
+      puppeteerLaunchOptions: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      },
+      outputFileName: "REIMS2_manual.pdf"
+    }]
   ]
 }

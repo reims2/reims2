@@ -9,12 +9,14 @@
   },
   "repository": "reims2-docs/reims2-docs",
   "scripts": {
+    "export": "vuepress export src",
     "dev": "vuepress dev src",
     "build": "vuepress build src",
     "start": "vuepress serve --host $HOST --port $PORT src"
   },
   "license": "MIT",
   "devDependencies": {
+    "@snowdog/vuepress-plugin-pdf-export": "^1.1.0",
     "vuepress": "^1.8.2",
     "vuepress-plugin-serve": "^2.0.4"
   }

@@ -1,0 +1,30 @@
+name: Deploy
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [main]
+
+# Define common variables for all jobs since all use the dokku action
+env:
+  REMOTE_HOST: "ssh://dokku@reims2.duckdns.org"
+
+jobs:
+  deploy:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Wait for previous deploy
+        uses: softprops/turnstyle@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Deploy with dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "${{ env.REMOTE_HOST }}/docs"
+          ssh_private_key: ${{ secrets.PRIVATE_KEY }}
+          git_push_flags: "--force"
