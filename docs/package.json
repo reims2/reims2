@@ -1,0 +1,21 @@
+{
+  "name": "reims2-docs",
+  "version": "0.0.1",
+  "description": "User Documentation for REIMS2",
+  "main": "index.js",
+  "authors": {
+    "name": "l3d00m",
+    "email": "substantialimpulse@pm.me"
+  },
+  "repository": "reims2-docs/reims2-docs",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src",
+    "start": "vuepress serve --host $HOST --port $PORT src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.8.2",
+    "vuepress-plugin-serve": "^2.0.4"
+  }
+}
