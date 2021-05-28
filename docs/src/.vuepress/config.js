@@ -29,7 +29,7 @@ module.exports = {
   themeConfig: {
     repo: 'reims2/reims2-docs',
     editLinks: true,
-    docsDir: '/',
+    docsDir: 'src',
     docsBranch: 'main',
     repoLabel: false,
     sidebar: [
