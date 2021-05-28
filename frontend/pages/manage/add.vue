@@ -68,12 +68,7 @@
           :style="'opacity: ' + (1-idx*0.3)"
         >
           <template #actions>
-            <v-btn
-              text
-              color="error"
-            >
-              Remove
-            </v-btn>
+            <delete-button :glass="item" @deleted="updateDeleted(item)" />
             <v-btn
               text
               color="primary"
@@ -180,6 +175,11 @@ export default {
     },
     generate_hint(options) {
       return 'One of ' + options.join(', ')
+    },
+    updateDeleted(item) {
+      const index = this.lastAdded.indexOf(item)
+      console.log(index)
+      // todo this is an vuex object, make this logic better if (index > -1) this.lastAdded.splice(index, 1)
     }
   },
   title: 'Enter glasses'

@@ -28,13 +28,7 @@
               <div class="d-flex flex-shrink-1 justify-start">
                 <glass-card v-if="selected" :glass="selected">
                   <template #actions>
-                    <v-btn
-                      text
-                      color="error"
-                      @click="startDelete"
-                    >
-                      Remove
-                    </v-btn>
+                    <delete-button :glass="selected" @deleted="updatedDeleted" />
                     <v-btn
                       text
                       color="primary"
@@ -54,7 +48,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   data: () => ({
     valid: false,
@@ -73,9 +67,6 @@ export default {
     setTimeout(() => { this.$refs.firstInput.focus() })
   },
   methods: {
-    ...mapActions({
-      deleteGlasses: 'glasses/delete'
-    }),
     edit() {
       if (this.selected) {
         // todo do edit
@@ -93,9 +84,7 @@ export default {
         this.result = 'SKU not found'
       }
     },
-    startDelete() {
-      // todo some confirmation dialog
-      this.deleteGlasses(this.selected.id)
+    updatedDeleted() {
       this.result = 'Successfully deleted glasses with SKU ' + this.selected.sku
       this.$refs.form.reset()
       this.$refs.firstInput.focus()
