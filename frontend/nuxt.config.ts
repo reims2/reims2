@@ -67,7 +67,8 @@ const config: NuxtConfig = {
   ],
 
   proxy: { // https://axios.nuxtjs.org/options/#proxy
-    '/api': { target: process.env.API_URL, pathRewrite: { '^/api': '' }, ws: false }
+    '/api': { target: process.env.API_URL, pathRewrite: { '^/api': '' }, ws: false },
+    '/docs': { target: process.env.DOCS_URL }
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
