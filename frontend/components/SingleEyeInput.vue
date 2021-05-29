@@ -47,10 +47,10 @@ export default {
           label: 'Sphere',
           step: 0.25,
           rules: [
-            v => v == null || !!v.length || 'Required',
-            v => v == null || v.length < 2 || !isNaN(parseFloat(v)) || 'Enter a valid number',
-            v => v == null || v.length < 2 || (v >= -50 && v <= 50) || 'Out of range',
-            v => v == null || v.length < 1 || v[0] === '+' || v[0] === '-' || 'Please start with a + or -'
+            v => (v != null && !!v.length) || 'Required',
+            v => !isNaN(parseFloat(v)) || 'Enter a valid number',
+            v => (v >= -50 && v <= 50) || 'Out of range',
+            v => v == null || v.length < 1 || v[0] === '+' || v[0] === '-' || 'Please start with + or -'
           ]
         },
         cylinder: {
@@ -59,7 +59,7 @@ export default {
           negative: true,
           step: 0.25,
           rules: [
-            v => v == null || !!v.length || 'Required',
+            v => (v != null && !!v.length) || 'Required',
             v => !isNaN(parseFloat(v)) || 'Enter a valid number',
             v => v <= 0 || 'Must be negative',
             v => v >= -8 || 'Out of range'
@@ -69,13 +69,13 @@ export default {
           label: 'Axis',
           prefix: '+',
           rules: [
-            v => v == null || !!v.length || 'Required',
+            v => (v != null && !!v.length) || 'Required',
             v => !isNaN(parseFloat(v)) || 'Enter a valid number',
             v => Number.isInteger(parseFloat(v)) || 'Must be an integer',
             // eslint-disable-next-line eqeqeq
             v => !v || v == 0 || v.length >= 3 || 'Enter 3 digits (leading zeros)',
             v => v >= 0 || 'Must be positive',
-            v => v <= 180 || 'Out of range'
+            v => v <= 180 || 'Maximum is 180'
           ]
         },
         add: {
@@ -84,10 +84,10 @@ export default {
           step: 0.25,
           prefix: '+',
           rules: [
-            v => v == null || !!v.length || 'Required for bifocals',
+            v => (v != null && !!v.length) || 'Required for bifocals',
             v => !isNaN(parseFloat(v)) || 'Enter a valid number',
             v => v >= 0 || 'Must be positive',
-            v => v <= 10 || 'Out of range'
+            v => v <= 10 || 'Maximum is 10'
           ]
         }
       }
