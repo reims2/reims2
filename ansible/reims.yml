@@ -1,0 +1,106 @@
+---
+- hosts: all
+  roles:
+    - dokku_bot.ansible_dokku
+  vars:
+    dokku_hostname: "{{ inventory_hostname }}"
+    dokku_packages_state: latest
+    dokku_vhost_enable: true
+    dokku_mysql_db_name: "reims-db"
+    dokku_plugins:
+      - name: clone
+        url: https://github.com/crisward/dokku-clone.git
+      - name: letsencrypt
+        url: https://github.com/dokku/dokku-letsencrypt.git
+      - name: mysql
+        url: https://github.com/dokku/dokku-mysql.git
+  tasks:
+    - name: dokku apps:create api
+      dokku_app:
+        app: api
+    - name: dokku apps:create frontend
+      dokku_app:
+        app: frontend
+    - name: dokku apps:create docs
+      dokku_app:
+        app: docs
+    - name: Create mysql
+      dokku_service_create:
+        name: "{{dokku_mysql_db_name}}"
+        service: mysql
+    - name: Disable Mysql strict mode
+      blockinfile:
+        path: "/var/lib/dokku/services/mysql/{{dokku_mysql_db_name}}/config/disable_strict_mode.cnf"
+        block: |
+          [mysqld]
+          sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+    - name: Restart mysql to apply config
+      shell: "dokku mysql:restart {{dokku_mysql_db_name}}"
+
+    - name: Link mysql to api
+      dokku_service_link:
+        app: api
+        name: "{{dokku_mysql_db_name}}"
+        service: mysql
+
+    - name: Set variables for frontend
+      dokku_config:
+        app: frontend
+        config:
+          DOKKU_LETSENCRYPT_EMAIL: substantialimpulse@pm.me
+          PORT: "5000"
+          API_URL: "http://api.web:5000/pvh/api/"
+          DOCS_URL: "http://docs.web:5000/"
+          HOST: "0.0.0.0"
+    - name: Set letsencrypt and port for api
+      dokku_config:
+        app: api
+        config:
+          DOKKU_LETSENCRYPT_EMAIL: substantialimpulse@pm.me
+          PORT: "5000"
+    - name: Set host and port for docs
+      dokku_config:
+        app: docs
+        config:
+          PORT: "5000"
+          HOST: "0.0.0.0"
+
+    - name: Create network configuration
+      shell: |
+        dokku network:create reims
+        dokku network:set frontend attach-post-deploy reims
+        dokku network:set api attach-post-deploy reims
+        dokku network:set docs attach-post-deploy reims
+        dokku network:rebuildall
+
+    - name: Deploy frontend from git
+      dokku_clone:
+        app: frontend
+        repository: https://github.com/reims2/reims2-frontend
+    - name: Deploy api from git
+      dokku_clone:
+        app: api
+        repository: https://github.com/reims2/reims2-backend
+    - name: Deploy docs from git
+      dokku_clone:
+        app: docs
+        repository: https://github.com/reims2/reims2-docs
+    - name: Add main domain to frontend
+      dokku_domains:
+        app: frontend
+        domains:
+          - "{{ inventory_hostname }}"
+    - name: Clear docs domain
+      dokku_domains:
+        app: docs
+        state: clear
+    - name: Disable docs proxy
+      dokku_proxy:
+        app: docs
+        state: absent
+    - name: Enable frontend letsencrypt
+      dokku_letsencrypt:
+        app: frontend
+    - name: Enable API letsencrypt
+      dokku_letsencrypt:
+        app: api

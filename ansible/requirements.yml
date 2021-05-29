@@ -1,0 +1,6 @@
+roles:
+  - dokku_bot.ansible_dokku
+  - jnv.unattended-upgrades
+
+collections:
+  - devsec.hardening

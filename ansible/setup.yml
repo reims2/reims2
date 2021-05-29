@@ -1,0 +1,65 @@
+- name: Upgrade and install helpful packages
+  hosts: all
+  become: true
+  tasks:
+    - name: Print ip address
+      debug: var=ansible_default_ipv4.address
+    - name: Apt upgrade
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 #One day
+    - name: Install some packages (user-specified)
+      ansible.builtin.package:
+        name:
+          - htop
+          - nano
+          - libpam-systemd # ssh session closed after reboot
+        state: present
+    - name: Set authorized SSH pubkeys from file
+      authorized_key:
+        user: "{{ansible_user}}"
+        state: present
+        key: "{{ lookup('file', 'creds/pub_keys') }}"
+
+- name: Enable unattended updates
+  hosts: all
+  roles:
+    - role: jnv.unattended-upgrades
+      unattended_automatic_reboot_time: "03:00"
+      unattended_update_days: "{ 'Fr', 'Sa' }"
+
+- name: SSH hardening
+  hosts: all
+  vars:
+    ssh_permit_root_login: "yes"
+    sftp_enabled: true
+    ssh_print_motd: true
+    sftp_umask: "0022"
+  collections:
+    - devsec.hardening
+  roles:
+    - ssh_hardening
+
+- name: OS hardening
+  hosts: all
+  vars:
+    sysctl_overwrite:
+      # Enable IPv4 traffic forwarding.
+      net.ipv4.ip_forward: 1
+      net.ipv6.conf.all.disable_ipv6: 0
+      net.ipv6.conf.all.forwarding: 1
+    os_auth_pw_max_age: 99999 # nobody wants to be forced to change PW
+    os_auth_pw_min_age: 0
+    os_auth_allow_homeless: true
+    os_env_umask: 022
+    os_selinux_state: disabled
+    os_auditd_enabled: false # lxd container
+    os_auth_pam_passwdqc_enable: false # dont need strong PW policy
+  collections:
+    - devsec.hardening
+  roles:
+    - devsec.hardening.os_hardening
+  post_tasks:
+    - name: Reboot to apply sysctl params
+      reboot:
