@@ -38,4 +38,7 @@ public interface GlassesRepository  extends JpaRepository<Glasses, Long>, Custom
     Page<Glasses> findAllByLocation(String location, Pageable pageable);
 
     Optional<Glasses> findAllByIdAndLocation(long id, String location);
+
+    Optional<Glasses> findAllBySkuAndLocation(Long sku, String location);
+
 }

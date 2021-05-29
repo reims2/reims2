@@ -1,7 +1,5 @@
 package org.PVH.model;
 
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +7,7 @@ import javax.persistence.*;
 public class Glasses extends BaseEntity{
 
     @Column(name = "SKU")
-    private long sku;
+    private Long sku;
 
     @Column(name = "glasses_type")
     private String glassesType;
@@ -46,11 +44,11 @@ public class Glasses extends BaseEntity{
         this.dispensed = dispensed;
     }
 
-    public long getSku() {
+    public Long getSku() {
         return sku;
     }
 
-    public void setSku(long SKU) {
+    public void setSku(Long SKU) {
         this.sku = SKU;
     }
 

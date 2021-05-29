@@ -1,7 +1,5 @@
 package org.PVH.repository.jpa;
 
-import org.PVH.model.Dispense;
-import org.PVH.model.Eye;
 import org.PVH.model.Glasses;
 import org.PVH.repository.CustomGlassesRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -55,23 +55,38 @@ public class MainServiceImpl implements MainService {
         Eye osid = eyeRepository.save(glasses.getOs());
         Eye odid = eyeRepository.save(glasses.getOd());
         Dispense dispense = new Dispense(null);
+        //If dispense is already set...
         if(glasses.getDispense()!=null)
             dispenseRepository.save(glasses.getDispense());
         else {
+            //Else set dispense null in Dispense Table
             dispenseRepository.save(dispense);
             glasses.setDispense(dispense);
         }
+
         return glassesRepository.saveGlassesWithNextPossibleSKU(glasses);
     }
+
 
     @Override
     @Transactional
     public void deleteGlasses(Glasses glasses) throws DataAccessException {
         glassesRepository.delete(glasses);
     }
+
+    @Override
+    public Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException {
+        return glassesRepository.save(glasses);
+    }
+
     @Override
     public Optional<Glasses> findAllByIdAndLocation(long id,String location) {
         return glassesRepository.findAllByIdAndLocation(id,location);
+    }
+
+    @Override
+    public Optional<Glasses> findAllBySkuAndLocation(Long sku, String location) {
+        return  glassesRepository.findAllBySkuAndLocation(sku,location);
     }
 
 
