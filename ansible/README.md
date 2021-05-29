@@ -1,21 +1,20 @@
 # REIMS2 ansible role
 
-For deploying a complete instance of REIMS2 (with dokku), do the following on your dev machine (after [installing ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)):
+For deploying a complete instance of REIMS2 (with dokku), do the following **on your local dev machine**:
 
-```bash
-# Install dependencies
-ansible-galaxy install -r requirements.yml
-# Deploying REIMS2 with dokku
-ansible-playbook -i hosts reims.yml
-```
+0. [Install ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+1. Add your server in `hosts` file
+2. Add your dokku deploy key (e.g. for GitHub actions) in `creds/deploy_key.pub`.
+3. Install ansible dependencies with `ansible-galaxy install -r requirements.yml`
+4. Deploy with `ansible-playbook -i hosts reims.yml`
 
-It's that easy!
+That's it!
 
-### Optional
+### Optional OS hardening
 
-Create a file `creds/pub_keys` containing your SSH public keys for logging in via SSH in the future.
+Create a file `creds/pub_keys` containing your SSH public keys for logging in via SSH in the future. Password based SSH login will be disabled!
 
-Run the `setup.yml` playbook for some OS hardening stuff first:
+Then run the `setup.yml` playbook for some OS hardening stuff:
 
 ```bash
 ansible-playbook -i hosts setup.yml

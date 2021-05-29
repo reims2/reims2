@@ -1,6 +1,8 @@
 roles:
   - dokku_bot.ansible_dokku
   - jnv.unattended-upgrades
+  - geerlingguy.swap
 
 collections:
   - devsec.hardening
+  - community.general
