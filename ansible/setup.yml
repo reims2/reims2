@@ -45,7 +45,7 @@
     os_auth_pw_max_age: 99999 # nobody wants to be forced to change PW
     os_auth_pw_min_age: 0
     os_auth_allow_homeless: true
-    os_env_umask: 022
+    os_env_umask: "022"
     os_selinux_state: disabled
     os_auditd_enabled: false # lxd container
     os_auth_pam_passwdqc_enable: false # dont need strong PW policy
@@ -54,6 +54,7 @@
     ssh_print_motd: true
     ssh_print_pam_motd: true
     sftp_umask: "0022"
+    os_ignore_home_folder_users: [dokku]
   collections:
     - devsec.hardening
   roles:
@@ -71,10 +72,16 @@
       community.general.ufw:
         rule: allow
         name: OpenSSH
-    - name: Allow nginx
+    - name: Allow http
       community.general.ufw:
         rule: allow
-        name: "Nginx Full"
+        port: "80"
+        proto: tcp
+    - name: Allow https
+      community.general.ufw:
+        rule: allow
+        port: "443"
+        proto: tcp
     - name: Enable UFW
       community.general.ufw:
         state: enabled

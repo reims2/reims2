@@ -8,6 +8,7 @@
     dokku_packages_state: latest
     dokku_vhost_enable: true
     dokku_mysql_db_name: "reims-db"
+    dokku_network_name: "reims2"
     dokku_users:
       - name: Github Actions
         username: ci-deploy
@@ -73,10 +74,10 @@
 
     - name: Create network configuration (all apps in one network)
       shell: |
-        dokku network:create reims2
-        dokku network:set frontend attach-post-deploy reims
-        dokku network:set api attach-post-deploy reims
-        dokku network:set docs attach-post-deploy reims
+        dokku network:create {{dokku_network_name}}
+        dokku network:set frontend attach-post-deploy {{dokku_network_name}}
+        dokku network:set api attach-post-deploy {{dokku_network_name}}
+        dokku network:set docs attach-post-deploy {{dokku_network_name}}
         dokku network:rebuildall
 
     - name: Deploy frontend from git
