@@ -53,6 +53,7 @@
     sftp_enabled: true
     ssh_print_motd: true
     ssh_print_pam_motd: true
+    ssh_max_auth_retries: 4
     sftp_umask: "0022"
     os_ignore_home_folder_users: [dokku]
   collections:
