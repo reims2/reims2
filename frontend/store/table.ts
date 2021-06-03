@@ -19,8 +19,7 @@ export const mutations: MutationTree<TableState> = {
 }
 
 export const ActionType = {
-  LOAD_ITEMS: 'loadItems',
-  ADD_GLASSES: 'addGlasses'
+  LOAD_ITEMS: 'loadItems'
 }
 export const actions: ActionTree<TableState, TableState> = {
 

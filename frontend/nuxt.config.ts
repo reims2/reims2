@@ -39,7 +39,7 @@ const config: NuxtConfig = {
     height: '5px',
     duration: 1000,
     continuous: true,
-    throttle: 50
+    throttle: 200
   },
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -7,8 +7,7 @@ export const state = (): RootState => ({
 })
 
 export const MutationType = {
-  SET_LOCATION: 'setLocation',
-  SET_MATCHES: 'setMatches'
+  SET_LOCATION: 'setLocation'
 }
 export const mutations: MutationTree<RootState> = {
   [MutationType.SET_LOCATION]: (state, value: string) => { state.location = value }
