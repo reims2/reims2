@@ -8,4 +8,6 @@ public interface CustomGlassesRepository {
 
     Glasses saveGlassesWithNextPossibleSKU(Glasses glasses);
 
+    Glasses saveGlassesWithNextPossibleSKUinSM(Glasses glasses);
+
 }

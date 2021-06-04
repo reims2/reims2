@@ -1,39 +1,39 @@
 package org.PVH.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "roles" ,uniqueConstraints = @UniqueConstraint(columnNames = {"username", "role"}))
-public class Role extends BaseEntity {
+@Table(name = "roles")
+public class Role {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "username")
-    @JsonIgnore
-    private User user;
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
+	private ERole name;
 
-    @Column( name = "role")
-    private String name;
+	public Role() {
 
-    public User getUser() {
-        return user;
-    }
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public Role(ERole name) {
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public ERole getName() {
+		return name;
+	}
+
+	public void setName(ERole name) {
+		this.name = name;
+	}
 }

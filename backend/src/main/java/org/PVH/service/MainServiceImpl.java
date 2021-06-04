@@ -63,6 +63,9 @@ public class MainServiceImpl implements MainService {
             dispenseRepository.save(dispense);
             glasses.setDispense(dispense);
         }
+        // SM
+        if(glasses.getLocation().equals("SM"))
+            return glassesRepository.saveGlassesWithNextPossibleSKUinSM(glasses);
 
         return glassesRepository.saveGlassesWithNextPossibleSKU(glasses);
     }

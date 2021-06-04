@@ -45,7 +45,7 @@ public class GlassesRestController {
 
 
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@RequestMapping(value = "/{location}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Map<String, Object>> getAllGlassesPage(@RequestParam(required = false) String glassesType,
                                                              @RequestParam(defaultValue = "0") int page,
@@ -91,7 +91,7 @@ public class GlassesRestController {
 	}
 
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@RequestMapping(value = "/{location}/{sku}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Glasses> getGlasses(@PathVariable("sku") Long sku, @PathVariable("location") String location){
 		Optional<Glasses> glasses = this.mainService.findAllBySkuAndLocation(sku,location);
@@ -101,7 +101,7 @@ public class GlassesRestController {
 		return new ResponseEntity<Glasses>(glasses.get(), HttpStatus.OK);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Glasses> addGlasses(@RequestBody @Valid Glasses glasses, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -118,7 +118,7 @@ public class GlassesRestController {
         return new ResponseEntity<Glasses>(this.mainService.saveGlasses(glasses),HttpStatus.CREATED);
 	}
 
-//    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+//
 //	@RequestMapping(value = "/{location}/{sku}", method = RequestMethod.PUT, produces = "application/json")
 //	public ResponseEntity<Glasses> updateGlasses(@PathVariable("sku") Long sku, @PathVariable("location")String location, @RequestBody @Valid Glasses glasses, BindingResult bindingResult){
 //		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -146,7 +146,7 @@ public class GlassesRestController {
 //		return new ResponseEntity<Glasses>(currentGlasses.get(), HttpStatus.OK);
 //	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     @RequestMapping(value = "/dispense/{location}/{sku}", method = RequestMethod.PUT, produces = "application/json")
     public ResponseEntity<DispenseBoolean> updateDispensed(@PathVariable("sku") Long sku, @PathVariable("location")String location, @RequestBody @Valid DispenseBoolean dispensed, BindingResult bindingResult){
         BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -176,7 +176,7 @@ public class GlassesRestController {
     }
 
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@RequestMapping(value = "/{location}/{sku}", method = RequestMethod.DELETE, produces = "application/json")
 	@Transactional
 	public ResponseEntity<Void> deleteGlasses(@PathVariable("sku") Long sku, @PathVariable("location")String location){

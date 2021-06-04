@@ -16,9 +16,6 @@ INSERT INTO glasses VALUES (2,1,'single','small','neutral',2,'Halen',TRUE,3,4);
 INSERT INTO glasses VALUES (3,2,'single','small','neutral',3,'San',TRUE,5,6);
 
 
-
-INSERT INTO users(username,password,enabled) VALUES ('admin','{noop}admin', true);
-
-INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_OWNER_ADMIN');
-INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_VET_ADMIN');
-INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_ADMIN');
+INSERT INTO roles(name) VALUES('ROLE_USER');
+INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
+INSERT INTO roles(name) VALUES('ROLE_ADMIN');

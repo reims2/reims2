@@ -1,5 +1,6 @@
 DROP TABLE roles IF EXISTS;
 DROP TABLE users IF EXISTS;
+DROP TABLE user_roles IF EXISTS;
 DROP TABLE eye IF EXISTS;
 DROP TABLE glasses IF EXISTS;
 DROP TABLE dispense IF EXISTS;
@@ -32,18 +33,20 @@ ALTER TABLE glasses ADD CONSTRAINT fk_glasses_OS FOREIGN KEY (OS_ID) REFERENCES 
 ALTER TABLE glasses ADD CONSTRAINT fk_glasses_OD FOREIGN KEY (OD_ID) REFERENCES eye (id);
 ALTER TABLE glasses ADD CONSTRAINT fk_dispense FOREIGN KEY (dispense_id) REFERENCES dispense (id);
 
-CREATE  TABLE users (
-  username    VARCHAR(20) NOT NULL ,
-  password    VARCHAR(20) NOT NULL ,
-  enabled     BOOLEAN DEFAULT TRUE NOT NULL ,
-  PRIMARY KEY (username)
+CREATE TABLE users (
+    id         BIGINT IDENTITY PRIMARY KEY,
+    password VARCHAR(120) NULL,
+    username VARCHAR(20) NULL UNIQUE
 );
 
 CREATE TABLE roles (
-  id              INTEGER IDENTITY PRIMARY KEY,
-  username        VARCHAR(20) NOT NULL,
-  role            VARCHAR(20) NOT NULL
+       id        INT IDENTITY PRIMARY KEY,
+        name varchar(20) null
 );
-ALTER TABLE roles ADD CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username);
-CREATE INDEX fk_username_idx ON roles (username);
+CREATE TABLE user_roles (
+           user_id BIGINT,
+           role_id INT
+);
 
+ALTER TABLE user_roles ADD CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id);
+ALTER TABLE user_roles ADD CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles (id);
