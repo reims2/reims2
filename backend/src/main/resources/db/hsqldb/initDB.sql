@@ -10,7 +10,7 @@ CREATE TABLE eye (
   sphere VARCHAR(30),
   cylinder VARCHAR(30),
   axis VARCHAR(30),
-  add  VARCHAR(30)
+  additional  VARCHAR(30)
 );
 
 CREATE TABLE dispense (

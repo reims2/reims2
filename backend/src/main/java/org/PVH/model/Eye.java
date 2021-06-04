@@ -16,7 +16,7 @@ public class Eye extends BaseEntity{
     @Column(name = "axis")
     private String axis;
 
-    @Column(name = "add")
+    @Column(name = "additional")
     private String add;
 
 
