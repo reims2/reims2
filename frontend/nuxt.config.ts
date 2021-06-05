@@ -95,7 +95,18 @@ const config: NuxtConfig = {
   // https://auth.nuxtjs.org/guide/scheme
   auth: {
     strategies: {
-      local: { /* ... */ }
+      local: {
+        token: {
+          property: 'accessToken'
+        },
+        user: {
+          autoFetch: false
+        },
+        endpoints: {
+          user: false,
+          login: { url: '/api/auth/signin', method: 'post' }
+        }
+      }
     }
   },
 
@@ -124,8 +135,7 @@ const config: NuxtConfig = {
   },
 
   router: {
-    // todo enable in future for auth
-    // middleware: ['auth']
+    middleware: ['auth']
   }
 }
 

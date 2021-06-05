@@ -51,6 +51,17 @@
                 View Manual
               </v-btn>
             </v-col>
+            <v-col class="d-flex justify-center" cols=12 md="auto">
+              <v-btn
+                v-if="$auth.loggedIn"
+                x-large
+                outlined
+                color="warning"
+                @click="$auth.logout()"
+              >
+                Log out
+              </v-btn>
+            </v-col>
           </v-row>
         </v-col>
       </v-row>

@@ -10,6 +10,12 @@
         >
           <v-row>
             <v-col cols=12>
+              <div class="text--secondary pb-2">
+                Username test, Password is testtest
+              </div>
+              <v-alert v-if="errorText" type="error" dense outlined>
+                {{ errorText }}
+              </v-alert>
               <v-text-field
                 v-model="username"
                 label="Username"
@@ -19,6 +25,7 @@
               <v-text-field
                 v-model="password"
                 label="Password"
+                type="password"
                 :rules="[v => !!v || 'Item is required']"
                 required
               />
@@ -43,16 +50,23 @@ export default {
     return {
       username: '',
       password: '',
-      valid: false
+      valid: false,
+      errorText: ''
     }
   },
   methods: {
     async userLogin() {
+      this.errorText = ''
       try {
         const response = await this.$auth.loginWith('local', { data: { username: this.username, password: this.password } })
-        console.log(response)
+        this.$auth.setUser({ id: response.data.id, roles: response.data.roles, username: response.data.username })
       } catch (err) {
         console.log(err)
+        try {
+          this.errorText = `Login failed (${err.response.data.exMessage})`
+        } catch (e) {
+          this.errorText = 'Login failed'
+        }
       }
     }
   }
