@@ -32,15 +32,43 @@ module.exports = {
     docsDir: 'src',
     docsBranch: 'main',
     repoLabel: false,
-    sidebar: [
-      '/',
-      '/test',
-      '/test2'
-    ],
+    sidebar: {
+      '/dev/': [
+        
+        {
+          title: 'Overview',
+          path: '/dev/',
+          collapsable: false,
+          children: [
+            'analysis', 
+            'deploy',
+            'notes',
+          ]
+        },
+        {
+          title: 'Planning',
+          path: '/dev/planning.html',
+          collapsable: false,
+          children: [
+            'user-stories',
+            'requirements',
+          ]
+        },
+      ],
+      '/': [
+        '/',
+        'test',
+        'test2'
+      ],
+    },
     nav: [
       {
-        text: 'Partners for Visual Health',
-        link: 'https://partnersforvisualhealth.org/',
+        text: 'Open REIMS',
+        link: 'https://reims2.duckdns.org',
+      },
+      {
+        text: 'Developer docs',
+        link: '/dev/',
       }
     ]
   },
