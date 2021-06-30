@@ -120,6 +120,7 @@ export default {
       deep: true
     },
     location() {
+      this.$nuxt.$loading.start()
       this.loadItems(this.options)
     }
   },

@@ -11,13 +11,14 @@
         class="py-0 pl-0"
       >
         <v-text-field
-          v-model="eye_model[id]"
+          :value="value[id]"
           :label="item.label"
           :rules="!item.disabled ? item.rules : []"
           :step="item.step"
           :disabled="item.disabled"
+          @input="test => input(id, test)"
           @update:error="val => hasError[id] = val"
-          @change="update(id)"
+          @blur="update(id)"
         />
       </v-col>
     </v-row>
@@ -27,18 +28,26 @@
 <script>
 export default {
   props: {
+    value: {
+      type: Object,
+      required: true
+    },
     eyeName: {
       type: String,
       required: true
     },
     addEnabled: {
       type: Boolean,
-      required: true
+      default: true
     }
   },
   data: () => ({
-    eye_model: {},
-    hasError: {}
+    hasError: { // workaround, see https://stackoverflow.com/a/59439106/4026792
+      sphere: true,
+      cylinder: true,
+      axis: true,
+      add: true
+    }
   }),
   computed: {
     eye_data() {
@@ -55,8 +64,6 @@ export default {
         },
         cylinder: {
           label: 'Cylinder',
-          // prefix: '‒',
-          negative: true,
           step: 0.25,
           rules: [
             v => (v != null && !!v.length) || 'Required',
@@ -67,7 +74,6 @@ export default {
         },
         axis: {
           label: 'Axis',
-          prefix: '+',
           rules: [
             v => (v != null && !!v.length) || 'Required',
             v => !isNaN(parseFloat(v)) || 'Enter a valid number',
@@ -82,7 +88,6 @@ export default {
           label: 'Add',
           disabled: !this.addEnabled,
           step: 0.25,
-          prefix: '+',
           rules: [
             v => (v != null && !!v.length) || 'Required for bifocals',
             v => !isNaN(parseFloat(v)) || 'Enter a valid number',
@@ -94,19 +99,21 @@ export default {
     }
   },
   methods: {
+    input(id, newVal) {
+      this.$emit('input', { ...this.value, [id]: newVal })
+    },
     update(id) {
       if (!this.hasError[id]) {
         const step = this.eye_data[id].step
         if (step > 0) {
-          const number = Math.ceil(Math.abs(this.eye_model[id]) / step) * step
+          const number = Math.ceil(Math.abs(this.value[id]) / step) * step
           if (!isNaN(number)) {
-            const numberString = (Number(this.eye_model[id]) >= 0 ? '+' : '-') + number.toFixed(2)
-            this.eye_model[id] = numberString
+            const numberString = (Number(this.value[id]) >= 0 ? '+' : '-') + number.toFixed(2)
+            this.$emit('input', { ...this.value, [id]: numberString })
+            this.$emit('change', true)
           }
         }
       }
-
-      this.$emit('update', this.eye_model)
     }
   }
 }

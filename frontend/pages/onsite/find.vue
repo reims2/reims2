@@ -10,7 +10,7 @@
             >
               <v-autocomplete
                 ref="firstInput"
-                v-model="eye_model[type_data.id]"
+                v-model="glassesType"
                 :items="type_data.options"
                 :label="type_data.label"
                 :rules="type_data.rules"
@@ -18,16 +18,26 @@
               />
             </v-col>
             <v-col
-              v-for="eye in ['OD', 'OS']"
-              :key="eye"
               cols=12
               md=6
               class="px-4 pt-4"
             >
               <single-eye-input
-                :eye-name="eye"
-                :add-enabled="eye_model[type_data.id] !== 'single'"
-                @update="model => {update_eye(model, eye)}"
+                v-model="od_eye"
+                eye-name="OD"
+                :add-enabled="glassesType !== 'single'"
+              />
+            </v-col>
+            <v-col
+              cols=12
+              md=6
+              class="px-4 pt-4"
+            >
+              <single-eye-input
+                :value="os_eye"
+                eye-name="OS"
+                :add-enabled="glassesType !== 'single'"
+                @input="e => {os_eye = e; sync_eye = false}"
               />
             </v-col>
             <v-col cols=12 class="pt-4">
@@ -84,12 +94,20 @@ export default {
   data: () => ({
     valid: false,
     page: 1,
-    eye_model: {},
+    glassesType: '',
+    os_eye: {},
+    od_eye: {},
+    sync_eye: true,
     type_data:
       {
-        id: 'glassesType',
         label: 'Type',
-        options: ['single', 'multifocal'],
+        options: [{
+          text: 'single vision',
+          value: 'single'
+        }, {
+          text: 'multifocal',
+          value: 'multi'
+        }],
         rules: [v => !!v || 'Item is required']
       }
   }),
@@ -97,6 +115,14 @@ export default {
     ...mapState({
       matches: state => state.glasses.matches
     })
+  },
+  watch: {
+    od_eye() {
+      if (this.sync_eye) {
+        console.log('u')
+        this.$set(this.os_eye, 'add', this.od_eye.add)
+      }
+    }
   },
   activated() {
     setTimeout(() => { this.$refs.firstInput.focus() })
@@ -106,17 +132,21 @@ export default {
       philScore: 'glasses/philScore'
     }),
     submit() {
-      this.philScore(this.eye_model)
+      // this.$nuxt.$loading.start()
+      const eyeModel = {}
+      eyeModel.glassesType = this.glassesType
+      eyeModel.os = this.os_eye
+      eyeModel.od = this.od_eye
+      this.philScore(eyeModel)
       this.page = 1
       setTimeout(() => { this.$refs.firstInput.focus() })
+      this.sync_eye = true
     },
     reset() {
       this.$refs.form.reset()
       this.philScore({})
       setTimeout(() => { this.$refs.firstInput.focus() })
-    },
-    update_eye(model, eye) {
-      this.eye_model[eye] = model
+      this.sync_eye = true
     }
   },
   title: 'Find glasses'

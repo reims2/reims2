@@ -74,7 +74,7 @@ export default {
     submit() {
       if (this.selected) {
         // do dispension
-        console.log(JSON.stringify(this.selected.id))
+        this.$nuxt.$loading.start()
         this.dispense(this.selected.id)
         this.result = 'Successfully dispensed glasses with SKU ' + this.selected.sku
         this.$refs.form.reset()
