@@ -21,11 +21,14 @@ http://localhost:9966/pvh/api/auth/signup
 With Following Example Body:
 ```
 {
-  "username": "daniel33",
-  "password": "admin!1223",
+  "username": "test",
+  "password": "testtest",
   "role" : ["mod", "user", "admin"]
 }
 ```
+
+Or, with a one-liner in curl
+`curl -d '{"username": "test","password": "testtest","role" : ["mod", "user", "admin"]}' -H "Content-Type: application/json" -X POST https://reims2.duckdns.org/api/auth/signup`
 
 Then you can log in with:
 ```
@@ -34,8 +37,8 @@ http://localhost:9966/pvh/api/auth/signin
 With Following Example Body:
 ```
 {
-  "username": "daniel33",
-  "password": "admin!1223"
+  "username": "test",
+  "password": "testtest"
 }
 ```
 You'll get an Bearer Token, which you will need to provide to get access on Endpoints.
