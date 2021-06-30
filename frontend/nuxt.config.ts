@@ -107,6 +107,12 @@ const config: NuxtConfig = {
           login: { url: '/api/auth/signin', method: 'post' }
         }
       }
+    },
+    cookie: {
+      options: {
+        secure: true
+        // samesite: 'lax'
+      }
     }
   },
 

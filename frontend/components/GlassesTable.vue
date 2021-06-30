@@ -78,11 +78,11 @@ export default {
         { value: 'sku', text: 'SKU' },
         { value: 'glassesType', text: 'Type' },
         { value: 'odsphere', text: 'OD Sphere' },
-        { value: 'odcyl', text: 'OD Cyl' },
+        { value: 'odcylinder', text: 'OD Cyl' },
         { value: 'odaxis', text: 'OD Axis' },
         { value: 'odadd', text: 'OD Add' },
         { value: 'ossphere', text: 'OS Sphere' },
-        { value: 'oscyl', text: 'OS Cyl' },
+        { value: 'oscylinder', text: 'OS Cyl' },
         { value: 'osaxis', text: 'OS Axis' },
         { value: 'osadd', text: 'OS Add' },
         { value: 'appearance', text: 'Appearance' },
@@ -99,14 +99,14 @@ export default {
         return true
       }).map((el) => {
         // map to flat object for table
-        el.odsphere = el.od.sphere
-        el.odaxis = el.od.axis
-        el.odcyl = el.od.cylinder
-        el.odadd = el.od.add
-        el.ossphere = el.os.sphere
-        el.osaxis = el.os.axis
-        el.oscyl = el.os.cylinder
-        el.osadd = el.os.add
+        el.odsphere = this.formatRx(el.od.sphere)
+        el.odaxis = parseInt(el.od.axis)
+        el.odcylinder = this.formatRx(el.od.cylinder)
+        el.odadd = this.formatRx(el.od.add)
+        el.ossphere = this.formatRx(el.os.sphere)
+        el.osaxis = parseInt(el.os.axis)
+        el.oscylinder = this.formatRx(el.os.cylinder)
+        el.osadd = this.formatRx(el.os.add)
         return el
       })
     }
@@ -138,6 +138,9 @@ export default {
     },
     updateFilter(value, eye, child) {
       this.filters[eye][child] = value
+    },
+    formatRx(value) {
+      return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)
     }
   }
 }
