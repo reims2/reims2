@@ -1,5 +1,5 @@
 [reims]
-reims2.duckdns.org
+reims2.app
 
 [all:vars]
 ansible_user = ubuntu
