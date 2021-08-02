@@ -100,11 +100,11 @@ export default {
       }).map((el) => {
         // map to flat object for table
         el.odsphere = this.formatRx(el.od.sphere)
-        el.odaxis = parseInt(el.od.axis)
+        el.odaxis = parseInt(el.od.axis).toString().padStart(3, '0')
         el.odcylinder = this.formatRx(el.od.cylinder)
         el.odadd = this.formatRx(el.od.add)
         el.ossphere = this.formatRx(el.os.sphere)
-        el.osaxis = parseInt(el.os.axis)
+        el.osaxis = parseInt(el.os.axis).toString().padStart(3, '0')
         el.oscylinder = this.formatRx(el.os.cylinder)
         el.osadd = this.formatRx(el.os.add)
         return el

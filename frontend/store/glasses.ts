@@ -31,16 +31,14 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
   // unsigned difference between lens and prescription cylinder
   const cylinderDiff = Math.abs(lens.cylinder - rx.cylinder)
   // If the prescription is a bifocal, one-tenth the unsigned difference between lens and prescription added strength
-  const addDiff = glassesType !== 'multi'
-    ? 0
-    : (Math.abs(lens.add - rx.add) / 10)
+  const addDiff = glassesType === 'single' ? 0 : Math.abs(lens.add - rx.add)
 
   // if the unsigned difference between lens and prescription is over 90, 180 minus that difference, divided by 3600
   // else if the unsigned difference between lens and prescription less than or equal to 90, that difference divided by 3600
   const axisDiff = Math.abs(lens.axis - rx.axis)
   const axisDiffNormalized = (axisDiff > 90 ? 180 - axisDiff : axisDiff)
 
-  let score = sphereDiff + cylinderDiff + addDiff + axisDiffNormalized / 3600
+  let score = sphereDiff + cylinderDiff + addDiff / 10 + axisDiffNormalized / 3600
 
   if ((rx.sphere - lens.sphere) === (lens.cylinder - rx.cylinder) / 2 &&
         rx.sphere > lens.sphere &&
@@ -54,14 +52,11 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
     score -= 0.12
   }
 
-  if ((lens.sphere > rx.sphere && rx.cylinder > lens.cylinder) ||
-        (lens.sphere < rx.sphere && rx.cylinder < lens.cylinder)) {
-    if (sphereDiff === cylinderDiff) {
-      if (cylinderDiff < 0.5) {
-        score -= (sphereDiff === cylinderDiff) ? 0.3 : 0.25
-      } else {
-        score -= (sphereDiff === cylinderDiff) ? (11 / 20) : 0.5
-      }
+  if ((lens.sphere > rx.sphere && rx.cylinder > lens.cylinder) || (lens.sphere < rx.sphere && rx.cylinder < lens.cylinder)) {
+    if (cylinderDiff < 0.5) {
+      score -= (sphereDiff === cylinderDiff) ? 0.3 : 0.25
+    } else {
+      score -= (sphereDiff === cylinderDiff) ? (11 / 20) : 0.5
     }
   }
 
