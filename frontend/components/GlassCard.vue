@@ -12,7 +12,7 @@
           label
           :ripple="false"
         >
-          {{ glass.score }}
+          {{ glass.score.toFixed(2) }}
         </v-chip>
       </div>
       <span class="text--secondary">SKU</span> {{ glass.sku.toString().padStart(4, '0') }}
