@@ -119,7 +119,7 @@ export default {
   watch: {
     od_eye() {
       if (this.sync_eye) {
-        console.log('u')
+        // setting manually to trigger reactive system in SingleEyeInput
         this.$set(this.os_eye, 'add', this.od_eye.add)
       }
     }
