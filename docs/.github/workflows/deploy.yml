@@ -8,7 +8,7 @@ on:
 
 # Define common variables for all jobs since all use the dokku action
 env:
-  REMOTE_HOST: "ssh://dokku@reims2.duckdns.org"
+  REMOTE_HOST: "ssh://dokku@reims2.app"
 
 jobs:
   deploy:

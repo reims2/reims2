@@ -64,7 +64,7 @@ module.exports = {
     nav: [
       {
         text: 'Open REIMS',
-        link: 'https://reims2.duckdns.org',
+        link: 'https://reims2.app',
       },
       {
         text: 'Developer docs',
