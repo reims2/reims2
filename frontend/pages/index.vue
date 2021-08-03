@@ -28,7 +28,7 @@
             </v-col>
             <v-col class="d-flex justify-center" cols=12 md="auto">
               <v-btn
-                to="/manage/add"
+                to="/manage/data"
                 nuxt
                 x-large
                 outlined

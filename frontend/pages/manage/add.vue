@@ -136,7 +136,7 @@ export default {
   },
   activated() {
     // jump to first field if we switch back to this UI
-    setTimeout(() => { this.$refs.firstInput[0].focus() })
+    // fixme readd setTimeout(() => { this.$refs.firstInput[0].focus() })
   },
   methods: {
     ...mapActions({
