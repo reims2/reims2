@@ -80,7 +80,9 @@ const config: NuxtConfig = {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     meta: {
-      name: 'REIMS2'
+      name: 'REIMS2',
+      author: 'Partners for Visual Health',
+      ogHost: 'reims2.app'
     }
   },
 

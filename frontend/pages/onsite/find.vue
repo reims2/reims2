@@ -77,7 +77,7 @@
           <div class="text-center">
             <v-pagination
               v-model="page"
-              :length="3"
+              :length="5"
               circle
             />
           </div>

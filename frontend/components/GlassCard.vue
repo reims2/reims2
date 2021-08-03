@@ -12,7 +12,7 @@
           label
           :ripple="false"
         >
-          {{ glass.score.toFixed(2) }}
+          {{ glass.score.toFixed(3) }}
         </v-chip>
       </div>
       <span class="text--secondary">SKU</span> {{ glass.sku.toString().padStart(4, '0') }}
@@ -36,8 +36,20 @@
       <v-container class="text--primary pa-0">
         <v-row dense>
           <v-col v-for="eye in eyes" :key="eye.key" cols=6>
-            <div class="text-subtitle-1">
-              {{ eye.text }}
+            <div class="d-flex">
+              <div class="text-subtitle-1">
+                {{ eye.text }}
+              </div>
+              <div v-if="glass.score != null" class="d-flex align-center">
+                <v-chip
+                  class="ml-2 px-2"
+                  x-small
+                  label
+                  :ripple="false"
+                >
+                  {{ (eye.key == 'od' ? glass.odScore : glass.osScore).toFixed(3) }}
+                </v-chip>
+              </div>
             </div>
             <tr>
               <td class="text--secondary pr-2">
@@ -55,7 +67,7 @@
               <td class="text--secondary pr-2">
                 Axis
               </td>
-              <td>{{ glass[eye.key].axis.toString().padStart(3,'0') }}</td>
+              <td>{{ parseInt(glass[eye.key].axis).toString().padStart(3,'0') }}</td>
             </tr>
             <tr v-if="glass.glassesType !== 'single'">
               <td class="text--secondary pr-2">
