@@ -22,16 +22,26 @@
               />
             </v-col>
             <v-col
-              v-for="eye in eyes"
-              :key="eye.key"
               cols=12
               md=6
               class="px-4 pt-4"
             >
               <single-eye-input
-                :eye-name="eye.text"
+                v-model="od_eye"
+                eye-name="OD"
                 :add-enabled="glass_model['glassesType'] !== 'single'"
-                @update="model => {update_eye(model, eye.key)}"
+              />
+            </v-col>
+            <v-col
+              cols=12
+              md=6
+              class="px-4 pt-4"
+            >
+              <single-eye-input
+                :value="os_eye"
+                eye-name="OS"
+                :add-enabled="glass_model['glassesType'] !== 'single'"
+                @input="e => {os_eye = e; sync_eye = false}"
               />
             </v-col>
             <v-col cols=12 class="pt-4">
@@ -88,7 +98,9 @@ export default {
   data: () => ({
     valid: false,
     glass_model: {},
-    eye_model: {},
+    os_eye: {},
+    od_eye: {},
+    sync_eye: true,
     output: '',
     general_data: [
       {
@@ -126,6 +138,12 @@ export default {
     })
   },
   watch: {
+    od_eye() {
+      if (this.sync_eye) {
+        // setting manually to trigger reactive system in SingleEyeInput
+        this.$set(this.os_eye, 'add', this.od_eye.add)
+      }
+    },
     lastAdded: {
       handler() {
         // reset on successful load
@@ -136,7 +154,7 @@ export default {
   },
   activated() {
     // jump to first field if we switch back to this UI
-    // fixme readd setTimeout(() => { this.$refs.firstInput[0].focus() })
+    setTimeout(() => { this.$refs.firstInput[0].focus() })
   },
   methods: {
     ...mapActions({
@@ -149,10 +167,10 @@ export default {
         this.glass_model.sku = Math.floor(Math.random() * 10000) // fixme this is just for testing
         const newOd = {}
         const newOs = {}
-        for (const key of Object.keys(this.eye_model.od)) {
+        for (const key of Object.keys(this.od_eye)) {
           // copy to new object (thanks js) and convert to Number at once
-          newOd[key] = Number(this.eye_model.od[key])
-          newOs[key] = Number(this.eye_model.os[key])
+          newOd[key] = Number(this.od_eye[key])
+          newOs[key] = Number(this.os_eye[key])
         }
         this.glass_model.od = newOd
         this.glass_model.os = newOs
@@ -160,18 +178,12 @@ export default {
       }
     },
     reset() {
-      this.eye_model = {}
+      this.os_eye = {}
+      this.od_eye = {}
       this.glass_model = {}
       this.$refs.form.reset()
       this.$refs.firstInput[0].focus()
-    },
-    update_eye(model, eye) {
-      this.eye_model[eye] = model
-      if (eye === 'od') {
-        if (!this.eye_model.os || Object.keys(this.eye_model.os).length === 0) {
-          // todo prefill right eye with values from left
-        }
-      }
+      this.sync_eye = true
     },
     generate_hint(options) {
       return 'One of ' + options.join(', ')
