@@ -85,7 +85,7 @@ export default {
           ]
         },
         add: {
-          label: 'Add',
+          label: 'Additional',
           disabled: !this.addEnabled,
           step: 0.25,
           rules: [

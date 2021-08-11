@@ -24,6 +24,7 @@ export function calculateAllPhilscore(terms:any, glasses: any[]):any[] {
 
       return { ...glass, score: (odScore + osScore), odScore, osScore }
     })
+    .filter(glass => glass.score <= 3)
     .sort((a, b) => (a.score > b.score ? 1 : -1))
 }
 
@@ -68,7 +69,8 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
   const axisDiffNormalized = (axisDiff > 90 ? 180 - axisDiff : axisDiff) // account for wraparound (e.g. 190 is 10 in reality)
 
   // This is our main score, weighting the difference of glass and lens on all parameters
-  let score = sphereDiff + cylinderDiff + addDiff / 10 + axisDiffNormalized / 3600
+  const initScore = sphereDiff + cylinderDiff + addDiff / 10 + axisDiffNormalized / 3600
+  let score = initScore
 
   /* In the following that score gets improved (=smaller) or worse (=bigger) based on a few rules to account for some optometry special cases */
 
@@ -112,7 +114,7 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
     score += 0.25
   }
 
-  return score
+  return score >= 0 ? score : initScore
 }
 
 export interface GlassesSatate {

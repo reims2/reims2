@@ -70,14 +70,14 @@
         </div>
         <div v-else>
           <glass-card
-            v-for="item in matches.slice(3*(page-1),3*(page-1)+3)"
+            v-for="item in matches.slice(itemsPerPage*(page-1),itemsPerPage*(page-1)+itemsPerPage)"
             :key="item.sku"
             :glass="item"
           />
           <div class="text-center">
             <v-pagination
               v-model="page"
-              :length="5"
+              :length="calcPageCount()"
               circle
             />
           </div>
@@ -98,6 +98,7 @@ export default {
     os_eye: {},
     od_eye: {},
     sync_eye: true,
+    itemsPerPage: 3,
     type_data:
       {
         label: 'Type',
@@ -147,6 +148,10 @@ export default {
       this.philScore({})
       setTimeout(() => { this.$refs.firstInput.focus() })
       this.sync_eye = true
+    },
+    calcPageCount() {
+      const pages = Math.ceil(this.matches.length / this.itemsPerPage)
+      return pages > 10 ? 10 : pages
     }
   },
   title: 'Find glasses'
