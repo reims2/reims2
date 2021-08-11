@@ -4,7 +4,9 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 
 ## Open Questions
 
-None!
+- Single eye filter
+- no tolerances ok?
+- relax axis tolerances needed? (maybe)
 
 ## Ideas
 

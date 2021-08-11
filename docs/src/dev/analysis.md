@@ -57,16 +57,23 @@ on cdx files: https://stackoverflow.com/q/3618633/4026792
 
 ### The general process
 
-**actually the order and conditions of those steps is still unclear**, but this is our current assumption:
+We first filter out all glasses that wouldn't get a good Philscore anyway. For that:
 
-1. EITHER
-   1. Match Sphere +- Tolerance
-   2. Match Cyl +- Tolerance
-   3. Pass AtoLTF()
-   4. Rank using RANK()
-2. OR
-   1. Create new possible Rx with SPEQ()
-   2. Rank using RANK()
+EITHER
+
+1.  Match Sphere +- Tolerance and
+2.  Match Cyl +- Tolerance
+
+OR
+
+1.  Create new possible Rx with SPEQ() (account for the fact that cyl+sphere can be transformed, see below)
+
+But this is just to save computing power probably, so it can be ignored.
+
+Then comes the important stuff:
+
+1. Filter out bad glasses with AtoLTF() (this checks for valid axis tolerances)
+2. Rank using RANK() (this gives the philscore)
 
 ### AtoLTF()
 
