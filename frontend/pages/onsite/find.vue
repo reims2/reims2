@@ -42,7 +42,6 @@
             </v-col>
             <v-col cols=12 class="pt-4">
               <div>
-                <div>These are not real matches yet!</div>
                 <v-btn
                   :disabled="!valid"
                   color="primary"
@@ -64,10 +63,22 @@
           </v-row>
         </v-form>
       </v-col>
-      <v-col cols=12 md=4 lg=3 class="pl-0 pl-md-6">
-        <div v-if="matches.length == 0" class="text--secondary">
-          Enter prescription to display matches
-        </div>
+      <v-col
+        v-if="matches"
+        ref="results"
+        cols=12
+        md=4
+        lg=3
+        class="pl-0 pl-md-6"
+      >
+        <v-alert
+          v-if="!matches.length"
+          type="warning"
+          outlined
+          dense
+        >
+          No suitable glasses found. Please try another search.
+        </v-alert>
         <div v-else>
           <glass-card
             v-for="item in matches.slice(itemsPerPage*(page-1),itemsPerPage*(page-1)+itemsPerPage)"
@@ -127,21 +138,27 @@ export default {
   },
   activated() {
     setTimeout(() => { this.$refs.firstInput.focus() })
+    this.submit()
   },
   methods: {
     ...mapActions({
       philScore: 'glasses/philScore'
     }),
     submit() {
-      // this.$nuxt.$loading.start()
       const eyeModel = {}
       eyeModel.glassesType = this.glassesType
       eyeModel.os = this.os_eye
       eyeModel.od = this.od_eye
       this.philScore(eyeModel)
       this.page = 1
-      setTimeout(() => { this.$refs.firstInput.focus() })
       this.sync_eye = true
+
+      if (this.$vuetify.breakpoint.mobile && this.$refs.results) {
+        // fixme this scrolls only if result container was already visible
+        this.$refs.results.scrollIntoView(true)
+      } else {
+        setTimeout(() => { this.$refs.firstInput.focus() })
+      }
     },
     reset() {
       this.$refs.form.reset()
@@ -150,6 +167,7 @@ export default {
       this.sync_eye = true
     },
     calcPageCount() {
+      if (!this.matches) return 0
       const pages = Math.ceil(this.matches.length / this.itemsPerPage)
       return pages > 10 ? 10 : pages
     }

@@ -9,12 +9,12 @@ function propsAsNumber(obj:any):Record<string, number> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function calculateAllPhilscore(terms:any, glasses: any[]):any[] {
+export function calculateAllPhilscore(terms:any, glasses: any[]):any[]|null {
+  if (!terms.glassesType) { // fixme workaround so search doesn't start when search terms are empty
+    return null
+  }
   const rxOd = propsAsNumber(terms.od)
   const rxOs = propsAsNumber(terms.os)
-  if (!terms.glassesType) { // fixme workaround so search doesn't start when search terms are empty
-    return []
-  }
   return glasses.slice()
     .filter(glass => (glass.glassesType === 'single' ? terms.glassesType === glass.glassesType : terms.glassesType !== 'single'))
     .filter(glass => checkForAxisTolerance(rxOd, propsAsNumber(glass.od)) && checkForAxisTolerance(rxOs, propsAsNumber(glass.os)))
@@ -119,12 +119,12 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
 
 export interface GlassesSatate {
   allGlasses: any[],
-  matches: any[],
+  matches: any[]|null,
   lastAdded: any[]
 }
 export const state = (): GlassesSatate => ({
   allGlasses: [],
-  matches: [],
+  matches: null,
   lastAdded: []
 })
 

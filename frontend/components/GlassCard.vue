@@ -1,6 +1,6 @@
 <template>
   <v-card
-    style="min-width: 290px;"
+    style="min-width: 270px;"
     class="mb-2"
   >
     <v-card-title>
@@ -53,15 +53,15 @@
             </div>
             <tr>
               <td class="text--secondary pr-2">
-                Sphere
+                SPH
               </td>
               <td>{{ formatNumber(glass[eye.key].sphere, 2) }} D</td>
             </tr>
             <tr>
               <td class="text--secondary pr-2">
-                Cyl
+                CYL
               </td>
-              <td>{{ formatNumber(glass[eye.key].cylinder, 2) }}</td>
+              <td>{{ formatNumber(glass[eye.key].cylinder, 2) }} D</td>
             </tr>
             <tr>
               <td class="text--secondary pr-2">
