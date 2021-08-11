@@ -16,7 +16,7 @@
     - geerlingguy.swap
     - role: jnv.unattended-upgrades
       unattended_automatic_reboot_time: "06:00"
-      unattended_update_days: "{ 'Mon' }"
+      unattended_update_days: '{ "Mon" }'
   vars:
     swap_file_size_mb: "2048" # some swap for more RAM during Dokku deploys
   tasks:
