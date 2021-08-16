@@ -65,56 +65,62 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
   const cylinderDiff = Math.abs(lens.cylinder - rx.cylinder)
   const addDiff = glassesType === 'single' ? 0 : Math.abs(lens.add - rx.add)
 
-  const axisDiff = Math.abs(lens.axis - rx.axis)
-  const axisDiffNormalized = (axisDiff > 90 ? 180 - axisDiff : axisDiff) // account for wraparound (e.g. 190 is 10 in reality)
+  let axisDiff = Math.abs(lens.axis - rx.axis)
+  axisDiff = (axisDiff > 90 ? 180 - axisDiff : axisDiff) // account for wraparound (e.g. 190 is 10 in reality)
 
   // This is our main score, weighting the difference of glass and lens on all parameters
-  const initScore = sphereDiff + cylinderDiff + addDiff / 10 + axisDiffNormalized / 3600
+  const initScore = sphereDiff + cylinderDiff + addDiff * 0.09 + axisDiff / 3600
   let score = initScore
 
   /* In the following that score gets improved (=smaller) or worse (=bigger) based on a few rules to account for some optometry special cases */
-
-  // Account for the fact that one can transform glasses based on sphere+cylinder
-  // adding a value to Rx cylinder and subtracting half of that value from the Rx sphere, will give you roughly the same Rx. (but remember cyl > 0 not possible)
-  if ((rx.sphere - lens.sphere) === (lens.cylinder - rx.cylinder) / 2 &&
-        // fixme rx.sphere > lens.sphere &&
-        cylinderDiff < 1) {
-    score -= (lens.sphere > 0) ? 0.55 : 0.5
-  }
-
-  // If sphere matches and the cylinder difference is small, substract an additonal amount
-  // because this makes the glasses near perfect even though they have a difference in cylinder
-  if (rx.sphere === lens.sphere && cylinderDiff > 0 && cylinderDiff <= 0.75) {
-    score -= 0.12
-  }
-
-  // If either both sphere and cylinder are too small OR both sphere and cylinder are too big, improve the score by subtracting a bit
-  if ((lens.sphere > rx.sphere && rx.cylinder > lens.cylinder) || (lens.sphere < rx.sphere && rx.cylinder < lens.cylinder)) {
-    // Subtract based on how high the difference is
-    // fixme without this next if it gives wrong Philscore, but it doesn't make sense to put it here!
-    if (sphereDiff === cylinderDiff) {
-      if (cylinderDiff < 0.5) {
-      // Subtract a bit more when sphere and cylinder have exactly the same difference
-        score -= (sphereDiff === cylinderDiff) ? 0.3 : 0.25
-      } else {
-      // fixme For some reason, we subtract more when the cylinder difference is higher. this doesn't make sense
-        score -= (sphereDiff === cylinderDiff) ? 0.55 : 0.5
-      }
-    }
-  }
-
-  if (glassesType === 'multi' && lens.axis > rx.axis) {
-    // fixme use NON normalized? i dont think so
-    // but why do this at all? this doesn't make sense because a higher difference should be punished, not encouraged?
-    score -= axisDiffNormalized / 100
-  }
 
   if (rx.sphere > lens.sphere && rx.sphere > 0) {
     // ADDING to the score, so it seems to be bad if that is the case
     score += 0.25
   }
 
-  return score >= 0 ? score : initScore
+  const subtractScore = (score:number, change:number) => ((score - change) < 0 ? score : (score - change))
+
+  // Account for the fact that one can transform glasses based on sphere+cylinder
+  // adding a value to Rx cylinder and subtracting half of that value from the Rx sphere, will give you roughly the same Rx. (but remember cyl > 0 not possible)
+  let diff = 0
+  if ((rx.sphere - lens.sphere) === (lens.cylinder - rx.cylinder) / 2 &&
+        // fixme rx.sphere > lens.sphere &&
+        cylinderDiff < 1) {
+    diff = (lens.sphere > 0) ? 0.55 : 0.5
+  }
+  score = subtractScore(score, diff)
+
+  // If either both sphere and cylinder are too small OR both sphere and cylinder are too big, improve the score by subtracting a bit
+  diff = 0
+  if ((lens.sphere > rx.sphere && rx.cylinder > lens.cylinder) || (lens.sphere < rx.sphere && rx.cylinder < lens.cylinder)) {
+    // Subtract based on how big the difference is
+    if (cylinderDiff < 0.5) { // should be the same as cylinderDiff === 0.25 (not 0 though!)
+      // Subtract a bit more when sphere and cylinder have exactly the same difference
+      diff = (sphereDiff === cylinderDiff) ? 0.3 : 0.25
+    } else {
+      // fixme For some reason, we subtract more when the cylinder difference is higher. this doesn't make sense => maybe so we don't go below zero?
+      diff = (sphereDiff === cylinderDiff) ? 0.55 : 0.5
+    }
+  }
+  score = subtractScore(score, diff)
+
+  // If sphere matches and the cylinder difference is small, substract an additonal amount
+  // because this makes the glasses near perfect even though they have a difference in cylinder
+  diff = 0
+  if (rx.sphere === lens.sphere && cylinderDiff > 0 && cylinderDiff <= 0.75) { // fixme ? && glassesType === 'single'
+    diff = 0.12
+  }
+  score = subtractScore(score, diff)
+
+  diff = 0
+  if (glassesType === 'multi' && lens.axis > rx.axis) {
+    // but why do this at all? this doesn't make sense because a higher difference should be punished, not encouraged?
+    diff = (lens.axis - rx.axis) / 1000
+  }
+  score = subtractScore(score, diff)
+
+  return score
 }
 
 export interface GlassesSatate {
