@@ -115,7 +115,7 @@ export default {
   }),
   methods: {
     calcColor(val) {
-      const scale = chroma.scale(['#EF6C00', '#009688']).domain([1.25, 0])
+      const scale = chroma.scale(['#BF360C', '#FF9800', '#009688']).domain([2.0, 1.0, 0])
       return scale(val).hex()
     },
     formatNumber(val, decimals) {
