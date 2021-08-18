@@ -7,10 +7,10 @@ DROP TABLE dispense IF EXISTS;
 
 CREATE TABLE eye (
   id         BIGINT IDENTITY PRIMARY KEY,
-  sphere VARCHAR(30),
-  cylinder VARCHAR(30),
-  axis VARCHAR(30),
-  additional  VARCHAR(30)
+  sphere FLOAT,
+  cylinder FLOAT,
+  axis INT,
+  additional  FLOAT
 );
 
 CREATE TABLE dispense (

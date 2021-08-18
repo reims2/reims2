@@ -7,10 +7,10 @@ DROP TABLE IF EXISTS dispense;
 
 CREATE TABLE eye (
   id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-  sphere VARCHAR(30),
-  cylinder VARCHAR(30),
-  axis VARCHAR(30),
-  additional  VARCHAR(30)
+  sphere FLOAT,
+  cylinder FLOAT,
+  axis INT,
+  additional  FLOAT
 );
 
 CREATE TABLE dispense (

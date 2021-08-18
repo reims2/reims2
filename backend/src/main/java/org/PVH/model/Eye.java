@@ -8,47 +8,47 @@ public class Eye extends BaseEntity{
 
 
     @Column(name = "sphere")
-    private String sphere;
+    private float sphere;
 
     @Column(name = "cylinder")
-    private String cylinder;
+    private float cylinder;
 
     @Column(name = "axis")
-    private String axis;
+    private int axis;
 
     @Column(name = "additional")
-    private String add;
+    private float add;
 
 
-    public String getSphere() {
+    public float getSphere() {
         return sphere;
     }
 
-    public void setSphere(String sphere) {
+    public void setSphere(float sphere) {
         this.sphere = sphere;
     }
 
-    public String getCylinder() {
+    public float getCylinder() {
         return cylinder;
     }
 
-    public void setCylinder(String cylinder) {
+    public void setCylinder(float cylinder) {
         this.cylinder = cylinder;
     }
 
-    public String getAxis() {
+    public int getAxis() {
         return axis;
     }
 
-    public void setAxis(String axis) {
+    public void setAxis(int axis) {
         this.axis = axis;
     }
 
-    public String getAdd() {
+    public float getAdd() {
         return add;
     }
 
-    public void setAdd(String add) {
+    public void setAdd(float add) {
         this.add = add;
     }
 }
