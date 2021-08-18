@@ -1,20 +1,15 @@
-# reims2-frontend
+# REIMS2 frontend
+
+![GitHub Deploy Workflow Status](https://img.shields.io/github/workflow/status/reims2/reims2-frontend/Deploy?label=deploy)
+
+This is the frontend for [REIMS2](https://reims2.app)!
 
 ## Build Setup
 
 ```bash
-# install dependencies
-$ npm install
+# Install dependencies
+npm install
 
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
+# Serve with hot reload at http://localhost:3000
+API_URL=https://reims2.app/api npm run dev
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

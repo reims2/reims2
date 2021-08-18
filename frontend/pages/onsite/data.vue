@@ -3,7 +3,7 @@
     <v-row dense class="d-flex justify-center">
       <v-col cols=12>
         <v-alert type="warning" style="width: fit-content;">
-          Filtering is currently not working and sorting only for a few fields
+          Filtering is not yet working
         </v-alert>
         <glasses-table />
       </v-col>
