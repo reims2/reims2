@@ -1,0 +1,5 @@
+WAIT=5 # Wait 5 seconds each attempt
+ATTEMPTS=25 # Do a lot of attempts (database setup is slow, todo will change in production)
+
+# This endpoint should return OK
+/pvh/api/status OK
