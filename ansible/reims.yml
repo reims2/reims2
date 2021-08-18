@@ -59,8 +59,8 @@
         config:
           DOKKU_LETSENCRYPT_EMAIL: substantialimpulse@pm.me
           PORT: "5000"
-          API_URL: "http://api.web:5000/pvh/api/"
-          DOCS_URL: "http://docs.web:5000/"
+          API_URL: "http://api.web:5000/pvh/api"
+          DOCS_URL: "http://docs.web:5000"
           HOST: "0.0.0.0"
     - name: Set letsencrypt mail and port for api
       dokku_config:
