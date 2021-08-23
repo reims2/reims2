@@ -4,9 +4,7 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 
 ## Open Questions
 
-- Single eye filter
-- no tolerances ok?
-- relax axis tolerances needed? (maybe)
+None
 
 ## Ideas
 
@@ -97,3 +95,11 @@ Most of them are just nice-to-have and could be done after the rewrite as a QOL 
 - philscore explanation will follow
 
 -
+
+## Meeting notes 23.8.
+
+- No single eye philscore neccessary!
+- No tolerances for search required (philscore will get bad if it's too high anyway)
+- Option to "relax axis tolerances" as in old REIMS is not required anymore
+- it's not really clear that the current score is the philscore
+- just copy the additional field from od to os, don't copy the rest
