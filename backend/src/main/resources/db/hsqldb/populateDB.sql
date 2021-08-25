@@ -1,7 +1,13 @@
+INSERT INTO roles VALUES(1, 'ROLE_USER');
+INSERT INTO roles VALUES(2, 'ROLE_MODERATOR');
+INSERT INTO roles VALUES(3, 'ROLE_ADMIN');
 
-INSERT INTO roles(name) VALUES('ROLE_USER');
-INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
-INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+-- init with test and testtest, todo remove me in production (what could possibly go wrong)
+INSERT INTO users VALUES(1, '$2a$10$vpFqQIbEm0Zd0eco2hLxgOTiujxoziOGvKgbX6KE1ud8hwdHJXsE2', 'test');
+
+INSERT INTO user_roles VALUES(1, 1);
+INSERT INTO user_roles VALUES(1, 2);
+INSERT INTO user_roles VALUES(1, 3);
 
 INSERT INTO eye VALUES(1, 1.75, -0.25, 26, 2.5);
 INSERT INTO eye VALUES(2, 1.75, -2.25, 46, 2.5);

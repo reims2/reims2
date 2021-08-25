@@ -4,10 +4,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "glasses")
-public class Glasses extends BaseEntity{
+public class Glasses extends BaseEntity {
 
     @Column(name = "SKU")
-    private Long sku;
+    private Integer sku;
 
     @Column(name = "glasses_type")
     private String glassesType;
@@ -28,11 +28,11 @@ public class Glasses extends BaseEntity{
     @JoinColumn(name = "dispense_id")
     private Dispense dispense;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "OS_ID")
     private Eye os;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "OD_ID")
     private Eye od;
 
@@ -44,11 +44,11 @@ public class Glasses extends BaseEntity{
         this.dispensed = dispensed;
     }
 
-    public Long getSku() {
+    public Integer getSku() {
         return sku;
     }
 
-    public void setSku(Long SKU) {
+    public void setSku(Integer SKU) {
         this.sku = SKU;
     }
 
