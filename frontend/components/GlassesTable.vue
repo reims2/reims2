@@ -17,7 +17,7 @@
     <template v-if="!$vuetify.breakpoint.mobile" #body.prepend>
       <tr>
         <td />
-        <td>
+        <td class="v-data-table__divider">
           <div class="d-flex mt-3 mb-1">
             <v-select
               multiple
@@ -37,13 +37,17 @@
           <min-max-input @update="value => {updateFilter(value, 'od', 'cylinder')}" />
         </td>
         <td />
-        <td />
+        <td class="v-data-table__divider" />
         <td>
           <min-max-input @update="value => {updateFilter(value, 'os', 'sphere')}" />
         </td>
         <td>
           <min-max-input @update="value => {updateFilter(value, 'os', 'cylinder')}" />
         </td>
+        <td />
+        <td class="v-data-table__divider" />
+        <td />
+        <td />
       </tr>
     </template>
   </v-data-table>
@@ -76,7 +80,7 @@ export default {
     headers() {
       return [
         { value: 'sku', text: 'SKU' },
-        { value: 'glassesType', text: 'Type' },
+        { value: 'glassesType', text: 'Type', divider: true },
         { value: 'odsphere', text: 'OD SPH' },
         { value: 'odcylinder', text: 'OD CYL' },
         { value: 'odaxis', text: 'OD Axis' },
@@ -84,7 +88,7 @@ export default {
         { value: 'ossphere', text: 'OS SPH' },
         { value: 'oscylinder', text: 'OS CYL' },
         { value: 'osaxis', text: 'OS Axis' },
-        { value: 'osadd', text: 'OS Add' },
+        { value: 'osadd', text: 'OS Add', divider: true },
         { value: 'appearance', text: 'Appearance' },
         { value: 'glassesSize', text: 'Size' }
       ]

@@ -132,9 +132,6 @@ export default {
     od_eye() {
       if (this.sync_eye) {
         // setting manually to trigger reactive system in SingleEyeInput
-        this.$set(this.os_eye, 'sphere', this.od_eye.sphere)
-        this.$set(this.os_eye, 'cylinder', this.od_eye.cylinder)
-        this.$set(this.os_eye, 'axis', this.od_eye.axis)
         this.$set(this.os_eye, 'add', this.od_eye.add)
       }
     }

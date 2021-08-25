@@ -5,14 +5,14 @@
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col
-              v-for="item in general_data"
+              v-for="item in generalData"
               :key="item.label"
               cols="12"
               class="py-0 px-4 "
             >
               <v-autocomplete
                 ref="firstInput"
-                v-model="glass_model[item.id]"
+                v-model="glassModel[item.id]"
                 :items="item.options"
                 :label="item.label"
                 :rules="item.rules"
@@ -27,9 +27,9 @@
               class="px-4 pt-4"
             >
               <single-eye-input
-                v-model="od_eye"
+                v-model="odEye"
                 eye-name="OD"
-                :add-enabled="glass_model['glassesType'] !== 'single'"
+                :add-enabled="glassModel['glassesType'] !== 'single'"
               />
             </v-col>
             <v-col
@@ -38,10 +38,10 @@
               class="px-4 pt-4"
             >
               <single-eye-input
-                :value="os_eye"
+                :value="osEye"
                 eye-name="OS"
-                :add-enabled="glass_model['glassesType'] !== 'single'"
-                @input="e => {os_eye = e; sync_eye = false}"
+                :add-enabled="glassModel['glassesType'] !== 'single'"
+                @input="e => {updateSync(osEye, e); osEye = e}"
               />
             </v-col>
             <v-col cols=12 class="pt-4">
@@ -93,16 +93,16 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 export default {
   data: () => ({
     valid: false,
-    glass_model: {},
-    os_eye: {},
-    od_eye: {},
-    sync_eye: true,
+    glassModel: {},
+    osEye: {},
+    odEye: {},
+    syncEyes: true,
     output: '',
-    general_data: [
+    generalData: [
       {
         id: 'glassesType',
         label: 'Type',
@@ -138,16 +138,16 @@ export default {
     })
   },
   watch: {
-    od_eye() {
-      if (this.sync_eye) {
+    odEye() {
+      if (this.syncEyes) {
         // setting manually to trigger reactive system in SingleEyeInput
-        this.$set(this.os_eye, 'add', this.od_eye.add)
+        this.$set(this.osEye, 'add', this.odEye.add)
       }
     },
     lastAdded: {
       handler() {
         // reset on successful load
-        this.reset()
+        // this.reset() // todo readd
       },
       deep: true
     }
@@ -160,38 +160,42 @@ export default {
     ...mapActions({
       addGlasses: 'glasses/addGlasses'
     }),
+    ...mapMutations({
+      removeFromLastAdded: 'glasses/removeFromLastAdded'
+    }),
     submit() {
       if (this.valid) {
         this.$nuxt.$loading.start()
 
-        this.glass_model.sku = Math.floor(Math.random() * 10000) // fixme this is just for testing
+        this.glassModel.sku = Math.floor(Math.random() * 10000) // fixme this is just for testing
         const newOd = {}
         const newOs = {}
-        for (const key of Object.keys(this.od_eye)) {
+        for (const key of Object.keys(this.odEye)) {
           // copy to new object (thanks js) and convert to Number at once
-          newOd[key] = Number(this.od_eye[key])
-          newOs[key] = Number(this.os_eye[key])
+          newOd[key] = Number(this.odEye[key])
+          newOs[key] = Number(this.osEye[key])
         }
-        this.glass_model.od = newOd
-        this.glass_model.os = newOs
-        this.addGlasses(this.glass_model)
+        this.glassModel.od = newOd
+        this.glassModel.os = newOs
+        this.addGlasses(this.glassModel)
       }
     },
     reset() {
-      this.os_eye = {}
-      this.od_eye = {}
-      this.glass_model = {}
+      this.osEye = {}
+      this.odEye = {}
+      this.glassModel = {}
       this.$refs.form.reset()
       this.$refs.firstInput[0].focus()
-      this.sync_eye = true
+      this.syncEyes = true
     },
     generate_hint(options) {
       return 'One of ' + options.join(', ')
     },
     updateDeleted(item) {
-      const index = this.lastAdded.indexOf(item)
-      console.log(index)
-      // todo this is an vuex object, make this logic better if (index > -1) this.lastAdded.splice(index, 1)
+      this.removeFromLastAdded(item.sku)
+    },
+    updateSync(oldEye, newEye) {
+      if (oldEye.add !== newEye.add) this.syncEyes = false
     }
   },
   title: 'Enter glasses'

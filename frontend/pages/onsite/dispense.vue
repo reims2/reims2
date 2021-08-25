@@ -75,7 +75,7 @@ export default {
       if (this.selected) {
         // do dispension
         this.$nuxt.$loading.start()
-        this.dispense(this.selected.id)
+        this.dispense(this.selected.sku)
         this.result = 'Successfully dispensed glasses with SKU ' + this.selected.sku
         this.$refs.form.reset()
         this.$refs.firstInput.focus()

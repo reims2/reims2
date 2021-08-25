@@ -58,7 +58,7 @@ export default {
     }),
     startDelete() {
       this.deleteDialog = false
-      this.deleteGlasses(this.glass.id)
+      this.deleteGlasses(this.glass.sku)
       this.$emit('deleted')
     }
   }

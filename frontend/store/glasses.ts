@@ -137,12 +137,17 @@ export const state = (): GlassesSatate => ({
 export const MutationType = {
   SET_GLASSES: 'setGlasses',
   SET_MATCHES: 'setMatches',
-  APPEND_LAST_ADDED: 'appendLastAdded'
+  APPEND_LAST_ADDED: 'appendLastAdded',
+  REMOVE_FROM_LAST_ADDED: 'removeFromLastAdded'
 }
 export const mutations: MutationTree<GlassesSatate> = {
   [MutationType.SET_GLASSES]: (state, value: any[]) => { state.allGlasses = value },
   [MutationType.SET_MATCHES]: (state, value: any[]) => { state.matches = value },
-  [MutationType.APPEND_LAST_ADDED]: (state, value: any) => { state.lastAdded.unshift(value) }
+  [MutationType.APPEND_LAST_ADDED]: (state, value: any) => { state.lastAdded.unshift(value) },
+  [MutationType.REMOVE_FROM_LAST_ADDED]: (state, skuToRemove: number) => {
+    // eslint-disable-next-line eqeqeq
+    state.lastAdded = state.lastAdded.filter(itm => itm.sku != skuToRemove)
+  }
 }
 
 export const ActionType = {
@@ -165,15 +170,15 @@ export const actions: ActionTree<GlassesSatate, GlassesSatate> = {
   async [ActionType.ADD_GLASSES]({ commit, rootState }, newGlasses:any) {
     const request = Object.assign({}, newGlasses)
     request.location = (rootState as any).location
-    await this.$axios.$post('/api/glasses', request)
-    commit(MutationType.APPEND_LAST_ADDED, newGlasses)
+    const data = await this.$axios.$post('/api/glasses', request)
+    commit(MutationType.APPEND_LAST_ADDED, data)
   },
 
-  async [ActionType.DISPENSE_GLASSES](_state, glassesId: any) {
-    await this.$axios.$put(`/api/glasses/dispense/${glassesId}`, { dispensed: true })
+  async [ActionType.DISPENSE_GLASSES]({ rootState }, sku: any) {
+    await this.$axios.$put(`/api/glasses/dispense/${(rootState as any).location}/${sku}`, { dispensed: true })
   },
 
-  async [ActionType.DELETE_GLASSES](_state, glassesId: any) {
-    await this.$axios.$delete(`/api/glasses/${glassesId}`)
+  async [ActionType.DELETE_GLASSES]({ rootState }, sku: any) {
+    await this.$axios.$delete(`/api/glasses/${(rootState as any).location}/${sku}`)
   }
 }
