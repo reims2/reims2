@@ -63,13 +63,16 @@ public class MainServiceImpl implements MainService {
             dispenseRepository.save(dispense);
             glasses.setDispense(dispense);
         }
-        // SM
-        if(glasses.getLocation().equals("SM"))
-            return glassesRepository.saveGlassesWithNextPossibleSKUinSM(glasses);
 
-        return glassesRepository.saveGlassesWithNextPossibleSKU(glasses);
+        // todo someday make this configurable per location
+        int min = 0;
+        int max = 10000;
+        if (glasses.getLocation().equals("sm"))
+            min = 5000;
+        if (glasses.getLocation().equals("sa"))
+            max = 5000;
+        return glassesRepository.saveGlassesWithNextPossibleSKU(glasses, min, max);
     }
-
 
     @Override
     @Transactional
