@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      load: 'glasses/loadActiveGlasses'
+      load: 'loadGlasses'
     })
   }
 }

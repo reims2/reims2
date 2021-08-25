@@ -125,7 +125,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      matches: state => state.glasses.matches
+      matches: state => state.find.matches
     })
   },
   watch: {
@@ -142,7 +142,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      philScore: 'glasses/philScore'
+      philScore: 'find/philScore'
     }),
     submit() {
       const eyeModel = {}

@@ -77,7 +77,7 @@ export default {
       set(value) {
         this.$nuxt.$loading.start()
         this.$store.commit('setLocation', value)
-        this.$store.dispatch('glasses/loadActiveGlasses')
+        this.$store.dispatch('loadGlasses')
       }
     }
   }

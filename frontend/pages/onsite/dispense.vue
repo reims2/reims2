@@ -58,7 +58,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      glasses: state => state.glasses.allGlasses
+      glasses: state => state.allGlasses
     }),
     selected() {
       return this.glasses.filter(el => Number(el.sku) === this.sku)[0] // todo replace with getter in store
