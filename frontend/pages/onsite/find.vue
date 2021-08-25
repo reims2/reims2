@@ -151,7 +151,7 @@ export default {
       eyeModel.od = this.od_eye
       this.philScore(eyeModel)
       this.page = 1
-      // this.sync_eye = true //todo spend some thoughts on UX, no clue whats best
+      this.sync_eye = true
 
       if (this.$vuetify.breakpoint.mobile && this.$refs.results) {
         // fixme this scrolls only if result container was already visible

@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { mdiArrowLeft } from '@mdi/js'
 export default {
   props: {
@@ -63,6 +64,7 @@ export default {
   data() {
     return {
       mdiArrowLeft,
+      refreshGlassesInterval: '',
       locations: [
         { text: 'San Miguel', value: 'sm' },
         { text: 'Santa Ana', value: 'sa' }
@@ -70,6 +72,9 @@ export default {
     }
   },
   computed: {
+    ...mapActions([
+      'loadGlasses'
+    ]),
     location: {
       get() {
         return this.$store.state.location
@@ -77,10 +82,15 @@ export default {
       set(value) {
         this.$nuxt.$loading.start()
         this.$store.commit('setLocation', value)
-        this.$store.dispatch('loadGlasses')
+        this.loadGlasses()
       }
     }
+  },
+  created() {
+    this.refreshGlassesInterval = setInterval(() => this.$store.dispatch('loadGlasses'), 5 * 60 * 1000)
+  },
+  beforeDestroy() {
+    clearInterval(this.refreshGlassesInterval)
   }
-
 }
 </script>

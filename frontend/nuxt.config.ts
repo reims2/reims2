@@ -63,7 +63,9 @@ const config: NuxtConfig = {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://auth.nuxtjs.org/
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    // https://github.com/nuxt-community/dayjs-module#readme
+    '@nuxtjs/dayjs'
   ],
 
   proxy: { // https://axios.nuxtjs.org/options/#proxy
@@ -116,6 +118,15 @@ const config: NuxtConfig = {
         // samesite: 'lax'
       }
     }
+  },
+
+  // https://npmjs.com/package/@nuxtjs/dayjs
+  dayjs: {
+    locales: ['en'],
+    defaultLocale: 'en',
+    plugins: [
+      'relativeTime'
+    ] // Your Day.js plugin
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
