@@ -18,7 +18,7 @@ public interface MainService {
     Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException;
 
     Optional<Glasses> findAllByIdAndLocation(long id, String location);
-    Optional<Glasses> findAllBySkuAndLocation(Long sku, String location);
+    Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
 
     Page<Glasses> findAllGlasses(Pageable pageable) throws DataAccessException;
     Page<Glasses> findByGlassesContaining(String location,String glassesType, Pageable pageable) throws DataAccessException;

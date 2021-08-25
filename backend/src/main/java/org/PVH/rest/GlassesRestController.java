@@ -93,7 +93,7 @@ public class GlassesRestController {
 
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@RequestMapping(value = "/{location}/{sku}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Glasses> getGlasses(@PathVariable("sku") Long sku, @PathVariable("location") String location){
+	public ResponseEntity<Glasses> getGlasses(@PathVariable("sku") int sku, @PathVariable("location") String location){
 		Optional<Glasses> glasses = this.mainService.findAllBySkuAndLocation(sku,location);
 		if(glasses.isEmpty()){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -148,7 +148,7 @@ public class GlassesRestController {
 
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     @RequestMapping(value = "/dispense/{location}/{sku}", method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity<DispenseBoolean> updateDispensed(@PathVariable("sku") Long sku, @PathVariable("location")String location, @RequestBody @Valid DispenseBoolean dispensed, BindingResult bindingResult){
+    public ResponseEntity<DispenseBoolean> updateDispensed(@PathVariable("sku") int sku, @PathVariable("location")String location, @RequestBody @Valid DispenseBoolean dispensed, BindingResult bindingResult){
         BindingErrorsResponse errors = new BindingErrorsResponse();
         HttpHeaders headers = new HttpHeaders();
         if(bindingResult.hasErrors()){
@@ -179,7 +179,7 @@ public class GlassesRestController {
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@RequestMapping(value = "/{location}/{sku}", method = RequestMethod.DELETE, produces = "application/json")
 	@Transactional
-	public ResponseEntity<Void> deleteGlasses(@PathVariable("sku") Long sku, @PathVariable("location")String location){
+	public ResponseEntity<Void> deleteGlasses(@PathVariable("sku") int sku, @PathVariable("location")String location){
 		Optional<Glasses> glasses = this.mainService.findAllBySkuAndLocation(sku,location);
 		if(glasses.isEmpty()){
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);

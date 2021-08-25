@@ -91,7 +91,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Optional<Glasses> findAllBySkuAndLocation(Long sku, String location) {
+    public Optional<Glasses> findAllBySkuAndLocation(int sku, String location) {
         return  glassesRepository.findAllBySkuAndLocation(sku,location);
     }
 

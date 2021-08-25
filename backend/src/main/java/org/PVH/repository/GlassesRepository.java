@@ -39,6 +39,6 @@ public interface GlassesRepository  extends JpaRepository<Glasses, Long>, Custom
 
     Optional<Glasses> findAllByIdAndLocation(long id, String location);
 
-    Optional<Glasses> findAllBySkuAndLocation(Long sku, String location);
+    Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
 
 }
