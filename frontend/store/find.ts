@@ -1,5 +1,6 @@
 import type { ActionTree, MutationTree } from 'vuex'
 import { RootState } from '.'
+import { Glasses } from '~/model/GlassesModel'
 
 function propsAsNumber(obj:any):Record<string, number> {
   const temp = JSON.parse(JSON.stringify(obj))
@@ -8,7 +9,7 @@ function propsAsNumber(obj:any):Record<string, number> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function calculateAllPhilscore(terms:any, glasses: any[]):any[]|null {
+export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[]|null {
   if (!terms.glassesType) { // fixme workaround so search doesn't start when search terms are empty
     return null
   }
@@ -123,7 +124,7 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
 }
 
 export interface MatchesState {
-  matches: any[]|null,
+  matches: Glasses[]|null,
 }
 export const state = (): MatchesState => ({
   matches: null
@@ -133,7 +134,7 @@ export const MutationType = {
   SET_MATCHES: 'setMatches'
 }
 export const mutations: MutationTree<MatchesState> = {
-  [MutationType.SET_MATCHES]: (state, value: any[]) => { state.matches = value }
+  [MutationType.SET_MATCHES]: (state, value: Glasses[]) => { state.matches = value }
 }
 
 export const ActionType = {

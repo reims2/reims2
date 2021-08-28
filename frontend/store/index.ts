@@ -1,6 +1,7 @@
 import type { MutationTree, ActionTree } from 'vuex'
+import { Glasses } from '~/model/GlassesModel'
 export interface RootState {
-  allGlasses: any[],
+  allGlasses: Glasses[],
   lastRefresh: Date | null,
   location: string
 }
@@ -13,12 +14,19 @@ export const state = (): RootState => ({
 export const MutationType = {
   SET_GLASSES: 'setGlasses',
   SET_LOCATION: 'setLocation',
-  SET_LAST_REFRESH: 'setLastRefresh'
+  SET_LAST_REFRESH: 'setLastRefresh',
+  DELETE_OFFLINE_GLASSES: 'deleteOfflineGlasses',
+  ADD_OFFLINE_GLASSES: 'addOfflineGlasses'
 }
 export const mutations: MutationTree<RootState> = {
-  [MutationType.SET_GLASSES]: (state, value: any[]) => { state.allGlasses = value },
+  [MutationType.SET_GLASSES]: (state, value: Glasses[]) => { state.allGlasses = value },
   [MutationType.SET_LOCATION]: (state, value: string) => { state.location = value },
-  [MutationType.SET_LAST_REFRESH]: (state, value: Date) => { state.lastRefresh = value }
+  [MutationType.SET_LAST_REFRESH]: (state, value: Date) => { state.lastRefresh = value },
+  [MutationType.DELETE_OFFLINE_GLASSES]: (state, sku: Number) => {
+    // todo error handling if glasses do not contain SKU
+    state.allGlasses = state.allGlasses.filter(el => el.sku !== sku)
+  },
+  [MutationType.ADD_OFFLINE_GLASSES]: (state, glasses: Glasses) => { state.allGlasses.push(glasses) }
 }
 
 export const ActionType = {

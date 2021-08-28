@@ -1,8 +1,9 @@
 import type { ActionTree, MutationTree } from 'vuex'
 import { RootState } from '.'
+import { Glasses } from '~/model/GlassesModel'
 
 export interface TableState {
-  items: any[],
+  items: Glasses[],
   totalItems: number
 }
 export const state = (): TableState => ({
@@ -15,7 +16,7 @@ export const MutationType = {
   SET_TOTAL_ITEMS: 'setTotalItems'
 }
 export const mutations: MutationTree<TableState> = {
-  [MutationType.SET_ITEMS]: (state, value: any[]) => { state.items = value },
+  [MutationType.SET_ITEMS]: (state, value: Glasses[]) => { state.items = value },
   [MutationType.SET_TOTAL_ITEMS]: (state, value: number) => { state.totalItems = value }
 }
 
