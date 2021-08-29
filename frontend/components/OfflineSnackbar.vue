@@ -1,7 +1,6 @@
 <template>
   <v-snackbar
-    v-if="$vuetify.isOffline"
-    :value="snackbarOpen"
+    v-model="snackbarOpen"
     timeout=-1
     :color="$store.state.lastRefresh ? 'warning' : 'error'"
     right
@@ -14,7 +13,11 @@
 <script>
 export default {
   data: () => ({
-    snackbarOpen: true
-  })
+    snackbarOpen: false
+  }),
+  mounted() {
+    window.addEventListener('offline', () => { this.snackbarOpen = true })
+    window.addEventListener('online', () => { this.snackbarOpen = false })
+  }
 }
 </script>

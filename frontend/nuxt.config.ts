@@ -92,6 +92,25 @@ const config: NuxtConfig = {
     manifest: {
       name: 'REIMS2',
       short_name: 'REIMS2'
+    },
+    workbox: {
+      runtimeCaching: [
+        {
+          // Should be a regex string. Compiles into new RegExp('https://my-cdn.com/.*')
+          urlPattern: '/api/.*',
+          method: 'PUT',
+          strategyOptions: {
+            cacheName: 'dispense-cache'
+          },
+          handler: 'NetworkOnly',
+          strategyPlugins: [{
+            use: 'BackgroundSync',
+            config: {
+              maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
+            }
+          }]
+        }
+      ]
     }
   },
 
