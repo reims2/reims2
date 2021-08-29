@@ -78,7 +78,8 @@ const config: NuxtConfig = {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     proxy: true,
-    progress: true // show loading bar
+    progress: true, // show loading bar
+    retry: false
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

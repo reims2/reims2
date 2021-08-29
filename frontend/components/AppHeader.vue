@@ -17,13 +17,35 @@
       {{ title }}
     </v-toolbar-title>
     <v-spacer />
+    <v-toolbar-items>
+      <v-tooltip bottom :open-on-hover="false" color="#000">
+        <template #activator="{ on }">
+          <v-btn
+            v-show="$nuxt.isOffline"
+            color="warning"
+            text
+            retain-focus-on-click
+            class="mr-3"
+            @click="on.click"
+            @blur="on.blur"
+          >
+            <v-icon>{{ mdiWifiOff }}</v-icon>
+            <span v-if="!$vuetify.breakpoint.mobile" class="ml-2">
+              Offline
+            </span>
+          </v-btn>
+        </template>
+        <span v-if="$store.state.lastRefresh">REIMS is running offline. <last-refresh-span />.</span>
+        <span v-else>No connection. Please reconnect!</span>
+      </v-tooltip>
+    </v-toolbar-items>
     <v-select
       v-model="location"
       :items="locations"
       dense
       hide-details
       style="max-width:150px"
-      class="mr-0 mr-md-10 mt-2"
+      class="mr-0 mr-md-10"
     />
 
     <template v-if="items.length > 0" #extension>
@@ -48,9 +70,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { mdiArrowLeft } from '@mdi/js'
+import { mdiArrowLeft, mdiWifiOff } from '@mdi/js'
+import LastRefreshSpan from './LastRefreshSpan.vue'
 export default {
+  components: { LastRefreshSpan },
   props: {
     items: {
       type: Array,
@@ -64,6 +87,7 @@ export default {
   data() {
     return {
       mdiArrowLeft,
+      mdiWifiOff,
       refreshGlassesInterval: '',
       locations: [
         { text: 'San Miguel', value: 'sm' },

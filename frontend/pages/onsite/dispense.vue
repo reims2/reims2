@@ -75,13 +75,17 @@ export default {
       if (this.selected) {
         // do dispension
         this.$nuxt.$loading.start()
+        this.result = 'Dispensing glasses with SKU ' + this.selected.sku + '...'
         try {
           await this.dispense(this.selected.sku)
         } catch (error) {
+          this.result = ''
           if (!error.handled) {
             if (error.response.status === 404) {
               this.result = 'SKU ' + this.selected.sku + ' not found, was it already dispensed?'
             }
+          } else if (error.response == null) {
+            this.result = 'Network error, glasses are NOT dispensed. Please retry later!'
           }
           return
         }

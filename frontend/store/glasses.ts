@@ -25,6 +25,7 @@ export const mutations: MutationTree<GlassesSatate> = {
 
 export const ActionType = {
   ADD_GLASSES: 'addGlasses',
+  FETCH_SINGLE_GLASSES: 'fetchSingle',
   DISPENSE_GLASSES: 'dispense',
   DELETE_GLASSES: 'delete'
 }
@@ -35,6 +36,13 @@ export const actions: ActionTree<GlassesSatate, RootState> = {
     const data = await this.$axios.$post('/api/glasses', request)
     commit(MutationType.APPEND_LAST_ADDED, data)
     commit(IndexMutationType.ADD_OFFLINE_GLASSES, data, { root: true })
+  },
+
+  async [ActionType.FETCH_SINGLE_GLASSES]({ commit, rootState }, sku: number) {
+    const data = await this.$axios.$get(`/api/glasses/${rootState.location}/${sku}`)
+    commit(IndexMutationType.DELETE_OFFLINE_GLASSES, sku, { root: true })
+    commit(IndexMutationType.ADD_OFFLINE_GLASSES, data, { root: true })
+    return data
   },
 
   async [ActionType.DISPENSE_GLASSES]({ commit, rootState }, sku: number) {

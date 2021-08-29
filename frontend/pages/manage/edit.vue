@@ -17,6 +17,7 @@
                 v-model.number="sku"
                 label="SKU"
                 type="number"
+                @input="search(sku)"
               />
             </v-col>
             <v-col v-if="result" cols=12 class="pt-0">
@@ -53,15 +54,13 @@ export default {
   data: () => ({
     valid: false,
     sku: '',
-    result: null
+    result: null,
+    selected: null
   }),
   computed: {
     ...mapState({
       glasses: state => state.allGlasses
-    }),
-    selected() {
-      return this.glasses.filter(el => Number(el.sku) === this.sku)[0]
-    }
+    })
   },
   activated() {
     setTimeout(() => { this.$refs.firstInput.focus() })
@@ -82,6 +81,23 @@ export default {
         // todo
       } else {
         this.result = 'SKU not found'
+      }
+    },
+    async search(sku) {
+      if (!sku) {
+        this.selected = null
+        return
+      }
+      try {
+        this.selected = await this.$store.dispatch('glasses/fetchSingle', sku)
+      } catch (error) {
+        if (error.response && error.response.status < 500) {
+          // SKU doesn't exist or client side error, don't display anything
+          this.selected = null
+        } else if (this.glasses) {
+          // Network or server error, fallback to stored database if exists
+          this.selected = this.glasses.filter(el => Number(el.sku) === this.sku)[0]
+        }
       }
     },
     updatedDeleted() {
