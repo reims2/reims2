@@ -1,6 +1,6 @@
 <template>
   <v-snackbar
-    v-if="!$vuetify.isOffline"
+    v-if="$vuetify.isOffline"
     :value="snackbarOpen"
     timeout=-1
     :color="$store.state.lastRefresh ? 'warning' : 'error'"

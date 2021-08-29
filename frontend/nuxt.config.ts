@@ -88,6 +88,10 @@ const config: NuxtConfig = {
       name: 'REIMS2',
       author: 'Partners for Visual Health',
       ogHost: 'reims2.app'
+    },
+    manifest: {
+      name: 'REIMS2',
+      short_name: 'REIMS2'
     }
   },
 
