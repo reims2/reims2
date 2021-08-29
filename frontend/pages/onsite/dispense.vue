@@ -89,9 +89,9 @@ export default {
           }
           return
         }
-        this.result = 'Successfully dispensed glasses with SKU ' + this.selected.sku
         this.$refs.form.reset()
         this.$refs.firstInput.focus()
+        this.result = 'Successfully dispensed glasses with SKU ' + this.selected.sku
       } else {
         this.result = 'SKU not found'
       }
