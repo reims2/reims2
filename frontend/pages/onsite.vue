@@ -35,7 +35,10 @@ export default {
     }
   },
   mounted() {
-    this.load()
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+      this.load()
+    })
   },
   methods: {
     ...mapActions({

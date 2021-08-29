@@ -72,9 +72,6 @@ export default {
     }
   },
   computed: {
-    ...mapActions([
-      'loadGlasses'
-    ]),
     location: {
       get() {
         return this.$store.state.location
@@ -82,7 +79,7 @@ export default {
       set(value) {
         this.$nuxt.$loading.start()
         this.$store.commit('setLocation', value)
-        this.loadGlasses()
+        this.$store.dispatch('loadGlasses')
       }
     }
   },

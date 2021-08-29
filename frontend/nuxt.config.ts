@@ -25,7 +25,9 @@ const config: NuxtConfig = {
     // https://github.com/nuxt-community/pwa-module/issues/239#issuecomment-796807081
     { src: '~/plugins/pwa-update.js', mode: 'client' },
     // https://github.com/robinvdvleuten/vuex-persistedstate#example-with-nuxtjs
-    { src: '~/plugins/persistedState.js', mode: 'client' }
+    { src: '~/plugins/persistedState.js', mode: 'client' },
+    // https://zaengle.com/blog/error-handling-in-nuxt-apps
+    { src: '~/plugins/axios.js' }
   ],
 
   ssr: false, // Disable Server Side rendering

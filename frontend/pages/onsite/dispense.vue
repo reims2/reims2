@@ -71,11 +71,20 @@ export default {
     ...mapActions({
       dispense: 'glasses/dispense'
     }),
-    submit() {
+    async submit() {
       if (this.selected) {
         // do dispension
         this.$nuxt.$loading.start()
-        this.dispense(this.selected.sku)
+        try {
+          await this.dispense(this.selected.sku)
+        } catch (error) {
+          if (!error.handled) {
+            if (error.response.status === 404) {
+              this.result = 'SKU ' + this.selected.sku + ' not found, was it already dispensed?'
+            }
+          }
+          return
+        }
         this.result = 'Successfully dispensed glasses with SKU ' + this.selected.sku
         this.$refs.form.reset()
         this.$refs.firstInput.focus()

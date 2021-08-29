@@ -1,5 +1,8 @@
 import type { MutationTree, ActionTree } from 'vuex'
 import { Glasses } from '~/model/GlassesModel'
+
+const arrayContainsSku = (data: Glasses[], sku: number) => data.some(e => e.sku === sku)
+
 export interface RootState {
   allGlasses: Glasses[],
   lastRefresh: Date | null,
@@ -22,11 +25,16 @@ export const mutations: MutationTree<RootState> = {
   [MutationType.SET_GLASSES]: (state, value: Glasses[]) => { state.allGlasses = value },
   [MutationType.SET_LOCATION]: (state, value: string) => { state.location = value },
   [MutationType.SET_LAST_REFRESH]: (state, value: Date) => { state.lastRefresh = value },
-  [MutationType.DELETE_OFFLINE_GLASSES]: (state, sku: Number) => {
-    // todo error handling if glasses do not contain SKU
-    state.allGlasses = state.allGlasses.filter(el => el.sku !== sku)
+  [MutationType.DELETE_OFFLINE_GLASSES]: (state, sku: number) => {
+    if (arrayContainsSku(state.allGlasses, sku)) {
+      state.allGlasses = state.allGlasses.filter(el => el.sku !== sku)
+    }
   },
-  [MutationType.ADD_OFFLINE_GLASSES]: (state, glasses: Glasses) => { state.allGlasses.push(glasses) }
+  [MutationType.ADD_OFFLINE_GLASSES]: (state, glasses: Glasses) => {
+    if (!arrayContainsSku(state.allGlasses, glasses.sku)) {
+      state.allGlasses.push(glasses)
+    }
+  }
 }
 
 export const ActionType = {
