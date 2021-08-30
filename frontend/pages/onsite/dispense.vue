@@ -85,7 +85,7 @@ export default {
               this.result = 'SKU ' + this.selected.sku + ' not found, was it already dispensed?'
             }
           } else if (error.response == null) {
-            this.result = 'Network error, glasses are NOT dispensed. Please retry later!'
+            this.result = 'Network error. Dispension will be retried as soon as you\'re back online.'
           }
           return
         }

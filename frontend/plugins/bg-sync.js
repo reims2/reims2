@@ -1,15 +1,10 @@
-import { BackgroundSyncPlugin } from 'workbox-background-sync'
-import { registerRoute } from 'workbox-routing'
-import { NetworkOnly } from 'workbox-strategies'
-
-const bgSyncPlugin = new BackgroundSyncPlugin('myQueueName', {
-  maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
-})
-
-registerRoute(
+/* eslint-disable no-undef */
+workbox.routing.registerRoute(
   /\/api\/.*/,
-  new NetworkOnly({
-    plugins: [bgSyncPlugin]
+  new workbox.strategies.NetworkOnly({
+    plugins: [new workbox.backgroundSync.BackgroundSyncPlugin('reimsDispenseQueue', {
+      maxRetentionTime: 7 * 24 * 60 // retry dispense for 7 days
+    })]
   }),
   'PUT'
 )
