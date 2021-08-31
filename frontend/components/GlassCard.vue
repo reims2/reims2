@@ -51,32 +51,25 @@
                 </v-chip>
               </div>
             </div>
-            <tr>
+            <tr v-for="[dataKey, dataItem] in Object.entries(eyeData)" :key="dataKey" @click="edit = eye.key + dataKey">
               <td class="text--secondary pr-2">
-                SPH
+                {{ dataItem.label }}
               </td>
-              <td>{{ formatNumber(glass[eye.key].sphere, 2) }} D</td>
-            </tr>
-            <tr>
-              <td class="text--secondary pr-2">
-                CYL
+              <td>
+                <editable-span
+                  :value="dataItem.format(glass[eye.key][dataKey])"
+                  :suffix="dataItem.suffix"
+                  :rules="eyeRules[dataKey]"
+                  :is-editing="editable && edit == eye.key + dataKey"
+                  @change="edit = ''"
+                />
               </td>
-              <td>{{ formatNumber(glass[eye.key].cylinder, 2) }} D</td>
-            </tr>
-            <tr>
-              <td class="text--secondary pr-2">
-                Axis
-              </td>
-              <td>{{ parseInt(glass[eye.key].axis).toString().padStart(3,'0') }}</td>
-            </tr>
-            <tr v-if="glass.glassesType !== 'single'">
-              <td class="text--secondary pr-2">
-                Add
-              </td>
-              <td>{{ formatNumber(glass[eye.key].add, 2) }} D</td>
             </tr>
           </v-col>
         </v-row>
+        <div v-if="editable" class="caption text--secondary pt-1">
+          Click any value to edit
+        </div>
       </v-container>
     </v-card-text>
     <v-card-actions v-if="!noActions" class="pt-0">
@@ -88,8 +81,11 @@
 <script>
 import { mdiArrowUpDown, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
 import * as chroma from '../lib/chroma'
+import EditableSpan from './EditableSpan.vue'
+import { eyeRules } from '~/lib/util'
 
 export default {
+  components: { EditableSpan },
   props: {
     glass: {
       type: Object,
@@ -98,12 +94,17 @@ export default {
     noActions: {
       type: Boolean,
       default: false
+    },
+    editable: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
     mdiArrowUpDown,
     mdiGlasses,
     mdiHumanMaleFemale,
+    eyeRules,
     eyes: [{
       text: 'OD',
       key: 'od'
@@ -111,8 +112,39 @@ export default {
     {
       text: 'OS',
       key: 'os'
-    }]
+    }],
+    edit: ''
   }),
+  computed: {
+    eyeData() {
+      return {
+        sphere: {
+          label: 'SPH',
+          format: v => this.formatNumber(v, 2),
+          enabled: true,
+          suffix: 'D'
+        },
+        cylinder: {
+          label: 'CYL',
+          format: v => this.formatNumber(v, 2),
+          enabled: true,
+          suffix: 'D'
+        },
+        axis: {
+          label: 'Axis',
+          format: v => parseInt(v).toString().padStart(3, '0'),
+          enabled: true,
+          suffix: ''
+        },
+        add: {
+          label: 'Add',
+          format: v => this.formatNumber(v, 2),
+          enabled: this.glass.glassesType !== 'single',
+          suffix: 'D'
+        }
+      }
+    }
+  },
   methods: {
     calcColor(val) {
       const scale = chroma.scale(['#BF360C', '#FF9800', '#009688']).domain([2.0, 1.0, 0])

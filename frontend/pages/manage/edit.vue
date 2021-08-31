@@ -27,16 +27,9 @@
             </v-col>
             <v-col>
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card v-if="selected" :glass="selected">
+                <glass-card v-if="selected" :glass="selected" editable>
                   <template #actions>
                     <delete-button :glass="selected" @deleted="updatedDeleted" />
-                    <v-btn
-                      text
-                      color="primary"
-                      @click="edit"
-                    >
-                      Edit
-                    </v-btn>
                   </template>
                 </glass-card>
               </div>

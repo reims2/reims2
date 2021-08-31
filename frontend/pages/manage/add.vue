@@ -76,15 +76,10 @@
           :key="item.sku || 1"
           :glass="item"
           :style="'opacity: ' + (1-idx*0.3)"
+          editable
         >
           <template #actions>
             <delete-button :glass="item" @deleted="updateDeleted(item)" />
-            <v-btn
-              text
-              color="primary"
-            >
-              Edit
-            </v-btn>
           </template>
         </glass-card>
       </v-col>
