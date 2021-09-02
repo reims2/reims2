@@ -21,7 +21,7 @@ module.exports = {
     'spaced-comment': 'warn',
     semi: 'warn', // no preference for semicolons at end
     'no-warning-comments': 'warn',
-    'vue/valid-v-slot': 'off', // false positives for vuetify
+    'vue/valid-v-slot': ['error', { allowModifiers: true }], // false positives for vuetify
     'vue/html-quotes': 'off', // doesn't work properly
     'space-before-function-paren': ['warn', 'never'] // no space before function parentheses because that looks weird
   }

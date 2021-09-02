@@ -51,6 +51,33 @@
         <td />
       </tr>
     </template>
+    <template #item.od.sphere="{ item }">
+      {{ formatRx(item.od.sphere) }} D
+    </template>
+    <template #item.od.cylinder="{ item }">
+      {{ formatRx(item.od.cylinder) }} D
+    </template>
+    <template #item.od.axis="{ item }">
+      {{ parseInt(item.od.axis).toString().padStart(3, '0') }}
+    </template>
+    <template #item.od.add="{ item }">
+      {{ formatRx(item.od.add) }} D
+    </template>
+    <template #item.os.sphere="{ item }">
+      {{ formatRx(item.os.sphere) }} D
+    </template>
+    <template #item.os.cylinder="{ item }">
+      {{ formatRx(item.os.cylinder) }} D
+    </template>
+    <template #item.os.axis="{ item }">
+      {{ parseInt(item.os.axis).toString().padStart(3, '0') }}
+    </template>
+    <template #item.os.add="{ item }">
+      {{ formatRx(item.os.add) }} D
+    </template>
+    <template #item.creationDate="{ item }">
+      {{ $dayjs(item.creationDate).format('DD.MM.YYYY') }}
+    </template>
   </v-data-table>
 </template>
 
@@ -82,17 +109,17 @@ export default {
       return [
         { value: 'sku', text: 'SKU' },
         { value: 'glassesType', text: 'Type', divider: true },
-        { value: 'odsphere', text: 'OD SPH' },
-        { value: 'odcylinder', text: 'OD CYL' },
-        { value: 'odaxis', text: 'OD Axis' },
-        { value: 'odadd', text: 'OD Add', divider: true },
-        { value: 'ossphere', text: 'OS SPH' },
-        { value: 'oscylinder', text: 'OS CYL' },
-        { value: 'osaxis', text: 'OS Axis' },
-        { value: 'osadd', text: 'OS Add', divider: true },
+        { value: 'od.sphere', text: 'OD SPH' },
+        { value: 'od.cylinder', text: 'OD CYL' },
+        { value: 'od.axis', text: 'OD Axis' },
+        { value: 'od.add', text: 'OD Add', divider: true },
+        { value: 'os.sphere', text: 'OS SPH' },
+        { value: 'os.cylinder', text: 'OS CYL' },
+        { value: 'os.axis', text: 'OS Axis' },
+        { value: 'os.add', text: 'OS Add', divider: true },
         { value: 'appearance', text: 'Appearance' },
         { value: 'glassesSize', text: 'Size' },
-        { value: 'created', text: 'Added' }
+        { value: 'creationDate', text: 'Added' }
       ]
     },
     items() {
@@ -103,18 +130,6 @@ export default {
         if (!this.isInLimits(el.os.sphere, this.filters.os.sphere)) return false
         if (!this.isInLimits(el.os.cylinder, this.filters.os.cylinder)) return false
         return true
-      }).map((el) => {
-        // map to flat object for table
-        el.odsphere = this.formatRx(el.od.sphere)
-        el.odaxis = parseInt(el.od.axis).toString().padStart(3, '0')
-        el.odcylinder = this.formatRx(el.od.cylinder)
-        el.odadd = this.formatRx(el.od.add)
-        el.ossphere = this.formatRx(el.os.sphere)
-        el.osaxis = parseInt(el.os.axis).toString().padStart(3, '0')
-        el.oscylinder = this.formatRx(el.os.cylinder)
-        el.osadd = this.formatRx(el.os.add)
-        el.created = this.$dayjs(el.creationDate).format('DD.MM.YYYY')
-        return el
       })
     }
   },
