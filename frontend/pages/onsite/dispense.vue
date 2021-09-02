@@ -80,12 +80,12 @@ export default {
           await this.dispense(this.selected.sku)
         } catch (error) {
           this.result = ''
-          if (!error.handled) {
-            if (error.response.status === 404) {
-              this.result = 'SKU ' + this.selected.sku + ' not found, was it already dispensed?'
-            }
+          if (error.status === 404) {
+            this.result = 'SKU ' + this.selected.sku + ' not found, was it already dispensed?'
           } else if (error.response == null) {
             this.result = 'Network error. Dispension will be retried as soon as you\'re back online.'
+          } else if (!error.handled) {
+            this.$store.commit('setError', `Could not dispense glasses, please retry (${error.status})`)
           }
           return
         }

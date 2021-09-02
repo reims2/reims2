@@ -1,18 +1,19 @@
-export default ({ $axios, app }) => {
+export default ({ $axios, app, store }) => {
   // todo set sensible default timeout
   $axios.defaults.timeout = 10000
 
   $axios.onError((error) => {
-    if (error.response === undefined) {
-      // todo show network errors somewhere globally
-      console.log('Request Error: \n' + JSON.stringify(error))
-      error.handled = true
-    } else if (error.response.status === 401) {
-      console.log('Login no longer valid (401 received), logout')
-      // todo maybe inform the user what happened
+    error.status = error.response ? error.response.status : 'Network Error'
+    if (error.status === 401) {
+      store.commit('setError', 'Credentials no longer valid, please login again')
       error.handled = true
       app.$auth.logout()
     }
     throw error
+  })
+
+  $axios.onResponse(() => {
+    // Network request successful, clear network errors
+    // store.commit('clearError')
   })
 }

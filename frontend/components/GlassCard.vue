@@ -5,32 +5,59 @@
   >
     <v-card-title>
       <div v-if="glass.score != null" class="d-flex align-center">
-        <v-chip
-          class="mr-2 px-2 white--text font-weight-medium"
-          :color="calcColor(glass.score)"
-          small
-          label
-          :ripple="false"
-        >
-          {{ glass.score.toFixed(2) }}
-        </v-chip>
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-chip
+              class="mr-2 px-2 white--text font-weight-medium"
+              :color="calcColor(glass.score)"
+              small
+              label
+              :ripple="false"
+              v-bind="attrs"
+              v-on="on"
+            >
+              {{ glass.score.toFixed(2) }}
+            </v-chip>
+          </template>
+          PhilScore result
+        </v-tooltip>
       </div>
       <span class="text--secondary">SKU</span> {{ glass.sku.toString().padStart(4, '0') }}
     </v-card-title>
     <v-card-subtitle class="text--primary pb-2 d-flex align-center">
-      <v-icon small class="mr-1">
-        {{ mdiGlasses }}
-      </v-icon>
-      {{ glass.glassesType }}
-      <v-icon small class="ml-3 mr-1">
-        {{ mdiArrowUpDown }}
-      </v-icon>
-      {{ glass.glassesSize }}
-
-      <v-icon small class="ml-3 mr-1">
-        {{ mdiHumanMaleFemale }}
-      </v-icon>
-      {{ glass.appearance }}
+      <v-tooltip bottom>
+        <template #activator="{ on, attrs }">
+          <span v-bind="attrs" v-on="on">
+            <v-icon small>
+              {{ mdiGlasses }}
+            </v-icon>
+            {{ glass.glassesType }}
+          </span>
+        </template>
+        Glasses type (either bifocal or single)
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template #activator="{ on, attrs }">
+          <span v-bind="attrs" v-on="on">
+            <v-icon small class="ml-2">
+              {{ mdiArrowUpDown }}
+            </v-icon>
+            {{ glass.glassesSize }}
+          </span>
+        </template>
+        Glasses size (small to large)
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template #activator="{ on, attrs }">
+          <span v-bind="attrs" v-on="on">
+            <v-icon small class="ml-2">
+              {{ mdiHumanMaleFemale }}
+            </v-icon>
+            {{ glass.appearance }}
+          </span>
+        </template>
+        Glasses appearance (neutral, feminine or masculine)
+      </v-tooltip>
     </v-card-subtitle>
     <v-card-text :class="[noActions ? '' :'py-0']">
       <v-container class="text--primary pa-0">
@@ -41,14 +68,21 @@
                 {{ eye.text }}
               </div>
               <div v-if="glass.score != null" class="d-flex align-center">
-                <v-chip
-                  class="ml-2 px-2"
-                  x-small
-                  label
-                  :ripple="false"
-                >
-                  {{ (eye.key == 'od' ? glass.odScore : glass.osScore).toFixed(2) }}
-                </v-chip>
+                <v-tooltip bottom>
+                  <template #activator="{ on, attrs }">
+                    <v-chip
+                      class="ml-2 px-2"
+                      x-small
+                      label
+                      :ripple="false"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      {{ (eye.key == 'od' ? glass.odScore : glass.osScore).toFixed(2) }}
+                    </v-chip>
+                  </template>
+                  PhilScore only for {{ eye.text }}
+                </v-tooltip>
               </div>
             </div>
             <tr v-for="[dataKey, dataItem] in Object.entries(eyeData)" :key="dataKey" @click="edit = eye.key + dataKey">
@@ -117,32 +151,31 @@ export default {
   }),
   computed: {
     eyeData() {
-      return {
+      const data = {
         sphere: {
           label: 'SPH',
           format: v => this.formatNumber(v, 2),
-          enabled: true,
           suffix: 'D'
         },
         cylinder: {
           label: 'CYL',
           format: v => this.formatNumber(v, 2),
-          enabled: true,
           suffix: 'D'
         },
         axis: {
           label: 'Axis',
           format: v => parseInt(v).toString().padStart(3, '0'),
-          enabled: true,
           suffix: ''
-        },
-        add: {
+        }
+      }
+      if (this.glass.glassesType !== 'single') {
+        data.add = {
           label: 'Add',
           format: v => this.formatNumber(v, 2),
-          enabled: this.glass.glassesType !== 'single',
           suffix: 'D'
         }
       }
+      return data
     }
   },
   methods: {

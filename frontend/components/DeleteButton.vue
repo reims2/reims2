@@ -56,10 +56,14 @@ export default {
     ...mapActions({
       deleteGlasses: 'glasses/delete'
     }),
-    startDelete() {
+    async startDelete() {
       this.deleteDialog = false
-      this.deleteGlasses(this.glass.sku)
-      this.$emit('deleted')
+      try {
+        await this.deleteGlasses(this.glass.sku)
+        this.$emit('deleted')
+      } catch (error) {
+        this.$store.commit('setError', `Could not delete glasses, please retry (${error.status})`)
+      }
     }
   }
 }

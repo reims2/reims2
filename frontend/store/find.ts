@@ -9,10 +9,7 @@ function propsAsNumber(obj:any):Record<string, number> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[]|null {
-  if (!terms.glassesType) { // fixme workaround so search doesn't start when search terms are empty
-    return null
-  }
+export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
   const rxOd = propsAsNumber(terms.od)
   const rxOs = propsAsNumber(terms.os)
   return glasses.slice()
@@ -124,24 +121,20 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
 }
 
 export interface MatchesState {
-  matches: Glasses[]|null,
 }
 export const state = (): MatchesState => ({
-  matches: null
 })
 
 export const MutationType = {
-  SET_MATCHES: 'setMatches'
 }
 export const mutations: MutationTree<MatchesState> = {
-  [MutationType.SET_MATCHES]: (state, value: Glasses[]) => { state.matches = value }
 }
 
 export const ActionType = {
   PHIL_SCORE: 'philScore'
 }
 export const actions: ActionTree<MatchesState, RootState> = {
-  [ActionType.PHIL_SCORE]({ commit, rootState }, eyeModel) {
-    commit(MutationType.SET_MATCHES, calculateAllPhilscore(eyeModel, rootState.allGlasses || []))
+  [ActionType.PHIL_SCORE]({ rootState }, eyeModel) {
+    return calculateAllPhilscore(eyeModel, rootState.allGlasses || [])
   }
 }

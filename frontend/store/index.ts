@@ -6,12 +6,14 @@ const arrayContainsSku = (data: Glasses[], sku: number) => data.some(e => e.sku 
 export interface RootState {
   allGlasses: Glasses[],
   lastRefresh: Date | null,
-  location: string
+  location: string,
+  error: string
 }
 export const state = (): RootState => ({
   allGlasses: [],
   lastRefresh: null,
-  location: 'sa'
+  location: 'sa',
+  error: ''
 })
 
 export const MutationType = {
@@ -19,7 +21,9 @@ export const MutationType = {
   SET_LOCATION: 'setLocation',
   SET_LAST_REFRESH: 'setLastRefresh',
   DELETE_OFFLINE_GLASSES: 'deleteOfflineGlasses',
-  ADD_OFFLINE_GLASSES: 'addOfflineGlasses'
+  ADD_OFFLINE_GLASSES: 'addOfflineGlasses',
+  SET_ERROR: 'setError',
+  CLEAR_ERROR: 'clearError'
 }
 export const mutations: MutationTree<RootState> = {
   [MutationType.SET_GLASSES]: (state, value: Glasses[]) => { state.allGlasses = value },
@@ -34,6 +38,12 @@ export const mutations: MutationTree<RootState> = {
     if (!arrayContainsSku(state.allGlasses, glasses.sku)) {
       state.allGlasses.push(glasses)
     }
+  },
+  [MutationType.SET_ERROR]: (state, message:string) => {
+    state.error = message
+  },
+  [MutationType.CLEAR_ERROR]: (state) => {
+    state.error = ''
   }
 }
 

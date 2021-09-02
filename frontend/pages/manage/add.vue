@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   data: () => ({
     valid: false,
@@ -125,26 +125,15 @@ export default {
     {
       text: 'OS',
       key: 'os'
-    }]
+    }],
+    lastAdded: []
   }),
-  computed: {
-    ...mapState({
-      lastAdded: state => state.glasses.lastAdded
-    })
-  },
   watch: {
     odEye() {
       if (this.syncEyes) {
         // setting manually to trigger reactive system in SingleEyeInput
         this.$set(this.osEye, 'add', this.odEye.add)
       }
-    },
-    lastAdded: {
-      handler() {
-        // reset on successful load
-        // this.reset() // todo readd
-      },
-      deep: true
     }
   },
   activated() {
@@ -155,14 +144,9 @@ export default {
     ...mapActions({
       addGlasses: 'glasses/addGlasses'
     }),
-    ...mapMutations({
-      removeFromLastAdded: 'glasses/removeFromLastAdded'
-    }),
-    submit() {
+    async submit() {
       if (this.valid) {
         this.$nuxt.$loading.start()
-
-        this.glassModel.sku = Math.floor(Math.random() * 10000) // fixme this is just for testing
         const newOd = {}
         const newOs = {}
         for (const key of Object.keys(this.odEye)) {
@@ -172,7 +156,13 @@ export default {
         }
         this.glassModel.od = newOd
         this.glassModel.os = newOs
-        this.addGlasses(this.glassModel)
+        try {
+          const newGlasses = await this.addGlasses(this.glassModel)
+          this.lastAdded.unshift(newGlasses)
+          this.$store.commit('clearError')
+        } catch (error) {
+          this.$store.commit('setError', `Could not add glasses, please retry (${error.status})`)
+        }
       }
     },
     reset() {
@@ -186,8 +176,9 @@ export default {
     generate_hint(options) {
       return 'One of ' + options.join(', ')
     },
-    updateDeleted(item) {
-      this.removeFromLastAdded(item.sku)
+    updateDeleted(toRemove) {
+      this.lastAdded = this.lastAdded.filter(itm => itm.sku != toRemove.sku)
+      this.reset()
     },
     updateSync(oldEye, newEye) {
       if (oldEye.add !== newEye.add) this.syncEyes = false

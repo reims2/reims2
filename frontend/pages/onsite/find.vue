@@ -99,10 +99,11 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   data: () => ({
+    matches: null,
     valid: false,
     page: 1,
     glassesType: '',
@@ -123,11 +124,6 @@ export default {
         rules: [v => !!v || 'Item is required']
       }
   }),
-  computed: {
-    ...mapState({
-      matches: state => state.find.matches
-    })
-  },
   watch: {
     od_eye() {
       if (this.sync_eye) {
@@ -138,18 +134,18 @@ export default {
   },
   activated() {
     setTimeout(() => { this.$refs.firstInput.focus() })
-    this.submit()
   },
   methods: {
     ...mapActions({
       philScore: 'find/philScore'
     }),
-    submit() {
+    async submit() {
       const eyeModel = {}
       eyeModel.glassesType = this.glassesType
       eyeModel.os = this.os_eye
       eyeModel.od = this.od_eye
-      this.philScore(eyeModel)
+      // todo maybe block submit if allGlasses is empty/null
+      this.matches = await this.philScore(eyeModel)
       this.page = 1
       this.sync_eye = true
 
@@ -162,7 +158,7 @@ export default {
     },
     reset() {
       this.$refs.form.reset()
-      this.philScore({})
+      this.matches = null
       setTimeout(() => { this.$refs.firstInput.focus() })
       this.sync_eye = true
     },
