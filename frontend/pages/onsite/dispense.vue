@@ -73,15 +73,16 @@ export default {
     }),
     async submit() {
       if (this.selected) {
+        const skuToDispense = this.selected.sku
         // do dispension
         this.$nuxt.$loading.start()
-        this.result = 'Dispensing glasses with SKU ' + this.selected.sku + '...'
+        this.result = 'Dispensing glasses with SKU ' + skuToDispense + '...'
         try {
-          await this.dispense(this.selected.sku)
+          await this.dispense(skuToDispense)
         } catch (error) {
           this.result = ''
           if (error.status === 404) {
-            this.result = 'SKU ' + this.selected.sku + ' not found, was it already dispensed?'
+            this.result = 'SKU ' + skuToDispense + ' not found, was it already dispensed?'
           } else if (error.response == null) {
             this.result = 'Network error. Dispension will be retried as soon as you\'re back online.'
           } else if (!error.handled) {
@@ -91,7 +92,7 @@ export default {
         }
         this.$refs.form.reset()
         this.$refs.firstInput.focus()
-        this.result = 'Successfully dispensed glasses with SKU ' + this.selected.sku
+        this.result = 'Successfully dispensed glasses with SKU ' + skuToDispense
       } else {
         this.result = 'SKU not found'
       }
