@@ -5,6 +5,7 @@ import org.PVH.repository.CustomGlassesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigInteger;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -33,8 +34,9 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
             else
                 nextSKU = min;
         }
-        
+
         glasses.setSku(nextSKU);
+        glasses.setCreationDate(new Date());
 
         entityManager.persist(glasses);
         entityManager.flush();

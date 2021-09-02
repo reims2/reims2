@@ -1,6 +1,7 @@
 package org.PVH.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "glasses")
@@ -23,6 +24,10 @@ public class Glasses extends BaseEntity {
 
     @Column(name = "dispensed")
     private boolean dispensed;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "creation_date")
+    private Date creationDate;
 
     @OneToOne
     @JoinColumn(name = "dispense_id")
@@ -106,5 +111,13 @@ public class Glasses extends BaseEntity {
 
     public void setDispense(Dispense dispense) {
         this.dispense = dispense;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }

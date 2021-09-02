@@ -30,6 +30,7 @@ CREATE TABLE glasses
      dispense_id  INTEGER,
      location     VARCHAR(50),
      dispensed    BOOLEAN DEFAULT false,
+     creation_date TIMESTAMP DEFAULT NULL,
      os_id        INTEGER,
      od_id        INTEGER
   );
