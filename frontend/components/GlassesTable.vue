@@ -48,6 +48,7 @@
         <td class="v-data-table__divider" />
         <td />
         <td />
+        <td />
       </tr>
     </template>
   </v-data-table>
@@ -90,7 +91,8 @@ export default {
         { value: 'osaxis', text: 'OS Axis' },
         { value: 'osadd', text: 'OS Add', divider: true },
         { value: 'appearance', text: 'Appearance' },
-        { value: 'glassesSize', text: 'Size' }
+        { value: 'glassesSize', text: 'Size' },
+        { value: 'created', text: 'Added' }
       ]
     },
     items() {
@@ -111,6 +113,7 @@ export default {
         el.osaxis = parseInt(el.os.axis).toString().padStart(3, '0')
         el.oscylinder = this.formatRx(el.os.cylinder)
         el.osadd = this.formatRx(el.os.add)
+        el.created = this.$dayjs(el.creationDate).format('DD.MM.YYYY')
         return el
       })
     }
