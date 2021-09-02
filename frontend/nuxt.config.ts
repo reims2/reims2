@@ -87,11 +87,15 @@ const config: NuxtConfig = {
     meta: {
       name: 'REIMS2',
       author: 'Partners for Visual Health',
-      ogHost: 'reims2.app'
+      ogHost: 'reims2.app',
+      description: 'REIMS2 is the next version of the Richmond Eyeglass Inventory Matching System. ' +
+      'It supports the annual visual health campaigns run by Partners for Visual Health.'
     },
     manifest: {
       name: 'REIMS2',
-      short_name: 'REIMS2'
+      short_name: 'REIMS2',
+      description: 'REIMS2 is the next version of the Richmond Eyeglass Inventory Matching System. ' +
+      'It supports the annual visual health campaigns run by Partners for Visual Health.'
     },
     workbox: {
       workboxExtensions: '@/plugins/bg-sync.js'
