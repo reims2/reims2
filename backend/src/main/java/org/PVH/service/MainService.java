@@ -19,8 +19,12 @@ public interface MainService {
 
     Optional<Glasses> findAllByIdAndLocation(long id, String location);
     Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
+    Optional<Glasses>  findAllByPreviousSkuAndLocation(int previousSku, String location);
+
 
     Page<Glasses> findAllGlasses(Pageable pageable) throws DataAccessException;
     Page<Glasses> findByGlassesContaining(String location,String glassesType, Pageable pageable) throws DataAccessException;
     Page<Glasses> findAllByLocation(String location, Pageable pageable) throws DataAccessException;
+
+
 }

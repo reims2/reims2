@@ -82,6 +82,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException {
+        dispenseRepository.save(glasses.getDispense());
         return glassesRepository.save(glasses);
     }
 
@@ -93,6 +94,11 @@ public class MainServiceImpl implements MainService {
     @Override
     public Optional<Glasses> findAllBySkuAndLocation(int sku, String location) {
         return  glassesRepository.findAllBySkuAndLocation(sku,location);
+    }
+
+    @Override
+    public Optional<Glasses> findAllByPreviousSkuAndLocation(int previousSku, String location) {
+        return  glassesRepository.findByDispense_PreviousSkuAndLocation(previousSku,location);
     }
 
 

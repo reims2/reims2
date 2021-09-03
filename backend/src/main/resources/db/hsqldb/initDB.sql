@@ -17,7 +17,8 @@ CREATE TABLE eye
 CREATE TABLE dispense
   (
      id          INTEGER IDENTITY PRIMARY KEY,
-     modify_date TIMESTAMP DEFAULT NULL
+     modify_date TIMESTAMP DEFAULT NULL,
+     previous_sku          INTEGER DEFAULT NULL
   );
 
 CREATE TABLE glasses

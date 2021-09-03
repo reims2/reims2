@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
@@ -147,8 +148,35 @@ public class GlassesRestController {
 //	}
 
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    @RequestMapping(value = "/dispense/{location}/{sku}", method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity<DispenseBoolean> updateDispensed(@PathVariable("sku") int sku, @PathVariable("location")String location, @RequestBody @Valid DispenseBoolean dispensed, BindingResult bindingResult){
+    @RequestMapping(value = "/dispense/{location}/{sku}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity updateDispensed(@PathVariable("sku") int sku, @PathVariable("location") String location){
+
+        Optional<Glasses>  currentGlasses;
+        currentGlasses = this.mainService.findAllBySkuAndLocation(sku, location);
+
+        if(currentGlasses.isEmpty()){
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
+        if(currentGlasses.get().isDispensed()){
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "entity already dispensed"
+            );
+        }
+
+        currentGlasses.get().setDispensed(true);
+        currentGlasses.get().getDispense().setModifyDate(new Date());
+        currentGlasses.get().getDispense().setPreviousSku(currentGlasses.get().getSku());
+        currentGlasses.get().setSku(null);
+
+        this.mainService.saveGlassesAfterDispense(currentGlasses.get());
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @RequestMapping(value = "/undispense", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity undispense(@RequestBody @Valid Glasses glasses, BindingResult bindingResult){
         BindingErrorsResponse errors = new BindingErrorsResponse();
         HttpHeaders headers = new HttpHeaders();
         if(bindingResult.hasErrors()){
@@ -157,22 +185,31 @@ public class GlassesRestController {
             return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
         }
 
-        Optional<Glasses>  currentGlasses = this.mainService.findAllBySkuAndLocation(sku, location);
+        Optional<Glasses> currentGlasses = this.mainService.findGlassesById(glasses.getId());
+
         if(currentGlasses.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "entity not found"
+            );
         }
-        // If glass is already dispensed..
-        if(currentGlasses.get().isDispensed()){
-            currentGlasses.get().setDispensed(dispensed.isDispensed());
-            currentGlasses.get().getDispense().setModifyDate(new Date());
-            this.mainService.saveGlassesAfterDispense(currentGlasses.get());
-            return new ResponseEntity<DispenseBoolean>(dispensed,HttpStatus.OK);
+        if(!currentGlasses.get().isDispensed()){
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "entity already undispensed!"
+            );
         }
-        currentGlasses.get().setDispensed(dispensed.isDispensed());
+        Optional<Glasses> testGlasses = this.mainService.findAllBySkuAndLocation(glasses.getDispense().getPreviousSku(),currentGlasses.get().getLocation());
+        if(!testGlasses.isEmpty())
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "Previous SKU is already used"
+            );
+
+        currentGlasses.get().setDispensed(false);
         currentGlasses.get().getDispense().setModifyDate(new Date());
-        currentGlasses.get().setSku(null);
+        currentGlasses.get().setSku(currentGlasses.get().getDispense().getPreviousSku());
+        currentGlasses.get().getDispense().setPreviousSku(null);
+
         this.mainService.saveGlassesAfterDispense(currentGlasses.get());
-        return new ResponseEntity<DispenseBoolean>(dispensed,HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 

@@ -41,4 +41,7 @@ public interface GlassesRepository  extends JpaRepository<Glasses, Long>, Custom
 
     Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
 
+    Optional<Glasses> findByDispense_PreviousSkuAndLocation(int previousSku, String location);
+
+
 }

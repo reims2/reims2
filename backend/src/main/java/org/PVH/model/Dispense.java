@@ -13,6 +13,9 @@ public class Dispense extends BaseEntity {
     @Column(name = "modify_date")
     private Date modifyDate;
 
+    @Column(name = "previous_sku")
+    private Integer previousSku;
+
     public Dispense(Date modifyDate){
         this.modifyDate = modifyDate;
     }
@@ -28,4 +31,11 @@ public class Dispense extends BaseEntity {
         this.modifyDate = modify_date;
     }
 
+    public Integer getPreviousSku() {
+        return previousSku;
+    }
+
+    public void setPreviousSku(Integer previousSku) {
+        this.previousSku = previousSku;
+    }
 }
