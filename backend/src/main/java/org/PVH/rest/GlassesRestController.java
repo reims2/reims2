@@ -7,6 +7,7 @@ import org.PVH.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -148,8 +149,15 @@ public class GlassesRestController {
 //	}
 
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    @RequestMapping(value = "/dispense/{location}/{sku}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity updateDispensed(@PathVariable("sku") int sku, @PathVariable("location") String location){
+    @RequestMapping(value = "/dispense/{location}/{sku}", method = RequestMethod.PUT, produces = "application/json")
+    public ResponseEntity updateDispensed(@PathVariable("sku") int sku, @PathVariable("location") String location, @RequestBody Object glasses, BindingResult bindingResult){
+        BindingErrorsResponse errors = new BindingErrorsResponse();
+        HttpHeaders headers = new HttpHeaders();
+        if(bindingResult.hasErrors()){
+            errors.addAllErrors(bindingResult);
+            headers.add("errors", errors.toJSON());
+            return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
+        }
 
         Optional<Glasses>  currentGlasses;
         currentGlasses = this.mainService.findAllBySkuAndLocation(sku, location);
