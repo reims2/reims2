@@ -65,7 +65,7 @@ public class MainServiceImpl implements MainService {
         }
 
         // todo someday make this configurable per location
-        int min = 0;
+        int min = 1;
         int max = 10000;
         if (glasses.getLocation().equals("sm"))
             min = 5000;

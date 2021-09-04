@@ -202,10 +202,11 @@ public class GlassesRestController {
         }
         if(!currentGlasses.get().isDispensed()){
             throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST, "entity already undispensed!"
+                // send 204 because content is not modified https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4
+                HttpStatus.NO_CONTENT, "entity already undispensed!"
             );
         }
-        Optional<Glasses> testGlasses = this.mainService.findAllBySkuAndLocation(glasses.getDispense().getPreviousSku(),currentGlasses.get().getLocation());
+        Optional<Glasses> testGlasses = this.mainService.findAllBySkuAndLocation(currentGlasses.get().getDispense().getPreviousSku(),currentGlasses.get().getLocation());
         if(!testGlasses.isEmpty())
             throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST, "Previous SKU is already used"
