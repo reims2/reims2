@@ -1,11 +1,11 @@
 
 export interface Dispense {
-    id?: number; // backend ID, not always set
+    id: number; // backend ID
     modifyDate: Date|null;
 }
 
 export interface Eye {
-    id?: number; // backend ID, not always set
+    id: number; // backend ID
     add: number;
     axis: number;
     cylinder: number;
@@ -13,7 +13,7 @@ export interface Eye {
 }
 
 export interface Glasses {
-    id?: number; // backend ID, not always set
+    id: number; // backend ID
     appearance: string;
     dispense?: Dispense;
     dispensed?: boolean;

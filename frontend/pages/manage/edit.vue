@@ -84,7 +84,9 @@ export default {
       try {
         this.selected = await this.$store.dispatch('glasses/fetchSingle', sku)
       } catch (error) {
-        if (error.response && error.response.status < 500) {
+        if (this.$axios.isCancel(error)) {
+          // request was cancelled, ignore
+        } else if (error.response && error.response.status < 500) {
           // SKU doesn't exist or client side error, don't display anything
           this.selected = null
         } else if (this.glasses) {

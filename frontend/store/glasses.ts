@@ -2,7 +2,9 @@ import type { ActionTree, MutationTree } from 'vuex'
 import { RootState } from '.'
 import { MutationType as IndexMutationType } from './index'
 import { Glasses } from '~/model/GlassesModel'
+const axios = require('axios').default
 
+let cancelTokenGet = axios.CancelToken.source()
 export interface GlassesState {
 }
 export const state = (): GlassesState => ({
@@ -31,7 +33,9 @@ export const actions: ActionTree<GlassesState, RootState> = {
   },
 
   async [ActionType.FETCH_SINGLE_GLASSES]({ commit, rootState }, sku: number) {
-    const data = await this.$axios.$get(`/api/glasses/${rootState.location}/${sku}`)
+    if (cancelTokenGet) cancelTokenGet.cancel()
+    cancelTokenGet = axios.CancelToken.source()
+    const data = await this.$axios.$get(`/api/glasses/${rootState.location}/${sku}`, { cancelToken: cancelTokenGet.token })
     commit(IndexMutationType.DELETE_OFFLINE_GLASSES, sku, { root: true })
     commit(IndexMutationType.ADD_OFFLINE_GLASSES, data, { root: true })
     return data

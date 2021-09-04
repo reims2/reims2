@@ -110,6 +110,7 @@ export default {
       undispense: 'glasses/undispense'
     }),
     async submitDispension() {
+      if (this.isLoading || this.sku == null || this.sku === '') return
       if (!this.selected) {
         this.errorMesssage = 'SKU not found'
         return
@@ -117,6 +118,8 @@ export default {
       // copy object because the computed `selected` property will get null when it's dispensed
       const toDispense = this.selected
       // do dispension
+      this.successMessage = []
+      this.errorMesssage = []
       this.isLoading = true
       try {
         await this.dispense(toDispense.sku)
@@ -146,13 +149,14 @@ export default {
           this.lastDispensed = null
         } else if (error.response == null) {
           this.$store.commit('setError', 'Network error. Dispension will be automatically reverted as soon as you\'re back online.')
+          // fixme it must be possible to undo here
         } else {
           this.$store.commit('setError', `Could not undo dispension of glasses, please retry (Error ${error.status}).`)
         }
         return
       }
       this.lastDispensed = null
-      this.successMessage = 'Dispension successfully reverted'
+      this.successMessage = 'Reverted dispension successfully'
     }
   }
 }

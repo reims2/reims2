@@ -47,10 +47,11 @@
             <v-col cols=12 class="pt-4">
               <div class="d-flex">
                 <v-btn
-                  :disabled="!valid"
+                  :disabled="!valid || loading"
                   color="primary"
                   class="mr-4"
                   type="submit"
+                  :loading="loading"
                   @click="submit"
                 >
                   Add glasses
@@ -73,7 +74,7 @@
         </div>
         <glass-card
           v-for="(item, idx) in lastAdded.slice(0,3)"
-          :key="item.sku || 1"
+          :key="item.id"
           :glass="item"
           :style="'opacity: ' + (1-idx*0.3)"
           editable
@@ -92,6 +93,7 @@ import { mapActions } from 'vuex'
 export default {
   data: () => ({
     valid: false,
+    loading: false,
     glassModel: {},
     osEye: {},
     odEye: {},
@@ -146,7 +148,7 @@ export default {
     }),
     async submit() {
       if (this.valid) {
-        this.$nuxt.$loading.start()
+        this.loading = true
         const newOd = {}
         const newOs = {}
         for (const key of Object.keys(this.odEye)) {
@@ -159,10 +161,12 @@ export default {
         try {
           const newGlasses = await this.addGlasses(this.glassModel)
           this.lastAdded.unshift(newGlasses)
-          this.$store.commit('clearError')
         } catch (error) {
+          this.loading = false
           this.$store.commit('setError', `Could not add glasses, please retry (${error.status})`)
         }
+        this.loading = false
+        this.$store.commit('clearError')
       }
     },
     reset() {

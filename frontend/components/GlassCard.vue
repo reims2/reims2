@@ -19,7 +19,7 @@
               {{ glass.score.toFixed(2) }}
             </v-chip>
           </template>
-          PhilScore result
+          Result (Philscore) - lower values are better
         </v-tooltip>
       </div>
       <span class="text--secondary">SKU</span> {{ glass.sku.toString().padStart(4, '0') }}
@@ -101,9 +101,6 @@
             </tr>
           </v-col>
         </v-row>
-        <div v-if="editable" class="caption text--secondary pt-1">
-          Click any value to edit
-        </div>
       </v-container>
     </v-card-text>
     <v-card-actions v-if="!noActions" class="pt-0">

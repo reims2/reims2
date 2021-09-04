@@ -160,7 +160,8 @@ const config: NuxtConfig = {
     },
     icons: {
       iconfont: 'mdiSvg'
-    }
+    },
+    treeShake: true
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

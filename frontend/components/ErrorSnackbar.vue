@@ -35,7 +35,6 @@ export default {
   },
   watch: {
     error() {
-      console.log('watch')
       if (this.error) {
         this.snackbarOpen = true
         // manual timeout because the timeout has to be refreshed if the message has changed
