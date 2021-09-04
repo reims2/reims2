@@ -8,3 +8,13 @@ workbox.routing.registerRoute(
   }),
   'PUT'
 )
+
+workbox.routing.registerRoute(
+  /\/api\/glasses\/undispense.*/,
+  new workbox.strategies.NetworkOnly({
+    plugins: [new workbox.backgroundSync.BackgroundSyncPlugin('reimsUndispenseQueue', {
+      maxRetentionTime: 7 * 24 * 60 // retry undispense for 7 days
+    })]
+  }),
+  'POST'
+)

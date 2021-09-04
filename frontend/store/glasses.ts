@@ -17,6 +17,7 @@ export const ActionType = {
   ADD_GLASSES: 'addGlasses',
   FETCH_SINGLE_GLASSES: 'fetchSingle',
   DISPENSE_GLASSES: 'dispense',
+  UNDISPENSE_GLASSES: 'undispense',
   DELETE_GLASSES: 'delete',
   EDIT_GLASSES: 'edit'
 }
@@ -37,8 +38,13 @@ export const actions: ActionTree<GlassesState, RootState> = {
   },
 
   async [ActionType.DISPENSE_GLASSES]({ commit, rootState }, sku: number) {
-    await this.$axios.$put(`/api/glasses/dispense/${rootState.location}/${sku}`, { dispensed: true })
+    await this.$axios.$put(`/api/glasses/dispense/${rootState.location}/${sku}`, {})
     commit(IndexMutationType.DELETE_OFFLINE_GLASSES, sku, { root: true })
+  },
+
+  async [ActionType.UNDISPENSE_GLASSES]({ commit }, glasses: Glasses) {
+    await this.$axios.$post('/api/glasses/undispense', glasses)
+    commit(IndexMutationType.ADD_OFFLINE_GLASSES, glasses, { root: true })
   },
 
   async [ActionType.DELETE_GLASSES]({ commit, rootState }, sku: number) {

@@ -4,6 +4,7 @@
     :timeout=-1
     color="error"
     right
+    multi-line
   >
     {{ error }}
     <template #action="{ attrs }">
@@ -23,7 +24,6 @@
 import { mapMutations, mapState } from 'vuex'
 
 export default {
-  name: 'SpluseinsErrorSnackbar',
   data: () => ({
     snackTimeout: 0,
     snackbarOpen: false
@@ -40,7 +40,7 @@ export default {
         this.snackbarOpen = true
         // manual timeout because the timeout has to be refreshed if the message has changed
         clearTimeout(this.snackTimeout)
-        this.snackTimeout = setTimeout(() => { this.close() }, 10 * 1000)
+        this.snackTimeout = setTimeout(() => { this.close() }, 15 * 1000)
       } else {
         this.snackbarOpen = false
       }

@@ -3,7 +3,7 @@
     style="min-width: 270px;"
     class="mb-2"
   >
-    <v-card-title>
+    <v-card-title v-if="glass.sku">
       <div v-if="glass.score != null" class="d-flex align-center">
         <v-tooltip bottom>
           <template #activator="{ on, attrs }">

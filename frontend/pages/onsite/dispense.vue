@@ -2,13 +2,14 @@
   <v-container fluid>
     <v-row dense class="justify-center">
       <v-col cols=12 md=6 lg=4>
-        <div class="pb-3 text--secondary">
-          You can dispense glasses here. Input the SKU to continue.
+        <div class="text--secondary">
+          You can dispense glasses here.
         </div>
         <v-form
           ref="form"
           v-model="valid"
-          @submit.prevent="submit"
+          class="pt-3"
+          @submit.prevent="submitDispension"
         >
           <v-row>
             <v-col cols=12>
@@ -17,14 +18,12 @@
                 v-model.number="sku"
                 label="SKU"
                 type="number"
-                :hint="selected? 'Press ENTER to dispense' : null"
+                :hint="hint"
                 persistent-hint
+                :loading="isLoading"
+                :error-messages="errorMesssage"
+                :success-messages="successMessage"
               />
-            </v-col>
-            <v-col v-if="result" cols=12 class="pt-0">
-              <div class="text-body-2">
-                {{ result }}
-              </div>
             </v-col>
             <v-col>
               <div class="d-flex flex-shrink-1 justify-start">
@@ -33,7 +32,7 @@
                     <v-btn
                       text
                       color="primary"
-                      @click="submit"
+                      @click="submitDispension"
                     >
                       Dispense
                     </v-btn>
@@ -45,6 +44,26 @@
         </v-form>
       </v-col>
     </v-row>
+    <v-snackbar v-if="lastDispensed != null" :value=true :timeout="-1" bottom>
+      <template #action="{ attrs }">
+        <v-btn
+          text
+          v-bind="attrs"
+          color="error"
+          @click="undoDispension(lastDispensed)"
+        >
+          Undo
+        </v-btn>
+        <v-btn
+          text
+          v-bind="attrs"
+          @click="lastDispensed = null"
+        >
+          Close
+        </v-btn>
+      </template>
+      Successfully dispensed glasses with SKU {{ lastDispensed.sku }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -54,14 +73,32 @@ export default {
   data: () => ({
     valid: false,
     sku: '',
-    result: null
+    lastDispensed: null,
+    isLoading: false,
+    successMessage: [],
+    errorMesssage: []
   }),
   computed: {
     ...mapState({
       glasses: state => state.allGlasses
     }),
     selected() {
-      return this.glasses.filter(el => Number(el.sku) === this.sku)[0] // todo replace with getter in store
+      return this.glasses.filter(el => this.sku && el.sku === this.sku)[0] // todo replace with getter in store
+    },
+    hint() {
+      if (this.selected) {
+        return 'Press ENTER to dispense'
+      } else if (this.sku == null || this.sku === '') {
+        return 'Enter SKU to continue'
+      } else {
+        return 'SKU not found'
+      }
+    }
+  },
+  watch: {
+    sku() {
+      if (this.sku != null && this.sku !== '') this.successMessage = []
+      this.errorMesssage = []
     }
   },
   activated() {
@@ -69,33 +106,53 @@ export default {
   },
   methods: {
     ...mapActions({
-      dispense: 'glasses/dispense'
+      dispense: 'glasses/dispense',
+      undispense: 'glasses/undispense'
     }),
-    async submit() {
-      if (this.selected) {
-        const skuToDispense = this.selected.sku
-        // do dispension
-        this.$nuxt.$loading.start()
-        this.result = 'Dispensing glasses with SKU ' + skuToDispense + '...'
-        try {
-          await this.dispense(skuToDispense)
-        } catch (error) {
-          this.result = ''
-          if (error.status === 404) {
-            this.result = 'SKU ' + skuToDispense + ' not found, was it already dispensed?'
-          } else if (error.response == null) {
-            this.result = 'Network error. Dispension will be retried as soon as you\'re back online.'
-          } else if (!error.handled) {
-            this.$store.commit('setError', `Could not dispense glasses, please retry (${error.status})`)
-          }
-          return
-        }
-        this.$refs.form.reset()
-        this.$refs.firstInput.focus()
-        this.result = 'Successfully dispensed glasses with SKU ' + skuToDispense
-      } else {
-        this.result = 'SKU not found'
+    async submitDispension() {
+      if (!this.selected) {
+        this.errorMesssage = 'SKU not found'
+        return
       }
+      // copy object because the computed `selected` property will get null when it's dispensed
+      const toDispense = this.selected
+      // do dispension
+      this.isLoading = true
+      try {
+        await this.dispense(toDispense.sku)
+      } catch (error) {
+        this.isLoading = false
+        if (error.status === 404) {
+          this.$store.commit('setError', 'SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
+        } else if (error.response == null) {
+          this.$store.commit('setError', 'Network error. Dispension will be automatically retried as soon as you\'re back online.')
+        } else if (!error.handled) {
+          this.$store.commit('setError', `Could not dispense glasses, please retry (${error.status})`)
+        }
+        return
+      }
+      this.isLoading = false
+      this.lastDispensed = toDispense
+      this.successMessage = 'Dispension successful'
+      this.$refs.form.reset()
+      this.$refs.firstInput.focus()
+    },
+    async undoDispension(glasses) {
+      try {
+        await this.undispense(glasses)
+      } catch (error) {
+        if (error.status === 400) {
+          this.$store.commit('setError', `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`)
+          this.lastDispensed = null
+        } else if (error.response == null) {
+          this.$store.commit('setError', 'Network error. Dispension will be automatically reverted as soon as you\'re back online.')
+        } else {
+          this.$store.commit('setError', `Could not undo dispension of glasses, please retry (Error ${error.status}).`)
+        }
+        return
+      }
+      this.lastDispensed = null
+      this.successMessage = 'Dispension successfully reverted'
     }
   }
 }
