@@ -5,7 +5,7 @@
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col
-              v-for="item in generalData"
+              v-for="item in generalEyeData"
               :key="item.label"
               cols="12"
               class="py-0 px-4 "
@@ -13,12 +13,13 @@
               <v-autocomplete
                 ref="firstInput"
                 v-model="glassModel[item.id]"
-                :items="item.options"
+                :items="item.items"
                 :label="item.label"
                 :rules="item.rules"
                 auto-select-first
-                :hint="generate_hint(item.options)"
+                :hint="generate_hint(item.items)"
                 persistent-hint
+                :autofocus="item.first"
               />
             </v-col>
             <v-col
@@ -69,8 +70,11 @@
         </v-form>
       </v-col>
       <v-col v-if="lastAdded.length > 0" cols=12 md=4 lg=3 class="pl-0 pl-md-6">
-        <div class="text-h6 pb-2">
+        <div class="text-h6">
           Recently added
+        </div>
+        <div class="text--secondary text-body-2 pb-3">
+          You can also edit all values by clicking on them.
         </div>
         <glass-card
           v-for="(item, idx) in lastAdded.slice(0,3)"
@@ -78,6 +82,7 @@
           :glass="item"
           :style="'opacity: ' + (1-idx*0.3)"
           editable
+          @edited="glasses => updateLastAdded(glasses)"
         >
           <template #actions>
             <delete-button :glass="item" @deleted="updateDeleted(item)" />
@@ -90,6 +95,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { generalEyeData } from '~/lib/util'
 export default {
   data: () => ({
     valid: false,
@@ -99,27 +105,7 @@ export default {
     odEye: {},
     syncEyes: true,
     output: '',
-    generalData: [
-      {
-        id: 'glassesType',
-        label: 'Type',
-        options: ['single', 'bifocal', 'progressive'],
-        rules: [v => !!v || 'Item is required'],
-        first: true
-      },
-      {
-        id: 'glassesSize',
-        label: 'Size',
-        options: ['small', 'medium', 'large', 'child'],
-        rules: [v => !!v || 'Item is required']
-      },
-      {
-        id: 'appearance',
-        label: 'Appearance',
-        options: ['neutral', 'feminine', 'masculine'],
-        rules: [v => !!v || 'Item is required']
-      }
-    ],
+    generalEyeData,
     eyes: [{
       text: 'OD',
       key: 'od'
@@ -137,10 +123,6 @@ export default {
         this.$set(this.osEye, 'add', this.odEye.add)
       }
     }
-  },
-  activated() {
-    // jump to first field if we switch back to this UI
-    setTimeout(() => { this.$refs.firstInput[0].focus() })
   },
   methods: {
     ...mapActions({
@@ -183,6 +165,9 @@ export default {
     updateDeleted(toRemove) {
       this.lastAdded = this.lastAdded.filter(itm => itm.sku != toRemove.sku)
       this.reset()
+    },
+    updateLastAdded(updatedGlasses) {
+      this.lastAdded = this.lastAdded.map(el => (el.sku === updatedGlasses.sku ? updatedGlasses : el))
     },
     updateSync(oldEye, newEye) {
       if (oldEye.add !== newEye.add) this.syncEyes = false

@@ -2,6 +2,7 @@
   <v-card
     style="min-width: 270px;"
     class="mb-2"
+    :loading="loading"
   >
     <v-card-title v-if="glass.sku">
       <div v-if="glass.score != null" class="d-flex align-center">
@@ -25,39 +26,33 @@
       <span class="text--secondary">SKU</span> {{ glass.sku.toString().padStart(4, '0') }}
     </v-card-title>
     <v-card-subtitle class="text--primary pb-2 d-flex align-center">
-      <v-tooltip bottom>
-        <template #activator="{ on, attrs }">
-          <span v-bind="attrs" v-on="on">
-            <v-icon small>
-              {{ mdiGlasses }}
-            </v-icon>
-            {{ glass.glassesType }}
-          </span>
-        </template>
-        Glasses type (either bifocal or single)
-      </v-tooltip>
-      <v-tooltip bottom>
-        <template #activator="{ on, attrs }">
-          <span v-bind="attrs" v-on="on">
-            <v-icon small class="ml-2">
-              {{ mdiArrowUpDown }}
-            </v-icon>
-            {{ glass.glassesSize }}
-          </span>
-        </template>
-        Glasses size (small to large)
-      </v-tooltip>
-      <v-tooltip bottom>
-        <template #activator="{ on, attrs }">
-          <span v-bind="attrs" v-on="on">
-            <v-icon small class="ml-2">
-              {{ mdiHumanMaleFemale }}
-            </v-icon>
-            {{ glass.appearance }}
-          </span>
-        </template>
-        Glasses appearance (neutral, feminine or masculine)
-      </v-tooltip>
+      <span v-for="item in generalEyeData" :key="item.id" class="pr-2">
+        <v-tooltip bottom :disabled="editable && edit == item.id">
+          <template #activator="{ on, attrs }">
+            <span class="no-child-padding" @click="edit = item.id">
+              <v-select
+                v-if="editable && edit == item.id"
+                :value="glass[item.id]"
+                :items="item.items"
+                auto-select-first
+                single-line
+                hide-details
+                style="max-width:130px"
+                autofocus
+                @input="value => startEdit(null, item.id, value)"
+                @blur="edit = ''"
+              />
+              <span v-else v-bind="attrs" v-on="on">
+                <v-icon small>
+                  {{ item.icon }}
+                </v-icon>
+                {{ glass[item.id] }}
+              </span>
+            </span>
+          </template>
+          {{ item.desc }}
+        </v-tooltip>
+      </span>
     </v-card-subtitle>
     <v-card-text :class="[noActions ? '' :'py-0']">
       <v-container class="text--primary pa-0">
@@ -95,7 +90,8 @@
                   :suffix="dataItem.suffix"
                   :rules="eyeRules[dataKey]"
                   :is-editing="editable && edit == eye.key + dataKey"
-                  @change="value => startEdit(eye.key, dataKey, value)"
+                  @submit="value => startEdit(eye.key, dataKey, value)"
+                  @blur="edit = ''"
                 />
               </td>
             </tr>
@@ -105,16 +101,22 @@
     </v-card-text>
     <v-card-actions v-if="!noActions" class="pt-0">
       <slot name="actions" />
+      <v-btn
+        v-if="editable && edit != ''"
+        text
+        @click="edit = ''"
+      >
+        Cancel Edit
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import { mdiArrowUpDown, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
 import { mapActions } from 'vuex'
 import * as chroma from '../lib/chroma'
 import EditableSpan from './EditableSpan.vue'
-import { deepCopyGlasses, eyeRules } from '~/lib/util'
+import { deepCopyGlasses, eyeRules, generalEyeData } from '~/lib/util'
 
 export default {
   components: { EditableSpan },
@@ -133,9 +135,6 @@ export default {
     }
   },
   data: () => ({
-    mdiArrowUpDown,
-    mdiGlasses,
-    mdiHumanMaleFemale,
     eyeRules,
     eyes: [{
       text: 'OD',
@@ -145,7 +144,9 @@ export default {
       text: 'OS',
       key: 'os'
     }],
-    edit: ''
+    edit: '',
+    generalEyeData,
+    loading: false
   }),
   computed: {
     eyeData() {
@@ -153,7 +154,8 @@ export default {
         sphere: {
           label: 'SPH',
           format: v => this.formatNumber(v, 2),
-          suffix: 'D'
+          suffix: 'D',
+          step: 0.25
         },
         cylinder: {
           label: 'CYL',
@@ -188,14 +190,45 @@ export default {
       return (val < 0 ? '-' : '+') + Math.abs(Number(val)).toFixed(decimals)
     },
     async startEdit(eyeKey, dataKey, value) {
-      this.edit = '' // fixme where to put it
       if (!this.editable) return // just as a "safety" fallback
       const newGlasses = deepCopyGlasses(this.glass)
-      newGlasses[eyeKey][dataKey] = Number(value)
-      await this.editGlasses(newGlasses)
+      if (eyeKey == null) {
+        // edited a glasses general item like size or appearance
+        newGlasses[dataKey] = value
+      } else {
+        // edited a specific eye
+        value = Number(value)
+        if (this.eyeData[dataKey].step) {
+          value = Math.ceil(Math.abs(value) / this.eyeData[dataKey].step) * this.eyeData[dataKey].step
+          if (isNaN(value)) return
+        }
+        newGlasses[eyeKey][dataKey] = Number(value)
+      }
+      try {
+        this.loading = true
+        await this.editGlasses(newGlasses)
+      } catch (error) {
+        if (error.response && error.response.status < 500) {
+          this.edit = ''
+          this.$store.commit('setError', `Glasses can't be edited, sorry (Status ${error.status})`)
+        } else {
+          this.$store.commit('setError', `Editing was not possible because the server didn't respond. Please retry (Status ${error.status}).`)
+        }
+        this.loading = false
+        return
+      }
+      this.loading = false
+      this.edit = ''
       this.$emit('edited', newGlasses)
     }
   }
 
 }
 </script>
+
+<style scoped>
+.no-child-padding .v-text-field {
+  padding: 0px;
+  margin: 0px;
+}
+</style>

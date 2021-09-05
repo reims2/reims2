@@ -16,6 +16,7 @@
               <v-text-field
                 ref="firstInput"
                 v-model.number="sku"
+                autofocus
                 label="SKU"
                 type="number"
                 :hint="hint"
@@ -102,9 +103,6 @@ export default {
       if (this.sku != null && this.sku !== '') this.successMessage = []
       this.errorMesssage = []
     }
-  },
-  activated() {
-    setTimeout(() => { this.$refs.firstInput.focus() })
   },
   methods: {
     ...mapActions({

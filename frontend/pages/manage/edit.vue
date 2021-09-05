@@ -2,8 +2,8 @@
   <v-container fluid>
     <v-row dense class="justify-center">
       <v-col cols=12 md=6 lg=4>
-        <div class="pb-3 text--secondary">
-          You can edit or delete glasses here. Input the SKU to continue.
+        <div class="pb-2 text--secondary">
+          You can edit or delete glasses here.
         </div>
         <v-form
           ref="form"
@@ -15,6 +15,7 @@
               <v-text-field
                 ref="firstInput"
                 v-model.number="sku"
+                autofocus
                 label="SKU"
                 type="number"
                 :hint="hint"
@@ -24,13 +25,16 @@
                 @input="search(sku)"
               />
             </v-col>
-            <v-col>
+            <v-col v-if="selected">
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card v-if="selected" :glass="selected" editable @edited="glasses => selected=glasses">
+                <glass-card :glass="selected" editable @edited="glasses => selected=glasses">
                   <template #actions>
                     <delete-button :glass="selected" @deleted="updatedDeleted" />
                   </template>
                 </glass-card>
+              </div>
+              <div class="text--secondary pt-2">
+                You can edit all values by clicking on them.
               </div>
             </v-col>
           </v-row>
@@ -71,16 +75,13 @@ export default {
       if (this.isLoading) {
         return ''
       } else if (this.selected) {
-        return 'Click on any field below to edit'
+        return 'Click value to edit'
       } else if (this.sku == null || this.sku === '') {
         return 'Enter SKU to continue'
       } else {
         return 'SKU not found'
       }
     }
-  },
-  activated() {
-    setTimeout(() => { this.$refs.firstInput.focus() })
   },
   methods: {
     submit() {
@@ -89,7 +90,7 @@ export default {
     async search(sku) {
       this.errorMessage = ''
       this.selected = null
-      if (sku == null) return
+      if (sku == null || sku === '') return
       this.isLoading = true
       try {
         this.selected = await this.$store.dispatch('glasses/fetchSingle', sku)

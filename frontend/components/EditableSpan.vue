@@ -1,17 +1,18 @@
 <template>
-  <span v-if="isEditing">
-    <v-text-field
-      :value="value"
-      :rules="rules"
-      dense
-      single-line
-      hide-details
-      style="max-width: 60px"
-      class="pb-1"
-      @update:error="val => hasError = val"
-      @change="val => submit(val)"
-    />
-  </span>
+  <v-text-field
+    v-if="isEditing"
+    v-model="model"
+    :rules="rules"
+    dense
+    single-line
+    hide-details
+    style="max-width: 60px"
+    class="pb-1"
+    autofocus
+    @update:error="val => hasError = val"
+    @keyup.enter="submit"
+    @blur="$emit('blur')"
+  />
   <span v-else>
     {{ value }} {{ suffix }}
   </span>
@@ -39,13 +40,14 @@ export default {
   },
   data() {
     return {
-      hasError: false
+      hasError: false,
+      model: this.value
     }
   },
   methods: {
-    submit(val) {
+    submit() {
       if (!this.hasError) {
-        this.$emit('change', val)
+        this.$emit('submit', this.model)
       }
     }
   }

@@ -1,3 +1,5 @@
+import { mdiArrowUpDown, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
+
 export const eyeRules = {
   sphere: [
     v => (v != null && !!v.length) || 'Required',
@@ -30,6 +32,33 @@ export const eyeRules = {
        v => v <= 10 || 'Maximum is 10'
      ]
 }
+export const generalEyeData = [
+  {
+    id: 'glassesType',
+    label: 'Type',
+    items: ['single', 'bifocal', 'progressive'],
+    rules: [v => !!v || 'Item is required'],
+    first: true,
+    icon: mdiGlasses,
+    desc: 'Glasses type (bifocal, single or progressive)'
+  },
+  {
+    id: 'glassesSize',
+    label: 'Size',
+    items: ['small', 'medium', 'large', 'child'],
+    rules: [v => !!v || 'Item is required'],
+    icon: mdiArrowUpDown,
+    desc: 'Glasses size (small, medium, large or child)'
+  },
+  {
+    id: 'appearance',
+    label: 'Appearance',
+    items: ['neutral', 'feminine', 'masculine'],
+    rules: [v => !!v || 'Item is required'],
+    icon: mdiHumanMaleFemale,
+    desc: 'Glasses appearance (neutral, feminine or masculine)'
+  }
+]
 
 export function deepCopyGlasses(oldGlasses) {
   const newGlasses = Object.assign({}, oldGlasses)
