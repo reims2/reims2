@@ -17,17 +17,16 @@
                 v-model.number="sku"
                 label="SKU"
                 type="number"
+                :hint="hint"
+                persistent-hint
+                :loading="isLoading"
+                :error-messages="errorMessage"
                 @input="search(sku)"
               />
             </v-col>
-            <v-col v-if="result" cols=12 class="pt-0">
-              <div class="text-body-2">
-                {{ result }}
-              </div>
-            </v-col>
             <v-col>
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card v-if="selected" :glass="selected" editable>
+                <glass-card v-if="selected" :glass="selected" editable @edited="glasses => selected=glasses">
                   <template #actions>
                     <delete-button :glass="selected" @deleted="updatedDeleted" />
                   </template>
@@ -38,6 +37,18 @@
         </v-form>
       </v-col>
     </v-row>
+    <v-snackbar v-if="result != ''" :value=true :timeout="-1" bottom>
+      <template #action="{ attrs }">
+        <v-btn
+          text
+          v-bind="attrs"
+          @click="result = ''"
+        >
+          Close
+        </v-btn>
+      </template>
+      {{ result }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -47,53 +58,60 @@ export default {
   data: () => ({
     valid: false,
     sku: '',
-    result: null,
-    selected: null
+    result: '',
+    selected: null,
+    errorMessage: '',
+    isLoading: false
   }),
   computed: {
     ...mapState({
       glasses: state => state.allGlasses
-    })
+    }),
+    hint() {
+      if (this.isLoading) {
+        return ''
+      } else if (this.selected) {
+        return 'Click on any field below to edit'
+      } else if (this.sku == null || this.sku === '') {
+        return 'Enter SKU to continue'
+      } else {
+        return 'SKU not found'
+      }
+    }
   },
   activated() {
     setTimeout(() => { this.$refs.firstInput.focus() })
   },
   methods: {
-    edit() {
-      if (this.selected) {
-        // todo do edit
-        this.result = 'NOT IMPLEMENTED: Edited glasses with SKU ' + this.selected.sku
-        this.$refs.form.reset()
-        this.$refs.firstInput.focus()
-      } else {
-        this.result = 'SKU not found'
-      }
-    },
     submit() {
-      if (this.selected) {
-        // todo
-      } else {
-        this.result = 'SKU not found'
-      }
+      if (!this.selected) this.errorMessage = 'SKU not found'
     },
     async search(sku) {
-      if (!sku) {
-        this.selected = null
-        return
-      }
+      this.errorMessage = ''
+      this.selected = null
+      if (sku == null) return
+      this.isLoading = true
       try {
         this.selected = await this.$store.dispatch('glasses/fetchSingle', sku)
+        this.result = ''
       } catch (error) {
         if (this.$axios.isCancel(error)) {
-          // request was cancelled, ignore
+          // request was cancelled, ignore and return so we don't disable loading bar down below
+          return
         } else if (error.response && error.response.status < 500) {
           // SKU doesn't exist or client side error, don't display anything
           this.selected = null
         } else if (this.glasses) {
-          // Network or server error, fallback to stored database if exists
+          // Network or server error, fallback to stored database
           this.selected = this.glasses.filter(el => Number(el.sku) === this.sku)[0]
+          this.result = `Could not load glasses from server (${error.status}), falling back to local database.`
+        } else {
+          // no stored database and network or server error
+          this.errorMessage = 'Could not load glasses'
+          this.$store.commit('setError', `Could not load glasses with SKU ${sku} from server (${error.status}), please retry!`)
         }
       }
+      this.isLoading = false
     },
     updatedDeleted() {
       this.result = 'Successfully deleted glasses with SKU ' + this.selected.sku

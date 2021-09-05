@@ -62,7 +62,8 @@
           Close
         </v-btn>
       </template>
-      Successfully dispensed glasses with SKU {{ lastDispensed.sku }}
+      <span v-if="networkOffline">Glasses with SKU {{ lastDispensed.sku }} will be dispensed when you're back online</span>
+      <span v-else>Successfully dispensed glasses with SKU {{ lastDispensed.sku }}</span>
     </v-snackbar>
   </v-container>
 </template>
@@ -76,7 +77,8 @@ export default {
     lastDispensed: null,
     isLoading: false,
     successMessage: [],
-    errorMesssage: []
+    errorMesssage: [],
+    networkOffline: false
   }),
   computed: {
     ...mapState({
@@ -121,6 +123,8 @@ export default {
       this.successMessage = []
       this.errorMesssage = []
       this.isLoading = true
+      this.lastDispensed = null
+      this.networkOffline = false
       try {
         await this.dispense(toDispense.sku)
       } catch (error) {
@@ -128,7 +132,9 @@ export default {
         if (error.status === 404) {
           this.$store.commit('setError', 'SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
         } else if (error.response == null) {
-          this.$store.commit('setError', 'Network error. Dispension will be automatically retried as soon as you\'re back online.')
+          this.networkOffline = true
+          // this.$store.commit('setError', 'Network error. Dispension will be automatically retried as soon as you\'re back online.')
+          // fixme it must be possible to undo here
         } else if (!error.handled) {
           this.$store.commit('setError', `Could not dispense glasses, please retry (${error.status})`)
         }
@@ -149,7 +155,6 @@ export default {
           this.lastDispensed = null
         } else if (error.response == null) {
           this.$store.commit('setError', 'Network error. Dispension will be automatically reverted as soon as you\'re back online.')
-          // fixme it must be possible to undo here
         } else {
           this.$store.commit('setError', `Could not undo dispension of glasses, please retry (Error ${error.status}).`)
         }

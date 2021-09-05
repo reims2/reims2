@@ -95,7 +95,7 @@
                   :suffix="dataItem.suffix"
                   :rules="eyeRules[dataKey]"
                   :is-editing="editable && edit == eye.key + dataKey"
-                  @change="edit = ''"
+                  @change="value => startEdit(eye.key, dataKey, value)"
                 />
               </td>
             </tr>
@@ -111,9 +111,10 @@
 
 <script>
 import { mdiArrowUpDown, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
+import { mapActions } from 'vuex'
 import * as chroma from '../lib/chroma'
 import EditableSpan from './EditableSpan.vue'
-import { eyeRules } from '~/lib/util'
+import { deepCopyGlasses, eyeRules } from '~/lib/util'
 
 export default {
   components: { EditableSpan },
@@ -176,12 +177,23 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      editGlasses: 'glasses/edit'
+    }),
     calcColor(val) {
       const scale = chroma.scale(['#BF360C', '#FF9800', '#009688']).domain([2.0, 1.0, 0])
       return scale(val).hex()
     },
     formatNumber(val, decimals) {
       return (val < 0 ? '-' : '+') + Math.abs(Number(val)).toFixed(decimals)
+    },
+    async startEdit(eyeKey, dataKey, value) {
+      this.edit = '' // fixme where to put it
+      if (!this.editable) return // just as a "safety" fallback
+      const newGlasses = deepCopyGlasses(this.glass)
+      newGlasses[eyeKey][dataKey] = Number(value)
+      await this.editGlasses(newGlasses)
+      this.$emit('edited', newGlasses)
     }
   }
 

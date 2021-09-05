@@ -10,7 +10,7 @@
         v-bind="attrs"
         v-on="on"
       >
-        Remove
+        Delete
       </v-btn>
     </template>
     <v-card>

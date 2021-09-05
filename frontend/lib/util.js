@@ -30,3 +30,17 @@ export const eyeRules = {
        v => v <= 10 || 'Maximum is 10'
      ]
 }
+
+export function deepCopyGlasses(oldGlasses) {
+  const newGlasses = Object.assign({}, oldGlasses)
+  const newOd = {}
+  const newOs = {}
+  for (const key of Object.keys(oldGlasses.od)) {
+    // copy to new object and convert to Number at once
+    newOd[key] = Number(oldGlasses.od[key])
+    newOs[key] = Number(oldGlasses.os[key])
+  }
+  newGlasses.od = newOd
+  newGlasses.os = newOs
+  return newGlasses
+}

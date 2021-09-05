@@ -56,12 +56,8 @@ export const actions: ActionTree<GlassesState, RootState> = {
     commit(IndexMutationType.DELETE_OFFLINE_GLASSES, sku, { root: true })
   },
 
-  // eslint-disable-next-line require-await
   async [ActionType.EDIT_GLASSES]({ commit, rootState }, newGlasses:Glasses) {
-    const request = Object.assign({}, newGlasses)
-    request.location = rootState.location
-    // const data = await this.$axios.$put(`/api/glasses/${rootState.location}/${newGlasses.sku}`)
-    const data = newGlasses // todo enable me when edit API is ready AND REMOVE ESLINT DISABLE
+    const data = await this.$axios.$put(`/api/glasses/${rootState.location}/${newGlasses.sku}`)
     commit(IndexMutationType.DELETE_OFFLINE_GLASSES, newGlasses.sku, { root: true })
     commit(IndexMutationType.ADD_OFFLINE_GLASSES, data, { root: true })
     return data
