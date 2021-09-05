@@ -1,5 +1,7 @@
 package org.PVH.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -32,6 +34,7 @@ public class Glasses extends BaseEntity {
     @Column(name = "creation_date")
     private Date creationDate;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "dispense_id")
     private Dispense dispense;
