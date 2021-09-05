@@ -52,8 +52,8 @@ public class MainServiceImpl implements MainService {
     @Override
     @Transactional
     public Glasses saveGlasses(Glasses glasses) throws DataAccessException {
-        Eye osid = eyeRepository.save(glasses.getOs());
-        Eye odid = eyeRepository.save(glasses.getOd());
+        eyeRepository.save(glasses.getOs());
+        eyeRepository.save(glasses.getOd());
         Dispense dispense = new Dispense(null);
         //If dispense is already set...
         if(glasses.getDispense()!=null)
@@ -83,6 +83,13 @@ public class MainServiceImpl implements MainService {
     @Override
     public Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException {
         dispenseRepository.save(glasses.getDispense());
+        return glassesRepository.save(glasses);
+    }
+
+    @Override
+    public Glasses saveGlassesAfterEdit(Glasses glasses) throws DataAccessException {
+        eyeRepository.save(glasses.getOs());
+        eyeRepository.save(glasses.getOd());
         return glassesRepository.save(glasses);
     }
 

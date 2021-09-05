@@ -120,33 +120,31 @@ public class GlassesRestController {
         return new ResponseEntity<Glasses>(this.mainService.saveGlasses(glasses),HttpStatus.CREATED);
 	}
 
-//
-//	@RequestMapping(value = "/{location}/{sku}", method = RequestMethod.PUT, produces = "application/json")
-//	public ResponseEntity<Glasses> updateGlasses(@PathVariable("sku") Long sku, @PathVariable("location")String location, @RequestBody @Valid Glasses glasses, BindingResult bindingResult){
-//		BindingErrorsResponse errors = new BindingErrorsResponse();
-//		HttpHeaders headers = new HttpHeaders();
-//		if(bindingResult.hasErrors() || (glasses == null)){
-//			errors.addAllErrors(bindingResult);
-//			headers.add("errors", errors.toJSON());
-//			return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
-//		}
-//
-//        Optional<Glasses>  currentGlasses = this.mainService.findAllBySkuAndLocation(sku,location);
-//		if(currentGlasses.isEmpty()){
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//		}
-//        currentGlasses.get().setId(currentGlasses.get().getId());
-//		currentGlasses.get().setGlassesSize(glasses.getGlassesSize());
-//        currentGlasses.get().setGlassesType(glasses.getGlassesType());
-//        currentGlasses.get().setAppearance(glasses.getAppearance());
-//        currentGlasses.get().setLocation(glasses.getLocation());
-//        currentGlasses.get().setOd(glasses.getOd());
-//        currentGlasses.get().setOs(glasses.getOs());
-//        currentGlasses.get().setDispense(glasses.getDispense());
-//        currentGlasses.get().setDispensed(glasses.isDispensed());
-//        this.mainService.saveGlasses(currentGlasses.get());
-//		return new ResponseEntity<Glasses>(currentGlasses.get(), HttpStatus.OK);
-//	}
+
+	@RequestMapping(value = "/{location}/{sku}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseEntity<Glasses> updateGlasses(@PathVariable("sku") int sku, @PathVariable("location")String location, @RequestBody @Valid Glasses glasses, BindingResult bindingResult){
+		BindingErrorsResponse errors = new BindingErrorsResponse();
+		HttpHeaders headers = new HttpHeaders();
+		if(bindingResult.hasErrors() || (glasses == null)){
+			errors.addAllErrors(bindingResult);
+			headers.add("errors", errors.toJSON());
+			return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
+		}
+
+        Optional<Glasses>  currentGlasses = this.mainService.findAllBySkuAndLocation(sku,location);
+		if(currentGlasses.isEmpty()){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		currentGlasses.get().setGlassesSize(glasses.getGlassesSize());
+        currentGlasses.get().setGlassesType(glasses.getGlassesType());
+        currentGlasses.get().setAppearance(glasses.getAppearance());
+        currentGlasses.get().setOd(glasses.getOd());
+        currentGlasses.get().setOs(glasses.getOs());
+
+        this.mainService.saveGlassesAfterEdit(currentGlasses.get());
+		return new ResponseEntity<Glasses>(currentGlasses.get(), HttpStatus.OK);
+	}
 
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     @RequestMapping(value = "/dispense/{location}/{sku}", method = RequestMethod.PUT, produces = "application/json")

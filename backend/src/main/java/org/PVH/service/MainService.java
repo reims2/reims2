@@ -16,6 +16,7 @@ public interface MainService {
     void deleteGlasses(Glasses glasses) throws DataAccessException;
 
     Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException;
+    Glasses saveGlassesAfterEdit(Glasses glasses) throws DataAccessException;
 
     Optional<Glasses> findAllByIdAndLocation(long id, String location);
     Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
