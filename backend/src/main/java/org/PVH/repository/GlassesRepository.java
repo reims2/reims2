@@ -31,13 +31,13 @@ public interface GlassesRepository  extends JpaRepository<Glasses, Long>, Custom
 
 
 
-    Page<Glasses> findByGlassesTypeAndLocation(String location, String glassesType, Pageable pageable);
+    Page<Glasses> findByDispensedAndGlassesTypeAndLocation(boolean dispensed,String location, String glassesType, Pageable pageable);
 
     List<Glasses> findByGlassesTypeContaining(String glassesType, Sort sort);
 
-    Page<Glasses> findAllByLocation(String location, Pageable pageable);
-
     Optional<Glasses> findAllByIdAndLocation(long id, String location);
+
+    Page<Glasses>  findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable);
 
     Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
 

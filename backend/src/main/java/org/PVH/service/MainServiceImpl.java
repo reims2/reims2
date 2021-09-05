@@ -117,13 +117,13 @@ public class MainServiceImpl implements MainService {
 
     @Override
     @Transactional
-    public Page<Glasses> findByGlassesContaining(String location, String glassesType, Pageable pageable) throws DataAccessException {
-        return glassesRepository.findByGlassesTypeAndLocation(location,glassesType,pageable);
+    public Page<Glasses> findByGlassesContainingAndDispensed(boolean dispensed,String location, String glassesType, Pageable pageable) throws DataAccessException {
+        return glassesRepository.findByDispensedAndGlassesTypeAndLocation(dispensed,location,glassesType,pageable);
     }
 
     @Override
-    public Page<Glasses> findAllByLocation(String location, Pageable pageable) throws DataAccessException {
-        return glassesRepository.findAllByLocation(location,pageable);
+    public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException {
+        return glassesRepository.findByDispensedAndLocation(dispensed,location,pageable);
     }
 
 }

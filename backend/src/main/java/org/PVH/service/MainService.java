@@ -24,8 +24,8 @@ public interface MainService {
 
 
     Page<Glasses> findAllGlasses(Pageable pageable) throws DataAccessException;
-    Page<Glasses> findByGlassesContaining(String location,String glassesType, Pageable pageable) throws DataAccessException;
-    Page<Glasses> findAllByLocation(String location, Pageable pageable) throws DataAccessException;
+    Page<Glasses> findByGlassesContainingAndDispensed(boolean dispensed,String location,String glassesType, Pageable pageable) throws DataAccessException;
+    Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException;
 
 
 }

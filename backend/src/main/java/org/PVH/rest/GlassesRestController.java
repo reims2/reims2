@@ -74,9 +74,10 @@ public class GlassesRestController {
         Page<Glasses> pageGlasses;
 
         if (glassesType == null)
-            pageGlasses = mainService.findAllByLocation(location,pagingSort);
+            // Find all by default not dispensed glasses
+            pageGlasses = mainService.findByDispensedAndLocation(false,location,pagingSort);
         else
-            pageGlasses = mainService.findByGlassesContaining(location,glassesType, pagingSort);
+            pageGlasses = mainService.findByGlassesContainingAndDispensed(false,location,glassesType, pagingSort);
 
         glasses = pageGlasses.getContent();
 
