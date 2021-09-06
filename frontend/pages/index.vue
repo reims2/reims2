@@ -70,12 +70,11 @@
 </template>
 
 <script>
-import { mdiDatabaseCog, mdiGlasses, mdiFileDocument } from '@mdi/js'
+import { mdiDatabaseCog, mdiFileDocument } from '@mdi/js'
 export default {
   transition: '',
   data: () => ({
     mdiDatabaseCog,
-    mdiGlasses,
     mdiFileDocument
   }),
   head() {

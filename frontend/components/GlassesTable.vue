@@ -8,6 +8,7 @@
     dense
     must-sort
     sort-by="sku"
+    :mobile-breakpoint="$vuetify.breakpoint.mobileBreakpoint"
     :footer-props="{
       showFirstLastPage: true,
       itemsPerPageOptions: [10,20,100,500],
@@ -50,6 +51,9 @@
         <td />
         <td />
       </tr>
+    </template>
+    <template v-if="$vuetify.breakpoint.mobile" #item={item}>
+      <glass-card :glass="item" class="ma-2" />
     </template>
     <template #item.od.sphere="{ item }">
       {{ formatRx(item.od.sphere) }} D

@@ -30,7 +30,6 @@
       <v-tabs
         fixed-tabs
         centered
-        show-arrows
       >
         <v-tab
           v-for="(item, i) in items"
@@ -48,7 +47,7 @@
 </template>
 
 <script>
-import { mdiArrowLeft, mdiWifiOff } from '@mdi/js'
+import { mdiArrowLeft } from '@mdi/js'
 export default {
   props: {
     items: {
@@ -63,7 +62,6 @@ export default {
   data() {
     return {
       mdiArrowLeft,
-      mdiWifiOff,
       refreshGlassesInterval: '',
       locations: [
         { text: 'San Miguel', value: 'sm' },

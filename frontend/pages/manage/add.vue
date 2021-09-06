@@ -146,9 +146,11 @@ export default {
         } catch (error) {
           this.loading = false
           this.$store.commit('setError', `Could not add glasses, please retry (${error.status})`)
+          return
         }
         this.loading = false
         this.$store.commit('clearError')
+        this.reset()
       }
     },
     reset() {
@@ -163,8 +165,7 @@ export default {
       return 'One of ' + options.join(', ')
     },
     updateDeleted(toRemove) {
-      this.lastAdded = this.lastAdded.filter(itm => itm.sku != toRemove.sku)
-      this.reset()
+      this.lastAdded = this.lastAdded.filter(itm => itm !== toRemove)
     },
     updateLastAdded(updatedGlasses) {
       this.lastAdded = this.lastAdded.map(el => (el.sku === updatedGlasses.sku ? updatedGlasses : el))
