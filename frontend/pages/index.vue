@@ -18,25 +18,12 @@
           <v-row class="justify-center align-center">
             <v-col class="d-flex justify-center" cols=12 md="auto">
               <v-btn
-                to="/onsite/find"
+                to="/find"
                 nuxt
                 x-large
                 color="primary"
               >
                 Open REIMS2
-              </v-btn>
-            </v-col>
-            <v-col class="d-flex justify-center" cols=12 md="auto">
-              <v-btn
-                to="/manage/add"
-                nuxt
-                x-large
-                outlined
-              >
-                <v-icon left size="24">
-                  {{ mdiDatabaseCog }}
-                </v-icon>
-                Manage inventory
               </v-btn>
             </v-col>
             <v-col class="d-flex justify-center" cols=12 md="auto">
@@ -51,17 +38,6 @@
                 View Manual
               </v-btn>
             </v-col>
-            <v-col class="d-flex justify-center" cols=12 md="auto">
-              <v-btn
-                v-if="$auth.loggedIn"
-                x-large
-                outlined
-                color="warning"
-                @click="$auth.logout()"
-              >
-                Log out
-              </v-btn>
-            </v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -72,6 +48,7 @@
 <script>
 import { mdiDatabaseCog, mdiFileDocument } from '@mdi/js'
 export default {
+  layout: 'start',
   transition: '',
   data: () => ({
     mdiDatabaseCog,

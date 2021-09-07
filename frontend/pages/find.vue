@@ -102,6 +102,7 @@
 import { mapActions } from 'vuex'
 
 export default {
+  transition: 'main',
   data: () => ({
     matches: null,
     valid: false,
@@ -124,6 +125,11 @@ export default {
         rules: [v => !!v || 'Item is required']
       }
   }),
+  head() {
+    return {
+      title: 'Find matches'
+    }
+  },
   watch: {
     od_eye() {
       if (this.sync_eye) {

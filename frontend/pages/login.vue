@@ -46,6 +46,7 @@
 
 <script>
 export default {
+  layout: 'start',
   data() {
     return {
       username: '',

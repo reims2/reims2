@@ -18,7 +18,8 @@
         Are you sure you?
       </v-card-title>
       <v-card-text class="text--primary red--text">
-        This will permanently delete SKU {{ glass.sku }}.
+        This will permanently delete the glasses (SKU {{ glass.sku }}) and cannot be reverted.
+        <span class="font-weight-bold">Only use this if the glasses have been entered by mistake.</span>
       </v-card-text>
       <v-card-actions>
         <v-spacer />

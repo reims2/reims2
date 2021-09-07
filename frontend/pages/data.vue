@@ -13,6 +13,11 @@
 
 <script>
 export default {
-  title: 'View and analyse data'
+  transition: 'main',
+  head() {
+    return {
+      title: 'View all glasses'
+    }
+  }
 }
 </script>

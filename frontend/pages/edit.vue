@@ -3,7 +3,7 @@
     <v-row dense class="justify-center">
       <v-col cols=12 md=6 lg=4>
         <div class="text--secondary">
-          You can dispense glasses here.
+          You can edit and dispense glasses here.
         </div>
         <v-form
           ref="form"
@@ -24,11 +24,12 @@
                 :loading="isLoading"
                 :error-messages="errorMesssage"
                 :success-messages="successMessage"
+                outlined
               />
             </v-col>
-            <v-col>
+            <v-col v-if="selected">
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card v-if="selected" :glass="selected">
+                <glass-card :glass="selected" editable @edited="glasses => selected=glasses">
                   <template #actions>
                     <v-btn
                       text
@@ -37,8 +38,12 @@
                     >
                       Dispense
                     </v-btn>
+                    <delete-button :glass="selected" @deleted="updatedDeleted" />
                   </template>
                 </glass-card>
+              </div>
+              <div class="text--secondary pt-2">
+                You can edit all values by clicking on them.
               </div>
             </v-col>
           </v-row>
@@ -66,21 +71,40 @@
       <span v-if="networkOffline">Glasses with SKU {{ lastDispensed.sku }} will be dispensed when you're back online</span>
       <span v-else>Successfully dispensed glasses with SKU {{ lastDispensed.sku }}</span>
     </v-snackbar>
+    <v-snackbar v-if="result != ''" :value=true :timeout="-1" bottom>
+      <template #action="{ attrs }">
+        <v-btn
+          text
+          v-bind="attrs"
+          @click="result = ''"
+        >
+          Close
+        </v-btn>
+      </template>
+      {{ result }}
+    </v-snackbar>
   </v-container>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
+  transition: 'main',
   data: () => ({
     valid: false,
     sku: '',
     lastDispensed: null,
     isLoading: false,
+    result: '',
     successMessage: [],
     errorMesssage: [],
     networkOffline: false
   }),
+  head() {
+    return {
+      title: 'Edit glasses'
+    }
+  },
   computed: {
     ...mapState({
       glasses: state => state.allGlasses
@@ -92,7 +116,7 @@ export default {
       if (this.selected) {
         return 'Press ENTER to dispense'
       } else if (this.sku == null || this.sku === '') {
-        return 'Enter SKU to continue'
+        return ''
       } else {
         return 'SKU not found'
       }
@@ -162,6 +186,12 @@ export default {
       }
       this.lastDispensed = null
       this.successMessage = 'Reverted dispension successfully'
+    },
+    updatedDeleted() {
+      console.log('asd')
+      this.result = 'Successfully deleted glasses with SKU ' + this.selected.sku
+      this.$refs.form.reset()
+      this.$refs.firstInput.focus()
     }
   }
 }

@@ -97,6 +97,7 @@
 import { mapActions } from 'vuex'
 import { generalEyeData } from '~/lib/util'
 export default {
+  transition: 'main',
   data: () => ({
     valid: false,
     loading: false,
@@ -116,6 +117,11 @@ export default {
     }],
     lastAdded: []
   }),
+  head() {
+    return {
+      title: 'Add glasses'
+    }
+  },
   watch: {
     odEye() {
       if (this.syncEyes) {

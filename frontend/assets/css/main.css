@@ -1,0 +1,10 @@
+.main-enter-active,
+.main-leave-active {
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
+  transition-duration: 50ms;
+}
+.main-enter,
+.main-leave-to {
+  opacity: 0;
+}
