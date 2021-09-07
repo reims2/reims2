@@ -132,7 +132,9 @@ export default {
         } else if (error.response == null) {
           this.networkOffline = true
           // this.$store.commit('setError', 'Network error. Dispension will be automatically retried as soon as you\'re back online.')
-          // fixme it must be possible to undo here
+          this.lastDispensed = toDispense
+          this.$refs.form.reset()
+          this.$refs.firstInput.focus()
         } else if (!error.handled) {
           this.$store.commit('setError', `Could not dispense glasses, please retry (${error.status})`)
         }
