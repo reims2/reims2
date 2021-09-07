@@ -3,7 +3,6 @@ package org.PVH.service;
 import java.util.Optional;
 
 import org.PVH.model.Dispense;
-import org.PVH.model.Eye;
 import org.PVH.model.Glasses;
 import org.PVH.repository.DispenseRepository;
 import org.PVH.repository.EyeRepository;
@@ -13,6 +12,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -122,8 +122,9 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException {
-        return glassesRepository.findByDispensedAndLocation(dispensed,location,pageable);
+    public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec) throws DataAccessException {
+        return glassesRepository.findByDispensedAndLocation(dispensed,location,pageable,spec);
     }
+
 
 }

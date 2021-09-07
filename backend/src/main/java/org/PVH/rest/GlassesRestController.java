@@ -1,13 +1,16 @@
 
 package org.PVH.rest;
 
-import org.PVH.model.DispenseBoolean;
+import com.google.common.base.Joiner;
 import org.PVH.model.Glasses;
+import org.PVH.repository.GlassesRepository;
+import org.PVH.repository.queryAPI.GlassesSpecificationsBuilder;
+import org.PVH.repository.queryAPI.SearchOperation;
 import org.PVH.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -18,6 +21,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +38,8 @@ public class GlassesRestController {
 
 	@Autowired
 	private MainService mainService;
-
+    @Autowired
+    private GlassesRepository glassesRepository;
 
     private Sort.Direction getSortDirection(String direction) {
         if (direction.equals("asc")) {
@@ -46,14 +52,76 @@ public class GlassesRestController {
     }
 
 
+//
+//    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+//	@RequestMapping(value = "/{location}", method = RequestMethod.GET, produces = "application/json")
+//	public ResponseEntity<Map<String, Object>> getAllGlassesPage(@RequestParam(required = false) String glassesType,
+//                                                             @RequestParam(defaultValue = "0") int page,
+//                                                             @RequestParam(defaultValue = "3") int size,
+//                                                             @RequestParam(defaultValue = "sku,desc") String[] sort,
+//                                                                 @PathVariable("location") String location){
+//
+//        List<Order> orders = new ArrayList<Order>();
+//
+//        if (sort[0].contains(",")) {
+//            // will sort more than 2 fields
+//            // sortOrder="field, direction"
+//            for (String sortOrder : sort) {
+//                String[] _sort = sortOrder.split(",");
+//                orders.add(new Order(getSortDirection(_sort[1]), _sort[0]));
+//            }
+//        } else {
+//            // sort=[SKU, desc]
+//            orders.add(new Order(getSortDirection(sort[1]), sort[0]));
+//        }
+//        Collection<Glasses> glasses = new ArrayList<Glasses>();
+//        Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
+//
+//        Page<Glasses> pageGlasses;
+//
+//        if (glassesType == null)
+//            // Find all by default not dispensed glasses
+//            pageGlasses = mainService.findByDispensedAndLocation(false,location,pagingSort);
+//        else
+//            pageGlasses = mainService.findByGlassesContainingAndDispensed(false,location,glassesType, pagingSort);
+//
+//        glasses = pageGlasses.getContent();
+//
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("glasses", glasses);
+//        response.put("currentPage", pageGlasses.getNumber());
+//        response.put("totalItems", pageGlasses.getTotalElements());
+//        response.put("totalPages", pageGlasses.getTotalPages());
+//
+//		if (glasses.isEmpty()){
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}
+//		return new ResponseEntity<>(response, HttpStatus.OK);
+//	}
 
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	@RequestMapping(value = "/{location}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> getAllGlassesPage(@RequestParam(required = false) String glassesType,
-                                                             @RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "3") int size,
-                                                             @RequestParam(defaultValue = "sku,desc") String[] sort,
-                                                                 @PathVariable("location") String location){
+    @RequestMapping(method = RequestMethod.GET, value = "/{location}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getAllGlassesPage(@RequestParam(value = "search", required = false) String search,
+                                        @RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "3") int size,
+                                        @RequestParam(defaultValue = "sku,desc") String[] sort,
+                                        @PathVariable("location") String location) {
+        GlassesSpecificationsBuilder builder = new GlassesSpecificationsBuilder();
+        String operationSetExper = Joiner.on("|")
+            .join(SearchOperation.SIMPLE_OPERATION_SET);
+        Pattern pattern = Pattern.compile("(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),");
+        Matcher matcher = pattern.matcher(search + ",");
+        while (matcher.find()) {
+            builder.with(
+                matcher.group(1),
+                matcher.group(2),
+                matcher.group(4),
+                matcher.group(3),
+                matcher.group(5));
+        }
+
+        builder.with("dispensed",":",false,"","");
+        builder.with("location",":",location,"","");
 
         List<Order> orders = new ArrayList<Order>();
 
@@ -70,14 +138,8 @@ public class GlassesRestController {
         }
         Collection<Glasses> glasses = new ArrayList<Glasses>();
         Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
-
-        Page<Glasses> pageGlasses;
-
-        if (glassesType == null)
-            // Find all by default not dispensed glasses
-            pageGlasses = mainService.findByDispensedAndLocation(false,location,pagingSort);
-        else
-            pageGlasses = mainService.findByGlassesContainingAndDispensed(false,location,glassesType, pagingSort);
+        Specification<Glasses> spec = builder.build();
+        Page<Glasses> pageGlasses = glassesRepository.findAll(spec,pagingSort);
 
         glasses = pageGlasses.getContent();
 
@@ -87,12 +149,11 @@ public class GlassesRestController {
         response.put("totalItems", pageGlasses.getTotalElements());
         response.put("totalPages", pageGlasses.getTotalPages());
 
-		if (glasses.isEmpty()){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-
+        if (glasses.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@RequestMapping(value = "/{location}/{sku}", method = RequestMethod.GET, produces = "application/json")

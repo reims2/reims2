@@ -4,6 +4,7 @@ import org.PVH.model.Glasses;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public interface MainService {
 
     Page<Glasses> findAllGlasses(Pageable pageable) throws DataAccessException;
     Page<Glasses> findByGlassesContainingAndDispensed(boolean dispensed,String location,String glassesType, Pageable pageable) throws DataAccessException;
-    Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException;
 
+    Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec) throws DataAccessException;
 
 }
