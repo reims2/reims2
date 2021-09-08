@@ -2,10 +2,10 @@
   <v-app>
     <app-header />
     <app-drawer :main-items="mainItems" :other-items="otherItems" />
-    <v-main class="mx-2">
-      <nuxt />
+    <v-main>
+      <offline-banner />
+      <Nuxt keep-alive class="py-4" />
       <error-snackbar />
-      <offline-snackbar />
     </v-main>
     <app-bottom-bar v-if="$vuetify.breakpoint.mobile" :items="mainItems" />
     <app-footer v-if="!$vuetify.breakpoint.mobile" />

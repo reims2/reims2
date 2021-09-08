@@ -1,6 +1,5 @@
 <template>
   <v-bottom-navigation
-    v-model="value"
     app
     background-color="primary"
     dark

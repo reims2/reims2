@@ -152,7 +152,8 @@ const config: NuxtConfig = {
         light: {
           primary: '#00695C' // teal darken 3
         }
-      }
+      },
+      options: { customProperties: true }
     },
     defaultAssets: false, // dont use CDNs for libraries
     breakpoint: {

@@ -31,14 +31,13 @@
       />
     </template>
 
-    <v-divider />
-
     <v-list v-if="!$vuetify.breakpoint.mobile" nav>
       <v-list-item
         v-for="item in mainItems"
         :key="item.title"
         :to="item.to"
         nuxt
+        active-class="highlighted"
       >
         <v-list-item-icon>
           <v-icon>{{ item.icon }}</v-icon>
@@ -50,12 +49,17 @@
       </v-list-item>
     </v-list>
     <v-divider v-if="!$vuetify.breakpoint.mobile" />
-    <v-list dense nav>
+
+    <v-list dense nav subheader>
+      <v-subheader v-if="!miniDrawer">
+        Inventory management
+      </v-subheader>
       <v-list-item
         v-for="item in otherItems"
         :key="item.title"
         :to="item.to"
         nuxt
+        active-class="highlighted"
       >
         <v-list-item-icon>
           <v-icon>{{ item.icon }}</v-icon>
@@ -66,12 +70,35 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
+
+    <template #append>
+      <v-divider />
+      <v-list dense nav>
+        <v-list-item href="/docs">
+          <v-list-item-icon>
+            <v-icon>{{ mdiFileDocument }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Documentation</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item @click="$auth.logout()">
+          <v-list-item-icon>
+            <v-icon>{{ mdiLogout }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </template>
   </v-navigation-drawer>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-
+import { mdiLogout, mdiFileDocument } from '@mdi/js'
 export default {
   props: {
     mainItems: {
@@ -85,6 +112,8 @@ export default {
   },
   data() {
     return {
+      mdiLogout,
+      mdiFileDocument,
       refreshGlassesInterval: '',
       locations: [
         { text: 'San Miguel', value: 'sm' },
@@ -122,3 +151,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.highlighted {
+  color: var(--v-primary-base) !important
+}
+</style>

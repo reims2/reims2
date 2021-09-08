@@ -179,6 +179,7 @@ export default {
           this.lastDispensed = null
         } else if (error.response == null) {
           this.$store.commit('setError', 'Network error. Dispension will be automatically reverted as soon as you\'re back online.')
+          this.lastDispensed = null
         } else {
           this.$store.commit('setError', `Could not undo dispension of glasses, please retry (Error ${error.status}).`)
         }
@@ -188,7 +189,6 @@ export default {
       this.successMessage = 'Reverted dispension successfully'
     },
     updatedDeleted() {
-      console.log('asd')
       this.result = 'Successfully deleted glasses with SKU ' + this.selected.sku
       this.$refs.form.reset()
       this.$refs.firstInput.focus()

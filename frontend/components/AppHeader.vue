@@ -1,18 +1,14 @@
 <template>
-  <v-container>
-    <v-app-bar
-      hide-on-scroll
-      app
-      dark
-      color="primary"
-      dense
-    >
-      <v-app-bar-nav-icon @click.stop="$store.commit('toggleDrawer')" />
-      <v-toolbar-title>
-        {{ title }}
-      </v-toolbar-title>
-    </v-app-bar>
-  </v-container>
+  <v-app-bar
+    app
+    dark
+    color="primary"
+  >
+    <v-app-bar-nav-icon @click.stop="$store.commit('toggleDrawer')" />
+    <v-toolbar-title>
+      {{ title }}
+    </v-toolbar-title>
+  </v-app-bar>
 </template>
 
 <script>

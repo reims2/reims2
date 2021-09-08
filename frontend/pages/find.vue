@@ -15,6 +15,7 @@
                 :label="type_data.label"
                 :rules="type_data.rules"
                 auto-select-first
+                autofocus
               />
             </v-col>
             <v-col
@@ -137,9 +138,6 @@ export default {
         this.$set(this.os_eye, 'add', this.od_eye.add)
       }
     }
-  },
-  activated() {
-    setTimeout(() => { this.$refs.firstInput.focus() })
   },
   methods: {
     ...mapActions({
