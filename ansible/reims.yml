@@ -7,7 +7,7 @@
     dokku_hostname: "{{ inventory_hostname }}"
     dokku_packages_state: latest
     dokku_vhost_enable: true
-    dokku_mysql_db_name: "reims-db"
+    dokku_mysql_db_name: "reims2-db"
     dokku_network_name: "reims2"
     dokku_users:
       - name: Github Actions
@@ -21,38 +21,52 @@
         url: https://github.com/crisward/dokku-clone.git
       - name: letsencrypt
         url: https://github.com/dokku/dokku-letsencrypt.git
-      - name: mysql
-        url: https://github.com/dokku/dokku-mysql.git
+      - name: mariadb
+        url: https://github.com/dokku/dokku-mariadb.git
+    aws_key_id: AKIAYEM6NADWH3DNKDFE
+    aws_secret_key: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      38613833363963336663666163333238316230353264326633393931623666643763306638373239
+      6130626132353536623934336663363265396234363464650a356137346437653263326366376131
+      65333566623039386265636461623566396439306137383934333937633564613565643865346233
+      3835303464306665340a373534306234383037383364383030326362643230653664353435316263
+      31333361306337656631363966663562363064346631663764396466386439363062666466616531
+      3632623962663634393736366564656236663332303430646162
+    aws_bucket_name: reims2-backup
+    mysql_dump: "{{ lookup('file', 'dump.sql') }}"
   tasks:
-    - name: dokku apps:create api
+    - name: dokku create api
       dokku_app:
         app: api
-    - name: dokku apps:create frontend
+    - name: dokku create frontend
       dokku_app:
         app: frontend
-    - name: dokku apps:create docs
+    - name: dokku create docs
       dokku_app:
         app: docs
 
     - name: Create mysql
       dokku_service_create:
         name: "{{dokku_mysql_db_name}}"
-        service: mysql
-    - name: Disable Mysql strict mode
+        service: mariadb
+    - name: Disable Mysql strict mode (to allow zero dates)
       blockinfile:
-        path: "/var/lib/dokku/services/mysql/{{dokku_mysql_db_name}}/config/disable_strict_mode.cnf"
+        path: "/var/lib/dokku/services/mariadb/{{dokku_mysql_db_name}}/config/disable_strict_mode.cnf"
         create: "yes"
         block: |
           [mysqld]
-          sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+          sql_mode="ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
     - name: Restart mysql to apply config
-      shell: "dokku mysql:restart {{dokku_mysql_db_name}}"
+      shell: "dokku mariadb:restart {{dokku_mysql_db_name}}"
     - name: Link database to api
       dokku_service_link:
         app: api
         name: "{{dokku_mysql_db_name}}"
-        service: mysql
-
+        service: mariadb
+    - name: Enable backups for mysql to S3
+      shell: |
+        dokku mariadb:backup-auth {{dokku_mysql_db_name}} {{aws_key_id}} {{aws_secret_key}}
+        dokku mariadb:backup-schedule {{dokku_mysql_db_name}} "0 2,10,18 * * *" {{aws_bucket_name}}
     - name: Set multiple variables for frontend
       dokku_config:
         app: frontend
@@ -83,18 +97,24 @@
         dokku network:set docs attach-post-deploy {{dokku_network_name}}
         dokku network:rebuildall
 
-    - name: Deploy frontend from git
+    - name: Deploy frontend from git (this takes up to 10 minutes)
       dokku_clone:
         app: frontend
         repository: https://github.com/reims2/reims2-frontend
-    - name: Deploy api from git
+        version: main
+        build: True
+    - name: Deploy api from git (this takes up to 5 minutes)
       dokku_clone:
         app: api
         repository: https://github.com/reims2/reims2-backend
-    - name: Deploy docs from git
+        version: main
+        build: True
+    - name: Deploy docs from git (this takes up to 5 minutes)
       dokku_clone:
         app: docs
         repository: https://github.com/reims2/reims2-docs
+        version: main
+        build: True
     - name: Add main domain to frontend
       dokku_domains:
         app: frontend
@@ -112,3 +132,25 @@
         app: api
     - name: Enable letsencrypt auto renew
       shell: dokku letsencrypt:cron-job --add
+    - name: Copy SQL dump file onto host
+      tags: restore-mysql
+      copy:
+        content: "{{mysql_dump}}"
+        dest: /tmp/reims-dump.sql
+        mode: 0600
+        owner: root
+        group: root
+        force: True
+      when: mysql_dump != ""
+    - name: Stop API for restoring dump
+      tags: restore-mysql
+      when: mysql_dump != ""
+      command: "dokku ps:stop api"
+    - name: Restore database from dump file
+      tags: restore-mysql
+      shell: "dokku mariadb:import {{dokku_mysql_db_name}} < /tmp/reims-dump.sql"
+      when: mysql_dump != ""
+    - name: Start API after dump restored
+      tags: restore-mysql
+      when: mysql_dump != ""
+      command: "dokku ps:start api"

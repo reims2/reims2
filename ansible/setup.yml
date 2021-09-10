@@ -26,7 +26,7 @@
         update_cache: yes
         cache_valid_time: 86400 #One day
     - name: Install some packages (user-specified)
-      ansible.builtin.package:
+      package:
         name:
           - htop
           - nano
@@ -70,20 +70,20 @@
   become: true
   tasks:
     - name: Allow ssh
-      community.general.ufw:
+      ufw:
         rule: allow
         name: OpenSSH
     - name: Allow http
-      community.general.ufw:
+      ufw:
         rule: allow
         port: "80"
         proto: tcp
     - name: Allow https
-      community.general.ufw:
+      ufw:
         rule: allow
         port: "443"
         proto: tcp
     - name: Enable UFW
-      community.general.ufw:
+      ufw:
         state: enabled
         policy: deny
