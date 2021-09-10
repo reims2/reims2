@@ -66,7 +66,7 @@ public class MainServiceImpl implements MainService {
 
         // todo someday make this configurable per location
         int min = 1;
-        int max = 10000;
+        int max = 10001; // for some reason an SKU 10.001 exists...
         if (glasses.getLocation().equals("sm"))
             min = 5000;
         if (glasses.getLocation().equals("sa"))
