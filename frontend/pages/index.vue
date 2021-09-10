@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="ma-0 pa-0 hero-bg" style="width:100%; height:100%">
+  <v-container class="ma-0 pa-0 hero-bg" style="width:100%; height:100%">
     <v-overlay opacity="0.97" absolute class="pa-0 ma-0">
       <v-row class="px-3" style="margin-top: -10vh;">
         <v-col class="pb-3 text-center" cols=12>

@@ -1,14 +1,14 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row class="justify-center" dense>
-      <v-col cols=12 md=6 lg=4>
+      <v-col cols=12 md=6 lg=4 class="pb-2 px-2">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col
               v-for="item in generalEyeData"
               :key="item.label"
               cols="12"
-              class="py-0 px-4 "
+              class="py-0 px-0"
             >
               <v-autocomplete
                 ref="firstInput"
@@ -19,13 +19,13 @@
                 auto-select-first
                 :hint="generate_hint(item.items)"
                 persistent-hint
-                :autofocus="item.first"
+                :autofocus="item.first && !$vuetify.breakpoint.mobile"
               />
             </v-col>
             <v-col
               cols=12
               md=6
-              class="px-4 pt-4"
+              class="px-1 pr-md-3 pt-4"
             >
               <single-eye-input
                 v-model="odEye"
@@ -36,7 +36,7 @@
             <v-col
               cols=12
               md=6
-              class="px-4 pt-4"
+              class="px-1 pl-md-3 pt-4"
             >
               <single-eye-input
                 :value="osEye"
@@ -45,7 +45,7 @@
                 @input="e => {updateSync(osEye, e); osEye = e}"
               />
             </v-col>
-            <v-col cols=12 class="pt-4">
+            <v-col cols=12 class="px-0 pt-4">
               <div class="d-flex">
                 <v-btn
                   :disabled="!valid || loading"
@@ -69,7 +69,14 @@
           </v-row>
         </v-form>
       </v-col>
-      <v-col v-if="lastAdded.length > 0" cols=12 md=4 lg=3 class="pl-0 pl-md-6">
+      <v-col
+        v-if="lastAdded.length > 0"
+        ref="results"
+        cols=12
+        md=4
+        lg=3
+        class="pl-md-6 pt-4 pt-md-2"
+      >
         <div class="text-h6">
           Recently added
         </div>
@@ -157,6 +164,8 @@ export default {
         this.loading = false
         this.$store.commit('clearError')
         this.reset()
+        // scroll to bottom on mobile
+        this.$nextTick(() => { if (this.$vuetify.breakpoint.mobile) this.$refs.results.scrollIntoView(true) })
       }
     },
     reset() {
@@ -164,8 +173,8 @@ export default {
       this.odEye = {}
       this.glassModel = {}
       this.$refs.form.reset()
-      this.$refs.firstInput[0].focus()
-      this.syncEyes = true
+      if (!this.$vuetify.breakpoint.mobile) this.$refs.firstInput[0].focus()
+      this.syncEyes = true // todo add some kind of UI (sync icon) for right eye
     },
     generate_hint(options) {
       return 'One of ' + options.join(', ')

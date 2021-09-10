@@ -1,12 +1,12 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row dense class="justify-center">
-      <v-col cols=12 md=6>
+      <v-col cols=12 md=6 class="px-2">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col
               cols="12"
-              class="py-0 px-4 "
+              class="py-0 px-0"
             >
               <v-autocomplete
                 ref="firstInput"
@@ -15,13 +15,13 @@
                 :label="type_data.label"
                 :rules="type_data.rules"
                 auto-select-first
-                autofocus
+                :autofocus="!$vuetify.breakpoint.mobile"
               />
             </v-col>
             <v-col
               cols=12
               md=6
-              class="px-4 pt-4"
+              class="px-1 pr-md-3 pt-4"
             >
               <single-eye-input
                 v-model="od_eye"
@@ -32,7 +32,7 @@
             <v-col
               cols=12
               md=6
-              class="px-4 pt-4"
+              class="px-1 pl-md-3 pt-4"
             >
               <single-eye-input
                 :value="os_eye"
@@ -41,7 +41,7 @@
                 @input="e => {os_eye = e; sync_eye = false}"
               />
             </v-col>
-            <v-col cols=12 class="pt-4">
+            <v-col cols=12 class="px-0 pt-4">
               <div>
                 <v-btn
                   :disabled="!valid"
@@ -70,7 +70,7 @@
         cols=12
         md=4
         lg=3
-        class="pl-0 pl-md-6"
+        class="px-0 pl-md-6"
       >
         <v-alert
           v-if="!matches.length"
@@ -153,12 +153,11 @@ export default {
       this.page = 1
       this.sync_eye = true
 
-      if (this.$vuetify.breakpoint.mobile && this.$refs.results) {
-        // fixme this scrolls only if result container was already visible
-        this.$refs.results.scrollIntoView(true)
-      } else {
-        setTimeout(() => { this.$refs.firstInput.focus() })
-      }
+      this.$nextTick(() => {
+        // on desktop, focus input again; on mobile, scroll to bottom
+        if (!this.$vuetify.breakpoint.mobile) this.$refs.firstInput.focus()
+        else if (this.$refs.results) this.$refs.results.scrollIntoView(true)
+      })
     },
     reset() {
       this.$refs.form.reset()

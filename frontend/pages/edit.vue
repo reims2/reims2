@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row dense class="justify-center">
       <v-col cols=12 md=6 lg=4>
         <div class="text--secondary">
@@ -16,7 +16,7 @@
               <v-text-field
                 ref="firstInput"
                 v-model.number="sku"
-                autofocus
+                :autofocus="!$vuetify.breakpoint.mobile"
                 label="SKU"
                 type="number"
                 :hint="hint"

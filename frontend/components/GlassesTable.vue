@@ -14,44 +14,8 @@
       itemsPerPageOptions: [10,20,100,500],
       showCurrentPage: true
     }"
+    @update:options="startLoading"
   >
-    <template v-if="!$vuetify.breakpoint.mobile" #body.prepend>
-      <tr>
-        <td />
-        <td class="v-data-table__divider">
-          <div class="d-flex mt-3 mb-1">
-            <v-select
-              multiple
-              dense
-              hide-details
-              label="Type"
-              :items="['single', 'bifocal', 'progressive']"
-              style="max-width:250px;"
-              @change="value => {filterType = value}"
-            />
-          </div>
-        </td>
-        <td>
-          <min-max-input @update="value => {updateFilter(value, 'od', 'sphere')}" />
-        </td>
-        <td>
-          <min-max-input @update="value => {updateFilter(value, 'od', 'cylinder')}" />
-        </td>
-        <td />
-        <td class="v-data-table__divider" />
-        <td>
-          <min-max-input @update="value => {updateFilter(value, 'os', 'sphere')}" />
-        </td>
-        <td>
-          <min-max-input @update="value => {updateFilter(value, 'os', 'cylinder')}" />
-        </td>
-        <td />
-        <td class="v-data-table__divider" />
-        <td />
-        <td />
-        <td />
-      </tr>
-    </template>
     <template v-if="$vuetify.breakpoint.mobile" #item={item}>
       <glass-card :glass="item" class="ma-2" />
     </template>
@@ -101,12 +65,12 @@ export default {
       }
     },
     options: { itemsPerPage: 20 },
-    loading: false
+    loading: false,
+    items: []
   }),
   computed: {
     ...mapState({
-      glasses: state => state.table.items,
-      totalItems: state => state.table.totalItems,
+      totalItems: state => state.totalGlassesCount,
       location: state => state.location
     }),
     headers() {
@@ -125,29 +89,11 @@ export default {
         { value: 'glassesSize', text: 'Size' },
         { value: 'creationDate', text: 'Added' }
       ]
-    },
-    items() {
-      return this.glasses.filter((el) => {
-        if (this.filterType.length > 0 && !this.filterType.includes(el.glassesType)) return false
-        if (!this.isInLimits(el.od.sphere, this.filters.od.sphere)) return false
-        if (!this.isInLimits(el.od.cylinder, this.filters.od.cylinder)) return false
-        if (!this.isInLimits(el.os.sphere, this.filters.os.sphere)) return false
-        if (!this.isInLimits(el.os.cylinder, this.filters.os.cylinder)) return false
-        return true
-      })
     }
   },
   watch: {
-    options: {
-      handler() {
-        this.$nuxt.$loading.start()
-        this.loadItems(this.options)
-      },
-      deep: true
-    },
     location() {
-      this.$nuxt.$loading.start()
-      this.loadItems(this.options)
+      this.startLoading()
     }
   },
   methods: {
@@ -168,7 +114,17 @@ export default {
     },
     formatRx(value) {
       return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)
+    },
+    async startLoading() {
+      setTimeout(() => { this.$nuxt.$loading.start() })
+      try {
+        this.items = await this.loadItems(this.options)
+      } catch (err) {
+        // todo error handling
+        console.log(err)
+      }
     }
+
   }
 }
 </script>

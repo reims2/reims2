@@ -4,7 +4,7 @@
     <app-drawer :main-items="mainItems" :other-items="otherItems" />
     <v-main>
       <offline-banner />
-      <Nuxt keep-alive class="py-4" />
+      <Nuxt keep-alive class="py-6 px-6" />
       <error-snackbar />
     </v-main>
     <app-bottom-bar v-if="$vuetify.breakpoint.mobile" :items="mainItems" />

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <app-header title="Login" />
     <v-row dense class="justify-center">
       <v-col cols=12 md=6 lg=4>
