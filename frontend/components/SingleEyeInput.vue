@@ -12,6 +12,7 @@
       >
         <v-text-field
           :value="value[id]"
+          type="number"
           :label="item.label"
           :rules="!item.disabled ? eyeRules[id] : []"
           :step="item.step"
@@ -84,7 +85,7 @@ export default {
           const number = Math.ceil(Math.abs(this.value[id]) / step) * step
           if (!isNaN(number)) {
             const numberString = (Number(this.value[id]) >= 0 ? '+' : '-') + number.toFixed(2)
-            this.input(id, numberString)
+            this.input(id, Number(numberString))
             this.$emit('change', true)
           }
         }

@@ -29,7 +29,7 @@
             </v-col>
             <v-col v-if="selected">
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card :glass="selected" editable @edited="glasses => selected=glasses">
+                <glass-card :key="selected.sku" :glass="selected" editable>
                   <template #actions>
                     <v-btn
                       text
