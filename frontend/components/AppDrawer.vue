@@ -6,29 +6,23 @@
     app
   >
     <template #prepend>
-      <v-list-item two-line>
-        <v-list-item-avatar>
-          <img src="https://randomuser.me/api/portraits/women/81.jpg">
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title v-if="$auth.loggedIn">
-            Jane Doe
-          </v-list-item-title>
-          <v-list-item-subtitle v-if="$auth.loggedIn">
-            Logged In
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+      <h2 class="text-h4 mt-4 mx-3" :style="miniDrawer ? 'visibility:hidden;': ''">
+        REIMS2
+      </h2>
+      <div v-if="$auth.loggedIn" class="text--secondary mx-3 mb-2" :style="miniDrawer ? 'visibility:hidden;': ''">
+        <span>Logged in</span>
+      </div>
       <v-select
         v-if="!miniDrawer"
         v-model="location"
         :items="locations"
         dense
         hide-details
-
-        class="mb-2 mx-3"
+        class="mb-1 mx-3"
       />
+      <div v-if="!miniDrawer" class="text-caption mb-1 mx-3">
+        <div>{{ $store.state.allGlasses.length }} glasses loaded</div>
+      </div>
     </template>
 
     <v-list v-if="!$vuetify.breakpoint.mobile" nav>
@@ -144,6 +138,7 @@ export default {
     ...mapState(['drawer'])
   },
   created() {
+    this.$store.dispatch('loadGlasses')
     this.refreshGlassesInterval = setInterval(() => this.$store.dispatch('loadGlasses'), 5 * 60 * 1000)
   },
   beforeDestroy() {

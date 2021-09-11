@@ -35,7 +35,7 @@ export const actions: ActionTree<GlassesState, RootState> = {
   async [ActionType.FETCH_SINGLE_GLASSES]({ commit, rootState }, sku: number) {
     if (cancelTokenGet) cancelTokenGet.cancel()
     cancelTokenGet = axios.CancelToken.source()
-    const data = await this.$axios.$get(`/api/glasses/${rootState.location}/${sku}`, { cancelToken: cancelTokenGet.token })
+    const data = await this.$axios.$get(`/api/glasses/${rootState.location}/${sku}`, { cancelToken: cancelTokenGet.token, progress: false })
     commit(IndexMutationType.DELETE_OFFLINE_GLASSES, sku, { root: true })
     commit(IndexMutationType.ADD_OFFLINE_GLASSES, data, { root: true })
     return data

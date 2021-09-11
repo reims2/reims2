@@ -124,7 +124,11 @@ export default {
   },
   watch: {
     sku() {
-      if (this.sku != null && this.sku !== '') this.successMessage = []
+      if (this.sku != null && this.sku !== '') {
+        this.successMessage = []
+        // also fetch glasses in background to update database
+        this.$store.dispatch('glasses/fetchSingle', this.sku)
+      }
       this.errorMesssage = []
     }
   },
@@ -171,9 +175,11 @@ export default {
       this.$refs.firstInput.focus()
     },
     async undoDispension(glasses) {
+      this.isLoading = true
       try {
         await this.undispense(glasses)
       } catch (error) {
+        this.isLoading = false
         if (error.status === 400) {
           this.$store.commit('setError', `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`)
           this.lastDispensed = null
@@ -185,6 +191,7 @@ export default {
         }
         return
       }
+      this.isLoading = false
       this.lastDispensed = null
       this.successMessage = 'Reverted dispension successfully'
     },

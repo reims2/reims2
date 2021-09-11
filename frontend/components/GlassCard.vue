@@ -91,7 +91,6 @@
                   :rules="eyeRules[dataKey]"
                   :is-editing="editable && edit == eye.key + dataKey"
                   @submit="value => startEdit(eye.key, dataKey, value)"
-                  @blur="edit = ''"
                 />
               </td>
             </tr>

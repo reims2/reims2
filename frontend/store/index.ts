@@ -8,16 +8,14 @@ export interface RootState {
   lastRefresh: Date | null,
   location: string,
   error: string,
-  drawer: boolean,
-  totalGlassesCount: number
+  drawer: boolean
 }
 export const state = (): RootState => ({
   allGlasses: [],
   lastRefresh: null,
   location: 'sa',
   error: '',
-  drawer: false,
-  totalGlassesCount: 0
+  drawer: false
 })
 
 export const MutationType = {
@@ -29,8 +27,7 @@ export const MutationType = {
   SET_ERROR: 'setError',
   CLEAR_ERROR: 'clearError',
   TOGGLE_DRAWER: 'toggleDrawer',
-  SET_DRAWER: 'setDrawer',
-  SET_GLASSES_COUNT: 'setGlassesCount'
+  SET_DRAWER: 'setDrawer'
 }
 export const mutations: MutationTree<RootState> = {
   [MutationType.SET_GLASSES]: (state, value: Glasses[]) => { state.allGlasses = value },
@@ -57,8 +54,7 @@ export const mutations: MutationTree<RootState> = {
   },
   [MutationType.SET_DRAWER]: (state, value) => {
     state.drawer = value
-  },
-  [MutationType.SET_GLASSES_COUNT]: (state, value: number) => { state.totalGlassesCount = value }
+  }
 }
 
 export const ActionType = {

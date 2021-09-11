@@ -70,7 +70,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      totalItems: state => state.totalGlassesCount,
+      totalItems: state => state.table.totalGlassesCount,
       location: state => state.location
     }),
     headers() {
