@@ -12,17 +12,14 @@ public class Glasses extends BaseEntity {
     @Column(name = "SKU")
     private Integer sku;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "glasses_type")
-    private GlassesTypeEnum glassesType;
+    private String glassesType;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "glasses_size")
-    private GlassesSizeEnum glassesSize;
+    private String glassesSize;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "appearance")
-    private AppearanceEnum appearance;
+    private String appearance;
 
     @Column(name = "location")
     private String location;
@@ -61,14 +58,6 @@ public class Glasses extends BaseEntity {
 
     public void setSku(Integer SKU) {
         this.sku = SKU;
-    }
-
-    public AppearanceEnum getAppearance() {
-        return appearance;
-    }
-
-    public void setAppearance(AppearanceEnum appearance) {
-        this.appearance = appearance;
     }
 
     public Eye getOs() {
@@ -112,18 +101,26 @@ public class Glasses extends BaseEntity {
     }
 
     public GlassesSizeEnum getGlassesSize() {
-        return glassesSize;
+        return Enum.valueOf(GlassesSizeEnum.class, glassesSize);
     }
 
     public void setGlassesSize(GlassesSizeEnum glassesSize) {
-        this.glassesSize = glassesSize;
+        this.glassesSize = glassesSize.name();
+    }
+
+    public AppearanceEnum getAppearance() {
+        return Enum.valueOf(AppearanceEnum.class, appearance);
+    }
+
+    public void setAppearance(AppearanceEnum appearance) {
+        this.appearance = appearance.name();
     }
 
     public GlassesTypeEnum getGlassesType() {
-        return glassesType;
+        return Enum.valueOf(GlassesTypeEnum.class, glassesType);
     }
 
     public void setGlassesType(GlassesTypeEnum glassesType) {
-        this.glassesType = glassesType;
+        this.glassesType = glassesType.name();
     }
 }

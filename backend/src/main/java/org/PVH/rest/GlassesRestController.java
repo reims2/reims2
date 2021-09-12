@@ -1,13 +1,18 @@
 
 package org.PVH.rest;
 
-import com.google.common.base.Joiner;
+import cz.jirutka.rsql.parser.RSQLParser;
+import cz.jirutka.rsql.parser.ast.Node;
 import org.PVH.model.Glasses;
 import org.PVH.repository.GlassesRepository;
-import org.PVH.repository.queryAPI.GlassesSpecificationsBuilder;
-import org.PVH.repository.queryAPI.SearchOperation;
+import org.PVH.repository.RSQL.CustomRsqlVisitor;
 import org.PVH.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,14 +26,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 
 
 @RestController
@@ -106,22 +103,6 @@ public class GlassesRestController {
                                         @RequestParam(defaultValue = "3") int size,
                                         @RequestParam(defaultValue = "sku,desc") String[] sort,
                                         @PathVariable("location") String location) {
-        GlassesSpecificationsBuilder builder = new GlassesSpecificationsBuilder();
-        String operationSetExper = Joiner.on("|")
-            .join(SearchOperation.SIMPLE_OPERATION_SET);
-        Pattern pattern = Pattern.compile("(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),");
-        Matcher matcher = pattern.matcher(search + ",");
-        while (matcher.find()) {
-            builder.with(
-                matcher.group(1),
-                matcher.group(2),
-                matcher.group(4),
-                matcher.group(3),
-                matcher.group(5));
-        }
-
-        builder.with("dispensed",":",false,"","");
-        builder.with("location",":",location,"","");
 
         List<Order> orders = new ArrayList<Order>();
 
@@ -138,8 +119,15 @@ public class GlassesRestController {
         }
         Collection<Glasses> glasses = new ArrayList<Glasses>();
         Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
-        Specification<Glasses> spec = builder.build();
-        Page<Glasses> pageGlasses = glassesRepository.findAll(spec,pagingSort);
+//        Specification<Glasses> spec = builder.build();
+        Page<Glasses> pageGlasses;
+        if(search==null){
+            pageGlasses = glassesRepository.findAll(pagingSort);
+        }else {
+            Node rootNode = new RSQLParser().parse(search);
+            Specification<Glasses> spec = rootNode.accept(new CustomRsqlVisitor<Glasses>());
+            pageGlasses = glassesRepository.findAll(spec, pagingSort);
+        }
 
         glasses = pageGlasses.getContent();
 
