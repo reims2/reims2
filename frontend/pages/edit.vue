@@ -2,8 +2,8 @@
   <v-container>
     <v-row dense class="justify-center">
       <v-col cols=12 md=6 lg=4>
-        <div class="text--secondary">
-          You can edit and dispense glasses here.
+        <div class="text--secondary pb-2">
+          Start by entering a SKU to dispense or edit glasses.
         </div>
         <v-form
           ref="form"
@@ -33,7 +33,7 @@
                   <template #actions>
                     <v-btn
                       text
-                      color="primary"
+                      class="mx-0"
                       @click="submitDispension"
                     >
                       Dispense
@@ -41,9 +41,6 @@
                     <delete-button :glass="selected" @deleted="updatedDeleted" />
                   </template>
                 </glass-card>
-              </div>
-              <div class="text--secondary pt-2">
-                You can edit all values by clicking on them.
               </div>
             </v-col>
           </v-row>

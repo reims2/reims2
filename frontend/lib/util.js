@@ -1,4 +1,4 @@
-import { mdiArrowUpDown, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
+import { mdiArrowLeftRight, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
 
 const isAllowedStep = (number) => {
   if (number == null || !number) return true // we don't handle that
@@ -53,7 +53,7 @@ export const generalEyeData = [
     label: 'Size',
     items: ['small', 'medium', 'large', 'child'],
     rules: [v => !!v || 'Item is required'],
-    icon: mdiArrowUpDown,
+    icon: mdiArrowLeftRight,
     desc: 'Glasses size (small, medium, large or child)'
   },
   {

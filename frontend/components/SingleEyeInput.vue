@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row dense>
-      <div class="text-h6">
+      <div class="text-h5 pb-2">
         {{ eyeName }}
       </div>
       <v-col
@@ -11,12 +11,15 @@
         class="py-0 pl-0"
       >
         <v-text-field
+          outlined
+          dense
           :value="value[id]"
           type="number"
           :label="item.label"
           :rules="!item.disabled ? eyeRules[id] : []"
           :step="item.step"
           :disabled="item.disabled"
+          :prefix="value[id] != null ? item.prefix : ''"
           @input="test => input(id, test)"
           @update:error="val => hasError[id] = val"
           @blur="update(id)"
@@ -61,7 +64,8 @@ export default {
         },
         cylinder: {
           label: 'Cylinder',
-          step: 0.25
+          step: 0.25,
+          prefix: this.value.cylinder <= 0 ? '' : '-'
         },
         axis: {
           label: 'Axis'
@@ -69,7 +73,8 @@ export default {
         add: {
           label: 'Additional',
           disabled: !this.addEnabled,
-          step: 0.25
+          step: 0.25,
+          prefix: '+'
         }
       }
     }

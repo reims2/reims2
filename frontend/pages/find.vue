@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <v-row dense class="justify-center">
-      <v-col cols=12 md=6 class="px-2">
+      <v-col cols=12 md=6 lg=4 class="px-2">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col
               cols="12"
-              class="py-0 px-0"
+              class="px-0 pb-0"
             >
               <v-autocomplete
                 ref="firstInput"
@@ -16,12 +16,13 @@
                 :rules="type_data.rules"
                 auto-select-first
                 :autofocus="!$vuetify.breakpoint.mobile"
+                outlined
               />
             </v-col>
             <v-col
               cols=12
               md=6
-              class="px-1 pr-md-3 pt-4"
+              class="px-1 pr-md-5 pt-0"
             >
               <single-eye-input
                 v-model="od_eye"
@@ -32,7 +33,7 @@
             <v-col
               cols=12
               md=6
-              class="px-1 pl-md-3 pt-4"
+              class="px-1 pl-md-5 pt-0"
             >
               <single-eye-input
                 :value="os_eye"
@@ -41,7 +42,7 @@
                 @input="e => {os_eye = e; sync_eye = false}"
               />
             </v-col>
-            <v-col cols=12 class="px-0 pt-4">
+            <v-col cols=12 class="px-0">
               <div>
                 <v-btn
                   :disabled="!valid"

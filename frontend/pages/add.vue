@@ -1,14 +1,14 @@
 <template>
   <v-container>
     <v-row class="justify-center" dense>
-      <v-col cols=12 md=6 lg=4 class="pb-2 px-2">
+      <v-col cols=12 md=6 lg=4 class="pb-2 px-2 pt-4">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col
               v-for="item in generalEyeData"
               :key="item.label"
               cols="12"
-              class="py-0 px-0"
+              class="pa-0"
             >
               <v-autocomplete
                 ref="firstInput"
@@ -17,15 +17,15 @@
                 :label="item.label"
                 :rules="item.rules"
                 auto-select-first
-                :hint="generate_hint(item.items)"
                 persistent-hint
                 :autofocus="item.first && !$vuetify.breakpoint.mobile"
+                outlined
               />
             </v-col>
             <v-col
               cols=12
               md=6
-              class="px-1 pr-md-3 pt-4"
+              class="px-1 pr-md-5 pt-0"
             >
               <single-eye-input
                 v-model="odEye"
@@ -36,7 +36,7 @@
             <v-col
               cols=12
               md=6
-              class="px-1 pl-md-3 pt-4"
+              class="px-1 pl-md-5 pt-0"
             >
               <single-eye-input
                 :value="osEye"
@@ -45,7 +45,7 @@
                 @input="e => {updateSync(osEye, e); osEye = e}"
               />
             </v-col>
-            <v-col cols=12 class="px-0 pt-4">
+            <v-col cols=12 class="px-0">
               <div class="d-flex">
                 <v-btn
                   :disabled="!valid || loading"
@@ -75,7 +75,7 @@
         cols=12
         md=4
         lg=3
-        class="pl-md-6 pt-4 pt-md-2"
+        class="pl-md-6 pt-3 pt-md-2"
       >
         <div class="text-h6">
           Recently added
@@ -175,9 +175,6 @@ export default {
       this.$refs.form.reset()
       if (!this.$vuetify.breakpoint.mobile) this.$refs.firstInput[0].focus()
       this.syncEyes = true // todo add some kind of UI (sync icon) for right eye
-    },
-    generate_hint(options) {
-      return 'One of ' + options.join(', ')
     },
     updateDeleted(toRemove) {
       this.lastAdded = this.lastAdded.filter(itm => itm !== toRemove)

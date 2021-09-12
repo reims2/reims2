@@ -116,13 +116,15 @@ export default {
       return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)
     },
     async startLoading() {
-      setTimeout(() => { this.$nuxt.$loading.start() })
+      this.loading = true
       try {
         this.items = await this.loadItems(this.options)
       } catch (err) {
+        this.loading = false
         // todo error handling
         console.log(err)
       }
+      this.loading = false
     }
 
   }
