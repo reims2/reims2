@@ -1,8 +1,10 @@
 package org.PVH.payload.request;
 
-import javax.validation.constraints.Email;
+import org.PVH.model.Role;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 
 public class SignupRequest {
@@ -10,11 +12,11 @@ public class SignupRequest {
     @Size(min = 3, max = 20)
     private String username;
 
-    private Set<String> role;
-
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+
+    private Set<String> roles;
 
     public String getUsername() {
         return username;
@@ -33,11 +35,11 @@ public class SignupRequest {
         this.password = password;
     }
 
-    public Set<String> getRole() {
-      return this.role;
+    public Set<String> getRoles() {
+        return roles;
     }
 
-    public void setRole(Set<String> role) {
-      this.role = role;
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 }

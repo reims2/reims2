@@ -9,16 +9,11 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Enumerated(EnumType.STRING)
 	@Column(length = 20)
-	private ERole name;
+	private String name;
 
 	public Role() {
 
-	}
-
-	public Role(ERole name) {
-		this.name = name;
 	}
 
 	public Integer getId() {
@@ -30,10 +25,10 @@ public class Role {
 	}
 
 	public ERole getName() {
-		return name;
+        return Enum.valueOf(ERole.class, name);
 	}
 
 	public void setName(ERole name) {
-		this.name = name;
+		this.name = name.name();
 	}
 }

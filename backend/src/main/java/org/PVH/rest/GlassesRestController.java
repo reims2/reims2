@@ -49,53 +49,6 @@ public class GlassesRestController {
     }
 
 
-//
-//    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-//	@RequestMapping(value = "/{location}", method = RequestMethod.GET, produces = "application/json")
-//	public ResponseEntity<Map<String, Object>> getAllGlassesPage(@RequestParam(required = false) String glassesType,
-//                                                             @RequestParam(defaultValue = "0") int page,
-//                                                             @RequestParam(defaultValue = "3") int size,
-//                                                             @RequestParam(defaultValue = "sku,desc") String[] sort,
-//                                                                 @PathVariable("location") String location){
-//
-//        List<Order> orders = new ArrayList<Order>();
-//
-//        if (sort[0].contains(",")) {
-//            // will sort more than 2 fields
-//            // sortOrder="field, direction"
-//            for (String sortOrder : sort) {
-//                String[] _sort = sortOrder.split(",");
-//                orders.add(new Order(getSortDirection(_sort[1]), _sort[0]));
-//            }
-//        } else {
-//            // sort=[SKU, desc]
-//            orders.add(new Order(getSortDirection(sort[1]), sort[0]));
-//        }
-//        Collection<Glasses> glasses = new ArrayList<Glasses>();
-//        Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
-//
-//        Page<Glasses> pageGlasses;
-//
-//        if (glassesType == null)
-//            // Find all by default not dispensed glasses
-//            pageGlasses = mainService.findByDispensedAndLocation(false,location,pagingSort);
-//        else
-//            pageGlasses = mainService.findByGlassesContainingAndDispensed(false,location,glassesType, pagingSort);
-//
-//        glasses = pageGlasses.getContent();
-//
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("glasses", glasses);
-//        response.put("currentPage", pageGlasses.getNumber());
-//        response.put("totalItems", pageGlasses.getTotalElements());
-//        response.put("totalPages", pageGlasses.getTotalPages());
-//
-//		if (glasses.isEmpty()){
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//		}
-//		return new ResponseEntity<>(response, HttpStatus.OK);
-//	}
-
     @RequestMapping(method = RequestMethod.GET, value = "/{location}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getAllGlassesPage(@RequestParam(value = "search", required = false) String search,

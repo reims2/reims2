@@ -1,19 +1,28 @@
 package org.PVH.rest;
 
+import cz.jirutka.rsql.parser.RSQLParser;
+import cz.jirutka.rsql.parser.ast.Node;
 import org.PVH.model.ERole;
+import org.PVH.model.Glasses;
 import org.PVH.model.Role;
 import org.PVH.model.User;
 import org.PVH.payload.request.LoginRequest;
 import org.PVH.payload.request.SignupRequest;
 import org.PVH.payload.response.JwtResponse;
 import org.PVH.payload.response.MessageResponse;
+import org.PVH.repository.RSQL.CustomRsqlVisitor;
 import org.PVH.repository.RoleRepository;
 import org.PVH.repository.UserRepository;
 import org.PVH.security.jwt.JwtUtils;
 import org.PVH.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,10 +32,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -71,7 +79,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody User signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                 .badRequest()
@@ -82,30 +90,30 @@ public class AuthController {
         User user = new User(signUpRequest.getUsername(),
             encoder.encode(signUpRequest.getPassword()));
 
-        Set<String> strRoles = signUpRequest.getRole();
+        Set<Role> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                switch (role.getName()) {
+                    case ROLE_ADMIN:
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
 
                         break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                    case ROLE_MODERATOR:
+                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
 
                         break;
                     default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                        Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
                 }
@@ -116,5 +124,74 @@ public class AuthController {
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getAllUsersPage(@RequestParam(value = "search", required = false) String search,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "3") int size,
+                                                               @RequestParam(defaultValue = "username,desc") String[] sort) {
+
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+
+        if (sort[0].contains(",")) {
+            // will sort more than 2 fields
+            // sortOrder="field, direction"
+            for (String sortOrder : sort) {
+                String[] _sort = sortOrder.split(",");
+                orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
+            }
+        } else {
+            // sort=[SKU, desc]
+            orders.add(new Sort.Order(getSortDirection(sort[1]), sort[0]));
+        }
+        Collection<User> users = new ArrayList<User>();
+        Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
+//        Specification<Glasses> spec = builder.build();
+        Page<User> pageUser;
+        if(search==null){
+            pageUser = userRepository.findAll(pagingSort);
+        }else {
+            Node rootNode = new RSQLParser().parse(search);
+            Specification<User> spec = rootNode.accept(new CustomRsqlVisitor<User>());
+            pageUser = userRepository.findAll(spec, pagingSort);
+        }
+
+        users = pageUser.getContent();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("glasses", users);
+        response.put("currentPage", pageUser.getNumber());
+        response.put("totalItems", pageUser.getTotalElements());
+        response.put("totalPages", pageUser.getTotalPages());
+
+        if (users.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    @Transactional
+    public ResponseEntity<String> deleteGlasses(@PathVariable("id") Long id){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            return new ResponseEntity<String>("User was not found.",HttpStatus.NOT_FOUND);
+        }
+        userRepository.delete(user.get());
+        return new ResponseEntity<String>("User Deleted",HttpStatus.NO_CONTENT);
+    }
+
+    private Sort.Direction getSortDirection(String direction) {
+        if (direction.equals("asc")) {
+            return Sort.Direction.ASC;
+        } else if (direction.equals("desc")) {
+            return Sort.Direction.DESC;
+        }
+
+        return Sort.Direction.ASC;
     }
 }
