@@ -126,7 +126,7 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getAllUsersPage(@RequestParam(value = "search", required = false) String search,

@@ -4,7 +4,6 @@ package org.PVH.rest;
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
 import org.PVH.model.Glasses;
-import org.PVH.repository.GlassesRepository;
 import org.PVH.repository.RSQL.CustomRsqlVisitor;
 import org.PVH.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,6 @@ public class GlassesRestController {
 
 	@Autowired
 	private MainService mainService;
-    @Autowired
-    private GlassesRepository glassesRepository;
 
     private Sort.Direction getSortDirection(String direction) {
         if (direction.equals("asc")) {
@@ -72,14 +69,13 @@ public class GlassesRestController {
         }
         Collection<Glasses> glasses = new ArrayList<Glasses>();
         Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
-//        Specification<Glasses> spec = builder.build();
         Page<Glasses> pageGlasses;
         if(search==null){
-            pageGlasses = glassesRepository.findAll(pagingSort);
+            pageGlasses = mainService.findByDispensedAndLocation(false,location,pagingSort);
         }else {
             Node rootNode = new RSQLParser().parse(search);
             Specification<Glasses> spec = rootNode.accept(new CustomRsqlVisitor<Glasses>());
-            pageGlasses = glassesRepository.findAll(spec, pagingSort);
+            pageGlasses = mainService.findByDispensedAndLocation(false,location,pagingSort,spec);
         }
 
         glasses = pageGlasses.getContent();

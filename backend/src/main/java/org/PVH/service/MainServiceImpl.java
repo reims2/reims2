@@ -1,6 +1,8 @@
 package org.PVH.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.PVH.model.Dispense;
 import org.PVH.model.Glasses;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.orm.ObjectRetrievalFailureException;
@@ -114,15 +117,17 @@ public class MainServiceImpl implements MainService {
         return glassesRepository.findAll(pageable);
     }
 
-    @Override
-    @Transactional
-    public Page<Glasses> findByGlassesContainingAndDispensed(boolean dispensed,String location, String glassesType, Pageable pageable) throws DataAccessException {
-        return glassesRepository.findByDispensedAndGlassesTypeAndLocation(dispensed,location,glassesType,pageable);
-    }
 
     @Override
     public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec) throws DataAccessException {
-        return glassesRepository.findByDispensedAndLocation(dispensed,location,pageable,spec);
+        List<Glasses> allItems = glassesRepository.findAll(spec,pageable).stream().filter(glasses -> glasses.isDispensed()==dispensed && glasses.getLocation().equals(location)).collect(Collectors.toList());
+        return new PageImpl<>(allItems);
+
+    }
+
+    @Override
+    public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException {
+        return glassesRepository.findByDispensedAndLocation(dispensed,location,pageable);
     }
 
 
