@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.*;
 
-import lombok.AllArgsConstructor;
 import org.hibernate.query.criteria.internal.path.PluralAttributePath;
 import org.hibernate.query.criteria.internal.path.SingularAttributePath;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,12 +14,17 @@ import cz.jirutka.rsql.parser.ast.ComparisonOperator;
 
 import static org.PVH.repository.RSQL.RsqlSearchOperation.*;
 
-@AllArgsConstructor
 public class GenericRsqlSpecification<T> implements Specification<T> {
 
     private String property;
     private ComparisonOperator operator;
     private List<String> arguments;
+
+    public GenericRsqlSpecification(String property, ComparisonOperator operator,List<String> arguments){
+        this.property = property;
+        this.operator = operator;
+        this.arguments = arguments;
+    }
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
