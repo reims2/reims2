@@ -63,7 +63,7 @@ export default {
         await this.deleteGlasses(this.glass.sku)
         this.$emit('deleted')
       } catch (error) {
-        this.$store.commit('setError', `Could not delete glasses, please retry (${error.status})`)
+        this.$store.commit('setError', `Could not delete glasses, please retry (Error ${error.status})`)
       }
     }
   }

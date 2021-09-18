@@ -4,9 +4,14 @@ export default ({ $axios, app, store }) => {
 
   $axios.onError((error) => {
     error.status = error.response ? error.response.status : 'Network Error'
+    if (!error.response) {
+      error.network = true
+    } else if (error.response.status >= 500) {
+      error.server = true
+    }
+
     if (error.status === 401) {
       store.commit('setError', 'Credentials no longer valid, please login again')
-      error.handled = true
       app.$auth.logout()
     }
     throw error

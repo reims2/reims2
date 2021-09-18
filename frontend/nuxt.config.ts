@@ -28,7 +28,7 @@ const config: NuxtConfig = {
     // https://github.com/robinvdvleuten/vuex-persistedstate#example-with-nuxtjs
     { src: '~/plugins/persistedState.js', mode: 'client' },
     // https://zaengle.com/blog/error-handling-in-nuxt-apps
-    { src: '~/plugins/axios.js' }
+    { src: '~/plugins/axios-error-handling.js' }
   ],
 
   ssr: false, // Disable Server Side rendering
@@ -119,10 +119,11 @@ const config: NuxtConfig = {
           property: 'accessToken'
         },
         user: {
+          property: false,
           autoFetch: false
         },
         endpoints: {
-          user: false,
+          user: { url: '/api/auth/user' },
           login: { url: '/api/auth/signin', method: 'post' }
         }
       }

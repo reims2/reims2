@@ -233,9 +233,9 @@ export default {
       } catch (error) {
         if (error.response && error.response.status < 500) {
           this.edit = ''
-          this.$store.commit('setError', `Glasses can't be edited, sorry (Status ${error.status})`)
+          this.$store.commit('setError', `Glasses can't be edited, sorry (Error ${error.status})`)
         } else {
-          this.$store.commit('setError', `Editing was not possible because the server didn't respond. Please retry (Status ${error.status}).`)
+          this.$store.commit('setError', `Editing was not possible because the server didn't respond. Please retry (Error ${error.status}).`)
         }
         this.loading = false
         return

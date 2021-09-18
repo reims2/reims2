@@ -23,11 +23,17 @@ export default {
       { title: 'Edit', icon: mdiPencil, to: '/edit' },
       { title: 'View all', icon: mdiDatabase, to: '/data' },
       { title: 'Add', icon: mdiPlusCircleOutline, to: '/add' }
-    ],
-    otherItems: [
-      { title: 'Manage users', icon: mdiAccountEdit, to: '/manage/users' },
-      { title: 'Create reports', icon: mdiChartBox, to: '/manage/reports' }
     ]
-  })
+
+  }),
+  computed: {
+    otherItems() {
+      const list = [
+        { title: 'Create reports', icon: mdiChartBox, to: '/manage/reports' }
+      ]
+      if (this.$auth.user.roles && this.$auth.user.roles.includes('ADMIN')) list.push({ title: 'Manage users', icon: mdiAccountEdit, to: '/manage/users' })
+      return list
+    }
+  }
 }
 </script>

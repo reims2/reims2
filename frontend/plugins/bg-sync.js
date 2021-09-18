@@ -1,6 +1,10 @@
 /* eslint-disable no-undef */
-const bgSyncPlugin = new BackgroundSyncPlugin('reimsDispenseQueue', {
-  maxRetentionTime: 7 * 24 * 60 // retry dispense for 7 days
+const bgSyncDispensePlugin = new BackgroundSyncPlugin('reimsDispenseQueue', {
+  maxRetentionTime: 30 * 24 * 60 // retry dispense for 30 days
+})
+
+const bgSyncEditPlugin = new BackgroundSyncPlugin('reimsEditQueue', {
+  maxRetentionTime: 3 * 24 * 60 // retry dispense for 3 days
 })
 
 const statusPlugin = {
@@ -15,23 +19,34 @@ const statusPlugin = {
 }
 
 workbox.routing.registerRoute(
-  /\/api\/glasses\/dispense\/.*/,
+  /\/api\/glasses\/dispense(\/[^/]+){2}\/?/,
   new workbox.strategies.NetworkOnly({
     plugins: [
       statusPlugin,
-      bgSyncPlugin
+      bgSyncDispensePlugin
     ]
   }),
   'PUT'
 )
 
 workbox.routing.registerRoute(
-  /\/api\/glasses\/undispense.*/,
+  /\/api\/glasses\/undispense\/?/,
   new workbox.strategies.NetworkOnly({
     plugins: [
       statusPlugin,
-      bgSyncPlugin
+      bgSyncDispensePlugin
     ]
   }),
   'POST'
+)
+
+workbox.routing.registerRoute(
+  /\/api\/glasses(\/[^/]+){2}\/?/,
+  new workbox.strategies.NetworkOnly({
+    plugins: [
+      statusPlugin,
+      bgSyncEditPlugin
+    ]
+  }),
+  'PUT'
 )

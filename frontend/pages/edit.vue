@@ -65,8 +65,8 @@
           Close
         </v-btn>
       </template>
-      <span v-if="networkOffline">Glasses with SKU {{ lastDispensed.sku }} will be dispensed when you're back online</span>
-      <span v-else>Successfully dispensed glasses with SKU {{ lastDispensed.sku }}</span>
+      <span v-if="isOfflineDispension">Glasses with SKU {{ lastDispensed.sku }} will be dispensed when you're back online</span>
+      <span v-else>Glasses with SKU {{ lastDispensed.sku }} dispensed</span>
     </v-snackbar>
     <v-snackbar v-if="result != ''" :value=true :timeout="-1" bottom>
       <template #action="{ attrs }">
@@ -95,7 +95,7 @@ export default {
     result: '',
     successMessage: [],
     errorMesssage: [],
-    networkOffline: false
+    isOfflineDispension: false
   }),
   head() {
     return {
@@ -147,21 +147,21 @@ export default {
       this.errorMesssage = []
       this.isLoading = true
       this.lastDispensed = null
-      this.networkOffline = false
+      this.isOfflineDispension = false
       try {
         await this.dispense(toDispense.sku)
       } catch (error) {
         this.isLoading = false
         if (error.status === 404) {
           this.$store.commit('setError', 'SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
-        } else if (error.response == null) {
-          this.networkOffline = true
-          // this.$store.commit('setError', 'Network error. Dispension will be automatically retried as soon as you\'re back online.')
+        } else if (error.network || error.server) {
+          if (error.network) this.isOfflineDispension = true
+          if (error.server) this.$store.commit('setError', `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`)
           this.lastDispensed = toDispense
           this.$refs.form.reset()
           this.$refs.firstInput.focus()
-        } else if (!error.handled) {
-          this.$store.commit('setError', `Could not dispense glasses, please retry (${error.status})`)
+        } else {
+          this.$store.commit('setError', `Could not dispense glasses, please retry (Error ${error.status})`)
         }
         return
       }
@@ -180,8 +180,8 @@ export default {
         if (error.status === 400) {
           this.$store.commit('setError', `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`)
           this.lastDispensed = null
-        } else if (error.response == null) {
-          this.$store.commit('setError', 'Network error. Dispension will be automatically reverted as soon as you\'re back online.')
+        } else if (error.network || error.server) {
+          this.$store.commit('setError', 'Network or server error. Dispension will be automatically reverted as soon as you\'re back online.')
           this.lastDispensed = null
         } else {
           this.$store.commit('setError', `Could not undo dispension of glasses, please retry (Error ${error.status}).`)

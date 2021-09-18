@@ -63,7 +63,7 @@ export default {
         this.$auth.setUser({ id: response.data.id, roles: response.data.roles, username: response.data.username })
       } catch (err) {
         console.log(err)
-        this.errorText = `Login failed (${err.status})`
+        this.errorText = `Login failed (Error ${err.status})`
       }
     }
   }
