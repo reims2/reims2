@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -77,6 +79,20 @@ public class AuthController {
 												 roles));
 	}
 
+    @PreAuthorize("permitAll")
+    @RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> getCurrentUserInfo(Principal userPrincipal) {
+        // todo das hat thomas hier mal eben reingepfuscht, guck mal ob das so richtig ist
+        Optional<User> user = userRepository.findByUsername(userPrincipal.getName());
+        if (user.isEmpty()) {
+            return new ResponseEntity<String>("User was not found.", HttpStatus.NOT_FOUND);
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("username", user.get().getUsername());
+        map.put("roles", user.get().getRoles().stream().map(item -> item.getName()).collect(Collectors.toList()));
+        return new ResponseEntity(map, HttpStatus.OK);
+    }
+
     @PostMapping("/signup")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User signUpRequest) {
@@ -94,26 +110,20 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
+            Role userRole = roleRepository.findByName(ERole.USER.name())
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role.getName()) {
-                    case ROLE_ADMIN:
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN.name())
+                    case ADMIN:
+                        Role adminRole = roleRepository.findByName(ERole.ADMIN.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
 
                         break;
-                    case ROLE_MODERATOR:
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR.name())
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-
-                        break;
                     default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
+                        Role userRole = roleRepository.findByName(ERole.USER.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
                 }
@@ -176,7 +186,7 @@ public class AuthController {
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
     @Transactional
-    public ResponseEntity<String> deleteGlasses(@PathVariable("id") Long id){
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id){
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
             return new ResponseEntity<String>("User was not found.",HttpStatus.NOT_FOUND);
