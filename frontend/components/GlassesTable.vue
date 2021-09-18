@@ -17,7 +17,45 @@
     @update:options="startLoading"
   >
     <template v-if="$vuetify.breakpoint.mobile" #item={item}>
-      <glass-card :glass="item" class="ma-2" />
+      <glass-card :glass="item" class="ma-2 my-0" />
+    </template>
+    <template v-if="!$vuetify.breakpoint.mobile" #body.prepend>
+      <tr>
+        <td />
+        <td class="v-data-table__divider">
+          <v-select
+            single-line
+            multiple
+            dense
+            hide-details
+            small-chips
+            label="Filter"
+            :items="['single', 'bifocal', 'progressive']"
+            style="min-width:60px;"
+            class="fit pb-1"
+            @change="value => updateFilter(value, null, 'glassesType')"
+          />
+        </td>
+        <td>
+          <min-max-input @update="value => updateFilter(value, 'od', 'sphere')" />
+        </td>
+        <td>
+          <min-max-input @update="value => updateFilter(value, 'od', 'cylinder')" />
+        </td>
+        <td />
+        <td class="v-data-table__divider" />
+        <td>
+          <min-max-input @update="value => updateFilter(value, 'os', 'sphere')" />
+        </td>
+        <td>
+          <min-max-input @update="value => updateFilter(value, 'os', 'cylinder')" />
+        </td>
+        <td />
+        <td class="v-data-table__divider" />
+        <td />
+        <td />
+        <td />
+      </tr>
     </template>
     <template #item.od.sphere="{ item }">
       {{ formatRx(item.od.sphere) }} D
@@ -53,8 +91,8 @@
 import { mapState, mapActions } from 'vuex'
 export default {
   data: () => ({
-    filterType: [],
     filters: {
+      glassesType: [],
       od: {
         sphere: {},
         cylinder: {}
@@ -89,40 +127,78 @@ export default {
         { value: 'glassesSize', text: 'Size' },
         { value: 'creationDate', text: 'Added' }
       ]
+    },
+    filterString() {
+      let filterString = ''
+      for (const valueName of ['glassesType']) {
+        const filter = this.createSingleFilter(this.filters[valueName], valueName)
+        if (filter) filterString += filter + ';'
+      }
+      for (const eyeName of ['od', 'os']) {
+        for (const valName of ['sphere', 'cylinder']) {
+          const filter = this.createSingleFilter(this.filters[eyeName][valName], `${eyeName}.${valName}`)
+          if (filter) filterString += filter + ';'
+        }
+      }
+      return filterString.slice(0, -1)
     }
   },
   watch: {
     location() {
       this.startLoading()
+    },
+    filters: {
+      handler() {
+        this.startLoading()
+      },
+      deep: true
     }
   },
   methods: {
     ...mapActions({
       loadItems: 'table/loadItems'
     }),
-    isInLimits(value, filters) {
-      value = Number(value)
-      const min = filters.min !== '' && filters.min !== undefined ? filters.min : null
-      const max = filters.max !== '' && filters.max !== undefined ? filters.max : null
-      if (min != null && max != null) return value >= min && value <= max
-      else if (min != null) return value >= min
-      else if (max != null) return value <= max
-      else return true
+    createSingleFilter(value, filterName) {
+      if (value == null) return null
+
+      if (Array.isArray(value)) {
+        let filterString = ''
+        for (const el of value) {
+          filterString += `${filterName}==${el},`
+        }
+        return filterString.slice(0, -1)
+      } else {
+        const min = value.min !== '' && value.min !== undefined ? `${filterName}>=${Number(value.min)}` : null
+        const max = value.max !== '' && value.max !== undefined ? `${filterName}<=${Number(value.max)}` : null
+        if (min != null && max != null) return min + ';' + max
+        else if (min != null) return min
+        else if (max != null) return max
+        else return null
+      }
     },
     updateFilter(value, eye, child) {
-      this.filters[eye][child] = value
+      if (eye) this.filters[eye][child] = value
+      else this.filters[child] = value
+      this.$nextTick(() => {
+        this.startLoading()
+      })
     },
     formatRx(value) {
       return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)
     },
     async startLoading() {
+      setTimeout(() => { if (this.$vuetify.breakpoint.mobile) this.$nuxt.$loading.start() })
       this.loading = true
       try {
-        this.items = await this.loadItems(this.options)
+        this.items = await this.loadItems({ options: this.options, filterString: this.filterString })
       } catch (err) {
-        this.loading = false
-        // todo error handling
-        console.log(err)
+        if (err.status === 404) {
+          this.items = []
+          // fixme better UX?
+        } else {
+          // todo error handling
+          console.log(err)
+        }
       }
       this.loading = false
     }
@@ -130,3 +206,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-select.fit {
+  width: min-content;
+}
+.v-select.fit  .v-select__selection--comma {
+    text-overflow: unset;
+}
+</style>

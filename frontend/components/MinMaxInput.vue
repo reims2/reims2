@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-end fill-height my-2">
+  <div class="d-flex align-end fill-height pb-1">
     <v-text-field
       v-model="min"
       type="number"
@@ -7,8 +7,9 @@
       label="Min"
       hide-details
       dense
-      style="max-width:60px"
+      style="max-width:50px"
       class="mr-1"
+      single-line
       @change="update"
     />
     <v-text-field
@@ -17,8 +18,9 @@
       step="0.25"
       hide-details
       dense
-      style="max-width:60px"
+      style="max-width:50px"
       label="Max"
+      single-line
       @change="update"
     />
   </div>

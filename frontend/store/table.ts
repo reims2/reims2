@@ -20,9 +20,11 @@ export const ActionType = {
 }
 export const actions: ActionTree<TableState, RootState> = {
 
-  async [ActionType.LOAD_ITEMS]({ commit, rootState }, options:any) {
+  async [ActionType.LOAD_ITEMS]({ commit, rootState }, { options, filterString }) {
     const sortString = options.sortBy[0] + ',' + (options.sortDesc[0] ? 'desc' : 'asc')
-    const data = await this.$axios.$get(`/api/glasses/${rootState.location}`, { params: { size: options.itemsPerPage, page: options.page - 1, sort: sortString } })
+    const params:any = { size: options.itemsPerPage, page: options.page - 1, sort: sortString }
+    if (filterString != null && filterString !== '') params.search = filterString
+    const data = await this.$axios.$get(`/api/glasses/${rootState.location}`, { params })
     commit(MutationType.SET_GLASSES_COUNT, data.totalItems)
     return data.glasses
   }

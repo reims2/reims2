@@ -27,15 +27,13 @@ export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
 
 function checkForAxisTolerance(rx:Record<string, number>, lens: Record<string, number>):boolean {
   /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
-  // Some arbitrary numbers from the paper, in short: Smaller cylinders allow for a greater tolerance.
+  // Some arbitrary numbers from the PDF, in short: Smaller cylinders allow for a greater tolerance.
   const toleranceYValues = [7, 8, 9, 10, 13, 15, 20, 25, 35, 90]
   const toleranceXValues = [-4, -3, -2, -1.75, -1.25, -1, -0.75, -0.5, -0.25, 0]
   // Implement simple "lookup table"
   let selectedTolerance = toleranceYValues[0]
   for (let i = 0; i < toleranceXValues.length; i++) {
-    if (lens.cylinder < toleranceXValues[i]) {
-      break
-    }
+    if (lens.cylinder < toleranceXValues[i]) break
     selectedTolerance = toleranceYValues[i]
   }
 

@@ -17,13 +17,13 @@
     "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/pwa": "^3.3.5",
     "chroma-js": "2.1.2",
-    "core-js": "^3.16.4",
+    "core-js": "^3.17.3",
     "nuxt": "^2.15.8",
     "vue-shortkey": "^3.1.7",
     "vuex-persistedstate": "^4.0.0"
   },
   "devDependencies": {
-    "@mdi/js": "^5.9.55",
+    "@mdi/js": "^6.1.95",
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.1",
@@ -38,6 +38,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-vue": "^7.17.0"
+    "eslint-plugin-vue": "^7.18.0"
   }
 }
