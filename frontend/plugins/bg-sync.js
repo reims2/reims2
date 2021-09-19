@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
-const bgSyncDispensePlugin = new BackgroundSyncPlugin('reimsDispenseQueue', {
+const bgSyncDispensePlugin = new workbox.backgroundSync.BackgroundSyncPlugin('reimsDispenseQueue', {
   maxRetentionTime: 30 * 24 * 60 // retry dispense for 30 days
 })
 
-const bgSyncEditPlugin = new BackgroundSyncPlugin('reimsEditQueue', {
+const bgSyncEditPlugin = new workbox.backgroundSync.BackgroundSyncPlugin('reimsEditQueue', {
   maxRetentionTime: 3 * 24 * 60 // retry dispense for 3 days
 })
 
