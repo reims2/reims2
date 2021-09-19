@@ -31,7 +31,7 @@ export const eyeRules = {
     v => !v || v.length >= 3 || 'Enter 3 digits (leading zeros)'
   ],
   add: [
-    v => (v != null && v !== '') || 'Required for bifocals',
+    v => (v != null && v !== '') || 'Required for multifocals',
     v => !isNaN(parseFloat(v)) || 'Enter a valid number',
     v => v >= 0 || 'Must be positive',
     v => v <= 10 || 'Maximum is 10',
@@ -42,11 +42,11 @@ export const generalEyeData = [
   {
     id: 'glassesType',
     label: 'Type',
-    items: ['single', 'bifocal', 'progressive'],
+    items: ['single', 'multifocal'],
     rules: [v => !!v || 'Item is required'],
     first: true,
     icon: mdiGlasses,
-    desc: 'Glasses type (bifocal, single or progressive)'
+    desc: 'Glasses type (single or multifocal)'
   },
   {
     id: 'glassesSize',

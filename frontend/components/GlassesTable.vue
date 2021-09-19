@@ -17,7 +17,7 @@
     @update:options="startLoading"
   >
     <template v-if="$vuetify.breakpoint.mobile" #item={item}>
-      <glass-card :glass="item" class="ma-2 my-0" />
+      <glass-card :glass="item" class="pa-2 py-0" />
     </template>
     <template v-if="!$vuetify.breakpoint.mobile" #body.prepend>
       <tr>
@@ -30,7 +30,7 @@
             hide-details
             small-chips
             label="Filter"
-            :items="['single', 'bifocal', 'progressive']"
+            :items="['single', 'multifocal']"
             style="min-width:60px;"
             class="fit pb-1"
             @change="value => updateFilter(value, null, 'glassesType')"

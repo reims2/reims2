@@ -77,11 +77,8 @@
         lg=3
         class="pl-md-6 pt-3 pt-md-2"
       >
-        <div class="text-h6">
+        <div class="text-h6 pb-2">
           Recently added
-        </div>
-        <div class="text--secondary text-body-2 pb-3">
-          You can also edit all values by clicking on them.
         </div>
         <glass-card
           v-for="(item, idx) in lastAdded.slice(0,3)"
