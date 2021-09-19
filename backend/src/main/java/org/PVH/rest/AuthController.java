@@ -110,20 +110,20 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.USER.name())
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role.getName()) {
-                    case ADMIN:
-                        Role adminRole = roleRepository.findByName(ERole.ADMIN.name())
+                    case ROLE_ADMIN:
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
 
                         break;
                     default:
-                        Role userRole = roleRepository.findByName(ERole.USER.name())
+                        Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
                 }
@@ -186,7 +186,7 @@ public class AuthController {
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
     @Transactional
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id){
+    public ResponseEntity<String> deleteGlasses(@PathVariable("id") Long id){
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
             return new ResponseEntity<String>("User was not found.",HttpStatus.NOT_FOUND);
