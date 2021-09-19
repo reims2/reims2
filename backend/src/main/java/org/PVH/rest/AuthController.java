@@ -186,7 +186,7 @@ public class AuthController {
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
     @Transactional
-    public ResponseEntity<String> deleteGlasses(@PathVariable("id") Long id){
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id){
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
             return new ResponseEntity<String>("User was not found.",HttpStatus.NOT_FOUND);

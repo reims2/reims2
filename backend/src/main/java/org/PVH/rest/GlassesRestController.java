@@ -45,7 +45,7 @@ public class GlassesRestController {
         return Sort.Direction.ASC;
     }
 
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET, value = "/{location}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getAllGlassesPage(@RequestParam(value = "search", required = false) String search,
@@ -120,6 +120,7 @@ public class GlassesRestController {
 	}
 
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@RequestMapping(value = "/{location}/{sku}", method = RequestMethod.PUT, produces = "application/json")
 	public ResponseEntity<Glasses> updateGlasses(@PathVariable("sku") int sku, @PathVariable("location")String location, @RequestBody @Valid Glasses glasses, BindingResult bindingResult){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
