@@ -21,7 +21,7 @@ export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
 
       return { ...glass, score: (odScore + osScore), odScore, osScore }
     })
-    .filter(glass => glass.score <= 3)
+    .filter(glass => glass.score <= 4)
     .sort((a, b) => (a.score > b.score ? 1 : -1))
 }
 
@@ -80,7 +80,8 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
   // adding a value to Rx cylinder and subtracting half of that value from the Rx sphere, will give you roughly the same Rx. (but remember cyl > 0 not possible)
   let diff = 0
   if ((rx.sphere - lens.sphere) === (lens.cylinder - rx.cylinder) / 2 &&
-        // fixme rx.sphere > lens.sphere &&
+        // rx.sphere > lens.sphere && // fixme this is in the PDF but removing it gives better results
+        glassesType === 'single' && // fixme this doesn't make sense and isn't in the PDF, but gives better results
         cylinderDiff < 1) {
     diff = (lens.sphere > 0) ? 0.55 : 0.5
   }
@@ -103,17 +104,19 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
   // If sphere matches and the cylinder difference is small, substract an additonal amount
   // because this makes the glasses near perfect even though they have a difference in cylinder
   diff = 0
-  if (rx.sphere === lens.sphere && cylinderDiff > 0 && cylinderDiff <= 0.75) { // fixme ? && glassesType === 'single'
+  if (rx.sphere === lens.sphere && cylinderDiff > 0 && cylinderDiff <= 0.75) {
+    // && glassesType === 'single' // fixme this condition is valid according to pdf, but isn't in reality
     diff = 0.12
   }
   score = subtractScore(score, diff)
 
+  /* fixme removing this doesn't make a big difference, but gives slightly better results. not sure why this was in the PDF
   diff = 0
   if (glassesType === 'multi' && lens.axis > rx.axis) {
     // but why do this at all? this doesn't make sense because a higher difference should be punished, not encouraged?
     diff = (lens.axis - rx.axis) / 1000
   }
-  score = subtractScore(score, diff)
+  score = subtractScore(score, diff) */
 
   return score
 }

@@ -9,8 +9,8 @@
       <h2 class="text-h4 mt-4 mx-3" :style="miniDrawer ? 'visibility:hidden;': ''">
         REIMS2
       </h2>
-      <div v-if="$auth.loggedIn" class="text--secondary mx-3 mb-2" :style="miniDrawer ? 'visibility:hidden;': ''">
-        <span>Logged in</span>
+      <div v-if="$auth.loggedIn && $auth.user" class="text--secondary mx-3 mb-2" :style="miniDrawer ? 'visibility:hidden;': ''">
+        Logged in as <span class="font-weight-bold">{{ $auth.user.username }}</span>
       </div>
       <v-select
         v-if="!miniDrawer"

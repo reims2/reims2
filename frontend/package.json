@@ -13,17 +13,17 @@
     "@nuxt/typescript-runtime": "^2.1.0",
     "@nuxtjs/auth-next": "5.0.0-1624817847.21691f1",
     "@nuxtjs/axios": "^5.13.6",
-    "@nuxtjs/dayjs": "^1.4.0",
+    "@nuxtjs/dayjs": "^1.4.1",
     "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/pwa": "^3.3.5",
     "chroma-js": "2.1.2",
-    "core-js": "^3.17.3",
+    "core-js": "^3.18.2",
     "nuxt": "^2.15.8",
     "vue-shortkey": "^3.1.7",
-    "vuex-persistedstate": "^4.0.0"
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
-    "@mdi/js": "^6.1.95",
+    "@mdi/js": "^6.2.95",
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.1",
@@ -38,6 +38,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-vue": "^7.18.0"
+    "eslint-plugin-vue": "^7.19.1"
   }
 }
