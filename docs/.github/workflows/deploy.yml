@@ -28,3 +28,4 @@ jobs:
           git_remote_url: "${{ env.REMOTE_HOST }}/docs"
           ssh_private_key: ${{ secrets.PRIVATE_KEY }}
           git_push_flags: "--force"
+          branch: "main"
