@@ -1,14 +1,15 @@
-import { Glasses } from '~/model/GlassesModel'
+import { Glasses, Eye } from '~/model/GlassesModel'
 
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 4
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
-  const rxOd = propsAsNumber(terms.od)
-  const rxOs = propsAsNumber(terms.os)
+  const rxOd = sanitizeValues(terms.od)
+  const rxOs = sanitizeValues(terms.os)
+
   return glasses.slice()
-    .filter(glass => (glass.glassesType === 'single' ? terms.glassesType === glass.glassesType : terms.glassesType !== 'single'))
+    .filter(glass => (terms.glassesType === glass.glassesType))
     .filter(glass => checkForAxisTolerance(rxOd, propsAsNumber(glass.od)) && checkForAxisTolerance(rxOs, propsAsNumber(glass.os)))
     .filter(glass => glass.glassesType === 'single' || (Math.abs(glass.od.add - rxOd.add) <= 0.5 && Math.abs(glass.os.add - rxOs.add) <= 0.5))
     .map((glass) => {
@@ -108,7 +109,7 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
 
   /* fixme removing this doesn't make a big difference, but gives slightly better results. not sure why this was in the PDF
     diff = 0
-    if (glassesType === 'multi' && lens.axis > rx.axis) {
+    if (glassesType === 'multifocal' && lens.axis > rx.axis) {
       // but why do this at all? this doesn't make sense because a higher difference should be punished, not encouraged?
       diff = (lens.axis - rx.axis) / 1000
     }
@@ -121,4 +122,17 @@ function propsAsNumber(obj:any):Record<string, number> {
   const temp = JSON.parse(JSON.stringify(obj))
   Object.keys(temp).forEach((k) => { temp[k] = Number(temp[k]) })
   return temp
+}
+
+function sanitizeValues(singleEye: Eye) {
+  const rx = propsAsNumber(singleEye)
+  // easier for calculation
+  if (rx.axis === 180) rx.axis = 0
+  // user input could have been 1.2 instead of 1.25, so do rounding
+  for (const prop of ['sphere', 'cylinder', 'additional']) {
+    rx[prop] = Math.ceil(Math.abs(rx[prop]) / 0.25) * 0.25
+  }
+  // user input could have been positive, convert to negative
+  rx.cylinder = -Math.abs(rx.cylinder)
+  return rx
 }

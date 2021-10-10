@@ -133,7 +133,7 @@ export default {
           value: 'single'
         }, {
           text: 'multifocal',
-          value: 'multi'
+          value: 'multifocal'
         }],
         rules: [v => !!v || 'Item is required']
       }
