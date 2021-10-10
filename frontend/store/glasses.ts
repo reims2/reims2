@@ -2,6 +2,7 @@ import type { ActionTree, MutationTree } from 'vuex'
 import { RootState } from '.'
 import { MutationType as IndexMutationType } from './index'
 import { Glasses } from '~/model/GlassesModel'
+import { calculateAllPhilscore } from '~/lib/philscore'
 const axios = require('axios').default
 
 let cancelTokenGet = axios.CancelToken.source()
@@ -21,7 +22,8 @@ export const ActionType = {
   DISPENSE_GLASSES: 'dispense',
   UNDISPENSE_GLASSES: 'undispense',
   DELETE_GLASSES: 'delete',
-  EDIT_GLASSES: 'edit'
+  EDIT_GLASSES: 'edit',
+  PHIL_SCORE: 'philScore'
 }
 export const actions: ActionTree<GlassesState, RootState> = {
   async [ActionType.ADD_GLASSES]({ commit, rootState }, newGlasses:Glasses) {
@@ -61,5 +63,8 @@ export const actions: ActionTree<GlassesState, RootState> = {
     commit(IndexMutationType.DELETE_OFFLINE_GLASSES, newGlasses.sku, { root: true })
     commit(IndexMutationType.ADD_OFFLINE_GLASSES, data, { root: true })
     return data
+  },
+  [ActionType.PHIL_SCORE]({ rootState }, eyeModel) {
+    return calculateAllPhilscore(eyeModel, rootState.allGlasses || [])
   }
 }

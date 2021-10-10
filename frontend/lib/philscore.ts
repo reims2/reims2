@@ -1,12 +1,7 @@
-import type { ActionTree, MutationTree } from 'vuex'
-import { RootState } from '.'
 import { Glasses } from '~/model/GlassesModel'
 
-function propsAsNumber(obj:any):Record<string, number> {
-  const temp = JSON.parse(JSON.stringify(obj))
-  Object.keys(temp).forEach((k) => { temp[k] = Number(temp[k]) })
-  return temp
-}
+// glasses with a philscore higher than this will be removed
+const PHILSCORE_CUT_OFF = 4
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
@@ -15,13 +10,14 @@ export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
   return glasses.slice()
     .filter(glass => (glass.glassesType === 'single' ? terms.glassesType === glass.glassesType : terms.glassesType !== 'single'))
     .filter(glass => checkForAxisTolerance(rxOd, propsAsNumber(glass.od)) && checkForAxisTolerance(rxOs, propsAsNumber(glass.os)))
+    .filter(glass => glass.glassesType === 'single' || (Math.abs(glass.od.add - rxOd.add) <= 0.5 && Math.abs(glass.os.add - rxOs.add) <= 0.5))
     .map((glass) => {
       const odScore = calcSingleEyePhilscore(rxOd, propsAsNumber(glass.od), terms.glassesType)
       const osScore = calcSingleEyePhilscore(rxOs, propsAsNumber(glass.os), terms.glassesType)
 
       return { ...glass, score: (odScore + osScore), odScore, osScore }
     })
-    .filter(glass => glass.score <= 4)
+    .filter(glass => glass.score <= PHILSCORE_CUT_OFF)
     .sort((a, b) => (a.score > b.score ? 1 : -1))
 }
 
@@ -80,9 +76,9 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
   // adding a value to Rx cylinder and subtracting half of that value from the Rx sphere, will give you roughly the same Rx. (but remember cyl > 0 not possible)
   let diff = 0
   if ((rx.sphere - lens.sphere) === (lens.cylinder - rx.cylinder) / 2 &&
-        // rx.sphere > lens.sphere && // fixme this is in the PDF but removing it gives better results
-        glassesType === 'single' && // fixme this doesn't make sense and isn't in the PDF, but gives better results
-        cylinderDiff < 1) {
+          // rx.sphere > lens.sphere && // fixme this is in the PDF but removing it gives better results
+          glassesType === 'single' && // fixme this doesn't make sense and isn't in the PDF, but gives better results
+          cylinderDiff < 1) {
     diff = (lens.sphere > 0) ? 0.55 : 0.5
   }
   score = subtractScore(score, diff)
@@ -111,31 +107,18 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
   score = subtractScore(score, diff)
 
   /* fixme removing this doesn't make a big difference, but gives slightly better results. not sure why this was in the PDF
-  diff = 0
-  if (glassesType === 'multi' && lens.axis > rx.axis) {
-    // but why do this at all? this doesn't make sense because a higher difference should be punished, not encouraged?
-    diff = (lens.axis - rx.axis) / 1000
-  }
-  score = subtractScore(score, diff) */
+    diff = 0
+    if (glassesType === 'multi' && lens.axis > rx.axis) {
+      // but why do this at all? this doesn't make sense because a higher difference should be punished, not encouraged?
+      diff = (lens.axis - rx.axis) / 1000
+    }
+    score = subtractScore(score, diff) */
 
   return score
 }
 
-export interface MatchesState {
-}
-export const state = (): MatchesState => ({
-})
-
-export const MutationType = {
-}
-export const mutations: MutationTree<MatchesState> = {
-}
-
-export const ActionType = {
-  PHIL_SCORE: 'philScore'
-}
-export const actions: ActionTree<MatchesState, RootState> = {
-  [ActionType.PHIL_SCORE]({ rootState }, eyeModel) {
-    return calculateAllPhilscore(eyeModel, rootState.allGlasses || [])
-  }
+function propsAsNumber(obj:any):Record<string, number> {
+  const temp = JSON.parse(JSON.stringify(obj))
+  Object.keys(temp).forEach((k) => { temp[k] = Number(temp[k]) })
+  return temp
 }

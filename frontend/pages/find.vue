@@ -175,7 +175,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      philScore: 'find/philScore'
+      philScore: 'glasses/philScore'
     }),
     async submit() {
       const eyeModel = {}
