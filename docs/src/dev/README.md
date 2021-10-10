@@ -6,4 +6,4 @@ title: Overview
 
 This is a collection of all the stuff that is needed for building a new version of the [REIMS](https://vosh.org/get-involved/vosh-fellow/suggested-reading/reims-system/) system.
 
-It is a work in progress and is primarily a notekeeper for the developer. It contains information for understanding the old REIMS and help on setting up REIMS2.
+It contains information for understanding the old REIMS and help on setting up and understanding REIMS2 from a developer's perspective..

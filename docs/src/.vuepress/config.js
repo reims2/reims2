@@ -34,15 +34,13 @@ module.exports = {
     repoLabel: false,
     sidebar: {
       '/dev/': [
-        
         {
           title: 'Overview',
           path: '/dev/',
           collapsable: false,
           children: [
-            'analysis', 
+            'philscore',
             'deploy',
-            'notes',
           ]
         },
         {
@@ -52,6 +50,15 @@ module.exports = {
           children: [
             'user-stories',
             'requirements',
+          ]
+        },
+        {
+          title: 'Other stuff',
+          path: '/dev/other.html',
+          collapsable: false,
+          children: [
+            'analysis', 
+            'notes',
           ]
         },
       ],
