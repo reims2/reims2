@@ -7,8 +7,8 @@ For deploying a complete instance of REIMS2 (with dokku), do the following **on 
 0. [Install ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 1. Install ansible dependencies with `ansible-galaxy install -r requirements.yml`
 2. Add your server **domain** in the existing `hosts` file
-3. Add your dokku deploy key (e.g. for GitHub actions) in subfolder `creds/deploy_key.pub` (or comment out the dokku_users stuff)
-4. Enter you AWS key+secret inside `reims.yml` for S3 backups (or just comment out the mysql:backup stuff)
+3. Optionally add your dokku deploy key (e.g. for GitHub actions) in subfolder `creds/deploy_key.pub` (or comment out the dokku_users stuff)
+4. Optionally enter you AWS key+secret inside `reims.yml` for S3 backups (or just comment out the mysql:backup stuff)
 5. Optionally place `dump.sql` in the main directory to restore the database
 
 Now deploy with:
@@ -30,9 +30,9 @@ But first create a file `creds/pub_keys` containing your SSH public keys for log
 ansible-playbook -i hosts setup.yml
 ```
 
-### Upload a new database dump
+### How to restore an old database dump
 
-_Uses local `dump.sql`_
+Copy the sql dump file to `dump.sql` in this folder. Then run the following command:
 
 ```bash
 ansible-playbook -i hosts --tags restore-mysql reims.yml
