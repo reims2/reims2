@@ -4,7 +4,8 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 
 ## Open Questions
 
-None
+- first image: Unclear why REIMS does produce this glasses at all, it's far outside the tolerances. But if you higher the tolerance, it'll give the same result as REIMS2.
+-
 
 ## Ideas
 
@@ -103,3 +104,11 @@ Most of them are just nice-to-have and could be done after the rewrite as a QOL 
 - Option to "relax axis tolerances" as in old REIMS is not required anymore
 - it's not really clear that the current score is the philscore
 - just copy the additional field from od to os, don't copy the rest
+
+## Meeting notes 11.9.
+
+- cylinder can be zero, but axis should be also zero, cylinder doesnt have to be minus,
+- spehre can be entered without +
+- axis can be entered as 0, but 180 is preferred
+- additional not required
+- multifocal everywhere
