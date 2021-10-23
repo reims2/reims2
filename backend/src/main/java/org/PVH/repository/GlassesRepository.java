@@ -15,6 +15,9 @@
  */
 package org.PVH.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.PVH.model.Glasses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,27 +26,20 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+public interface GlassesRepository extends JpaRepository<Glasses, Long>, CustomGlassesRepository, JpaSpecificationExecutor<Glasses> {
 
-public interface GlassesRepository  extends JpaRepository<Glasses, Long>, CustomGlassesRepository, JpaSpecificationExecutor<Glasses> {
-
-
-
-    Page<Glasses> findByDispensedAndGlassesTypeAndLocation(boolean dispensed,String location, String glassesType, Pageable pageable);
+    Page<Glasses> findByDispensedAndGlassesTypeAndLocation(boolean dispensed, String location, String glassesType, Pageable pageable);
 
     List<Glasses> findByGlassesTypeContaining(String glassesType, Sort sort);
 
     Optional<Glasses> findAllByIdAndLocation(long id, String location);
 
-    Page<Glasses>  findByDispensedAndLocation(Specification<Glasses> spec, Pageable pageable,boolean dispensed, String location);
-    Page<Glasses>  findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable);
+    Page<Glasses> findByDispensedAndLocation(Specification<Glasses> spec, Pageable pageable, boolean dispensed, String location);
+
+    Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable);
 
     Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
 
     Optional<Glasses> findByDispense_PreviousSkuAndLocation(int previousSku, String location);
-
-
 
 }

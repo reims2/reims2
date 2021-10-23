@@ -1,11 +1,12 @@
 package org.PVH.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "eye")
-public class Eye extends BaseEntity{
-
+public class Eye extends BaseEntity {
 
     @Column(name = "sphere")
     private float sphere;
@@ -18,7 +19,6 @@ public class Eye extends BaseEntity{
 
     @Column(name = "additional")
     private float add;
-
 
     public float getSphere() {
         return sphere;

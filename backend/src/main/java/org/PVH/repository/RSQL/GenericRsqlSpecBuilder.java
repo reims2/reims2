@@ -1,10 +1,10 @@
 package org.PVH.repository.RSQL;
 
-import org.springframework.data.jpa.domain.Specification;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.springframework.data.jpa.domain.Specification;
 
 import cz.jirutka.rsql.parser.ast.ComparisonNode;
 import cz.jirutka.rsql.parser.ast.LogicalNode;
@@ -25,19 +25,15 @@ public class GenericRsqlSpecBuilder<T> {
 
     public Specification<T> createSpecification(final LogicalNode logicalNode) {
 
-        List<Specification<T>> specs = logicalNode.getChildren()
-            .stream()
-            .map(node -> createSpecification(node))
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+        List<Specification<T>> specs = logicalNode.getChildren().stream().map(node -> createSpecification(node)).filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
         Specification<T> result = specs.get(0);
         if (logicalNode.getOperator() == LogicalOperator.AND) {
             for (int i = 1; i < specs.size(); i++) {
                 result = Specification.where(result).and(specs.get(i));
             }
-        }
-        else if (logicalNode.getOperator() == LogicalOperator.OR) {
+        } else if (logicalNode.getOperator() == LogicalOperator.OR) {
             for (int i = 1; i < specs.size(); i++) {
                 result = Specification.where(result).or(specs.get(i));
             }
@@ -47,7 +43,8 @@ public class GenericRsqlSpecBuilder<T> {
     }
 
     public Specification<T> createSpecification(final ComparisonNode comparisonNode) {
-        return Specification.where(new GenericRsqlSpecification<T>(comparisonNode.getSelector(), comparisonNode.getOperator(), comparisonNode.getArguments()));
+        return Specification.where(
+                new GenericRsqlSpecification<T>(comparisonNode.getSelector(), comparisonNode.getOperator(), comparisonNode.getArguments()));
     }
 
 }

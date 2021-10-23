@@ -16,12 +16,12 @@
 
 package org.PVH.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Vitaliy Fedoriv
@@ -45,12 +45,12 @@ public class ExceptionControllerAdvice {
 	}
 
 	private class ErrorInfo {
-	    public final String className;
-	    public final String exMessage;
+		public final String className;
+		public final String exMessage;
 
-	    public ErrorInfo(Exception ex) {
-	        this.className = ex.getClass().getName();
-	        this.exMessage = ex.getLocalizedMessage();
-	    }
+		public ErrorInfo(Exception ex) {
+			this.className = ex.getClass().getName();
+			this.exMessage = ex.getLocalizedMessage();
+		}
 	}
 }

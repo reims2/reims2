@@ -1,10 +1,5 @@
 package org.PVH.repository.jpa;
 
-import org.PVH.model.Glasses;
-import org.PVH.repository.CustomGlassesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Lock;
-
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -12,6 +7,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
+
+import org.PVH.model.Glasses;
+import org.PVH.repository.CustomGlassesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 
 public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
 

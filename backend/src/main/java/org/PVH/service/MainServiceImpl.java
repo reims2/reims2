@@ -20,7 +20,6 @@ import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Service
 public class MainServiceImpl implements MainService {
 
@@ -29,13 +28,11 @@ public class MainServiceImpl implements MainService {
     private DispenseRepository dispenseRepository;
 
     @Autowired
-     public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository) {
+    public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository) {
         this.glassesRepository = glassesRepository;
         this.eyeRepository = eyeRepository;
         this.dispenseRepository = dispenseRepository;
     }
-
-
 
     @Override
     @Transactional
@@ -43,13 +40,12 @@ public class MainServiceImpl implements MainService {
         Optional<Glasses> glasses = null;
         try {
             glasses = glassesRepository.findById(glassesId);
-        } catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
+        } catch (ObjectRetrievalFailureException | EmptyResultDataAccessException e) {
             // just ignore not found exceptions for Jdbc/Jpa realization
             return null;
         }
         return glasses;
     }
-
 
     @Override
     @Transactional
@@ -57,11 +53,11 @@ public class MainServiceImpl implements MainService {
         eyeRepository.save(glasses.getOs());
         eyeRepository.save(glasses.getOd());
         Dispense dispense = new Dispense(null);
-        //If dispense is already set...
-        if(glasses.getDispense()!=null)
+        // If dispense is already set...
+        if (glasses.getDispense() != null)
             dispenseRepository.save(glasses.getDispense());
         else {
-            //Else set dispense null in Dispense Table
+            // Else set dispense null in Dispense Table
             dispenseRepository.save(dispense);
             glasses.setDispense(dispense);
         }
@@ -96,20 +92,19 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Optional<Glasses> findAllByIdAndLocation(long id,String location) {
-        return glassesRepository.findAllByIdAndLocation(id,location);
+    public Optional<Glasses> findAllByIdAndLocation(long id, String location) {
+        return glassesRepository.findAllByIdAndLocation(id, location);
     }
 
     @Override
     public Optional<Glasses> findAllBySkuAndLocation(int sku, String location) {
-        return  glassesRepository.findAllBySkuAndLocation(sku,location);
+        return glassesRepository.findAllBySkuAndLocation(sku, location);
     }
 
     @Override
     public Optional<Glasses> findAllByPreviousSkuAndLocation(int previousSku, String location) {
-        return  glassesRepository.findByDispense_PreviousSkuAndLocation(previousSku,location);
+        return glassesRepository.findByDispense_PreviousSkuAndLocation(previousSku, location);
     }
-
 
     @Override
     @Transactional
@@ -117,18 +112,19 @@ public class MainServiceImpl implements MainService {
         return glassesRepository.findAll(pageable);
     }
 
-
     @Override
-    public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec) throws DataAccessException {
-        List<Glasses> allItems = glassesRepository.findAll(spec,pageable).stream().filter(glasses -> glasses.isDispensed()==dispensed && glasses.getLocation().equals(location)).collect(Collectors.toList());
+    public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec)
+            throws DataAccessException {
+        List<Glasses> allItems = glassesRepository.findAll(spec, pageable).stream()
+                .filter(glasses -> glasses.isDispensed() == dispensed && glasses.getLocation().equals(location))
+                .collect(Collectors.toList());
         return new PageImpl<>(allItems);
 
     }
 
     @Override
     public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException {
-        return glassesRepository.findByDispensedAndLocation(dispensed,location,pageable);
+        return glassesRepository.findByDispensedAndLocation(dispensed, location, pageable);
     }
-
 
 }
