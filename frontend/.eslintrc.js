@@ -23,6 +23,7 @@ module.exports = {
     'no-warning-comments': 'warn',
     'vue/valid-v-slot': ['error', { allowModifiers: true }], // false positives for vuetify
     'vue/html-quotes': 'off', // doesn't work properly
-    'space-before-function-paren': ['warn', 'never'] // no space before function parentheses because that looks weird
+    'space-before-function-paren': ['warn', 'never'], // no space before function parentheses because that looks weird
+    'no-console': 'off'
   }
 }

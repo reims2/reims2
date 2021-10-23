@@ -59,8 +59,7 @@ export default {
     async userLogin() {
       this.errorText = ''
       try {
-        const response = await this.$auth.loginWith('local', { data: { username: this.username, password: this.password } })
-        this.$auth.setUser({ id: response.data.id, roles: response.data.roles, username: response.data.username })
+        await this.$auth.loginWith('local', { data: { username: this.username, password: this.password } })
       } catch (err) {
         console.log(err)
         this.errorText = `Login failed (Error ${err.status})`
