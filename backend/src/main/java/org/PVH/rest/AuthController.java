@@ -1,27 +1,28 @@
 package org.PVH.rest;
 
-import cz.jirutka.rsql.parser.RSQLParser;
-import cz.jirutka.rsql.parser.ast.Node;
+import java.security.Principal;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
 import org.PVH.model.ERole;
-import org.PVH.model.Glasses;
 import org.PVH.model.Role;
 import org.PVH.model.User;
 import org.PVH.payload.request.LoginRequest;
-import org.PVH.payload.request.SignupRequest;
 import org.PVH.payload.response.JwtResponse;
 import org.PVH.payload.response.MessageResponse;
-import org.PVH.repository.RSQL.CustomRsqlVisitor;
 import org.PVH.repository.RoleRepository;
 import org.PVH.repository.UserRepository;
 import org.PVH.security.jwt.JwtUtils;
 import org.PVH.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,14 +31,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-
-import java.security.Principal;
-import java.util.*;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -81,16 +82,12 @@ public class AuthController {
 
     @PreAuthorize("permitAll")
     @RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<?> getCurrentUserInfo(Principal userPrincipal) {
-        // todo das hat thomas hier mal eben reingepfuscht, guck mal ob das so richtig ist
+    public User getCurrentUserInfo(Principal userPrincipal) {
         Optional<User> user = userRepository.findByUsername(userPrincipal.getName());
-        if (user.isEmpty()) {
-            return new ResponseEntity<String>("User was not found.", HttpStatus.NOT_FOUND);
-        }
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("username", user.get().getUsername());
-        map.put("roles", user.get().getRoles().stream().map(item -> item.getName()).collect(Collectors.toList()));
-        return new ResponseEntity(map, HttpStatus.OK);
+        if (user.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found.");
+
+        return user.get();
     }
 
     @PostMapping("/signup")
@@ -138,49 +135,13 @@ public class AuthController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> getAllUsersPage(@RequestParam(value = "search", required = false) String search,
-                                                               @RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "3") int size,
-                                                               @RequestParam(defaultValue = "username,desc") String[] sort) {
+    public Collection<User> getAllUsersPage() {
+        Collection<User> users = userRepository.findAll();
 
-        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        if (users.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        if (sort[0].contains(",")) {
-            // will sort more than 2 fields
-            // sortOrder="field, direction"
-            for (String sortOrder : sort) {
-                String[] _sort = sortOrder.split(",");
-                orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
-            }
-        } else {
-            // sort=[SKU, desc]
-            orders.add(new Sort.Order(getSortDirection(sort[1]), sort[0]));
-        }
-        Collection<User> users = new ArrayList<User>();
-        Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
-//        Specification<Glasses> spec = builder.build();
-        Page<User> pageUser;
-        if(search==null){
-            pageUser = userRepository.findAll(pagingSort);
-        }else {
-            Node rootNode = new RSQLParser().parse(search);
-            Specification<User> spec = rootNode.accept(new CustomRsqlVisitor<User>());
-            pageUser = userRepository.findAll(spec, pagingSort);
-        }
-
-        users = pageUser.getContent();
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("glasses", users);
-        response.put("currentPage", pageUser.getNumber());
-        response.put("totalItems", pageUser.getTotalElements());
-        response.put("totalPages", pageUser.getTotalPages());
-
-        if (users.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return users;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -195,13 +156,4 @@ public class AuthController {
         return new ResponseEntity<String>("User Deleted",HttpStatus.NO_CONTENT);
     }
 
-    private Sort.Direction getSortDirection(String direction) {
-        if (direction.equals("asc")) {
-            return Sort.Direction.ASC;
-        } else if (direction.equals("desc")) {
-            return Sort.Direction.DESC;
-        }
-
-        return Sort.Direction.ASC;
-    }
 }
