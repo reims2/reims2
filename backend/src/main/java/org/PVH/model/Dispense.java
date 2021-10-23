@@ -1,9 +1,12 @@
 package org.PVH.model;
 
-import org.hibernate.annotations.UpdateTimestamp;
-
-import javax.persistence.*;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "dispense")
@@ -16,9 +19,10 @@ public class Dispense extends BaseEntity {
     @Column(name = "previous_sku")
     private Integer previousSku;
 
-    public Dispense(Date modifyDate){
+    public Dispense(Date modifyDate) {
         this.modifyDate = modifyDate;
     }
+
     public Dispense() {
 
     }

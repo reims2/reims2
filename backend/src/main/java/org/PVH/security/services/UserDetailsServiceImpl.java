@@ -1,5 +1,6 @@
 package org.PVH.security.services;
 
+import javax.transaction.Transactional;
 
 import org.PVH.model.User;
 import org.PVH.repository.UserRepository;
@@ -9,12 +10,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
-    UserRepository userRepository;
+	UserRepository userRepository;
 
 	@Override
 	@Transactional

@@ -18,12 +18,12 @@ package org.PVH.util;
 
 import java.util.Collection;
 
-import org.springframework.orm.ObjectRetrievalFailureException;
 import org.PVH.model.BaseEntity;
+import org.springframework.orm.ObjectRetrievalFailureException;
 
 /**
- * Utility methods for handling entities. Separate from the BaseEntity class mainly because of dependency on the
- * ORM-associated ObjectRetrievalFailureException.
+ * Utility methods for handling entities. Separate from the BaseEntity class mainly because of dependency on the ORM-associated
+ * ObjectRetrievalFailureException.
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
@@ -42,7 +42,7 @@ public abstract class EntityUtils {
      * @throws ObjectRetrievalFailureException if the entity was not found
      */
     public static <T extends BaseEntity> T getById(Collection<T> entities, Class<T> entityClass, int entityId)
-        throws ObjectRetrievalFailureException {
+            throws ObjectRetrievalFailureException {
         for (T entity : entities) {
             if (entity.getId() == entityId && entityClass.isInstance(entity)) {
                 return entity;

@@ -1,6 +1,6 @@
 package org.PVH.model;
 
-public class DispenseBoolean  {
+public class DispenseBoolean {
     public boolean isDispensed() {
         return dispensed;
     }

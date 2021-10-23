@@ -8,7 +8,6 @@ import javax.persistence.MappedSuperclass;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @MappedSuperclass
 public class BaseEntity {
     @Id
@@ -22,6 +21,7 @@ public class BaseEntity {
     public void setId(Long id) {
         this.id = id;
     }
+
     @JsonIgnore
     public boolean isNew() {
         return this.id == null;

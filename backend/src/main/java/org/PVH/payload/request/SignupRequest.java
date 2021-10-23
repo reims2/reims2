@@ -1,11 +1,9 @@
 package org.PVH.payload.request;
 
-import org.PVH.model.Role;
+import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.List;
-import java.util.Set;
 
 public class SignupRequest {
     @NotBlank
@@ -25,7 +23,6 @@ public class SignupRequest {
     public void setUsername(String username) {
         this.username = username;
     }
-
 
     public String getPassword() {
         return password;

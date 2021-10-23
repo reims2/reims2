@@ -45,40 +45,35 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/auth")
 @ConditionalOnProperty(name = "pvh.security.enable", havingValue = "true")
 public class AuthController {
-	@Autowired
-	AuthenticationManager authenticationManager;
+    @Autowired
+    AuthenticationManager authenticationManager;
 
-	@Autowired
+    @Autowired
     UserRepository userRepository;
 
     @Autowired
     RoleRepository roleRepository;
 
-	@Autowired
-	PasswordEncoder encoder;
+    @Autowired
+    PasswordEncoder encoder;
 
-	@Autowired
+    @Autowired
     JwtUtils jwtUtils;
 
-	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
-				.collect(Collectors.toList());
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
 
-		return ResponseEntity.ok(new JwtResponse(jwt,
-												 userDetails.getId(),
-												 userDetails.getUsername(),
-												 roles));
-	}
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
+    }
 
     @PreAuthorize("permitAll")
     @RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/json")
@@ -94,35 +89,32 @@ public class AuthController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                .badRequest()
-                .body(new MessageResponse("Error: Username is already taken!"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-            encoder.encode(signUpRequest.getPassword()));
+        User user = new User(signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()));
 
         Set<Role> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role.getName()) {
-                    case ROLE_ADMIN:
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN.name())
+                case ROLE_ADMIN:
+                    Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
+                    roles.add(adminRole);
 
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
+                    break;
+                default:
+                    Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
+                    roles.add(userRole);
                 }
             });
         }
@@ -147,13 +139,13 @@ public class AuthController {
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
     @Transactional
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id){
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
         Optional<User> user = userRepository.findById(id);
-        if(user.isEmpty()){
-            return new ResponseEntity<String>("User was not found.",HttpStatus.NOT_FOUND);
+        if (user.isEmpty()) {
+            return new ResponseEntity<String>("User was not found.", HttpStatus.NOT_FOUND);
         }
         userRepository.delete(user.get());
-        return new ResponseEntity<String>("User Deleted",HttpStatus.NO_CONTENT);
+        return new ResponseEntity<String>("User Deleted", HttpStatus.NO_CONTENT);
     }
 
 }
