@@ -31,7 +31,7 @@ export default {
       const list = [
         { title: 'Create reports', icon: mdiChartBox, to: '/manage/reports' }
       ]
-      if (this.$auth.user.roles && this.$auth.user.roles.includes('ADMIN')) list.push({ title: 'Manage users', icon: mdiAccountEdit, to: '/manage/users' })
+      if (this.$auth.user.roles && this.$auth.user.roles.map(el => el.name).includes('ROLE_ADMIN')) list.push({ title: 'Manage users', icon: mdiAccountEdit, to: '/manage/users' })
       return list
     }
   }

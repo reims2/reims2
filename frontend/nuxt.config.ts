@@ -119,8 +119,7 @@ const config: NuxtConfig = {
           property: 'accessToken'
         },
         user: {
-          property: false,
-          autoFetch: false
+          property: false
         },
         endpoints: {
           user: { url: '/api/auth/user' },
