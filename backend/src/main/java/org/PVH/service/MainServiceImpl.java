@@ -9,6 +9,7 @@ import org.PVH.model.Glasses;
 import org.PVH.repository.DispenseRepository;
 import org.PVH.repository.EyeRepository;
 import org.PVH.repository.GlassesRepository;
+import org.PVH.util.GlassesSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -102,11 +103,6 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Optional<Glasses> findAllByPreviousSkuAndLocation(int previousSku, String location) {
-        return glassesRepository.findByDispense_PreviousSkuAndLocation(previousSku, location);
-    }
-
-    @Override
     @Transactional
     public Page<Glasses> findAllGlasses(Pageable pageable) throws DataAccessException {
         return glassesRepository.findAll(pageable);
@@ -115,16 +111,14 @@ public class MainServiceImpl implements MainService {
     @Override
     public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec)
             throws DataAccessException {
-        List<Glasses> allItems = glassesRepository.findAll(spec, pageable).stream()
-                .filter(glasses -> glasses.isDispensed() == dispensed && glasses.getLocation().equals(location))
-                .collect(Collectors.toList());
-        return new PageImpl<>(allItems);
+        return glassesRepository.findAll(
+                Specification.where(spec).and(GlassesSpecs.hasLocation(location)).and(GlassesSpecs.isDispensed(dispensed)), pageable);
 
     }
 
     @Override
     public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException {
-        return glassesRepository.findByDispensedAndLocation(dispensed, location, pageable);
+        return findByDispensedAndLocation(dispensed, location, pageable, null);
     }
 
 }

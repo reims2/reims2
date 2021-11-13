@@ -9,7 +9,7 @@
             "name": "Launch PVHApplication",
             "request": "launch",
             "mainClass": "org.PVH.PVHApplication",
-            "projectName": "spring-petclinic-rest"
+            "projectName": "spring-pvh-rest"
         }
     ]
 }

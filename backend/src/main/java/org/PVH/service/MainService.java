@@ -24,8 +24,6 @@ public interface MainService {
 
     Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
 
-    Optional<Glasses> findAllByPreviousSkuAndLocation(int previousSku, String location);
-
     Page<Glasses> findAllGlasses(Pageable pageable) throws DataAccessException;
 
     Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec)
