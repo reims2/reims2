@@ -42,7 +42,6 @@ public class Glasses extends BaseEntity {
     @Column(name = "creation_date")
     private Date creationDate;
 
-    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "dispense_id")
     private Dispense dispense;

@@ -63,7 +63,7 @@ public class GlassesRestController {
     @RequestMapping(method = RequestMethod.GET, value = "/{location}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getAllGlassesPage(@RequestParam(value = "search", required = false) String search,
-            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "sku,desc") String[] sort, @PathVariable("location") String location) {
 
         List<Order> orders = new ArrayList<Order>();
@@ -102,6 +102,20 @@ public class GlassesRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @RequestMapping(method = RequestMethod.GET, value = "/dispensed/{location}")
+    @ResponseBody
+    public Collection<Glasses> getAllGlassesPage(@RequestParam Optional<Date> startDate, @RequestParam Optional<Date> endDate,
+            @PathVariable("location") String location) {
+
+        Collection<Glasses> glasses = mainService.findDispensedBetween(startDate.get(), endDate.get(), location);
+
+        if (glasses.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return glasses;
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")

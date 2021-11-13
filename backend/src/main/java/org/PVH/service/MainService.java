@@ -1,5 +1,7 @@
 package org.PVH.service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.PVH.model.Glasses;
@@ -30,5 +32,7 @@ public interface MainService {
             throws DataAccessException;
 
     Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException;
+
+    List<Glasses> findDispensedBetween(Date startDate, Date endDate, String location);
 
 }

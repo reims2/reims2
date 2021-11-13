@@ -1,5 +1,6 @@
 package org.PVH.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -119,6 +120,12 @@ public class MainServiceImpl implements MainService {
     @Override
     public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException {
         return findByDispensedAndLocation(dispensed, location, pageable, null);
+    }
+
+    @Override
+    public List<Glasses> findDispensedBetween(Date startDate, Date endDate, String location) {
+        return glassesRepository.findAll(Specification.where(GlassesSpecs.hasLocation(location)).and(GlassesSpecs.isDispensed(true))
+                .and(GlassesSpecs.dispensedInRange(startDate, endDate)));
     }
 
 }
