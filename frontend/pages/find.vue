@@ -96,7 +96,7 @@
           </div>
           <div class="mt-2 text-right">
             <a
-              :href="matchesAsCSVUri"
+              :href="_matchesAsCSVUri"
               target="_blank"
               class="text--secondary text-caption"
               download='matches.csv'
@@ -113,6 +113,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { matchesAsCsvUri } from '../lib/util'
 
 export default {
   transition: 'main',
@@ -144,25 +145,9 @@ export default {
     }
   },
   computed: {
-    matchesAsCSVUri() {
+    _matchesAsCSVUri() {
       if (!this.matches) return ''
-      const csvRows = this.matches.slice(0, 30).map((glass) => {
-        let row = ''
-        row += glass.sku + ';'
-        row += glass.od.sphere + ';'
-        row += glass.od.cylinder + ';'
-        row += glass.od.axis + ';'
-        row += glass.od.add + ';'
-        row += glass.os.sphere + ';'
-        row += glass.os.cylinder + ';'
-        row += glass.os.axis + ';'
-        row += glass.os.add + ';'
-        row += glass.score.toFixed(3)
-        return row
-      })
-      // add header
-      csvRows.unshift('"SKU";"OD sphere";"OD cylinder";"OD axis";"OD additional";"OS sphere";"OS cylinder";"OS axis";"OS additional";"PhilScore"')
-      return 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
+      return matchesAsCsvUri(this.matches.slice(0, 30))
     }
   },
   watch: {

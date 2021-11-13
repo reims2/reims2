@@ -132,8 +132,8 @@
 <script>
 import { mapActions } from 'vuex'
 import * as chroma from '../lib/chroma'
+import { deepCopyGlasses, eyeRules, generalEyeData } from '../lib/util'
 import EditableSpan from './EditableSpan.vue'
-import { deepCopyGlasses, eyeRules, generalEyeData } from '~/lib/util'
 
 export default {
   components: { EditableSpan },

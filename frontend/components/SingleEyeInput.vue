@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { eyeRules } from '~/lib/util'
+import { eyeRules } from '../lib/util'
 export default {
   props: {
     value: {

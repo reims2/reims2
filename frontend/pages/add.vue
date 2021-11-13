@@ -99,7 +99,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { generalEyeData } from '~/lib/util'
+import { generalEyeData } from '../lib/util'
 export default {
   transition: 'main',
   data: () => ({

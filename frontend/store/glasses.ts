@@ -23,7 +23,8 @@ export const ActionType = {
   UNDISPENSE_GLASSES: 'undispense',
   DELETE_GLASSES: 'delete',
   EDIT_GLASSES: 'edit',
-  PHIL_SCORE: 'philScore'
+  PHIL_SCORE: 'philScore',
+  LOAD_DISPENSED_GLASSES: 'loadDispensed'
 }
 export const actions: ActionTree<GlassesState, RootState> = {
   async [ActionType.ADD_GLASSES]({ commit, rootState }, newGlasses:Glasses) {
@@ -66,5 +67,11 @@ export const actions: ActionTree<GlassesState, RootState> = {
   },
   [ActionType.PHIL_SCORE]({ rootState }, eyeModel) {
     return calculateAllPhilscore(eyeModel, rootState.allGlasses || [])
+  },
+
+  async [ActionType.LOAD_DISPENSED_GLASSES]({ rootState }, { startDate, endDate }) {
+    const params:any = { startDate, endDate }
+    const data = await this.$axios.$get(`/api/glasses/dispensed/${rootState.location}`, { params })
+    return data
   }
 }
