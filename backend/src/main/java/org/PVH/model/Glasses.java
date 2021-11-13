@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,6 +32,7 @@ public class Glasses extends BaseEntity {
     private String appearance;
 
     @Column(name = "location")
+    @Pattern(regexp = "sm|sa")
     private String location;
 
     @Column(name = "dispensed")
