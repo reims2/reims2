@@ -4,8 +4,9 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 
 ## Open Questions
 
-- first image: Unclear why REIMS does produce this glasses at all, it's far outside the tolerances. But if you higher the tolerance, it'll give the same result as REIMS2.
--
+- Invalid SKUs I had to delete: https://github.com/reims2/reims_dbf_extractor/blob/main/reims_dbf_extractor.py#L10-L16
+- Go through algorithm or show docs
+- It's maybe possible to improve algorithm
 
 ## Ideas
 

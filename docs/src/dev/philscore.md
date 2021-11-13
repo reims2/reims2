@@ -1,8 +1,8 @@
 # How the matching works
 
-[Analysis of the old philscore algorithm here](./analysis#philscore). It was slightly simplified because we don't have to save computing power anymore like 20 years ago.
+This page describes how the matching currently works. It starts with a high level overview of the process and then describes each part in more detail.
 
-[Link to the code](https://github.com/friends-of-asaprosar/reims2-frontend/blob/main/lib/philscore.ts)
+The corresponding [code can be found here](https://github.com/reims2/reims2-frontend/blob/main/lib/philscore.ts).
 
 **Glossary**
 
@@ -13,13 +13,13 @@
 ## High-level overview
 
 1. Filter glasses by type (either single or multifocal)
-2. Filter out glasses with wrong OD axis ([`checkForAxisTolerance`](#checkforaxistolerance))
-3. Filter out glasses with wrong OS axis ([`checkForAxisTolerance`](#checkforaxistolerance))
-4. If multifocal: Filter out glasses which lens additional is more than 0.5 different to the desired additional.
-5. Calculate OD PhilScore ([`calcSingleEyePhilscore`](#calcsingleeyephilscore))
-6. Calculate OS Philscore ([`calcSingleEyePhilscore`](#calcsingleeyephilscore))
-7. Sum OD+OS philscore
-8. Remove any glasses with a PhilScore greater than 4
+2. Filter out glasses with wrong OD or OS axis ([`checkForAxisTolerance`](#checkforaxistolerance))
+3. If multifocal: Filter out glasses which lens' `additional` is more than 0.5 different to the desired `additional`.
+4. Calculate OD PhilScore ([`calcSingleEyePhilscore`](#calcsingleeyephilscore))
+5. Calculate OS Philscore ([`calcSingleEyePhilscore`](#calcsingleeyephilscore))
+6. Sum OD+OS philscore
+7. Remove any glasses with a PhilScore greater than 4
+8. Done, you now have a list of glasses that match
 
 ## checkForAxisTolerance
 
@@ -62,3 +62,7 @@ Important note: The score get's improved only if it's not smaller 0 after the im
 - Use a better (=> heigher) weigth for the additional delta in the initial Philscore. That way we can avoid the filtering by additional.
 - Use a better weigth (maybe even nonlinear based on lens cylinder) for the axis, so we can avoid the filtering by axis.
 - Also improve the score for multifocals based on the sphere+cylinder transformation, no clue why it's currently not the case.
+
+## Further reading
+
+- Here is an [analysis of the previous philscore algorithm](./analysis#philscore). We don't use the exact algorithm anymore because it was possible to simplify a lot of things nowadays due to more computing power available. The output should stay the same though.
