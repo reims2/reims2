@@ -8,3 +8,7 @@
 .main-leave-to {
   opacity: 0;
 }
+
+.no-decoration {
+  text-decoration: none;
+}

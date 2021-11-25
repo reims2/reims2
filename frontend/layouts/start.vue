@@ -3,6 +3,8 @@
     <v-main>
       <nuxt />
     </v-main>
-    <app-footer />
+    <app-footer
+      :show-last-update=false
+    />
   </v-app>
 </template>

@@ -18,7 +18,7 @@ export default {
   },
   watch: {
     lastRefresh() {
-      if (this.lastRefresh) this.generateTimeString()
+      this.generateTimeString()
     }
   },
   created() {
@@ -30,7 +30,11 @@ export default {
   },
   methods: {
     generateTimeString() {
-      this.lastRefreshString = this.$dayjs().to(this.lastRefresh)
+      if (!this.lastRefresh) {
+        this.lastRefreshString = ': none yet'
+      } else {
+        this.lastRefreshString = this.$dayjs().to(this.lastRefresh)
+      }
     }
   }
 

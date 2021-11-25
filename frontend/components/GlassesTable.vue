@@ -17,7 +17,9 @@
     @update:options="startLoading"
   >
     <template v-if="$vuetify.breakpoint.mobile" #item={item}>
-      <glass-card :glass="item" class="pa-2 py-0" />
+      <div class="mx-2 pb-1">
+        <glass-card :glass="item" />
+      </div>
     </template>
     <template v-if="!$vuetify.breakpoint.mobile" #body.prepend>
       <tr>

@@ -6,9 +6,15 @@
     app
   >
     <template #prepend>
-      <h2 class="text-h4 mt-4 mx-3" :style="miniDrawer ? 'visibility:hidden;': ''">
-        REIMS2
-      </h2>
+      <div class="mt-4 mx-3">
+        <NuxtLink
+          class="text-h4 no-decoration"
+          :style="miniDrawer ? 'visibility:hidden;': ''"
+          to="/"
+        >
+          REIMS2
+        </NuxtLink>
+      </div>
       <div v-if="$auth.loggedIn && $auth.user" class="text--secondary mx-3 mb-2" :style="miniDrawer ? 'visibility:hidden;': ''">
         Logged in as <span class="font-weight-bold">{{ $auth.user.username }}</span>
       </div>
@@ -108,7 +114,6 @@ export default {
     return {
       mdiLogout,
       mdiFileDocument,
-      refreshGlassesInterval: '',
       locations: [
         { text: 'San Miguel', value: 'sm' },
         { text: 'Santa Ana', value: 'sa' }
@@ -136,13 +141,6 @@ export default {
       set() { }
     },
     ...mapState(['drawer'])
-  },
-  created() {
-    this.$store.dispatch('loadGlasses')
-    this.refreshGlassesInterval = setInterval(() => this.$store.dispatch('loadGlasses'), 5 * 60 * 1000)
-  },
-  beforeDestroy() {
-    clearInterval(this.refreshGlassesInterval)
   }
 }
 </script>

@@ -21,9 +21,10 @@ export default {
     mainItems: [
       { title: 'Find', icon: mdiMagnify, to: '/find' },
       { title: 'Edit', icon: mdiPencil, to: '/edit' },
-      { title: 'View all', icon: mdiDatabase, to: '/data' },
+      { title: 'View all', icon: mdiDatabase, to: '/view' },
       { title: 'Add', icon: mdiPlusCircleOutline, to: '/add' }
-    ]
+    ],
+    refreshGlassesInterval: ''
 
   }),
   computed: {
@@ -34,6 +35,13 @@ export default {
       if (this.$auth.user.roles && this.$auth.user.roles.map(el => el.name).includes('ROLE_ADMIN')) list.push({ title: 'Manage users', icon: mdiAccountEdit, to: '/manage/users' })
       return list
     }
+  },
+  created() {
+    this.$store.dispatch('loadGlasses')
+    this.refreshGlassesInterval = setInterval(() => this.$store.dispatch('loadGlasses'), 5 * 60 * 1000)
+  },
+  beforeDestroy() {
+    clearInterval(this.refreshGlassesInterval)
   }
 }
 </script>
