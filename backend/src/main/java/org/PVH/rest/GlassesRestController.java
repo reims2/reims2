@@ -109,23 +109,23 @@ public class GlassesRestController {
     @ResponseBody
     public Collection<Glasses> getAllGlassesPage(@RequestParam Optional<Date> startDate, @RequestParam Optional<Date> endDate,
             @PathVariable("location") String location) {
+        Collection<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)), endDate.orElse(new Date()), location);
 
-        Collection<Glasses> glasses = mainService.findDispensedBetween(startDate.get(), endDate.get(), location);
-
-        if (glasses.isEmpty()) {
+        if (glasses.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+
         return glasses;
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @RequestMapping(value = "/{location}/{sku}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<Glasses> getGlasses(@PathVariable("sku") int sku, @PathVariable("location") String location) {
+    public Glasses getGlasses(@PathVariable("sku") int sku, @PathVariable("location") String location) {
         Optional<Glasses> glasses = this.mainService.findAllBySkuAndLocation(sku, location);
-        if (glasses.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Glasses>(glasses.get(), HttpStatus.OK);
+
+        if (glasses.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        return glasses.get();
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -191,7 +191,8 @@ public class GlassesRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
         }
         if (currentGlasses.get().isDispensed()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "entity already dispensed");
+            // send 204 because content is not modified https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "entity already dispensed");
         }
 
         currentGlasses.get().setDispensed(true);
@@ -220,9 +221,8 @@ public class GlassesRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
         }
         if (!currentGlasses.get().isDispensed()) {
-            throw new ResponseStatusException(
-                    // send 204 because content is not modified https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4
-                    HttpStatus.NO_CONTENT, "entity already undispensed!");
+            // send 204 because content is not modified https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "entity already undispensed");
         }
         Optional<Glasses> testGlasses = this.mainService.findAllBySkuAndLocation(currentGlasses.get().getDispense().getPreviousSku(),
                 currentGlasses.get().getLocation());
