@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
   transition: 'main',
   data: () => ({
@@ -106,8 +106,11 @@ export default {
     ...mapState({
       glasses: state => state.allGlasses
     }),
+    ...mapGetters({
+      getSingle: 'glasses/getSingle'
+    }),
     selected() {
-      return this.glasses.filter(el => this.sku && el.sku === this.sku)[0] // todo replace with getter in store
+      return this.getSingle(this.sku)
     },
     hint() {
       if (this.selected) {
@@ -127,6 +130,14 @@ export default {
         this.$store.dispatch('glasses/fetchSingle', this.sku)
       }
       this.errorMesssage = []
+    }
+  },
+  activated() {
+    console.log('activated')
+    if (this.$route.query.sku) {
+      this.$nextTick(() => {
+        this.sku = this.$route.query.sku
+      })
     }
   },
   methods: {

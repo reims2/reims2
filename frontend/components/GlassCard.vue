@@ -60,7 +60,7 @@
             </v-tooltip>
           </span>
         </v-card-subtitle>
-        <v-card-text :class="[noActions ? '' :'py-0']">
+        <v-card-text class="py-0">
           <v-container class="text--primary pa-0">
             <v-row dense>
               <v-col v-for="eye in eyes" :key="eye.key" cols=6>
@@ -104,7 +104,7 @@
             </v-row>
           </v-container>
         </v-card-text>
-        <v-card-actions v-if="!noActions" class="pt-0 mx-0">
+        <v-card-actions class="pt-0 mx-0">
           <v-btn
             v-if="editable && edit == ''"
             text
@@ -142,10 +142,6 @@ export default {
       type: Object,
       required: true
     },
-    noActions: {
-      type: Boolean,
-      default: false
-    },
     editable: {
       type: Boolean,
       default: false
@@ -168,7 +164,7 @@ export default {
   }),
   computed: {
     eyeData() {
-      const data = {
+      const tempData = {
         sphere: {
           label: 'SPH',
           format: v => this.formatNumber(v, 2),
@@ -187,13 +183,13 @@ export default {
         }
       }
       if (this.glass.glassesType !== 'single') {
-        data.add = {
+        tempData.add = {
           label: 'Add',
           format: v => this.formatNumber(v, 2),
           suffix: 'D'
         }
       }
-      return data
+      return tempData
     }
   },
   watch: {

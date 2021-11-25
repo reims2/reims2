@@ -86,7 +86,18 @@
             v-for="item in matches.slice(itemsPerPage*(page-1),itemsPerPage*(page-1)+itemsPerPage)"
             :key="item.sku"
             :glass="item"
-          />
+          >
+            <template #actions>
+              <v-btn
+                nuxt
+                :to="{path:'/edit', query: { sku: item.sku }}"
+                text
+                class="mx-0"
+              >
+                Open Glasses
+              </v-btn>
+            </template>
+          </glass-card>
           <div class="text-center">
             <v-pagination
               v-model="page"
@@ -98,9 +109,8 @@
             <a
               :href="_matchesAsCSVUri"
               target="_blank"
-              class="text--secondary text-caption"
+              class="text--secondary text-caption no-decoration"
               download='matches.csv'
-              style="text-decoration: none;"
             >
               Download as CSV
             </a>

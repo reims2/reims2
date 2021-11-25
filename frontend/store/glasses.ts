@@ -1,4 +1,4 @@
-import type { ActionTree, MutationTree } from 'vuex'
+import type { ActionTree, MutationTree, GetterTree } from 'vuex'
 import { RootState } from '.'
 import { MutationType as IndexMutationType } from './index'
 import { Glasses } from '~/model/GlassesModel'
@@ -14,6 +14,15 @@ export const state = (): GlassesState => ({
 export const MutationType = {
 }
 export const mutations: MutationTree<GlassesState> = {
+}
+
+export const GettersType = {
+  GET_SINGLE_GLASS: 'getSingle'
+}
+export const getters: GetterTree<GlassesState, RootState> = {
+  [GettersType.GET_SINGLE_GLASS]: (_state: GlassesState, _getters: GetterTree<GlassesState, RootState>, rootState: RootState) => (sku: number) => {
+    return rootState.allGlasses.find(glass => glass.sku === sku)
+  }
 }
 
 export const ActionType = {
