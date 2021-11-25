@@ -1,12 +1,13 @@
-import { Glasses, Eye } from '~/model/GlassesModel'
+import { sanitizeEyeValues, propsAsNumber } from '~/lib/util'
+import { Glasses } from '~/model/GlassesModel'
 
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 4
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
-  const rxOd = sanitizeValues(terms.od)
-  const rxOs = sanitizeValues(terms.os)
+  const rxOd = sanitizeEyeValues(terms.od)
+  const rxOs = sanitizeEyeValues(terms.os)
 
   return glasses.slice()
     .filter(glass => (terms.glassesType === glass.glassesType))
@@ -116,23 +117,4 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
     score = subtractScore(score, diff) */
 
   return score
-}
-
-function propsAsNumber(obj:any):Record<string, number> {
-  const temp = JSON.parse(JSON.stringify(obj))
-  Object.keys(temp).forEach((k) => { temp[k] = Number(temp[k]) })
-  return temp
-}
-
-function sanitizeValues(singleEye: Eye) {
-  const rx = propsAsNumber(singleEye)
-  // easier for calculation
-  if (rx.axis === 180) rx.axis = 0
-  // user input could have been 1.2 instead of 1.25, so do rounding
-  for (const prop of ['sphere', 'cylinder', 'additional']) {
-    rx[prop] = Math.ceil(Math.abs(rx[prop]) / 0.25) * 0.25
-  }
-  // user input could have been positive, convert to negative
-  rx.cylinder = -Math.abs(rx.cylinder)
-  return rx
 }

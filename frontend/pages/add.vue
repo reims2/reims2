@@ -99,7 +99,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { generalEyeData } from '../lib/util'
+import { generalEyeData, sanitizeEyeValues } from '../lib/util'
 export default {
   transition: 'main',
   data: () => ({
@@ -141,15 +141,8 @@ export default {
     async submit() {
       if (this.valid) {
         this.loading = true
-        const newOd = {}
-        const newOs = {}
-        for (const key of Object.keys(this.odEye)) {
-          // copy to new object (thanks js) and convert to Number at once
-          newOd[key] = Number(this.odEye[key])
-          newOs[key] = Number(this.osEye[key])
-        }
-        this.glassModel.od = newOd
-        this.glassModel.os = newOs
+        this.glassModel.od = sanitizeEyeValues(this.odEye)
+        this.glassModel.os = sanitizeEyeValues(this.osEye)
         try {
           const newGlasses = await this.addGlasses(this.glassModel)
           this.lastAdded.unshift(newGlasses)

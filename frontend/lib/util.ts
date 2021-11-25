@@ -1,5 +1,5 @@
 import { mdiArrowLeftRight, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
-import { Glasses } from '~/model/GlassesModel'
+import { Glasses, Eye } from '~/model/GlassesModel'
 
 const isAllowedStep = (number:number) => {
   if (number == null || !number) return true // we don't handle that
@@ -119,4 +119,25 @@ export function dispensedAsCsv(glasses:Glasses[]) {
   // add header
   csvRows.unshift('"Old SKU";"OD sphere";"OD cylinder";"OD axis";"OD additional";"OS sphere";"OS cylinder";"OS axis";"OS additional";"Date of dispension"')
   return 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
+}
+
+/** convert all props to number type and return as new object */
+export function propsAsNumber(obj:any):Record<string, number> {
+  const temp = JSON.parse(JSON.stringify(obj))
+  Object.keys(temp).forEach((k) => { temp[k] = Number(temp[k]) })
+  return temp
+}
+
+/** Eye is fixed by applying step rounding and the correct sign for cylinder */
+export function sanitizeEyeValues(singleEye: Eye) {
+  const rx = propsAsNumber(singleEye)
+  // easier for calculation
+  if (rx.axis === 180) rx.axis = 0
+  // user input could have been 1.2 instead of 1.25, so do rounding
+  for (const prop of ['sphere', 'cylinder', 'additional']) {
+    rx[prop] = Math.ceil(Math.abs(rx[prop]) / 0.25) * 0.25
+  }
+  // user input could have been positive, convert to negative
+  rx.cylinder = -Math.abs(rx.cylinder)
+  return rx
 }
