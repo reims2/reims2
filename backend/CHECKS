@@ -1,5 +1,5 @@
 WAIT=5 # Wait 5 seconds each attempt
-ATTEMPTS=10
+ATTEMPTS=13
 
 # This endpoint should return OK
 /pvh/api OK
