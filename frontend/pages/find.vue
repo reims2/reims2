@@ -45,11 +45,11 @@
             <v-col cols=12 class="px-0">
               <div>
                 <v-btn
-                  :disabled="!valid"
+                  :disabled="(!valid && hasGlassesLoaded)"
                   color="primary"
                   class="mr-4"
                   type="submit"
-                  @click="submit"
+                  @click="submitAndUpdate"
                 >
                   Search glasses
                 </v-btn>
@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { matchesAsCsvUri } from '../lib/util'
 
 export default {
@@ -155,6 +155,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      allGlasses: state => state.allGlasses
+    }),
     _matchesAsCSVUri() {
       if (!this.matches) return ''
       return matchesAsCsvUri(this.matches.slice(0, 30))
@@ -166,19 +169,20 @@ export default {
         // setting manually to trigger reactive system in SingleEyeInput
         this.$set(this.os_eye, 'add', this.od_eye.add)
       }
+    },
+    allGlasses() {
+      if (this.valid) this.loadGlasses()
     }
   },
   methods: {
     ...mapActions({
       philScore: 'glasses/philScore'
     }),
-    async submit() {
-      const eyeModel = {}
-      eyeModel.glassesType = this.glassesType
-      eyeModel.os = this.os_eye
-      eyeModel.od = this.od_eye
-      // todo maybe block submit if allGlasses is empty/null
-      this.matches = await this.philScore(eyeModel)
+    ...mapGetters({
+      hasGlassesLoaded: 'glasses/hasGlassesLoaded'
+    }),
+    async submitAndUpdate() {
+      await this.loadGlasses()
       this.page = 1
       this.sync_eye = true
 
@@ -187,6 +191,14 @@ export default {
         if (!this.$vuetify.breakpoint.mobile) this.$refs.firstInput.focus()
         else if (this.$refs.results) this.$refs.results.scrollIntoView(true)
       })
+    },
+    async loadGlasses() {
+      const eyeModel = {}
+      eyeModel.glassesType = this.glassesType
+      eyeModel.os = this.os_eye
+      eyeModel.od = this.od_eye
+
+      this.matches = await this.philScore(eyeModel)
     },
     reset() {
       this.$refs.form.reset()

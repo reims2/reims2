@@ -17,11 +17,16 @@ export const mutations: MutationTree<GlassesState> = {
 }
 
 export const GettersType = {
-  GET_SINGLE_GLASS: 'getSingle'
+  GET_SINGLE_GLASS: 'getSingle',
+  HAS_GLASSES_LOADED: 'hasGlassesLoaded'
 }
+
 export const getters: GetterTree<GlassesState, RootState> = {
   [GettersType.GET_SINGLE_GLASS]: (_state: GlassesState, _getters: GetterTree<GlassesState, RootState>, rootState: RootState) => (sku: number) => {
     return rootState.allGlasses.find(glass => glass.sku === sku)
+  },
+  [GettersType.HAS_GLASSES_LOADED]: (_state: GlassesState, _getters: GetterTree<GlassesState, RootState>, rootState: RootState) => {
+    return rootState.allGlasses.length > 0
   }
 }
 

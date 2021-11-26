@@ -57,6 +57,7 @@
         <td />
         <td />
         <td />
+        <td />
       </tr>
     </template>
     <template #item.od.sphere="{ item }">
@@ -86,11 +87,22 @@
     <template #item.creationDate="{ item }">
       {{ $dayjs(item.creationDate).format('DD.MM.YYYY') }}
     </template>
+    <template #item.actions="{item}">
+      <v-btn
+        nuxt
+        :to="{path:'/edit', query: { sku: item.sku }}"
+        icon
+        small
+      >
+        <v-icon>{{ mdiPencil }}</v-icon>
+      </v-btn>
+    </template>
   </v-data-table>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import { mdiPencil } from '@mdi/js'
 export default {
   data: () => ({
     filters: {
@@ -106,7 +118,8 @@ export default {
     },
     options: { itemsPerPage: 20 },
     loading: false,
-    items: []
+    items: [],
+    mdiPencil
   }),
   computed: {
     ...mapState({
@@ -127,7 +140,8 @@ export default {
         { value: 'os.add', text: 'OS Add', divider: true },
         { value: 'appearance', text: 'Appearance' },
         { value: 'glassesSize', text: 'Size' },
-        { value: 'creationDate', text: 'Added' }
+        { value: 'creationDate', text: 'Added' },
+        { value: 'actions', text: '', sortable: false }
       ]
     },
     filterString() {
@@ -193,13 +207,11 @@ export default {
       this.loading = true
       try {
         this.items = await this.loadItems({ options: this.options, filterString: this.filterString })
-      } catch (err) {
-        if (err.status === 404) {
+      } catch (error) {
+        if (error.status === 404) {
           this.items = []
-          // fixme better UX?
         } else {
-          // todo error handling
-          console.log(err)
+          this.$store.commit('setError', `Could not load data, please retry (Error ${error.status})`)
         }
       }
       this.loading = false
