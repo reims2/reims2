@@ -69,8 +69,9 @@
         v-if="matches"
         ref="results"
         cols=12
-        md=4
-        lg=3
+        md=6
+        lg=4
+        xl=3
         class="px-0 pl-md-6"
       >
         <v-alert

@@ -136,7 +136,7 @@ export default {
     console.log('activated')
     if (this.$route.query.sku) {
       this.$nextTick(() => {
-        setTimeout(() => { this.sku = this.$route.query.sku })
+        this.sku = this.$route.query.sku
       })
     }
   },
