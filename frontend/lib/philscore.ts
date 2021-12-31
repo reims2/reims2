@@ -3,6 +3,10 @@ import { Glasses } from '~/model/GlassesModel'
 
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 4
+// Glasses with a sphere/cylinder/additional delta of more than this will be removed
+const SPHERE_TOLERANCE = 2
+const CYLINDER_TOLERANCE = 2
+const ADDITIONAL_TOLERANCE = 0.5
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
@@ -12,7 +16,9 @@ export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
   return glasses.slice()
     .filter(glass => (terms.glassesType === glass.glassesType))
     .filter(glass => checkForAxisTolerance(rxOd, propsAsNumber(glass.od)) && checkForAxisTolerance(rxOs, propsAsNumber(glass.os)))
-    .filter(glass => glass.glassesType === 'single' || (Math.abs(glass.od.add - rxOd.add) <= 0.5 && Math.abs(glass.os.add - rxOs.add) <= 0.5))
+    .filter(glass => Math.abs(glass.od.sphere - rxOd.sphere) <= SPHERE_TOLERANCE && Math.abs(glass.os.sphere - rxOs.sphere) <= SPHERE_TOLERANCE)
+    .filter(glass => Math.abs(glass.od.cylinder - rxOd.cylinder) <= CYLINDER_TOLERANCE && Math.abs(glass.os.cylinder - rxOs.cylinder) <= CYLINDER_TOLERANCE)
+    .filter(glass => glass.glassesType === 'single' || (Math.abs(glass.od.add!! - rxOd.add) <= ADDITIONAL_TOLERANCE && Math.abs(glass.os.add!! - rxOs.add) <= ADDITIONAL_TOLERANCE))
     .map((glass) => {
       const odScore = calcSingleEyePhilscore(rxOd, propsAsNumber(glass.od), terms.glassesType)
       const osScore = calcSingleEyePhilscore(rxOs, propsAsNumber(glass.os), terms.glassesType)
