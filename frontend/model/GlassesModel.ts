@@ -1,9 +1,9 @@
 export interface Eye {
     id: number; // backend ID
-    add: number;
+    add?: number;
     axis: number;
     cylinder: number;
-    sphere?: number;
+    sphere: number;
 }
 
 export interface Dispense {

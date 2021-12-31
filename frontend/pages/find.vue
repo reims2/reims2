@@ -45,7 +45,7 @@
             <v-col cols=12 class="px-0">
               <div>
                 <v-btn
-                  :disabled="(!valid && hasGlassesLoaded)"
+                  :disabled="searchButtonDisabled"
                   color="primary"
                   class="mr-4"
                   type="submit"
@@ -161,6 +161,9 @@ export default {
     _matchesAsCSVUri() {
       if (!this.matches) return ''
       return matchesAsCsvUri(this.matches.slice(0, 30))
+    },
+    searchButtonDisabled() {
+      return !this.valid && this.hasGlassesLoaded
     }
   },
   watch: {

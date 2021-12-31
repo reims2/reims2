@@ -110,7 +110,7 @@ export default {
       getSingle: 'glasses/getSingle'
     }),
     selected() {
-      return this.getSingle(this.sku)
+      return this.getSingle(parseInt(this.sku))
     },
     hint() {
       if (this.selected) {
@@ -136,7 +136,7 @@ export default {
     console.log('activated')
     if (this.$route.query.sku) {
       this.$nextTick(() => {
-        this.sku = this.$route.query.sku
+        setTimeout(() => { this.sku = this.$route.query.sku })
       })
     }
   },
