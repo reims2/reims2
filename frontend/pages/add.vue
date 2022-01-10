@@ -164,7 +164,7 @@ export default {
       this.glassModel = {}
       this.$refs.form.reset()
       if (!this.$vuetify.breakpoint.mobile) this.$refs.firstInput[0].focus()
-      this.syncEyes = true // todo add some kind of UI (sync icon) for right eye
+      this.syncEyes = true
     },
     updateDeleted(toRemove) {
       this.lastAdded = this.lastAdded.filter(itm => itm !== toRemove)

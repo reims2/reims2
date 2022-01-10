@@ -99,7 +99,7 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
       // Subtract a bit more when sphere and cylinder have exactly the same difference
       diff = (sphereDiff === cylinderDiff) ? 0.3 : 0.25
     } else {
-      // fixme For some reason, we subtract more when the cylinder difference is higher. this doesn't make sense => maybe so we don't go below zero?
+      // fixme For some reason, we subtract more when the cylinder difference is higher => maybe so we don't go below zero? in that case it would probably make more sense to make this dynamically in the future
       diff = (sphereDiff === cylinderDiff) ? 0.55 : 0.5
     }
   }

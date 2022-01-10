@@ -66,6 +66,7 @@
         <v-dialog
           v-model="dialog"
           max-width="500px"
+          persistent
         >
           <template #activator="{ on, attrs }">
             <v-btn
@@ -132,7 +133,7 @@
                 text
                 @click="dialog = false"
               >
-                Close
+                Cancel
               </v-btn>
               <v-btn
                 color="blue darken-1"
