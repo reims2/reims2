@@ -133,11 +133,13 @@ export function sanitizeEyeValues(singleEye: Eye) {
   const rx = propsAsNumber(singleEye)
   // easier for calculation
   if (rx.axis === 180) rx.axis = 0
+  // cylinder must be negative
+  rx.cylinder = -Math.abs(rx.cylinder)
   // user input could have been 1.2 instead of 1.25, so do rounding
   for (const prop of ['sphere', 'cylinder', 'additional']) {
+    const isNegative = rx[prop] < 0
     rx[prop] = Math.ceil(Math.abs(rx[prop]) / 0.25) * 0.25
+    rx[prop] = isNegative ? -rx[prop] : rx[prop]
   }
-  // user input could have been positive, convert to negative
-  rx.cylinder = -Math.abs(rx.cylinder)
   return rx
 }

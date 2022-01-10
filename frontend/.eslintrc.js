@@ -25,6 +25,6 @@ module.exports = {
     'vue/html-quotes': 'off', // doesn't work properly
     'space-before-function-paren': ['warn', 'never'], // no space before function parentheses because that looks weird
     'no-console': 'off',
-    'vue/multi-word-component-names': 'warn',
+    'vue/multi-word-component-names': 'off',
   }
 }
