@@ -1,7 +1,11 @@
 {
-    "editor.formatOnSave": true,
-    "[javascript,vue,js]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-    },
-    "jest.jestCommandLine": "npm run test --"
+  "editor.formatOnSave": true,
+  "[javascript,vue,js]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "jest.autoRun": {
+    "watch": true,
+    "onStartup": ["all-tests"]
+  },
+  "jest.jestCommandLine": "jest"
 }

@@ -10,8 +10,8 @@ This is the frontend for [REIMS2](https://reims2.app)!
 
 ```bash
 # Install dependencies
-npm install
+yarn install
 
 # Serve with hot reload at http://localhost:3000
-API_URL=https://reims2.app/api npm run dev
+API_URL=https://reims2.app/api yarn run dev
 ```
