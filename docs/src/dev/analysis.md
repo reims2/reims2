@@ -85,8 +85,6 @@ Variables: zat (i.e. AXIS TOLERANCE). A bigger cylinder allows less tolerance fo
 
 Returns: Whether the Lens axis is in range of desired axis and the tolerance
 
-_Todo Make a nice visualization for all possible results_
-
 See also: [This reference Point 3](https://www.thevisioncouncil.org/sites/default/files/ANSI%20Z80%201-2015_Quick%20Reference%20v2.pdf) or [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6431005/)
 
 ### SPEQ()
