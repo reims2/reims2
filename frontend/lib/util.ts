@@ -129,7 +129,7 @@ export function propsAsNumber(obj:any):Record<string, number> {
 }
 
 /** Eye is fixed by applying step rounding and the correct sign for cylinder */
-export function sanitizeEyeValues(singleEye: Eye) {
+export function sanitizeEyeValues(singleEye: Eye) : Eye {
   const rx = propsAsNumber(singleEye)
   // easier for calculation
   if (rx.axis === 180) rx.axis = 0
@@ -141,5 +141,5 @@ export function sanitizeEyeValues(singleEye: Eye) {
     rx[prop] = Math.ceil(Math.abs(rx[prop]) / 0.25) * 0.25
     rx[prop] = isNegative ? -rx[prop] : rx[prop]
   }
-  return rx
+  return rx as unknown as Eye
 }

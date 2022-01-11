@@ -2,7 +2,7 @@ import type { ActionTree, MutationTree, GetterTree } from 'vuex'
 import { RootState } from '.'
 import { MutationType as IndexMutationType } from './index'
 import { Glasses } from '~/model/GlassesModel'
-import { calculateAllPhilscore } from '~/lib/philscore'
+import calculateAllPhilscore from '~/lib/philscore'
 const axios = require('axios').default
 
 let cancelTokenGet = axios.CancelToken.source()

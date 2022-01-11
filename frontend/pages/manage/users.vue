@@ -86,6 +86,14 @@
             <v-card-text>
               <v-form ref="form" v-model="valid">
                 <v-container>
+                  <v-alert
+                    v-if='newRoles.includes("ROLE_ADMIN")'
+                    type="warning"
+                    dense
+                    prominent
+                  >
+                    Users with the admin role can add and delete users, so be careful to apply that role only when necessary.
+                  </v-alert>
                   <v-row dense>
                     <v-col cols="12">
                       <v-text-field
@@ -117,26 +125,17 @@
                   </v-row>
                 </v-container>
               </v-form>
-              <v-alert
-                v-if='newRoles.includes("ROLE_ADMIN")'
-                type="warning"
-                dense
-                prominent
-              >
-                Users with the admin role can add and delete users, so be careful to apply that role only when necessary.
-              </v-alert>
             </v-card-text>
             <v-card-actions>
               <v-spacer />
               <v-btn
-                color="blue darken-1"
                 text
                 @click="dialog = false"
               >
                 Cancel
               </v-btn>
               <v-btn
-                color="blue darken-1"
+                color="primary"
                 text
                 :disabled="!valid"
                 :loading="addLoading"

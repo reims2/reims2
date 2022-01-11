@@ -9,14 +9,14 @@
             "webRoot": "${workspaceFolder}",
             "runtimeArgs": [
                 "--incognito"
-            ],
+            ]
         },
         {
             "type": "chrome",
             "request": "launch",
             "name": "Chrome nuxt",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}",
+            "webRoot": "${workspaceFolder}"
         },
         {
             "type": "node",
@@ -37,6 +37,23 @@
                 "API_URL": "https://reims2.app/api", // for AXIOS
                 "DOCS_URL": "http://localhost:8080/"
             }
+        },
+        {
+            "type": "node",
+            "name": "vscode-jest-tests",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "args": [
+                "run",
+                "test",
+                "--",
+                "--runInBand",
+                "--watchAll=false"
+            ]
         }
     ],
     "compounds": [

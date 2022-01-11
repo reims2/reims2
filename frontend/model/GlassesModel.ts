@@ -11,17 +11,18 @@ export interface Dispense {
     modifyDate: Date|null;
     previousSku: number|null;
 }
-
-export interface Glasses {
+export interface GlassesSearch {
+    glassesType: string;
+    od: Eye;
+    os: Eye;
+}
+export interface Glasses extends GlassesSearch{
     id: number; // backend ID
     appearance: string;
     dispensed?: boolean;
     dispense?: Dispense;
     glassesSize: string;
-    glassesType: string;
     location?: string;
-    od: Eye;
-    os: Eye;
     sku: number;
     creationDate: number;
     score?: number;

@@ -1,5 +1,5 @@
-import { sanitizeEyeValues, propsAsNumber } from '~/lib/util'
-import { Glasses } from '~/model/GlassesModel'
+import { sanitizeEyeValues } from './util'
+import { Glasses, Eye, GlassesSearch } from '~/model/GlassesModel'
 
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 4
@@ -9,19 +9,19 @@ const CYLINDER_TOLERANCE = 2
 const ADDITIONAL_TOLERANCE = 0.5
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
+export default function calculateAllPhilscore(terms:GlassesSearch, glasses: Glasses[]):Glasses[] {
   const rxOd = sanitizeEyeValues(terms.od)
   const rxOs = sanitizeEyeValues(terms.os)
 
   return glasses.slice()
     .filter(glass => (terms.glassesType === glass.glassesType))
-    .filter(glass => checkForAxisTolerance(rxOd, propsAsNumber(glass.od)) && checkForAxisTolerance(rxOs, propsAsNumber(glass.os)))
-    .filter(glass => Math.abs(glass.od.sphere - rxOd.sphere) <= SPHERE_TOLERANCE && Math.abs(glass.os.sphere - rxOs.sphere) <= SPHERE_TOLERANCE)
-    .filter(glass => Math.abs(glass.od.cylinder - rxOd.cylinder) <= CYLINDER_TOLERANCE && Math.abs(glass.os.cylinder - rxOs.cylinder) <= CYLINDER_TOLERANCE)
-    .filter(glass => glass.glassesType === 'single' || (Math.abs(glass.od.add!! - rxOd.add) <= ADDITIONAL_TOLERANCE && Math.abs(glass.os.add!! - rxOs.add) <= ADDITIONAL_TOLERANCE))
+    .filter(glass => checkForSingleAxisTolerance(rxOd, glass.od) && checkForSingleAxisTolerance(rxOs, glass.os))
+    .filter(glass => checkForSphereTolerance(glass, rxOd, rxOs))
+    .filter(glass => checkForCylinderTolerance(glass, rxOd, rxOs))
+    .filter(glass => glass.glassesType === 'single' || checkForAdditionalTolerance(glass, rxOd, rxOs))
     .map((glass) => {
-      const odScore = calcSingleEyePhilscore(rxOd, propsAsNumber(glass.od), terms.glassesType)
-      const osScore = calcSingleEyePhilscore(rxOs, propsAsNumber(glass.os), terms.glassesType)
+      const odScore = calcSingleEyePhilscore(rxOd, glass.od, terms.glassesType === 'single')
+      const osScore = calcSingleEyePhilscore(rxOs, glass.os, terms.glassesType === 'single')
 
       return { ...glass, score: (odScore + osScore), odScore, osScore }
     })
@@ -29,7 +29,7 @@ export function calculateAllPhilscore(terms:any, glasses: Glasses[]):Glasses[] {
     .sort((a, b) => (a.score > b.score ? 1 : -1))
 }
 
-function checkForAxisTolerance(rx:Record<string, number>, lens: Record<string, number>):boolean {
+function checkForSingleAxisTolerance(rx:Eye, lens: Eye):boolean {
   /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
   // Some arbitrary numbers from the PDF, in short: Smaller cylinders allow for a greater tolerance.
   const toleranceYValues = [7, 8, 9, 10, 13, 15, 20, 25, 35, 90]
@@ -59,10 +59,27 @@ function checkForAxisTolerance(rx:Record<string, number>, lens: Record<string, n
   return (lens.axis >= minimum1 && lens.axis <= maximum1) || (lens.axis >= minimum2 && lens.axis <= maximum2)
 }
 
-function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, number>, glassesType: string):number {
+function checkForSphereTolerance(glass: Glasses, rxOd:Eye, rxOs: Eye):boolean {
+  return Math.abs(glass.od.sphere - rxOd.sphere) <= SPHERE_TOLERANCE && Math.abs(glass.os.sphere - rxOs.sphere) <= SPHERE_TOLERANCE
+}
+
+function checkForCylinderTolerance(glass: Glasses, rxOd:Eye, rxOs: Eye):boolean {
+  return Math.abs(glass.od.cylinder - rxOd.cylinder) <= CYLINDER_TOLERANCE && Math.abs(glass.os.cylinder - rxOs.cylinder) <= CYLINDER_TOLERANCE
+}
+
+function checkForAdditionalTolerance(glass: Glasses, rxOd:Eye, rxOs: Eye):boolean {
+  return (Math.abs(glass.od.add!! - rxOd.add!!) <= ADDITIONAL_TOLERANCE && Math.abs(glass.os.add!! - rxOs.add!!) <= ADDITIONAL_TOLERANCE)
+}
+
+function calcSingleEyePhilscore(rx:Eye, lens: Eye, isSinglefocal: boolean):number {
+  /**
+   * rx: desired values for a single eye
+   * lens: single eye of one available glasses
+   * glassesType: single or multifocal
+   */
   const sphereDiff = Math.abs(lens.sphere - rx.sphere)
   const cylinderDiff = Math.abs(lens.cylinder - rx.cylinder)
-  const addDiff = glassesType === 'single' ? 0 : Math.abs(lens.add - rx.add)
+  const addDiff = isSinglefocal ? 0 : Math.abs(lens.add!! - rx.add!!)
 
   let axisDiff = Math.abs(lens.axis - rx.axis)
   axisDiff = (axisDiff > 90 ? 180 - axisDiff : axisDiff) // account for wraparound (e.g. 190 is 10 in reality)
@@ -71,56 +88,89 @@ function calcSingleEyePhilscore(rx:Record<string, number>, lens: Record<string, 
   const initScore = sphereDiff + cylinderDiff + addDiff * 0.09 + axisDiff / 3600
   let score = initScore
 
+  // special function that adds two numbers as long as the results stays positive
+  const changeScore = (score:number, change:number) => ((score + change) < 0 ? score : (score + change))
+
   /* In the following that score gets improved (=smaller) or worse (=bigger) based on a few rules to account for some optometry special cases */
 
-  if (rx.sphere > lens.sphere && rx.sphere > 0) {
-    // ADDING to the score, so it seems to be bad if that is the case
-    score += 0.25
-  }
+  let diff = smallerLensSphereScore(rx.sphere, lens.sphere)
+  score = changeScore(score, diff)
 
-  const subtractScore = (score:number, change:number) => ((score - change) < 0 ? score : (score - change))
+  diff = sphericalEquivalentScore(rx.sphere, rx.cylinder, lens.sphere, lens.cylinder, isSinglefocal)
+  score = changeScore(score, diff)
 
-  // Account for the fact that one can transform glasses based on sphere+cylinder
-  // adding a value to Rx cylinder and subtracting half of that value from the Rx sphere, will give you roughly the same Rx. (but remember cyl > 0 not possible)
-  let diff = 0
-  if ((rx.sphere - lens.sphere) === (lens.cylinder - rx.cylinder) / 2 &&
-          // rx.sphere > lens.sphere && // fixme this is in the PDF but removing it gives better results
-          glassesType === 'single' && // fixme this doesn't make sense and isn't in the PDF, but gives better results
-          cylinderDiff < 1) {
-    diff = (lens.sphere > 0) ? 0.55 : 0.5
-  }
-  score = subtractScore(score, diff)
+  diff = contraryDiffsScore(rx.sphere, lens.sphere, rx.cylinder, lens.cylinder)
+  score = changeScore(score, diff)
 
-  // If either both sphere and cylinder are too small OR both sphere and cylinder are too big, improve the score by subtracting a bit
-  diff = 0
-  if ((lens.sphere > rx.sphere && rx.cylinder > lens.cylinder) || (lens.sphere < rx.sphere && rx.cylinder < lens.cylinder)) {
-    // Subtract based on how big the difference is
-    if (cylinderDiff < 0.5) { // should be the same as cylinderDiff === 0.25 (not 0 though!)
-      // Subtract a bit more when sphere and cylinder have exactly the same difference
-      diff = (sphereDiff === cylinderDiff) ? 0.3 : 0.25
-    } else {
-      // fixme For some reason, we subtract more when the cylinder difference is higher => maybe so we don't go below zero? in that case it would probably make more sense to make this dynamically in the future
-      diff = (sphereDiff === cylinderDiff) ? 0.55 : 0.5
-    }
-  }
-  score = subtractScore(score, diff)
-
-  // If sphere matches and the cylinder difference is small, substract an additonal amount
-  // because this makes the glasses near perfect even though they have a difference in cylinder
-  diff = 0
-  if (rx.sphere === lens.sphere && cylinderDiff > 0 && cylinderDiff <= 0.75) {
-    // && glassesType === 'single' // fixme this condition is valid according to pdf, but isn't in reality
-    diff = 0.12
-  }
-  score = subtractScore(score, diff)
-
-  /* fixme removing this doesn't make a big difference, but gives slightly better results. not sure why this was in the PDF
-    diff = 0
-    if (glassesType === 'multifocal' && lens.axis > rx.axis) {
-      // but why do this at all? this doesn't make sense because a higher difference should be punished, not encouraged?
-      diff = (lens.axis - rx.axis) / 1000
-    }
-    score = subtractScore(score, diff) */
+  diff = equalSphereAndSmallCylinderScore(rx.sphere, lens.sphere, cylinderDiff)
+  score = changeScore(score, diff)
 
   return score
 }
+
+export function smallerLensSphereScore(rxSphere :number, lensSphere:number) : number {
+  if (rxSphere > lensSphere && rxSphere > 0) {
+    // ADDING to the score, so it seems to be bad if that is the case
+    return +0.25
+  }
+  return 0
+}
+
+export function equalSphereAndSmallCylinderScore(rxSphere: number, lensSphere: number, cylinderDiff: number): number {
+  /**
+   * If sphere matches and the cylinder difference is small, substract an additonal amount
+   * because this makes the glasses near perfect even though they have a difference in cylinder
+   */
+  if (rxSphere === lensSphere && cylinderDiff > 0 && cylinderDiff <= 0.75) {
+    // && glassesType === 'single' // fixme this condition is valid according to pdf, but isn't in reality
+    return -0.12
+  }
+  return 0
+}
+
+export function contraryDiffsScore(rxSphere: number, lensSphere: number, rxCylinder: number, lensCylinder: number): number {
+  /**
+   * If either cylinders are too small AND spheres are too big; or the other way round, improve the score by subtracting a bit
+   */
+  const sphereDiff = Math.abs(lensSphere - rxSphere)
+  const cylinderDiff = Math.abs(lensCylinder - rxCylinder)
+  if ((lensSphere > rxSphere && rxCylinder > lensCylinder) || (lensSphere < rxSphere && rxCylinder < lensCylinder)) {
+    // Subtract based on how big the difference is
+    if (cylinderDiff < 0.5) { // should be the same as cylinderDiff === 0.25 (not 0 though!)
+      // Subtract a bit more when sphere and cylinder have exactly the same difference
+      return (sphereDiff === cylinderDiff) ? -0.3 : -0.25
+    } else {
+      // fixme For some reason, we subtract more when the cylinder difference is higher
+      // => maybe so we don't go below zero? in that case it would probably make more sense to make this dynamically in the future
+      return (sphereDiff === cylinderDiff) ? -0.55 : -0.5
+    }
+  }
+  return 0
+}
+
+export function sphericalEquivalentScore(rxSphere: number, lensSphere: number, rxCylinder: number, lensCylinder: number, isSinglefocal: boolean): number {
+  /**
+   * Account for the fact that one can transform glasses based on sphere+cylinder
+   * adding a value to Rx cylinder and subtracting half of that value from the Rx sphere, will give you roughly the same Rx. (but remember cyl > 0 not possible)
+   */
+  const cylinderDiff = Math.abs(lensCylinder - rxCylinder)
+  if ((rxSphere - lensSphere) === (lensCylinder - rxCylinder) / 2 &&
+    // rxSphere > lensSphere && // fixme this is in the PDF but removing it gives better results
+    isSinglefocal && // fixme this doesn't make sense and isn't in the PDF, but gives better results
+    cylinderDiff < 1) {
+    return (lensSphere > 0) ? -0.55 : -0.5
+  }
+  return 0
+}
+
+// function multiFocalAxisScore(rxAxis: number, lensAxis:number, isMultifocal: boolean): number {
+//   /**
+//    * DEPRECATED: This function was in the original PDF, but removing it gave better results, so this is unused. For reference only
+//    * It anyway only made it pretty small difference since we divide by 1000
+//    */
+//   if (isMultifocal && lensAxis > rxAxis) {
+//     // but why do this at all? this doesn't make sense because a higher difference should be punished, not encouraged?
+//     return -(lensAxis - rxAxis) / 1000
+//   }
+//   return 0
+// }
