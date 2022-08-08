@@ -1,6 +1,5 @@
 import type { ActionTree, MutationTree, GetterTree } from 'vuex'
-import { RootState } from '.'
-import { MutationType as IndexMutationType } from './index'
+import { RootState, MutationType as IndexMutationType } from '.'
 import { Glasses } from '~/model/GlassesModel'
 import calculateAllPhilscore from '~/lib/philscore'
 const axios = require('axios').default

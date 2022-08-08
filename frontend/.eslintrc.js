@@ -2,7 +2,8 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true
+    node: true,
+    jest: true
   },
   extends: [
     '@nuxtjs/eslint-config-typescript',
@@ -25,6 +26,6 @@ module.exports = {
     'vue/html-quotes': 'off', // doesn't work properly
     'space-before-function-paren': ['warn', 'never'], // no space before function parentheses because that looks weird
     'no-console': 'off',
-    'vue/multi-word-component-names': 'off',
+    'vue/multi-word-component-names': 'off'
   }
 }
