@@ -94,6 +94,7 @@
                 :to="{path:'/edit', query: { sku: item.sku }}"
                 text
                 class="mx-0"
+                color="primary"
               >
                 Open Glasses
               </v-btn>

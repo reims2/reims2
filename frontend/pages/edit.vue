@@ -47,12 +47,11 @@
         </v-form>
       </v-col>
     </v-row>
-    <v-snackbar v-if="lastDispensed != null" :value=true :timeout="-1" bottom>
+    <v-snackbar v-if="lastDispensed != null" :value=true :timeout="-1" bottom vertical>
       <template #action="{ attrs }">
         <v-btn
           text
           v-bind="attrs"
-          color="error"
           @click="undoDispension(lastDispensed)"
         >
           Undo
@@ -60,6 +59,7 @@
         <v-btn
           text
           v-bind="attrs"
+          color="primary lighten-3"
           @click="lastDispensed = null"
         >
           Close

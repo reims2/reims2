@@ -26,8 +26,8 @@
         hide-details
         class="mb-1 mx-3"
       />
-      <div v-if="!miniDrawer" class="text-caption mb-1 mx-3">
-        <div>{{ $store.state.allGlasses.length }} glasses loaded</div>
+      <div v-if="!miniDrawer && $store.state.allGlasses.length > 0" class="text-caption mb-1 mx-3">
+        <div>{{ $store.state.allGlasses.length }} glasses stored</div>
       </div>
     </template>
 

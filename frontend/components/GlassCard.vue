@@ -29,7 +29,7 @@
               Result (Philscore) - lower values are better
             </v-tooltip>
           </div>
-          <span class="text--secondary">SKU</span> {{ glass.sku.toString().padStart(4, '0') }}
+          <span class="mr-1">SKU</span> {{ glass.sku.toString().padStart(4, '0') }}
         </v-card-title>
         <v-card-subtitle class="text--primary pb-2 d-flex align-center">
           <span v-for="item in generalEyeData" :key="item.id" class="pr-2">
@@ -49,7 +49,7 @@
                     @blur="edit = ''"
                   />
                   <span v-else v-bind="attrs" v-on="on">
-                    <v-icon small>
+                    <v-icon small color="black">
                       {{ item.icon }}
                     </v-icon>
                     {{ glass[item.id] }}
@@ -228,6 +228,7 @@ export default {
         await this.editGlasses(newGlasses)
       } catch (error) {
         if (error.response && error.response.status < 500) {
+          // TODO catch network errors because they'll be retried.
           this.edit = ''
           this.$store.commit('setError', `Glasses can't be edited, sorry (Error ${error.status})`)
         } else {
