@@ -9,7 +9,10 @@
             "name": "Launch PVHApplication",
             "request": "launch",
             "mainClass": "org.PVH.PVHApplication",
-            "projectName": "spring-pvh-rest"
+            "projectName": "spring-pvh-rest",
+            "env": {
+                "PVH_JWT_SECRET": "testtoken"
+            }
         }
     ]
 }
