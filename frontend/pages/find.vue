@@ -45,7 +45,7 @@
             <v-col cols=12 class="px-0">
               <div>
                 <v-btn
-                  :disabled="searchButtonDisabled"
+                  :disabled="Boolean(searchButtonDisabled)"
                   color="primary"
                   class="mr-4"
                   type="submit"
@@ -189,7 +189,7 @@ export default {
     async submitAndUpdate() {
       await this.loadGlasses()
       this.page = 1
-      this.sync_eye = true
+      this.sync_eye = true // fixme good hgere?
 
       this.$nextTick(() => {
         // on desktop, focus input again; on mobile, scroll to bottom

@@ -42,18 +42,17 @@ test('spherical equivalent of rx returns negative score', () => {
   expect(philscore.sphericalEquivalentScore(-1, -1.25, -0.5, 0, true)).toBeNegative()
 })
 
-test('spherical equivalent of lens (other way round) also returns negative score', () => {
-  // fixme should it?
-  expect(philscore.sphericalEquivalentScore(-1.25, -1, 0, -0.5, true)).toBeNegative()
+test('spherical equivalent of lens (other way round) should not return score', () => {
+  expect(philscore.sphericalEquivalentScore(-1.25, -1, 0, -0.5, true)).toBe(0)
 })
 
-test('spherical equivalent for multifocals returns no score', () => {
-  expect(philscore.sphericalEquivalentScore(-1, -1.25, -0.5, 0, false)).toBe(0)
+test('spherical equivalent for multifocals also returns negative score', () => {
+  expect(philscore.sphericalEquivalentScore(-1, -1.25, -0.5, 0, false)).toBeNegative()
 })
 
 test('spherical equivalent with positive spheres returns bigger score than the one with negative spheres', () => {
   const scoreNegativeEquivalent = philscore.sphericalEquivalentScore(-1, -1.25, -0.5, 0, true)
-  const scorePositiveEquivalent = philscore.sphericalEquivalentScore(1, 1.25, 0.5, 0, true)
+  const scorePositiveEquivalent = philscore.sphericalEquivalentScore(1.25, 1, -0.5, 0, true)
   expect(Math.abs(scorePositiveEquivalent) > Math.abs(scoreNegativeEquivalent)).toBeTrue()
 })
 
