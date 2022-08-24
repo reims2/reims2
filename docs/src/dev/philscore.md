@@ -14,12 +14,22 @@ The corresponding [code can be found here](https://github.com/reims2/reims2-fron
 
 1. Filter glasses by type (either single or multifocal)
 2. Filter out glasses with wrong OD or OS axis ([`checkForAxisTolerance`](#checkforaxistolerance))
-3. If multifocal: Filter out glasses which lens' `additional` is more than 0.5 different to the desired `additional`.
-4. Calculate OD PhilScore ([`calcSingleEyePhilscore`](#calcsingleeyephilscore))
-5. Calculate OS Philscore ([`calcSingleEyePhilscore`](#calcsingleeyephilscore))
-6. Sum OD+OS philscore
-7. Remove any glasses with a PhilScore greater than 4
-8. Done, you now have a list of glasses that match
+3. Filter out glasses by tolerance of sphere + cylinder ([`checkForTolerances`](#checkForTolerances))
+4. If multifocal: Filter out glasses which lens' `additional` is more than TOLERANCE different to the desired `additional`.
+5. Calculate OD PhilScore ([`calcSingleEyePhilscore`](#calcsingleeyephilscore))
+6. Calculate OS Philscore ([`calcSingleEyePhilscore`](#calcsingleeyephilscore))
+7. Sum OD+OS philscore
+8. Remove any glasses with a PhilScore greater than 4
+9. Done, you now have a list of glasses that match
+
+## checkForTolerances
+
+The Sphere and Cylinder of that glasses must be within the desired tolerance of the prescription (currently set to 0.5 by default). 
+
+Each glass is compared to the desired prescription sphere +- tolerance and prescription cylinder +- tolerance and discarded it's outside that range. It's not only checked against the desired prescription +- tolerance, but also against (every spherical equivalent of that prescription) +- tolerance.
+
+Example to follow TODO
+
 
 ## checkForAxisTolerance
 
@@ -50,23 +60,22 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
 
 1. Calculate the _initial_ PhilScore based on the sum of the deltas of sphere, cylinder, axis (and additional).
    - The deltas are weighted, i.e. the sphere and cylinder deltas count a lot more than the axis and additional deltas.
-2. **Worsen** the score if the desired sphere is positive AND if it's bigger than the lens sphere.
-3. **Improve** the score if the glasses matches after sphere+cylinder transformation (_spherical equivalent_)
+2. **Improve** the score if the glasses matches after sphere+cylinder transformation (_spherical equivalent_)
    - _The score get's improved slightly more if lens sphere is positive_
-   - We do this **only for singlefocal** glasses.
-4. **Improve** the score if lens sphere is bigger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder bigger).
+3. Only if step 2 did not apply: **Improve** the score if lens sphere is bigger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder bigger).
    - _The score get's improved more if sphere delta matches cylinder delta_
    - `if (lens.sphere > rx.sphere AND lens.cylinder < rx.cylinder) OR (lens.sphere < rx.sphere AND lens.cylinder > rx.cylinder)`
-5. **Improve** the score if the spheres are equal and the cylinder delta is small (<= 0.75).
+4. Only if step 2 or 3 did not apply: **Improve** the score if the spheres are equal and the cylinder delta is small (<= 0.75).
+5. **Improve** the score if the search is multifocal and the lens additional is bigger than the desired additional.
+   - Score gets improved more if the difference is bigger. (Why?)
+6. **Worsen** the score if the desired sphere is positive AND if it's bigger than the lens sphere.
 
-Important note: The score get's improved only if it's not smaller 0 after the improvement (i.e. if initial score is 0.2 and we want to subtract 0.5, it'll stay at 0.2).
 
 ## Things that could be improved or make no sense
 
-- Let the score get below zero or at least exactly zero. The current algorithm has weird side effects if a score is just a tad too small so that it won't get improved.
+- Not sure why steps 3 and 4 are only applied when previous steps did not apply. Maybe change that?
 - Use a better (=> higher) weight for the additional delta in the initial Philscore. That way we can avoid the filtering by additional.
 - Use a better weight (maybe even nonlinear based on lens cylinder) for the axis, so we can avoid the filtering by axis.
-- Also improve the score for multifocals based on the sphere+cylinder transformation, no clue why it's currently not the case.
 
 ## Further reading
 

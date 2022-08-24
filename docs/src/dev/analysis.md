@@ -116,3 +116,26 @@ For RANK() see also [this source code from 5 years ago](https://github.com/reims
 > There is no correlation between the SKU and the power of the glasses that is assigned to it (so the SKU can be generated automatically)
 
 SKU= Stock keeping unit i.e. serial number
+
+
+### Notes from analyzing source
+
+- mrlb: OD;OS;Both (always 3)
+- mtype: (s)ingle or (b)ifocal
+- mica: Ignore cylinder and axis (always false)
+- zeye: always 'OU' (both eyes)
+- zods: odsphere
+- zosa: osadd
+
+
+Variables ending with `d` always OD (left eye), with `s` are OS
+
+.F. is false; .T. is true
+
+- rxs(d/s): Rx sphere
+- rxc(d/s): Rx cylinder
+- rxa(d/s): Rx axis
+- rxad(d/s): Rx additional
+
+- s(d/s)(1-3): spherical equivalent Sphere, pair 1,2,3
+- c(d/s)(1-3): spherical equivalent Cylinder, pair 1,2,3
