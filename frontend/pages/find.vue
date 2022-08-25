@@ -22,7 +22,7 @@
             <v-col
               cols=12
               md=6
-              class="px-1 pr-md-5 pt-0"
+              class="px-1 pr-md-5 py-md-0 py-1"
             >
               <single-eye-input
                 v-model="od_eye"
@@ -33,13 +33,23 @@
             <v-col
               cols=12
               md=6
-              class="px-1 pl-md-5 pt-0"
+              class="px-1 pl-md-5 py-0"
             >
               <single-eye-input
                 :value="os_eye"
                 eye-name="OS"
                 :add-enabled="glassesType !== 'single'"
                 @input="e => {os_eye = e; sync_eye = false}"
+              />
+            </v-col>
+            <v-col
+              cols=12
+              class="pa-0 pb-1"
+            >
+              <v-checkbox
+                v-model="high_tolerance"
+                default-value=false
+                label="Increase search tolerance (might yield bad results)"
               />
             </v-col>
             <v-col cols=12 class="px-0">
@@ -75,7 +85,7 @@
         class="px-0 pl-md-6"
       >
         <v-alert
-          v-if="!matches.length"
+          v-if="matches.length === 0"
           type="warning"
           outlined
           dense
@@ -84,8 +94,8 @@
         </v-alert>
         <div v-else>
           <glass-card
-            v-for="item in matches.slice(itemsPerPage*(page-1),itemsPerPage*(page-1)+itemsPerPage)"
-            :key="item.sku"
+            v-for="item in orderedMatches"
+            :key="item.id"
             :glass="item"
           >
             <template #actions>
@@ -136,6 +146,7 @@ export default {
     glassesType: '',
     os_eye: {},
     od_eye: {},
+    high_tolerance: false,
     sync_eye: true,
     itemsPerPage: 3,
     type_data:
@@ -166,6 +177,10 @@ export default {
     },
     searchButtonDisabled() {
       return !this.valid && this.hasGlassesLoaded
+    },
+    orderedMatches() {
+      if (this.matches == null) return null
+      return this.matches.slice(this.itemsPerPage * (this.page - 1), this.itemsPerPage * (this.page - 1) + this.itemsPerPage)
     }
   },
   watch: {
@@ -202,6 +217,7 @@ export default {
       eyeModel.glassesType = this.glassesType
       eyeModel.os = this.os_eye
       eyeModel.od = this.od_eye
+      eyeModel.highTolerance = this.high_tolerance
 
       this.matches = await this.philScore(eyeModel)
     },

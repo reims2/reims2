@@ -15,6 +15,7 @@ export interface GlassesSearch {
     glassesType: string;
     od: Eye;
     os: Eye;
+    highTolerance?: boolean;
 }
 export interface Glasses extends GlassesSearch{
     id: number; // backend ID

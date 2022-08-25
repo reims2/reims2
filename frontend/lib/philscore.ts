@@ -4,21 +4,20 @@ import { Glasses, Eye, GlassesSearch } from '~/model/GlassesModel'
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 10
 // Glasses with a sphere/cylinder/additional delta of more than this will be removed
-const SPHERE_TOLERANCE = 0.5
-const CYLINDER_TOLERANCE = 0.5
-const ADDITIONAL_TOLERANCE = 0.5
+const NORMAL_TOLERANCE = 0.5
+const HIGH_TOLERANCE = 1.0
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function calculateAllPhilscore(terms:GlassesSearch, glasses: Glasses[]):Glasses[] {
   const rxOd = sanitizeEyeValues(terms.od)
   const rxOs = sanitizeEyeValues(terms.os)
+  const tolerance = terms.highTolerance !== null && terms.highTolerance ? HIGH_TOLERANCE : NORMAL_TOLERANCE
 
   return glasses.slice()
     .filter(glass => (terms.glassesType === glass.glassesType))
     .filter(glass => checkForSingleAxisTolerance(rxOd, glass.od) && checkForSingleAxisTolerance(rxOs, glass.os))
-    .filter(glass => checkForTolerances(glass.od, rxOd))
-    .filter(glass => checkForTolerances(glass.os, rxOs))
-    .filter(glass => glass.glassesType === 'single' || checkForAdditionalTolerance(glass, rxOd, rxOs))
+    .filter(glass => checkForTolerances(glass.od, rxOd, tolerance))
+    .filter(glass => checkForTolerances(glass.os, rxOs, tolerance))
+    .filter(glass => glass.glassesType === 'single' || checkForAdditionalTolerance(glass, rxOd, rxOs, tolerance))
     .map((glass) => {
       const odScore = calcSingleEyePhilscore(rxOd, glass.od, terms.glassesType === 'single')
       const osScore = calcSingleEyePhilscore(rxOs, glass.os, terms.glassesType === 'single')
@@ -59,18 +58,18 @@ function checkForSingleAxisTolerance(rx:Eye, lens: Eye):boolean {
   return (lens.axis >= minimum1 && lens.axis <= maximum1) || (lens.axis >= minimum2 && lens.axis <= maximum2)
 }
 
-function checkForTolerances(lens: Eye, rx:Eye):boolean {
+function checkForTolerances(lens: Eye, rx:Eye, tolerance: number):boolean {
   /**
    * Check if the rx itself or any of its spherical equivalents is in the tolerance range of sphere+cylinder of lens.
    */
   for (const equivalent of calcSphericalEquivalents(rx.sphere, rx.cylinder)) {
-    if (Math.abs(equivalent.sphere - lens.sphere) <= SPHERE_TOLERANCE && Math.abs(equivalent.cylinder - lens.cylinder) <= CYLINDER_TOLERANCE) return true
+    if (Math.abs(equivalent.sphere - lens.sphere) <= tolerance && Math.abs(equivalent.cylinder - lens.cylinder) <= tolerance) return true
   }
   return false
 }
 
-function checkForAdditionalTolerance(glass: Glasses, rxOd:Eye, rxOs: Eye):boolean {
-  return (Math.abs(glass.od.add!! - rxOd.add!!) <= ADDITIONAL_TOLERANCE && Math.abs(glass.os.add!! - rxOs.add!!) <= ADDITIONAL_TOLERANCE)
+function checkForAdditionalTolerance(glass: Glasses, rxOd:Eye, rxOs: Eye, tolerance: number):boolean {
+  return (Math.abs(glass.od.add!! - rxOd.add!!) <= tolerance && Math.abs(glass.os.add!! - rxOs.add!!) <= tolerance)
 }
 
 function calcSingleEyePhilscore(rx:Eye, lens: Eye, isSinglefocal: boolean):number {
