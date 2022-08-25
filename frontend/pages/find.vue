@@ -93,23 +93,24 @@
           No suitable glasses found. Please try another search.
         </v-alert>
         <div v-else>
-          <glass-card
-            v-for="item in orderedMatches"
+          <div
+            v-for="item in paginatedMatches"
             :key="item.id"
-            :glass="item"
           >
-            <template #actions>
-              <v-btn
-                nuxt
-                :to="{path:'/edit', query: { sku: item.sku }}"
-                text
-                class="mx-0"
-                color="primary"
-              >
-                Open Glasses
-              </v-btn>
-            </template>
-          </glass-card>
+            <glass-card :glass="item">
+              <template #actions>
+                <v-btn
+                  nuxt
+                  :to="{path:'/edit', query: { sku: item.sku }}"
+                  text
+                  class="mx-0"
+                  color="primary"
+                >
+                  Open Glasses
+                </v-btn>
+              </template>
+            </glass-card>
+          </div>
           <div class="text-center">
             <v-pagination
               v-model="page"
@@ -178,7 +179,7 @@ export default {
     searchButtonDisabled() {
       return !this.valid && this.hasGlassesLoaded
     },
-    orderedMatches() {
+    paginatedMatches() {
       if (this.matches == null) return null
       return this.matches.slice(this.itemsPerPage * (this.page - 1), this.itemsPerPage * (this.page - 1) + this.itemsPerPage)
     }
