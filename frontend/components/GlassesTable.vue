@@ -184,10 +184,13 @@ export default {
         }
         return filterString.slice(0, -1)
       } else {
-        const min = value.min !== '' && value.min !== undefined ? `${filterName}>=${Number(value.min)}` : null
-        const max = value.max !== '' && value.max !== undefined ? `${filterName}<=${Number(value.max)}` : null
-        if (min != null && max != null) return min + ';' + max
-        else if (min != null) return min
+        const min = !isNaN(value.min) ? `${filterName}>=${value.min}` : null
+        const max = !isNaN(value.max) ? `${filterName}<=${value.max}` : null
+        if (min != null && max != null) {
+          // swap min max automatically if entered wrongly
+          if (max < min) return max + ';' + min
+          else return min + ';' + max
+        } else if (min != null) return min
         else if (max != null) return max
         else return null
       }
@@ -195,9 +198,6 @@ export default {
     updateFilter(value, eye, child) {
       if (eye) this.filters[eye][child] = value
       else this.filters[child] = value
-      this.$nextTick(() => {
-        this.startLoading()
-      })
     },
     formatRx(value) {
       return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)

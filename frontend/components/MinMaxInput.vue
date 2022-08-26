@@ -4,7 +4,7 @@
       v-model="min"
       type="number"
       step="0.25"
-      label="Min"
+      label="From"
       hide-details
       dense
       style="max-width:50px"
@@ -19,7 +19,7 @@
       hide-details
       dense
       style="max-width:50px"
-      label="Max"
+      label="To"
       single-line
       @change="update"
     />
@@ -34,7 +34,7 @@ export default {
   }),
   methods: {
     update() {
-      this.$emit('update', { min: this.min, max: this.max })
+      this.$emit('update', { min: parseFloat(this.min), max: parseFloat(this.max) })
     }
   }
 }
