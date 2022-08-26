@@ -46,6 +46,7 @@
     "jest-extended": "^3.0.2",
     "ts-jest": "^28.0.8",
     "ts-loader": "^8.1.0",
-    "typescript": "4.7.4"
+    "typescript": "4.7.4",
+    "vue-enter-to-tab": "^1.0.2"
   }
 }

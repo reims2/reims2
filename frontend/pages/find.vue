@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container @keyup.s="submitAndUpdate">
     <v-row dense class="justify-center">
       <v-col cols=12 md=6 lg=4 class="px-2">
         <v-form ref="form" v-model="valid" @submit.prevent>
@@ -17,6 +17,7 @@
                 auto-select-first
                 :autofocus="!$vuetify.breakpoint.mobile"
                 outlined
+                @keyup.s="() => {return true}"
               />
             </v-col>
             <v-col
@@ -50,20 +51,23 @@
                 v-model="high_tolerance"
                 default-value=false
                 label="Increase search tolerance (might yield bad results)"
+                tabindex="-1"
               />
             </v-col>
             <v-col cols=12 class="px-0">
               <div>
                 <v-btn
+                  v-prevent-enter-tab
                   :disabled="Boolean(searchButtonDisabled)"
                   color="primary"
                   class="mr-4"
                   type="submit"
                   @click="submitAndUpdate"
                 >
-                  Search glasses
+                  <span class="text-decoration-underline">S</span>earch glasses
                 </v-btn>
                 <v-btn
+                  v-prevent-enter-tab
                   class="mr-4"
                   plain
                   @click="reset"
@@ -82,7 +86,7 @@
         md=6
         lg=4
         xl=3
-        class="px-0 pl-md-6"
+        class="pt-8 pt-md-1 px-0 pl-md-6"
       >
         <v-alert
           v-if="matches.length === 0"
@@ -137,8 +141,10 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import { matchesAsCsvUri } from '../lib/util'
+import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 
 export default {
+  mixins: [ModifiedEnterToTabMixin],
   transition: 'main',
   data: () => ({
     matches: null,
@@ -203,6 +209,7 @@ export default {
       hasGlassesLoaded: 'glasses/hasGlassesLoaded'
     }),
     async submitAndUpdate() {
+      if (!this.valid) return
       await this.loadGlasses()
       this.page = 1
       this.sync_eye = true // fixme good hgere?

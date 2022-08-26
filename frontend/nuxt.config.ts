@@ -23,6 +23,8 @@ const config: NuxtConfig = {
   plugins: [
     // https://github.com/iFgR/vue-shortkey
     { src: '@/plugins/vue-shortkey.js', mode: 'client' },
+    // https://github.com/ajomuch92/vue-enter-to-tab
+    { src: '@/plugins/vue-enter-to-tab.js', mode: 'client' },
     // https://github.com/nuxt-community/pwa-module/issues/239#issuecomment-796807081
     { src: '~/plugins/pwa-update.js', mode: 'client' },
     // https://github.com/robinvdvleuten/vuex-persistedstate#example-with-nuxtjs
