@@ -155,6 +155,7 @@
 import { mdiDelete, mdiPlus, mdiPencil } from '@mdi/js'
 import { mapActions } from 'vuex'
 export default {
+  title: 'Manage users',
   data: () => ({
     items: [],
     addLoading: false,

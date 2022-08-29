@@ -3,11 +3,16 @@
     app
     dark
     color="primary"
+    extension-height="80px"
   >
     <v-app-bar-nav-icon @click.stop="$store.commit('toggleDrawer')" />
     <v-toolbar-title>
       {{ title }}
     </v-toolbar-title>
+
+    <template v-if="$nuxt.isOffline" #extension>
+      <offline-banner />
+    </template>
   </v-app-bar>
 </template>
 
@@ -16,12 +21,16 @@ import { mdiChevronLeft, mdiMenu } from '@mdi/js'
 export default {
   data: () => ({
     mdiChevronLeft,
-    mdiMenu
+    mdiMenu,
+    title: 'REIMS2'
   }),
-  computed: {
-    title(ctx) {
-      return ctx.$root.$meta().refresh().metaInfo.titleChunk
+  watch: {
+    $route(to) {
+      this.title = to.meta.title || 'REIMS2'
     }
+  },
+  created() {
+    this.title = this.$route.meta.title || 'REIMS2'
   }
 
 }

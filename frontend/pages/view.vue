@@ -11,6 +11,7 @@
 <script>
 export default {
   transition: 'main',
+  title: 'View all glasses',
   head() {
     return {
       title: 'View all glasses'

@@ -86,7 +86,7 @@
         md=6
         lg=4
         xl=3
-        class="pt-8 pt-md-1 px-0 pl-md-6"
+        class="pt-10 pt-md-1 px-0 pl-md-6"
       >
         <v-alert
           v-if="matches.length === 0"
@@ -169,6 +169,7 @@ export default {
         rules: [v => !!v || 'Item is required']
       }
   }),
+  title: 'Find glasses',
   head() {
     return {
       title: 'Find matches'
@@ -240,7 +241,6 @@ export default {
       const pages = Math.ceil(this.matches.length / this.itemsPerPage)
       return pages > 10 ? 10 : pages
     }
-  },
-  title: 'Find glasses'
+  }
 }
 </script>

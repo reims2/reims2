@@ -66,7 +66,7 @@
           download='dispensed.csv'
           :disabled="!csvUri || csvUri == ''"
         >
-          Download reports
+          Download report
         </v-btn>
       </v-col>
     </v-row>
@@ -87,6 +87,7 @@ export default {
     loading: false,
     csvUri: ''
   }),
+  title: 'Create reports',
   watch: {
     startDate() {
       this.submit()

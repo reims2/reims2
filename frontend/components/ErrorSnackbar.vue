@@ -5,6 +5,7 @@
     color="error"
     right
     multi-line
+    absolute
   >
     {{ error }}
     <template #action="{ attrs }">

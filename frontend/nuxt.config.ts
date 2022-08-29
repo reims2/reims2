@@ -70,7 +70,9 @@ const config: NuxtConfig = {
     // https://auth.nuxtjs.org/
     '@nuxtjs/auth-next',
     // https://github.com/nuxt-community/dayjs-module#readme
-    '@nuxtjs/dayjs'
+    '@nuxtjs/dayjs',
+    // https://github.com/dword-design/nuxt-route-meta
+    'nuxt-route-meta'
   ],
 
   proxy: { // https://axios.nuxtjs.org/options/#proxy
@@ -152,7 +154,10 @@ const config: NuxtConfig = {
       light: true,
       themes: {
         light: {
-          primary: '#00695C' // teal darken 3
+          primary: '#005c66',
+          secondary: '#67697C',
+          accent: '#b34c00',
+          background: '#FFF'
         }
       },
       options: { customProperties: true }

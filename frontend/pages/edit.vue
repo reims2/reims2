@@ -47,7 +47,14 @@
         </v-form>
       </v-col>
     </v-row>
-    <v-snackbar v-if="lastDispensed != null" :value=true :timeout="-1" bottom vertical>
+    <v-snackbar
+      v-if="lastDispensed != null"
+      :value=true
+      :timeout="-1"
+      vertical
+      absolute
+      bottom
+    >
       <template #action="{ attrs }">
         <v-btn
           text
@@ -68,7 +75,7 @@
       <span v-if="isOfflineDispension">Glasses with SKU {{ lastDispensed.sku }} will be dispensed when you're back online</span>
       <span v-else>Glasses with SKU {{ lastDispensed.sku }} dispensed</span>
     </v-snackbar>
-    <v-snackbar v-if="result != ''" :value=true :timeout="-1" bottom>
+    <v-snackbar v-if="result != ''" :value=true :timeout="-1" bottom absolute>
       <template #action="{ attrs }">
         <v-btn
           text
@@ -102,6 +109,7 @@ export default {
       title: 'Edit glasses'
     }
   },
+  title: 'Edit glasses',
   computed: {
     ...mapState({
       glasses: state => state.allGlasses

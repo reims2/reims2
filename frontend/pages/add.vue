@@ -180,6 +180,6 @@ export default {
       if (oldEye.add !== newEye.add) this.syncEyes = false
     }
   },
-  title: 'Enter glasses'
+  title: 'Add glasses'
 }
 </script>

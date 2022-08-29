@@ -36,6 +36,7 @@
         v-for="item in mainItems"
         :key="item.title"
         :to="item.to"
+        :disabled="item.disabled || false"
         nuxt
         active-class="highlighted"
       >
@@ -58,6 +59,7 @@
         v-for="item in otherItems"
         :key="item.title"
         :to="item.to"
+        :disabled="item.disabled || false"
         nuxt
         active-class="highlighted"
       >
