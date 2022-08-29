@@ -121,14 +121,14 @@
         repository: https://github.com/reims2/reims2-docs
         version: main
         build: True
-    - name: Fix dokku git config after using clone
-      tags: test
-      shell: |
-        git config --global receive.denyCurrentBranch warn
-        git --git-dir=/home/dokku/frontend config core.bare true
-        git --git-dir=/home/dokku/api config core.bare true
-        git --git-dir=/home/dokku/docs config core.bare true
-        chown dokku:dokku /home/dokku/*/config
+    # - name: Fix dokku git config after using clone
+    #   tags: test
+    #   shell: |
+    #     git config --global receive.denyCurrentBranch warn
+    #     git --git-dir=/home/dokku/frontend config core.bare true
+    #     git --git-dir=/home/dokku/api config core.bare true
+    #     git --git-dir=/home/dokku/docs config core.bare true
+    #     chown dokku:dokku /home/dokku/*/config
     - name: Add main domain to frontend
       dokku_domains:
         app: frontend
