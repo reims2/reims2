@@ -6,30 +6,22 @@
     app
   >
     <template #prepend>
-      <div class="mt-4 mx-3">
+      <div class="mt-5 mx-3 text-h6  font-weight-medium">
         <NuxtLink
-          class="text-h4 no-decoration"
           :style="miniDrawer ? 'visibility:hidden;': ''"
+          class="no-decoration no-color"
           to="/"
         >
-          REIMS2
+          REIMS {{ locationNames[location] }}
         </NuxtLink>
       </div>
-      <div v-if="$auth.loggedIn && $auth.user" class="text--secondary mx-3 mb-2" :style="miniDrawer ? 'visibility:hidden;': ''">
+      <div v-if="$auth.loggedIn && $auth.user && !miniDrawer" class="text--secondary ml-3 mb-1">
         Logged in as <span class="font-weight-bold">{{ $auth.user.username }}</span>
       </div>
-      <v-select
-        v-if="!miniDrawer"
-        v-model="location"
-        :items="locations"
-        dense
-        hide-details
-        class="mb-1 mx-3"
-      />
-      <div v-if="!miniDrawer && $store.state.allGlasses.length > 0" class="text-caption mb-1 mx-3">
-        <div>{{ $store.state.allGlasses.length }} glasses stored</div>
-      </div>
     </template>
+    <location-dialog v-model="dialog" />
+
+    <v-divider v-if="!miniDrawer" class="mt-3" />
 
     <v-list v-if="!$vuetify.breakpoint.mobile" nav>
       <v-list-item
@@ -49,12 +41,9 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-    <v-divider v-if="!$vuetify.breakpoint.mobile" />
+    <v-divider v-if="!$vuetify.breakpoint.mobile" class="mb-3" />
 
-    <v-list dense nav subheader>
-      <v-subheader v-if="!miniDrawer">
-        Inventory management
-      </v-subheader>
+    <v-list nav subheader>
       <v-list-item
         v-for="item in otherItems"
         :key="item.title"
@@ -76,15 +65,14 @@
     <template #append>
       <v-divider />
       <v-list dense nav>
-        <v-list-item href="/docs">
+        <v-list-item @click.stop="dialog=true">
           <v-list-item-icon>
-            <v-icon>{{ mdiFileDocument }}</v-icon>
+            <v-icon>{{ mdiMapMarkerMultiple }}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>Documentation</v-list-item-title>
+            <v-list-item-title>Change location</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
         <v-list-item @click="$auth.logout()">
           <v-list-item-icon>
             <v-icon>{{ mdiLogout }}</v-icon>
@@ -100,7 +88,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import { mdiLogout, mdiFileDocument } from '@mdi/js'
+import { mdiLogout, mdiMapMarkerMultiple } from '@mdi/js'
+import { locationNames } from '../lib/util'
 export default {
   props: {
     mainItems: {
@@ -115,25 +104,12 @@ export default {
   data() {
     return {
       mdiLogout,
-      mdiFileDocument,
-      locations: [
-        { text: 'San Miguel', value: 'sm' },
-        { text: 'Santa Ana', value: 'sa' }
-      ]
+      locationNames,
+      mdiMapMarkerMultiple,
+      dialog: false
     }
   },
-
   computed: {
-    location: {
-      get() {
-        return this.$store.state.location
-      },
-      set(value) {
-        this.$nuxt.$loading.start()
-        this.$store.commit('setLocation', value)
-        this.$store.dispatch('loadGlasses')
-      }
-    },
     drawerModel: {
       get() { return !this.$vuetify.breakpoint.mobile || this.drawer },
       set(val) { this.$store.commit('setDrawer', val) }
@@ -142,13 +118,13 @@ export default {
       get() { return !this.$vuetify.breakpoint.mobile && !this.drawer },
       set() { }
     },
-    ...mapState(['drawer'])
+    ...mapState(['drawer', 'location'])
   }
 }
 </script>
 
 <style scoped>
 .highlighted {
-  color: var(--v-primary-base) !important
+  color: var(--v-accent-base) !important
 }
 </style>

@@ -12,3 +12,7 @@
 .no-decoration {
   text-decoration: none;
 }
+
+.no-color {
+  color: unset !important;
+}

@@ -10,6 +10,11 @@ const isAllowedStep = (number:number) => {
   return false
 }
 
+export const locationNames = {
+  sa: 'Santa Ana',
+  sm: 'San Miguel'
+}
+
 export const eyeRules = {
   sphere: [
     (v:any) => (v != null && v !== '') || 'Required',

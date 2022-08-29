@@ -31,10 +31,10 @@ export default {
     },
     otherItems() {
       const list = [
-        { title: 'Create reports', icon: mdiChartBox, to: '/manage/reports', disabled: this.$nuxt.isOffline }
+        { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: this.$nuxt.isOffline }
       ]
       if (this.$auth.user.roles && this.$auth.user.roles.map(el => el.name).includes('ROLE_ADMIN')) {
-        list.push({ title: 'Manage users', icon: mdiAccountEdit, to: '/manage/users', disabled: this.$nuxt.isOffline })
+        list.push({ title: 'Users', icon: mdiAccountEdit, to: '/manage/users', disabled: this.$nuxt.isOffline })
       }
       return list
     }

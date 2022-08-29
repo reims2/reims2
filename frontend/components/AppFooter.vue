@@ -9,22 +9,25 @@
   >
     <div v-if="showLastUpdate">
       <last-refresh-span /><span class="px-2">—</span>
+      {{ allGlasses.length }} glasses stored<span class="px-2">—</span>
     </div>
     <span>&copy; {{ new Date().getFullYear() }}
       <a href="https://partnersforvisualhealth.org/" tabindex="-1" target=”_blank” rel=noopener class="white--text">Partners for Visual Health</a>
     </span>
-    <span class="px-2">—</span>
-    <a href="https://github.com/reims2" tabindex="-1" target=”_blank” rel=noopener class="white--text">Source Code</a>
   </v-footer>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     showLastUpdate: {
       type: Boolean,
       default: true
     }
+  },
+  computed: {
+    ...mapState(['allGlasses'])
   }
 }
 </script>
