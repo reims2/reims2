@@ -29,7 +29,7 @@
             </v-col>
             <v-col v-if="selected">
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card :key="selected.sku" :glass="selected" editable>
+                <glass-card :key="selected.key" :glass="selected" editable>
                   <template #actions>
                     <v-btn
                       text
@@ -118,7 +118,10 @@ export default {
       getSingle: 'glasses/getSingle'
     }),
     selected() {
-      return this.getSingle(parseInt(this.sku))
+      const selected = this.getSingle(parseInt(this.sku))
+      // horrible hack to always refresh the virtual DOM if something changed
+      if (selected) selected.key = '' + selected.sku + Math.floor(Math.random() * 10000).toString()
+      return selected
     },
     hint() {
       if (this.selected) {

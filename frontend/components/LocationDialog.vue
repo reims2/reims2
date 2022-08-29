@@ -1,11 +1,11 @@
 <template>
   <v-dialog
     :value="value"
-    max-width="600px"
+    max-width="400px"
     @input="e => updateDialogState(e)"
   >
     <v-card>
-      <v-card-title class="text-h5 grey lighten-2">
+      <v-card-title class="text-h5 secondary white--text">
         Change location
       </v-card-title>
 
