@@ -13,7 +13,9 @@
 
 <script>
 import { mdiFileFind, mdiPencil, mdiDatabase, mdiPlusCircle, mdiAccountEdit, mdiChartBox } from '@mdi/js'
+import { mapState } from 'vuex'
 import AppFooter from '~/components/AppFooter.vue'
+
 export default {
   components: { AppFooter },
   data: () => ({
@@ -37,15 +39,32 @@ export default {
         list.push({ title: 'Users', icon: mdiAccountEdit, to: '/manage/users', disabled: this.$nuxt.isOffline })
       }
       return list
-    }
+    },
+    ...mapState(['lastRefresh'])
 
   },
   created() {
-    this.$store.dispatch('loadGlasses')
-    this.refreshGlassesInterval = setInterval(() => this.$store.dispatch('loadGlasses'), 5 * 60 * 1000)
+    this.updateGlasses()
+    this.refreshGlassesInterval = setInterval(() => this.updateGlasses(), 3 * 60 * 1000)
   },
   beforeDestroy() {
     clearInterval(this.refreshGlassesInterval)
+  },
+  methods: {
+    async updateGlasses() {
+      try {
+        await this.$store.dispatch('loadGlasses')
+      } catch (error) {
+        if (!this.lastRefresh) {
+          this.$store.commit('setError', `Could not load glasses database, please retry (Error ${error.status})`)
+        } else if (this.$dayjs().diff(this.lastRefresh) > 3 * 24 * 60 * 60 * 1000) {
+          // if the last successful update is more than three day ago, mark DB as outdated
+          this.$store.commit('setOutdatedFlag', true)
+        }
+        // else just fail silently because there's still a recent enough version of the DB cached
+        console.log('DB update failed', error)
+      }
+    }
   }
 }
 </script>

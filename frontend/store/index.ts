@@ -6,6 +6,7 @@ const arrayContainsSku = (data: Glasses[], sku: number) => data.some(e => e.sku 
 export interface RootState {
   allGlasses: Glasses[],
   lastRefresh: Date | null,
+  isOutdated: boolean,
   location: string,
   error: string,
   drawer: boolean
@@ -15,13 +16,15 @@ export const state = (): RootState => ({
   lastRefresh: null,
   location: 'sa',
   error: '',
-  drawer: false
+  drawer: false,
+  isOutdated: false
 })
 
 export const MutationType = {
   SET_GLASSES: 'setGlasses',
   SET_LOCATION: 'setLocation',
   SET_LAST_REFRESH: 'setLastRefresh',
+  SET_OUTDATED_FLAG: 'setOutdatedFlag',
   DELETE_OFFLINE_GLASSES: 'deleteOfflineGlasses',
   ADD_OFFLINE_GLASSES: 'addOfflineGlasses',
   SET_ERROR: 'setError',
@@ -33,6 +36,7 @@ export const mutations: MutationTree<RootState> = {
   [MutationType.SET_GLASSES]: (state, value: Glasses[]) => { state.allGlasses = value },
   [MutationType.SET_LOCATION]: (state, value: string) => { state.location = value },
   [MutationType.SET_LAST_REFRESH]: (state, value: Date) => { state.lastRefresh = value },
+  [MutationType.SET_OUTDATED_FLAG]: (state, value: boolean) => { state.isOutdated = value },
   [MutationType.DELETE_OFFLINE_GLASSES]: (state, sku: number) => {
     if (arrayContainsSku(state.allGlasses, sku)) {
       state.allGlasses = state.allGlasses.filter(el => el.sku !== sku)
@@ -65,7 +69,8 @@ export const actions: ActionTree<RootState, RootState> = {
   async [ActionType.LOAD_GLASSES]({ commit, state }) {
     const data = await this.$axios.$get(`/api/glasses/${state.location}`, { params: { size: 100000 } }) as any
     commit(MutationType.SET_GLASSES, data.glasses)
-    commit(MutationType.SET_LAST_REFRESH, new Date())
+    commit(MutationType.SET_OUTDATED_FLAG, false)
+    commit(MutationType.SET_LAST_REFRESH, new Date().toISOString())
   }
 
 }

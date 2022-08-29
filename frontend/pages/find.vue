@@ -199,7 +199,7 @@ export default {
       }
     },
     allGlasses() {
-      if (this.valid) this.loadGlasses()
+      if (this.valid) this.loadMatches()
     }
   },
   methods: {
@@ -211,7 +211,7 @@ export default {
     }),
     async submitAndUpdate() {
       if (!this.valid) return
-      await this.loadGlasses()
+      await this.loadMatches()
       this.page = 1
       this.sync_eye = true // fixme good hgere?
 
@@ -221,7 +221,7 @@ export default {
         else if (this.$refs.results) this.$refs.results.scrollIntoView(true)
       })
     },
-    async loadGlasses() {
+    async loadMatches() {
       const eyeModel = {}
       eyeModel.glassesType = this.glassesType
       eyeModel.os = this.os_eye

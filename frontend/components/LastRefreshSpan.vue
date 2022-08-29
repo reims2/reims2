@@ -12,9 +12,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'lastRefresh'
-    ])
+    ...mapState(['lastRefresh'])
   },
   watch: {
     lastRefresh() {
@@ -32,6 +30,8 @@ export default {
     generateTimeString() {
       if (!this.lastRefresh) {
         this.lastRefreshString = ': none yet'
+      } else if (this.$dayjs().diff(this.lastRefresh) < 5 * 60 * 1000) {
+        this.lastRefreshString = 'now' // don't bother the user with anything less than 5 minutes
       } else {
         this.lastRefreshString = this.$dayjs().to(this.lastRefresh)
       }

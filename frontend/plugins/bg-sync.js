@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 const bgSyncDispensePlugin = new workbox.backgroundSync.BackgroundSyncPlugin('reimsDispenseQueue', {
-  maxRetentionTime: 30 * 24 * 60 // retry dispense for 30 days
+  maxRetentionTime: 60 * 24 * 60 // retry dispense for 60 days
 })
 
 const bgSyncEditPlugin = new workbox.backgroundSync.BackgroundSyncPlugin('reimsEditQueue', {
-  maxRetentionTime: 3 * 24 * 60 // retry dispense for 3 days
+  maxRetentionTime: 7 * 24 * 60 // retry edit for 7 days
 })
 
 const statusPlugin = {
