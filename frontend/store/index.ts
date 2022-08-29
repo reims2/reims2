@@ -58,11 +58,7 @@ export const mutations: MutationTree<RootState> = {
 }
 
 export const ActionType = {
-  PHIL_SCORE: 'philScore',
-  LOAD_GLASSES: 'loadGlasses',
-  ADD_GLASSES: 'addGlasses',
-  DISPENSE_GLASSES: 'dispense',
-  DELETE_GLASSES: 'delete'
+  LOAD_GLASSES: 'loadGlasses'
 }
 export const actions: ActionTree<RootState, RootState> = {
 

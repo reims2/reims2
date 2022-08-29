@@ -4,6 +4,7 @@
       max-width="1000px"
       :type="$store.state.lastRefresh ? 'info' : 'error'"
       prominent
+      color="secondary"
       dense
     >
       <span v-if="$store.state.lastRefresh">REIMS is running offline. <last-refresh-span />.</span>

@@ -71,8 +71,19 @@ export default {
   methods: {
     async changeLocation() {
       this.loading = true
+      this.prevLocation = this.location
       this.$store.commit('setLocation', this.newLocation)
-      await this.$store.dispatch('loadGlasses')
+
+      try {
+        await this.$store.dispatch('loadGlasses')
+      } catch (error) {
+        // reset location
+        this.newLocation = this.prevLocation
+        this.$store.commit('setLocation', this.newLocation)
+
+        this.$store.commit('setError', `Cannot change location (Error ${error.status})`)
+      }
+
       this.loading = false
       this.updateDialogState(false)
     },
