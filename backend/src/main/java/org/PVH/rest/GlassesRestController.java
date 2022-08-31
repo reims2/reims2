@@ -41,8 +41,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.opencsv.CSVWriter;
-
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
 
@@ -67,7 +65,8 @@ public class GlassesRestController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET, value = "/{location}")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> getAllGlassesPage(@RequestParam(value = "search", required = false) String search,
+    public ResponseEntity<Map<String, Object>> getAllGlassesPaginated(
+            @RequestParam(value = "search", required = false) String search,
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "sku,desc") String[] sort, @PathVariable("location") String location) {
 
@@ -110,6 +109,14 @@ public class GlassesRestController {
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @RequestMapping(method = RequestMethod.GET, value = "/{location}.csv")
+    @ResponseBody
+    public void getAllGlassesCsv(HttpServletResponse servletResponse, @PathVariable("location") String location) {
+        List<Glasses> glasses = mainService.findByDispensedAndLocation(false, location);
+        WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET, value = "/dispensed/{location}")
     @ResponseBody
     public Collection<Glasses> getAllDispensedGlasses(@RequestParam Optional<Date> startDate,
@@ -130,14 +137,7 @@ public class GlassesRestController {
         Collection<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
                 endDate.orElse(new Date()), location);
 
-        servletResponse.setContentType("text/csv");
-        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"dispensed_report.csv\"");
-        try (CSVWriter csvPrinter = new CSVWriter(servletResponse.getWriter())) {
-            WriteCsvToResponse.writeGlasses(csvPrinter, glasses);
-        } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-        return;
+        WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")

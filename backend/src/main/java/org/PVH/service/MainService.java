@@ -33,6 +33,8 @@ public interface MainService {
 
     Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException;
 
+    List<Glasses> findByDispensedAndLocation(boolean dispensed, String location) throws DataAccessException;
+
     List<Glasses> findDispensedBetween(Date startDate, Date endDate, String location);
 
 }

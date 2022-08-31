@@ -1,15 +1,31 @@
 package org.PVH.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.PVH.model.Eye;
 import org.PVH.model.Glasses;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.opencsv.CSVWriter;
 
 public class WriteCsvToResponse {
+
+    public static void writeGlassesToCsvHttpResponse(HttpServletResponse servletResponse, Collection<Glasses> glasses) {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"glasses.csv\"");
+        try (CSVWriter csvPrinter = new CSVWriter(servletResponse.getWriter())) {
+            writeGlasses(csvPrinter, glasses);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+
+    }
 
     public static void writeGlasses(CSVWriter writer, Collection<Glasses> glasses) {
         writer.writeNext(new String[] { "SKU",
