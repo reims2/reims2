@@ -76,7 +76,6 @@
 <script>
 import { mdiCalendar } from '@mdi/js'
 import { mapActions } from 'vuex'
-import { dispensedAsCsv } from '../../lib/util'
 export default {
   data: () => ({
     startDate: '',
@@ -102,24 +101,21 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadItems: 'glasses/loadDispensed'
+      loadItems: 'glasses/loadDispensedCsv'
     }),
     async submit() {
       this.loading = true
       this.csvUri = ''
       try {
-        const items = await this.loadItems({
+        const csvFile = await this.loadItems({
           startDate: this.$dayjs(this.startDate).format('MM/DD/YYYY'),
           endDate: this.$dayjs(this.endDate).add(1, 'day').format('MM/DD/YYYY')
         })
-        this.csvUri = dispensedAsCsv(items)
-      } catch (err) {
-        if (err.status === 404) {
-          // fixme better UX?
-        } else {
-          // todo error handling
-          console.log(err)
-        }
+        const blob = new Blob([csvFile], { type: 'application/csv' })
+        this.csvUri = URL.createObjectURL(blob)
+      } catch (error) {
+        this.csvUri = ''
+        this.$store.commit('setError', `Could not load reports (Error ${error.status})`)
       }
       this.loading = false
     }

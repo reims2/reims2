@@ -37,7 +37,7 @@ export const ActionType = {
   DELETE_GLASSES: 'delete',
   EDIT_GLASSES: 'edit',
   PHIL_SCORE: 'philScore',
-  LOAD_DISPENSED_GLASSES: 'loadDispensed'
+  LOAD_DISPENSED_CSV: 'loadDispensedCsv'
 }
 export const actions: ActionTree<GlassesState, RootState> = {
   async [ActionType.ADD_GLASSES]({ commit, rootState }, newGlasses:Glasses) {
@@ -82,9 +82,9 @@ export const actions: ActionTree<GlassesState, RootState> = {
     return calculateAllPhilscore(eyeModel, rootState.allGlasses || [])
   },
 
-  async [ActionType.LOAD_DISPENSED_GLASSES]({ rootState }, { startDate, endDate }) {
+  async [ActionType.LOAD_DISPENSED_CSV]({ rootState }, { startDate, endDate }) {
     const params:any = { startDate, endDate }
-    const data = await this.$axios.$get(`/api/glasses/dispensed/${rootState.location}`, { params })
+    const data = await this.$axios.$get(`/api/glasses/dispensed/${rootState.location}.csv`, { params, responseType: 'blob' })
     return data
   }
 }

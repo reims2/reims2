@@ -178,7 +178,10 @@ export default {
           this.$store.commit('setError', 'SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
         } else if (error.network || error.server) {
           if (error.network) this.isOfflineDispension = true
-          if (error.server) this.$store.commit('setError', `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`)
+          if (error.server) {
+            this.$store.commit('setError', `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`)
+            this.isOfflineDispension = true
+          }
           this.lastDispensed = toDispense
           this.$refs.form.reset()
           this.$refs.firstInput.focus()

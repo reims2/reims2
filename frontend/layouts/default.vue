@@ -35,7 +35,7 @@ export default {
       const list = [
         { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: this.$nuxt.isOffline }
       ]
-      if (this.$auth.user.roles && this.$auth.user.roles.map(el => el.name).includes('ROLE_ADMIN')) {
+      if (this.$auth.user && this.$auth.user.roles && this.$auth.user.roles.map(el => el.name).includes('ROLE_ADMIN')) {
         list.push({ title: 'Users', icon: mdiAccountEdit, to: '/manage/users', disabled: this.$nuxt.isOffline })
       }
       return list
