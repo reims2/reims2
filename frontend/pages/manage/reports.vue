@@ -2,8 +2,27 @@
   <v-container>
     <v-row dense class="d-flex justify-center">
       <v-col cols=12 md=6 lg=4>
-        <div class="pb-2">
-          Select a date range below to generate a table of all dispensed glasses during that time.
+        <div class="pb-2 text-h5">
+          Export current inventory
+        </div>
+        <div class="pb-4 text--secondary">
+          Click this button to export a report of all glasses that are not dispensed.
+        </div>
+        <v-btn
+          color="accent"
+          :loading="loadingUndispensed"
+          @click="downloadUndispensed"
+        >
+          Export all
+        </v-btn>
+
+        <v-divider class="my-8" />
+
+        <div class="pb-2 text-h5">
+          Export dispensed glasses
+        </div>
+        <div class="pb-2 text--secondary">
+          Select a date range and click the buttom below to generate a report of all dispensed glasses during that time.
         </div>
         <div class="pt-4">
           <v-menu
@@ -31,7 +50,7 @@
             />
           </v-menu>
         </div>
-        <div class="pb-4">
+        <div class="pb-2">
           <v-menu
             v-model="endMenu"
             :close-on-content-click="false"
@@ -59,15 +78,19 @@
         </div>
 
         <v-btn
-          color="primary"
-          :loading="loading"
+          color="accent"
+          :loading="loadingDispensed"
+          @click="downloadDispensed"
+        >
+          Export dispensed
+        </v-btn>
+        <a
+          ref="downloadLink"
           :href="csvUri"
           target="_blank"
-          download='dispensed.csv'
-          :disabled="!csvUri || csvUri == ''"
-        >
-          Download report
-        </v-btn>
+          download='glasses.csv'
+          class="d-none"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -83,41 +106,49 @@ export default {
     startMenu: false,
     endMenu: false,
     mdiCalendar,
-    loading: false,
+    loadingDispensed: false,
+    loadingUndispensed: false,
     csvUri: ''
   }),
   title: 'Create reports',
-  watch: {
-    startDate() {
-      this.submit()
-    },
-    endDate() {
-      this.submit()
-    }
-  },
   created() {
     this.startDate = this.$dayjs().subtract(1, 'year').format('YYYY-MM-DD')
     this.endDate = this.$dayjs().format('YYYY-MM-DD')
   },
   methods: {
     ...mapActions({
-      loadItems: 'glasses/loadDispensedCsv'
+      loadDispensed: 'glasses/loadDispensedCsv',
+      loadUndispensed: 'glasses/loadUndispensedCsv'
     }),
-    async submit() {
-      this.loading = true
-      this.csvUri = ''
+    async downloadDispensed() {
+      this.loadingDispensed = true
       try {
-        const csvFile = await this.loadItems({
+        const csvFile = await this.loadDispensed({
           startDate: this.$dayjs(this.startDate).format('MM/DD/YYYY'),
           endDate: this.$dayjs(this.endDate).add(1, 'day').format('MM/DD/YYYY')
         })
-        const blob = new Blob([csvFile], { type: 'application/csv' })
-        this.csvUri = URL.createObjectURL(blob)
+        this.downloadCsv(csvFile)
       } catch (error) {
-        this.csvUri = ''
-        this.$store.commit('setError', `Could not load reports (Error ${error.status})`)
+        this.$store.commit('setError', `Could not load dispensed report (Error ${error.status})`)
       }
-      this.loading = false
+      this.loadingDispensed = false
+    },
+    async downloadUndispensed() {
+      this.loadingUndispensed = true
+      try {
+        const csvFile = await this.loadUndispensed()
+        this.downloadCsv(csvFile)
+      } catch (error) {
+        this.$store.commit('setError', `Could not load all glasses (Error ${error.status})`)
+      }
+      this.loadingUndispensed = false
+    },
+    downloadCsv(csvBlob) {
+      const blob = new Blob([csvBlob], { type: 'application/csv' })
+      this.csvUri = URL.createObjectURL(blob)
+      this.$nextTick(() => {
+        this.$refs.downloadLink.click()
+      })
     }
   }
 }
