@@ -1,6 +1,7 @@
 
 package org.PVH.rest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -9,12 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.PVH.model.Glasses;
 import org.PVH.repository.RSQL.CustomRsqlVisitor;
 import org.PVH.service.MainService;
+import org.PVH.util.WriteCsvToResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +40,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.opencsv.CSVWriter;
 
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
@@ -107,14 +112,32 @@ public class GlassesRestController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET, value = "/dispensed/{location}")
     @ResponseBody
-    public Collection<Glasses> getAllGlassesPage(@RequestParam Optional<Date> startDate, @RequestParam Optional<Date> endDate,
+    public Collection<Glasses> getAllDispensedGlasses(@RequestParam Optional<Date> startDate,
+            @RequestParam Optional<Date> endDate,
             @PathVariable("location") String location) {
-        Collection<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)), endDate.orElse(new Date()), location);
-
-        if (glasses.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        Collection<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
+                endDate.orElse(new Date()), location);
 
         return glasses;
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @RequestMapping(method = RequestMethod.GET, value = "/dispensed/{location}.csv")
+    public void getAllDispensedGlassesCsv(HttpServletResponse servletResponse,
+            @RequestParam Optional<Date> startDate,
+            @RequestParam Optional<Date> endDate,
+            @PathVariable("location") String location) throws IOException {
+        Collection<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
+                endDate.orElse(new Date()), location);
+
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"dispensed_report.csv\"");
+        try (CSVWriter csvPrinter = new CSVWriter(servletResponse.getWriter())) {
+            WriteCsvToResponse.writeGlasses(csvPrinter, glasses);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+        return;
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
