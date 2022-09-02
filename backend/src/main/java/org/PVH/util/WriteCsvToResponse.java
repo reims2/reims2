@@ -1,18 +1,16 @@
 package org.PVH.util;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.opencsv.CSVWriter;
 import org.PVH.model.Eye;
 import org.PVH.model.Glasses;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.opencsv.CSVWriter;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class WriteCsvToResponse {
 

@@ -18,7 +18,8 @@ package org.PVH.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
-
+    private static final Logger logger = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> exception(Exception e) {
 		ObjectMapper mapper = new ObjectMapper();
@@ -39,7 +40,7 @@ public class ExceptionControllerAdvice {
 		try {
 			respJSONstring = mapper.writeValueAsString(errorInfo);
 		} catch (JsonProcessingException e1) {
-			e1.printStackTrace();
+			logger.error(e1.getOriginalMessage());
 		}
 		return ResponseEntity.badRequest().body(respJSONstring);
 	}

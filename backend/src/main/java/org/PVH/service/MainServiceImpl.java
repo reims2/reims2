@@ -1,10 +1,5 @@
 package org.PVH.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.PVH.model.Dispense;
 import org.PVH.model.Glasses;
 import org.PVH.repository.DispenseRepository;
@@ -15,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MainServiceImpl implements MainService {
@@ -39,12 +37,12 @@ public class MainServiceImpl implements MainService {
     @Override
     @Transactional
     public Optional<Glasses> findGlassesById(long glassesId) {
-        Optional<Glasses> glasses = null;
+        Optional<Glasses> glasses;
         try {
             glasses = glassesRepository.findById(glassesId);
         } catch (ObjectRetrievalFailureException | EmptyResultDataAccessException e) {
             // just ignore not found exceptions for Jdbc/Jpa realization
-            return null;
+            return Optional.empty();
         }
         return glasses;
     }

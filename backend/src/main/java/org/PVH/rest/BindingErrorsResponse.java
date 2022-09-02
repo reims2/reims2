@@ -16,16 +16,17 @@
 
 package org.PVH.rest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Vitaliy Fedoriv
@@ -33,7 +34,7 @@ import org.springframework.validation.FieldError;
  */
 
 public class BindingErrorsResponse {
-
+    private static final Logger logger = LoggerFactory.getLogger(BindingErrorsResponse.class);
 	public BindingErrorsResponse() {
 		this(null);
 	}
@@ -86,7 +87,7 @@ public class BindingErrorsResponse {
 		try {
 			errorsAsJSON = mapper.writeValueAsString(bindingErrors);
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+            logger.error(e.getOriginalMessage());
 		}
 		return errorsAsJSON;
 	}

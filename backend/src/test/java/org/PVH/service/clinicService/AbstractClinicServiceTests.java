@@ -15,10 +15,8 @@
  */
 package org.PVH.service.clinicService;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.PVH.service.MainService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 /**

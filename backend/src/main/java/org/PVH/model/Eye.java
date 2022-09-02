@@ -1,19 +1,10 @@
 package org.PVH.model;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NegativeOrZero;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
-
-import org.springframework.security.access.prepost.PostAuthorize;
+import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "eye")

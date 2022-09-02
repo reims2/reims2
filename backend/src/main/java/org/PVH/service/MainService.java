@@ -1,9 +1,5 @@
 package org.PVH.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
 import org.PVH.model.Glasses;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -12,7 +8,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Lock;
 
 import javax.persistence.LockModeType;
-import javax.transaction.Transactional;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 public interface MainService {
 

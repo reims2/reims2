@@ -1,18 +1,14 @@
 package org.PVH.repository.RSQL;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.persistence.criteria.*;
-import javax.persistence.metamodel.*;
-
+import cz.jirutka.rsql.parser.ast.ComparisonOperator;
 import org.hibernate.query.criteria.internal.path.PluralAttributePath;
 import org.hibernate.query.criteria.internal.path.SingularAttributePath;
 import org.springframework.data.jpa.domain.Specification;
 
-import cz.jirutka.rsql.parser.ast.ComparisonOperator;
-
-import static org.PVH.repository.RSQL.RsqlSearchOperation.*;
+import javax.persistence.criteria.*;
+import javax.persistence.metamodel.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GenericRsqlSpecification<T> implements Specification<T> {
 
@@ -83,25 +79,29 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
             String step = pathSteps[0];
             path = root.get(step);
             From lastFrom = root;
+            try {
+                for (int i = 1; i <= pathSteps.length - 1; i++) {
 
-            for (int i = 1; i <= pathSteps.length - 1; i++) {
-                if(path instanceof PluralAttributePath) {
-                    PluralAttribute attr = ((PluralAttributePath) path).getAttribute();
-                    Join join = getJoin(attr, lastFrom);
-                    path = join.get(pathSteps[i]);
-                    lastFrom = join;
-                } else if(path instanceof SingularAttributePath) {
-                    SingularAttribute attr = ((SingularAttributePath) path).getAttribute();
-                    if(attr.getPersistentAttributeType() != Attribute.PersistentAttributeType.BASIC) {
-                        Join join = lastFrom.join(attr, JoinType.LEFT);
+                    if (path instanceof PluralAttributePath) {
+                        PluralAttribute attr = ((PluralAttributePath) path).getAttribute();
+                        Join join = getJoin(attr, lastFrom);
                         path = join.get(pathSteps[i]);
                         lastFrom = join;
+                    } else if (path instanceof SingularAttributePath) {
+                        SingularAttribute attr = ((SingularAttributePath) path).getAttribute();
+                        if (attr.getPersistentAttributeType() != Attribute.PersistentAttributeType.BASIC) {
+                            Join join = lastFrom.join(attr, JoinType.LEFT);
+                            path = join.get(pathSteps[i]);
+                            lastFrom = join;
+                        } else {
+                            path = path.get(pathSteps[i]);
+                        }
                     } else {
                         path = path.get(pathSteps[i]);
                     }
-                }  else {
-                    path = path.get(pathSteps[i]);
                 }
+            }catch (Exception e){
+                throw new RuntimeException(e);
             }
         } else {
             path = root.get(property);
@@ -134,5 +134,6 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
             else return arg;
         }).collect(Collectors.toList());
     }
+
 }
 

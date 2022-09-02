@@ -1,9 +1,9 @@
 package org.PVH.repository.RSQL;
 
-import java.util.Arrays;
-
 import cz.jirutka.rsql.parser.ast.ComparisonOperator;
 import cz.jirutka.rsql.parser.ast.RSQLOperators;
+
+import java.util.Arrays;
 
 public enum RsqlSearchOperation {
     EQUAL(RSQLOperators.EQUAL), NOT_EQUAL(RSQLOperators.NOT_EQUAL), GREATER_THAN(RSQLOperators.GREATER_THAN),

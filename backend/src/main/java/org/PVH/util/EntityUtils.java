@@ -16,10 +16,10 @@
 
 package org.PVH.util;
 
-import java.util.Collection;
-
 import org.PVH.model.BaseEntity;
 import org.springframework.orm.ObjectRetrievalFailureException;
+
+import java.util.Collection;
 
 /**
  * Utility methods for handling entities. Separate from the BaseEntity class mainly because of dependency on the ORM-associated
