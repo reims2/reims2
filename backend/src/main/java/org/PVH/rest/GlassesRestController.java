@@ -28,6 +28,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
@@ -135,11 +137,14 @@ public class GlassesRestController {
 
         return glasses.get();
     }
-
+    private static Lock lock = new ReentrantLock();
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Glasses> addGlasses(@RequestBody @Valid Glasses glasses, BindingResult bindingResult,
             UriComponentsBuilder ucBuilder) {
+        lock.lock();
+        Glasses glassesResponse;
+        try {
         BindingErrorsResponse errors = new BindingErrorsResponse();
         HttpHeaders headers = new HttpHeaders();
         if (bindingResult.hasErrors() || (glasses == null)) {
@@ -149,8 +154,14 @@ public class GlassesRestController {
         }
 
         headers.setLocation(ucBuilder.path("/api/glasses/{id}").buildAndExpand(glasses.getId()).toUri());
-
-        return new ResponseEntity<Glasses>(this.mainService.saveGlasses(glasses), HttpStatus.CREATED);
+        glassesResponse = this.mainService.saveGlasses(glasses);
+        }catch (RuntimeException e){
+            throw new ResponseStatusException(
+                HttpStatus.INTERNAL_SERVER_ERROR, "Foo Not Found", e);
+        }finally {
+            lock.unlock();
+        }
+        return new ResponseEntity<>(glassesResponse, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
