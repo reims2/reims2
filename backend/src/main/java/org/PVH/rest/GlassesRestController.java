@@ -157,7 +157,7 @@ public class GlassesRestController {
         glassesResponse = this.mainService.saveGlasses(glasses);
         }catch (RuntimeException e){
             throw new ResponseStatusException(
-                HttpStatus.INTERNAL_SERVER_ERROR, "Foo Not Found", e);
+                HttpStatus.INTERNAL_SERVER_ERROR , "Something bad happened.", e);
         }finally {
             lock.unlock();
         }

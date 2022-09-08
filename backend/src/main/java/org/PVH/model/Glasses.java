@@ -8,7 +8,7 @@ import java.util.Date;
 @Table(name = "glasses")
 public class Glasses extends BaseEntity {
 
-    @Column(name = "SKU", unique = true)
+    @Column(name = "SKU")
     private Integer sku;
 
     @Column(name = "glasses_type")

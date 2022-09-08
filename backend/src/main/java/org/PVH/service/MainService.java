@@ -15,15 +15,11 @@ import java.util.Optional;
 public interface MainService {
 
     Optional<Glasses> findGlassesById(long glassesId);
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Glasses saveGlasses(Glasses glasses) throws DataAccessException;
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     void deleteGlasses(Glasses glasses) throws DataAccessException;
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException;
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Glasses saveGlassesAfterEdit(Glasses glasses) throws DataAccessException;
 
     Optional<Glasses> findAllByIdAndLocation(long id, String location);

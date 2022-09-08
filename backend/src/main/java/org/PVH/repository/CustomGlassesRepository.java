@@ -7,7 +7,6 @@ import javax.persistence.LockModeType;
 
 public interface CustomGlassesRepository {
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Glasses saveGlassesWithNextPossibleSKU(Glasses glasses, int min, int max);
 
 }

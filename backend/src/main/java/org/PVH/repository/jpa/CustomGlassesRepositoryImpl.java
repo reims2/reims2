@@ -5,10 +5,7 @@ import org.PVH.repository.CustomGlassesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Lock;
 
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
+import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.Date;
@@ -19,9 +16,8 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
     private EntityManager entityManager;
 
     @Override
-    @Transactional
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public Glasses saveGlassesWithNextPossibleSKU(Glasses glasses, int min, int max) {
+
         Query query = entityManager.createQuery("SELECT sku FROM Glasses WHERE sku = :min" );
         query.setParameter("min",min);
         boolean minimumUsed = query.getResultList().size() > 0;
