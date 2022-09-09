@@ -44,8 +44,6 @@ export const actions: ActionTree<GlassesState, RootState> = {
   async [ActionType.ADD_GLASSES]({ commit, rootState }, newGlasses:Glasses) {
     const request = Object.assign({}, newGlasses)
     request.location = rootState.location
-    // FIXME remvoe this line, just for testing. buggy request
-    this.$axios.$post('/api/glasses', request)
     const data = await this.$axios.$post('/api/glasses', request)
     commit(IndexMutationType.ADD_OFFLINE_GLASSES, data, { root: true })
     return data
