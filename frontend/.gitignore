@@ -3,7 +3,7 @@
 # for testing
 #assets/out.json
 
-
+*.vim
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template

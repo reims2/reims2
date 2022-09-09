@@ -170,6 +170,9 @@ export default {
       deep: true
     }
   },
+  activated: function() {
+    this.startLoading()
+  },
   methods: {
     ...mapActions({
       loadItems: 'table/loadItems'
