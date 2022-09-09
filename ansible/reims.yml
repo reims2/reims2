@@ -5,10 +5,14 @@
     - dokku_bot.ansible_dokku
   vars:
     dokku_hostname: "{{ inventory_hostname }}"
+    frontend_domain: "{{ inventory_hostname }}"
     dokku_packages_state: latest
     dokku_vhost_enable: true
-    dokku_mysql_db_name: "reims2-db"
+    db_name: "reims2-db"
     dokku_network_name: "reims2"
+    frontend_app_name: "frontend"
+    api_app_name: "api"
+    docs_app_name: "docs"
     dokku_users:
       - name: Github Actions
         username: ci-deploy
@@ -31,7 +35,7 @@
       31333361306337656631363966663562363064346631663764396466386439363062666466616531
       3632623962663634393736366564656236663332303430646162
     aws_bucket_name: reims2-backup
-    mysql_dump: "{{ lookup('file', 'dump.sql') }}"
+    db_dump: "{{ lookup('file', 'dump.sql') }}"
     backend_jwt_token: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       33316631313764353364613134303933383561386233343438373735383466613837303466633034
@@ -42,129 +46,101 @@
   tasks:
     - name: dokku create api
       dokku_app:
-        app: api
+        app: "{{api_app_name}}"
     - name: dokku create frontend
       dokku_app:
-        app: frontend
+        app: "{{frontend_app_name}}"
     - name: dokku create docs
       dokku_app:
-        app: docs
+        app: "{{docs_app_name}}"
 
     - name: Create mysql
       dokku_service_create:
-        name: "{{dokku_mysql_db_name}}"
+        name: "{{db_name}}"
         service: mariadb
     - name: Disable Mysql strict mode (to allow zero dates)
       blockinfile:
-        path: "/var/lib/dokku/services/mariadb/{{dokku_mysql_db_name}}/config/disable_strict_mode.cnf"
+        path: "/var/lib/dokku/services/mariadb/{{db_name}}/config/disable_strict_mode.cnf"
         create: "yes"
         block: |
           [mysqld]
           sql_mode="ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
     - name: Restart mysql to apply config
-      shell: "dokku mariadb:restart {{dokku_mysql_db_name}}"
+      shell: "dokku mariadb:restart {{db_name}}"
     - name: Link database to api
       dokku_service_link:
-        app: api
-        name: "{{dokku_mysql_db_name}}"
+        app: "{{ api_app_name }}"
+        name: "{{db_name}}"
         service: mariadb
     - name: Enable backups for mysql to S3
+      when: aws_bucket_name != ""
       shell: |
-        dokku mariadb:backup-auth {{dokku_mysql_db_name}} {{aws_key_id}} {{aws_secret_key}}
-        dokku mariadb:backup-schedule {{dokku_mysql_db_name}} "0 2,10,18 * * *" {{aws_bucket_name}}
+        dokku mariadb:backup-auth {{db_name}} {{aws_key_id}} {{aws_secret_key}}
+        dokku mariadb:backup-schedule {{db_name}} "0 2,10,18 * * *" {{aws_bucket_name}}
     - name: Set multiple variables for frontend
       dokku_config:
-        app: frontend
+        app: "{{frontend_app_name}}"
         config:
           DOKKU_LETSENCRYPT_EMAIL: substantialimpulse@pm.me
           PORT: "5000"
-          API_URL: "http://api.web:5000/pvh/api"
-          DOCS_URL: "http://docs.web:5000"
+          API_URL: "http://{{api_app_name}}.web:5000/pvh/api"
+          DOCS_URL: "http://{{docs_app_name}}.web:5000"
           HOST: "0.0.0.0"
-    - name: Set letsencrypt mail and port for api
+    - name: Set letsencrypt config and backend token for api
       dokku_config:
-        app: api
+        app: "{{api_app_name}}"
         config:
           DOKKU_LETSENCRYPT_EMAIL: substantialimpulse@pm.me
           PORT: "5000"
           PVH_JWT_SECRET: "{{backend_jwt_token}}"
     - name: Set host and port for docs
       dokku_config:
-        app: docs
+        app: "{{docs_app_name}}"
         config:
           PORT: "5000"
           HOST: "0.0.0.0"
-
     - name: Create network configuration (all apps in one network)
       shell: |
         dokku network:create {{dokku_network_name}}
-        dokku network:set frontend attach-post-deploy {{dokku_network_name}}
-        dokku network:set api attach-post-deploy {{dokku_network_name}}
-        dokku network:set docs attach-post-deploy {{dokku_network_name}}
+        dokku network:set {{frontend_app_name}} attach-post-deploy {{dokku_network_name}}
+        dokku network:set {{api_app_name}} attach-post-deploy {{dokku_network_name}}
+        dokku network:set {{docs_app_name}} attach-post-deploy {{dokku_network_name}}
         dokku network:rebuildall
-
+    - name: Add main domain to frontend
+      dokku_domains:
+        app: "{{frontend_app_name}}"
+        domains:
+          - "{{ frontend_domain }}"
+    - name: Disable docs proxy
+      dokku_proxy:
+        app: "{{docs_app_name}}"
+        state: absent
+    - name: Enable frontend letsencrypt
+      dokku_letsencrypt:
+        app: "{{frontend_app_name}}"
+    - name: Enable API letsencrypt
+      dokku_letsencrypt:
+        app: "{{api_app_name}}"
+    - name: Enable letsencrypt auto renew
+      shell: dokku letsencrypt:cron-job --add
     - name: Deploy frontend from git (this takes up to 10 minutes)
       dokku_clone:
-        app: frontend
+        app: "{{frontend_app_name}}"
         repository: https://github.com/reims2/reims2-frontend
         version: main
         build: True
     - name: Deploy api from git (this takes up to 5 minutes)
       dokku_clone:
-        app: api
+        app: "{{api_app_name}}"
         repository: https://github.com/reims2/reims2-backend
         version: main
         build: True
     - name: Deploy docs from git (this takes up to 5 minutes)
       dokku_clone:
-        app: docs
+        app: "{{docs_app_name}}"
         repository: https://github.com/reims2/reims2-docs
         version: main
         build: True
-    # - name: Fix dokku git config after using clone
-    #   tags: test
-    #   shell: |
-    #     git config --global receive.denyCurrentBranch warn
-    #     git --git-dir=/home/dokku/frontend config core.bare true
-    #     git --git-dir=/home/dokku/api config core.bare true
-    #     git --git-dir=/home/dokku/docs config core.bare true
-    #     chown dokku:dokku /home/dokku/*/config
-    - name: Add main domain to frontend
-      dokku_domains:
-        app: frontend
-        domains:
-          - "{{ inventory_hostname }}"
-    - name: Disable docs proxy
-      dokku_proxy:
-        app: docs
-        state: absent
-    - name: Enable frontend letsencrypt
-      dokku_letsencrypt:
-        app: frontend
-    - name: Enable API letsencrypt
-      dokku_letsencrypt:
-        app: api
-    - name: Enable letsencrypt auto renew
-      shell: dokku letsencrypt:cron-job --add
-    - name: Copy SQL dump file onto host
+    - import_tasks: tasks/restore-db.yml
       tags: restore-mysql
-      copy:
-        content: "{{mysql_dump}}"
-        dest: /tmp/reims-dump.sql
-        mode: 0600
-        owner: root
-        group: root
-        force: True
-      when: mysql_dump != ""
-    - name: Stop API for restoring dump
-      tags: restore-mysql
-      when: mysql_dump != ""
-      command: "dokku ps:stop api"
-    - name: Restore database from dump file
-      tags: restore-mysql
-      shell: "dokku mariadb:import {{dokku_mysql_db_name}} < /tmp/reims-dump.sql"
-      when: mysql_dump != ""
-    - name: Start API after dump restored
-      tags: restore-mysql
-      when: mysql_dump != ""
-      command: "dokku ps:start api"
+      when: db_dump != ""
