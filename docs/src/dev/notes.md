@@ -4,8 +4,7 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 
 ## Open Questions
 
-none
-
+- none
 ## Ideas
 
 Most of them are just nice-to-have and could be done after the rewrite as a QOL improvement.
@@ -17,6 +16,14 @@ Most of them are just nice-to-have and could be done after the rewrite as a QOL 
 - Improve the Philscore with ideas from the philscore page
 - Show reasons for philscore in UI, i.e. highlight high deltas, highlight spherical equivalents
 - Glasses that would work well, but OD/OS are swapped => Ask Diane, if that makes sense
+
+## 9.9.22
+
+- make it clear which location we are in when adding glasses
+- empty cyl = 0
+- change wording leading zeros
+- horizotnal input fields would be nicer
+
 
 ## 6.4.22 Feedback analysis
 
