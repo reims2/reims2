@@ -23,9 +23,8 @@ export const eyeRules = {
     (v:any) => isAllowedStep(v) || 'Not an allowed step'
   ],
   cylinder: [
-    (v:any) => (v != null && v !== '') || 'Required',
-    (v:any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
-    (v:any) => Math.abs(v) <= 6 || 'Out of range',
+    (v:any) => (!v || !isNaN(parseFloat(v))) || 'Enter a valid number',
+    (v:any) => (!v || Math.abs(v) <= 6) || 'Out of range',
     (v:any) => isAllowedStep(v) || 'Not an allowed step'
   ],
   axis: [
@@ -34,7 +33,7 @@ export const eyeRules = {
     (v:any) => Number.isInteger(parseFloat(v)) || 'Must be an integer',
     (v:any) => v >= 0 || 'Must be positive',
     (v:any) => v <= 180 || 'Maximum is 180',
-    (v:any) => !v || v.length >= 3 || 'Enter 3 digits (leading zeros)'
+    (v:any) => !v || v.length >= 3 || 'Enter 3 digits (include leading zero)'
   ],
   add: [
     (v:any) => (v != null && v !== '') || 'Required for multifocals',
@@ -140,8 +139,10 @@ export function sanitizeEyeValues(singleEye: Eye) : Eye {
   if (rx.axis === 180) rx.axis = 0
   // cylinder must be negative
   rx.cylinder = -Math.abs(rx.cylinder)
-  // user input could have been 1.2 instead of 1.25, so do rounding
   for (const prop of ['sphere', 'cylinder', 'additional']) {
+    // if variable is undefined or NaN, set to 0 (used only for cylinder as of now)
+    rx[prop] = !rx[prop] ? 0 : rx[prop]
+    // user input could have been 1.2 instead of 1.25, so do rounding
     const isNegative = rx[prop] < 0
     rx[prop] = Math.ceil(Math.abs(rx[prop]) / 0.25) * 0.25
     rx[prop] = isNegative ? -rx[prop] : rx[prop]
