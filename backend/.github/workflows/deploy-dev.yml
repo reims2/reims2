@@ -1,0 +1,29 @@
+name: Deploy Dev
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+# Define common variables for all jobs since all use the dokku action
+env:
+  REMOTE_HOST: "ssh://dokku@reims2.app"
+
+jobs:
+  deploy-dev-api:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Wait for previous deploy
+        uses: softprops/turnstyle@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Deploy with dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "${{ env.REMOTE_HOST }}/dev-api"
+          ssh_private_key: ${{ secrets.PRIVATE_KEY }}
+          git_push_flags: "--force"
+          branch: "main"
