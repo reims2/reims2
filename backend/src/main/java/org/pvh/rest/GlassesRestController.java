@@ -34,7 +34,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(exposedHeaders = "errors, content-type")
 @RequestMapping("api/glasses")
 public class GlassesRestController {
 
