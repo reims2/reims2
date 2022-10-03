@@ -23,7 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
@@ -106,8 +105,7 @@ public class GlassesRestController {
     @ResponseBody
     public void getAllGlassesCsv(HttpServletResponse servletResponse, @PathVariable("location") String location) {
         var glasses = mainService.findByDispensedAndLocation(false, location);
-            var glassesStream = glasses.stream().map(a -> GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(a)).collect(Collectors.toList());
-        WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glassesStream);
+        WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -132,10 +130,7 @@ public class GlassesRestController {
             @PathVariable("location") String location) {
         Collection<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
                 endDate.orElse(new Date()), location);
-        Collection<GlassesResponseDTO> glassesDto = glasses.stream().map
-                (a -> GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(a))
-            .collect(Collectors.toList());
-        WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glassesDto);
+        WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")

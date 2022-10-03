@@ -31,4 +31,5 @@ public interface GlassesMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Glasses updateGlassesFromGlassesResponseDTO(GlassesResponseDTO glassesResponseDTO, @MappingTarget Glasses glasses);
+
 }
