@@ -144,8 +144,8 @@ public class GlassesMapperImpl implements GlassesMapper {
 
         GlassesResponseDTO glassesResponseDTO = new GlassesResponseDTO();
 
-        glassesResponseDTO.setSku( glasses.getSku() );
         glassesResponseDTO.setId(glasses.getId());
+        glassesResponseDTO.setSku( glasses.getSku() );
         if ( glasses.getGlassesType() != null ) {
             glassesResponseDTO.setGlassesType( glasses.getGlassesType().name() );
         }

@@ -105,9 +105,9 @@ public class GlassesRestController {
     @GetMapping(path = "/{location}.csv")
     @ResponseBody
     public void getAllGlassesCsv(HttpServletResponse servletResponse, @PathVariable("location") String location) {
-        List<GlassesResponseDTO> glasses = mainService.findByDispensedAndLocation(false, location)
-            .stream().map(a -> GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(a)).collect(Collectors.toList());
-        WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
+        var glasses = mainService.findByDispensedAndLocation(false, location);
+            var glassesStream = glasses.stream().map(a -> GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(a)).collect(Collectors.toList());
+        WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glassesStream);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
