@@ -1,7 +1,17 @@
 package org.pvh.error;
 
+import org.springframework.http.HttpStatus;
+
 public class PVHException extends RuntimeException {
-    public PVHException(String message) {
+    private final HttpStatus statusCode;
+
+    public PVHException(String message, HttpStatus statusCode) {
         super(message);
+        this.statusCode = statusCode;
     }
+
+    public HttpStatus getStatusCode() {
+        return statusCode;
+    }
+
 }

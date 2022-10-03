@@ -4,6 +4,7 @@ package org.pvh.rest;
 import cz.jirutka.rsql.parser.RSQLParser;
 import org.pvh.error.PVHException;
 import org.pvh.model.dto.GlassesDTO;
+import org.pvh.model.dto.GlassesDispenseDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.mapper.GlassesMapperImpl;
@@ -81,7 +82,7 @@ public class GlassesRestController {
             pageGlasses = mainService.findByDispensedAndLocation(false, location, pagingSort);
         } else {
             var rootNode = new RSQLParser().parse(search);
-            Specification<Glasses> spec = rootNode.accept(new CustomRsqlVisitor<Glasses>());
+            Specification<Glasses> spec = rootNode.accept(new CustomRsqlVisitor<>());
             pageGlasses = mainService.findByDispensedAndLocation(false, location, pagingSort, spec);
         }
 
@@ -95,7 +96,7 @@ public class GlassesRestController {
         response.put("totalPages", pageGlasses.getTotalPages());
 
         if (glasses.isEmpty()) {
-            throw new PVHException("Glasses not found!");
+            throw new PVHException("Glasses not found!", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -143,7 +144,7 @@ public class GlassesRestController {
         Optional<Glasses> glasses = this.mainService.findAllBySkuAndLocation(sku, location);
 
         if (glasses.isEmpty())
-            throw new PVHException("Glasses not found!");
+            throw new PVHException("Glasses not found!", HttpStatus.NOT_FOUND);
 
         return GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(glasses.get());
     }
@@ -164,7 +165,7 @@ public class GlassesRestController {
         headers.setLocation(ucBuilder.path("/api/glasses/{id}").buildAndExpand(glassesResponse.getId()).toUri());
 
         }catch (RuntimeException e){
-            throw new PVHException("While adding new Glasses something bad happened.");
+            throw new PVHException("While adding new Glasses something bad happened.", HttpStatus.INTERNAL_SERVER_ERROR);
         }finally {
             lock.unlock();
         }
@@ -176,12 +177,12 @@ public class GlassesRestController {
     public ResponseEntity<GlassesResponseDTO> updateGlasses(@PathVariable("sku") int sku, @PathVariable("location") String location,
                                                     @RequestBody @Valid GlassesDTO glasses) {
         if (glasses == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new PVHException("Please provide a valid glasses DTO.", HttpStatus.BAD_REQUEST);
         }
 
         Optional<Glasses> currentGlasses = this.mainService.findAllBySkuAndLocation(sku, location);
         if (currentGlasses.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new PVHException("entity not found", HttpStatus.NOT_FOUND);
         }
         var glasses1 = GlassesMapperImpl.getInstance().updateGlassesFromGlassesDTO(glasses,currentGlasses.get());
         return new ResponseEntity<>(GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(this.mainService.saveGlassesAfterEdit(glasses1)), HttpStatus.OK);
@@ -194,11 +195,11 @@ public class GlassesRestController {
         currentGlasses = this.mainService.findAllBySkuAndLocation(sku, location);
 
         if (currentGlasses.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+            throw new PVHException("entity not found", HttpStatus.NOT_FOUND);
         }
         if (currentGlasses.get().isDispensed()) {
             // send 204 because content is not modified https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "entity already dispensed");
+            throw new PVHException("entity already dispensed", HttpStatus.NO_CONTENT);
         }
 
         currentGlasses.get().setDispensed(true);
@@ -212,22 +213,24 @@ public class GlassesRestController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping(path = "/undispense", produces = "application/json")
-    public ResponseEntity<GlassesResponseDTO> undispense(@RequestBody @Valid GlassesDTO glassesDTO) {
-        var glasses = GlassesMapperImpl.getInstance().glassesDTOToGlasses(glassesDTO);
+    public ResponseEntity<GlassesResponseDTO> undispense(@RequestBody @Valid GlassesDispenseDTO glassesDispenseDTO) {
 
-        Optional<Glasses> currentGlasses = this.mainService.findGlassesById(glasses.getId());
+        if (glassesDispenseDTO == null) {
+            throw new PVHException("Please provide a valid glasses DTO.", HttpStatus.BAD_REQUEST);
+        }
+        Optional<Glasses> currentGlasses = this.mainService.findGlassesById(glassesDispenseDTO.getId());
 
         if (currentGlasses.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+            throw new PVHException("entity not found", HttpStatus.NOT_FOUND);
         }
         if (!currentGlasses.get().isDispensed()) {
             // send 204 because content is not modified https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "entity already undispensed");
+            throw new PVHException("entity already undispensed", HttpStatus.NO_CONTENT);
         }
         Optional<Glasses> testGlasses = this.mainService.findAllBySkuAndLocation(currentGlasses.get().getDispense().getPreviousSku(),
                 currentGlasses.get().getLocation());
         if (testGlasses.isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Previous SKU is already used");
+            throw new PVHException("Previous SKU is already used", HttpStatus.BAD_REQUEST);
 
         currentGlasses.get().setDispensed(false);
         currentGlasses.get().getDispense().setModifyDate(new Date());
@@ -244,7 +247,7 @@ public class GlassesRestController {
     public ResponseEntity<Void> deleteGlasses(@PathVariable("sku") int sku, @PathVariable("location") String location) {
         Optional<Glasses> glasses = this.mainService.findAllBySkuAndLocation(sku, location);
         if (glasses.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new PVHException("entity not found", HttpStatus.NOT_FOUND);
         }
         this.mainService.deleteGlasses(glasses.get());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

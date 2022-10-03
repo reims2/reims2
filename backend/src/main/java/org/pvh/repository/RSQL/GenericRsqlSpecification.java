@@ -5,6 +5,7 @@ import org.hibernate.query.criteria.internal.path.PluralAttributePath;
 import org.hibernate.query.criteria.internal.path.SingularAttributePath;
 import org.pvh.error.PVHException;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.*;
@@ -87,7 +88,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
                         PluralAttribute attr = ((PluralAttributePath) path).getAttribute();
                         Join join = getJoin(attr, lastFrom);
                         if(join == null){
-                            throw new PVHException("Path parameters are not set correctly...");
+                            throw new PVHException("Path parameters are not set correctly...", HttpStatus.INTERNAL_SERVER_ERROR);
                         }
                         path = join.get(pathSteps[i]);
                         lastFrom = join;

@@ -6,10 +6,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pvh.model.dto.EyeDTO;
 import org.pvh.model.dto.GlassesDTO;
-import org.pvh.model.dto.GlassesResponseDTO;
 import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
+import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.model.mapper.GlassesMapperImpl;
 import org.pvh.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -65,7 +67,6 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.appearance", Matchers.is(glasses.getAppearance().name())))
             .andExpect(MockMvcResultMatchers.jsonPath("$.os.cylinder", Matchers.is(glasses.getOs().getCylinder().intValue())))
             .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder", Matchers.is(glasses.getOd().getCylinder().intValue())))
-
             .andDo(print());
 
         this.mockMvc.perform(post("/api/glasses/").contentType(MediaType.APPLICATION_JSON).content(
@@ -81,6 +82,10 @@ public class GlassesRestControllerIntegrationTest {
 
         this.mockMvc.perform(post("/api/glasses/").contentType(MediaType.APPLICATION_JSON).content(
                 objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDTO(failGlasses))))
+            .andExpect(status().is4xxClientError())
+            .andDo(print());
+
+        this.mockMvc.perform(post("/api/glasses/").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError())
             .andDo(print());
     }
@@ -136,6 +141,37 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.currentPage", Matchers.is(0)))
             .andDo(print());
 
+        var totalItemsSa = mainService.findByDispensedAndLocation(false,"sa").size();
+
+        this.mockMvc.perform(get("/api/glasses/sa?size=2&page=1&sort=sku,desc" ))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.glasses[0].location", Matchers.is("sa")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems", Matchers.is(totalItemsSa)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.currentPage", Matchers.is(1)))
+            .andDo(print());
+
+
+        var totalItemsSaWithMultifocal = mainService.findByDispensedAndLocation(false,"sa")
+            .stream()
+            .filter(a -> a.getGlassesType().equals(GlassesTypeEnum.multifocal))
+            .collect(Collectors.toList()).size();
+
+
+        this.mockMvc.perform(get("/api/glasses/sa?size=2&page=2&sort=sku,desc&search=glassesType==multifocal" ))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.glasses[0].location", Matchers.is("sa")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.glasses[0].glassesType", Matchers.is("multifocal")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems", Matchers.is(totalItemsSaWithMultifocal)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.currentPage", Matchers.is(2)))
+            .andDo(print());
+
+        this.mockMvc.perform(get("/api/glasses/sa?size=2&page=2&sort=sku,desc&search=glassesType==aaa" ))
+            .andExpect(status().is4xxClientError())
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.is(notNullValue())))
+            .andDo(print());
     }
 
     @Test
@@ -149,6 +185,10 @@ public class GlassesRestControllerIntegrationTest {
 
         this.mockMvc.perform(delete("/api/glasses/sm/" + saveEntitySa.getSku()))
             .andExpect(status().isNoContent())
+            .andDo(print());
+
+        this.mockMvc.perform(delete("/api/glasses/sm/-1"))
+            .andExpect(status().is4xxClientError())
             .andDo(print());
     }
 
@@ -205,6 +245,8 @@ public class GlassesRestControllerIntegrationTest {
             new Glasses("multifocal", "medium", "neutral", "sa", new Dispense(), new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2, BigDecimal.ONE),
                 new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2, BigDecimal.ONE)));
 
+
+        // Get create Glasses
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa.getSku()))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
@@ -217,35 +259,112 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder", Matchers.is(saveEntitySa.getOd().getCylinder().doubleValue())))
             .andDo(print());
 
-
+        // Dispense created Glasses for first time
         this.mockMvc.perform(put("/api/glasses/dispense/sa/" + saveEntitySa.getSku()))
             .andExpect(status().isOk())
             .andDo(print());
 
+        // Dispense created Glasses for second time --> Sku not valid anymore
+        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + saveEntitySa.getSku()))
+            .andExpect(status().is4xxClientError())
+            .andDo(print());
+
+        // Dispense non existing Glasses
+        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + -1))
+            .andExpect(status().isNotFound())
+            .andDo(print());
+
+        // try to get created Glasses
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa.getSku()))
-            .andExpect(status().isBadRequest())
+            .andExpect(status().isNotFound())
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
             .andDo(print());
 
+        // check if created Glasses is dispensed
+        this.mockMvc.perform(get("/api/glasses/dispensed/sa"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].location", Matchers.is("sa")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].glassesType", Matchers.is(saveEntitySa.getGlassesType().name())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].glassesSize", Matchers.is(saveEntitySa.getGlassesSize().name())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].dispensed", Matchers.is(true)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].appearance", Matchers.is(saveEntitySa.getAppearance().name())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].os.cylinder", Matchers.is(saveEntitySa.getOs().getCylinder().doubleValue())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].od.cylinder", Matchers.is(saveEntitySa.getOd().getCylinder().doubleValue())))
+            .andDo(print());
+
+
+        Glasses saveEntitySa2 = mainService.saveGlasses(
+            new Glasses("multifocal", "medium", "neutral", "sa", new Dispense(), new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2, BigDecimal.ONE),
+                new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2, BigDecimal.ONE)));
+
+        // Try to Undispense firstly created glass -> not possible because of secondly created glass
+        this.mockMvc.perform(post("/api/glasses/undispense")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDispenseDTO(saveEntitySa))))
+            .andExpect(status().isBadRequest())
+            .andDo(print());
+
+        // dispense secondly created glass
+        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + saveEntitySa2.getSku()))
+            .andExpect(status().isOk())
+            .andDo(print());
+
+
+        // undispense secondly created glass
         this.mockMvc.perform(post("/api/glasses/undispense")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDTO(saveEntitySa))))
+            .content(objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDispenseDTO(saveEntitySa2))))
             .andExpect(status().isOk())
             .andDo(print());
+        // undispense secondly created glass second time
+        this.mockMvc.perform(post("/api/glasses/undispense")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDispenseDTO(saveEntitySa2))))
+            .andExpect(status().isNoContent())
+            .andDo(print());
+        // undispense empty glasss
+        this.mockMvc.perform(post("/api/glasses/undispense")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andDo(print());
 
-        this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa.getSku()))
+        // undispense wrong id glasss
+        saveEntitySa.setId(-1L);
+        this.mockMvc.perform(post("/api/glasses/undispense")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDispenseDTO(saveEntitySa))))
+            .andExpect(status().isNotFound())
+            .andDo(print());
+
+        this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa2.getSku()))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(saveEntitySa.getSku())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType", Matchers.is(saveEntitySa.getGlassesType().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesSize", Matchers.is(saveEntitySa.getGlassesSize().name())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(saveEntitySa2.getSku())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType", Matchers.is(saveEntitySa2.getGlassesType().name())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesSize", Matchers.is(saveEntitySa2.getGlassesSize().name())))
             .andExpect(MockMvcResultMatchers.jsonPath("$.dispensed", Matchers.is(false)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.appearance", Matchers.is(saveEntitySa.getAppearance().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.os.cylinder", Matchers.is(saveEntitySa.getOs().getCylinder().doubleValue())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder", Matchers.is(saveEntitySa.getOd().getCylinder().doubleValue())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.appearance", Matchers.is(saveEntitySa2.getAppearance().name())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.os.cylinder", Matchers.is(saveEntitySa2.getOs().getCylinder().doubleValue())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder", Matchers.is(saveEntitySa2.getOd().getCylinder().doubleValue())))
             .andDo(print());
-
-
     }
 
+
+    @Test
+    public void whenDispensedCSVDownload_thenVerifyStatus()
+        throws Exception {
+        this.mockMvc.perform(get("/api/glasses/dispensed/sa.csv"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.content().contentType("text/csv"))
+            .andDo(print());
+    }
+    @Test
+    public void whenCSVDownload_thenVerifyStatus()
+        throws Exception {
+        this.mockMvc.perform(get("/api/glasses/sa.csv"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.content().contentType("text/csv"))
+            .andDo(print());
+    }
 }

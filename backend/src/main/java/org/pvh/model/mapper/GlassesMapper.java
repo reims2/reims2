@@ -3,6 +3,7 @@ package org.pvh.model.mapper;
 import org.mapstruct.*;
 import org.pvh.model.dto.EyeDTO;
 import org.pvh.model.dto.GlassesDTO;
+import org.pvh.model.dto.GlassesDispenseDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
@@ -19,6 +20,10 @@ public interface GlassesMapper {
     Glasses glassesResponseDTOToGlasses(GlassesResponseDTO glassesResponseDTO);
 
     GlassesResponseDTO glassesToGlassesResponseDTO(Glasses glasses);
+
+    Glasses glassesDispenseDTOToGlasses(GlassesDispenseDTO glassesDispenseDTO);
+
+    GlassesDispenseDTO glassesToGlassesDispenseDTO(Glasses glasses);
 
     EyeDTO eyeToEyeDTO(Eye eye);
 

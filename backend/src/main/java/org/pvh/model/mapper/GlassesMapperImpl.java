@@ -2,6 +2,7 @@ package org.pvh.model.mapper;
 
 import org.pvh.model.dto.EyeDTO;
 import org.pvh.model.dto.GlassesDTO;
+import org.pvh.model.dto.GlassesDispenseDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
 import org.pvh.model.dto.GlassesResponseDTO.DispenseResponseDto;
 import org.pvh.model.entity.Dispense;
@@ -42,9 +43,6 @@ public class GlassesMapperImpl implements GlassesMapper {
             return null;
         }
         Glasses glasses = new Glasses();
-        if (glassesDTO.getId() != null){
-            glasses.setId(glassesDTO.getId());
-        }
 
         glasses.setOs( eyeDTOToEye( glassesDTO.getOs() ) );
         glasses.setOd( eyeDTOToEye( glassesDTO.getOd() ) );
@@ -69,7 +67,6 @@ public class GlassesMapperImpl implements GlassesMapper {
         }
 
         GlassesDTO glassesDTO = new GlassesDTO(
-            glasses.getId(),
             glasses.getGlassesType().name(),
             glasses.getGlassesSize().name(),
             glasses.getAppearance().name(),
@@ -154,6 +151,7 @@ public class GlassesMapperImpl implements GlassesMapper {
         if ( glasses.getAppearance() != null ) {
             glassesResponseDTO.setAppearance( glasses.getAppearance().name() );
         }
+        glassesResponseDTO.setSku(glasses.getSku());
         glassesResponseDTO.setLocation( glasses.getLocation() );
         glassesResponseDTO.setDispensed( glasses.isDispensed() );
         glassesResponseDTO.setCreationDate( glasses.getCreationDate() );
@@ -161,6 +159,25 @@ public class GlassesMapperImpl implements GlassesMapper {
         glassesResponseDTO.setOs( eyeToEyeDTO( glasses.getOs() ) );
         glassesResponseDTO.setOd( eyeToEyeDTO( glasses.getOd() ) );
 
+        return glassesResponseDTO;
+    }
+
+    @Override
+    public Glasses glassesDispenseDTOToGlasses(GlassesDispenseDTO glassesDispenseDTO) {
+        if ( glassesDispenseDTO == null ) {
+            return null;
+        }
+
+        Glasses glasses = new Glasses();
+        glasses.setId(glassesDispenseDTO.getId());
+
+        return glasses;
+    }
+
+    @Override
+    public GlassesDispenseDTO glassesToGlassesDispenseDTO(Glasses glasses) {
+        GlassesDispenseDTO glassesResponseDTO = new GlassesDispenseDTO();
+        glassesResponseDTO.setId(glasses.getId());
         return glassesResponseDTO;
     }
 

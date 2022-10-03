@@ -8,7 +8,6 @@ import java.util.Objects;
  * A DTO for the {@link org.pvh.model.entity.Glasses} entity
  */
 public class GlassesDTO implements Serializable {
-    private Long id;
     private String glassesType;
     private String glassesSize;
     private String appearance;
@@ -18,16 +17,6 @@ public class GlassesDTO implements Serializable {
     private EyeDTO od;
 
     public GlassesDTO(){}
-
-    public GlassesDTO(Long id, String glassesType, String glassesSize, String appearance, String location, EyeDTO os, EyeDTO od) {
-        this.id = id;
-        this.glassesType = glassesType;
-        this.glassesSize = glassesSize;
-        this.appearance = appearance;
-        this.location = location;
-        this.os = os;
-        this.od = od;
-    }
 
     public GlassesDTO(String glassesType, String glassesSize, String appearance, String location, EyeDTO os, EyeDTO od) {
         this.glassesType = glassesType;
@@ -82,13 +71,6 @@ public class GlassesDTO implements Serializable {
         return Objects.hash( glassesType, glassesSize, appearance, location,os, od);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public String toString() {
