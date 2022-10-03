@@ -9,6 +9,8 @@ import java.util.Objects;
  * A DTO for the {@link org.pvh.model.entity.Glasses} entity
  */
 public class GlassesResponseDTO implements Serializable {
+
+    private Long id;
     private Integer sku;
     private String glassesType;
     private String glassesSize;
@@ -115,6 +117,18 @@ public class GlassesResponseDTO implements Serializable {
 
     public void setOd(EyeDTO od) {
         this.od = od;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isDispensed() {
+        return dispensed;
     }
 
     @Override

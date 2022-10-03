@@ -9,21 +9,21 @@ import java.util.Objects;
  */
 public class GlassesDispenseDTO implements Serializable {
 
-    private long id;
+    private Long id;
 
     public GlassesDispenseDTO() {
     }
 
-    public GlassesDispenseDTO(long id) {
+    public GlassesDispenseDTO(Long id) {
 
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

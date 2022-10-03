@@ -129,6 +129,9 @@ public class GlassesMapperImpl implements GlassesMapper {
         if ( glassesResponseDTO.getGlassesType() != null ) {
             glasses.setGlassesType( Enum.valueOf( GlassesTypeEnum.class, glassesResponseDTO.getGlassesType() ) );
         }
+        if ( glassesResponseDTO.getId() != null ) {
+            glasses.setId(glassesResponseDTO.getId());
+        }
 
         return glasses;
     }
@@ -142,6 +145,7 @@ public class GlassesMapperImpl implements GlassesMapper {
         GlassesResponseDTO glassesResponseDTO = new GlassesResponseDTO();
 
         glassesResponseDTO.setSku( glasses.getSku() );
+        glassesResponseDTO.setId(glasses.getId());
         if ( glasses.getGlassesType() != null ) {
             glassesResponseDTO.setGlassesType( glasses.getGlassesType().name() );
         }
