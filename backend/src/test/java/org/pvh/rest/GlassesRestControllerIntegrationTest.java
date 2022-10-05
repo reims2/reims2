@@ -5,7 +5,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pvh.model.dto.EyeDTO;
-import org.pvh.model.dto.GlassesDTO;
+import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
@@ -26,7 +26,6 @@ import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -59,7 +58,7 @@ public class GlassesRestControllerIntegrationTest {
                 new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2, BigDecimal.ONE));
 
         this.mockMvc.perform(post("/api/glasses/").contentType(MediaType.APPLICATION_JSON).content(
-                objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDTO(glasses))))
+                objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesRequestDTO(glasses))))
             .andExpect(status().isCreated())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType", Matchers.is(glasses.getGlassesType().name())))
@@ -70,7 +69,7 @@ public class GlassesRestControllerIntegrationTest {
             .andDo(print());
 
         this.mockMvc.perform(post("/api/glasses/").contentType(MediaType.APPLICATION_JSON).content(
-                objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDTO(glasses))))
+                objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesRequestDTO(glasses))))
             .andExpect(status().isCreated())
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType", Matchers.is(glasses.getGlassesType().name())))
@@ -81,7 +80,7 @@ public class GlassesRestControllerIntegrationTest {
             .andDo(print());
 
         this.mockMvc.perform(post("/api/glasses/").contentType(MediaType.APPLICATION_JSON).content(
-                objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDTO(failGlasses))))
+                objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesRequestDTO(failGlasses))))
             .andExpect(status().is4xxClientError())
             .andDo(print());
 
@@ -201,7 +200,7 @@ public class GlassesRestControllerIntegrationTest {
                 new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2, BigDecimal.ONE));
 
         MvcResult result = this.mockMvc.perform(post("/api/glasses/").contentType(MediaType.APPLICATION_JSON).content(
-                objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDTO(glasses))))
+                objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesRequestDTO(glasses))))
             .andExpect(status().isCreated())
             .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(5000)))
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
@@ -214,7 +213,7 @@ public class GlassesRestControllerIntegrationTest {
 
         this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + 5000).contentType(MediaType.APPLICATION_JSON)
                 .content(
-                    objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDTO(glassesToUpdate))))
+                    objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesRequestDTO(glassesToUpdate))))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(5000)))
@@ -225,8 +224,8 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder", Matchers.is(glassesToUpdate.getOd().getCylinder().intValue())))
             .andDo(print());
 
-        GlassesDTO failGlassesToUpdate =
-            new GlassesDTO("multifocal", "medium", "test", "sm", new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
+        GlassesRequestDTO failGlassesToUpdate =
+            new GlassesRequestDTO("multifocal", "medium", "test", "sm", new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
                 new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
 
         this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + 5000).contentType(MediaType.APPLICATION_JSON)
@@ -299,9 +298,7 @@ public class GlassesRestControllerIntegrationTest {
                 new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2, BigDecimal.ONE)));
 
         // Try to Undispense firstly created glass -> not possible because of secondly created glass
-        this.mockMvc.perform(post("/api/glasses/undispense")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDispenseDTO(saveEntitySa))))
+        this.mockMvc.perform(put("/api/glasses/undispense/"+saveEntitySa.getId()))
             .andExpect(status().isBadRequest())
             .andDo(print());
 
@@ -312,29 +309,22 @@ public class GlassesRestControllerIntegrationTest {
 
 
         // undispense secondly created glass
-        this.mockMvc.perform(post("/api/glasses/undispense")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDispenseDTO(saveEntitySa2))))
+        this.mockMvc.perform(put("/api/glasses/undispense/"+saveEntitySa2.getId()))
             .andExpect(status().isOk())
             .andDo(print());
         // undispense secondly created glass second time
-        this.mockMvc.perform(post("/api/glasses/undispense")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDispenseDTO(saveEntitySa2))))
+        this.mockMvc.perform(put("/api/glasses/undispense/"+saveEntitySa2.getId()))
             .andExpect(status().isNoContent())
             .andDo(print());
         // undispense empty glasss
-        this.mockMvc.perform(post("/api/glasses/undispense")
-                .contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(put("/api/glasses/undispense/fsdg"))
             .andExpect(status().isBadRequest())
             .andDo(print());
 
         // undispense wrong id glasss
         saveEntitySa.setId(-1L);
-        this.mockMvc.perform(post("/api/glasses/undispense")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesDispenseDTO(saveEntitySa))))
-            .andExpect(status().isNotFound())
+        this.mockMvc.perform(put("/api/glasses/undispense/"+saveEntitySa.getId()))
+            .andExpect(status().isBadRequest())
             .andDo(print());
 
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa2.getSku()))

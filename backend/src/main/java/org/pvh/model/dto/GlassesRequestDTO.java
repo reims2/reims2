@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * A DTO for the {@link org.pvh.model.entity.Glasses} entity
  */
-public class GlassesDTO implements Serializable {
+public class GlassesRequestDTO implements Serializable {
     private String glassesType;
     private String glassesSize;
     private String appearance;
@@ -16,9 +16,9 @@ public class GlassesDTO implements Serializable {
     private EyeDTO os;
     private EyeDTO od;
 
-    public GlassesDTO(){}
+    public GlassesRequestDTO(){}
 
-    public GlassesDTO(String glassesType, String glassesSize, String appearance, String location, EyeDTO os, EyeDTO od) {
+    public GlassesRequestDTO(String glassesType, String glassesSize, String appearance, String location, EyeDTO os, EyeDTO od) {
         this.glassesType = glassesType;
         this.glassesSize = glassesSize;
         this.appearance = appearance;
@@ -56,7 +56,7 @@ public class GlassesDTO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GlassesDTO entity = (GlassesDTO) o;
+        GlassesRequestDTO entity = (GlassesRequestDTO) o;
         return
             Objects.equals(this.glassesType, entity.glassesType) &&
             Objects.equals(this.glassesSize, entity.glassesSize) &&

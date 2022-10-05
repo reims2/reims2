@@ -3,8 +3,7 @@ package org.pvh.rest;
 
 import cz.jirutka.rsql.parser.RSQLParser;
 import org.pvh.error.PVHException;
-import org.pvh.model.dto.GlassesDTO;
-import org.pvh.model.dto.GlassesDispenseDTO;
+import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.mapper.GlassesMapperImpl;
@@ -38,6 +37,8 @@ import java.util.stream.Collectors;
 @RequestMapping("api/glasses")
 public class GlassesRestController {
 
+
+    private static final String ENTITY_NOT_FOUND = "Entity not found!";
     @Autowired
     private MainService mainService;
 
@@ -146,7 +147,7 @@ public class GlassesRestController {
     private static final Lock lock = new ReentrantLock();
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping(path = "", produces = "application/json")
-    public ResponseEntity<GlassesResponseDTO> addGlasses(@RequestBody @Valid GlassesDTO glasses,UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<GlassesResponseDTO> addGlasses(@RequestBody @Valid GlassesRequestDTO glasses, UriComponentsBuilder ucBuilder) {
         lock.lock();
         Glasses glassesResponse;
         try {
@@ -155,7 +156,7 @@ public class GlassesRestController {
             return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
         }
 
-        var g = GlassesMapperImpl.getInstance().glassesDTOToGlasses(glasses);
+        var g = GlassesMapperImpl.getInstance().glassesRequestDTOToGlasses(glasses);
         glassesResponse = this.mainService.saveGlasses(g);
         headers.setLocation(ucBuilder.path("/api/glasses/{id}").buildAndExpand(glassesResponse.getId()).toUri());
 
@@ -170,16 +171,16 @@ public class GlassesRestController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping(path = "/{location}/{sku}", produces = "application/json")
     public ResponseEntity<GlassesResponseDTO> updateGlasses(@PathVariable("sku") int sku, @PathVariable("location") String location,
-                                                    @RequestBody @Valid GlassesDTO glasses) {
+                                                    @RequestBody @Valid GlassesRequestDTO glasses) {
         if (glasses == null) {
             throw new PVHException("Please provide a valid glasses DTO.", HttpStatus.BAD_REQUEST);
         }
 
         Optional<Glasses> currentGlasses = this.mainService.findAllBySkuAndLocation(sku, location);
         if (currentGlasses.isEmpty()) {
-            throw new PVHException("entity not found", HttpStatus.NOT_FOUND);
+            throw new PVHException(ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
-        var glasses1 = GlassesMapperImpl.getInstance().updateGlassesFromGlassesDTO(glasses,currentGlasses.get());
+        var glasses1 = GlassesMapperImpl.getInstance().updateGlassesFromGlassesRequestDTO(glasses,currentGlasses.get());
         return new ResponseEntity<>(GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(this.mainService.saveGlassesAfterEdit(glasses1)), HttpStatus.OK);
     }
 
@@ -190,7 +191,7 @@ public class GlassesRestController {
         currentGlasses = this.mainService.findAllBySkuAndLocation(sku, location);
 
         if (currentGlasses.isEmpty()) {
-            throw new PVHException("entity not found", HttpStatus.NOT_FOUND);
+            throw new PVHException(ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
         if (currentGlasses.get().isDispensed()) {
             // send 204 because content is not modified https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4
@@ -207,7 +208,7 @@ public class GlassesRestController {
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @PostMapping(path = "/undispense/{id}", produces = "application/json")
+    @PutMapping(path = "/undispense/{id}", produces = "application/json")
     public ResponseEntity<GlassesResponseDTO> undispense(@PathVariable("id") long id) {
 
         if (id < 0) {
@@ -216,7 +217,7 @@ public class GlassesRestController {
         Optional<Glasses> currentGlasses = this.mainService.findGlassesById(id);
 
         if (currentGlasses.isEmpty()) {
-            throw new PVHException("entity not found", HttpStatus.NOT_FOUND);
+            throw new PVHException(ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
         if (!currentGlasses.get().isDispensed()) {
             // send 204 because content is not modified https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4
@@ -242,7 +243,7 @@ public class GlassesRestController {
     public ResponseEntity<Void> deleteGlasses(@PathVariable("sku") int sku, @PathVariable("location") String location) {
         Optional<Glasses> glasses = this.mainService.findAllBySkuAndLocation(sku, location);
         if (glasses.isEmpty()) {
-            throw new PVHException("entity not found", HttpStatus.NOT_FOUND);
+            throw new PVHException(ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
         this.mainService.deleteGlasses(glasses.get());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

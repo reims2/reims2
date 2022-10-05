@@ -1,7 +1,7 @@
 package org.pvh.model.mapper;
 
 import org.pvh.model.dto.EyeDTO;
-import org.pvh.model.dto.GlassesDTO;
+import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesDispenseDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
 import org.pvh.model.dto.GlassesResponseDTO.DispenseResponseDto;
@@ -38,35 +38,35 @@ public class GlassesMapperImpl implements GlassesMapper {
 
 
     @Override
-    public Glasses glassesDTOToGlasses(GlassesDTO glassesDTO) {
-        if ( glassesDTO == null ) {
+    public Glasses glassesRequestDTOToGlasses(GlassesRequestDTO glassesRequestDTO) {
+        if ( glassesRequestDTO == null ) {
             return null;
         }
         Glasses glasses = new Glasses();
 
-        glasses.setOs( eyeDTOToEye( glassesDTO.getOs() ) );
-        glasses.setOd( eyeDTOToEye( glassesDTO.getOd() ) );
-        glasses.setLocation( glassesDTO.getLocation() );
-        if ( glassesDTO.getGlassesSize() != null ) {
-            glasses.setGlassesSize( Enum.valueOf( GlassesSizeEnum.class, glassesDTO.getGlassesSize() ) );
+        glasses.setOs( eyeDTOToEye( glassesRequestDTO.getOs() ) );
+        glasses.setOd( eyeDTOToEye( glassesRequestDTO.getOd() ) );
+        glasses.setLocation( glassesRequestDTO.getLocation() );
+        if ( glassesRequestDTO.getGlassesSize() != null ) {
+            glasses.setGlassesSize( Enum.valueOf( GlassesSizeEnum.class, glassesRequestDTO.getGlassesSize() ) );
         }
-        if ( glassesDTO.getAppearance() != null ) {
-            glasses.setAppearance( Enum.valueOf( AppearanceEnum.class, glassesDTO.getAppearance() ) );
+        if ( glassesRequestDTO.getAppearance() != null ) {
+            glasses.setAppearance( Enum.valueOf( AppearanceEnum.class, glassesRequestDTO.getAppearance() ) );
         }
-        if ( glassesDTO.getGlassesType() != null ) {
-            glasses.setGlassesType( Enum.valueOf( GlassesTypeEnum.class, glassesDTO.getGlassesType() ) );
+        if ( glassesRequestDTO.getGlassesType() != null ) {
+            glasses.setGlassesType( Enum.valueOf( GlassesTypeEnum.class, glassesRequestDTO.getGlassesType() ) );
         }
 
         return glasses;
     }
 
     @Override
-    public GlassesDTO glassesToGlassesDTO(Glasses glasses) {
+    public GlassesRequestDTO glassesToGlassesRequestDTO(Glasses glasses) {
         if ( glasses == null ) {
             return null;
         }
 
-        GlassesDTO glassesDTO = new GlassesDTO(
+        GlassesRequestDTO glassesRequestDTO = new GlassesRequestDTO(
             glasses.getGlassesType().name(),
             glasses.getGlassesSize().name(),
             glasses.getAppearance().name(),
@@ -74,32 +74,32 @@ public class GlassesMapperImpl implements GlassesMapper {
             eyeToEyeDTO(glasses.getOs()),
             eyeToEyeDTO(glasses.getOd()));
 
-        return glassesDTO;
+        return glassesRequestDTO;
     }
 
     @Override
-    public Glasses updateGlassesFromGlassesDTO(GlassesDTO glassesDTO, Glasses glasses) {
-        if ( glassesDTO == null ) {
+    public Glasses updateGlassesFromGlassesRequestDTO(GlassesRequestDTO glassesRequestDTO, Glasses glasses) {
+        if ( glassesRequestDTO == null ) {
             return null;
         }
 
-        if ( glassesDTO.getOs() != null ) {
-            glasses.setOs( eyeDTOToEye( glassesDTO.getOs() ) );
+        if ( glassesRequestDTO.getOs() != null ) {
+            glasses.setOs( eyeDTOToEye( glassesRequestDTO.getOs() ) );
         }
-        if ( glassesDTO.getOd() != null ) {
-            glasses.setOd( eyeDTOToEye( glassesDTO.getOd() ) );
+        if ( glassesRequestDTO.getOd() != null ) {
+            glasses.setOd( eyeDTOToEye( glassesRequestDTO.getOd() ) );
         }
-        if ( glassesDTO.getLocation() != null ) {
-            glasses.setLocation( glassesDTO.getLocation() );
+        if ( glassesRequestDTO.getLocation() != null ) {
+            glasses.setLocation( glassesRequestDTO.getLocation() );
         }
-        if ( glassesDTO.getGlassesSize() != null ) {
-            glasses.setGlassesSize( Enum.valueOf( GlassesSizeEnum.class, glassesDTO.getGlassesSize() ) );
+        if ( glassesRequestDTO.getGlassesSize() != null ) {
+            glasses.setGlassesSize( Enum.valueOf( GlassesSizeEnum.class, glassesRequestDTO.getGlassesSize() ) );
         }
-        if ( glassesDTO.getAppearance() != null ) {
-            glasses.setAppearance( Enum.valueOf( AppearanceEnum.class, glassesDTO.getAppearance() ) );
+        if ( glassesRequestDTO.getAppearance() != null ) {
+            glasses.setAppearance( Enum.valueOf( AppearanceEnum.class, glassesRequestDTO.getAppearance() ) );
         }
-        if ( glassesDTO.getGlassesType() != null ) {
-            glasses.setGlassesType( Enum.valueOf( GlassesTypeEnum.class, glassesDTO.getGlassesType() ) );
+        if ( glassesRequestDTO.getGlassesType() != null ) {
+            glasses.setGlassesType( Enum.valueOf( GlassesTypeEnum.class, glassesRequestDTO.getGlassesType() ) );
         }
 
         return glasses;
