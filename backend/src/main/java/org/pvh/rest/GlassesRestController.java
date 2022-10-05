@@ -207,13 +207,13 @@ public class GlassesRestController {
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @PostMapping(path = "/undispense", produces = "application/json")
-    public ResponseEntity<GlassesResponseDTO> undispense(@RequestBody @Valid GlassesDispenseDTO glassesDispenseDTO) {
+    @PostMapping(path = "/undispense/{id}", produces = "application/json")
+    public ResponseEntity<GlassesResponseDTO> undispense(@PathVariable("id") long id) {
 
-        if (glassesDispenseDTO == null) {
-            throw new PVHException("Please provide a valid glasses DTO.", HttpStatus.BAD_REQUEST);
+        if (id < 0) {
+            throw new PVHException("Please provide a valid glasses id.", HttpStatus.BAD_REQUEST);
         }
-        Optional<Glasses> currentGlasses = this.mainService.findGlassesById(glassesDispenseDTO.getId());
+        Optional<Glasses> currentGlasses = this.mainService.findGlassesById(id);
 
         if (currentGlasses.isEmpty()) {
             throw new PVHException("entity not found", HttpStatus.NOT_FOUND);
