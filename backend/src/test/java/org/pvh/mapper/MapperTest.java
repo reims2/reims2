@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.pvh.model.dto.EyeDTO;
-import org.pvh.model.dto.GlassesDispenseDTO;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
 import org.pvh.model.entity.Dispense;
@@ -15,7 +14,6 @@ import org.pvh.model.mapper.GlassesMapperImpl;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.Date;
 

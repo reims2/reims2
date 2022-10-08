@@ -7,7 +7,7 @@ REIMS2 Java Backend with Spring Boot
 To run the backend, you'll have to type in the following command:
 
 ```
-export PVH_JWT_SECRET=testtoken
+export PVH_JWT_SECRET=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException
 ./mvnw spring-boot:run
 ```
 
