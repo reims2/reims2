@@ -70,6 +70,7 @@
                   v-prevent-enter-tab
                   class="mr-4"
                   plain
+                  tabindex="-1"
                   @click="reset"
                 >
                   Clear form
