@@ -7,6 +7,9 @@
     "name": "l3d00m",
     "email": "substantialimpulse@pm.me"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "repository": "reims2-docs/reims2-docs",
   "scripts": {
     "export": "vuepress export src",
