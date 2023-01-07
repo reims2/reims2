@@ -7,7 +7,7 @@ REIMS2 Java Backend with Spring Boot
 To run the backend, you'll have to type in the following command:
 
 ```
-export PVH_JWT_SECRET=testtoken
+export PVH_JWT_SECRET=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException
 ./mvnw spring-boot:run
 ```
 
@@ -16,7 +16,7 @@ http://localhost:9966/pvh/api/glasses
 
 # Swagger Documentation
 
-http://localhost:9966/pvh/swagger-ui.html
+http://localhost:9966/pvh/v2/api-docs
 
 # Security
 
