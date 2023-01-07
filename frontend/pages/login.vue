@@ -10,9 +10,6 @@
         >
           <v-row>
             <v-col cols=12>
-              <div class="text--secondary pb-2">
-                Username test, Password is testtest
-              </div>
               <v-alert v-if="errorText" type="error" dense outlined>
                 {{ errorText }}
               </v-alert>

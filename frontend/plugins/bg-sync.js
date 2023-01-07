@@ -19,7 +19,7 @@ const statusPlugin = {
 }
 
 workbox.routing.registerRoute(
-  /\/api\/glasses\/dispense(\/[^/]+){2}\/?/,
+  /\/api\/glasses\/(un)?dispense.*/,
   new workbox.strategies.NetworkOnly({
     plugins: [
       statusPlugin,
@@ -27,17 +27,6 @@ workbox.routing.registerRoute(
     ]
   }),
   'PUT'
-)
-
-workbox.routing.registerRoute(
-  /\/api\/glasses\/undispense\/?/,
-  new workbox.strategies.NetworkOnly({
-    plugins: [
-      statusPlugin,
-      bgSyncDispensePlugin
-    ]
-  }),
-  'POST'
 )
 
 workbox.routing.registerRoute(
