@@ -7,7 +7,7 @@
       authorized_key:
         user: "{{ansible_user}}"
         state: present
-        key: "{{ lookup('file', 'creds/pub_keys') }}"
+        key: "{{ lookup('file', '../creds/pub_keys') }}"
 
 - name: Enable auto upgrade, enable swap and some helpful packages
   hosts: all

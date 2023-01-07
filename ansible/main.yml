@@ -1,0 +1,43 @@
+---
+- name: Initial server configuration and hardening
+  import_playbook: plays/setup.yml
+
+- name: Setup production REIMS2
+  import_playbook: plays/reims.yml
+  vars:
+    frontend_domain: "{{ inventory_hostname }}"
+    db_name: "reims2-db"
+    dokku_network_name: "reims2"
+    frontend_app_name: "frontend"
+    api_app_name: "api"
+    docs_app_name: "docs"
+    backend_jwt_token: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      33316631313764353364613134303933383561386233343438373735383466613837303466633034
+      3639353665323431666463666161653063633463643261370a333331353631313466333731363066
+      63666131333966616130383465336361616164663635326266306562393736303331393131376533
+      3433613634323636650a663430326537643765383533323564616639663764346335353237363834
+      66376238393362663639333438633065646334333532323364386661663065303430
+    aws_key_id: AKIAYEM6NADWH3DNKDFE
+    aws_secret_key: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      38613833363963336663666163333238316230353264326633393931623666643763306638373239
+      6130626132353536623934336663363265396234363464650a356137346437653263326366376131
+      65333566623039386265636461623566396439306137383934333937633564613565643865346233
+      3835303464306665340a373534306234383037383364383030326362643230653664353435316263
+      31333361306337656631363966663562363064346631663764396466386439363062666466616531
+      3632623962663634393736366564656236663332303430646162
+    aws_bucket_name: reims2-backup
+    db_dump: "{{ lookup('file', '../dump.sql', errors='warn') }}"
+
+- name: Setup dev REIMS2
+  import_playbook: plays/reims.yml
+  vars:
+    frontend_domain: "{{ 'dev.' + inventory_hostname }}"
+    db_name: "dev-db"
+    dokku_network_name: "dev-reims2"
+    frontend_app_name: "dev-frontend"
+    api_app_name: "dev-api"
+    docs_app_name: "dev-docs"
+    backend_jwt_token: "testtoken"
+    db_dump: "{{ lookup('file', '../dump.sql', errors='warn') }}"
