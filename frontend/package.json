@@ -35,7 +35,6 @@
     "@nuxtjs/vuetify": "^1.12.3",
     "@types/chroma-js": "^2.1.4",
     "@types/jest": "^29.2.5",
-    "@vue/runtime-dom": "^3.2.45",
     "eslint": "^8.31.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
