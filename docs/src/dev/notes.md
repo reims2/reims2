@@ -4,7 +4,10 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 
 ## Open Questions
 
-- none
+- please host the server
+- other orgs that are using REIMS?
+- how important is storing unsucessful searches?
+
 ## Ideas
 
 Most of them are just nice-to-have and could be done after the rewrite as a QOL improvement.
