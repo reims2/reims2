@@ -6,12 +6,14 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch PVHApplication",
+            "name": "Spring Boot-PVHApplication<spring-pvh-rest>",
             "request": "launch",
-            "mainClass": "org.PVH.PVHApplication",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.pvh.PVHApplication",
             "projectName": "spring-pvh-rest",
+            "args": "",
             "env": {
-                "PVH_JWT_SECRET": "testtoken"
+                "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException"
             }
         }
     ]

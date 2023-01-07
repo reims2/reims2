@@ -17,7 +17,7 @@ public class RootRestController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public void redirectToSwagger(HttpServletResponse response) throws IOException {
-        response.sendRedirect(this.servletContextPath + "/swagger-ui.html");
+        response.sendRedirect(this.servletContextPath + "/api");
     }
 
     @RequestMapping(value = "/api", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)

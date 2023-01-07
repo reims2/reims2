@@ -16,7 +16,7 @@ http://localhost:9966/pvh/api/glasses
 
 # Swagger Documentation
 
-http://localhost:9966/pvh/swagger-ui.html
+http://localhost:9966/pvh/v2/api-docs
 
 # Security
 
