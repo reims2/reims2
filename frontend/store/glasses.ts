@@ -64,7 +64,7 @@ export const actions: ActionTree<GlassesState, RootState> = {
   },
 
   async [ActionType.UNDISPENSE_GLASSES]({ commit }, glasses: Glasses) {
-    await this.$axios.$post('/api/glasses/undispense', glasses)
+    await this.$axios.$put(`/api/glasses/undispense/${glasses.id}`, glasses)
     commit(IndexMutationType.ADD_OFFLINE_GLASSES, glasses, { root: true })
   },
 
