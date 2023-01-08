@@ -68,7 +68,7 @@
       shell: |
         dokku mariadb:backup-auth {{db_name}} {{aws_key_id}} {{aws_secret_key}}
         dokku mariadb:backup-schedule {{db_name}} "0 2,10,18 * * *" {{aws_bucket_name}}
-    - name: Set multiple variables for frontend
+    - name: "Frontend env vars: letsencrypt mail, internal URLS for API+docs and nodejs host+port"
       dokku_config:
         app: "{{frontend_app_name}}"
         config:
@@ -77,14 +77,14 @@
           API_URL: "http://{{api_app_name}}.web:5000/pvh/api"
           DOCS_URL: "http://{{docs_app_name}}.web:5000"
           HOST: "0.0.0.0"
-    - name: Set letsencrypt config and backend token for api
+    - name: "API env vars: letsencrypt mail and backend token"
       dokku_config:
         app: "{{api_app_name}}"
         config:
           DOKKU_LETSENCRYPT_EMAIL: substantialimpulse@pm.me
           PORT: "5000"
           PVH_JWT_SECRET: "{{backend_jwt_token}}"
-    - name: Set host and port for docs
+    - name: "Docs env vars: nodejs host+port vars"
       dokku_config:
         app: "{{docs_app_name}}"
         config:
@@ -109,6 +109,9 @@
     - name: Enable frontend letsencrypt
       dokku_letsencrypt:
         app: "{{frontend_app_name}}"
+    - name: Enable API letsencrypt
+      dokku_letsencrypt:
+        app: "{{api_app_name}}"
     - name: Enable letsencrypt auto renew
       shell: dokku letsencrypt:cron-job --add
     - name: Deploy frontend from git (this takes 5 minutes and will work even when failing with timeout)

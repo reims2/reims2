@@ -24,7 +24,7 @@ ansible-playbook -i hosts main.yml
 
 The initial username is `test` and password `testtest`. It's recommended to create a new admin user, login as that and delete this initial user.
 
-It'll also configure a developer instance at `dev.yourdomain.de`.
+It'll also configure a developer instance at `dev.<yourdomain>`.
 
 ## I only want to restore an old database dump
 
