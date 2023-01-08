@@ -59,7 +59,11 @@ export default {
         await this.$auth.loginWith('local', { data: { username: this.username, password: this.password } })
       } catch (err) {
         console.log(err)
-        this.errorText = `Login failed (Error ${err.status})`
+        if (err.status === 401) {
+          this.errorText = err.response.data
+        } else {
+          this.errorText = `Login failed (Error ${err.status})`
+        }
       }
     }
   }

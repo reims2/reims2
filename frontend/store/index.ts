@@ -67,7 +67,8 @@ export const ActionType = {
 export const actions: ActionTree<RootState, RootState> = {
 
   async [ActionType.LOAD_GLASSES]({ commit, state }) {
-    const data = await this.$axios.$get(`/api/glasses/${state.location}`, { params: { size: 100000 } }) as any
+    // fetch with a long timeout, because we can afford to wait and a timeout would be totally unnecessary (e.g. with a bad connection in el salvador)
+    const data = await this.$axios.$get(`/api/glasses/${state.location}`, { params: { size: 100000 }, timeout: 60000 }) as any
     commit(MutationType.SET_GLASSES, data.glasses)
     commit(MutationType.SET_OUTDATED_FLAG, false)
     commit(MutationType.SET_LAST_REFRESH, new Date().toISOString())

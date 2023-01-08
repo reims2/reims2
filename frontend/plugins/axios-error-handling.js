@@ -1,6 +1,5 @@
 export default ({ $axios, app, store }) => {
-  // todo set sensible default timeout
-  $axios.defaults.timeout = 8000
+  $axios.defaults.timeout = 6000
 
   $axios.onError((error) => {
     error.status = error.response ? error.response.status : 'Network Error'
