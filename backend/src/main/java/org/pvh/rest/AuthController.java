@@ -86,7 +86,7 @@ public class AuthController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody UserDTO signUpRequestDTO) {
 
-        var signUpRequest = UserMapperImpl.getInstance().userDTOToUser(signUpRequestDTO);
+        User signUpRequest = UserMapperImpl.getInstance().userDTOToUser(signUpRequestDTO);
 
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));

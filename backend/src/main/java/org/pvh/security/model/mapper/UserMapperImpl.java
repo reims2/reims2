@@ -35,7 +35,7 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        var user = new User();
+        User user = new User();
 
         user.setUsername( userDTO.getUsername() );
         user.setPassword( userDTO.getPassword() );
@@ -50,7 +50,7 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        var userDTO = new UserDTO();
+        UserDTO userDTO = new UserDTO();
 
         userDTO.setUsername( user.getUsername() );
         userDTO.setPassword( user.getPassword() );
@@ -93,7 +93,7 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        var role = new Role();
+        Role role = new Role();
 
         if ( roleDTO.getName() != null ) {
             role.setName( Enum.valueOf( ERole.class, roleDTO.getName() ) );
@@ -120,7 +120,7 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        var roleDTO = new RoleDTO();
+        RoleDTO roleDTO = new RoleDTO();
 
         if ( role.getName() != null ) {
             roleDTO.setName( role.getName().name() );

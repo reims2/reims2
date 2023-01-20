@@ -2,6 +2,7 @@
 package org.pvh.rest;
 
 import cz.jirutka.rsql.parser.RSQLParser;
+import cz.jirutka.rsql.parser.ast.Node;
 import org.pvh.error.PVHException;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
@@ -81,7 +82,7 @@ public class GlassesRestController {
         if (search == null) {
             pageGlasses = mainService.findByDispensedAndLocation(false, location, pagingSort);
         } else {
-            var rootNode = new RSQLParser().parse(search);
+            Node rootNode = new RSQLParser().parse(search);
             Specification<Glasses> spec = rootNode.accept(new CustomRsqlVisitor<>());
             pageGlasses = mainService.findByDispensedAndLocation(false, location, pagingSort, spec);
         }
@@ -105,7 +106,7 @@ public class GlassesRestController {
     @GetMapping(path = "/{location}.csv")
     @ResponseBody
     public void getAllGlassesCsv(HttpServletResponse servletResponse, @PathVariable("location") String location) {
-        var glasses = mainService.findByDispensedAndLocation(false, location);
+        List<Glasses> glasses = mainService.findByDispensedAndLocation(false, location);
         WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
     }
 
@@ -151,12 +152,12 @@ public class GlassesRestController {
         lock.lock();
         Glasses glassesResponse;
         try {
-        var headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         if (glasses == null) {
             return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
         }
 
-        var g = GlassesMapperImpl.getInstance().glassesRequestDTOToGlasses(glasses);
+        Glasses g = GlassesMapperImpl.getInstance().glassesRequestDTOToGlasses(glasses);
         glassesResponse = this.mainService.saveGlasses(g);
         headers.setLocation(ucBuilder.path("/api/glasses/{id}").buildAndExpand(glassesResponse.getId()).toUri());
 
@@ -180,7 +181,7 @@ public class GlassesRestController {
         if (currentGlasses.isEmpty()) {
             throw new PVHException(ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
-        var glasses1 = GlassesMapperImpl.getInstance().updateGlassesFromGlassesRequestDTO(glasses,currentGlasses.get());
+        Glasses glasses1 = GlassesMapperImpl.getInstance().updateGlassesFromGlassesRequestDTO(glasses,currentGlasses.get());
         return new ResponseEntity<>(GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(this.mainService.saveGlassesAfterEdit(glasses1)), HttpStatus.OK);
     }
 

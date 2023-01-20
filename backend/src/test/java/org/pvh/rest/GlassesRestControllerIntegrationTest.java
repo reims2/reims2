@@ -130,7 +130,7 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.is(notNullValue())))
             .andDo(print());
 
-        var totalItems = mainService.findByDispensedAndLocation(false,"sm").size();
+        int totalItems = mainService.findByDispensedAndLocation(false,"sm").size();
 
         this.mockMvc.perform(get("/api/glasses/sm?size=2&page=0&sort=sku,asc" ))
             .andExpect(status().isOk())
@@ -140,7 +140,7 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.currentPage", Matchers.is(0)))
             .andDo(print());
 
-        var totalItemsSa = mainService.findByDispensedAndLocation(false,"sa").size();
+        int totalItemsSa = mainService.findByDispensedAndLocation(false,"sa").size();
 
         this.mockMvc.perform(get("/api/glasses/sa?size=2&page=1&sort=sku,desc" ))
             .andExpect(status().isOk())
@@ -151,7 +151,7 @@ public class GlassesRestControllerIntegrationTest {
             .andDo(print());
 
 
-        var totalItemsSaWithMultifocal = mainService.findByDispensedAndLocation(false,"sa")
+        int totalItemsSaWithMultifocal = mainService.findByDispensedAndLocation(false,"sa")
             .stream()
             .filter(a -> a.getGlassesType().equals(GlassesTypeEnum.multifocal))
             .collect(Collectors.toList()).size();
