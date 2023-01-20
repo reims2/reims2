@@ -137,6 +137,10 @@ export function sanitizeEyeValues(singleEye: Eye) : Eye {
   const rx = propsAsNumber(singleEye)
   // easier for calculation
   if (rx.axis === 180) rx.axis = 0
+  // can be empty when cyl == 0. Also force to 0 when cyl == 0just in case
+  if (!rx.axis || rx.cylinder === 0) rx.axis = 0
+  // can be empty in edge cases
+  if (!rx.cylinder) rx.cylinder = 0
   // cylinder must be negative
   rx.cylinder = -Math.abs(rx.cylinder)
   for (const prop of ['sphere', 'cylinder', 'additional']) {
@@ -148,4 +152,10 @@ export function sanitizeEyeValues(singleEye: Eye) : Eye {
     rx[prop] = isNegative ? -rx[prop] : rx[prop]
   }
   return rx as unknown as Eye
+}
+
+export function clearObjectProperties(obj:any) {
+  for (const key of Object.keys(obj)) {
+    obj[key] = ''
+  }
 }

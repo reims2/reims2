@@ -35,7 +35,7 @@
             },
             "env": {
                 //"API_URL": "http://localhost:9966/pvh/api", // local API
-                "API_URL": "https://reims2.app/api", // for AXIOS
+                "API_URL": "https://dev.reims2.app/api", // for AXIOS
                 "DOCS_URL": "http://localhost:8080/"
             }
         },

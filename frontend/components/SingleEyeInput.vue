@@ -13,14 +13,14 @@
         <v-text-field
           outlined
           dense
-          :value="value[id]"
           type="number"
+          :value="eye_data[id].value"
           :label="item.label"
           :rules="!item.disabled ? eyeRules[id] : []"
           :step="item.step"
           :disabled="item.disabled"
-          :prefix="value[id] != null ? item.prefix : ''"
-          @input="test => input(id, test)"
+          :prefix="eye_data[id].value != null ? item.prefix : ''"
+          @input="val => input(id, val)"
           @update:error="val => hasError[id] = val"
           @blur="update(id)"
         />
@@ -33,13 +33,29 @@
 import { eyeRules } from '../lib/util'
 export default {
   props: {
-    value: {
-      type: Object,
-      required: true
-    },
     eyeName: {
       type: String,
       required: true
+    },
+    axis: {
+      type: [String, Number],
+      required: false,
+      default: ''
+    },
+    sphere: {
+      type: [String, Number],
+      required: false,
+      default: ''
+    },
+    add: {
+      type: [String, Number],
+      required: false,
+      default: ''
+    },
+    cylinder: {
+      type: [String, Number],
+      required: false,
+      default: ''
     },
     addEnabled: {
       type: Boolean,
@@ -61,39 +77,49 @@ export default {
         sphere: {
           label: 'Sphere',
           step: 0.25,
-          prefix: this.value.sphere > 0 ? '+' : ''
+          prefix: this.sphere > 0 ? '+' : '',
+          value: this.sphere
         },
         cylinder: {
           label: 'Cylinder (minus form)',
-          step: 0.25
+          step: 0.25,
+          value: this.cylinder
         },
         axis: {
-          label: 'Axis'
+          label: 'Axis',
+          disabled: this.cylinder === '' || this.cylinder === '0' || this.cylinder === 0,
+          value: this.axis
         },
         add: {
           label: 'Additional',
           disabled: !this.addEnabled,
           step: 0.25,
-          prefix: '+'
+          prefix: '+',
+          value: this.add
         }
       }
     }
   },
   methods: {
-    input(id, newVal) {
-      this.$emit('input', { ...this.value, [id]: newVal })
+    input(id, value) {
+      this.$emit('input', { id, value })
     },
     update(id) {
-      let newVal = this.value[id]
+      let newVal = this.eye_data[id].value
       if (id === 'cylinder') {
         // replace empty cylinder with 0
-        if (newVal === undefined || newVal == null || newVal === '') {
-          this.input(id, 0)
-          this.$emit('change', true)
-          return
-        }
+        if (newVal === undefined || newVal == null || newVal === '') newVal = 0
+
         // always use negative cylinder internally
         newVal = -Math.abs(Number(newVal))
+
+        if (newVal === 0) {
+          // emit cylinder value here already to force update
+          this.input(id, 0)
+          // reset axis if cylinder is 0 and force update
+          this.input('axis', '000')
+          return
+        }
       }
       if (!this.hasError[id]) {
         const step = this.eye_data[id].step
@@ -104,7 +130,6 @@ export default {
             // nicer number formatting with leading decimals, doesn't really work now because we use "number" type input fields
             const numberString = (Number(newVal) < 0 ? '-' : '') + number.toFixed(2)
             this.input(id, Number(numberString))
-            this.$emit('change', true)
           }
         }
       }

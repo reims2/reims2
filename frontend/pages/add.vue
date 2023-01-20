@@ -29,9 +29,10 @@
               class="px-1 pr-md-5 pt-0"
             >
               <single-eye-input
-                v-model="odEye"
+                v-bind="odEye"
                 eye-name="OD"
-                :add-enabled="glassModel['glassesType'] !== 'single'"
+                :add-enabled="glassModel['glassesType'] === 'multifocal'"
+                @input="e => {odEye[e.id] = e.value}"
               />
             </v-col>
             <v-col
@@ -40,10 +41,10 @@
               class="px-1 pl-md-5 pt-0"
             >
               <single-eye-input
-                :value="osEye"
+                v-bind="osEye"
                 eye-name="OS"
-                :add-enabled="glassModel['glassesType'] !== 'single'"
-                @input="e => {updateSync(osEye, e); osEye = e}"
+                :add-enabled="glassModel['glassesType'] === 'multifocal'"
+                @input="e => {updateSync(osEye, e.value); osEye[e.id] = e.value}"
               />
             </v-col>
             <v-col cols=12 class="px-0">
@@ -63,6 +64,7 @@
                   v-prevent-enter-tab
                   class="mr-4"
                   plain
+                  tabindex="-1"
                   @click="reset"
                 >
                   Clear form
@@ -102,7 +104,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { generalEyeData, sanitizeEyeValues } from '../lib/util'
+import { generalEyeData, sanitizeEyeValues, clearObjectProperties } from '../lib/util'
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 export default {
   mixins: [ModifiedEnterToTabMixin],
@@ -111,8 +113,8 @@ export default {
     valid: false,
     loading: false,
     glassModel: {},
-    osEye: {},
-    odEye: {},
+    odEye: { axis: '', cylinder: '', sphere: '', add: '' },
+    osEye: { axis: '', cylinder: '', sphere: '', add: '' },
     syncEyes: true,
     output: '',
     generalEyeData,
@@ -132,10 +134,12 @@ export default {
     }
   },
   watch: {
-    odEye() {
+    'odEye.add'(newVal) {
+      console.log('sync eye')
       if (this.syncEyes) {
+        console.log('sync eye')
         // setting manually to trigger reactive system in SingleEyeInput
-        this.$set(this.osEye, 'add', this.odEye.add)
+        this.$set(this.osEye, 'add', newVal)
       }
     }
   },
@@ -168,8 +172,8 @@ export default {
       this.$nextTick(() => { if (this.$vuetify.breakpoint.mobile) this.$refs.results.scrollIntoView(true) })
     },
     reset() {
-      this.osEye = {}
-      this.odEye = {}
+      clearObjectProperties(this.odEye)
+      clearObjectProperties(this.osEye)
       this.glassModel = {}
       this.$refs.form.reset()
       if (!this.$vuetify.breakpoint.mobile) this.$refs.firstInput[0].focus()
@@ -181,8 +185,8 @@ export default {
     updateLastAdded(updatedGlasses) {
       this.lastAdded = this.lastAdded.map(el => (el.sku === updatedGlasses.sku ? updatedGlasses : el))
     },
-    updateSync(oldEye, newEye) {
-      if (oldEye.add !== newEye.add) this.syncEyes = false
+    updateSync(oldEye, newValue) {
+      if (oldEye.add !== newValue) this.syncEyes = false
     }
   },
   title: 'Add glasses'

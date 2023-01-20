@@ -20,7 +20,7 @@ export const ModifiedEnterToTabMixin = {
       if (keyCode === ENTER_CODE &&
             !ctrlKey &&
             target &&
-            target.tagName.toLowerCase() != 'textarea' &&
+            target.tagName.toLowerCase() !== 'textarea' &&
             this.$isEnterToTabEnabled &&
             !target.preventEnterTab) {
         e.preventDefault()

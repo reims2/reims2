@@ -136,7 +136,7 @@ export function contraryDiffsScore(rxSphere: number, lensSphere: number, rxCylin
       // Subtract a bit more when sphere and cylinder have exactly the same difference
       return (sphereDiff === cylinderDiff) ? -0.3 : -0.25
     } else {
-      // fixme For some reason, we subtract more when the cylinder difference is higher
+      // TODO For some reason, we subtract more when the cylinder difference is higher
       // => maybe so we don't go below zero? in that case it would probably make more sense to make this dynamically in the future
       return (sphereDiff === cylinderDiff) ? -0.55 : -0.5
     }

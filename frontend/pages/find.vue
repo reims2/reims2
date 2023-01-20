@@ -26,9 +26,10 @@
               class="px-1 pr-md-5 py-md-0 py-1"
             >
               <single-eye-input
-                v-model="od_eye"
+                v-bind="odEye"
                 eye-name="OD"
-                :add-enabled="glassesType !== 'single'"
+                :add-enabled="glassesType === 'multifocal'"
+                @input="e => {odEye[e.id] = e.value}"
               />
             </v-col>
             <v-col
@@ -37,10 +38,10 @@
               class="px-1 pl-md-5 py-0"
             >
               <single-eye-input
-                :value="os_eye"
+                v-bind="osEye"
                 eye-name="OS"
-                :add-enabled="glassesType !== 'single'"
-                @input="e => {os_eye = e; sync_eye = false}"
+                :add-enabled="glassesType === 'multifocal'"
+                @input="e => {osEye[e.id] = e.value; syncEye = false}"
               />
             </v-col>
             <v-col
@@ -152,10 +153,10 @@ export default {
     valid: false,
     page: 1,
     glassesType: '',
-    os_eye: {},
-    od_eye: {},
+    odEye: { axis: '', cylinder: '', sphere: '', add: '' },
+    osEye: { axis: '', cylinder: '', sphere: '', add: '' },
     high_tolerance: false,
-    sync_eye: true,
+    syncEye: true,
     itemsPerPage: 3,
     type_data:
       {
@@ -193,10 +194,10 @@ export default {
     }
   },
   watch: {
-    od_eye() {
-      if (this.sync_eye) {
+    'odEye.add'(newVal) {
+      if (this.syncEye) {
         // setting manually to trigger reactive system in SingleEyeInput
-        this.$set(this.os_eye, 'add', this.od_eye.add)
+        this.$set(this.osEye, 'add', newVal)
       }
     },
     allGlasses() {
@@ -214,7 +215,7 @@ export default {
       if (!this.valid) return
       await this.loadMatches()
       this.page = 1
-      this.sync_eye = true // fixme good hgere?
+      // this.syncEye = true // fixme good hgere?
 
       this.$nextTick(() => {
         // on desktop, focus input again; on mobile, scroll to bottom
@@ -225,8 +226,8 @@ export default {
     async loadMatches() {
       const eyeModel = {}
       eyeModel.glassesType = this.glassesType
-      eyeModel.os = this.os_eye
-      eyeModel.od = this.od_eye
+      eyeModel.os = { ...this.osEye }
+      eyeModel.od = { ...this.odEye }
       eyeModel.highTolerance = this.high_tolerance
 
       this.matches = await this.philScore(eyeModel)
@@ -235,7 +236,7 @@ export default {
       this.$refs.form.reset()
       this.matches = null
       setTimeout(() => { this.$refs.firstInput.focus() })
-      this.sync_eye = true
+      this.syncEye = true
     },
     calcPageCount() {
       if (!this.matches) return 0
