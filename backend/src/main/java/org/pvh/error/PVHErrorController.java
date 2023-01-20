@@ -27,7 +27,8 @@ public class PVHErrorController extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(
             new ErrorResponseDefault(status.value(),
-                "Something bad happened - please contact Reims Dev Team",
+                // Show error message in production as well.
+                ex.getMessage(),
                 new Date()),
             status);
 

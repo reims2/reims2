@@ -1,5 +1,6 @@
 package org.pvh.service;
 
+import org.pvh.error.NoSkusLeftException;
 import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Glasses;
 import org.pvh.repository.DispenseRepository;
@@ -49,7 +50,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     @Transactional
-    public Glasses saveGlasses(Glasses glasses) throws DataAccessException {
+    public Glasses saveGlasses(Glasses glasses) throws DataAccessException, NoSkusLeftException {
         eyeRepository.save(glasses.getOs());
         eyeRepository.save(glasses.getOd());
         Dispense dispense = new Dispense(null);
@@ -63,12 +64,17 @@ public class MainServiceImpl implements MainService {
         }
 
         // todo someday make this configurable per location
-        int min = 1;
-        int max = 10001; // for some reason an SKU 10.001 exists...
-        if (glasses.getLocation().equals("sm"))
-            min = 5000;
-        if (glasses.getLocation().equals("sa"))
+        int min = 0;
+        int max = 0; 
+        if (glasses.getLocation().equals("sa")) {
+            min = 1;
             max = 5000;
+        }
+        if (glasses.getLocation().equals("sm")){
+            min = 5001;
+            max = 10001; // for some reason an SKU 10.001 exists...
+        }
+            
         return glassesRepository.saveGlassesWithNextPossibleSKU(glasses, min, max);
     }
 

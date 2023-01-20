@@ -1,5 +1,6 @@
 package org.pvh.service;
 
+import org.pvh.error.NoSkusLeftException;
 import org.pvh.model.entity.Glasses;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public interface MainService {
 
     Optional<Glasses> findGlassesById(long glassesId);
-    Glasses saveGlasses(Glasses glasses) throws DataAccessException;
+    Glasses saveGlasses(Glasses glasses) throws DataAccessException, org.pvh.error.NoSkusLeftException, NoSkusLeftException;
 
     void deleteGlasses(Glasses glasses) throws DataAccessException;
 

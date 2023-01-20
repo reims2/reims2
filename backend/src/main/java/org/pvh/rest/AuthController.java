@@ -1,5 +1,6 @@
 package org.pvh.rest;
 
+import org.pvh.error.PVHException;
 import org.pvh.model.payload.request.LoginRequest;
 import org.pvh.model.payload.response.JwtResponse;
 import org.pvh.model.payload.response.MessageResponse;
@@ -54,13 +55,13 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/signin")
-    public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication;
         try {
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password.");
+            throw new PVHException("Invalid username or password.", HttpStatus.UNAUTHORIZED);
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

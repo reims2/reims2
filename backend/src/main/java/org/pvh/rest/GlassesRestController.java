@@ -3,6 +3,7 @@ package org.pvh.rest;
 
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
+import org.pvh.error.NoSkusLeftException;
 import org.pvh.error.PVHException;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
@@ -163,7 +164,9 @@ public class GlassesRestController {
         headers.setLocation(ucBuilder.path("/api/glasses/{id}").buildAndExpand(glassesResponse.getId()).toUri());
 
         }catch (RuntimeException e){
-            throw new PVHException("While adding new Glasses something bad happened.", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new PVHException("Something bad happened while adding new glasses.", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NoSkusLeftException e) {
+            throw new PVHException("No free SKUs left in this location.", HttpStatus.CONFLICT); //Fixme
         }finally {
             lock.unlock();
         }

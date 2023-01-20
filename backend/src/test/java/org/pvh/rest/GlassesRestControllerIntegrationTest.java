@@ -202,7 +202,7 @@ public class GlassesRestControllerIntegrationTest {
         MvcResult result = this.mockMvc.perform(post("/api/glasses/").contentType(MediaType.APPLICATION_JSON).content(
                 objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesRequestDTO(glasses))))
             .andExpect(status().isCreated())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(5000)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(5001)))
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andReturn();
@@ -211,12 +211,12 @@ public class GlassesRestControllerIntegrationTest {
             new Glasses("multifocal", "medium", "feminine", "sm", new Dispense(), new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
                 new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + 5000).contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + 5001).contentType(MediaType.APPLICATION_JSON)
                 .content(
                     objectMapper.writeValueAsBytes(GlassesMapperImpl.getInstance().glassesToGlassesRequestDTO(glassesToUpdate))))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(5000)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(5001)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.appearance", Matchers.is(glassesToUpdate.getAppearance().name())))
             .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType", Matchers.is(glassesToUpdate.getGlassesType().name())))
             .andExpect(MockMvcResultMatchers.jsonPath("$.glassesSize", Matchers.is(glassesToUpdate.getGlassesSize().name())))
@@ -228,7 +228,7 @@ public class GlassesRestControllerIntegrationTest {
             new GlassesRequestDTO("multifocal", "medium", "test", "sm", new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
                 new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + 5000).contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + 5001).contentType(MediaType.APPLICATION_JSON)
                 .content(
                     objectMapper.writeValueAsBytes(failGlassesToUpdate)))
             .andExpect(status().is4xxClientError())

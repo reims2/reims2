@@ -1,5 +1,6 @@
 package org.pvh.repository.jpa;
 
+import org.pvh.error.NoSkusLeftException;
 import org.pvh.model.entity.Glasses;
 import org.pvh.repository.CustomGlassesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
     private EntityManager entityManager;
 
     @Override
-    public Glasses saveGlassesWithNextPossibleSKU(Glasses glasses, int min, int max) {
+    public Glasses saveGlassesWithNextPossibleSKU(Glasses glasses, int min, int max) throws NoSkusLeftException {
 
         Query query = entityManager.createQuery("SELECT sku FROM Glasses WHERE sku = :min" );
         query.setParameter("min",min);
@@ -37,9 +38,7 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
                 // JPA returns BigInteger even though it really is just a java int => convert it
                 nextSKU = ((BigInteger) findNextSKUQuery.getSingleResult()).intValue();
             } catch (NoResultException e) {
-                // all SKUs used, todo add some better error message in the future, for now
-                // throw exception
-                throw e;
+                throw new NoSkusLeftException("No free SKU");
             }
         }
         glasses.setSku(nextSKU);
