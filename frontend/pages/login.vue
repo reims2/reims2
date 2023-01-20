@@ -60,7 +60,7 @@ export default {
       } catch (err) {
         console.log(err)
         if (err.status === 401) {
-          this.errorText = err.response.data
+          this.errorText = err.message
         } else {
           this.errorText = `Login failed (Error ${err.status})`
         }

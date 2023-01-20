@@ -153,7 +153,12 @@ export default {
         this.lastAdded.unshift(newGlasses)
       } catch (error) {
         this.loading = false
-        this.$store.commit('setError', `Could not add glasses, please retry (${error.status})`)
+        if (error.status === 409) {
+          // no free skus left.
+          this.$store.commit('setError', error.message)
+        } else {
+          this.$store.commit('setError', `Could not add glasses, please retry (${error.status})`)
+        }
         return
       }
       this.loading = false

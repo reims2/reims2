@@ -1,5 +1,5 @@
 export default ({ $axios, app, store }) => {
-  $axios.defaults.timeout = 6000
+  $axios.defaults.timeout = 8000
 
   $axios.onError((error) => {
     error.status = error.response ? error.response.status : 'Network Error'
@@ -7,6 +7,12 @@ export default ({ $axios, app, store }) => {
       error.network = true
     } else if (error.response.status >= 500) {
       error.server = true
+    }
+
+    try {
+      error.message = error.response.data.message
+    } catch (e) {
+      error.message = ''
     }
 
     if (error.status === 401) {
