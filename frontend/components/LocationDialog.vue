@@ -35,7 +35,7 @@
           :disabled="newLocation == location"
           @click="changeLocation"
         >
-          Save
+          Apply
         </v-btn>
       </v-card-actions>
     </v-card>

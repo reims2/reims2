@@ -11,7 +11,7 @@
     :mobile-breakpoint="$vuetify.breakpoint.mobileBreakpoint"
     :footer-props="{
       showFirstLastPage: true,
-      itemsPerPageOptions: [10,20,100,500],
+      itemsPerPageOptions: [10,20,50,100,500],
       showCurrentPage: true
     }"
     @update:options="startLoading"
