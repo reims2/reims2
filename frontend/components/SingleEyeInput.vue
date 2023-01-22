@@ -23,6 +23,9 @@
           @input="val => input(id, val)"
           @update:error="val => hasError[id] = val"
           @blur="update(id)"
+          @focus="$event.target.select()"
+          @keydown.s.prevent
+          @keydown.a.prevent
         />
       </v-col>
     </v-row>
@@ -77,7 +80,7 @@ export default {
         sphere: {
           label: 'Sphere',
           step: 0.25,
-          prefix: this.sphere > 0 ? '+' : '',
+          // prefix: this.sphere > 0 ? '+' : '',
           value: this.sphere
         },
         cylinder: {

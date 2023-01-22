@@ -29,9 +29,9 @@ export const ModifiedEnterToTabMixin = {
         const currentIndex = [...allElements].indexOf(target)
         const targetIndex = (currentIndex + 1) % allElements.length
         const nextElement = allElements[targetIndex]
+        nextElement.focus()
         // if the next element is a button, click on it instead of just focusing. otherwise user has to double enter for a button to activate
         if (nextElement.tagName.toLowerCase() === 'button') nextElement.click()
-        else nextElement.focus()
       }
     }
   }

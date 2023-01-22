@@ -6,18 +6,21 @@
           <v-row dense>
             <v-col
               cols="12"
-              class="px-0 pb-0"
+              class="px-0 pb-3"
             >
-              <v-autocomplete
+              <v-text-field
                 ref="firstInput"
                 v-model="glassesType"
-                :items="type_data.options"
-                :label="type_data.label"
-                :rules="type_data.rules"
-                auto-select-first
+                :label="glassesTypeData.label"
+                :rules="glassesTypeData.rules"
+                :hint="glassesTypeData.hint"
+                persistent-hint
                 :autofocus="!$vuetify.breakpoint.mobile"
                 outlined
+                clearable
                 @keyup.s="() => {return true}"
+                @blur="autoComplete"
+                @focus="$event.target.select()"
               />
             </v-col>
             <v-col
@@ -142,7 +145,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
-import { matchesAsCsvUri } from '../lib/util'
+import { matchesAsCsvUri, generalEyeData, completeGlassesData } from '../lib/util'
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 
 export default {
@@ -158,18 +161,7 @@ export default {
     high_tolerance: false,
     syncEye: true,
     itemsPerPage: 3,
-    type_data:
-      {
-        label: 'Type',
-        options: [{
-          text: 'single vision',
-          value: 'single'
-        }, {
-          text: 'multifocal',
-          value: 'multifocal'
-        }],
-        rules: [v => !!v || 'Item is required']
-      }
+    glassesTypeData: generalEyeData.find((obj) => { return obj.id === 'glassesType' })
   }),
   title: 'Find glasses',
   head() {
@@ -242,6 +234,9 @@ export default {
       if (!this.matches) return 0
       const pages = Math.ceil(this.matches.length / this.itemsPerPage)
       return pages > 10 ? 10 : pages
+    },
+    autoComplete() {
+      this.glassesType = completeGlassesData(this.glassesType, 'glassesType')
     }
   }
 }

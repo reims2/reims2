@@ -15,7 +15,7 @@
             <v-tooltip bottom>
               <template #activator="{ on, attrs }">
                 <v-chip
-                  class="mr-2 px-2 white--text font-weight-medium"
+                  class="mr-2 px-2 white--text font-weight-black"
                   :color="calcColor(glass.score)"
                   small
                   label

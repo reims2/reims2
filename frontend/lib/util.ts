@@ -48,7 +48,8 @@ export const generalEyeData = [
     id: 'glassesType',
     label: 'Type',
     items: ['single', 'multifocal'],
-    rules: [(v:any) => !!v || 'Item is required'],
+    rules: [(v:any) => (v && ('single'.startsWith(v) || 'multifocal'.startsWith(v))) || 'Enter s for single or m for multifocal'],
+    hint: '(s)ingle or (m)ultifocal',
     first: true,
     icon: mdiGlasses,
     desc: 'Glasses type (single or multifocal)'
@@ -57,7 +58,9 @@ export const generalEyeData = [
     id: 'glassesSize',
     label: 'Size',
     items: ['small', 'medium', 'large', 'child'],
-    rules: [(v:any) => !!v || 'Item is required'],
+    hint: '(s)mall, (m)edium, (l)arge or (c)hild',
+    rules: [(v:any) => (v && ('small'.startsWith(v) || 'medium'.startsWith(v) || 'large'.startsWith(v) || 'child'.startsWith(v))) ||
+      'Enter s for small, m for medium, l for large or c for child'],
     icon: mdiArrowLeftRight,
     desc: 'Glasses size (small, medium, large or child)'
   },
@@ -65,11 +68,26 @@ export const generalEyeData = [
     id: 'appearance',
     label: 'Appearance',
     items: ['neutral', 'feminine', 'masculine'],
-    rules: [(v:any) => !!v || 'Item is required'],
+    hint: '(n)eutral, (f)eminine or (m)asculine',
+    rules: [(v:any) => (v && ('neutral'.startsWith(v) || 'feminine'.startsWith(v) || 'masculine'.startsWith(v))) ||
+      'Enter n for neutral, f for feminine or m for masculine'],
     icon: mdiHumanMaleFemale,
     desc: 'Glasses appearance (neutral, feminine or masculine)'
   }
 ]
+
+/** autocomplete item data based on first characters. i.e. for dataId=glassesType return single for character s.
+ * Otherwise returns original string */
+export function completeGlassesData(glassesString:string, dataId:string) : string {
+  if (!glassesString || typeof glassesString !== 'string' || glassesString === '') return glassesString
+  const data = generalEyeData.find((obj) => { return obj.id === dataId })
+  if (!data) return glassesString
+
+  for (const item of data.items) {
+    if (item.startsWith(glassesString.toLowerCase())) return item
+  }
+  return glassesString
+}
 
 export function deepCopyGlasses(oldGlasses:any) {
   const newGlasses:Glasses = Object.assign({}, oldGlasses)
