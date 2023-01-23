@@ -137,6 +137,7 @@ public class GlassesRestController {
             @PathVariable("location") String location) {
         List<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
                 endDate.orElse(new Date()), location);
+        Collections.sort(glasses, (o1, o2) -> o1.getDispense().getModifyDate().compareTo(o2.getDispense().getModifyDate()));
         WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
     }
 
