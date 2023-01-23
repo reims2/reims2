@@ -8,21 +8,12 @@
               v-for="item in generalEyeData"
               :key="item.label"
               cols="12"
-              class="pa-0 py-2"
+              class="pa-0 pb-5"
             >
-              <v-text-field
+              <auto-complete-field
                 ref="firstInput"
                 v-model="glassModel[item.id]"
-                :label="item.label"
-                :rules="item.rules"
-                :hint="item.hint"
-                :autofocus="item.first && !$vuetify.breakpoint.mobile"
-                outlined
-                clearable
-                hide-details="auto"
-                @keyup.a="() => {return true}"
-                @blur="autoComplete(item.id)"
-                @focus="$event.target.select()"
+                v-bind="item"
               />
             </v-col>
             <v-col
@@ -106,7 +97,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { generalEyeData, sanitizeEyeValues, clearObjectProperties, completeGlassesData } from '../lib/util'
+import { generalEyeData, sanitizeEyeValues, clearObjectProperties } from '../lib/util'
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 export default {
   mixins: [ModifiedEnterToTabMixin],
@@ -185,9 +176,6 @@ export default {
     },
     updateSync(oldEye, newValue) {
       if (oldEye.add !== newValue) this.syncEyes = false
-    },
-    autoComplete(id) {
-      this.glassModel[id] = completeGlassesData(this.glassModel[id], id)
     }
   },
   title: 'Add glasses'

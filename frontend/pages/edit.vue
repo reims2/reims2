@@ -144,7 +144,6 @@ export default {
     }
   },
   activated() {
-    console.log('activated')
     if (this.$route.query.sku) {
       this.$nextTick(() => {
         this.sku = this.$route.query.sku

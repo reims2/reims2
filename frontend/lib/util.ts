@@ -76,19 +76,6 @@ export const generalEyeData = [
   }
 ]
 
-/** autocomplete item data based on first characters. i.e. for dataId=glassesType return single for character s.
- * Otherwise returns original string */
-export function completeGlassesData(glassesString:string, dataId:string) : string {
-  if (!glassesString || typeof glassesString !== 'string' || glassesString === '') return glassesString
-  const data = generalEyeData.find((obj) => { return obj.id === dataId })
-  if (!data) return glassesString
-
-  for (const item of data.items) {
-    if (item.startsWith(glassesString.toLowerCase())) return item
-  }
-  return glassesString
-}
-
 export function deepCopyGlasses(oldGlasses:any) {
   const newGlasses:Glasses = Object.assign({}, oldGlasses)
   const newOd:any = {}

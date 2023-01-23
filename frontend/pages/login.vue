@@ -18,6 +18,8 @@
                 label="Username"
                 :rules="[v => !!v || 'Item is required']"
                 required
+                autocorrect="off"
+                autocapitalize="off"
               />
               <v-text-field
                 v-model="password"

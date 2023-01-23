@@ -101,6 +101,8 @@
                         label="Username"
                         :rules="[v => !!v || 'Item is required']"
                         required
+                        autocorrect="off"
+                        autocapitalize="off"
                       />
                     </v-col>
                     <v-col cols="12">

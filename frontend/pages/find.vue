@@ -8,19 +8,11 @@
               cols="12"
               class="px-0 pb-3"
             >
-              <v-text-field
+              <auto-complete-field
                 ref="firstInput"
                 v-model="glassesType"
-                :label="glassesTypeData.label"
-                :rules="glassesTypeData.rules"
-                :hint="glassesTypeData.hint"
-                persistent-hint
-                :autofocus="!$vuetify.breakpoint.mobile"
-                outlined
-                clearable
-                @keyup.s="() => {return true}"
-                @blur="autoComplete"
-                @focus="$event.target.select()"
+                v-bind="glassesTypeData"
+                :persistent-hint=true
               />
             </v-col>
             <v-col
@@ -145,7 +137,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
-import { matchesAsCsvUri, generalEyeData, completeGlassesData } from '../lib/util'
+import { matchesAsCsvUri, generalEyeData } from '../lib/util'
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 
 export default {
@@ -234,9 +226,6 @@ export default {
       if (!this.matches) return 0
       const pages = Math.ceil(this.matches.length / this.itemsPerPage)
       return pages > 10 ? 10 : pages
-    },
-    autoComplete() {
-      this.glassesType = completeGlassesData(this.glassesType, 'glassesType')
     }
   }
 }
