@@ -44,7 +44,7 @@
               class="pa-0 pb-1"
             >
               <v-checkbox
-                v-model="high_tolerance"
+                v-model="highTolerance"
                 default-value=false
                 label="Increase search tolerance (might yield bad results)"
                 tabindex="-1"
@@ -158,7 +158,7 @@ export default {
     glassesType: '',
     odEye: { axis: '', cylinder: '', sphere: '', add: '' },
     osEye: { axis: '', cylinder: '', sphere: '', add: '' },
-    high_tolerance: false,
+    highTolerance: false,
     syncEye: true,
     itemsPerPage: 3,
     glassesTypeData: generalEyeData.find((obj) => { return obj.id === 'glassesType' })
@@ -208,6 +208,9 @@ export default {
     glassesType() {
       this.matches = null
     },
+    highTolerance() {
+      this.matches = null
+    },
     allGlasses() {
       if (this.valid) this.loadMatches()
     }
@@ -237,7 +240,7 @@ export default {
       eyeModel.glassesType = this.glassesType
       eyeModel.os = { ...this.osEye }
       eyeModel.od = { ...this.odEye }
-      eyeModel.highTolerance = this.high_tolerance
+      eyeModel.highTolerance = this.highTolerance
 
       this.matches = await this.philScore(eyeModel)
     },
