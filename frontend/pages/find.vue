@@ -1,7 +1,7 @@
 <template>
   <v-container @keyup.s="submitAndUpdate">
     <v-row dense class="justify-center">
-      <v-col cols=12 md=6 lg=4 class="px-2">
+      <v-col cols=12 md=6 lg=5 class="px-3">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col
@@ -77,16 +77,24 @@
         </v-form>
       </v-col>
       <v-col
-        v-if="matches"
         ref="results"
         cols=12
         md=6
-        lg=4
+        lg=5
         xl=3
         class="pt-10 pt-md-1 px-0 pl-md-6"
       >
         <v-alert
-          v-if="matches.length === 0"
+          v-if="matches == null"
+          type="info"
+          outlined
+          color="primary"
+          dense
+        >
+          Start a new search to display results
+        </v-alert>
+        <v-alert
+          v-else-if="matches.length === 0"
           type="warning"
           outlined
           dense
@@ -184,6 +192,22 @@ export default {
         this.$set(this.osEye, 'add', newVal)
       }
     },
+    odEye: {
+      handler() {
+        // clear matches to avoid confusion
+        this.matches = null
+      },
+      deep: true
+    },
+    osEye: {
+      handler() {
+        this.matches = null
+      },
+      deep: true
+    },
+    glassesType() {
+      this.matches = null
+    },
     allGlasses() {
       if (this.valid) this.loadMatches()
     }
@@ -196,6 +220,7 @@ export default {
       hasGlassesLoaded: 'glasses/hasGlassesLoaded'
     }),
     async submitAndUpdate() {
+      console.log('submit detected')
       if (!this.valid) return
       await this.loadMatches()
       this.page = 1

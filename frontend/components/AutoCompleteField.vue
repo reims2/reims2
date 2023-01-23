@@ -12,7 +12,8 @@
     hide-details="auto"
     autocorrect="off"
     autocapitalize="off"
-    @keyup.a="() => {return true}"
+    @keyup.a.stop
+    @keyup.s.stop
     @blur="autoComplete(id)"
     @focus="$event.target.select()"
   />
