@@ -11,7 +11,7 @@ import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 import org.springframework.stereotype.Component;
-
+import java.math.BigDecimal;
 import javax.annotation.processing.Generated;
 
 @Generated(
@@ -46,15 +46,13 @@ public class GlassesMapperImpl implements GlassesMapper {
         glasses.setOs( eyeDTOToEye( glassesRequestDTO.getOs() ) );
         glasses.setOd( eyeDTOToEye( glassesRequestDTO.getOd() ) );
         glasses.setLocation( glassesRequestDTO.getLocation() );
-        if ( glassesRequestDTO.getGlassesSize() != null ) {
-            glasses.setGlassesSize( Enum.valueOf( GlassesSizeEnum.class, glassesRequestDTO.getGlassesSize() ) );
-        }
-        if ( glassesRequestDTO.getAppearance() != null ) {
-            glasses.setAppearance( Enum.valueOf( AppearanceEnum.class, glassesRequestDTO.getAppearance() ) );
-        }
-        if ( glassesRequestDTO.getGlassesType() != null ) {
-            glasses.setGlassesType( Enum.valueOf( GlassesTypeEnum.class, glassesRequestDTO.getGlassesType() ) );
-        }
+        if ( glassesRequestDTO.getGlassesSize() == null ) return null;
+        if ( glassesRequestDTO.getAppearance() == null ) return null;
+        if ( glassesRequestDTO.getGlassesType() == null ) return null;
+        glasses.setGlassesSize( Enum.valueOf( GlassesSizeEnum.class, glassesRequestDTO.getGlassesSize() ) );
+        glasses.setAppearance( Enum.valueOf( AppearanceEnum.class, glassesRequestDTO.getAppearance() ) );
+        glasses.setGlassesType( Enum.valueOf( GlassesTypeEnum.class, glassesRequestDTO.getGlassesType() ) );
+
 
         return glasses;
     }
@@ -157,10 +155,10 @@ public class GlassesMapperImpl implements GlassesMapper {
 
         Eye eye = new Eye();
 
-        eye.setSphere( eyeDTO.getSphere() );
-        eye.setCylinder( eyeDTO.getCylinder() );
+        eye.setSphere( eyeDTO.getSphere() != null ? eyeDTO.getSphere() : new BigDecimal(0) );
+        eye.setCylinder( eyeDTO.getCylinder() != null ? eyeDTO.getCylinder() : new BigDecimal(0) );
         eye.setAxis( eyeDTO.getAxis() );
-        eye.setAdd( eyeDTO.getAdd() );
+        eye.setAdd( eyeDTO.getAdd() != null ? eyeDTO.getAdd() : new BigDecimal(0) );
 
         return eye;
     }
