@@ -36,7 +36,8 @@
             "env": {
                 //"API_URL": "http://localhost:9966/pvh/api", // local API
                 "API_URL": "https://dev.reims2.app/api", // for AXIOS
-                "DOCS_URL": "http://localhost:8080/"
+                "DOCS_URL": "http://localhost:8080/",
+                "PVH_DEBUG": "true",
             }
         },
         {
@@ -45,7 +46,6 @@
             "request": "launch",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true,
             "cwd": "${workspaceFolder}",
             "runtimeExecutable": "npm",
             "args": [

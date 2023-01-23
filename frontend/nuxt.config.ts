@@ -87,6 +87,12 @@ const config: NuxtConfig = {
     retry: false
   },
 
+  env: {
+    // @ts-ignore
+    isDev: process.env.PVH_DEBUG === 'true' || false,
+    version: process.env.GIT_REV || ''
+  },
+
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     meta: {
