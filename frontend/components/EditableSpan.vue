@@ -7,7 +7,7 @@
     single-line
     hide-details
     style="max-width: 60px"
-    class="pb-1"
+    class="pb-1 prevent-enter-tab"
     autofocus
     @update:error="val => hasError = val"
     @keyup.enter="submit"

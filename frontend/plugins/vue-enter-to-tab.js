@@ -6,6 +6,7 @@ Vue.use(VueEnterToTab, true)
 // source from https://github.com/ajomuch92/vue-enter-to-tab
 // it has been modified to 1. include https://github.com/ajomuch92/vue-enter-to-tab/pull/2
 // and 2. to auto click a button if the next element is a button
+// and 3. to abort if any parent contains class ".prevent-enter-tab" (the vue directive didn't really work)
 const ENTER_CODE = 13
 export const ModifiedEnterToTabMixin = {
   mounted() {
@@ -22,7 +23,8 @@ export const ModifiedEnterToTabMixin = {
             target &&
             target.tagName.toLowerCase() !== 'textarea' &&
             this.$isEnterToTabEnabled &&
-            !target.preventEnterTab) {
+            !target.preventEnterTab &&
+            !target.closest('.prevent-enter-tab')) {
         e.preventDefault()
         const allElementsQuery = this.$el.querySelectorAll('input, button, a, textarea, select, audio, video, [contenteditable]')
         const allElements = [...allElementsQuery].filter(r => !r.disabled && !r.hidden && r.offsetParent && !r.readOnly && r.tabIndex >= 0)
