@@ -38,5 +38,6 @@
     frontend_app_name: "dev-frontend"
     api_app_name: "dev-api"
     docs_app_name: "dev-docs"
-    backend_jwt_token: "testtoken"
+    backend_jwt_token: "testtokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttoken"
+    debug_enable: True
     db_dump: "{{ lookup('file', '../dump.sql', errors='warn') }}"

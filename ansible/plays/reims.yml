@@ -77,6 +77,13 @@
           API_URL: "http://{{api_app_name}}.web:5000/pvh/api"
           DOCS_URL: "http://{{docs_app_name}}.web:5000"
           HOST: "0.0.0.0"
+    - name: "Frontend env vars: Enable debug"
+      when: debug_enable is defined and debug_enable
+      dokku_config:
+        app: "{{frontend_app_name}}"
+        config:
+          PVH_DEBUG: "true"
+
     - name: "API env vars: letsencrypt mail and backend token"
       dokku_config:
         app: "{{api_app_name}}"
@@ -84,6 +91,13 @@
           DOKKU_LETSENCRYPT_EMAIL: substantialimpulse@pm.me
           PORT: "5000"
           PVH_JWT_SECRET: "{{backend_jwt_token}}"
+    - name: "API env vars: Enable debug"
+      when: debug_enable is defined and debug_enable
+      dokku_config:
+        app: "{{api_app_name}}"
+        config:
+          PVH_DEBUG: "true"
+
     - name: "Docs env vars: nodejs host+port vars"
       dokku_config:
         app: "{{docs_app_name}}"
