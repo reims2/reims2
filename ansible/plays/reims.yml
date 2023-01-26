@@ -128,6 +128,23 @@
         app: "{{api_app_name}}"
     - name: Enable letsencrypt auto renew
       shell: dokku letsencrypt:cron-job --add
+    - name: Start vector container for persistent logging
+      shell: dokku logs:vector-start
+    - name: API: Configure persistent logging
+      shell: "dokku logs:set {{api_app_name}} vector-sink 'file://?path=/var/log/dokku/apps/{{api_app_name}}.log&encoding[codec]=text'"
+    - name: Frontend: Configure persistent logging
+      shell: "dokku logs:set {{frontend_app_name}} vector-sink 'file://?path=/var/log/dokku/apps/{{frontend_app_name}}.log&encoding[codec]=text'"
+    - name: Configure logrotate for persistent app logs
+      copy:
+        dest: "/etc/logrotate.d/dokku-vector.conf"
+        content: |
+          /var/log/dokku/apps/*.log {
+              weekly
+              rotate 4
+              size 10M
+              compress
+              delaycompress
+          }
     - name: Deploy frontend from git (this takes 5 minutes and will work even when failing with timeout)
       timeout: 300
       ignore_errors: yes
