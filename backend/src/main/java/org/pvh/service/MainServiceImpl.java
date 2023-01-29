@@ -63,7 +63,7 @@ public class MainServiceImpl implements MainService {
             glasses.setDispense(dispense);
         }
 
-        // todo someday make this configurable per location
+        // TODO someday make this configurable per location
         int min = 0;
         int max = 0; 
         if (glasses.getLocation().equals("sa")) {
@@ -72,7 +72,7 @@ public class MainServiceImpl implements MainService {
         }
         if (glasses.getLocation().equals("sm")){
             min = 5001;
-            max = 10001; // for some reason an SKU 10.001 exists...
+            max = 10000;
         }
             
         return glassesRepository.saveGlassesWithNextPossibleSKU(glasses, min, max);
