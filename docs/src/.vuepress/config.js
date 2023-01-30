@@ -64,8 +64,7 @@ module.exports = {
       ],
       '/': [
         '/',
-        'test',
-        'test2'
+        '/howto'
       ],
     },
     nav: [
