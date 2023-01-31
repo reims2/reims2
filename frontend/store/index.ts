@@ -39,6 +39,7 @@ export const mutations: MutationTree<RootState> = {
   [MutationType.SET_OUTDATED_FLAG]: (state, value: boolean) => { state.isOutdated = value },
   [MutationType.DELETE_OFFLINE_GLASSES]: (state, sku: number) => {
     if (arrayContainsSku(state.allGlasses, sku)) {
+      // call arrayContainsSku to avoid unnecessary reactive changes when replacing the array like this
       state.allGlasses = state.allGlasses.filter(el => el.sku !== sku)
     }
   },
