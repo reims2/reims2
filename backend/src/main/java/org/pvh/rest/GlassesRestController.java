@@ -111,6 +111,10 @@ public class GlassesRestController {
     @ResponseBody
     public void getAllGlassesCsv(HttpServletResponse servletResponse, @PathVariable("location") String location) {
         List<Glasses> glasses = mainService.findByDispensedAndLocation(false, location);
+        if (glasses.isEmpty()){
+            servletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            return;
+        }
         Collections.sort(glasses, (o1, o2) -> o1.getSku() - o2.getSku());
         WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
     }
@@ -137,6 +141,11 @@ public class GlassesRestController {
             @PathVariable("location") String location) {
         List<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
                 endDate.orElse(new Date()), location);
+        if (glasses.isEmpty()){
+            servletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            return;
+        }
+            
         Collections.sort(glasses, (o1, o2) -> o1.getDispense().getModifyDate().compareTo(o2.getDispense().getModifyDate()));
         WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
     }
