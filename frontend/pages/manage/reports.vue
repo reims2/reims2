@@ -3,92 +3,48 @@
     <v-row dense class="d-flex justify-center">
       <v-col cols=12 md=6 lg=4>
         <div class="pb-2 text-h5">
-          Export current inventory
+          Current inventory report
         </div>
         <div class="pb-4 text--secondary">
-          Click this button to export a report of all glasses that are not dispensed.
+          This report contains all glasses in the inventory of the current location. Dispensed glasses are not included.
         </div>
         <v-btn
           color="accent"
-          :loading="loadingUndispensed"
-          @click="downloadUndispensed"
+          :loading="loadingInventoryReport"
+          @click="downloadInventoryReport"
         >
-          Export all
+          Download
         </v-btn>
 
-        <v-divider class="my-8" />
+        <v-divider class="my-9" />
 
         <div class="pb-2 text-h5">
-          Export dispensed glasses
+          Dispense report
         </div>
         <div class="pb-2 text--secondary">
-          Select a date range and click the buttom below to generate a report of all dispensed glasses during that time.
+          This report contains all glasses that were dispensed in the selected year.
         </div>
-        <div class="pt-4">
-          <v-menu
-            v-model="startMenu"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-          >
-            <template #activator="{ on, attrs }">
-              <v-text-field
-                :value="startDate"
-                label="From"
-                :prepend-icon="mdiCalendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-              />
-            </template>
-            <v-date-picker
-              v-model="startDate"
-              no-title
-              scrollable
-              @input="startMenu = false"
-            />
-          </v-menu>
-        </div>
-        <div class="pb-2">
-          <v-menu
-            v-model="endMenu"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-          >
-            <template #activator="{ on, attrs }">
-              <v-text-field
-                :value="endDate"
-                label="To"
-                :prepend-icon="mdiCalendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-              />
-            </template>
-            <v-date-picker
-              v-model="endDate"
-              no-title
-              scrollable
-              @input="endMenu = false"
-            />
-          </v-menu>
-        </div>
+
+        <v-select
+          v-model="selectedDispenedYear"
+          :prepend-icon="mdiCalendar"
+          :items="lastYears"
+          outlined
+          class="pt-4"
+        />
 
         <v-btn
           color="accent"
-          :loading="loadingDispensed"
-          @click="downloadDispensed"
+          :loading="loadingDispensedReport"
+          @click="downloadDispensedReport"
         >
-          Export dispensed
+          Download
         </v-btn>
         <a
           ref="downloadLink"
           :href="csvUri"
           target="_blank"
-          download='glasses.csv'
+          :download='filename'
           class="d-none"
         />
       </v-col>
@@ -98,52 +54,65 @@
 
 <script>
 import { mdiCalendar } from '@mdi/js'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import { locationNames } from '../../lib/util'
 export default {
   data: () => ({
-    startDate: '',
-    endDate: '',
-    startMenu: false,
-    endMenu: false,
     mdiCalendar,
-    loadingDispensed: false,
-    loadingUndispensed: false,
-    csvUri: ''
+    loadingDispensedReport: false,
+    loadingInventoryReport: false,
+    csvUri: '',
+    filename: '',
+    locationNames,
+    selectedDispenedYear: null
   }),
   title: 'Create reports',
+  computed: {
+    ...mapState(['location']),
+    lastYears() {
+      const year = this.$dayjs().year()
+      return Array.from(new Array(30), (_, index) => year - index).filter(year => year >= 2022)
+    }
+  },
   created() {
-    this.startDate = this.$dayjs().subtract(1, 'year').format('YYYY-MM-DD')
-    this.endDate = this.$dayjs().format('YYYY-MM-DD')
+    this.selectedDispenedYear = this.$dayjs().year()
   },
   methods: {
     ...mapActions({
-      loadDispensed: 'glasses/loadDispensedCsv',
-      loadUndispensed: 'glasses/loadUndispensedCsv'
+      loadDispensedCsv: 'glasses/loadDispensedCsv',
+      loadInventoryCsv: 'glasses/loadInventoryCsv'
     }),
-    async downloadDispensed() {
-      this.loadingDispensed = true
+    async downloadDispensedReport() {
+      this.loadingDispensedReport = true
+      const selectedYearStart = this.$dayjs().startOf('year').year(this.selectedDispenedYear)
       try {
-        const csvFile = await this.loadDispensed({
-          startDate: this.$dayjs(this.startDate).format('MM/DD/YYYY'),
-          endDate: this.$dayjs(this.endDate).add(1, 'day').format('MM/DD/YYYY')
+        const csvFile = await this.loadDispensedCsv({
+          startDate: selectedYearStart.format('MM/DD/YYYY'),
+          endDate: selectedYearStart.add(1, 'year').format('MM/DD/YYYY')
         })
+        this.filename = `dispense_report_${this.location}_${this.selectedDispenedYear}.csv`
         this.downloadCsv(csvFile)
       } catch (error) {
-        this.$store.commit('setError', `Could not load dispensed report (Error ${error.status})`)
+        this.$store.commit('setError', `Could not create dispense report (Error ${error.status})`)
       }
-      this.loadingDispensed = false
+      this.loadingDispensedReport = false
     },
-    async downloadUndispensed() {
-      this.loadingUndispensed = true
+    async downloadInventoryReport() {
+      this.loadingInventoryReport = true
       try {
-        const csvFile = await this.loadUndispensed()
+        const csvFile = await this.loadInventoryCsv()
+        this.filename = `inventory_${this.location}.csv`
         this.downloadCsv(csvFile)
       } catch (error) {
-        this.$store.commit('setError', `Could not load all glasses (Error ${error.status})`)
+        this.$store.commit('setError', `Could not create inventory report (Error ${error.status})`)
       }
-      this.loadingUndispensed = false
+      this.loadingInventoryReport = false
     },
     downloadCsv(csvBlob) {
+      if (!csvBlob || csvBlob.size === 0) {
+        this.$store.commit('setError', 'Report is empty. Try selecting another year?')
+        return
+      }
       const blob = new Blob([csvBlob], { type: 'application/csv' })
       this.csvUri = URL.createObjectURL(blob)
       this.$nextTick(() => {

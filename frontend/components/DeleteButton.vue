@@ -14,7 +14,7 @@
     </template>
     <v-card>
       <v-card-title class="headline">
-        Are you sure you?
+        Are you sure?
       </v-card-title>
       <v-card-text class="text--primary red--text">
         This will permanently delete the glasses (SKU {{ glass.sku }}) and cannot be reverted.

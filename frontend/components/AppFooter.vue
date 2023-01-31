@@ -11,8 +11,14 @@
       <last-refresh-span /><span class="px-2">—</span>
       {{ allGlasses.length }} glasses stored<span class="px-2">—</span>
     </div>
-    <span>&copy; {{ new Date().getFullYear() }}
-      <a href="https://partnersforvisualhealth.org/" tabindex="-1" target=”_blank” rel=noopener class="white--text">Partners for Visual Health</a>
+    <span>&copy;
+      <a
+        href="https://partnersforvisualhealth.org/"
+        tabindex="-1"
+        target=”_blank”
+        rel=noopener
+        class="white--text"
+      >Partners for Visual Health</a>
     </span>
   </v-footer>
 </template>

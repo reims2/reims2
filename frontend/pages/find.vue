@@ -223,7 +223,6 @@ export default {
       hasGlassesLoaded: 'glasses/hasGlassesLoaded'
     }),
     async submitAndUpdate() {
-      console.log('submit detected')
       if (!this.valid) return
       await this.loadMatches()
       this.page = 1

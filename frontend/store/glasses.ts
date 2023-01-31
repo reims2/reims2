@@ -38,7 +38,7 @@ export const ActionType = {
   EDIT_GLASSES: 'edit',
   PHIL_SCORE: 'philScore',
   LOAD_DISPENSED_CSV: 'loadDispensedCsv',
-  LOAD_UNDISPENSED_CSV: 'loadUndispensedCsv'
+  LOAD_INVENTORY_CSV: 'loadInventoryCsv'
 }
 export const actions: ActionTree<GlassesState, RootState> = {
   async [ActionType.ADD_GLASSES]({ commit, rootState }, newGlasses:Glasses) {
@@ -88,7 +88,7 @@ export const actions: ActionTree<GlassesState, RootState> = {
     const data = await this.$axios.$get(`/api/glasses/dispensed/${rootState.location}.csv`, { params, responseType: 'blob' })
     return data
   },
-  async [ActionType.LOAD_UNDISPENSED_CSV]({ rootState }) {
+  async [ActionType.LOAD_INVENTORY_CSV]({ rootState }) {
     const data = await this.$axios.$get(`/api/glasses/${rootState.location}.csv`, { responseType: 'blob' })
     return data
   }

@@ -2,6 +2,7 @@
   <v-dialog
     :value="value"
     max-width="400px"
+    persistent
     @input="e => updateDialogState(e)"
   >
     <v-card>
