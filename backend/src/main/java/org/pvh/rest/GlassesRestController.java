@@ -12,6 +12,8 @@ import org.pvh.model.mapper.GlassesMapperImpl;
 import org.pvh.repository.RSQL.CustomRsqlVisitor;
 import org.pvh.service.MainService;
 import org.pvh.util.WriteCsvToResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +40,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(exposedHeaders = "errors, content-type")
 @RequestMapping("api/glasses")
 public class GlassesRestController {
+    private static final Logger logger = LoggerFactory.getLogger(GlassesRestController.class);
 
 
     private static final String ENTITY_NOT_FOUND = "Entity not found!";
@@ -209,6 +212,7 @@ public class GlassesRestController {
         currentGlasses.get().setSku(null);
 
         this.mainService.saveGlassesAfterDispense(currentGlasses.get());
+        logger.info("Dispensed glasses with SKU {} (in {})", sku, location);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -239,6 +243,7 @@ public class GlassesRestController {
         currentGlasses.get().getDispense().setPreviousSku(null);
 
         this.mainService.saveGlassesAfterDispense(currentGlasses.get());
+        logger.info("Undispensed glasses with SKU {}", currentGlasses.get().getSku());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -251,6 +256,7 @@ public class GlassesRestController {
             throw new PVHException(ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
         this.mainService.deleteGlasses(glasses.get());
+        logger.info("Deleted glasses with SKU {} (in {})", sku, location);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
