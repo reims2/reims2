@@ -38,7 +38,24 @@
                     >
                       Dispense
                     </v-btn>
-                    <delete-button :glass="selected" @deleted="updatedDeleted" />
+                    <div class="d-flex flex-grow-1 justify-end">
+                      <v-menu offset-y left>
+                        <template #activator="{ on, attrs }">
+                          <v-btn
+                            icon
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon> {{ mdiDotsVertical }} </v-icon>
+                          </v-btn>
+                        </template>
+                        <v-list dense>
+                          <v-list-item>
+                            <delete-button :glass="selected" @deleted="updatedDeleted" />
+                          </v-list-item>
+                        </v-list>
+                      </v-menu>
+                    </div>
                   </template>
                 </glass-card>
               </div>
@@ -91,6 +108,7 @@
 </template>
 
 <script>
+import { mdiDotsVertical } from '@mdi/js'
 import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
   transition: 'main',
@@ -102,7 +120,8 @@ export default {
     result: '',
     successMessage: [],
     errorMesssage: [],
-    isOfflineDispension: false
+    isOfflineDispension: false,
+    mdiDotsVertical
   }),
   head() {
     return {
