@@ -104,7 +104,7 @@
             </v-row>
           </v-container>
         </v-card-text>
-        <v-card-actions class="pt-0 mx-0">
+        <v-card-actions class="pt-0 mx-0" style="padding-left: 6px;">
           <v-btn
             v-if="editable && edit == ''"
             text
@@ -250,5 +250,9 @@ export default {
 .no-child-padding .v-text-field {
   padding: 0px;
   margin: 0px;
+}
+
+.v-btn {
+  min-width: 0px !important;
 }
 </style>
