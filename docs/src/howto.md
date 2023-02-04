@@ -24,16 +24,16 @@ To use it offline, simply open the REIMS2 website in Chrome and it'll load even 
 
 ## Delete or replace glasses
 
-If glasses are missing in the storage or you if you want to purge unused glasses from the storage, it's possible to delete them. Switch to the "Edit" screen, enter the SKU and click "Delete". You'll be asked to confirm that you really want to delete glasses. It's important not to confuse this with Dispense, because with this glasses are permanently deleted and cannot be recovered.
+If glasses are missing in the storage or you if you want to purge unused glasses from the storage, it's possible to delete them. Switch to the "Edit" screen, enter the SKU. Click the three dots in the bottom right corner of the glasses and click "Delete". You'll be asked to confirm that you really want to delete glasses. It's important not to confuse this with Dispense, because with this glasses are permanently deleted and cannot be recovered.
 
 
 ## Report of dispensed glasses
 
-After a campaign it's necessary to create a report of all dispensed glasses. Switch to the "Reports" page and enter a start and end date. Click "Export Dispensed". This will download a `csv` file, which can be opened with Excel. In addition to the usual glasses data it also contains the dispense date and the SKU it had before it was dispensed.
+After a campaign it's necessary to create a report of all dispensed glasses. Switch to the "Reports" page and enter a start and end date. Below "Dispense report", click "Download". This will download a `csv` file, which can be opened with Excel. In addition to the usual data it also contains the dispense date and the SKU it had before it was dispensed.
 
 ## Export the current inventory
 
-It can be helpful to export a list of all glasses, e.g. for analysing the current inventory in detail. Switch to the "Reports" page and click "Export all". This will download a `csv` file which can be opened with Excel. It contains all current (i.e. non dispensed) glasses for the current location (shown in the top left).
+It can be helpful to export a list of all glasses, e.g. for analysing the current inventory in detail. Switch to the "Reports" page and below "Current inventory report", click "Download". This will download a `csv` file which can be opened with Excel. It contains all current (i.e. non dispensed) glasses for the current location (shown in the top left).
 
 ## Simultanously add new glasses 
 
