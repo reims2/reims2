@@ -8,7 +8,7 @@ on:
 env:
   REMOTE_HOST: "ssh://dokku@reims2.app"
 
-concurrency: deploy-api
+concurrency: deploy-api-dev
 
 jobs:
   deploy-dev-api:
