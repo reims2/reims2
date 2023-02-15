@@ -23,7 +23,7 @@
     "chroma-js": "^2.4.2",
     "core-js": "^3.27.2",
     "nuxt": "^2.15.8",
-    "nuxt-route-meta": "^3.0.0",
+    "nuxt-route-meta": "^2.3.5",
     "vue": "^2.7.2",
     "vue-shortkey": "^3.1.7",
     "vuex-persistedstate": "^4.1.0"

@@ -5983,19 +5983,10 @@ from2@^2.1.0:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
 
-fs-extra@^10.1.0:
+fs-extra@^10.0.0, fs-extra@^10.1.0:
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-10.1.0.tgz#02873cfbc4084dde127eaa5f9905eef2325d1abf"
   integrity sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==
-  dependencies:
-    graceful-fs "^4.2.0"
-    jsonfile "^6.0.1"
-    universalify "^2.0.0"
-
-fs-extra@^11.1.0:
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.1.0.tgz#5784b102104433bb0e090f48bfc4a30742c357ed"
-  integrity sha512-0rcTq621PD5jM/e0a3EJoGC/1TC5ZBCERW82LQuwfGnCa1V8w7dpYH1yNu+SLb6E5dkeCBzKEyLGlFrnr+dUyw==
   dependencies:
     graceful-fs "^4.2.0"
     jsonfile "^6.0.1"
@@ -8984,16 +8975,16 @@ num2fraction@^1.2.2:
   resolved "https://registry.yarnpkg.com/num2fraction/-/num2fraction-1.2.2.tgz#6f682b6a027a4e9ddfa4564cd2589d1d4e669ede"
   integrity sha512-Y1wZESM7VUThYY+4W+X4ySH2maqcA+p7UR+w8VWNWVAd6lwuXXWz/w/Cz43J/dI2I+PS6wD5N+bJUF+gjWvIqg==
 
-nuxt-route-meta@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/nuxt-route-meta/-/nuxt-route-meta-3.0.0.tgz#7c8167e39d210130f9e11a2800c38746e42eccbb"
-  integrity sha512-xzS8WS48Gp42SLG+pKse3htlYDwDXisZytMuSukm+eOORhKGHVJwAP0bLTd5lPB4fZUc2mij6wMg2TBtiXMZWA==
+nuxt-route-meta@^2.3.5:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/nuxt-route-meta/-/nuxt-route-meta-2.3.6.tgz#dc05b52d57dd499badb7d680cf83a05d458f7f0a"
+  integrity sha512-U+aLyxTxI7jxXhrvsFqJSyfPJLTzz359U+vk+zD+RHOcNCXJj4lyHlB44a++vVkB+uths6mqQFOOlwmSK8louw==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/traverse" "^7.13.13"
     "@dword-design/functions" "^4.0.0"
     ast-to-literal "^0.0.5"
-    fs-extra "^11.1.0"
+    fs-extra "^10.0.0"
     ts-ast-to-literal "^2.0.0"
     typescript "~4.2"
     vue-template-compiler "^2.6.11"
