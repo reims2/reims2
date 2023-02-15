@@ -172,6 +172,11 @@ export default {
     valid: false,
     editInfo: false
   }),
+  head() {
+    return {
+      title: 'Manage users'
+    }
+  },
   computed: {
 
     filterString() {

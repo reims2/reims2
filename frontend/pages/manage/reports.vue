@@ -67,6 +67,11 @@ export default {
     selectedDispenedYear: null
   }),
   title: 'Create reports',
+  head() {
+    return {
+      title: 'Create reports'
+    }
+  },
   computed: {
     ...mapState(['location']),
     lastYears() {
