@@ -1,0 +1,14 @@
+warn_list: # or 'skip_list' to silence them completely
+  - experimental # all rules tagged as experimental
+  - ignore-errors # Use failed_when and specify error conditions instead of using ignore_errors.
+  - jinja[spacing] # Rule that looks inside jinja2 templates.
+  - name[casing] # Rule for checking task and play names.
+  - name[play] # Rule for checking task and play names.
+  - no-free-form # Rule for detecting discouraged free-form syntax for action modules.
+  - schema[requirements] # Perform JSON Schema Validation for known lintable kinds.
+  - yaml[line-length] # Violations reported by yamllint.
+  - no-changed-when # Use failed_when and specify error conditions instead of using changed_when.
+  - fqcn[action-core] # Use FQCN for builtin actions.
+  - fqcn[action] # Use FQCN for builtin actions.
+  - fqcn[keyword] # Use FQCN for builtin actions.
+  - no-changed-when # Commands should not change things if nothing needs doing.

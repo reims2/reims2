@@ -2,10 +2,10 @@
   hosts: all
   tasks:
     - name: Print ip address
-      debug: var=ansible_default_ipv4.address
+      ansible.builtin.debug: var=ansible_default_ipv4.address
     - name: Set authorized SSH pubkeys from file
-      authorized_key:
-        user: "{{ansible_user}}"
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user }}"
         state: present
         key: "{{ lookup('file', '../creds/pub_keys') }}"
 
@@ -21,15 +21,16 @@
     swap_file_size_mb: "2048" # some swap for more RAM during Dokku deploys
   tasks:
     - name: Apt upgrade
-      apt:
-        upgrade: yes
-        update_cache: yes
-        cache_valid_time: 86400 #One day
+      ansible.builtin.apt:
+        upgrade: true
+        update_cache: true
+        cache_valid_time: 86400 # One day
     - name: Install some packages (user-specified)
-      package:
+      ansible.builtin.package:
         name:
           - htop
           - nano
+          - goaccess
           - libpam-systemd # ssh session closed after reboot
         state: present
 
@@ -63,27 +64,27 @@
     - ssh_hardening
   post_tasks:
     - name: Reboot to apply sysctl params
-      reboot:
+      ansible.builtin.reboot:
 
 - name: Configure ufw
   hosts: all
   become: true
   tasks:
     - name: Allow ssh
-      ufw:
+      community.general.ufw:
         rule: allow
         name: OpenSSH
     - name: Allow http
-      ufw:
+      community.general.ufw:
         rule: allow
         port: "80"
         proto: tcp
     - name: Allow https
-      ufw:
+      community.general.ufw:
         rule: allow
         port: "443"
         proto: tcp
     - name: Enable UFW
-      ufw:
+      community.general.ufw:
         state: enabled
         policy: deny

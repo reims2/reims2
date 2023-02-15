@@ -1,18 +1,18 @@
 ---
 - name: Copy SQL dump file onto host
-  copy:
-    content: "{{db_dump}}"
+  ansible.builtin.copy:
+    content: "{{ db_dump }}"
     dest: /tmp/reims-dump.sql
     mode: 0600
     owner: root
     group: root
-    force: True
+    force: true
 
 - name: Stop API for restoring dump
-  command: "dokku ps:stop {{api_app_name}}"
+  ansible.builtin.command: "dokku ps:stop {{ api_app_name }}"
 
 - name: Restore database from dump file
-  shell: "dokku mariadb:import {{db_name}} < /tmp/reims-dump.sql"
+  ansible.builtin.shell: "dokku mariadb:import {{ db_name }} < /tmp/reims-dump.sql"
 
 - name: Start API after dump restored
-  command: "dokku ps:start {{api_app_name}}"
+  ansible.builtin.command: "dokku ps:start {{ api_app_name }}"
