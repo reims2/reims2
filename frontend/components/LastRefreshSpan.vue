@@ -1,5 +1,14 @@
 <template>
-  <span>Last update {{ lastRefreshString }}</span>
+  <div class="d-flex align-center">
+    <v-progress-circular
+      :style="{visibility: isRefreshingGlasses ? 'visible' : 'hidden'}"
+      indeterminate
+      size="17"
+      color="white"
+      class="mr-2 ma-0 pa-0"
+    />
+    Last update {{ lastRefreshString }}
+  </div>
 </template>
 
 <script>
@@ -12,7 +21,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['lastRefresh'])
+    ...mapState(['lastRefresh', 'isRefreshingGlasses'])
   },
   watch: {
     lastRefresh() {

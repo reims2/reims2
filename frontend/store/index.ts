@@ -9,7 +9,8 @@ export interface RootState {
   isOutdated: boolean,
   location: string,
   error: string,
-  drawer: boolean
+  drawer: boolean,
+  isRefreshingGlasses: boolean
 }
 export const state = (): RootState => ({
   allGlasses: [],
@@ -17,7 +18,8 @@ export const state = (): RootState => ({
   location: 'sa',
   error: '',
   drawer: false,
-  isOutdated: false
+  isOutdated: false,
+  isRefreshingGlasses: false
 })
 
 export const MutationType = {
@@ -25,6 +27,7 @@ export const MutationType = {
   SET_LOCATION: 'setLocation',
   SET_LAST_REFRESH: 'setLastRefresh',
   SET_OUTDATED_FLAG: 'setOutdatedFlag',
+  SET_IS_REFRESHING_GLASSES: 'setIsRefreshingGlasses',
   DELETE_OFFLINE_GLASSES: 'deleteOfflineGlasses',
   ADD_OFFLINE_GLASSES: 'addOfflineGlasses',
   SET_ERROR: 'setError',
@@ -37,6 +40,7 @@ export const mutations: MutationTree<RootState> = {
   [MutationType.SET_LOCATION]: (state, value: string) => { state.location = value },
   [MutationType.SET_LAST_REFRESH]: (state, value: Date) => { state.lastRefresh = value },
   [MutationType.SET_OUTDATED_FLAG]: (state, value: boolean) => { state.isOutdated = value },
+  [MutationType.SET_IS_REFRESHING_GLASSES]: (state, value: boolean) => { state.isRefreshingGlasses = value },
   [MutationType.DELETE_OFFLINE_GLASSES]: (state, sku: number) => {
     if (arrayContainsSku(state.allGlasses, sku)) {
       // call arrayContainsSku to avoid unnecessary reactive changes when replacing the array like this
@@ -68,11 +72,13 @@ export const ActionType = {
 export const actions: ActionTree<RootState, RootState> = {
 
   async [ActionType.LOAD_GLASSES]({ commit, state }) {
+    commit(MutationType.SET_IS_REFRESHING_GLASSES, true)
     // fetch with a long timeout, because we can afford to wait and a timeout would be totally unnecessary (e.g. with a bad connection in el salvador)
     const data = await this.$axios.$get(`/api/glasses/${state.location}`, { params: { size: 100000 }, timeout: 60000 }) as any
     commit(MutationType.SET_GLASSES, data.glasses)
     commit(MutationType.SET_OUTDATED_FLAG, false)
     commit(MutationType.SET_LAST_REFRESH, new Date().toISOString())
+    commit(MutationType.SET_IS_REFRESHING_GLASSES, false)
   }
 
 }

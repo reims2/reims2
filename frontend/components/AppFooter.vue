@@ -7,7 +7,7 @@
     class="justify-center text-body-2 pa-1"
     padless
   >
-    <div v-if="showLastUpdate">
+    <div v-if="showLastUpdate" class="d-flex">
       <last-refresh-span /><span class="px-2">—</span>
       {{ allGlasses.length }} glasses stored<span class="px-2">—</span>
     </div>
