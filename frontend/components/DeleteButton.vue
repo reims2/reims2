@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 export default {
   props: {
     glass: {
@@ -56,11 +56,17 @@ export default {
     ...mapActions({
       deleteGlasses: 'glasses/delete'
     }),
+    ...mapMutations({
+      deleteOfflineGlasses: 'deleteOfflineGlasses'
+    }),
     async startDelete() {
       this.deleteDialog = false
       try {
         await this.deleteGlasses(this.glass.sku)
         this.$emit('deleted')
+        // Delete glasses from local DB manually after emit. Otherwise the emit action is not executed in any parent component,
+        // because the (parent) glasses component containing this component is already removed due to reactive system
+        this.deleteOfflineGlasses(this.glass.sku)
       } catch (error) {
         this.$store.commit('setError', `Could not delete glasses, please retry (Error ${error.status})`)
       }

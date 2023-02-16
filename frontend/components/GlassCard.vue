@@ -5,7 +5,7 @@
   >
     <template #activator="toooltip">
       <v-card
-        style="min-width: 270px;"
+        style="min-width: 280px;"
         class="mb-2"
         :loading="loading"
         v-bind="toooltip.attrs"
@@ -206,7 +206,8 @@ export default {
       return scale(val).hex()
     },
     formatNumber(val, decimals) {
-      return (val < 0 ? '-' : '+') + Math.abs(Number(val)).toFixed(decimals)
+      const prefix = val === 0 ? '' : val < 0 ? '-' : '+'
+      return prefix + Math.abs(Number(val)).toFixed(decimals)
     },
     async startEdit(eyeKey, dataKey, value) {
       if (!this.editable) return // just as a "safety" fallback

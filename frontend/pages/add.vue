@@ -84,10 +84,9 @@
           :glass="item"
           :style="'opacity: ' + (1-idx*0.3)"
           editable
-          @edited="glasses => updateLastAdded(glasses)"
         >
           <template #actions>
-            <delete-button :glass="item" @deleted="updateDeleted(item)" />
+            <delete-button :glass="item" />
           </template>
         </glass-card>
       </v-col>
@@ -96,7 +95,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { generalEyeData, sanitizeEyeValues, clearObjectProperties } from '../lib/util'
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 export default {
@@ -119,17 +118,26 @@ export default {
       text: 'OS',
       key: 'os'
     }],
-    lastAdded: []
+    lastAddedSkus: []
   }),
   head() {
     return {
       title: 'Add glasses'
     }
   },
+  computed: {
+    ...mapState(['allGlasses']),
+    lastAdded() {
+      return this.lastAddedSkus.map(sku => this.allGlasses.find(g => g.sku === sku))
+    }
+  },
   watch: {
     'odEye.add'(newVal) {
       // set using vue function to trigger reactive system in SingleEyeInput
       if (this.syncEyes) this.$set(this.osEye, 'add', newVal)
+    },
+    allGlasses() {
+      this.lastAddedSkus = this.lastAddedSkus.filter(sku => this.allGlasses.find(g => g.sku === sku))
     }
   },
   methods: {
@@ -143,7 +151,7 @@ export default {
       this.glassModel.os = sanitizeEyeValues(this.osEye)
       try {
         const newGlasses = await this.addGlasses(this.glassModel)
-        this.lastAdded.unshift(newGlasses)
+        this.lastAddedSkus.unshift(newGlasses.sku)
       } catch (error) {
         this.loading = false
         if (error.status === 409) {
@@ -167,12 +175,6 @@ export default {
       this.$refs.form.reset()
       if (!this.$vuetify.breakpoint.mobile) this.$refs.firstInput[0].focus()
       this.syncEyes = true
-    },
-    updateDeleted(toRemove) {
-      this.lastAdded = this.lastAdded.filter(itm => itm !== toRemove)
-    },
-    updateLastAdded(updatedGlasses) {
-      this.lastAdded = this.lastAdded.map(el => (el.sku === updatedGlasses.sku ? updatedGlasses : el))
     },
     updateSync(oldEye, newValue) {
       if (oldEye.add !== newValue) this.syncEyes = false
