@@ -92,6 +92,14 @@
             <v-list-item-title>Change location</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item href="/docs" target="_blank">
+          <v-list-item-icon>
+            <v-icon>{{ mdiFileDocument }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Documentation</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item @click="$auth.logout()">
           <v-list-item-icon>
             <v-icon>{{ mdiLogout }}</v-icon>
@@ -107,7 +115,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { mdiLogout, mdiMapMarkerMultiple, mdiBug } from '@mdi/js'
+import { mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
 import { locationNames } from '../lib/util'
 export default {
   props: {
@@ -126,6 +134,7 @@ export default {
       mdiBug,
       locationNames,
       mdiMapMarkerMultiple,
+      mdiFileDocument,
       dialog: false,
       isDev: process.env.isDev,
       version: process.env.version

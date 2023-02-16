@@ -6,7 +6,7 @@
     @input="e => updateDialogState(e)"
   >
     <v-card>
-      <v-card-title class="text-h5 secondary white--text">
+      <v-card-title class="text-h5 white--text primary">
         Change location
       </v-card-title>
 
