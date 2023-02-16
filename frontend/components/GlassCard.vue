@@ -132,7 +132,7 @@
 <script>
 import { mapActions } from 'vuex'
 import * as chroma from '../lib/chroma'
-import { deepCopyGlasses, eyeRules, generalEyeData } from '../lib/util'
+import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '../lib/util'
 import EditableSpan from './EditableSpan.vue'
 
 export default {
@@ -215,13 +215,8 @@ export default {
         // edited a glasses general item like size or appearance
         newGlasses[dataKey] = value
       } else {
-        // edited a specific eye
-        value = Number(value)
-        if (this.eyeData[dataKey].step) {
-          value = Math.ceil(Math.abs(value) / this.eyeData[dataKey].step) * this.eyeData[dataKey].step
-          if (isNaN(value)) return
-        }
         newGlasses[eyeKey][dataKey] = Number(value)
+        newGlasses[eyeKey] = sanitizeEyeValues(newGlasses[eyeKey])
       }
       try {
         this.loading = true
