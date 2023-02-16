@@ -19,7 +19,7 @@
             <v-col
               cols=12
               md=6
-              class="px-1 pr-md-5 pt-0"
+              class="px-1 pr-md-5 py-0"
             >
               <single-eye-input
                 v-bind="odEye"
@@ -31,7 +31,7 @@
             <v-col
               cols=12
               md=6
-              class="px-1 pl-md-5 pt-0"
+              class="px-1 pl-md-5 py-0"
             >
               <single-eye-input
                 v-bind="osEye"
@@ -40,7 +40,10 @@
                 @input="e => {updateSync(osEye, e.value); osEye[e.id] = e.value}"
               />
             </v-col>
-            <v-col cols=12 class="px-0">
+            <v-col cols=12 class="px-0 pt-0">
+              <div class="pb-3 text-body-2  text--secondary">
+                You are in {{ locationNames[location] }} ({{ freeSlots }} SKUs left)
+              </div>
               <div class="d-flex">
                 <v-btn
                   v-prevent-enter-tab
@@ -96,7 +99,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { generalEyeData, sanitizeEyeValues, clearObjectProperties } from '../lib/util'
+import { generalEyeData, sanitizeEyeValues, clearObjectProperties, locationNames } from '../lib/util'
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 export default {
   mixins: [ModifiedEnterToTabMixin],
@@ -118,7 +121,8 @@ export default {
       text: 'OS',
       key: 'os'
     }],
-    lastAddedSkus: []
+    lastAddedSkus: [],
+    locationNames
   }),
   head() {
     return {
@@ -126,9 +130,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(['allGlasses']),
+    ...mapState(['allGlasses', 'location']),
     lastAdded() {
       return this.lastAddedSkus.map(sku => this.allGlasses.find(g => g.sku === sku))
+    },
+    freeSlots() {
+      // TODO for the future don't hardcode 5000
+      return 5000 - this.allGlasses.length
     }
   },
   watch: {
