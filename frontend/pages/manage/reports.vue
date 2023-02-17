@@ -6,7 +6,7 @@
           Current inventory report
         </div>
         <div class="pb-4 text--secondary">
-          This report contains all glasses in the inventory of the current location. Dispensed glasses are not included.
+          This report contains all active glasses in the storage of the current location.
         </div>
         <v-btn
           color="accent"
@@ -22,7 +22,7 @@
           Dispense report
         </div>
         <div class="pb-2 text--secondary">
-          This report contains all glasses that were dispensed in the selected year.
+          This report contains all glasses that were dispensed or deleted in the selected year.
         </div>
 
         <v-select

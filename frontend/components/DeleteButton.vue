@@ -13,14 +13,17 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title class="headline">
-        Delete glasses with SKU {{ glass.sku }}
+      <v-card-title class="headline white--text primary mb-4">
+        Delete glasses
       </v-card-title>
-      <v-card-text class="text--primary">
-        Please select a reason below. This cannot be reverted.
+      <v-card-text class="text--primary pb-0">
+        <div class="pb-3">
+          This will delete the glasses with SKU {{ glass.sku }}. Please select a reason, which is later visible in campaign reports.
+        </div>
         <v-select
           v-model="deleteReason"
           :items="reasons"
+          outlined
         />
       </v-card-text>
       <v-card-actions>
@@ -54,12 +57,11 @@ export default {
   },
   data: () => ({
     deleteDialog: false,
-    deleteReason: 'TOO_HIGH_VALUES',
+    deleteReason: 'TOO_HIGH_VALUES', // preselect most common reason for doing mass removals
     reasons: [
-      //     NOT_FOUND, BROKEN, TOO_HIGH_VALUES, OTHER // NOSONAR
+      { text: 'Glasses have too high values', value: 'TOO_HIGH_VALUES' },
       { text: 'Not found in storage', value: 'NOT_FOUND' },
       { text: 'Glasses damaged / broken', value: 'BROKEN' },
-      { text: 'Glasses have too high values', value: 'TOO_HIGH_VALUES' },
       { text: 'Other reason', value: 'OTHER' }
     ]
   }),
