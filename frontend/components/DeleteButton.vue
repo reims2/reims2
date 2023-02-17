@@ -14,11 +14,14 @@
     </template>
     <v-card>
       <v-card-title class="headline">
-        Are you sure?
+        Delete glasses with SKU {{ glass.sku }}
       </v-card-title>
-      <v-card-text class="text--primary red--text">
-        This will permanently delete the glasses (SKU {{ glass.sku }}) and cannot be reverted.
-        <span class="font-weight-bold">Only use this if the glasses have been entered by mistake.</span>
+      <v-card-text class="text--primary">
+        Please select a reason below. This cannot be reverted.
+        <v-select
+          v-model="deleteReason"
+          :items="reasons"
+        />
       </v-card-text>
       <v-card-actions>
         <v-spacer />
@@ -50,11 +53,19 @@ export default {
     }
   },
   data: () => ({
-    deleteDialog: false
+    deleteDialog: false,
+    deleteReason: 'TOO_HIGH_VALUES',
+    reasons: [
+      //     NOT_FOUND, BROKEN, TOO_HIGH_VALUES, OTHER // NOSONAR
+      { text: 'Not found in storage', value: 'NOT_FOUND' },
+      { text: 'Glasses damaged / broken', value: 'BROKEN' },
+      { text: 'Glasses have too high values', value: 'TOO_HIGH_VALUES' },
+      { text: 'Other reason', value: 'OTHER' }
+    ]
   }),
   methods: {
     ...mapActions({
-      deleteGlasses: 'glasses/delete'
+      deleteGlasses: 'glasses/dispense'
     }),
     ...mapMutations({
       deleteOfflineGlasses: 'deleteOfflineGlasses'
@@ -62,7 +73,7 @@ export default {
     async startDelete() {
       this.deleteDialog = false
       try {
-        await this.deleteGlasses(this.glass.sku)
+        await this.deleteGlasses({ sku: this.glass.sku, reason: this.deleteReason })
         this.$emit('deleted')
         // Delete glasses from local DB manually after emit. Otherwise the emit action is not executed in any parent component,
         // because the (parent) glasses component containing this component is already removed due to reactive system

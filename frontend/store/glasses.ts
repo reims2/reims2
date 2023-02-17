@@ -67,8 +67,8 @@ export const actions: ActionTree<GlassesState, RootState> = {
     return data
   },
 
-  async [ActionType.DISPENSE_GLASSES]({ commit, rootState }, sku: number) {
-    await this.$axios.$put(`/api/glasses/dispense/${rootState.location}/${sku}`, {})
+  async [ActionType.DISPENSE_GLASSES]({ commit, rootState }, { sku, reason }) {
+    await this.$axios.$put(`/api/glasses/dispense/${rootState.location}/${sku}?reason=${reason}`, {})
     commit(IndexMutationType.DELETE_OFFLINE_GLASSES, sku, { root: true })
   },
 

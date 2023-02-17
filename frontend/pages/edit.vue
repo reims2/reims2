@@ -189,7 +189,7 @@ export default {
       this.lastDispensed = null
       this.isOfflineDispension = false
       try {
-        await this.dispense(toDispense.sku)
+        await this.dispense({ sku: toDispense.sku, reason: 'DISPENSED' })
       } catch (error) {
         this.isLoading = false
         if (error.status === 404) {
