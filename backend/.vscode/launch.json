@@ -13,7 +13,8 @@
             "projectName": "spring-pvh-rest",
             "args": "",
             "env": {
-                "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException"
+                "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException",
+                "PVH_DEBUG": "true",
             }
         }
     ]

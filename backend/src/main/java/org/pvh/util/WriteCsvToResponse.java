@@ -8,9 +8,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.TimeZone;
 
 public class WriteCsvToResponse {
 
@@ -31,10 +34,10 @@ public class WriteCsvToResponse {
                 "Type",
                 "Appearance",
                 "Size",
-                "Added date",
+                "Added date (in CST)",
                 "Is dispensed?",
                 "SKU before dispension",
-                "dispension date",
+                "dispension date (in CST)",
                 "OD Sphere", "OD Cylinder", "OD Axis", "OD Add",
                 "OS Sphere", "OS Cylinder", "OS Axis", "OS Add" });
 
@@ -45,6 +48,10 @@ public class WriteCsvToResponse {
     }
 
     private static void writeSingleGlasses(CSVWriter writer, Glasses glass) {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        DateFormat df = new SimpleDateFormat(pattern);
+        // TODO come up with an alternative to hardcoding EL Salvador's timezone
+        df.setTimeZone(TimeZone.getTimeZone("CST"));
 
         List<String> rowList = new ArrayList<>();
         rowList.add(glass.isDispensed() ? "-" : glass.getSku().toString());
@@ -52,10 +59,10 @@ public class WriteCsvToResponse {
         rowList.add(glass.getGlassesType().toString());
         rowList.add(glass.getAppearance().toString());
         rowList.add(glass.getGlassesSize().toString());
-        rowList.add(glass.getCreationDate().toString());
+        rowList.add(df.format(glass.getCreationDate()));
         rowList.add(glass.isDispensed() ? "true" : "false");
         rowList.add(glass.isDispensed() ? glass.getDispense().getPreviousSku().toString() : "-");
-        rowList.add(glass.isDispensed() ? glass.getDispense().getModifyDate().toString() : "-");
+        rowList.add(glass.isDispensed() ? df.format(glass.getDispense().getModifyDate()) : "-");
 
         for (Eye eye : new Eye[] { glass.getOd(), glass.getOs() }) {
             rowList.add(eye.getSphere().toString());
