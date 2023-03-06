@@ -4,9 +4,8 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 
 ## Open Questions
 
-- please host the server
-- other orgs that are using REIMS?
-- how important is storing unsucessful searches?
+-
+
 
 ## Ideas
 
@@ -61,3 +60,10 @@ Most of them are just nice-to-have and could be done after the rewrite as a QOL 
 ### General
 - Am I correct that this program will only function with internet functionality?  That is to say, is there a capacity for us to dispense when we are offline and then reconcile the database when we regain connectivity?
     - => yes it will work. Maybe some status.
+    -
+    -
+## 6.3.23
+
+- BAL lenses: when it's not worth correcting or user has a protheses. BAL lens is used for aestheatic reasons. It means the RX of the other eye doesn't matter, but it's important to keep the Sphere as similiar as possible.
+
+
