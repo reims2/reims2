@@ -71,11 +71,10 @@
       ansible.builtin.shell: |
         dokku mariadb:backup-auth {{ db_name }} {{ aws_key_id }} {{ aws_secret_key }}
         dokku mariadb:backup-schedule {{ db_name }} "0 2,10,18 * * *" {{ aws_bucket_name }}
-    - name: "Frontend env vars: letsencrypt mail, internal URLS for API+docs and nodejs host+port"
+    - name: "Frontend env vars: internal URLS for API+docs and nodejs host+port"
       dokku_config:
         app: "{{ frontend_app_name }}"
         config:
-          DOKKU_LETSENCRYPT_EMAIL: substantialimpulse@pm.me
           PORT: "5000"
           API_URL: "http://{{ api_app_name }}.web:5000/pvh/api"
           DOCS_URL: "http://{{ docs_app_name }}.web:5000"
@@ -87,13 +86,12 @@
         config:
           PVH_DEBUG: "true"
 
-    - name: "API env vars: letsencrypt mail and backend token"
+    - name: "API env vars: api token"
       dokku_config:
         app: "{{ api_app_name }}"
         config:
-          DOKKU_LETSENCRYPT_EMAIL: substantialimpulse@pm.me
           PORT: "5000"
-          PVH_JWT_SECRET: "{{ backend_jwt_token }}"
+          PVH_JWT_SECRET: "{{ api_jwt_token }}"
     - name: "API env vars: Enable debug"
       when: debug_enable is defined and debug_enable
       dokku_config:
@@ -119,6 +117,11 @@
         app: "{{ frontend_app_name }}"
         domains:
           - "{{ frontend_domain }}"
+    - name: Add API domain
+      dokku_domains:
+        app: "{{ api_app_name }}"
+        domains:
+          - "{{ api_domain }}"
     - name: Disable docs proxy
       dokku_proxy:
         app: "{{ docs_app_name }}"
@@ -168,6 +171,8 @@
         repository: https://github.com/reims2/reims2-docs
         version: main
         build: true
+    - name: "Set letsencrypt mail"
+      ansible.builtin.command: dokku letsencrypt:set --global email letsencrypt@kxlion.de
     - name: Enable frontend letsencrypt
       dokku_letsencrypt:
         app: "{{ frontend_app_name }}"
