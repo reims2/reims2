@@ -123,14 +123,6 @@
       dokku_proxy:
         app: "{{ docs_app_name }}"
         state: absent
-    - name: Enable frontend letsencrypt
-      dokku_letsencrypt:
-        app: "{{ frontend_app_name }}"
-    - name: Enable API letsencrypt
-      dokku_letsencrypt:
-        app: "{{ api_app_name }}"
-    - name: Enable letsencrypt auto renew
-      ansible.builtin.command: dokku letsencrypt:cron-job --add
     - name: Start vector container for persistent logging
       ansible.builtin.command: dokku logs:vector-start
     - name: "API: Configure persistent logging"
@@ -176,6 +168,14 @@
         repository: https://github.com/reims2/reims2-docs
         version: main
         build: true
+    - name: Enable frontend letsencrypt
+      dokku_letsencrypt:
+        app: "{{ frontend_app_name }}"
+    - name: Enable API letsencrypt
+      dokku_letsencrypt:
+        app: "{{ api_app_name }}"
+    - name: Enable letsencrypt auto renew
+      ansible.builtin.command: dokku letsencrypt:cron-job --add
     - name: "Run restore DB tasks"
       ansible.builtin.import_tasks: ../tasks/restore-db.yml
       tags:

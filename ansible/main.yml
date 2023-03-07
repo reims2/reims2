@@ -18,6 +18,7 @@
       35346364326262653438343761373136316534313636393938393166346636333639306465313434
       6133383639626563350a636538623631343565353363346161613234383664306364383035663230
       3536
+    aws_key_id: AKIAYEM6NADWH3DNKDFE
     aws_secret_key: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       38613833363963336663666163333238316230353264326633393931623666643763306638373239
@@ -39,5 +40,5 @@
     api_app_name: "dev-api"
     docs_app_name: "dev-docs"
     backend_jwt_token: "testtokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttoken"
-    debug_enable: True
+    debug_enable: true
     db_dump: "{{ lookup('file', '../dump.sql', errors='warn') }}"
