@@ -12,7 +12,6 @@ After a match has been found and the glasses have been dispensed, it's important
 
 If glasses are entered with wrong data, it's possible to correct that. Switch to the "Edit" page and enter the SKU you want to change. On the appearing glasses, click on the value you want to change. A text field will open, where it's possible to enter the new value. Click "Save" to save the changes.
 
-
 ## Working offline
 
 REIMS2 can run fully offline and it's possible to find, dispense and edit glasses with no internet connection. This makes it possible to use REIMS2 in remote areas without connection.
@@ -21,11 +20,9 @@ For this to work it is neccessary that REIMS2 has been opened at least once in t
 
 To use it offline, simply open the REIMS2 website in Chrome and it'll load even when there's no connection. It'll display a banner at the top of the page that it is running offline. Finding matches works like before. If you dispense or edit glasses, those changes will be automatically uploaded as soon as the connection is back online. It will continue to work when you close the browser or shut off the machine in the meantime. Adding new glasses is not possible offline, nor is creating reports.
 
-
 ## Delete or replace glasses
 
 If glasses are missing in the storage or you if you want to purge unused glasses from the storage, it's possible to delete them. Switch to the "Edit" screen, enter the SKU. Click the three dots in the bottom right corner of the glasses and click "Delete". You'll be asked to confirm that you really want to delete glasses. It's important not to confuse this with Dispense, because with this glasses are permanently deleted and cannot be recovered.
-
 
 ## Report of dispensed glasses
 
@@ -35,6 +32,6 @@ After a campaign it's necessary to create a report of all dispensed glasses. Swi
 
 It can be helpful to export a list of all glasses, e.g. for analysing the current inventory in detail. Switch to the "Reports" page and below "Current inventory report", click "Download". This will download a `csv` file which can be opened with Excel. It contains all current (i.e. non dispensed) glasses for the current location (shown in the top left).
 
-## Simultanously add new glasses 
+## Simultanously add new glasses
 
 With REIMS2 it's possible to add new glasses on multiple devices at the same time. REIMS2 makes sure that there are no colliding SKUs. This works out of the box and there's nothing you need to do to use this feature (this was different for REIMS1).

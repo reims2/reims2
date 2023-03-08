@@ -24,12 +24,11 @@ The corresponding [code can be found here](https://github.com/reims2/reims2-fron
 
 ## checkForTolerances
 
-The Sphere and Cylinder of that glasses must be within the desired tolerance of the prescription (currently set to 0.5 by default). 
+The Sphere and Cylinder of that glasses must be within the desired tolerance of the prescription (currently set to 0.5 by default).
 
 Each glass is compared to the desired prescription sphere +- tolerance and prescription cylinder +- tolerance and discarded it's outside that range. It's not only checked against the desired prescription +- tolerance, but also against (every spherical equivalent of that prescription) +- tolerance.
 
 Example to follow TODO
-
 
 ## checkForAxisTolerance
 
@@ -69,7 +68,6 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
 5. **Improve** the score if the search is multifocal and the lens additional is bigger than the desired additional.
    - Score gets improved more if the difference is bigger. (Why?)
 6. **Worsen** the score if the desired sphere is positive AND if it's bigger than the lens sphere.
-
 
 ## Things that could be improved or make no sense
 

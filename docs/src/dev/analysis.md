@@ -117,7 +117,6 @@ For RANK() see also [this source code from 5 years ago](https://github.com/reims
 
 SKU= Stock keeping unit i.e. serial number
 
-
 ### Notes from analyzing source
 
 - mrlb: OD;OS;Both (always 3)
@@ -126,7 +125,6 @@ SKU= Stock keeping unit i.e. serial number
 - zeye: always 'OU' (both eyes)
 - zods: odsphere
 - zosa: osadd
-
 
 Variables ending with `d` always OD (left eye), with `s` are OS
 
