@@ -1,6 +1,7 @@
 package org.pvh.model.entity;
 
 import javax.persistence.*;
+import org.pvh.model.enums.DispenseReasonEnum;
 import java.util.Date;
 
 @Entity
@@ -14,8 +15,12 @@ public class Dispense extends BaseEntity {
     @Column(name = "previous_sku")
     private Integer previousSku;
 
-    public Dispense(Date modifyDate) {
+    @Column(name = "dispense_reason")
+    private String dispenseReason;
+
+    public Dispense(Date modifyDate, String dispenseReason) {
         this.modifyDate = modifyDate;
+        this.dispenseReason = dispenseReason;
     }
 
     public Dispense() {
@@ -36,5 +41,13 @@ public class Dispense extends BaseEntity {
 
     public void setPreviousSku(Integer previousSku) {
         this.previousSku = previousSku;
+    }
+
+    public DispenseReasonEnum getDispenseReason() {
+        return dispenseReason != null ? Enum.valueOf(DispenseReasonEnum.class, dispenseReason) : null;
+    }
+
+    public void setDispenseReason(DispenseReasonEnum dispenseReason) {
+        this.dispenseReason = dispenseReason != null ? dispenseReason.name() : null;
     }
 }

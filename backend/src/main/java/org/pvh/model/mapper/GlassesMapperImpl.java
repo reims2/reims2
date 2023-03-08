@@ -8,6 +8,7 @@ import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.enums.AppearanceEnum;
+import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 import org.springframework.stereotype.Component;
@@ -170,9 +171,12 @@ public class GlassesMapperImpl implements GlassesMapper {
         }
 
         Dispense dispense = new Dispense();
-
         dispense.setModifyDate(dispenseResponseDto.getModifyDate());
         dispense.setPreviousSku(dispenseResponseDto.getPreviousSku());
+        DispenseReasonEnum enumValue = dispenseResponseDto.getDispenseReason() != null
+                ? Enum.valueOf(DispenseReasonEnum.class, dispenseResponseDto.getDispenseReason())
+                : null;
+        dispense.setDispenseReason(enumValue);
 
         return dispense;
     }
@@ -183,9 +187,9 @@ public class GlassesMapperImpl implements GlassesMapper {
         }
 
         DispenseResponseDto dispenseResponseDto = new DispenseResponseDto();
-
         dispenseResponseDto.setModifyDate(dispense.getModifyDate());
         dispenseResponseDto.setPreviousSku(dispense.getPreviousSku());
+        dispenseResponseDto.setDispenseReason(dispense.getDispenseReason() != null ? dispense.getDispenseReason().name() : null);
 
         return dispenseResponseDto;
     }
@@ -200,6 +204,12 @@ public class GlassesMapperImpl implements GlassesMapper {
         }
         if (dispenseResponseDto.getPreviousSku() != null) {
             mappingTarget.setPreviousSku(dispenseResponseDto.getPreviousSku());
+        }
+        if (dispenseResponseDto.getDispenseReason() != null) {
+            DispenseReasonEnum enumValue = dispenseResponseDto.getDispenseReason() != null
+                    ? Enum.valueOf(DispenseReasonEnum.class, dispenseResponseDto.getDispenseReason())
+                    : null;
+            mappingTarget.setDispenseReason(enumValue);
         }
     }
 }

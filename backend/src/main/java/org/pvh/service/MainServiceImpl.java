@@ -53,12 +53,12 @@ public class MainServiceImpl implements MainService {
     public Glasses saveGlasses(Glasses glasses) throws DataAccessException, NoSkusLeftException {
         eyeRepository.save(glasses.getOs());
         eyeRepository.save(glasses.getOd());
-        Dispense dispense = new Dispense(null);
         // If dispense is already set...
         if (glasses.getDispense() != null)
             dispenseRepository.save(glasses.getDispense());
         else {
             // Else set dispense null in Dispense Table
+            Dispense dispense = new Dispense();
             dispenseRepository.save(dispense);
             glasses.setDispense(dispense);
         }

@@ -176,12 +176,14 @@ public class GlassesResponseDTO implements Serializable {
     public static class DispenseResponseDto implements Serializable {
         private Date modifyDate;
         private Integer previousSku;
+        private String dispenseReason;
 
         public DispenseResponseDto() {}
 
-        public DispenseResponseDto(Date modifyDate, Integer previousSku) {
+        public DispenseResponseDto(Date modifyDate, Integer previousSku, String dispenseReason) {
             this.modifyDate = modifyDate;
             this.previousSku = previousSku;
+            this.dispenseReason = dispenseReason;
         }
 
         public Date getModifyDate() {
@@ -200,6 +202,14 @@ public class GlassesResponseDTO implements Serializable {
             this.previousSku = previousSku;
         }
 
+        public String getDispenseReason() {
+            return dispenseReason;
+        }
+
+        public void setDispenseReason(String dispenseReason) {
+            this.dispenseReason = dispenseReason;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o)
@@ -208,18 +218,20 @@ public class GlassesResponseDTO implements Serializable {
                 return false;
             DispenseResponseDto entity = (DispenseResponseDto) o;
             return Objects.equals(this.modifyDate, entity.modifyDate) &&
+                    Objects.equals(this.dispenseReason, entity.dispenseReason) &&
                     Objects.equals(this.previousSku, entity.previousSku);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(modifyDate, previousSku);
+            return Objects.hash(modifyDate, previousSku, dispenseReason);
         }
 
         @Override
         public String toString() {
             return getClass().getSimpleName() + "(" +
                     "modifyDate = " + modifyDate + ", " +
+                    "dispenseReason = " + dispenseReason + ", " +
                     "previousSku = " + previousSku + ")";
         }
     }
