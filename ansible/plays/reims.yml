@@ -105,6 +105,7 @@
         config:
           PORT: "5000"
           HOST: "0.0.0.0"
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"
     - name: Create network configuration (all apps in one network)
       ansible.builtin.shell: |
         dokku network:create {{ dokku_network_name }}
