@@ -185,6 +185,8 @@ public class GlassesRestController {
         } finally {
             lock.unlock();
         }
+
+        logger.info("Added new glasses in {}. SKU is {}.", glassesResponse.getLocation(), glassesResponse.getSku());
         return new ResponseEntity<>(GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(glassesResponse), HttpStatus.CREATED);
     }
 
@@ -201,6 +203,7 @@ public class GlassesRestController {
             throw new PVHException(ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
         Glasses glasses1 = GlassesMapperImpl.getInstance().updateGlassesFromGlassesRequestDTO(glasses, currentGlasses.get());
+        logger.info("Edited glasses with SKU {} (in {})", sku, location);
         return new ResponseEntity<>(
                 GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(this.mainService.saveGlassesAfterEdit(glasses1)),
                 HttpStatus.OK);
