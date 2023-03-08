@@ -65,16 +65,16 @@ public class MainServiceImpl implements MainService {
 
         // TODO someday make this configurable per location
         int min = 0;
-        int max = 0; 
+        int max = 0;
         if (glasses.getLocation().equals("sa")) {
             min = 1;
             max = 5000;
         }
-        if (glasses.getLocation().equals("sm")){
+        if (glasses.getLocation().equals("sm")) {
             min = 5001;
             max = 10000;
         }
-            
+
         return glassesRepository.saveGlassesWithNextPossibleSKU(glasses, min, max);
     }
 

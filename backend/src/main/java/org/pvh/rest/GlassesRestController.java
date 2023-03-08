@@ -92,7 +92,7 @@ public class GlassesRestController {
         }
 
         glasses = pageGlasses.getContent().stream().map(a -> GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(a))
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
         Map<String, Object> response = new HashMap<>();
         response.put("glasses", glasses);
@@ -111,7 +111,7 @@ public class GlassesRestController {
     @ResponseBody
     public void getAllGlassesCsv(HttpServletResponse servletResponse, @PathVariable("location") String location) {
         List<Glasses> glasses = mainService.findByDispensedAndLocation(false, location);
-        if (glasses.isEmpty()){
+        if (glasses.isEmpty()) {
             servletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return;
         }
@@ -128,9 +128,8 @@ public class GlassesRestController {
         Collection<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
                 endDate.orElse(new Date()), location);
 
-        return glasses.stream().map
-                (a -> GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(a))
-            .collect(Collectors.toList());
+        return glasses.stream().map(a -> GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(a))
+                .collect(Collectors.toList());
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -141,11 +140,11 @@ public class GlassesRestController {
             @PathVariable("location") String location) {
         List<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
                 endDate.orElse(new Date()), location);
-        if (glasses.isEmpty()){
+        if (glasses.isEmpty()) {
             servletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return;
         }
-            
+
         Collections.sort(glasses, (o1, o2) -> o1.getDispense().getModifyDate().compareTo(o2.getDispense().getModifyDate()));
         WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
     }
@@ -160,27 +159,29 @@ public class GlassesRestController {
 
         return GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(glasses.get());
     }
+
     private static final Lock lock = new ReentrantLock();
+
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping(path = "", produces = "application/json")
     public ResponseEntity<GlassesResponseDTO> addGlasses(@RequestBody @Valid GlassesRequestDTO glasses, UriComponentsBuilder ucBuilder) {
         lock.lock();
         Glasses glassesResponse;
         try {
-        HttpHeaders headers = new HttpHeaders();
-        if (glasses == null) {
-            return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
-        }
+            HttpHeaders headers = new HttpHeaders();
+            if (glasses == null) {
+                return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
+            }
 
-        Glasses g = GlassesMapperImpl.getInstance().glassesRequestDTOToGlasses(glasses);
-        glassesResponse = this.mainService.saveGlasses(g);
-        headers.setLocation(ucBuilder.path("/api/glasses/{id}").buildAndExpand(glassesResponse.getId()).toUri());
+            Glasses g = GlassesMapperImpl.getInstance().glassesRequestDTOToGlasses(glasses);
+            glassesResponse = this.mainService.saveGlasses(g);
+            headers.setLocation(ucBuilder.path("/api/glasses/{id}").buildAndExpand(glassesResponse.getId()).toUri());
 
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new PVHException("Something bad happened while adding new glasses.", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (NoSkusLeftException e) {
-            throw new PVHException("No free SKUs left in this location.", HttpStatus.CONFLICT); //Fixme
-        }finally {
+            throw new PVHException("No free SKUs left in this location.", HttpStatus.CONFLICT); // Fixme
+        } finally {
             lock.unlock();
         }
         return new ResponseEntity<>(GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(glassesResponse), HttpStatus.CREATED);
@@ -189,7 +190,7 @@ public class GlassesRestController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping(path = "/{location}/{sku}", produces = "application/json")
     public ResponseEntity<GlassesResponseDTO> updateGlasses(@PathVariable("sku") int sku, @PathVariable("location") String location,
-                                                    @RequestBody @Valid GlassesRequestDTO glasses) {
+            @RequestBody @Valid GlassesRequestDTO glasses) {
         if (glasses == null) {
             throw new PVHException("Please provide a valid glasses DTO.", HttpStatus.BAD_REQUEST);
         }
@@ -198,8 +199,10 @@ public class GlassesRestController {
         if (currentGlasses.isEmpty()) {
             throw new PVHException(ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
-        Glasses glasses1 = GlassesMapperImpl.getInstance().updateGlassesFromGlassesRequestDTO(glasses,currentGlasses.get());
-        return new ResponseEntity<>(GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(this.mainService.saveGlassesAfterEdit(glasses1)), HttpStatus.OK);
+        Glasses glasses1 = GlassesMapperImpl.getInstance().updateGlassesFromGlassesRequestDTO(glasses, currentGlasses.get());
+        return new ResponseEntity<>(
+                GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(this.mainService.saveGlassesAfterEdit(glasses1)),
+                HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")

@@ -29,7 +29,7 @@ public class WriteCsvToResponse {
     }
 
     public static void writeGlasses(CSVWriter writer, Collection<Glasses> glasses) {
-        writer.writeNext(new String[] { "SKU",
+        writer.writeNext(new String[] {"SKU",
                 "Location",
                 "Type",
                 "Appearance",
@@ -39,7 +39,7 @@ public class WriteCsvToResponse {
                 "SKU before dispension",
                 "dispension date (in CST)",
                 "OD Sphere", "OD Cylinder", "OD Axis", "OD Add",
-                "OS Sphere", "OS Cylinder", "OS Axis", "OS Add" });
+                "OS Sphere", "OS Cylinder", "OS Axis", "OS Add"});
 
         for (Glasses glass : glasses) {
             writeSingleGlasses(writer, glass);
@@ -64,7 +64,7 @@ public class WriteCsvToResponse {
         rowList.add(glass.isDispensed() ? glass.getDispense().getPreviousSku().toString() : "-");
         rowList.add(glass.isDispensed() ? df.format(glass.getDispense().getModifyDate()) : "-");
 
-        for (Eye eye : new Eye[] { glass.getOd(), glass.getOs() }) {
+        for (Eye eye : new Eye[] {glass.getOd(), glass.getOs()}) {
             rowList.add(eye.getSphere().toString());
             rowList.add(eye.getCylinder().toString());
             rowList.add(Integer.toString(eye.getAxis()));

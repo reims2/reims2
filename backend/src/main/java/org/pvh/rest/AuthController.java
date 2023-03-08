@@ -59,7 +59,8 @@ public class AuthController {
 
         Authentication authentication;
         try {
-            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         } catch (BadCredentialsException e) {
             throw new PVHException("Invalid username or password.", HttpStatus.UNAUTHORIZED);
         }
@@ -107,11 +108,11 @@ public class AuthController {
             strRoles.forEach(role -> {
                 if (role.getName() == ERole.ROLE_ADMIN) {
                     Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN.name())
-                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(adminRole);
                 } else {
                     Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
-                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(userRole);
                 }
             });

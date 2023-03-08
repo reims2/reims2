@@ -29,7 +29,9 @@ public class Eye extends BaseEntity {
     @PositiveOrZero(message = "Additional must be positive")
     @DecimalMax(value = "8.0")
     private BigDecimal add;
+
     public Eye() {}
+
     public Eye(BigDecimal sphere, BigDecimal cylinder, int axis, BigDecimal add) {
         this.sphere = sphere;
         this.cylinder = cylinder;

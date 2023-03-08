@@ -16,7 +16,7 @@ public class GlassesRequestDTO implements Serializable {
     private EyeDTO os;
     private EyeDTO od;
 
-    public GlassesRequestDTO(){}
+    public GlassesRequestDTO() {}
 
     public GlassesRequestDTO(String glassesType, String glassesSize, String appearance, String location, EyeDTO os, EyeDTO od) {
         this.glassesType = glassesType;
@@ -54,32 +54,33 @@ public class GlassesRequestDTO implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         GlassesRequestDTO entity = (GlassesRequestDTO) o;
-        return
-            Objects.equals(this.glassesType, entity.glassesType) &&
-            Objects.equals(this.glassesSize, entity.glassesSize) &&
-            Objects.equals(this.appearance, entity.appearance) &&
-            Objects.equals(this.location, entity.location) &&
-            Objects.equals(this.os, entity.os) &&
-            Objects.equals(this.od, entity.od);
+        return Objects.equals(this.glassesType, entity.glassesType) &&
+                Objects.equals(this.glassesSize, entity.glassesSize) &&
+                Objects.equals(this.appearance, entity.appearance) &&
+                Objects.equals(this.location, entity.location) &&
+                Objects.equals(this.os, entity.os) &&
+                Objects.equals(this.od, entity.od);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( glassesType, glassesSize, appearance, location,os, od);
+        return Objects.hash(glassesType, glassesSize, appearance, location, os, od);
     }
 
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-            "glassesType = " + glassesType + ", " +
-            "glassesSize = " + glassesSize + ", " +
-            "appearance = " + appearance + ", " +
-            "location = " + location + ", " +
-            "os = " + os + ", " +
-            "od = " + od + ")";
+                "glassesType = " + glassesType + ", " +
+                "glassesSize = " + glassesSize + ", " +
+                "appearance = " + appearance + ", " +
+                "location = " + location + ", " +
+                "os = " + os + ", " +
+                "od = " + od + ")";
     }
 }

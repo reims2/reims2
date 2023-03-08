@@ -17,35 +17,35 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-	@Value("${pvh.app.jwtSecret}")
-	private String jwtSecret;
+    @Value("${pvh.app.jwtSecret}")
+    private String jwtSecret;
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(this.jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-	@Value("${pvh.app.jwtExpirationMs}")
-	private long jwtExpirationMs;
+    @Value("${pvh.app.jwtExpirationMs}")
+    private long jwtExpirationMs;
 
-	public String generateJwtToken(Authentication authentication) {
+    public String generateJwtToken(Authentication authentication) {
 
-		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
-		return Jwts.builder()
-            .setSubject((userPrincipal.getUsername()))
-            .setIssuedAt(new Date())
-            .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-            .signWith(getSigningKey(),SignatureAlgorithm.HS512).compact();
-	}
+        return Jwts.builder()
+                .setSubject((userPrincipal.getUsername()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512).compact();
+    }
 
-	public String getUserNameFromJwtToken(String token) {
+    public String getUserNameFromJwtToken(String token) {
         return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().getSubject();
-	}
+    }
 
-	public boolean validateJwtToken(String authToken) {
+    public boolean validateJwtToken(String authToken) {
         try {
 
             Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(authToken);
@@ -55,5 +55,5 @@ public class JwtUtils {
             logger.error(e.toString());
             return false;
         }
-	}
+    }
 }

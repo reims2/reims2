@@ -20,8 +20,7 @@ public class UserDTO implements Serializable {
     private String password;
     private Set<RoleDTO> roles;
 
-    public UserDTO() {
-    }
+    public UserDTO() {}
 
     public UserDTO(String username, String password, Set<RoleDTO> roles) {
         this.username = username;
@@ -55,12 +54,14 @@ public class UserDTO implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         UserDTO entity = (UserDTO) o;
         return Objects.equals(this.username, entity.username) &&
-            Objects.equals(this.password, entity.password) &&
-            Objects.equals(this.roles, entity.roles);
+                Objects.equals(this.password, entity.password) &&
+                Objects.equals(this.roles, entity.roles);
     }
 
     @Override
@@ -71,9 +72,9 @@ public class UserDTO implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-            "username = " + username + ", " +
-            "password = " + password + ", " +
-            "roles = " + roles + ")";
+                "username = " + username + ", " +
+                "password = " + password + ", " +
+                "roles = " + roles + ")";
     }
 
     /**
@@ -82,8 +83,7 @@ public class UserDTO implements Serializable {
     public static class RoleDTO implements Serializable {
         private String name;
 
-        public RoleDTO() {
-        }
+        public RoleDTO() {}
 
         public RoleDTO(String name) {
             this.name = name;
@@ -99,8 +99,10 @@ public class UserDTO implements Serializable {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
             RoleDTO entity = (RoleDTO) o;
             return Objects.equals(this.name, entity.name);
         }
@@ -113,7 +115,7 @@ public class UserDTO implements Serializable {
         @Override
         public String toString() {
             return getClass().getSimpleName() + "(" +
-                "name = " + name + ")";
+                    "name = " + name + ")";
         }
     }
 }

@@ -22,7 +22,8 @@ public class EyeDTO implements Serializable {
     @DecimalMax(value = "8.0")
     private BigDecimal add;
 
-    public EyeDTO(){}
+    public EyeDTO() {}
+
     public EyeDTO(BigDecimal sphere, BigDecimal cylinder, int axis, BigDecimal add) {
         this.sphere = sphere;
         this.cylinder = cylinder;
@@ -49,13 +50,15 @@ public class EyeDTO implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         EyeDTO entity = (EyeDTO) o;
         return Objects.equals(this.sphere, entity.sphere) &&
-            Objects.equals(this.cylinder, entity.cylinder) &&
-            Objects.equals(this.axis, entity.axis) &&
-            Objects.equals(this.add, entity.add);
+                Objects.equals(this.cylinder, entity.cylinder) &&
+                Objects.equals(this.axis, entity.axis) &&
+                Objects.equals(this.add, entity.add);
     }
 
     @Override
@@ -66,9 +69,9 @@ public class EyeDTO implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-            "sphere = " + sphere + ", " +
-            "cylinder = " + cylinder + ", " +
-            "axis = " + axis + ", " +
-            "add = " + add + ")";
+                "sphere = " + sphere + ", " +
+                "cylinder = " + cylinder + ", " +
+                "axis = " + axis + ", " +
+                "add = " + add + ")";
     }
 }

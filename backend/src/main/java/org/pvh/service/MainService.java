@@ -14,11 +14,13 @@ import java.util.Optional;
 public interface MainService {
 
     Optional<Glasses> findGlassesById(long glassesId);
+
     Glasses saveGlasses(Glasses glasses) throws DataAccessException, org.pvh.error.NoSkusLeftException, NoSkusLeftException;
 
     void deleteGlasses(Glasses glasses) throws DataAccessException;
 
     Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException;
+
     Glasses saveGlassesAfterEdit(Glasses glasses) throws DataAccessException;
 
     Optional<Glasses> findAllByIdAndLocation(long id, String location);

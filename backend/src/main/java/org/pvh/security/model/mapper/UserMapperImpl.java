@@ -17,11 +17,10 @@ public class UserMapperImpl implements UserMapper {
 
     private static UserMapperImpl mapper;
 
-    private UserMapperImpl() {
-    }
+    private UserMapperImpl() {}
 
     public static UserMapperImpl getInstance() {
-        if(mapper == null) {
+        if (mapper == null) {
             mapper = new UserMapperImpl();
         }
 
@@ -31,57 +30,56 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public User userDTOToUser(UserDTO userDTO) {
-        if ( userDTO == null ) {
+        if (userDTO == null) {
             return null;
         }
 
         User user = new User();
 
-        user.setUsername( userDTO.getUsername() );
-        user.setPassword( userDTO.getPassword() );
-        user.setRoles( roleDTOSetToRoleSet( userDTO.getRoles() ) );
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setRoles(roleDTOSetToRoleSet(userDTO.getRoles()));
 
         return user;
     }
 
     @Override
     public UserDTO userToUserDTO(User user) {
-        if ( user == null ) {
+        if (user == null) {
             return null;
         }
 
         UserDTO userDTO = new UserDTO();
 
-        userDTO.setUsername( user.getUsername() );
-        userDTO.setPassword( user.getPassword() );
-        userDTO.setRoles( roleSetToRoleDTOSet( user.getRoles() ) );
+        userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setRoles(roleSetToRoleDTOSet(user.getRoles()));
 
         return userDTO;
     }
 
     @Override
     public User updateUserFromUserDTO(UserDTO userDTO, User user) {
-        if ( userDTO == null ) {
+        if (userDTO == null) {
             return null;
         }
 
-        if ( userDTO.getUsername() != null ) {
-            user.setUsername( userDTO.getUsername() );
+        if (userDTO.getUsername() != null) {
+            user.setUsername(userDTO.getUsername());
         }
-        if ( userDTO.getPassword() != null ) {
-            user.setPassword( userDTO.getPassword() );
+        if (userDTO.getPassword() != null) {
+            user.setPassword(userDTO.getPassword());
         }
-        if ( user.getRoles() != null ) {
-            Set<Role> set = roleDTOSetToRoleSet( userDTO.getRoles() );
-            if ( set != null ) {
+        if (user.getRoles() != null) {
+            Set<Role> set = roleDTOSetToRoleSet(userDTO.getRoles());
+            if (set != null) {
                 user.getRoles().clear();
-                user.getRoles().addAll( set );
+                user.getRoles().addAll(set);
             }
-        }
-        else {
-            Set<Role> set = roleDTOSetToRoleSet( userDTO.getRoles() );
-            if ( set != null ) {
-                user.setRoles( set );
+        } else {
+            Set<Role> set = roleDTOSetToRoleSet(userDTO.getRoles());
+            if (set != null) {
+                user.setRoles(set);
             }
         }
 
@@ -89,54 +87,54 @@ public class UserMapperImpl implements UserMapper {
     }
 
     protected Role roleDTOToRole(RoleDTO roleDTO) {
-        if ( roleDTO == null ) {
+        if (roleDTO == null) {
             return null;
         }
 
         Role role = new Role();
 
-        if ( roleDTO.getName() != null ) {
-            role.setName( Enum.valueOf( ERole.class, roleDTO.getName() ) );
+        if (roleDTO.getName() != null) {
+            role.setName(Enum.valueOf(ERole.class, roleDTO.getName()));
         }
 
         return role;
     }
 
     protected Set<Role> roleDTOSetToRoleSet(Set<RoleDTO> set) {
-        if ( set == null ) {
+        if (set == null) {
             return Collections.emptySet();
         }
 
         Set<Role> set1 = new HashSet<>();
-        for ( RoleDTO roleDTO : set ) {
-            set1.add( roleDTOToRole( roleDTO ) );
+        for (RoleDTO roleDTO : set) {
+            set1.add(roleDTOToRole(roleDTO));
         }
 
         return set1;
     }
 
     protected RoleDTO roleToRoleDTO(Role role) {
-        if ( role == null ) {
+        if (role == null) {
             return null;
         }
 
         RoleDTO roleDTO = new RoleDTO();
 
-        if ( role.getName() != null ) {
-            roleDTO.setName( role.getName().name() );
+        if (role.getName() != null) {
+            roleDTO.setName(role.getName().name());
         }
 
         return roleDTO;
     }
 
     protected Set<RoleDTO> roleSetToRoleDTOSet(Set<Role> set) {
-        if ( set == null ) {
+        if (set == null) {
             return Collections.emptySet();
         }
 
         Set<RoleDTO> set1 = new HashSet<>();
-        for ( Role role : set ) {
-            set1.add( roleToRoleDTO( role ) );
+        for (Role role : set) {
+            set1.add(roleToRoleDTO(role));
         }
 
         return set1;

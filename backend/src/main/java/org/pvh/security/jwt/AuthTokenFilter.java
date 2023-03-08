@@ -42,11 +42,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
-		} catch (UsernameNotFoundException e){
+		} catch (UsernameNotFoundException e) {
 			logger.warn(e.getMessage());
 		} catch (Exception e) {
 			logger.warn("Cannot set user authentication: {}", e);
-		} 
+		}
 
 		filterChain.doFilter(request, response);
 	}

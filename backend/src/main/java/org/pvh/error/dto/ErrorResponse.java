@@ -2,7 +2,7 @@ package org.pvh.error.dto;
 
 import java.util.Date;
 
-public class ErrorResponse  extends ErrorResponseDefault{
+public class ErrorResponse extends ErrorResponseDefault {
 
     private String error;
     private String path;

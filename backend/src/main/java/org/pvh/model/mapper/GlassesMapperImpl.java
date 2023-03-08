@@ -15,20 +15,18 @@ import java.math.BigDecimal;
 import javax.annotation.processing.Generated;
 
 @Generated(
-    value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-10-02T12:00:59+0200",
-    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.16 (Ubuntu)"
-)
+        value = "org.mapstruct.ap.MappingProcessor",
+        date = "2022-10-02T12:00:59+0200",
+        comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.16 (Ubuntu)")
 @Component
 public class GlassesMapperImpl implements GlassesMapper {
 
     private static GlassesMapperImpl mapper;
 
-    private GlassesMapperImpl() {
-    }
+    private GlassesMapperImpl() {}
 
     public static GlassesMapperImpl getInstance() {
-        if(mapper == null) {
+        if (mapper == null) {
             mapper = new GlassesMapperImpl();
         }
 
@@ -38,20 +36,23 @@ public class GlassesMapperImpl implements GlassesMapper {
 
     @Override
     public Glasses glassesRequestDTOToGlasses(GlassesRequestDTO glassesRequestDTO) {
-        if ( glassesRequestDTO == null ) {
+        if (glassesRequestDTO == null) {
             return null;
         }
         Glasses glasses = new Glasses();
 
-        glasses.setOs( eyeDTOToEye( glassesRequestDTO.getOs() ) );
-        glasses.setOd( eyeDTOToEye( glassesRequestDTO.getOd() ) );
-        glasses.setLocation( glassesRequestDTO.getLocation() );
-        if ( glassesRequestDTO.getGlassesSize() == null ) return null;
-        if ( glassesRequestDTO.getAppearance() == null ) return null;
-        if ( glassesRequestDTO.getGlassesType() == null ) return null;
-        glasses.setGlassesSize( Enum.valueOf( GlassesSizeEnum.class, glassesRequestDTO.getGlassesSize() ) );
-        glasses.setAppearance( Enum.valueOf( AppearanceEnum.class, glassesRequestDTO.getAppearance() ) );
-        glasses.setGlassesType( Enum.valueOf( GlassesTypeEnum.class, glassesRequestDTO.getGlassesType() ) );
+        glasses.setOs(eyeDTOToEye(glassesRequestDTO.getOs()));
+        glasses.setOd(eyeDTOToEye(glassesRequestDTO.getOd()));
+        glasses.setLocation(glassesRequestDTO.getLocation());
+        if (glassesRequestDTO.getGlassesSize() == null)
+            return null;
+        if (glassesRequestDTO.getAppearance() == null)
+            return null;
+        if (glassesRequestDTO.getGlassesType() == null)
+            return null;
+        glasses.setGlassesSize(Enum.valueOf(GlassesSizeEnum.class, glassesRequestDTO.getGlassesSize()));
+        glasses.setAppearance(Enum.valueOf(AppearanceEnum.class, glassesRequestDTO.getAppearance()));
+        glasses.setGlassesType(Enum.valueOf(GlassesTypeEnum.class, glassesRequestDTO.getGlassesType()));
 
 
         return glasses;
@@ -59,44 +60,44 @@ public class GlassesMapperImpl implements GlassesMapper {
 
     @Override
     public GlassesRequestDTO glassesToGlassesRequestDTO(Glasses glasses) {
-        if ( glasses == null ) {
+        if (glasses == null) {
             return null;
         }
 
         GlassesRequestDTO glassesRequestDTO = new GlassesRequestDTO(
-            glasses.getGlassesType().name(),
-            glasses.getGlassesSize().name(),
-            glasses.getAppearance().name(),
-            glasses.getLocation(),
-            eyeToEyeDTO(glasses.getOs()),
-            eyeToEyeDTO(glasses.getOd()));
+                glasses.getGlassesType().name(),
+                glasses.getGlassesSize().name(),
+                glasses.getAppearance().name(),
+                glasses.getLocation(),
+                eyeToEyeDTO(glasses.getOs()),
+                eyeToEyeDTO(glasses.getOd()));
 
         return glassesRequestDTO;
     }
 
     @Override
     public Glasses updateGlassesFromGlassesRequestDTO(GlassesRequestDTO glassesRequestDTO, Glasses glasses) {
-        if ( glassesRequestDTO == null ) {
+        if (glassesRequestDTO == null) {
             return null;
         }
 
-        if ( glassesRequestDTO.getOs() != null ) {
-            glasses.setOs( eyeDTOToEye( glassesRequestDTO.getOs() ) );
+        if (glassesRequestDTO.getOs() != null) {
+            glasses.setOs(eyeDTOToEye(glassesRequestDTO.getOs()));
         }
-        if ( glassesRequestDTO.getOd() != null ) {
-            glasses.setOd( eyeDTOToEye( glassesRequestDTO.getOd() ) );
+        if (glassesRequestDTO.getOd() != null) {
+            glasses.setOd(eyeDTOToEye(glassesRequestDTO.getOd()));
         }
-        if ( glassesRequestDTO.getLocation() != null ) {
-            glasses.setLocation( glassesRequestDTO.getLocation() );
+        if (glassesRequestDTO.getLocation() != null) {
+            glasses.setLocation(glassesRequestDTO.getLocation());
         }
-        if ( glassesRequestDTO.getGlassesSize() != null ) {
-            glasses.setGlassesSize( Enum.valueOf( GlassesSizeEnum.class, glassesRequestDTO.getGlassesSize() ) );
+        if (glassesRequestDTO.getGlassesSize() != null) {
+            glasses.setGlassesSize(Enum.valueOf(GlassesSizeEnum.class, glassesRequestDTO.getGlassesSize()));
         }
-        if ( glassesRequestDTO.getAppearance() != null ) {
-            glasses.setAppearance( Enum.valueOf( AppearanceEnum.class, glassesRequestDTO.getAppearance() ) );
+        if (glassesRequestDTO.getAppearance() != null) {
+            glasses.setAppearance(Enum.valueOf(AppearanceEnum.class, glassesRequestDTO.getAppearance()));
         }
-        if ( glassesRequestDTO.getGlassesType() != null ) {
-            glasses.setGlassesType( Enum.valueOf( GlassesTypeEnum.class, glassesRequestDTO.getGlassesType() ) );
+        if (glassesRequestDTO.getGlassesType() != null) {
+            glasses.setGlassesType(Enum.valueOf(GlassesTypeEnum.class, glassesRequestDTO.getGlassesType()));
         }
 
         return glasses;
@@ -105,101 +106,100 @@ public class GlassesMapperImpl implements GlassesMapper {
 
     @Override
     public GlassesResponseDTO glassesToGlassesResponseDTO(Glasses glasses) {
-        if ( glasses == null ) {
+        if (glasses == null) {
             return null;
         }
 
         GlassesResponseDTO glassesResponseDTO = new GlassesResponseDTO();
 
         glassesResponseDTO.setId(glasses.getId());
-        glassesResponseDTO.setSku( glasses.getSku() );
-        if ( glasses.getGlassesType() != null ) {
-            glassesResponseDTO.setGlassesType( glasses.getGlassesType().name() );
+        glassesResponseDTO.setSku(glasses.getSku());
+        if (glasses.getGlassesType() != null) {
+            glassesResponseDTO.setGlassesType(glasses.getGlassesType().name());
         }
-        if ( glasses.getGlassesSize() != null ) {
-            glassesResponseDTO.setGlassesSize( glasses.getGlassesSize().name() );
+        if (glasses.getGlassesSize() != null) {
+            glassesResponseDTO.setGlassesSize(glasses.getGlassesSize().name());
         }
-        if ( glasses.getAppearance() != null ) {
-            glassesResponseDTO.setAppearance( glasses.getAppearance().name() );
+        if (glasses.getAppearance() != null) {
+            glassesResponseDTO.setAppearance(glasses.getAppearance().name());
         }
         glassesResponseDTO.setSku(glasses.getSku());
-        glassesResponseDTO.setLocation( glasses.getLocation() );
-        glassesResponseDTO.setDispensed( glasses.isDispensed() );
-        glassesResponseDTO.setCreationDate( glasses.getCreationDate() );
-        glassesResponseDTO.setDispense( dispenseToDispenseResponseDto( glasses.getDispense() ) );
-        glassesResponseDTO.setOs( eyeToEyeDTO( glasses.getOs() ) );
-        glassesResponseDTO.setOd( eyeToEyeDTO( glasses.getOd() ) );
+        glassesResponseDTO.setLocation(glasses.getLocation());
+        glassesResponseDTO.setDispensed(glasses.isDispensed());
+        glassesResponseDTO.setCreationDate(glasses.getCreationDate());
+        glassesResponseDTO.setDispense(dispenseToDispenseResponseDto(glasses.getDispense()));
+        glassesResponseDTO.setOs(eyeToEyeDTO(glasses.getOs()));
+        glassesResponseDTO.setOd(eyeToEyeDTO(glasses.getOd()));
 
         return glassesResponseDTO;
     }
 
 
 
-
     @Override
     public EyeDTO eyeToEyeDTO(Eye eye) {
-        if ( eye == null ) {
+        if (eye == null) {
             return null;
         }
 
-        EyeDTO eyeDTO = new EyeDTO(eye.getSphere(),eye.getCylinder(),eye.getAxis(),eye.getAdd());
+        EyeDTO eyeDTO = new EyeDTO(eye.getSphere(), eye.getCylinder(), eye.getAxis(), eye.getAdd());
 
         return eyeDTO;
     }
 
     @Override
     public Eye eyeDTOToEye(EyeDTO eyeDTO) {
-        if ( eyeDTO == null ) {
+        if (eyeDTO == null) {
             return null;
         }
 
         Eye eye = new Eye();
 
-        eye.setSphere( eyeDTO.getSphere() != null ? eyeDTO.getSphere() : new BigDecimal(0) );
-        eye.setCylinder( eyeDTO.getCylinder() != null ? eyeDTO.getCylinder() : new BigDecimal(0) );
-        eye.setAxis( eyeDTO.getAxis() );
-        eye.setAdd( eyeDTO.getAdd() != null ? eyeDTO.getAdd() : new BigDecimal(0) );
+        eye.setSphere(eyeDTO.getSphere() != null ? eyeDTO.getSphere() : new BigDecimal(0));
+        eye.setCylinder(eyeDTO.getCylinder() != null ? eyeDTO.getCylinder() : new BigDecimal(0));
+        eye.setAxis(eyeDTO.getAxis());
+        eye.setAdd(eyeDTO.getAdd() != null ? eyeDTO.getAdd() : new BigDecimal(0));
 
         return eye;
     }
 
 
     protected Dispense dispenseResponseDtoToDispense(DispenseResponseDto dispenseResponseDto) {
-        if ( dispenseResponseDto == null ) {
+        if (dispenseResponseDto == null) {
             return null;
         }
 
         Dispense dispense = new Dispense();
 
-        dispense.setModifyDate( dispenseResponseDto.getModifyDate() );
-        dispense.setPreviousSku( dispenseResponseDto.getPreviousSku() );
+        dispense.setModifyDate(dispenseResponseDto.getModifyDate());
+        dispense.setPreviousSku(dispenseResponseDto.getPreviousSku());
 
         return dispense;
     }
 
     protected DispenseResponseDto dispenseToDispenseResponseDto(Dispense dispense) {
-        if ( dispense == null ) {
+        if (dispense == null) {
             return null;
         }
 
         DispenseResponseDto dispenseResponseDto = new DispenseResponseDto();
 
-        dispenseResponseDto.setModifyDate( dispense.getModifyDate() );
-        dispenseResponseDto.setPreviousSku( dispense.getPreviousSku() );
+        dispenseResponseDto.setModifyDate(dispense.getModifyDate());
+        dispenseResponseDto.setPreviousSku(dispense.getPreviousSku());
 
         return dispenseResponseDto;
     }
 
     protected void dispenseResponseDtoToDispense1(DispenseResponseDto dispenseResponseDto, Dispense mappingTarget) {
-        if ( dispenseResponseDto == null ) {
+        if (dispenseResponseDto == null) {
             return;
         }
 
-        if ( dispenseResponseDto.getModifyDate() != null ) {
-            mappingTarget.setModifyDate( dispenseResponseDto.getModifyDate() );
+        if (dispenseResponseDto.getModifyDate() != null) {
+            mappingTarget.setModifyDate(dispenseResponseDto.getModifyDate());
         }
-        if ( dispenseResponseDto.getPreviousSku() != null ) {
-            mappingTarget.setPreviousSku( dispenseResponseDto.getPreviousSku() );
+        if (dispenseResponseDto.getPreviousSku() != null) {
+            mappingTarget.setPreviousSku(dispenseResponseDto.getPreviousSku());
         }
     }
 }

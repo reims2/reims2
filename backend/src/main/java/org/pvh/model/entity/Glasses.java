@@ -47,7 +47,7 @@ public class Glasses extends BaseEntity {
     @JoinColumn(name = "OD_ID")
     private Eye od;
 
-    public Glasses(){}
+    public Glasses() {}
 
     public Glasses(String glassesType, String glassesSize, String appearance, String location, Dispense dispense, Eye os, Eye od) {
         this.glassesType = glassesType;
@@ -60,7 +60,8 @@ public class Glasses extends BaseEntity {
         this.od = od;
     }
 
-    public Glasses(Integer sku, String glassesType, String glassesSize, String appearance, String location, boolean dispensed, Date creationDate, Dispense dispense, Eye os, Eye od) {
+    public Glasses(Integer sku, String glassesType, String glassesSize, String appearance, String location, boolean dispensed,
+            Date creationDate, Dispense dispense, Eye os, Eye od) {
         this.sku = sku;
         this.glassesType = glassesType;
         this.glassesSize = glassesSize;

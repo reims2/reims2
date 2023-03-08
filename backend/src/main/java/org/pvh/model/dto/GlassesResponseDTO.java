@@ -23,10 +23,10 @@ public class GlassesResponseDTO implements Serializable {
     private EyeDTO os;
     private EyeDTO od;
 
-    public GlassesResponseDTO() {
-    }
+    public GlassesResponseDTO() {}
 
-    public GlassesResponseDTO(Integer sku, String glassesType, String glassesSize, String appearance, String location, boolean dispensed, Date creationDate, DispenseResponseDto dispense, EyeDTO os, EyeDTO od) {
+    public GlassesResponseDTO(Integer sku, String glassesType, String glassesSize, String appearance, String location, boolean dispensed,
+            Date creationDate, DispenseResponseDto dispense, EyeDTO os, EyeDTO od) {
         this.sku = sku;
         this.glassesType = glassesType;
         this.glassesSize = glassesSize;
@@ -133,19 +133,21 @@ public class GlassesResponseDTO implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         GlassesResponseDTO entity = (GlassesResponseDTO) o;
         return Objects.equals(this.sku, entity.sku) &&
-            Objects.equals(this.glassesType, entity.glassesType) &&
-            Objects.equals(this.glassesSize, entity.glassesSize) &&
-            Objects.equals(this.appearance, entity.appearance) &&
-            Objects.equals(this.location, entity.location) &&
-            Objects.equals(this.dispensed, entity.dispensed) &&
-            Objects.equals(this.creationDate, entity.creationDate) &&
-            Objects.equals(this.dispense, entity.dispense) &&
-            Objects.equals(this.os, entity.os) &&
-            Objects.equals(this.od, entity.od);
+                Objects.equals(this.glassesType, entity.glassesType) &&
+                Objects.equals(this.glassesSize, entity.glassesSize) &&
+                Objects.equals(this.appearance, entity.appearance) &&
+                Objects.equals(this.location, entity.location) &&
+                Objects.equals(this.dispensed, entity.dispensed) &&
+                Objects.equals(this.creationDate, entity.creationDate) &&
+                Objects.equals(this.dispense, entity.dispense) &&
+                Objects.equals(this.os, entity.os) &&
+                Objects.equals(this.od, entity.od);
     }
 
     @Override
@@ -156,16 +158,16 @@ public class GlassesResponseDTO implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-            "sku = " + sku + ", " +
-            "glassesType = " + glassesType + ", " +
-            "glassesSize = " + glassesSize + ", " +
-            "appearance = " + appearance + ", " +
-            "location = " + location + ", " +
-            "dispensed = " + dispensed + ", " +
-            "creationDate = " + creationDate + ", " +
-            "dispense = " + dispense + ", " +
-            "os = " + os + ", " +
-            "od = " + od + ")";
+                "sku = " + sku + ", " +
+                "glassesType = " + glassesType + ", " +
+                "glassesSize = " + glassesSize + ", " +
+                "appearance = " + appearance + ", " +
+                "location = " + location + ", " +
+                "dispensed = " + dispensed + ", " +
+                "creationDate = " + creationDate + ", " +
+                "dispense = " + dispense + ", " +
+                "os = " + os + ", " +
+                "od = " + od + ")";
     }
 
     /**
@@ -175,8 +177,7 @@ public class GlassesResponseDTO implements Serializable {
         private Date modifyDate;
         private Integer previousSku;
 
-        public DispenseResponseDto() {
-        }
+        public DispenseResponseDto() {}
 
         public DispenseResponseDto(Date modifyDate, Integer previousSku) {
             this.modifyDate = modifyDate;
@@ -201,11 +202,13 @@ public class GlassesResponseDTO implements Serializable {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
             DispenseResponseDto entity = (DispenseResponseDto) o;
             return Objects.equals(this.modifyDate, entity.modifyDate) &&
-                Objects.equals(this.previousSku, entity.previousSku);
+                    Objects.equals(this.previousSku, entity.previousSku);
         }
 
         @Override
@@ -216,8 +219,8 @@ public class GlassesResponseDTO implements Serializable {
         @Override
         public String toString() {
             return getClass().getSimpleName() + "(" +
-                "modifyDate = " + modifyDate + ", " +
-                "previousSku = " + previousSku + ")";
+                    "modifyDate = " + modifyDate + ", " +
+                    "previousSku = " + previousSku + ")";
         }
     }
 }

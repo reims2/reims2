@@ -18,7 +18,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
     private ComparisonOperator operator;
     private List<String> arguments;
 
-    public GenericRsqlSpecification(String property, ComparisonOperator operator,List<String> arguments){
+    public GenericRsqlSpecification(String property, ComparisonOperator operator, List<String> arguments) {
         this.property = property;
         this.operator = operator;
         this.arguments = arguments;
@@ -26,7 +26,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
-                                 CriteriaBuilder builder) {
+            CriteriaBuilder builder) {
         Path<String> propertyExpression = parseProperty(root);
         List<Object> args = castArguments(propertyExpression);
         Object argument = args.get(0);
@@ -34,34 +34,36 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
             case EQUAL:
                 if (argument instanceof String)
                     return builder.like(propertyExpression,
-                        argument.toString().replace('*', '%'));
+                            argument.toString().replace('*', '%'));
                 else if (argument == null)
                     return builder.isNull(propertyExpression);
-                else return builder.equal(propertyExpression, argument);
+                else
+                    return builder.equal(propertyExpression, argument);
 
             case NOT_EQUAL:
                 if (argument instanceof String)
                     return builder.notLike(propertyExpression,
-                        argument.toString().replace('*', '%'));
+                            argument.toString().replace('*', '%'));
                 else if (argument == null)
                     return builder.isNotNull(propertyExpression);
-                else return builder.notEqual(propertyExpression, argument);
+                else
+                    return builder.notEqual(propertyExpression, argument);
 
             case GREATER_THAN:
                 return builder.greaterThan(propertyExpression,
-                    argument.toString());
+                        argument.toString());
 
             case GREATER_THAN_OR_EQUAL:
                 return builder.greaterThanOrEqualTo(propertyExpression,
-                    argument.toString());
+                        argument.toString());
 
             case LESS_THAN:
                 return builder.lessThan(propertyExpression,
-                    argument.toString());
+                        argument.toString());
 
             case LESS_THAN_OR_EQUAL:
                 return builder.lessThanOrEqualTo(propertyExpression,
-                    argument.toString());
+                        argument.toString());
             case IN:
                 return propertyExpression.in(args);
             case NOT_IN:
@@ -87,7 +89,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
                     if (path instanceof PluralAttributePath) {
                         PluralAttribute attr = ((PluralAttributePath) path).getAttribute();
                         Join join = getJoin(attr, lastFrom);
-                        if(join == null){
+                        if (join == null) {
                             throw new PVHException("Path parameters are not set correctly...", HttpStatus.INTERNAL_SERVER_ERROR);
                         }
                         path = join.get(pathSteps[i]);
@@ -105,7 +107,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
                         path = path.get(pathSteps[i]);
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else {
@@ -115,7 +117,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
     }
 
     private Join getJoin(PluralAttribute attr, From from) {
-        switch (attr.getCollectionType()){
+        switch (attr.getCollectionType()) {
             case COLLECTION:
                 return from.join((CollectionAttribute) attr);
             case SET:
@@ -133,10 +135,14 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
         Class<?> type = propertyExpression.getJavaType();
 
         return arguments.stream().map(arg -> {
-            if (type.equals(Integer.class)) return Integer.parseInt(arg);
-            else if (type.equals(Long.class)) return Long.parseLong(arg);
-            else if (type.equals(Byte.class)) return Byte.parseByte(arg);
-            else return arg;
+            if (type.equals(Integer.class))
+                return Integer.parseInt(arg);
+            else if (type.equals(Long.class))
+                return Long.parseLong(arg);
+            else if (type.equals(Byte.class))
+                return Byte.parseByte(arg);
+            else
+                return arg;
         }).collect(Collectors.toList());
     }
 
