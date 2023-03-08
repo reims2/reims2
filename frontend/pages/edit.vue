@@ -51,7 +51,7 @@
                         </template>
                         <v-list dense>
                           <v-list-item>
-                            <delete-button :glass="selected" @deleted="updatedDeleted" />
+                            <delete-button :glass="selected" @delete="reason => submitDeletion(reason)" />
                           </v-list-item>
                         </v-list>
                       </v-menu>
@@ -166,6 +166,9 @@ export default {
       deleteOfflineGlasses: 'deleteOfflineGlasses'
     }),
     async submitDispension() {
+      await this.submitDeletion('DISPENSED')
+    },
+    async submitDeletion(reason) {
       if (this.isLoading || this.sku == null || this.sku === '') return
       if (!this.selected) {
         this.errorMesssage = 'SKU not found'
@@ -179,7 +182,7 @@ export default {
       this.isLoading = true
       this.lastDispensed = null
       try {
-        await this.dispense({ sku: toDispense.sku, reason: 'DISPENSED' })
+        await this.dispense({ sku: toDispense.sku, reason })
       } catch (error) {
         this.isLoading = false
         if (error.status === 404) {
@@ -200,11 +203,14 @@ export default {
         }
         return
       }
-      this.deleteOfflineGlasses(toDispense.sku)
       this.isLoading = false
       this.lastDispensed = toDispense
-      this.snackbarMessage = `Dispension of SKU ${toDispense.sku} successful`
-      this.successMessage = 'Dispension successful'
+      if (reason === 'DISPENSED') {
+        this.snackbarMessage = `Successfully dispensed glasses with SKU ${toDispense.sku}`
+        this.successMessage = 'Dispension successful'
+      } else {
+        this.snackbarMessage = `Successfully deleted glasses with SKU ${toDispense.sku}`
+      }
       this.$refs.form.reset()
       this.$refs.firstInput.focus()
     },
@@ -229,12 +235,6 @@ export default {
       this.lastDispensed = null
       this.sku = glasses.sku
       this.snackbarMessage = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`
-    },
-    updatedDeleted() {
-      this.snackbarMessage = `Successfully deleted glasses with SKU ${this.selected.sku}`
-      this.lastDispensed = this.selected
-      this.$refs.form.reset()
-      this.$refs.firstInput.focus()
     }
   }
 }

@@ -18,9 +18,11 @@
       </v-card-title>
       <v-card-text class="text--primary pb-0">
         <div class="pb-3">
-          This will delete the glasses with SKU {{ glass.sku }}. Please select a reason, which is later visible in campaign reports.
+          This will delete the glasses with SKU {{ glass.sku }}.
+          <span v-if="!fixedReason">Please select a reason, which is later visible in campaign reports.</span>
         </div>
         <v-select
+          v-if="!fixedReason"
           v-model="deleteReason"
           :items="reasons"
           outlined
@@ -47,12 +49,16 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
 export default {
   props: {
     glass: {
       type: Object,
       required: true
+    },
+    fixedReason: {
+      type: String,
+      default: null,
+      required: false
     }
   },
   data: () => ({
@@ -62,28 +68,15 @@ export default {
       { text: 'Glasses have too high values', value: 'TOO_HIGH_VALUES' },
       { text: 'Not found in storage', value: 'NOT_FOUND' },
       { text: 'Glasses damaged / broken', value: 'BROKEN' },
-      { text: 'Wrongly added', value: 'WRONGLY_ADDED' },
       { text: 'Other reason', value: 'OTHER' }
+      // can only be selected via this.fixedReason
+      // { text: 'Wrongly added', value: 'WRONGLY_ADDED' },
     ]
   }),
   methods: {
-    ...mapActions({
-      deleteGlasses: 'glasses/dispense'
-    }),
-    ...mapMutations({
-      deleteOfflineGlasses: 'deleteOfflineGlasses'
-    }),
-    async startDelete() {
+    startDelete() {
       this.deleteDialog = false
-      try {
-        await this.deleteGlasses({ sku: this.glass.sku, reason: this.deleteReason })
-        this.$emit('deleted')
-        // Delete glasses from local DB manually after emit. Otherwise the emit action is not executed in any parent component,
-        // because the (parent) glasses component containing this component is already removed due to reactive system
-        this.deleteOfflineGlasses(this.glass.sku)
-      } catch (error) {
-        this.$store.commit('setError', `Could not delete glasses, please retry (Error ${error.status})`)
-      }
+      this.$emit('delete', !this.fixedReason ? this.deleteReason : null)
     }
   }
 }

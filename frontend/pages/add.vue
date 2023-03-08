@@ -89,7 +89,7 @@
           editable
         >
           <template #actions>
-            <delete-button :glass="item" />
+            <delete-button :glass="item" fixed-reason="WRONGLY_ADDED" @delete="submitDeletion(item.sku)" />
           </template>
         </glass-card>
       </v-col>
@@ -150,7 +150,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      addGlasses: 'glasses/addGlasses'
+      addGlasses: 'glasses/addGlasses',
+      deleteGlasses: 'glasses/dispense'
     }),
     async submit() {
       if (!this.valid) return
@@ -186,6 +187,17 @@ export default {
     },
     updateSync(oldEye, newValue) {
       if (oldEye.add !== newValue) this.syncEyes = false
+    },
+    async submitDeletion(sku) {
+      try {
+        await this.deleteGlasses({ sku, reason: 'WRONGLY_ADDED' })
+      } catch (error) {
+        if (error.status === 404) {
+          console.log('Already deleted')
+        } else {
+          this.$store.commit('setError', `Could not delete glasses, please retry (Error ${error.status})`)
+        }
+      }
     }
   },
   title: 'Add glasses'
