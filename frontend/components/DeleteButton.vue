@@ -62,6 +62,7 @@ export default {
       { text: 'Glasses have too high values', value: 'TOO_HIGH_VALUES' },
       { text: 'Not found in storage', value: 'NOT_FOUND' },
       { text: 'Glasses damaged / broken', value: 'BROKEN' },
+      { text: 'Wrongly added', value: 'WRONGLY_ADDED' },
       { text: 'Other reason', value: 'OTHER' }
     ]
   }),

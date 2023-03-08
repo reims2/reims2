@@ -65,7 +65,7 @@
       </v-col>
     </v-row>
     <v-snackbar
-      v-if="lastDispensed != null"
+      v-if="snackbarMessage != ''"
       :value=true
       :timeout="-1"
       vertical
@@ -74,6 +74,7 @@
     >
       <template #action="{ attrs }">
         <v-btn
+          v-if="lastDispensed != null"
           text
           v-bind="attrs"
           @click="undoDispension(lastDispensed)"
@@ -84,32 +85,19 @@
           text
           v-bind="attrs"
           color="primary lighten-3"
-          @click="lastDispensed = null"
+          @click="snackbarMessage = ''"
         >
           Close
         </v-btn>
       </template>
-      <span v-if="isOfflineDispension">Glasses with SKU {{ lastDispensed.sku }} will be dispensed when you're back online</span>
-      <span v-else>Glasses with SKU {{ lastDispensed.sku }} dispensed</span>
-    </v-snackbar>
-    <v-snackbar v-if="result != ''" :value=true :timeout="-1" bottom absolute>
-      <template #action="{ attrs }">
-        <v-btn
-          text
-          v-bind="attrs"
-          @click="result = ''"
-        >
-          Close
-        </v-btn>
-      </template>
-      {{ result }}
+      <span>{{ snackbarMessage }}</span>
     </v-snackbar>
   </v-container>
 </template>
 
 <script>
 import { mdiDotsVertical } from '@mdi/js'
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   transition: 'main',
   data: () => ({
@@ -117,9 +105,9 @@ export default {
     sku: '',
     lastDispensed: null,
     isLoading: false,
-    result: '',
-    successMessage: [],
-    errorMesssage: [],
+    snackbarMessage: '',
+    successMessage: '',
+    errorMesssage: '',
     isOfflineDispension: false,
     mdiDotsVertical
   }),
@@ -155,11 +143,11 @@ export default {
   watch: {
     sku() {
       if (this.sku != null && this.sku !== '') {
-        this.successMessage = []
+        this.successMessage = ''
         // also fetch glasses in background to update database
         this.$store.dispatch('glasses/fetchSingle', this.sku)
       }
-      this.errorMesssage = []
+      this.errorMesssage = ''
     }
   },
   activated() {
@@ -174,6 +162,9 @@ export default {
       dispense: 'glasses/dispense',
       undispense: 'glasses/undispense'
     }),
+    ...mapMutations({
+      deleteOfflineGlasses: 'deleteOfflineGlasses'
+    }),
     async submitDispension() {
       if (this.isLoading || this.sku == null || this.sku === '') return
       if (!this.selected) {
@@ -183,11 +174,10 @@ export default {
       // copy object because the computed `selected` property will get null when it's dispensed
       const toDispense = this.selected
       // do dispension
-      this.successMessage = []
-      this.errorMesssage = []
+      this.snackbarMessage = ''
+      this.errorMesssage = ''
       this.isLoading = true
       this.lastDispensed = null
-      this.isOfflineDispension = false
       try {
         await this.dispense({ sku: toDispense.sku, reason: 'DISPENSED' })
       } catch (error) {
@@ -195,10 +185,12 @@ export default {
         if (error.status === 404) {
           this.$store.commit('setError', 'SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
         } else if (error.network || error.server) {
-          if (error.network) this.isOfflineDispension = true
           if (error.server) {
             this.$store.commit('setError', `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`)
-            this.isOfflineDispension = true
+            this.snackbarMessage = `Glasses with SKU ${toDispense.sku} will be dispensed when the server is back online`
+            this.deleteOfflineGlasses(toDispense.sku)
+          } else {
+            this.snackbarMessage = `Glasses with SKU ${toDispense.sku} will be dispensed when you're back online`
           }
           this.lastDispensed = toDispense
           this.$refs.form.reset()
@@ -208,8 +200,10 @@ export default {
         }
         return
       }
+      this.deleteOfflineGlasses(toDispense.sku)
       this.isLoading = false
       this.lastDispensed = toDispense
+      this.snackbarMessage = `Dispension of SKU ${toDispense.sku} successful`
       this.successMessage = 'Dispension successful'
       this.$refs.form.reset()
       this.$refs.firstInput.focus()
@@ -222,10 +216,10 @@ export default {
         this.isLoading = false
         if (error.status === 400) {
           this.$store.commit('setError', `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`)
-          this.lastDispensed = null
+          this.snackbarMessage = ''
         } else if (error.network || error.server) {
           this.$store.commit('setError', 'Network or server error. Dispension will be automatically reverted as soon as you\'re back online.')
-          this.lastDispensed = null
+          this.snackbarMessage = ''
         } else {
           this.$store.commit('setError', `Could not undo dispension of glasses, please retry (Error ${error.status}).`)
         }
@@ -233,10 +227,12 @@ export default {
       }
       this.isLoading = false
       this.lastDispensed = null
-      this.successMessage = 'Reverted dispension successfully'
+      this.sku = glasses.sku
+      this.snackbarMessage = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`
     },
     updatedDeleted() {
-      this.result = 'Successfully deleted glasses with SKU ' + this.selected.sku
+      this.snackbarMessage = `Successfully deleted glasses with SKU ${this.selected.sku}`
+      this.lastDispensed = this.selected
       this.$refs.form.reset()
       this.$refs.firstInput.focus()
     }

@@ -19,7 +19,7 @@
         <v-divider class="my-9" />
 
         <div class="pb-2 text-h5">
-          Dispense report
+          Dispense & delete report
         </div>
         <div class="pb-2 text--secondary">
           This report contains all glasses that were dispensed or deleted in the selected year.
