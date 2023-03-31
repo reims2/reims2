@@ -1,0 +1,92 @@
+- name: Install packages
+  ansible.builtin.package:
+    name:
+      - grafana
+      - prometheus
+      - certbot
+      - python3-certbot-nginx
+    state: present
+
+- name: nginx new site
+  ansible.builtin.template:
+    src: nginx_monitoring.conf.j2
+    dest: /etc/nginx/sites-available/monitoring.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - reload nginx
+
+- name: nginx:enable default
+  file:
+    src: /etc/nginx/sites-available/monitoring.conf
+    dest: /etc/nginx/sites-enabled/monitoring.conf
+    state: link
+  notify:
+    - reload nginx
+
+- name: Ensure sites-enabled is included in nginx
+  ansible.builtin.lineinfile:
+    path: /etc/nginx/nginx.conf
+    search_string: "sites-enabled/*"
+    line: include /etc/nginx/sites-enabled/*.*;
+    insertafter: '^http \{'
+  notify:
+    - reload nginx
+
+- name: Remove server_names_hash_bucket_size.conf from nginx to avoid errors with cerrbot
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d/server_names_hash_bucket_size.conf
+    state: absent
+  notify:
+    - reload nginx
+  register: hasbucketsize_removed
+
+- name: Ensure server_names_hash_bucket_size is included in nginx.conf instead
+  ansible.builtin.lineinfile:
+    path: /etc/nginx/nginx.conf
+    search_string: "server_names_hash_bucket_size"
+    line: server_names_hash_bucket_size 128;
+    insertafter: '^http \{'
+  when: hashbucketsize_removed.changed
+
+- name: "Enable letsencrypt"
+  ansible.builtin.command: certbot --nginx -d "{{ monitoring_domain }}" -n --agree-tos --email letsencrypt@kxlion.de
+
+- name: grafana config
+  ansible.builtin.template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    owner: root
+    group: grafana
+    mode: "0644"
+  notify:
+    - reload grafana
+
+- name: grafana config
+  ansible.builtin.copy:
+    src: prometheus.yml
+    dest: /etc/prometheus/prometheus.yml
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - reload prometheus
+
+- name: Expose mariadb prod port
+  ansible.builtin.command: "dokku mariadb:expose {{ db_name }} 127.0.0.1:5000"
+  ignore_errors: true
+
+- name: Read db password
+  ansible.builtin.command: "cat /var/lib/dokku/services/mariadb/{{ db_name }}/ROOTPASSWORD"
+  register: db_password
+
+- name: Create read only DB user for monitoring
+  community.mysql.mysql_user:
+    name: monitoring
+    password: "{{ monitoring_db_password }}"
+    priv: "*.*:SELECT"
+    state: present
+    login_password: "{{ db_password.stdout }}"
+    login_port: 5000
+    login_user: root
