@@ -60,6 +60,9 @@
   ansible.builtin.command: certbot --nginx -d "{{ monitoring_domain }}" -n --agree-tos --email letsencrypt@kxlion.de
   when: letsencrypt_domain_exists is failed
 
+- name: Add HTTPS conf to nginx conf (in case it has been overwritten)
+  ansible.builtin.command: certbot install --nginx -d "{{ monitoring_domain }}" -n --agree-tos --email letsencrypt@kxlion.de
+
 - name: Copy grafana config
   ansible.builtin.template:
     src: grafana.ini.j2
@@ -83,6 +86,6 @@
 - name: Expose DB tasks
   ansible.builtin.include_tasks: expose_db.yml
   vars:
-    port: " {{ item.port }}"
+    port: "{{ item.port }}"
     db_name: "{{ item.name }}"
   loop: "{{ db_port_mapping }}"
