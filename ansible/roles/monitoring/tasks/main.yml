@@ -52,7 +52,7 @@
   when: hashbucketsize_removed.changed
 
 - name: Check if HTTPS is already enabled
-  ansible.builtin.command: "certbot certificates | grep {{ monitoring_domain }}"
+  ansible.builtin.shell: "certbot certificates | grep {{ monitoring_domain }}"
   register: letsencrypt_domain_exists
   ignore_errors: true
 

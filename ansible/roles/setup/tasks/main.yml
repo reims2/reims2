@@ -12,6 +12,7 @@
   vars:
     unattended_automatic_reboot_time: "06:00"
     unattended_update_days: '{"Mon"}'
+    unattended_download_upgradeable: 7
 
 - name: Enable swap
   ansible.builtin.include_role:
@@ -50,6 +51,8 @@
     os_auditd_enabled: false # lxd container
     os_auth_pam_passwdqc_enable: false # dont need strong PW policy
     os_ignore_home_folder_users: [dokku]
+    ufw_manage_defaults: false # we handle it manually below
+  register: os_hardening
 
 - name: SSH hardening
   ansible.builtin.include_role:
@@ -61,11 +64,13 @@
     ssh_print_pam_motd: true
     ssh_max_auth_retries: 4
     sftp_umask: "0022"
+  register: ssh_hardening
 
-  # Not using notify handler because include_role doesn't support it
+  # Not using notify handler because include_role doesn't support it. But we try to do it using var.changed
 - name: Restart server
   ansible.builtin.reboot:
     reboot_timeout: 600
+  when: ssh_hardening.changed or os_hardening.changed
 
 - name: Allow ssh
   community.general.ufw:

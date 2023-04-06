@@ -11,7 +11,7 @@ map $http_upgrade $connection_upgrade {
 }
 
 upstream grafana {
-  server localhost:3000;
+  server localhost:{{ grafana_port }};
 }
 
 server {
