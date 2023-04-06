@@ -9,22 +9,24 @@ For deploying a complete instance of REIMS2, do the following **on your local de
 2. Add your server **domain** (on which it will be accessible from) in the existing `hosts` file
 3. Add your JWT token (can be any secure password) as `backend_jwt_token` in `main.yml`
 4. Create a file `creds/pub_keys` containing your SSH public keys (password based SSH login will be disabled!)
-5. Rename `dump.sql.example` to `dump.sql` to populate REIMS2 with example data.
+5. Rename `dump.sql.example` to `dump.sql` if you want to populate REIMS2 with example data.
 6. Add your dokku deploy key (e.g. for GitHub actions) in subfolder `creds/deploy_key.pub` (otherwise comment out the dokku_users stuff in `plays/reims.yml`)
 7. Enter you AWS key+secret inside `reims.yml` for S3 backups (otherwise remove all `aws_*` variables)
 
 Now deploy with:
 
 ```bash
-# Don't forget --ask-vault-pass if using Ansible vault for the AWS password.
+# Don't forget --ask-vault-pass if using Ansible vault.
 ansible-playbook -i hosts main.yml
 ```
 
 **That's it, REIMS should be up and running!**
 
-The initial username is `test` and password `testtest`. It's recommended to create a new admin user, login as that and delete this initial user.
+If you use the example `dump.sql`, the initial username is `test` and password `testtest`. It's recommended to create a new admin user, login as that and delete this initial user.
 
 It'll also configure a developer instance at `dev.<yourdomain>`.
+
+A grafana monitoring solution will be available at `monitoring.<yourdomain>`. Don't forget to configure it with a password. You can add a Mysql datasource in grafana with the monitoring config from `main.yml`.
 
 ## I only want to restore an old database dump
 

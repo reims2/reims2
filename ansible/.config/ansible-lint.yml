@@ -12,3 +12,5 @@ warn_list: # or 'skip_list' to silence them completely
   - fqcn[action] # Use FQCN for builtin actions.
   - fqcn[keyword] # Use FQCN for builtin actions.
   - no-changed-when # Commands should not change things if nothing needs doing.
+  - no-handler
+  - meta-no-info

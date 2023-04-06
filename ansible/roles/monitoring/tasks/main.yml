@@ -52,15 +52,15 @@
   when: hashbucketsize_removed.changed
 
 - name: Check if HTTPS is already enabled
-  shell: "certbot certificates | {{ monitoring_domain }}"
+  ansible.builtin.command: "certbot certificates | grep {{ monitoring_domain }}"
   register: letsencrypt_domain_exists
   ignore_errors: true
 
-- name: "Enable letsencrypt"
+- name: Enable letsencrypt
   ansible.builtin.command: certbot --nginx -d "{{ monitoring_domain }}" -n --agree-tos --email letsencrypt@kxlion.de
   when: letsencrypt_domain_exists is failed
 
-- name: grafana config
+- name: Copy grafana config
   ansible.builtin.template:
     src: grafana.ini.j2
     dest: /etc/grafana/grafana.ini
@@ -70,7 +70,7 @@
   notify:
     - reload grafana
 
-- name: prometheus config
+- name: Copy prometheus config
   ansible.builtin.copy:
     src: prometheus.yml
     dest: /etc/prometheus/prometheus.yml
@@ -80,25 +80,9 @@
   notify:
     - reload prometheus
 
-- name: Expose mariadb prod port
-  ansible.builtin.command: "dokku mariadb:expose {{ db_name }} 127.0.0.1:5000"
-  ignore_errors: true
-
-- name: Read db password
-  ansible.builtin.command: "cat /var/lib/dokku/services/mariadb/{{ db_name }}/ROOTPASSWORD"
-  register: db_password
-
-- name: Print return information from the previous task
-  ansible.builtin.debug:
-    var: result
-    verbosity: 2
-
-- name: Create read only DB user for monitoring
-  community.mysql.mysql_user:
-    name: monitoring
-    password: "{{ monitoring_db_password }}"
-    priv: "*.*:SELECT"
-    state: present
-    login_password: "{{ db_password.stdout }}"
-    login_port: 5000
-    login_user: root
+- name: Expose DB tasks
+  ansible.builtin.include_tasks: expose_db.yml
+  vars:
+    port: " {{ item.port }}"
+    db_name: "{{ item.name }}"
+  loop: "{{ db_port_mapping }}"
