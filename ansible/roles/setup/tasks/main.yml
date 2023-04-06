@@ -4,7 +4,7 @@
   ansible.posix.authorized_key:
     user: "{{ ansible_user }}"
     state: present
-    key: "{{ lookup('file', 'creds/pub_keys') }}" # fixme
+    key: "{{ lookup('file', 'creds/pub_keys') }}"
 
 - name: Enable auto upgrade
   ansible.builtin.include_role:

@@ -8,7 +8,7 @@ dependencies:
       dokku_users:
         - name: Github Actions
           username: ci-deploy
-          ssh_key: "{{ lookup('file', 'creds/deploy_key.pub') }}" # FIXME
+          ssh_key: "{{ lookup('file', 'creds/deploy_key.pub') }}"
         - name: Local developer for debug
           username: dev
           ssh_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

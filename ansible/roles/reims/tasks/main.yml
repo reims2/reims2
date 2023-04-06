@@ -1,28 +1,18 @@
 - name: Ensure github.com is a known host for dokku user
   ansible.builtin.lineinfile:
-    dest: /dokku/.ssh/known_hosts
+    dest: /home/dokku/.ssh/known_hosts
     create: true
     state: present
     line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
     regexp: "^github\\.com"
     mode: "0644"
-- name: Ensure github.com is a known host for current user
-  ansible.builtin.lineinfile:
-    dest: /dokku/.ssh/known_hosts
-    create: true
-    state: present
-    line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
-    regexp: "^github\\.com"
-    mode: "0644"
-- name: dokku create api
+- name: dokku create apps
   dokku_app:
-    app: "{{ api_app_name }}"
-- name: dokku create frontend
-  dokku_app:
-    app: "{{ frontend_app_name }}"
-- name: dokku create docs
-  dokku_app:
-    app: "{{ docs_app_name }}"
+    app: "{{ item }}"
+  loop:
+    - "{{ api_app_name }}"
+    - "{{ frontend_app_name }}"
+    - "{{ docs_app_name }}"
 
 - name: Create mysql
   dokku_service_create:
@@ -36,18 +26,21 @@
       [mysqld]
       sql_mode="ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
     mode: "0644"
-- name: Restart mysql to apply config
-  ansible.builtin.command: "dokku mariadb:restart {{ db_name }}"
+  notify:
+    - restart dokku mariadb
+- name: Flush handlers to reload DB before starting API
+  ansible.builtin.meta: flush_handlers
 - name: Link database to api
   dokku_service_link:
     app: "{{ api_app_name }}"
     name: "{{ db_name }}"
     service: mariadb
 - name: Enable backups for mysql to S3
-  when: aws_bucket_name is defined and aws_bucket_name != '' and aws_bucket_name != None
+  when: aws_bucket_name != ""
   ansible.builtin.shell: |
     dokku mariadb:backup-auth {{ db_name }} {{ aws_key_id }} {{ aws_secret_key }}
     dokku mariadb:backup-schedule {{ db_name }} "0 2,10,18 * * *" {{ aws_bucket_name }}
+
 - name: "Frontend env vars: internal URLS for API+docs and nodejs host+port"
   dokku_config:
     app: "{{ frontend_app_name }}"
@@ -57,12 +50,11 @@
       DOCS_URL: "http://{{ docs_app_name }}.web:5000"
       HOST: "0.0.0.0"
 - name: "Frontend env vars: Enable debug"
-  when: debug_enable is defined and debug_enable
+  when: debug_enable
   dokku_config:
     app: "{{ frontend_app_name }}"
     config:
       PVH_DEBUG: "true"
-
 - name: "API env vars: api token"
   dokku_config:
     app: "{{ api_app_name }}"
@@ -70,7 +62,7 @@
       PORT: "5000"
       PVH_JWT_SECRET: "{{ api_jwt_token }}"
 - name: "API env vars: Enable debug"
-  when: debug_enable is defined and debug_enable
+  when: debug_enable
   dokku_config:
     app: "{{ api_app_name }}"
     config:
@@ -106,21 +98,18 @@
     state: absent
 - name: Start vector container for persistent logging
   ansible.builtin.command: dokku logs:vector-start
-- name: "API: Configure persistent logging"
-  ansible.builtin.command: "dokku logs:set {{ api_app_name }} vector-sink 'file://?path=/var/log/dokku/apps/{{ api_app_name }}.log&encoding[codec]=text'"
-- name: "Frontend: Configure persistent logging"
-  ansible.builtin.command: "dokku logs:set {{ frontend_app_name }} vector-sink 'file://?path=/var/log/dokku/apps/{{ frontend_app_name }}.log&encoding[codec]=text'"
+- name: "Frontend: Configure persistent logging for all apps"
+  ansible.builtin.command: "dokku logs:set {{ item }} vector-sink 'file://?path=/var/log/dokku/apps/{{ item }}.log&encoding[codec]=text'"
+  loop:
+    - "{{ frontend_app_name }}"
+    - "{{ api_app_name }}"
+    - "{{ docs_app_name }}"
 - name: Configure logrotate for persistent app logs
   ansible.builtin.copy:
+    src: dokku-logrotate.conf
     dest: "/etc/logrotate.d/dokku-vector.conf"
-    content: |
-      /var/log/dokku/apps/*.log {
-          weekly
-          rotate 4
-          size 10M
-          compress
-          delaycompress
-      }
+    owner: root
+    group: root
     mode: "0644"
 - name: Deploy frontend from git (this takes 5 minutes and will work even when failing with timeout)
   timeout: 300
@@ -151,12 +140,13 @@
     build: true
 - name: "Set letsencrypt mail"
   ansible.builtin.command: dokku letsencrypt:set --global email letsencrypt@kxlion.de
-- name: Enable frontend letsencrypt
+- name: Enable letsencrypt
   dokku_letsencrypt:
-    app: "{{ frontend_app_name }}"
-- name: Enable API letsencrypt
-  dokku_letsencrypt:
-    app: "{{ api_app_name }}"
+    app: "{{ item }}"
+  loop:
+    - "{{ frontend_app_name }}"
+    - "{{ api_app_name }}"
+
 - name: Enable letsencrypt auto renew
   ansible.builtin.command: dokku letsencrypt:cron-job --add
 - name: "Run restore DB tasks"
