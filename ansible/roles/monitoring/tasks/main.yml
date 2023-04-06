@@ -5,22 +5,23 @@
       - prometheus
       - certbot
       - python3-certbot-nginx
+      - python3-mysqldb
     state: present
 
-- name: nginx new site
+- name: Nginx new site
   ansible.builtin.template:
-    src: nginx_monitoring.conf.j2
-    dest: /etc/nginx/sites-available/monitoring.conf
+    src: nginx_grafana.conf.j2
+    dest: /etc/nginx/sites-available/grafana.conf
     owner: root
     group: root
     mode: "0644"
   notify:
     - reload nginx
 
-- name: nginx:enable default
-  file:
-    src: /etc/nginx/sites-available/monitoring.conf
-    dest: /etc/nginx/sites-enabled/monitoring.conf
+- name: Nginx enable new site
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/grafana.conf
+    dest: /etc/nginx/sites-enabled/grafana.conf
     state: link
   notify:
     - reload nginx
@@ -29,7 +30,7 @@
   ansible.builtin.lineinfile:
     path: /etc/nginx/nginx.conf
     search_string: "sites-enabled/*"
-    line: include /etc/nginx/sites-enabled/*.*;
+    line: "    include /etc/nginx/sites-enabled/*.*;"
     insertafter: '^http \{'
   notify:
     - reload nginx
@@ -40,18 +41,24 @@
     state: absent
   notify:
     - reload nginx
-  register: hasbucketsize_removed
+  register: hashbucketsize_removed
 
 - name: Ensure server_names_hash_bucket_size is included in nginx.conf instead
   ansible.builtin.lineinfile:
     path: /etc/nginx/nginx.conf
     search_string: "server_names_hash_bucket_size"
-    line: server_names_hash_bucket_size 128;
+    line: "    server_names_hash_bucket_size 128;"
     insertafter: '^http \{'
   when: hashbucketsize_removed.changed
 
+- name: Check if HTTPS is already enabled
+  shell: "certbot certificates | {{ monitoring_domain }}"
+  register: letsencrypt_domain_exists
+  ignore_errors: true
+
 - name: "Enable letsencrypt"
   ansible.builtin.command: certbot --nginx -d "{{ monitoring_domain }}" -n --agree-tos --email letsencrypt@kxlion.de
+  when: letsencrypt_domain_exists is failed
 
 - name: grafana config
   ansible.builtin.template:
@@ -63,7 +70,7 @@
   notify:
     - reload grafana
 
-- name: grafana config
+- name: prometheus config
   ansible.builtin.copy:
     src: prometheus.yml
     dest: /etc/prometheus/prometheus.yml
@@ -80,6 +87,11 @@
 - name: Read db password
   ansible.builtin.command: "cat /var/lib/dokku/services/mariadb/{{ db_name }}/ROOTPASSWORD"
   register: db_password
+
+- name: Print return information from the previous task
+  ansible.builtin.debug:
+    var: result
+    verbosity: 2
 
 - name: Create read only DB user for monitoring
   community.mysql.mysql_user:

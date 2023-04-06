@@ -1,9 +1,17 @@
 ---
 - name: Initial server configuration and hardening
-  import_playbook: plays/setup.yml
+  hosts: all
+  become: true
+  roles:
+    - common
+    - setup
 
 - name: Setup production REIMS2
-  import_playbook: plays/reims.yml
+  hosts: all
+  become: true
+  roles:
+    - common
+    - reims
   vars:
     frontend_domain: "{{ inventory_hostname }}"
     api_domain: "{{ 'api.' + inventory_hostname }}"
@@ -35,10 +43,13 @@
       34393135313537373965326338626638353661326133343836653435393964343736346530343135
       6665336566316538343635383639666164363030336437643633
     aws_bucket_name: reims2-backup
-    db_dump: "{{ lookup('file', '../dump.sql', errors='warn') }}"
 
 - name: Setup dev REIMS2
-  import_playbook: plays/reims.yml
+  hosts: all
+  become: true
+  roles:
+    - common
+    - reims
   vars:
     frontend_domain: "{{ 'dev.' + inventory_hostname }}"
     api_domain: "{{ 'dev-api.' + inventory_hostname }}"
@@ -49,11 +60,13 @@
     docs_app_name: "dev-docs"
     api_jwt_token: "testtokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttoken"
     debug_enable: true
-    db_dump: "{{ lookup('file', '../dump.sql', errors='warn') }}"
 
 - name: Setup monitoring
   hosts: all
   become: true
+  roles:
+    - common
+    - monitoring
   vars:
     monitoring_domain: "{{ 'monitoring.' + inventory_hostname }}"
     db_name: "reims2-db" # Creates a monitoring user for that dokku DB and exposes the DB on port 5000
@@ -64,6 +77,4 @@
       37663365303839643930376430636661663035383261303461363862323034613031303632313732
       6563616565396262350a356562346661353431636138326236646233653965656464333436613233
       32666163343133373864643561346435366666666163343839343266613862303764
-  tasks:
-    - ansible.builtin.import_tasks: tasks/monitoring.yml
-      tags: monitoring
+  tags: monitoring

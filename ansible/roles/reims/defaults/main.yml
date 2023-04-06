@@ -1,0 +1,2 @@
+---
+db_dump: "{{ lookup('file', 'dump.sql', errors='warn') }}"

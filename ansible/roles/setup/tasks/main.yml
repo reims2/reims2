@@ -1,0 +1,87 @@
+- name: Print ip address
+  ansible.builtin.debug: var=ansible_default_ipv4.address
+- name: Set authorized SSH pubkeys from file
+  ansible.posix.authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ lookup('file', 'creds/pub_keys') }}" # fixme
+
+- name: Enable auto upgrade
+  ansible.builtin.include_role:
+    name: jnv.unattended-upgrades
+  vars:
+    unattended_automatic_reboot_time: "06:00"
+    unattended_update_days: '{"Mon"}'
+
+- name: Enable swap
+  ansible.builtin.include_role:
+    name: geerlingguy.swap
+  vars:
+    swap_file_size_mb: "2048" # some swap for more RAM during Dokku deploys
+
+- name: Apt upgrade
+  ansible.builtin.apt:
+    upgrade: true
+    update_cache: true
+    cache_valid_time: 86400 # One day
+- name: Install some packages (user-specified)
+  ansible.builtin.package:
+    name:
+      - htop
+      - nano
+      - goaccess
+      - libpam-systemd # ssh session closed after reboot
+    state: present
+
+- name: OS hardening
+  ansible.builtin.include_role:
+    name: devsec.hardening.os_hardening
+  vars:
+    sysctl_overwrite:
+      # Enable IPv4 traffic forwarding.
+      net.ipv4.ip_forward: 1
+      net.ipv6.conf.all.disable_ipv6: 0
+      net.ipv6.conf.all.forwarding: 1
+    os_auth_pw_max_age: 99999 # nobody wants to be forced to change PW
+    os_auth_pw_min_age: 0
+    os_auth_allow_homeless: true
+    os_env_umask: "022"
+    os_selinux_state: disabled
+    os_auditd_enabled: false # lxd container
+    os_auth_pam_passwdqc_enable: false # dont need strong PW policy
+    os_ignore_home_folder_users: [dokku]
+
+- name: SSH hardening
+  ansible.builtin.include_role:
+    name: devsec.hardening.ssh_hardening
+  vars:
+    ssh_permit_root_login: "yes"
+    sftp_enabled: true
+    ssh_print_motd: true
+    ssh_print_pam_motd: true
+    ssh_max_auth_retries: 4
+    sftp_umask: "0022"
+
+  # Not using notify handler because include_role doesn't support it
+- name: Restart server
+  ansible.builtin.reboot:
+    reboot_timeout: 600
+
+- name: Allow ssh
+  community.general.ufw:
+    rule: allow
+    name: OpenSSH
+- name: Allow http
+  community.general.ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
+- name: Allow https
+  community.general.ufw:
+    rule: allow
+    port: "443"
+    proto: tcp
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+    policy: deny

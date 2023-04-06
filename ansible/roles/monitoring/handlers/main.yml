@@ -1,0 +1,9 @@
+- name: reload grafana
+  ansible.builtin.service:
+    name: grafana-server
+    state: reloaded
+
+- name: reload prometheus
+  ansible.builtin.service:
+    name: prometheus
+    state: reloaded

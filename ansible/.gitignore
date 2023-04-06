@@ -1,2 +1,3 @@
-creds/
 *.sql
+vault_password
+pub_keys
