@@ -1,5 +1,5 @@
 import { sanitizeEyeValues } from './util'
-import { Glasses, Eye, GlassesSearch } from '~/model/GlassesModel'
+import { Glasses, Eye, GlassesSearch, EyeSearch } from '~/model/GlassesModel'
 
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 10
@@ -8,19 +8,24 @@ const NORMAL_TOLERANCE = 0.5
 const HIGH_TOLERANCE = 1.0
 
 export default function calculateAllPhilscore(terms:GlassesSearch, glasses: Glasses[]):Glasses[] {
-  const rxOd = sanitizeEyeValues(terms.od)
-  const rxOs = sanitizeEyeValues(terms.os)
+  const rxOd = sanitizeEyeValues(terms.od) as EyeSearch
+  const rxOs = sanitizeEyeValues(terms.os) as EyeSearch
+  const isSinglefocal = terms.glassesType === 'single'
   const tolerance = terms.highTolerance !== null && terms.highTolerance ? HIGH_TOLERANCE : NORMAL_TOLERANCE
 
   return glasses.slice()
     .filter(glass => (terms.glassesType === glass.glassesType))
-    .filter(glass => checkForSingleAxisTolerance(rxOd, glass.od) && checkForSingleAxisTolerance(rxOs, glass.os))
-    .filter(glass => checkForTolerances(glass.od, rxOd, tolerance))
-    .filter(glass => checkForTolerances(glass.os, rxOs, tolerance))
-    .filter(glass => glass.glassesType === 'single' || checkForAdditionalTolerance(glass, rxOd, rxOs, tolerance))
+    .filter(glass => !rxOd.enabled || checkForSingleAxisTolerance(rxOd, glass.od))
+    .filter(glass => !rxOs.enabled || checkForSingleAxisTolerance(rxOd, glass.os))
+    .filter(glass => !rxOd.enabled || checkForTolerances(glass.od, rxOd, tolerance))
+    .filter(glass => !rxOs.enabled || checkForTolerances(glass.os, rxOs, tolerance))
+    .filter(glass => rxOd.enabled || (Math.abs(glass.od.sphere - rxOs.sphere) <= HIGH_TOLERANCE))
+    .filter(glass => rxOs.enabled || (Math.abs(glass.os.sphere - rxOd.sphere) <= HIGH_TOLERANCE))
+    .filter(glass => isSinglefocal || !rxOd.enabled || checkForAdditionalTolerance(glass.od, rxOd, tolerance))
+    .filter(glass => isSinglefocal || !rxOs.enabled || checkForAdditionalTolerance(glass.os, rxOs, tolerance))
     .map((glass) => {
-      const odScore = calcSingleEyePhilscore(rxOd, glass.od, terms.glassesType === 'single')
-      const osScore = calcSingleEyePhilscore(rxOs, glass.os, terms.glassesType === 'single')
+      const odScore = rxOd.enabled ? calcSingleEyePhilscore(rxOd, glass.od, isSinglefocal) : 0
+      const osScore = rxOs.enabled ? calcSingleEyePhilscore(rxOs, glass.os, isSinglefocal) : 0
 
       return { ...glass, score: (odScore + osScore), odScore, osScore }
     })
@@ -28,7 +33,7 @@ export default function calculateAllPhilscore(terms:GlassesSearch, glasses: Glas
     .sort((a, b) => (a.score > b.score ? 1 : -1))
 }
 
-function checkForSingleAxisTolerance(rx:Eye, lens: Eye):boolean {
+function checkForSingleAxisTolerance(rx:EyeSearch, lens: Eye):boolean {
   /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
   // Some arbitrary numbers from the PDF, in short: Smaller cylinders allow for a greater tolerance.
   const toleranceYValues = [7, 8, 9, 10, 13, 15, 20, 25, 35, 90]
@@ -58,7 +63,7 @@ function checkForSingleAxisTolerance(rx:Eye, lens: Eye):boolean {
   return (lens.axis >= minimum1 && lens.axis <= maximum1) || (lens.axis >= minimum2 && lens.axis <= maximum2)
 }
 
-function checkForTolerances(lens: Eye, rx:Eye, tolerance: number):boolean {
+function checkForTolerances(lens: Eye, rx:EyeSearch, tolerance: number):boolean {
   /**
    * Check if the rx itself or any of its spherical equivalents is in the tolerance range of sphere+cylinder of lens.
    */
@@ -68,11 +73,11 @@ function checkForTolerances(lens: Eye, rx:Eye, tolerance: number):boolean {
   return false
 }
 
-function checkForAdditionalTolerance(glass: Glasses, rxOd:Eye, rxOs: Eye, tolerance: number):boolean {
-  return (Math.abs(glass.od.add! - rxOd.add!) <= tolerance && Math.abs(glass.os.add! - rxOs.add!) <= tolerance)
+function checkForAdditionalTolerance(eye: Eye, rx:EyeSearch, tolerance: number):boolean {
+  return (Math.abs(eye.add! - rx.add!) <= tolerance)
 }
 
-function calcSingleEyePhilscore(rx:Eye, lens: Eye, isSinglefocal: boolean):number {
+function calcSingleEyePhilscore(rx:EyeSearch, lens: Eye, isSinglefocal: boolean):number {
   /**
    * rx: desired values for a single eye
    * lens: single eye of one available glasses

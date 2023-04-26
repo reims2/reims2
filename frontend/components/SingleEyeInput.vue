@@ -1,9 +1,19 @@
 <template>
   <div>
     <v-row dense>
-      <div class="text-h5 pb-2">
-        {{ eyeName }}
-      </div>
+      <v-col class="pa-0 text-h5 d-flex align-center">
+        <v-checkbox
+          :input-value="enabled"
+          tabindex="-1"
+          class="py-0 my-0"
+          hide-details
+          @change="val => input('enabled', val)"
+        />
+        <div :class="!enabled ? 'text--secondary' : ''">
+          {{ eyeName }}
+        </div>
+      </v-col>
+      <v-col cols=12 class="pa-0 pb-4" />
       <v-col
         v-for="[id, item] in Object.entries(eye_data)"
         :key="id"
@@ -16,9 +26,9 @@
           type="number"
           :value="eye_data[id].value"
           :label="item.label"
-          :rules="!item.disabled ? eyeRules[id] : []"
+          :rules="!(item.disabled || !enabled) ? eyeRules[id] : []"
           :step="item.step"
-          :disabled="item.disabled"
+          :disabled="item.disabled || !enabled"
           :prefix="eye_data[id].value != null ? item.prefix : ''"
           @input="val => input(id, val)"
           @update:error="val => hasError[id] = val"
@@ -61,6 +71,10 @@ export default {
       default: ''
     },
     addEnabled: {
+      type: Boolean,
+      default: true
+    },
+    enabled: {
       type: Boolean,
       default: true
     }

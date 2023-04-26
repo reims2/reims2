@@ -11,14 +11,12 @@ export interface Dispense {
     modifyDate: Date|null;
     previousSku: number|null;
 }
-export interface GlassesSearch {
-    glassesType: string;
+
+export interface Glasses {
+    id: number; // backend ID
     od: Eye;
     os: Eye;
-    highTolerance?: boolean;
-}
-export interface Glasses extends GlassesSearch{
-    id: number; // backend ID
+    glassesType: string;
     appearance: string;
     dispensed?: boolean;
     dispense?: Dispense;
@@ -27,4 +25,19 @@ export interface Glasses extends GlassesSearch{
     sku: number;
     creationDate: number;
     score?: number;
+}
+
+export interface EyeSearch {
+    add?: number;
+    axis: number;
+    cylinder: number;
+    sphere: number;
+    enabled: boolean;
+}
+
+export interface GlassesSearch {
+    glassesType: string;
+    od: EyeSearch;
+    os: EyeSearch;
+    highTolerance?: boolean;
 }
