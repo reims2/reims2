@@ -153,11 +153,11 @@ export default {
   transition: 'main',
   data: () => ({
     matches: null,
-    valid: false,
+    valid: true,
     page: 1,
     glassesType: '',
-    odEye: { axis: '', cylinder: '', sphere: '', add: '' },
-    osEye: { axis: '', cylinder: '', sphere: '', add: '' },
+    odEye: { axis: '', cylinder: '', sphere: '', add: '', enabled: true },
+    osEye: { axis: '', cylinder: '', sphere: '', add: '', enabled: true },
     highTolerance: false,
     syncEye: true,
     itemsPerPage: 3,
@@ -190,6 +190,26 @@ export default {
       if (this.syncEye) {
         // setting manually to trigger reactive system in SingleEyeInput
         this.$set(this.osEye, 'add', newVal)
+      }
+    },
+    'odEye.enabled'(newVal) {
+      if (!newVal) {
+        this.syncEye = false
+        this.$set(this.osEye, 'enabled', true) // one eye has to be enabled
+        this.$set(this.odEye, 'sphere', this.osEye.sphere)
+        this.$set(this.odEye, 'cylinder', '')
+        this.$set(this.odEye, 'axis', '')
+        this.$set(this.odEye, 'add', '')
+      }
+    },
+    'osEye.enabled'(newVal) {
+      if (!newVal) {
+        this.syncEye = false
+        this.$set(this.odEye, 'enabled', true) // one eye has to be enabled
+        this.$set(this.osEye, 'sphere', this.odEye.sphere)
+        this.$set(this.osEye, 'cylinder', '')
+        this.$set(this.osEye, 'axis', '')
+        this.$set(this.osEye, 'add', '')
       }
     },
     odEye: {
