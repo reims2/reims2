@@ -41,7 +41,7 @@
             </v-col>
             <v-col
               cols=12
-              class="pa-0 pb-1"
+              class="pa-0"
             >
               <v-checkbox
                 v-model="highTolerance"
@@ -153,11 +153,11 @@ export default {
   transition: 'main',
   data: () => ({
     matches: null,
-    valid: true,
+    valid: false,
     page: 1,
     glassesType: '',
-    odEye: { axis: '', cylinder: '', sphere: '', add: '', enabled: true },
-    osEye: { axis: '', cylinder: '', sphere: '', add: '', enabled: true },
+    odEye: { axis: '', cylinder: '', sphere: '', add: '', isBAL: false },
+    osEye: { axis: '', cylinder: '', sphere: '', add: '', isBAL: false },
     highTolerance: false,
     syncEye: true,
     itemsPerPage: 3,
@@ -192,20 +192,30 @@ export default {
         this.$set(this.osEye, 'add', newVal)
       }
     },
-    'odEye.enabled'(newVal) {
-      if (!newVal) {
+    'odEye.sphere'(newVal) {
+      if (this.osEye.isBAL) {
+        this.$set(this.osEye, 'sphere', newVal)
+      }
+    },
+    'osEye.sphere'(newVal) {
+      if (this.odEye.isBAL) {
+        this.$set(this.odEye, 'sphere', newVal)
+      }
+    },
+    'odEye.isBAL'(newVal) {
+      if (newVal) {
         this.syncEye = false
-        this.$set(this.osEye, 'enabled', true) // one eye has to be enabled
+        this.$set(this.osEye, 'isBAL', false) // one eye has to be enabled
         this.$set(this.odEye, 'sphere', this.osEye.sphere)
         this.$set(this.odEye, 'cylinder', '')
         this.$set(this.odEye, 'axis', '')
         this.$set(this.odEye, 'add', '')
       }
     },
-    'osEye.enabled'(newVal) {
-      if (!newVal) {
+    'osEye.isBAL'(newVal) {
+      if (newVal) {
         this.syncEye = false
-        this.$set(this.odEye, 'enabled', true) // one eye has to be enabled
+        this.$set(this.odEye, 'isBAL', false) // one eye has to be enabled
         this.$set(this.osEye, 'sphere', this.odEye.sphere)
         this.$set(this.osEye, 'cylinder', '')
         this.$set(this.osEye, 'axis', '')
