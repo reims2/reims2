@@ -49,24 +49,22 @@
       API_URL: "http://{{ api_app_name }}.web:5000/pvh/api"
       DOCS_URL: "http://{{ docs_app_name }}.web:5000"
       HOST: "0.0.0.0"
-- name: "Frontend env vars: Enable debug"
-  when: debug_enable
-  dokku_config:
-    app: "{{ frontend_app_name }}"
-    config:
-      PVH_DEBUG: "true"
 - name: "API env vars: api token"
   dokku_config:
     app: "{{ api_app_name }}"
     config:
       PORT: "5000"
       PVH_JWT_SECRET: "{{ api_jwt_token }}"
-- name: "API env vars: Enable debug"
+- name: "Set debug env vars for all apps"
   when: debug_enable
   dokku_config:
-    app: "{{ api_app_name }}"
+    app: "{{ item }}"
     config:
       PVH_DEBUG: "true"
+  loop:
+    - "{{ api_app_name }}"
+    - "{{ docs_app_name }}"
+    - "{{ frontend_app_name }}"
 
 - name: "Docs env vars: nodejs host+port vars"
   dokku_config:
@@ -107,37 +105,33 @@
 - name: Configure logrotate for persistent app logs
   ansible.builtin.copy:
     src: dokku-logrotate.conf
-    dest: "/etc/logrotate.d/dokku-vector.conf"
+    dest: "/etc/logrotate.d/dokku-vector"
     owner: root
     group: root
     mode: "0644"
-- name: Deploy frontend from git (this takes 5 minutes and will work even when failing with timeout)
+- name: Deploy apps from git (this takes up to 15 minutes total and will work even when failing with timeout)
   timeout: 300
   ignore_errors: true
   tags: deploy
   dokku_clone:
-    app: "{{ frontend_app_name }}"
-    repository: https://github.com/reims2/reims2-frontend
+    app: "{{ item.name }}"
+    repository: "{{ item.repo }}"
     version: main
     build: true
-- name: Deploy api from git (this takes up to 3 minutes and will work even when failing with timeout)
-  timeout: 180
-  ignore_errors: true
-  tags: deploy
-  dokku_clone:
-    app: "{{ api_app_name }}"
-    repository: https://github.com/reims2/reims2-backend
-    version: main
-    build: true
-- name: Deploy docs from git (this takes up to 3 minutes and will work even when failing with timeout)
-  timeout: 180
-  ignore_errors: true
-  tags: deploy
-  dokku_clone:
-    app: "{{ docs_app_name }}"
-    repository: https://github.com/reims2/reims2-docs
-    version: main
-    build: true
+  loop:
+    - {
+        name: "{{ frontend_app_name }}",
+        repo: "https://github.com/reims2/reims2-frontend",
+      }
+    - {
+        name: "{{ api_app_name }}",
+        repo: "https://github.com/reims2/reims2-backend",
+      }
+    - {
+        name: "{{ docs_app_name }}",
+        repo: "https://github.com/reims2/reims2-docs",
+      }
+
 - name: "Set letsencrypt mail"
   ansible.builtin.command: dokku letsencrypt:set --global email letsencrypt@kxlion.de
 - name: Enable letsencrypt
