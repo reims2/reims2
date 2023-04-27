@@ -32,7 +32,8 @@ export interface EyeSearch {
     axis: number;
     cylinder: number;
     sphere: number;
-    enabled: boolean;
+    // is balance lens => ignore this eye and search for similar sphere only
+    isBAL: boolean;
 }
 
 export interface GlassesSearch {

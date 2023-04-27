@@ -15,17 +15,17 @@ export default function calculateAllPhilscore(terms:GlassesSearch, glasses: Glas
 
   return glasses.slice()
     .filter(glass => (terms.glassesType === glass.glassesType))
-    .filter(glass => !rxOd.enabled || checkForSingleAxisTolerance(rxOd, glass.od))
-    .filter(glass => !rxOs.enabled || checkForSingleAxisTolerance(rxOd, glass.os))
-    .filter(glass => !rxOd.enabled || checkForTolerances(glass.od, rxOd, tolerance))
-    .filter(glass => !rxOs.enabled || checkForTolerances(glass.os, rxOs, tolerance))
-    .filter(glass => rxOd.enabled || (Math.abs(glass.od.sphere - rxOs.sphere) <= HIGH_TOLERANCE))
-    .filter(glass => rxOs.enabled || (Math.abs(glass.os.sphere - rxOd.sphere) <= HIGH_TOLERANCE))
-    .filter(glass => isSinglefocal || !rxOd.enabled || checkForAdditionalTolerance(glass.od, rxOd, tolerance))
-    .filter(glass => isSinglefocal || !rxOs.enabled || checkForAdditionalTolerance(glass.os, rxOs, tolerance))
+    .filter(glass => rxOd.isBAL || checkForSingleAxisTolerance(rxOd, glass.od))
+    .filter(glass => rxOs.isBAL || checkForSingleAxisTolerance(rxOd, glass.os))
+    .filter(glass => rxOd.isBAL || checkForTolerances(glass.od, rxOd, tolerance))
+    .filter(glass => rxOs.isBAL || checkForTolerances(glass.os, rxOs, tolerance))
+    .filter(glass => !rxOd.isBAL || (Math.abs(glass.od.sphere - rxOs.sphere) <= tolerance))
+    .filter(glass => !rxOs.isBAL || (Math.abs(glass.os.sphere - rxOd.sphere) <= tolerance))
+    .filter(glass => isSinglefocal || rxOd.isBAL || checkForAdditionalTolerance(glass.od, rxOd, tolerance))
+    .filter(glass => isSinglefocal || rxOs.isBAL || checkForAdditionalTolerance(glass.os, rxOs, tolerance))
     .map((glass) => {
-      const odScore = rxOd.enabled ? calcSingleEyePhilscore(rxOd, glass.od, isSinglefocal) : 0
-      const osScore = rxOs.enabled ? calcSingleEyePhilscore(rxOs, glass.os, isSinglefocal) : 0
+      const odScore = rxOd.isBAL ? 0 : calcSingleEyePhilscore(rxOd, glass.od, isSinglefocal)
+      const osScore = rxOs.isBAL ? 0 : calcSingleEyePhilscore(rxOs, glass.os, isSinglefocal)
 
       return { ...glass, score: (odScore + osScore), odScore, osScore }
     })

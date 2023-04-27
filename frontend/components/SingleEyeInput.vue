@@ -1,19 +1,11 @@
 <template>
   <div>
     <v-row dense>
-      <v-col class="pa-0 text-h5 d-flex align-center">
-        <v-checkbox
-          :input-value="enabled"
-          tabindex="-1"
-          class="py-0 my-0"
-          hide-details
-          @change="val => input('enabled', val)"
-        />
-        <div :class="!enabled ? 'text--secondary' : ''">
+      <v-col class="text-h5 pb-2">
+        <div :class="isBAL ? 'text--secondary' : ''">
           {{ eyeName }}
         </div>
       </v-col>
-      <v-col cols=12 class="pa-0 pb-4" />
       <v-col
         v-for="[id, item] in Object.entries(eye_data)"
         :key="id"
@@ -26,9 +18,9 @@
           type="number"
           :value="eye_data[id].value"
           :label="item.label"
-          :rules="!(item.disabled || !enabled) ? eyeRules[id] : []"
+          :rules="!(item.disabled || isBAL) ? eyeRules[id] : []"
           :step="item.step"
-          :disabled="item.disabled || !enabled"
+          :disabled="item.disabled || isBAL"
           :prefix="eye_data[id].value != null ? item.prefix : ''"
           @input="val => input(id, val)"
           @update:error="val => hasError[id] = val"
@@ -36,6 +28,16 @@
           @focus="$event.target.select()"
           @keydown.s.prevent
           @keydown.a.prevent
+        />
+      </v-col>
+      <v-col cols="12" class="pa-0 pb-4">
+        <v-checkbox
+          :input-value="isBAL"
+          tabindex="-1"
+          class="py-0 my-0"
+          :label="`Disable ${eyeName} (BAL lens)`"
+          hide-details
+          @change="val => input('isBAL', val)"
         />
       </v-col>
     </v-row>
@@ -74,9 +76,9 @@ export default {
       type: Boolean,
       default: true
     },
-    enabled: {
+    isBAL: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data: () => ({
