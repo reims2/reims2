@@ -38,7 +38,7 @@
     "@nuxtjs/vuetify": "^1.12.3",
     "@types/chroma-js": "^2.4.0",
     "@types/jest": "^29.5.1",
-    "eslint": "^8.40.0",
+    "eslint": "^8.41.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",
