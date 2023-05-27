@@ -2,11 +2,11 @@
 
 ## Change the location
 
-In the top left it shows which location REIMS currently uses. To change that, click on "Change location" in the bottom left. After clicking apply, it'll take a few seconds to download the database of the new location. After that, it shows the new location in the top left and you're done.
+In the top left it shows which location REIMS currently uses. To change that, click on "Change location" in the bottom left. After clicking apply, it'll take a few seconds to download the database of the new location. After that, it shows the new location in the top left.
 
 ## Dispense glasses
 
-After a match has been found and the glasses have been dispensed, it's important to mark them as dispensed in the database. Switch to the "Edit" screen, enter the SKU and click "Dispense". Instead of clicking the button it's also possible to hit ENTER. A message will show if the dispension was successful.
+After matching glasses have been found for a patient, it's important to mark those as dispensed in the database. Switch to the "Edit" screen, enter the SKU and click "Dispense". Instead of clicking the button, it's also possible to hit ENTER. A message will show if the dispension was successful.
 
 ## Edit existing glasses
 
@@ -22,7 +22,7 @@ To use it offline, simply open the REIMS2 website in Chrome and it'll load even 
 
 ## Delete or replace glasses
 
-If glasses are missing in the storage or you if you want to purge unused glasses from the storage, it's possible to delete them. Switch to the "Edit" screen, enter the SKU. Click the three dots in the bottom right corner of the glasses and click "Delete". You'll be asked to confirm that you really want to delete glasses. It's important not to confuse this with Dispense, because with this glasses are permanently deleted and cannot be recovered.
+If glasses are missing in the storage or you if you want to purge unused glasses from the storage, it's possible to delete them. Switch to the "Edit" screen and enter the SKU. Click the three dots in the bottom right corner of the glasses and click "Delete". You'll be asked to select a deletion reason, which will be tracked in the campaign reports.
 
 ## Report of dispensed glasses
 
