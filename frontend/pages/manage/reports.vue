@@ -3,6 +3,22 @@
     <v-row dense class="d-flex justify-center">
       <v-col cols=12 md=6 lg=4>
         <div class="pb-2 text-h5">
+          Live statistics
+        </div>
+        <div class="pb-4 text--secondary">
+          Visit the monitoring dashboard to see live statistics.
+        </div>
+        <v-btn
+          color="accent"
+          href="https://monitoring.reims2.app"
+          target="_blank"
+        >
+          Open dashboard
+        </v-btn>
+
+        <v-divider class="my-9" />
+
+        <div class="pb-2 text-h5">
           Current inventory report
         </div>
         <div class="pb-4 text--secondary">
