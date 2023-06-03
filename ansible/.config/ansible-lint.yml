@@ -7,6 +7,7 @@ warn_list: # or 'skip_list' to silence them completely
   - no-free-form # Rule for detecting discouraged free-form syntax for action modules.
   - schema[requirements] # Perform JSON Schema Validation for known lintable kinds.
   - yaml[line-length] # Violations reported by yamllint.
+  - yaml[indentation]
   - no-changed-when # Use failed_when and specify error conditions instead of using changed_when.
   - fqcn[action-core] # Use FQCN for builtin actions.
   - fqcn[action] # Use FQCN for builtin actions.

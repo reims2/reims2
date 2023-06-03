@@ -81,7 +81,7 @@
       6563616565396262350a356562346661353431636138326236646233653965656464333436613233
       32666163343133373864643561346435366666666163343839343266613862303764
     db_port_mapping:
-      # exposes dokku DB with 'name' to 'port' and creates a monitoring read only user for grafana config
+      # exposes dokku DB with 'name' to 'port' and creates a read only user "monitoring" for grafana config
       - name: "reims2-db"
         port: "5000"
       - name: "dev-db"
