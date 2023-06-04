@@ -1,0 +1,95 @@
+---
+# Tasks file for the traefik role
+
+# Infrastructure
+# Ansible instructions to deploy the infrastructure
+# Copyright (C) 2019-2020  Christoph (Sheogorath) Kern
+# Copyright (C) 2020       Alexander Wellbrock
+# Copyright (C) 2020       Saibotk
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+- name: Create install directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ traefik_install_location }}"
+  become: true
+
+- name: Create data directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: "root"
+    group: "root"
+    setype: "container_file_t"
+  with_items:
+    - "{{ traefik_config_location }}"
+    - "{{ traefik_acme_location }}"
+  become: true
+
+- name: Create proxy network
+  community.docker.docker_network:
+    name: "{{ proxy_network }}"
+    driver_options:
+      com.docker.network.bridge.name: "{{ traefik_docker_bridge_name }}"
+  become: true
+
+- name: Create ipv6 frontend network
+  community.docker.docker_network:
+    name: "{{ traefik_ipv6.name }}"
+    enable_ipv6: true
+    ipam_config:
+      - subnet: "{{ traefik_ipv6.subnet }}"
+  become: true
+  when:
+    - traefik_ipv6 is defined
+    - traefik_ipv6.enabled
+
+- name: Deploy dynamic_conf.yml
+  ansible.builtin.template:
+    src: dynamic_conf.yml
+    dest: "{{ traefik_config_location }}/dynamic_conf.yml"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  become: true
+  when:
+    - traefik_dynamic_conf != omit
+
+- name: Deploy docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml
+    dest: "{{ traefik_install_location }}/docker-compose.yml"
+    mode: "0600"
+    owner: "root"
+    group: "root"
+    validate: docker-compose -f %s config -q
+  tags:
+    - docker
+  become: true
+
+- name: Compose traefik
+  community.docker.docker_compose:
+    state: present
+    project_src: "{{ traefik_install_location }}"
+    pull: true
+    remove_orphans: true
+  tags:
+    - docker
+  become: true

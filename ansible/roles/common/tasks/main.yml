@@ -1,0 +1,12 @@
+- name: Install packages for ansible
+  ansible.builtin.package:
+    name:
+      - python3-mysqldb
+      - python3-docker
+      - python3-pip
+    state: present
+
+- name: Install docker-compose python package
+  ansible.builtin.pip:
+    name: docker-compose
+  become: true

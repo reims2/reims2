@@ -1,77 +1,58 @@
 - name: Install packages
   ansible.builtin.package:
     name:
-      - grafana
       - prometheus
-      - certbot
-      - python3-certbot-nginx
-      - python3-mysqldb
     state: present
 
-- name: Nginx new site
-  ansible.builtin.template:
-    src: nginx_grafana.conf.j2
-    dest: /etc/nginx/sites-available/grafana.conf
-    owner: root
-    group: root
-    mode: "0644"
-  notify:
-    - reload nginx
-
-- name: Nginx enable new site
+- name: Create install directory
   ansible.builtin.file:
-    src: /etc/nginx/sites-available/grafana.conf
-    dest: /etc/nginx/sites-enabled/grafana.conf
-    state: link
-  notify:
-    - reload nginx
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ grafana_install_location }}"
+  become: true
+  tags:
+    - grafana
 
-- name: Ensure sites-enabled is included in nginx
-  ansible.builtin.lineinfile:
-    path: /etc/nginx/nginx.conf
-    search_string: "sites-enabled/*"
-    line: "    include /etc/nginx/sites-enabled/*.*;"
-    insertafter: '^http \{'
-  notify:
-    - reload nginx
-
-- name: Remove server_names_hash_bucket_size.conf from nginx to avoid errors with cerrbot
+- name: Create data directories
   ansible.builtin.file:
-    path: /etc/nginx/conf.d/server_names_hash_bucket_size.conf
-    state: absent
-  notify:
-    - reload nginx
-  register: hashbucketsize_removed
+    path: "{{ item }}"
+    state: directory
+    mode: "0777"
+    owner: "root"
+    group: "root"
+    setype: "container_file_t"
+  with_items:
+    - "{{ grafana_data_location }}"
+  become: true
+  tags:
+    - grafana
 
-- name: Ensure server_names_hash_bucket_size is included in nginx.conf instead
-  ansible.builtin.lineinfile:
-    path: /etc/nginx/nginx.conf
-    search_string: "server_names_hash_bucket_size"
-    line: "    server_names_hash_bucket_size 128;"
-    insertafter: '^http \{'
-  when: hashbucketsize_removed.changed
-
-- name: Check if HTTPS is already enabled
-  ansible.builtin.shell: "certbot certificates | grep {{ monitoring_domain }}"
-  register: letsencrypt_domain_exists
-  ignore_errors: true
-
-- name: Enable letsencrypt
-  ansible.builtin.command: certbot --nginx -d "{{ monitoring_domain }}" -n --agree-tos --email letsencrypt@kxlion.de
-  when: letsencrypt_domain_exists is failed
-
-- name: Add HTTPS conf to nginx conf (in case it has been overwritten)
-  ansible.builtin.command: certbot install --nginx --cert-name " {{ monitoring_domain }}" -n --agree-tos --email letsencrypt@kxlion.de
-
-- name: Copy grafana config
+- name: Deploy docker-compose.yml
   ansible.builtin.template:
-    src: grafana.ini.j2
-    dest: /etc/grafana/grafana.ini
-    owner: root
-    group: grafana
-    mode: "0644"
-  notify:
-    - reload grafana
+    src: docker-compose.yml.j2
+    dest: "{{ grafana_install_location }}/docker-compose.yml"
+    mode: "0600"
+    owner: "root"
+    group: "root"
+    validate: docker-compose -f %s config -q
+  tags:
+    - docker
+    - grafana
+  become: true
+
+- name: Compose grafana
+  community.docker.docker_compose:
+    state: present
+    project_src: "{{ grafana_install_location }}"
+    pull: true
+    remove_orphans: true
+  tags:
+    - grafana
+  become: true
 
 - name: Copy prometheus config
   ansible.builtin.copy:

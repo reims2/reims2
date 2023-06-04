@@ -1,0 +1,117 @@
+{{ ansible_managed | comment }}
+
+# Infrastructure
+# Ansible instructions to deploy the infrastructure
+# Copyright (C) 2019-2020  Christoph (Sheogorath) Kern
+# Copyright (C) 2020       Saibotk
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+version: '2'
+services:
+  proxy:
+    image: docker.io/library/traefik:{{ traefik_version }}
+    cpu_shares: 3072
+    mem_limit: 256mb
+    memswap_limit: 512mb
+    read_only: true
+    restart: always
+    labels:
+      - "traefik.enable=true"
+{% if traefik_https_redirect_all %}
+      - "traefik.http.routers.http_catchall.rule=HostRegexp(`{any:.+}`)"
+      - "traefik.http.routers.http_catchall.entrypoints=http"
+      - "traefik.http.routers.http_catchall.middlewares=https_redirect"
+{% endif %}
+      - "traefik.http.middlewares.https_redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.https_redirect.redirectscheme.permanent=true"
+      - "traefik.http.middlewares.compress.compress=true"
+{% if traefik_dashboard_auth is defined %}
+      - "traefik.http.routers.api.rule=Host(`{{ traefik_dashboard_domain }}`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.middlewares=traefikauth"
+      - "traefik.http.middlewares.traefikauth.basicauth.users={{ traefik_dashboard_auth }}"
+{% endif %}
+
+    ports:
+      - "80:80"
+      - "443:443"
+{% for entrypoint in traefik_additional_entrypoints %}
+      - "{{ entrypoint.port }}:{{ entrypoint.port }}"
+{% endfor %}
+
+    volumes:
+{% if traefik_dynamic_conf != omit %}
+      - "{{ traefik_config_location }}:/etc/traefik/dynamic_conf:ro"
+{% endif %}
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "{{ traefik_acme_location }}:/etc/traefik/acme"
+
+    command:
+      - "--entryPoints.http.address=:80"
+      - "--entryPoints.https.address=:443"
+{% for entrypoint in traefik_additional_entrypoints %}
+      - "--entryPoints.{{ entrypoint.name }}.address=:{{ entrypoint.port }}"
+{% endfor %}
+      - "--accesslog={{ traefik_access_log_enabled | bool | lower }}"
+{% if traefik_dynamic_conf != omit %}
+      - "--providers.file.directory=/etc/traefik/dynamic_conf"
+      - "--providers.file.watch=true"
+{% endif %}
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+{% if traefik_https_letsencrypt_enabled %}
+      - "--certificatesResolvers.{{ traefik_certresolver }}.acme.httpChallenge=true"
+      - "--certificatesResolvers.{{ traefik_certresolver }}.acme.email={{ traefik_letsencrypt_email }}"
+      - "--certificatesResolvers.{{ traefik_certresolver }}.acme.storage=/etc/traefik/acme/acme.json"
+      - "--certificatesResolvers.{{ traefik_certresolver }}.acme.httpChallenge.entrypoint=http"
+{% endif %}
+{% if traefik_debug %}
+      - "--log.level=DEBUG"
+# FIXME TODO
+      - "--api=true"
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+{% endif %}
+
+
+    networks:
+      {{ proxy_network }}:
+{% if traefik_aliases is defined %}
+        aliases:
+{% for alias in traefik_aliases %}
+          - "{{ alias }}"
+{% endfor %}
+{% endif %}
+{% if traefik_ipv6.enabled %}
+      {{ traefik_ipv6.name }}:
+{% if traefik_ipv6.ip_addr != omit %}
+        ipv6_address: {{ traefik_ipv6.ip_addr | ansible.utils.ipaddr('address') }}
+{% endif %}
+{% endif %}
+
+{% if traefik_options | length > 0 %}
+    environment:
+{% for key, value in traefik_options.items() %}
+      - "{{ key }}={{ value }}"
+{% endfor %}
+{% endif %}
+
+
+networks:
+  {{ proxy_network }}:
+    external: true
+{% if traefik_ipv6.enabled %}
+  {{ traefik_ipv6.name }}:
+    external: true
+{% endif %}

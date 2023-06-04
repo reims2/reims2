@@ -1,2 +1,5 @@
 ---
+grafana_install_location: "/srv/grafana"
+grafana_data_location: "{{ grafana_install_location }}/config"
+
 grafana_port: "3000"

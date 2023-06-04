@@ -11,13 +11,14 @@
   become: true
   roles:
     - common
+    - traefik
     - reims
   vars:
     deploy_from_git: false
     frontend_domain: "{{ inventory_hostname }}"
     api_domain: "{{ 'api.' + inventory_hostname }}"
     db_name: "reims2-db"
-    dokku_network_name: "reims2"
+    db_dump: false
     frontend_app_name: "frontend"
     api_app_name: "api"
     docs_app_name: "docs"
@@ -52,13 +53,13 @@
   become: true
   roles:
     - common
+    - traefik
     - reims
   vars:
-    deploy_from_git: false
+    db_dump: false
     frontend_domain: "{{ 'dev.' + inventory_hostname }}"
     api_domain: "{{ 'dev-api.' + inventory_hostname }}"
     db_name: "dev-db"
-    dokku_network_name: "dev-reims2"
     frontend_app_name: "dev-frontend"
     api_app_name: "dev-api"
     docs_app_name: "dev-docs"
@@ -72,6 +73,7 @@
   become: true
   roles:
     - common
+    - traefik
     - monitoring
   vars:
     monitoring_domain: "{{ 'monitoring.' + inventory_hostname }}"

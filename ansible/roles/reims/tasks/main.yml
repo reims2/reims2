@@ -67,10 +67,10 @@
       PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"
 - name: Create network configuration (all apps in one network)
   ansible.builtin.shell: |
-    dokku network:create {{ dokku_network_name }}
-    dokku network:set {{ frontend_app_name }} attach-post-deploy {{ dokku_network_name }}
-    dokku network:set {{ api_app_name }} attach-post-deploy {{ dokku_network_name }}
-    dokku network:set {{ docs_app_name }} attach-post-deploy {{ dokku_network_name }}
+    dokku network:create {{ proxy_network }}
+    dokku network:set {{ frontend_app_name }} attach-post-deploy {{ proxy_network }}
+    dokku network:set {{ api_app_name }} attach-post-deploy {{ proxy_network }}
+    dokku network:set {{ docs_app_name }} attach-post-deploy {{ proxy_network }}
     dokku network:rebuildall
 - name: Add main domain to frontend
   dokku_domains:
@@ -86,8 +86,9 @@
   dokku_proxy:
     app: "{{ docs_app_name }}"
     state: absent
-- name: Use nginx as proxy
-  command: dokku proxy:set {{ item }} nginx
+- name: Use traefik as proxy
+  ansible.builtin.shell: |
+    dokku proxy:set {{ item }} traefik
   loop:
     - "{{ frontend_app_name }}"
     - "{{ api_app_name }}"
@@ -95,7 +96,7 @@
 
 - name: Start vector container for persistent logging
   ansible.builtin.command: dokku logs:vector-start
-- name: "Frontend: Configure persistent logging for all apps"
+- name: "Configure persistent logging for all apps"
   ansible.builtin.command: "dokku logs:set {{ item }} vector-sink 'file://?path=/var/log/dokku/apps/{{ item }}.log&encoding[codec]=text'"
   loop:
     - "{{ frontend_app_name }}"
@@ -155,4 +156,5 @@
   tags:
     - restore-mysql
     - deploy
-  when: db_dump != ""
+  when:
+    - db_dump != "" and dp_dump != false

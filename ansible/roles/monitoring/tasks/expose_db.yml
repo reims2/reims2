@@ -1,5 +1,5 @@
 - name: Expose mariadb prod port
-  ansible.builtin.command: "dokku mariadb:expose {{ db_name }} 127.0.0.1:{{ port }}"
+  ansible.builtin.command: "dokku mariadb:expose {{ db_name }} 0.0.0.0:{{ port }}"
   ignore_errors: true
 
 - name: Read db password

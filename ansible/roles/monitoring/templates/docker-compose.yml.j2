@@ -1,0 +1,41 @@
+{{ ansible_managed | comment }}
+
+version: '2.1'
+
+services:
+  docker-host:
+      image: qoomon/docker-host
+      cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
+      mem_limit: 8M
+      restart: always
+      #environment:
+      #  - PORTS=5000,5001  
+      networks:
+        {{ proxy_network }}:
+  grafana:
+    image: grafana/grafana-oss:latest
+    ports:
+     - "{{ grafana_port }}:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`{{ monitoring_domain }}`)"
+      - "traefik.http.routers.grafana.entrypoints=https"
+      - "traefik.http.routers.grafana.tls.certresolver={{ traefik_certresolver }}"
+
+    volumes:
+     - "{{grafana_data_location}}:/var/lib/grafana"
+    environment:
+     - GF_SERVER_ROOT_URL=https://%(domain)s/
+     - GF_SERVER_ENFORCE_DOMAIN=true
+     - GF_SERVER_DOMAIN={{ monitoring_domain }}
+    restart: always
+    networks:
+      {{ proxy_network }}:
+    depends_on:
+      - docker-host
+
+
+
+networks:
+  {{ proxy_network }}:
+    external: true
