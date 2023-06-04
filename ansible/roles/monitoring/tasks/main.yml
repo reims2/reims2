@@ -61,7 +61,7 @@
   when: letsencrypt_domain_exists is failed
 
 - name: Add HTTPS conf to nginx conf (in case it has been overwritten)
-  ansible.builtin.command: certbot install --nginx -d "{{ monitoring_domain }}" -n --agree-tos --email letsencrypt@kxlion.de
+  ansible.builtin.command: certbot install --nginx --cert-name " {{ monitoring_domain }}" -n --agree-tos --email letsencrypt@kxlion.de
 
 - name: Copy grafana config
   ansible.builtin.template:

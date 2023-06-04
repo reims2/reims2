@@ -2,3 +2,4 @@
 db_dump: "{{ lookup('file', 'dump.sql', errors='warn') }}"
 debug_enable: false
 aws_bucket_name: ""
+deploy_from_git: true
