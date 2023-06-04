@@ -25,6 +25,7 @@ services:
     mem_limit: 256mb
     memswap_limit: 512mb
     read_only: true
+    network_mode: bridge
     restart: always
     labels:
       - "traefik.enable=true"
@@ -85,21 +86,6 @@ services:
 {% endif %}
 
 
-    networks:
-      {{ proxy_network }}:
-{% if traefik_aliases is defined %}
-        aliases:
-{% for alias in traefik_aliases %}
-          - "{{ alias }}"
-{% endfor %}
-{% endif %}
-{% if traefik_ipv6.enabled %}
-      {{ traefik_ipv6.name }}:
-{% if traefik_ipv6.ip_addr != omit %}
-        ipv6_address: {{ traefik_ipv6.ip_addr | ansible.utils.ipaddr('address') }}
-{% endif %}
-{% endif %}
-
 {% if traefik_options | length > 0 %}
     environment:
 {% for key, value in traefik_options.items() %}
@@ -111,7 +97,3 @@ services:
 networks:
   {{ proxy_network }}:
     external: true
-{% if traefik_ipv6.enabled %}
-  {{ traefik_ipv6.name }}:
-    external: true
-{% endif %}

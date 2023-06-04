@@ -65,13 +65,13 @@
       PORT: "5000"
       HOST: "0.0.0.0"
       PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"
-- name: Create network configuration (all apps in one network)
-  ansible.builtin.shell: |
-    dokku network:create {{ proxy_network }}
-    dokku network:set {{ frontend_app_name }} attach-post-deploy {{ proxy_network }}
-    dokku network:set {{ api_app_name }} attach-post-deploy {{ proxy_network }}
-    dokku network:set {{ docs_app_name }} attach-post-deploy {{ proxy_network }}
-    dokku network:rebuildall
+- name: Clear default domains
+  command: "dokku domains:remove {{ item }} {{ item }}.reims2.app"
+  loop:
+    - "{{ frontend_app_name }}"
+    - "{{ api_app_name }}"
+    - "{{ docs_app_name }}"
+
 - name: Add main domain to frontend
   dokku_domains:
     app: "{{ frontend_app_name }}"
@@ -82,13 +82,28 @@
     app: "{{ api_app_name }}"
     domains:
       - "{{ api_domain }}"
-- name: Disable docs proxy
-  dokku_proxy:
+- name: Add docs domain
+  dokku_domains:
     app: "{{ docs_app_name }}"
-    state: absent
+    domains:
+      - "{{ docs_domain }}"
 - name: Use traefik as proxy
   ansible.builtin.shell: |
     dokku proxy:set {{ item }} traefik
+  loop:
+    - "{{ frontend_app_name }}"
+    - "{{ api_app_name }}"
+    - "{{ docs_app_name }}"
+- name: Clear proxy ports
+  ansible.builtin.shell: |
+    dokku proxy:ports-clear {{ item }}
+  loop:
+    - "{{ frontend_app_name }}"
+    - "{{ api_app_name }}"
+    - "{{ docs_app_name }}"
+- name: Add proxy ports
+  ansible.builtin.shell: |
+    dokku proxy:ports-add {{ item }} https:443:5000
   loop:
     - "{{ frontend_app_name }}"
     - "{{ api_app_name }}"
@@ -109,13 +124,14 @@
     owner: root
     group: root
     mode: "0644"
-- name: Restart apps to apply config
-  command: dokku ps:restart {{ item }}
+- name: Restart all apps to apply config
+  ansible.builtin.command: dokku ps:restart {{ item }}
   loop:
     - "{{ frontend_app_name }}"
     - "{{ api_app_name }}"
     - "{{ docs_app_name }}"
   when: not deploy_from_git
+
 - name: Deploy apps from git (this takes up to 15 minutes total and will work even when failing with timeout)
   timeout: 300
   ignore_errors: true
@@ -140,21 +156,10 @@
       }
   when: deploy_from_git
 
-- name: "Set letsencrypt mail"
-  ansible.builtin.command: dokku letsencrypt:set --global email letsencrypt@kxlion.de
-- name: Enable letsencrypt
-  dokku_letsencrypt:
-    app: "{{ item }}"
-  loop:
-    - "{{ frontend_app_name }}"
-    - "{{ api_app_name }}"
-
-- name: Enable letsencrypt auto renew
-  ansible.builtin.command: dokku letsencrypt:cron-job --add
 - name: "Run restore DB tasks"
   ansible.builtin.import_tasks: tasks/restore-db.yml
   tags:
     - restore-mysql
     - deploy
   when:
-    - db_dump != "" and dp_dump != false
+    - db_dump != "" and db_dump != false

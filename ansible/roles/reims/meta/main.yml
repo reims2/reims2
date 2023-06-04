@@ -13,7 +13,5 @@ dependencies:
           username: dev
           ssh_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
       dokku_plugins:
-        - name: letsencrypt
-          url: https://github.com/dokku/dokku-letsencrypt.git
         - name: mariadb
           url: https://github.com/dokku/dokku-mariadb.git

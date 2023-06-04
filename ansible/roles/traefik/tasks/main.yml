@@ -50,17 +50,6 @@
       com.docker.network.bridge.name: "{{ traefik_docker_bridge_name }}"
   become: true
 
-- name: Create ipv6 frontend network
-  community.docker.docker_network:
-    name: "{{ traefik_ipv6.name }}"
-    enable_ipv6: true
-    ipam_config:
-      - subnet: "{{ traefik_ipv6.subnet }}"
-  become: true
-  when:
-    - traefik_ipv6 is defined
-    - traefik_ipv6.enabled
-
 - name: Deploy dynamic_conf.yml
   ansible.builtin.template:
     src: dynamic_conf.yml
