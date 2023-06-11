@@ -12,3 +12,11 @@ config.local.js
 basement_dist
 /*.pdf
 Session.vim
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
