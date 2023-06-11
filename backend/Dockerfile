@@ -3,9 +3,9 @@ FROM eclipse-temurin:17.0.7_7-jdk-jammy AS build
 WORKDIR /usr/src/app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
+RUN --mount=type=cache,target=/root/.m2 ./mvnw dependency:go-offline
 COPY ./src ./src
-RUN ./mvnw clean install
+RUN --mount=type=cache,target=/root/.m2 ./mvnw clean install
 
 # PROD IMAGE
 FROM eclipse-temurin:17.0.7_7-jre-jammy
