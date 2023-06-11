@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:js-app",
+    "npm:unpublishSafe",
+    ":dependencyDashboard",
+    ":prHourlyLimitNone",
+    ":separateMajorReleases",
+    "helpers:disableTypesNodeMajor",
+    "helpers:pinGitHubActionDigests",
+    "schedule:weekends"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "vue",
+        "nuxt",
+        "webpack",
+        "nuxt-route-meta",
+        "ts-loader",
+        "node"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "enabled": false
+    }
+  ]
+}
