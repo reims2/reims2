@@ -3,7 +3,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app/
-RUN yarn install --immutable
+RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn install --immutable
 RUN yarn build
 RUN yarn workspaces focus --production
 
