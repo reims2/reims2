@@ -1006,7 +1006,7 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
   integrity sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==
 
-"@snowdog/vuepress-plugin-pdf-export@^1.1.0":
+"@snowdog/vuepress-plugin-pdf-export@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@snowdog/vuepress-plugin-pdf-export/-/vuepress-plugin-pdf-export-1.1.0.tgz#aa752ed3951e3085d01b86b3a65780b044d34b83"
   integrity sha512-wfwZy4LDiE+BotYl/EMBgJSta+1L+yJY4x8MhBWWcYW2xL1p04l6XEB4DI5X8ab7Wq+LIJzD/xILc8rL5TLdag==
@@ -8421,7 +8421,7 @@ vuepress-plugin-container@^2.0.2:
     "@vuepress/shared-utils" "^1.2.0"
     markdown-it-container "^2.0.0"
 
-vuepress-plugin-serve@^2.0.4:
+vuepress-plugin-serve@2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/vuepress-plugin-serve/-/vuepress-plugin-serve-2.0.4.tgz#d44f5e68810bba4129f6d0d38d483b761655496e"
   integrity sha512-k48WdAJ42+llZNXCbQ1ekDAZU54YXJtJRUpalAUkCP3FkI3esnUrMzyEKsosSdW2NSRLN9cPlj1qfhfYGhDNMw==
@@ -8437,7 +8437,7 @@ vuepress-plugin-smooth-scroll@^0.0.3:
   dependencies:
     smoothscroll-polyfill "^0.4.3"
 
-vuepress@^1.9.9:
+vuepress@1.9.9:
   version "1.9.9"
   resolved "https://registry.yarnpkg.com/vuepress/-/vuepress-1.9.9.tgz#75b313f48a21b2eeb435cad52333f26b3b8a7404"
   integrity sha512-CU94W3EdWaCavGx2VSvQJMI/hyv+m/YMdrvJJw67EVfmmJJDb1iTGrilDgLd0qsyrXzBy0Ru9Qi6rkf4IwcOTg==

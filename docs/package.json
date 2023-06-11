@@ -19,8 +19,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@snowdog/vuepress-plugin-pdf-export": "^1.1.0",
-    "vuepress": "^1.9.9",
-    "vuepress-plugin-serve": "^2.0.4"
+    "@snowdog/vuepress-plugin-pdf-export": "1.1.0",
+    "vuepress": "1.9.9",
+    "vuepress-plugin-serve": "2.0.4"
   }
 }
