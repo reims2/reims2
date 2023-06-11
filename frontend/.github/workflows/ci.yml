@@ -9,6 +9,10 @@ on:
   pull_request:
   merge_group:
 
+env:
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   ci:
     runs-on: ubuntu-latest
