@@ -2459,7 +2459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdi/js@npm:^7.2.96":
+"@mdi/js@npm:7.2.96":
   version: 7.2.96
   resolution: "@mdi/js@npm:7.2.96"
   checksum: f8e22da5d994a4b764580d22290c825c1d789a6e015c166e271e2164fb80d33551d6632632897e30ae9033a3fe4aa6a28f2e97c5d3ad56c823f89f859944899e
@@ -2824,7 +2824,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/types@npm:^2.16.3":
+"@nuxt/types@npm:2.17.0":
   version: 2.17.0
   resolution: "@nuxt/types@npm:2.17.0"
   dependencies:
@@ -2847,7 +2847,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/typescript-build@npm:^2.1.0":
+"@nuxt/typescript-build@npm:2.1.0":
   version: 2.1.0
   resolution: "@nuxt/typescript-build@npm:2.1.0"
   dependencies:
@@ -2861,7 +2861,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/typescript-runtime@npm:^2.1.0":
+"@nuxt/typescript-runtime@npm:2.1.0":
   version: 2.1.0
   resolution: "@nuxt/typescript-runtime@npm:2.1.0"
   dependencies:
@@ -3007,7 +3007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/axios@npm:^5.13.6":
+"@nuxtjs/axios@npm:5.13.6, @nuxtjs/axios@npm:^5.13.6":
   version: 5.13.6
   resolution: "@nuxtjs/axios@npm:5.13.6"
   dependencies:
@@ -3020,7 +3020,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/dayjs@npm:^1.4.1":
+"@nuxtjs/dayjs@npm:1.4.1":
   version: 1.4.1
   resolution: "@nuxtjs/dayjs@npm:1.4.1"
   dependencies:
@@ -3030,7 +3030,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/eslint-config-typescript@npm:^11.0.0":
+"@nuxtjs/eslint-config-typescript@npm:11.0.0":
   version: 11.0.0
   resolution: "@nuxtjs/eslint-config-typescript@npm:11.0.0"
   dependencies:
@@ -3062,7 +3062,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/eslint-module@npm:^3.1.0":
+"@nuxtjs/eslint-module@npm:3.1.0":
   version: 3.1.0
   resolution: "@nuxtjs/eslint-module@npm:3.1.0"
   dependencies:
@@ -3075,7 +3075,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/google-fonts@npm:^3.0.0":
+"@nuxtjs/google-fonts@npm:3.0.1":
   version: 3.0.1
   resolution: "@nuxtjs/google-fonts@npm:3.0.1"
   dependencies:
@@ -3086,7 +3086,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/proxy@npm:^2.1.0":
+"@nuxtjs/proxy@npm:2.1.0, @nuxtjs/proxy@npm:^2.1.0":
   version: 2.1.0
   resolution: "@nuxtjs/proxy@npm:2.1.0"
   dependencies:
@@ -3095,7 +3095,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/pwa@npm:^3.3.5":
+"@nuxtjs/pwa@npm:3.3.5":
   version: 3.3.5
   resolution: "@nuxtjs/pwa@npm:3.3.5"
   dependencies:
@@ -3112,7 +3112,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/vuetify@npm:^1.12.3":
+"@nuxtjs/vuetify@npm:1.12.3":
   version: 1.12.3
   resolution: "@nuxtjs/vuetify@npm:1.12.3"
   dependencies:
@@ -3272,7 +3272,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chroma-js@npm:^2.4.0":
+"@types/chroma-js@npm:2.4.0":
   version: 2.4.0
   resolution: "@types/chroma-js@npm:2.4.0"
   checksum: aa91adf61a5dee8469c1e6b298d3496041d1baa8bd9938865a61050b5e392adc3425718c7c29b09a3d8dfe0d2e8a1301e98d4b458135e53c2ecb3ecca8cb7d21
@@ -3437,7 +3437,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^29.5.1":
+"@types/jest@npm:29.5.2":
   version: 29.5.2
   resolution: "@types/jest@npm:29.5.2"
   dependencies:
@@ -5682,7 +5682,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chroma-js@npm:^2.4.2":
+"chroma-js@npm:2.4.2":
   version: 2.4.2
   resolution: "chroma-js@npm:2.4.2"
   checksum: cf9884c02d406286e4370599bcd1afbf089384407df46b3a69edfedcba7bb99e8f959a5cfdbfec750b305c441c06ca40cd1f70ba3a6c2ce739ac09a92520ddae
@@ -6107,7 +6107,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.30.0, core-js@npm:^3.30.2":
+"core-js@npm:3.30.2, core-js@npm:^3.30.2":
   version: 3.30.2
   resolution: "core-js@npm:3.30.2"
   checksum: 73d47e2b9d9f502800973982d08e995bbf04832e20b04e04be31dd7607247158271315e9328788a2408190e291c7ffbefad141167b1e57dea9f983e1e723541e
@@ -7360,7 +7360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-standard@npm:^17.0.0":
+"eslint-config-standard@npm:17.1.0, eslint-config-standard@npm:^17.0.0":
   version: 17.1.0
   resolution: "eslint-config-standard@npm:17.1.0"
   peerDependencies:
@@ -7438,7 +7438,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:^2.26.0, eslint-plugin-import@npm:^2.27.5":
+"eslint-plugin-import@npm:2.27.5, eslint-plugin-import@npm:^2.26.0":
   version: 2.27.5
   resolution: "eslint-plugin-import@npm:2.27.5"
   dependencies:
@@ -7463,7 +7463,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-n@npm:^15.2.5, eslint-plugin-n@npm:^15.7.0":
+"eslint-plugin-n@npm:15.7.0, eslint-plugin-n@npm:^15.2.5":
   version: 15.7.0
   resolution: "eslint-plugin-n@npm:15.7.0"
   dependencies:
@@ -7497,7 +7497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-nuxt@npm:^4.0.0":
+"eslint-plugin-nuxt@npm:4.0.0":
   version: 4.0.0
   resolution: "eslint-plugin-nuxt@npm:4.0.0"
   dependencies:
@@ -7508,7 +7508,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-promise@npm:^6.0.1, eslint-plugin-promise@npm:^6.1.1":
+"eslint-plugin-promise@npm:6.1.1, eslint-plugin-promise@npm:^6.0.1":
   version: 6.1.1
   resolution: "eslint-plugin-promise@npm:6.1.1"
   peerDependencies:
@@ -7541,7 +7541,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:^9.11.0, eslint-plugin-vue@npm:^9.4.0":
+"eslint-plugin-vue@npm:9.14.1, eslint-plugin-vue@npm:^9.4.0":
   version: 9.14.1
   resolution: "eslint-plugin-vue@npm:9.14.1"
   dependencies:
@@ -7646,7 +7646,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.41.0":
+"eslint@npm:8.42.0":
   version: 8.42.0
   resolution: "eslint@npm:8.42.0"
   dependencies:
@@ -10274,7 +10274,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-extended@npm:^3.2.4":
+"jest-extended@npm:3.2.4":
   version: 3.2.4
   resolution: "jest-extended@npm:3.2.4"
   dependencies:
@@ -10867,20 +10867,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:^25.4.0":
-  version: 25.5.4
-  resolution: "jest@npm:25.5.4"
-  dependencies:
-    "@jest/core": ^25.5.4
-    import-local: ^3.0.2
-    jest-cli: ^25.5.4
-  bin:
-    jest: bin/jest.js
-  checksum: 0acd0ae378bc6c724fb21b795f915268251b0dbb721ae4a8bed79babb6441d871fd23ecb0a960764c3d75864fbf3896cf0e429d8389e73788fb17a12f0813fef
-  languageName: node
-  linkType: hard
-
-"jest@npm:^29.5.0":
+"jest@npm:29.5.0":
   version: 29.5.0
   resolution: "jest@npm:29.5.0"
   dependencies:
@@ -10896,6 +10883,19 @@ __metadata:
   bin:
     jest: bin/jest.js
   checksum: a8ff2eb0f421623412236e23cbe67c638127fffde466cba9606bc0c0553b4c1e5cb116d7e0ef990b5d1712851652c8ee461373b578df50857fe635b94ff455d5
+  languageName: node
+  linkType: hard
+
+"jest@npm:^25.4.0":
+  version: 25.5.4
+  resolution: "jest@npm:25.5.4"
+  dependencies:
+    "@jest/core": ^25.5.4
+    import-local: ^3.0.2
+    jest-cli: ^25.5.4
+  bin:
+    jest: bin/jest.js
+  checksum: 0acd0ae378bc6c724fb21b795f915268251b0dbb721ae4a8bed79babb6441d871fd23ecb0a960764c3d75864fbf3896cf0e429d8389e73788fb17a12f0813fef
   languageName: node
   linkType: hard
 
@@ -12323,7 +12323,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt-route-meta@npm:^2.3.5":
+"nuxt-route-meta@npm:2.3.6":
   version: 2.3.6
   resolution: "nuxt-route-meta@npm:2.3.6"
   dependencies:
@@ -12339,7 +12339,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt@npm:^2.16.3":
+"nuxt@npm:2.17.0":
   version: 2.17.0
   resolution: "nuxt@npm:2.17.0"
   dependencies:
@@ -14674,42 +14674,42 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "reims2-frontend@workspace:."
   dependencies:
-    "@mdi/js": ^7.2.96
-    "@nuxt/types": ^2.16.3
-    "@nuxt/typescript-build": ^2.1.0
-    "@nuxt/typescript-runtime": ^2.1.0
+    "@mdi/js": 7.2.96
+    "@nuxt/types": 2.17.0
+    "@nuxt/typescript-build": 2.1.0
+    "@nuxt/typescript-runtime": 2.1.0
     "@nuxtjs/auth-next": 5.0.0-1667386184.dfbbb54
-    "@nuxtjs/axios": ^5.13.6
-    "@nuxtjs/dayjs": ^1.4.1
-    "@nuxtjs/eslint-config-typescript": ^11.0.0
-    "@nuxtjs/eslint-module": ^3.1.0
-    "@nuxtjs/google-fonts": ^3.0.0
-    "@nuxtjs/proxy": ^2.1.0
-    "@nuxtjs/pwa": ^3.3.5
-    "@nuxtjs/vuetify": ^1.12.3
-    "@types/chroma-js": ^2.4.0
-    "@types/jest": ^29.5.1
-    chroma-js: ^2.4.2
-    core-js: ^3.30.0
-    eslint: ^8.41.0
-    eslint-config-standard: ^17.0.0
-    eslint-plugin-import: ^2.27.5
-    eslint-plugin-n: ^15.7.0
-    eslint-plugin-nuxt: ^4.0.0
-    eslint-plugin-promise: ^6.1.1
-    eslint-plugin-vue: ^9.11.0
-    jest: ^29.5.0
-    jest-extended: ^3.2.4
-    nuxt: ^2.16.3
-    nuxt-route-meta: ^2.3.5
-    ts-jest: ^29.1.0
-    ts-loader: ^8.1.0
-    typescript: ^4.9.4
-    vue: ^2.7.2
-    vue-enter-to-tab: ^1.0.2
-    vue-shortkey: ^3.1.7
-    vuex-persistedstate: ^4.1.0
-    webpack: ^4.46.0
+    "@nuxtjs/axios": 5.13.6
+    "@nuxtjs/dayjs": 1.4.1
+    "@nuxtjs/eslint-config-typescript": 11.0.0
+    "@nuxtjs/eslint-module": 3.1.0
+    "@nuxtjs/google-fonts": 3.0.1
+    "@nuxtjs/proxy": 2.1.0
+    "@nuxtjs/pwa": 3.3.5
+    "@nuxtjs/vuetify": 1.12.3
+    "@types/chroma-js": 2.4.0
+    "@types/jest": 29.5.2
+    chroma-js: 2.4.2
+    core-js: 3.30.2
+    eslint: 8.42.0
+    eslint-config-standard: 17.1.0
+    eslint-plugin-import: 2.27.5
+    eslint-plugin-n: 15.7.0
+    eslint-plugin-nuxt: 4.0.0
+    eslint-plugin-promise: 6.1.1
+    eslint-plugin-vue: 9.14.1
+    jest: 29.5.0
+    jest-extended: 3.2.4
+    nuxt: 2.17.0
+    nuxt-route-meta: 2.3.6
+    ts-jest: 29.1.0
+    ts-loader: 8.4.0
+    typescript: 4.9.5
+    vue: 2.7.14
+    vue-enter-to-tab: 1.0.2
+    vue-shortkey: 3.1.7
+    vuex-persistedstate: 4.1.0
+    webpack: 4.46.0
   languageName: unknown
   linkType: soft
 
@@ -16521,7 +16521,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^29.1.0":
+"ts-jest@npm:29.1.0":
   version: 29.1.0
   resolution: "ts-jest@npm:29.1.0"
   dependencies:
@@ -16554,7 +16554,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-loader@npm:^8.0.17, ts-loader@npm:^8.1.0":
+"ts-loader@npm:8.4.0, ts-loader@npm:^8.0.17":
   version: 8.4.0
   resolution: "ts-loader@npm:8.4.0"
   dependencies:
@@ -16751,7 +16751,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.9.4":
+"typescript@npm:4.9.5":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
   bin:
@@ -16771,7 +16771,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=289587"
   bin:
@@ -17217,7 +17217,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-enter-to-tab@npm:^1.0.2":
+"vue-enter-to-tab@npm:1.0.2":
   version: 1.0.2
   resolution: "vue-enter-to-tab@npm:1.0.2"
   checksum: d242053bca2a53198121f5bd6da0e17858774b6384cf6be0a260df5b9232aefc392a60911612ce92fbaa4221166ddd0f569798907bcc3268a37c1ae87251e210
@@ -17308,7 +17308,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-shortkey@npm:^3.1.7":
+"vue-shortkey@npm:3.1.7":
   version: 3.1.7
   resolution: "vue-shortkey@npm:3.1.7"
   dependencies:
@@ -17345,7 +17345,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^2.7.10, vue@npm:^2.7.2":
+"vue@npm:2.7.14, vue@npm:^2.7.10":
   version: 2.7.14
   resolution: "vue@npm:2.7.14"
   dependencies:
@@ -17391,7 +17391,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuex-persistedstate@npm:^4.1.0":
+"vuex-persistedstate@npm:4.1.0":
   version: 4.1.0
   resolution: "vuex-persistedstate@npm:4.1.0"
   dependencies:
@@ -17568,7 +17568,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^4.46.0":
+"webpack@npm:4.46.0, webpack@npm:^4.46.0":
   version: 4.46.0
   resolution: "webpack@npm:4.46.0"
   dependencies:
