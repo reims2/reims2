@@ -30,12 +30,13 @@ jobs:
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
+        if: github.ref == 'refs/heads/main'
         uses: advanced-security/maven-dependency-submission-action@v2
 
   docker:
     # Only start publish after successful build & test on main branch
     needs: ci
-    if: github.ref == 'refs/heads/main'
+    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -44,8 +45,7 @@ jobs:
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+      - name: Log into Docker registry
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -58,6 +58,14 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            # set latest tag for default branch
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -66,7 +74,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
