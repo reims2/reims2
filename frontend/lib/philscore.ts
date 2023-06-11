@@ -69,7 +69,7 @@ function checkForTolerances(lens: Eye, rx:Eye, tolerance: number):boolean {
 }
 
 function checkForAdditionalTolerance(glass: Glasses, rxOd:Eye, rxOs: Eye, tolerance: number):boolean {
-  return (Math.abs(glass.od.add!! - rxOd.add!!) <= tolerance && Math.abs(glass.os.add!! - rxOs.add!!) <= tolerance)
+  return (Math.abs(glass.od.add! - rxOd.add!) <= tolerance && Math.abs(glass.os.add! - rxOs.add!) <= tolerance)
 }
 
 function calcSingleEyePhilscore(rx:Eye, lens: Eye, isSinglefocal: boolean):number {
@@ -80,7 +80,7 @@ function calcSingleEyePhilscore(rx:Eye, lens: Eye, isSinglefocal: boolean):numbe
    */
   const sphereDiff = Math.abs(lens.sphere - rx.sphere)
   const cylinderDiff = Math.abs(lens.cylinder - rx.cylinder)
-  const addDiff = isSinglefocal ? 0 : Math.abs(lens.add!! - rx.add!!)
+  const addDiff = isSinglefocal ? 0 : Math.abs(lens.add! - rx.add!)
 
   let axisDiff = Math.abs(lens.axis - rx.axis)
   axisDiff = (axisDiff > 90 ? 180 - axisDiff : axisDiff) // account for wraparound (e.g. 190 is 10 in reality)
@@ -99,7 +99,7 @@ function calcSingleEyePhilscore(rx:Eye, lens: Eye, isSinglefocal: boolean):numbe
 
   score += diff
 
-  if (!isSinglefocal) score += multiFocalAddScore(rx.add!!, lens.add!!)
+  if (!isSinglefocal) score += multiFocalAddScore(rx.add!, lens.add!)
   score += smallerLensSphereScore(rx.sphere, lens.sphere)
 
   return score
