@@ -31,7 +31,7 @@ jobs:
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
         if: github.ref == 'refs/heads/main'
-        uses: advanced-security/maven-dependency-submission-action@v2
+        uses: advanced-security/maven-dependency-submission-action@d682d5d68a398c90e9b35f8c564cd8e1918d6a24 # v3
 
   docker:
     # Only start publish after successful build & test on main branch
