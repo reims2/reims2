@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-jammy AS build
+FROM eclipse-temurin:17.0.7_7-jdk-jammy AS build
 
 WORKDIR /usr/src/app
 COPY .mvn/ .mvn
@@ -8,7 +8,7 @@ COPY ./src ./src
 RUN ./mvnw clean install
 
 # PROD IMAGE
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:17.0.7_7-jre-jammy
 RUN apt-get update && apt-get upgrade -y
 
 ENV HOST 0.0.0.0
