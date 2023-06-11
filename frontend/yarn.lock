@@ -2862,18 +2862,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/typescript-runtime@npm:2.1.0":
-  version: 2.1.0
-  resolution: "@nuxt/typescript-runtime@npm:2.1.0"
+"@nuxt/typescript-runtime@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@nuxt/typescript-runtime@npm:3.0.1"
   dependencies:
-    ts-node: ^9.1.1
-    typescript: ~4.2
+    ts-node: 9.1.1
   peerDependencies:
     "@nuxt/types": ">=2.13.1"
+    typescript: 4.x || 5.x
   bin:
     nuxt-ts: bin/nuxt-ts.js
     nuxts: bin/nuxt-ts.js
-  checksum: 258912d4ef9ee7ec0639379b53732bfda1be231623eea306880e4192455eace36d6c5df4e1c2f55a7d48a6f947afa6bed089a0c49c60511fe92ed7705981a929
+  checksum: 4b9c1dca6e224fb7b624874f261937a52f9d644ed706f3479c5c79f9aae52465e8548de46b9901db41bd6e300ad02c77c2fcfb8a499624f56807b45309a0d10c
   languageName: node
   linkType: hard
 
@@ -14708,7 +14708,7 @@ __metadata:
     "@mdi/js": 7.2.96
     "@nuxt/types": 2.17.0
     "@nuxt/typescript-build": 3.0.1
-    "@nuxt/typescript-runtime": 2.1.0
+    "@nuxt/typescript-runtime": 3.0.1
     "@nuxtjs/auth-next": 5.0.0-1667386184.dfbbb54
     "@nuxtjs/axios": 5.13.6
     "@nuxtjs/dayjs": 1.4.1
@@ -16601,7 +16601,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^9.1.1":
+"ts-node@npm:9.1.1":
   version: 9.1.1
   resolution: "ts-node@npm:9.1.1"
   dependencies:
