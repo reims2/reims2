@@ -1,5 +1,6 @@
 FROM eclipse-temurin:17.0.7_7-jdk-jammy AS build
 
+ENV PORT 5000
 WORKDIR /usr/src/app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
