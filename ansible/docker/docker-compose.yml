@@ -1,0 +1,100 @@
+version: '2'
+services:
+  proxy:
+    image: docker.io/library/traefik:v2.10.1
+    container_name: "traefik"
+    cpu_shares: 3072
+    mem_limit: 256mb
+    memswap_limit: 512mb
+    read_only: true
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.compress.compress=true"
+
+    ports:
+      - "80:80"
+      - "8080:8080"
+
+    volumes:
+      - "./dynamic_conf:/etc/traefik/dynamic_conf:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./acme:/etc/traefik/acme"
+
+    command:
+      - "--entryPoints.http.address=:80"
+      - "--entryPoints.traefik.address=:8080"
+      - "--accesslog=false"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--log.level=DEBUG"
+      - "--api=true"
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+    networks:
+      reims2:
+  frontend:
+    image: docker.io/reims2/reims2-frontend:latest
+    restart: always
+    container_name: "frontend"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`localhost`)"
+      - "traefik.http.routers.frontend.entrypoints=http"
+    environment:
+      - "API_URL=http://backend:5000/pvh/api"
+    networks:
+      reims2:
+  backend:
+    image: docker.io/reims2/reims2-backend:latest
+    restart: always
+    container_name: "backend"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/pvh/api`)"
+      - "traefik.http.routers.backend.entrypoints=http"
+    environment:
+      - "PVH_JWT_SECRET=dsndkjnakdjnasasdnasdkjwnqdjnqdnassjdaksjdnkajnsdkjnaskdjnaksjndkajsndknwkjdnqkjwndkqwdoqsdiwjeodejqwodjoj"
+      - "DATABASE_URL=mysql://root:root@db:3306/reims2-db"
+    networks:
+      reims2:
+      db:
+  docs:
+    image: docker.io/reims2/reims2-docs:latest
+    restart: always
+    container_name: "docs"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.docs.rule=Host(`localhost`) && PathPrefix(`/docs`)"
+      - "traefik.http.routers.docs.entrypoints=http"
+    networks:
+      reims2:
+  whoami:
+    image: traefik/whoami
+    container_name: whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - "traefik.http.routers.whoami.entrypoints=http"
+    networks:
+      reims2:
+  db:
+    image: docker.io/mariadb
+    container_name: "db"
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: "root"
+    volumes:
+      - "./db:/var/lib/mysql"
+    networks:
+      reims2:
+      db:
+
+
+
+
+
+
+networks:
+  reims2:
+  db:
