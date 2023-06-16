@@ -5,8 +5,7 @@ Dockerfile
 .git
 .gitignore
 .npmrc
-.nuxt
-dist
+src/.vuepress/dist
 .pnp.*
 .yarn/*
 !.yarn/patches

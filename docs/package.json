@@ -8,13 +8,13 @@
     "email": "substantialimpulse@pm.me"
   },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "repository": "reims2-docs/reims2-docs",
   "scripts": {
     "export": "vuepress export src",
     "dev": "vuepress dev src",
-    "build": "vuepress build src",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider vuepress build src",
     "start": "vuepress serve --host $HOST --port $PORT src"
   },
   "license": "MIT",
