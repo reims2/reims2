@@ -1,2 +1,0 @@
-- name: restart dokku mariadb
-  ansible.builtin.command: "dokku mariadb:restart {{ db_name }}"

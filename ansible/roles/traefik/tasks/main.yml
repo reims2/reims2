@@ -41,11 +41,13 @@
   with_items:
     - "{{ traefik_config_location }}"
     - "{{ traefik_acme_location }}"
+    - "{{ traefik_db_location }}"
   become: true
 
 - name: Create proxy network
   community.docker.docker_network:
     name: "{{ proxy_network }}"
+    driver: "overlay"
     driver_options:
       com.docker.network.bridge.name: "{{ traefik_docker_bridge_name }}"
   become: true
@@ -61,6 +63,11 @@
   when:
     - traefik_dynamic_conf != omit
 
+- name: Init a new swarm with default parameters
+  community.docker.docker_swarm:
+    state: present
+  become: true
+
 - name: Deploy docker-compose.yml
   ansible.builtin.template:
     src: docker-compose.yml
@@ -73,12 +80,36 @@
     - docker
   become: true
 
-- name: Compose traefik
-  community.docker.docker_compose:
+- name: Deploy stack from a compose file
+  community.docker.docker_stack:
     state: present
-    project_src: "{{ traefik_install_location }}"
-    pull: true
-    remove_orphans: true
-  tags:
-    - docker
+    name: "{{ stack_name }}"
+    compose:
+      - "{{ traefik_install_location }}/docker-compose.yml"
+    prune: true
   become: true
+
+- name: Create data directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0777"
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ grafana_data_location }}"
+  become: true
+  tags:
+    - grafana
+
+- name: Copy SQL dump file onto host
+  ansible.builtin.copy:
+    content: "{{ db_dump }}"
+    dest: /tmp/reims-dump.sql
+    mode: "0600"
+    owner: root
+    group: root
+    force: true
+# - name: Restore dump
+#   shell: |
+#     cat /tmp/reims-dump.sql | docker exec -i $(docker ps -q -f name={{ stack_name }}_db) /usr/bin/mariadb -p{{ reims2_db_root_password }} {{ reims2_db_name }}

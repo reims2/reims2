@@ -4,6 +4,7 @@
       - python3-mysqldb
       - python3-docker
       - python3-pip
+      - python3-jsondiff
     state: present
 
 - name: Install docker-compose python package

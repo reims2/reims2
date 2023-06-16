@@ -23,6 +23,7 @@ traefik_domain: reims2.app
 traefik_install_location: /srv/traefik
 traefik_acme_location: "{{ traefik_install_location }}/acme"
 traefik_config_location: "{{ traefik_install_location }}/dynamic_conf"
+traefik_db_location: "{{ traefik_install_location }}/db"
 traefik_certresolver: "leresolver"
 
 # The traefik/dockersocketproxy version to be used
@@ -42,10 +43,10 @@ traefik_letsencrypt_email: letsencrypt@kxlion.de
 # ! Note these are used globally, as every container that wants to use traefik,
 # ! has to be reachable for traefik and all containers, routed with traefik, are connected to the proxy network.
 proxy_network: reims2
-traefik_docker_bridge_name: reims2-proxy
+traefik_docker_bridge_name: reims2
 
 # Should a general https redirect middleware be enabled for all hosts on the web endpoint?
-traefik_https_redirect_all: false
+traefik_https_redirect_all: true
 
 # Should the letsencrypt certresolver be enabled/defined?
 # Useful eg. for local testing/LAN setups
@@ -83,3 +84,18 @@ traefik_access_log_enabled: false
 
 # Optional environment variables that should be added (key value pairs)
 traefik_options: {}
+
+reims2_db_name: reims2-db
+reims2_db_user: reims2
+reims2_db_password: reims2
+reims2_db_root_password: root
+db_network: db
+stack_name: reims2
+
+db_dump: "{{ lookup('file', 'dump.sql', errors='warn') }}"
+
+monitoring_domain: monitoring.{{ traefik_domain }}
+grafana_install_location: "/srv/grafana"
+grafana_data_location: "{{ grafana_install_location }}/config"
+
+grafana_port: "3000"
