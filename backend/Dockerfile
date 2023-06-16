@@ -20,7 +20,6 @@ COPY --from=build /usr/src/app/target/*.jar ./app.jar
 
 EXPOSE 5000
 
-HEALTHCHECK CMD --interval=1s --timeout=10s --retries 1 
-    CMD curl --fail http://localhost:5000/api || exit 1   
+HEALTHCHECK --interval=5s --timeout=10s --retries=2 CMD curl --fail http://localhost:$PORT/api || exit 1   
 
 ENTRYPOINT ["java", "-jar", "/usr/src/app/app.jar" ]
