@@ -14,7 +14,6 @@
     - traefik
     - reims
   vars:
-    deploy_from_git: false
     frontend_domain: "{{ inventory_hostname }}"
     api_domain: "{{ 'api.' + inventory_hostname }}"
     docs_domain: "{{ 'docs.' + inventory_hostname }}"

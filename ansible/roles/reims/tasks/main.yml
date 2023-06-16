@@ -6,6 +6,11 @@
     - "{{ frontend_app_name }}"
     - "{{ docs_app_name }}"
 
+- name: Enable docker buildkit
+  shell: |
+    echo "export DOCKER_BUILDKIT=1" | sudo tee -a /etc/default/dokku
+    echo "export BUILDKIT_PROGRESS=plain" | sudo tee -a /etc/default/dokku
+
 - name: Create mysql
   dokku_service_create:
     name: "{{ db_name }}"
