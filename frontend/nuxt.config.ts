@@ -64,7 +64,6 @@ const config: NuxtConfig = {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/proxy',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://auth.nuxtjs.org/
@@ -75,14 +74,8 @@ const config: NuxtConfig = {
     'nuxt-route-meta'
   ],
 
-  proxy: { // https://axios.nuxtjs.org/options/#proxy
-    '/api': { target: process.env.API_URL, pathRewrite: { '^/api': '' }, ws: false },
-    '/docs': { target: process.env.DOCS_URL }
-  },
-
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    proxy: true,
     progress: true, // show loading bar
     retry: false
   },
