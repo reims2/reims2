@@ -1,11 +1,25 @@
-version: "2"
+version: "3"
 services:
   proxy:
     image: docker.io/library/traefik:v2.10.1
-    container_name: "traefik"
-    cpu_shares: 3072
-    mem_limit: 256mb
-    memswap_limit: 512mb
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 256M
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+ 
     read_only: true
     restart: always
     labels:
@@ -47,7 +61,6 @@ services:
   frontend:
     image: docker.io/reims2/reims2-frontend:latest
     restart: always
-    container_name: "frontend"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`localhost`)"
@@ -58,10 +71,22 @@ services:
       - "BASE_URL_INTERNAL=http://backend:5000"
     networks:
       reims2:
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
   backend:
     image: docker.io/reims2/reims2-backend:latest
     restart: always
-    container_name: "backend"
     depends_on:
       - db
     labels:
@@ -80,10 +105,23 @@ services:
     networks:
       reims2:
       db:
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+ 
   docs:
     image: docker.io/reims2/reims2-docs:latest
     restart: always
-    container_name: "docs"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.docs.rule=Host(`localhost`) && PathPrefix(`/docs`)"
@@ -91,10 +129,23 @@ services:
       - "traefik.http.routers.docs.middlewares=compress"
     networks:
       reims2:
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+ 
 
   db:
     image: docker.io/mariadb
-    container_name: "db"
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: "root"
@@ -108,7 +159,20 @@ services:
       - "3306:3306"
     networks:
       db:
-
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+ 
 
 networks:
   reims2:
