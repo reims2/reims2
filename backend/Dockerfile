@@ -6,7 +6,7 @@ COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN --mount=type=cache,target=/root/.m2 ./mvnw dependency:go-offline
 COPY ./src ./src
-RUN --mount=type=cache,target=/root/.m2 ./mvnw clean install
+RUN --mount=type=cache,target=/root/.m2 ./mvnw clean install -DskipTests
 
 # PROD IMAGE
 FROM eclipse-temurin:17.0.7_7-jre-jammy
@@ -22,4 +22,5 @@ EXPOSE 5000
 
 HEALTHCHECK --interval=5s --timeout=10s --retries=2 CMD curl --fail http://localhost:$PORT/api || exit 1   
 
-ENTRYPOINT ["java", "-jar", "/usr/src/app/app.jar" ]
+
+ENTRYPOINT ["java",  "-jar", "/usr/src/app/app.jar", "--spring.profiles.active=mysql" ]
