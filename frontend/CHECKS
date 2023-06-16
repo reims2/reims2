@@ -1,5 +1,0 @@
-WAIT=2 # Wait 2 seconds each attempt
-ATTEMPTS=5 # Do 5 attempts
-
-# Start page should be accessible
-/

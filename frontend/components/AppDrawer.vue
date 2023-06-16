@@ -68,7 +68,7 @@
       <v-divider />
       <v-list dense nav>
         <v-list-item
-          v-if="isDev"
+          v-if="$config.isDev"
           :href="commitUrl"
           tabindex="-1"
           target=”_blank”
@@ -135,9 +135,7 @@ export default {
       locationNames,
       mdiMapMarkerMultiple,
       mdiFileDocument,
-      dialog: false,
-      isDev: process.env.isDev,
-      version: process.env.version
+      dialog: false
     }
   },
   computed: {
@@ -150,7 +148,7 @@ export default {
       set() { }
     },
     commitUrl: function() {
-      return 'https://github.com/reims2/reims2-frontend/commit/' + this.version
+      return 'https://github.com/reims2/reims2-frontend/commit/' + this.$config.version
     },
     ...mapState(['drawer', 'location'])
   }

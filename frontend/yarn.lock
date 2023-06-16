@@ -14747,6 +14747,7 @@ __metadata:
     vue: 2.7.14
     vue-enter-to-tab: 1.0.2
     vue-shortkey: 3.1.7
+    vuex: 3.6.2
     vuex-persistedstate: 4.1.0
     webpack: 4.46.0
   languageName: unknown
@@ -17442,7 +17443,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuex@npm:^3.6.2":
+"vuex@npm:3.6.2, vuex@npm:^3.6.2":
   version: 3.6.2
   resolution: "vuex@npm:3.6.2"
   peerDependencies:

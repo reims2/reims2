@@ -24,7 +24,6 @@ COPY --chown=node:node --from=build /usr/src/app/node_modules /usr/src/app/node_
 COPY --chown=node:node --from=build /usr/src/app/.nuxt /usr/src/app/.nuxt
 EXPOSE 5000
 
-HEALTHCHECK CMD --interval=1s --timeout=10s --retries 1 
-    CMD curl --fail http://localhost:5000/ || exit 1   
+HEALTHCHECK --interval=5s --timeout=10s --retries=2 CMD curl --fail http://localhost:$PORT/ || exit 1   
 
 CMD ["dumb-init", "node", "node_modules/nuxt/bin/nuxt.js", "start"]

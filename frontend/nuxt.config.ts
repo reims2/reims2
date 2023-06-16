@@ -14,6 +14,21 @@ const config: NuxtConfig = {
     ]
   },
 
+  // https://axios.nuxtjs.org/options/#runtime-config
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: process.env.BASE_URL_BROWSER
+    },
+
+    isDev: process.env.PVH_DEBUG === 'true' || false,
+    version: process.env.GIT_REV || ''
+  },
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.BASE_URL_INTERNAL
+    }
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/css/main.css'
@@ -77,13 +92,8 @@ const config: NuxtConfig = {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     progress: true, // show loading bar
-    retry: false
-  },
-
-  env: {
-    // @ts-ignore
-    isDev: process.env.PVH_DEBUG === 'true' || false,
-    version: process.env.GIT_REV || ''
+    retry: false,
+    prefix: '/api'
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
