@@ -6,10 +6,15 @@
     ":dependencyDashboard",
     ":prHourlyLimitNone",
     ":separateMajorReleases",
-    "helpers:disableTypesNodeMajor",
     "helpers:pinGitHubActionDigests",
-    "schedule:weekends"
+    "schedule:weekends",
+    ":automergePatch",
+    ":automergeLinters",
+    ":automergeTesters",
+    ":automergeTypes",
+    ":automergePr"
   ],
+  "platformAutomerge": true,
   "packageRules": [
     {
       "matchPackageNames": [
@@ -17,13 +22,16 @@
         "nuxt",
         "webpack",
         "nuxt-route-meta",
-        "ts-loader",
-        "node"
+        "ts-loader"
       ],
-      "matchUpdateTypes": [
-        "major"
-      ],
+      "matchUpdateTypes": ["major"],
       "enabled": false
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
     }
   ]
 }
