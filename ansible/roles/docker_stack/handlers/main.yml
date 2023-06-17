@@ -1,0 +1,8 @@
+- name: reload stack
+  community.docker.docker_stack:
+    state: present
+    name: "{{ stack_name }}"
+    compose:
+      - "{{ stack_file }}"
+    prune: true
+  become: true

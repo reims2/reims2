@@ -1,4 +1,6 @@
 ---
+backend_db_location: "{{ stack_install_location }}/data/db"
+
 reims2_db_name: reims2-db
 reims2_db_user: reims2
 

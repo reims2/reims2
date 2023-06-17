@@ -1,6 +1,6 @@
 ---
 # The install locations
-s3backup_install_location: /srv/s3backup
+s3backup_install_location: "{{ stack_install_location }}/s3backup"
 s3backup_data_location: "{{ s3backup_install_location }}/data"
 
 # The traefik/dockersocketproxy version to be used

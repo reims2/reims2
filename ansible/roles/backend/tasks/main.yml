@@ -1,4 +1,15 @@
 ---
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ backend_db_location }}"
+  become: true
+
 - name: Load docker-compose template
   ansible.builtin.set_fact:
     template_partial: "{{ lookup('template', 'docker-compose.yml.j2') }}"

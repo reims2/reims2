@@ -2,14 +2,10 @@
 # Default variables for the traefik role
 
 # The install locations
-app_domain: reims2.app
-traefik_install_location: /srv/traefik
+traefik_install_location: "{{ stack_install_location }}/traefik"
 traefik_acme_location: "{{ traefik_install_location }}/acme"
 traefik_config_location: "{{ traefik_install_location }}/dynamic_conf"
-traefik_db_location: "{{ traefik_install_location }}/db"
 traefik_certresolver: "leresolver"
-
-stack_file: "{{ traefik_install_location }}/docker-compose.yml"
 
 # The traefik/dockersocketproxy version to be used
 # renovate: depName=docker.io/library/traefik
@@ -65,4 +61,3 @@ traefik_access_log_enabled: false
 traefik_options: {}
 
 db_network: db
-stack_name: reims2

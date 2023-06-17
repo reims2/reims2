@@ -42,7 +42,7 @@
       MARIADB_USER: '{{ reims2_db_user }}'
       MARIADB_PASSWORD: '{{ reims2_db_password }}'
     volumes:
-      - "{{ traefik_db_location }}:/var/lib/mysql"
+      - "{{ backend_db_location }}:/var/lib/mysql"
     networks:
       {{ db_network }}:
     deploy:

@@ -10,7 +10,6 @@
     - "{{ traefik_install_location }}"
     - "{{ traefik_config_location }}"
     - "{{ traefik_acme_location }}"
-    - "{{ traefik_db_location }}"
   become: true
 
 - name: Create proxy network
@@ -20,24 +19,6 @@
     driver_options:
       com.docker.network.bridge.name: "{{ proxy_network }}"
   become: true
-
-- name: Init a new swarm with default parameters
-  community.docker.docker_swarm:
-    state: present
-  become: true
-
-- name: Create base docker-compose.yml if not exists
-  ansible.builtin.template:
-    src: docker-compose.yml.j2
-    dest: "{{ stack_file }}"
-    mode: "0600"
-    owner: "root"
-    group: "root"
-    force: false
-  tags:
-    - docker
-  become: true
-  notify: reload stack
 
 - name: Add network partial to docker-compose
   ansible.builtin.blockinfile:

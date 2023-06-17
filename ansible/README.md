@@ -10,7 +10,13 @@ For deploying a complete instance of REIMS2, do the following **on your local de
 3. Add config variables to `main.yml` (see below)
 4. Create a file `creds/pub_keys` containing your SSH public keys (password based SSH login will be disabled!)
 
-Now deploy with:
+Run setup script for hardening first (strongly recommended):
+
+```bash
+ansible-playbook -i hosts setup.yml
+```
+
+Now deploy REIMS2 with:
 
 ```bash
 # vaulti-id can be removed if not using ansible-vault

@@ -1,0 +1,34 @@
+---
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ stack_install_location }}"
+  become: true
+
+- name: Init a new swarm with default parameters
+  community.docker.docker_swarm:
+    state: present
+  become: true
+
+- name: Delete existing docker compose when reset_docker_stack is true
+  ansible.builtin.file:
+    path: "{{ stack_file }}"
+    state: absent
+  when: reset_docker_stack
+  become: true
+
+- name: Create base docker-compose.yml if not exists
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ stack_file }}"
+    mode: "0600"
+    owner: "root"
+    group: "root"
+    force: false
+  become: true
+  notify: reload stack
