@@ -32,8 +32,11 @@ jobs:
   docker:
     # Only start publish after successful build & test on main branch
     needs: ci
-    concurrency: ci-${{ github.ref }}
+    concurrency: docker-${{ github.ref }}
+    if: ${{ github.event_name != 'merge_group' }}
     runs-on: ubuntu-latest
+    outputs:
+      json: ${{ steps.meta.outputs.json }}
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
       - name: Setup Docker buildx
@@ -75,3 +78,18 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+  deploy:
+    # Only start publish after successful build & test on main branch
+    needs: docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    concurrency: deploy-reims2
+    steps:
+      - name: deploy via ssh
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: reims2.app
+          username: actions
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: /srv/update_script/update.sh reims2 docs ${{ fromJSON(needs.docker.outputs.json).tags[0] }}
