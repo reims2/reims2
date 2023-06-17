@@ -3,9 +3,9 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: "0700"
+    mode: "0770"
     owner: "root"
-    group: "root"
+    group: "docker"
   with_items:
     - "{{ backend_db_location }}"
   become: true
