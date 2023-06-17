@@ -1,27 +1,29 @@
 ---
-- name: Initial server configuration and hardening
+- name: Install reims
   hosts: all
-  become: true
   roles:
-    - common
-    - setup
-
-- name: Setup production REIMS2
-  hosts: all
+    - backend
+    - frontend
+    - monitoring
+    - s3backup
   become: true
-  roles:
-    - common
-    - reims
   vars:
-    deploy_from_git: false
-    frontend_domain: "{{ inventory_hostname }}"
-    api_domain: "{{ 'api.' + inventory_hostname }}"
-    db_name: "reims2-db"
-    dokku_network_name: "reims2"
-    frontend_app_name: "frontend"
-    api_app_name: "api"
-    docs_app_name: "docs"
-    api_jwt_token: !vault |
+    db_dump: "{{ lookup('file', 'dump.sql', errors='warn') }}"
+    reims2_db_password: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      38393939376534393861623839316563343839373364336464333063316261386662663264383737
+      3035346539356335653035316131343166363263366632360a373661353165363534356165323138
+      33323338376636393161383062353864366363383037313563656233373830316163366562393335
+      3066646361666264660a323230666531396533353866633666356561303166356265633135353432
+      37633661646332666266353232343439373765313232333837623332656565383838
+    reims2_db_root_password: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      39663064326538313437356334376130313264353032643732643231646265313132663661616664
+      3238326236366638643935353632303161353261316634390a656638393635343263336135373762
+      34393364326637323834303133353539653130326461613238653437333630616461656436373032
+      3838363866656466340a396631303238353231333262376365363465643730653834376665333664
+      32373136316162336535306230613634326461336131626135393134663839633631
+    reims2_jwt_secret: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       61313835653263643831623135346136323666323664393962633237386664313262383630323836
       3233363631653230663462333133313532646135333030610a376166633133636633613535336439
@@ -43,49 +45,3 @@
       3333663438383664340a376336383363376462343265323335343962386563303737326365376130
       34393135313537373965326338626638353661326133343836653435393964343736346530343135
       6665336566316538343635383639666164363030336437643633
-    aws_bucket_name: reims2-backup
-  tags:
-    - reims-prod
-
-- name: Setup dev REIMS2
-  hosts: all
-  become: true
-  roles:
-    - common
-    - reims
-  vars:
-    deploy_from_git: false
-    frontend_domain: "{{ 'dev.' + inventory_hostname }}"
-    api_domain: "{{ 'dev-api.' + inventory_hostname }}"
-    db_name: "dev-db"
-    dokku_network_name: "dev-reims2"
-    frontend_app_name: "dev-frontend"
-    api_app_name: "dev-api"
-    docs_app_name: "dev-docs"
-    api_jwt_token: "testtokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttokentesttoken"
-    debug_enable: true
-  tags:
-    - reims-dev
-
-- name: Setup monitoring
-  hosts: all
-  become: true
-  roles:
-    - common
-    - monitoring
-  vars:
-    monitoring_domain: "{{ 'monitoring.' + inventory_hostname }}"
-    monitoring_db_password: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      38346534326165633066363432363964653361623031363765663639343036616264653964346266
-      6563616536366164376163616262303336653433366163350a316130613661376231303566393665
-      37663365303839643930376430636661663035383261303461363862323034613031303632313732
-      6563616565396262350a356562346661353431636138326236646233653965656464333436613233
-      32666163343133373864643561346435366666666163343839343266613862303764
-    db_port_mapping:
-      # exposes dokku DB with 'name' to 'port' and creates a read only user "monitoring" for grafana config
-      - name: "reims2-db"
-        port: "5000"
-      - name: "dev-db"
-        port: "5001"
-  tags: monitoring

@@ -1,0 +1,4 @@
+{{ ansible_managed | comment }}
+# Dynamic configuration
+
+{{ traefik_dynamic_conf | to_nice_yaml(indent=2) }}

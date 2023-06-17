@@ -1,0 +1,11 @@
+- name: reload stack
+  community.docker.docker_stack:
+    state: present
+    name: "{{ stack_name }}"
+    compose:
+      - "{{ stack_file }}"
+    prune: true
+  become: true
+
+- name: reload proxy
+  ansible.builtin.command: docker service update "{{ stack_name }}_proxy"

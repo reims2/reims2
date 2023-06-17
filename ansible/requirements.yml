@@ -1,9 +1,10 @@
 roles:
-  - dokku_bot.ansible_dokku
   - jnv.unattended-upgrades
   - geerlingguy.swap
+  - geerlingguy.docker
 
 collections:
   - devsec.hardening
   - community.general
   - community.mysql
+  - community.docker

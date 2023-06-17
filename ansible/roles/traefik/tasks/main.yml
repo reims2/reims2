@@ -1,0 +1,82 @@
+---
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ traefik_install_location }}"
+    - "{{ traefik_config_location }}"
+    - "{{ traefik_acme_location }}"
+    - "{{ traefik_db_location }}"
+  become: true
+
+- name: Create proxy network
+  community.docker.docker_network:
+    name: "{{ proxy_network }}"
+    driver: "overlay"
+    driver_options:
+      com.docker.network.bridge.name: "{{ proxy_network }}"
+  become: true
+
+- name: Init a new swarm with default parameters
+  community.docker.docker_swarm:
+    state: present
+  become: true
+
+- name: Create base docker-compose.yml if not exists
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ stack_file }}"
+    mode: "0600"
+    owner: "root"
+    group: "root"
+    force: false
+  tags:
+    - docker
+  become: true
+  notify: reload stack
+
+- name: Add network partial to docker-compose
+  ansible.builtin.blockinfile:
+    dest: "{{ stack_file }}"
+    content: |
+      networks:
+        {{ proxy_network }}:
+          external: true
+        {{ db_network }}:
+
+    state: present
+    # TODO maybe validate if previous step didn't change
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for network"
+  notify: reload stack
+
+- name: Load traefik compose template
+  ansible.builtin.set_fact:
+    template_partial: "{{ lookup('template', 'proxy.yml.j2') }}"
+
+- name: Add traefik service to docker-compose
+  ansible.builtin.blockinfile:
+    dest: "{{ stack_file }}"
+    content: "{{ template_partial }}"
+    state: present
+    validate: docker-compose -f %s config -q
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for proxy"
+    insertafter: "services:"
+  notify: reload stack
+
+- name: Deploy dynamic_conf.yml for traefik
+  ansible.builtin.template:
+    src: dynamic_conf.yml.j2
+    dest: "{{ traefik_config_location }}/dynamic_conf.yml"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  become: true
+  when:
+    - traefik_dynamic_conf != omit
+  notify:
+    - reload stack
+    - reload proxy
