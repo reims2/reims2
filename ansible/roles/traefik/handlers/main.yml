@@ -8,4 +8,4 @@
   become: true
 
 - name: reload proxy
-  command: docker service update "{{ stack_name }}_proxy"
+  ansible.builtin.command: docker service update "{{ stack_name }}_proxy"

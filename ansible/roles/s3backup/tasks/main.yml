@@ -30,5 +30,5 @@
     cron_file: reims2-s3backup
 
 - name: Execute backup script
-  ansible.builtin.shell: "sh {{ s3backup_install_location }}/backup.sh"
+  ansible.builtin.command: "sh {{ s3backup_install_location }}/backup.sh"
   become: true

@@ -7,3 +7,4 @@ collections:
   - devsec.hardening
   - community.general
   - community.mysql
+  - community.docker

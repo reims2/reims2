@@ -19,7 +19,7 @@ traefik_version: v2.10.1
 traefik_dashboard_domain: "dashboard.{{ app_domain }}"
 
 # A basic auth users string (see https://docs.traefik.io/v2.0/middlewares/basicauth/)
-#traefik_dashboard_auth: ""
+# traefik_dashboard_auth: ""
 
 # The email to use for letencrypt certificate requests
 traefik_letsencrypt_email: letsencrypt@kxlion.de
