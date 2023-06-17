@@ -36,28 +36,22 @@ jobs:
   docker:
     # Only start publish after successful build & test on main branch
     needs: ci
-    concurrency: ci-${{ github.ref }}
+    if: ${{ github.event_name != 'merge_group' }}
+    concurrency: docker-${{ github.ref }}
     runs-on: ubuntu-latest
+    outputs:
+      json: ${{ steps.meta.outputs.json }}
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@ecf95283f03858871ff00b787d79c419715afc34 # v2
-
-      # https://docs.docker.com/build/ci/github-actions/cache/#local-cache
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into Docker registry
         uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc # v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: reims2
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Extract metadata (tags, labels) for Docker
@@ -86,9 +80,21 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    # Only start publish after successful build & test on main branch
+    needs: docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    concurrency: deploy-reims2
+    steps:
+      - name: deploy via ssh
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: reims2.app
+          username: actions
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: /srv/update_script/update.sh reims2 frontend ${{ fromJSON(needs.docker.outputs.json).tags[0] }}
