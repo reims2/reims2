@@ -1,0 +1,56 @@
+  frontend:
+    image: docker.io/reims2/reims2-frontend:latest
+    restart: always
+    environment:
+      - "BASE_URL_BROWSER=https://{{ app_domain }}"
+      - "BASE_URL_INTERNAL=http://backend:5000"
+    networks:
+      {{ proxy_network }}:
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.frontend.rule=Host(`{{ app_domain }}`)"
+        - "traefik.http.routers.frontend.entrypoints=https"
+        - "traefik.http.routers.frontend.middlewares=compress@file"
+        - "traefik.http.routers.frontend.tls.certresolver={{ traefik_certresolver }}"
+        - "traefik.http.services.frontend.loadbalancer.server.port=5000"
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+
+  docs:
+    image: docker.io/reims2/reims2-docs:latest
+    restart: always
+    networks:
+      {{ proxy_network }}:
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.docs.rule=Host(`{{ app_domain }}`) && PathPrefix(`/docs`)"
+        - "traefik.http.routers.docs.entrypoints=https"
+        - "traefik.http.routers.docs.middlewares=compress@file"
+        - "traefik.http.routers.docs.tls.certresolver={{ traefik_certresolver }}"
+        - "traefik.http.services.docs.loadbalancer.server.port=5000"
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+ 

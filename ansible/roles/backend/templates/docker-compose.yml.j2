@@ -1,0 +1,60 @@
+  backend:
+    image: docker.io/reims2/reims2-backend:latest
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - 'PVH_JWT_SECRET={{ reims2_jwt_secret }}'
+      - "DATABASE_HOST=db"
+      - "DATABASE_PORT=3306"
+      - 'DATABASE_NAME={{ reims2_db_name}}'
+      - 'DATABASE_USER={{ reims2_db_user }}'
+      - 'DATABASE_PASSWORD={{ reims2_db_password }}'
+    networks:
+      {{ proxy_network }}:
+      {{ db_network }}:
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.backend.rule=Host(`{{ app_domain }}`) && PathPrefix(`/api`)"
+        - "traefik.http.routers.backend.entrypoints=https"
+        - "traefik.http.routers.backend.middlewares=compress@file"
+        - "traefik.http.routers.backend.tls.certresolver={{ traefik_certresolver }}"
+        - "traefik.http.services.backend.loadbalancer.server.port=5000"
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  db:
+    image: docker.io/mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: '{{ reims2_db_root_password }}'
+      MARIADB_DATABASE: '{{ reims2_db_name }}'
+      MARIADB_USER: '{{ reims2_db_user }}'
+      MARIADB_PASSWORD: '{{ reims2_db_password }}'
+    volumes:
+      - "{{ traefik_db_location }}:/var/lib/mysql"
+    networks:
+      {{ db_network }}:
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s

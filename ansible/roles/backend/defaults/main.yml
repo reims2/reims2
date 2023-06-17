@@ -1,0 +1,5 @@
+---
+reims2_db_name: reims2-db
+reims2_db_user: reims2
+
+db_dump: false

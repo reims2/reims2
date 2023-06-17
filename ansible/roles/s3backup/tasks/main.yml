@@ -1,0 +1,34 @@
+- name: Create install dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ s3backup_install_location }}"
+    - "{{ s3backup_data_location }}"
+  become: true
+
+- name: Deploy backup script
+  ansible.builtin.template:
+    src: backup.sh
+    dest: "{{ s3backup_install_location }}/backup.sh"
+    mode: "0755"
+    owner: "root"
+    group: "root"
+    # validate: shellcheck %s
+  become: true
+
+- name: Creates backup schedule
+  ansible.builtin.cron:
+    name: reims2 s3backup
+    minute: "0"
+    hour: "*/6,11"
+    user: root
+    job: "sh {{ s3backup_install_location }}/backup.sh"
+    cron_file: reims2-s3backup
+
+- name: Execute backup script
+  ansible.builtin.shell: "sh {{ s3backup_install_location }}/backup.sh"
+  become: true

@@ -24,35 +24,25 @@
     mode: "0777"
     owner: "root"
     group: "root"
-    setype: "container_file_t"
   with_items:
     - "{{ grafana_data_location }}"
   become: true
   tags:
     - grafana
 
-- name: Deploy docker-compose.yml
-  ansible.builtin.template:
-    src: docker-compose.yml.j2
-    dest: "{{ grafana_install_location }}/docker-compose.yml"
-    mode: "0600"
-    owner: "root"
-    group: "root"
-    validate: docker-compose -f %s config -q
-  tags:
-    - docker
-    - grafana
-  become: true
+- name: Load docker-compose template
+  set_fact:
+    template_partial: "{{ lookup('template', 'docker-compose.yml.j2') }}"
 
-- name: Compose grafana
-  community.docker.docker_compose:
+- name: Add compose to stack
+  blockinfile:
+    dest: "{{ stack_file }}"
+    content: "{{ template_partial }}"
     state: present
-    project_src: "{{ grafana_install_location }}"
-    pull: true
-    remove_orphans: true
-  tags:
-    - grafana
-  become: true
+    validate: docker-compose -f %s config -q
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for monitoring"
+    insertafter: "services:"
+  notify: reload stack
 
 - name: Copy prometheus config
   ansible.builtin.copy:
@@ -63,10 +53,9 @@
     mode: "0644"
   notify:
     - reload prometheus
-
-- name: Expose DB tasks
-  ansible.builtin.include_tasks: expose_db.yml
-  vars:
-    port: "{{ item.port }}"
-    db_name: "{{ item.name }}"
-  loop: "{{ db_port_mapping }}"
+# - name: Expose DB tasks
+#   ansible.builtin.include_tasks: expose_db.yml
+#   vars:
+#     port: "{{ item.port }}"
+#     db_name: "{{ item.name }}"
+#   loop: "{{ db_port_mapping }}"

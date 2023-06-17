@@ -1,5 +1,6 @@
 ---
+monitoring_domain: monitoring.{{ app_domain }}
 grafana_install_location: "/srv/grafana"
-grafana_data_location: "{{ grafana_install_location }}/config"
+grafana_data_location: "{{ grafana_install_location }}/data"
 
 grafana_port: "3000"

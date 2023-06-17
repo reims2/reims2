@@ -1,26 +1,8 @@
-{{ ansible_managed | comment }}
-
-version: '2.1'
-
-services:
-  docker-host:
-      image: qoomon/docker-host
-      cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
-      mem_limit: 8M
-      restart: always
-      environment:
-        - PORTS=5000,5001  
   grafana:
     image: grafana/grafana-oss:latest
-    network_mode: bridge
-    ports:
-     - "{{ grafana_port }}:3000"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`{{ monitoring_domain }}`)"
-      - "traefik.http.routers.grafana.entrypoints=https"
-      - "traefik.http.routers.grafana.tls.certresolver={{ traefik_certresolver }}"
-
+    networks:
+      {{ proxy_network }}:
+      {{ db_network }}:
     volumes:
      - "{{grafana_data_location}}:/var/lib/grafana"
     environment:
@@ -28,6 +10,24 @@ services:
      - GF_SERVER_ENFORCE_DOMAIN=true
      - GF_SERVER_DOMAIN={{ monitoring_domain }}
     restart: always
-    depends_on:
-      - docker-host
-
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.grafana.rule=Host(`{{ monitoring_domain }}`)"
+        - "traefik.http.routers.grafana.entrypoints=https"
+        - "traefik.http.routers.grafana.middlewares=compress@file"
+        - "traefik.http.routers.grafana.tls.certresolver={{ traefik_certresolver }}"
+        - "traefik.http.services.grafana.loadbalancer.server.port={{ grafana_port }}"
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+ 

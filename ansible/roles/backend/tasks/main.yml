@@ -1,0 +1,26 @@
+---
+- name: Load docker-compose template
+  set_fact:
+    template_partial: "{{ lookup('template', 'docker-compose.yml.j2') }}"
+
+- name: Add compose to stack
+  blockinfile:
+    dest: "{{ stack_file }}"
+    content: "{{ template_partial }}"
+    state: present
+    validate: docker-compose -f %s config -q
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for backend"
+    insertafter: "services:"
+  notify: reload stack
+
+- name: Copy SQL dump file onto host
+  ansible.builtin.copy:
+    content: "{{ db_dump }}"
+    dest: /tmp/reims-dump.sql
+    mode: "0600"
+    owner: root
+    group: root
+    force: true
+# - name: Restore dump
+#   shell: |
+#     cat /tmp/reims-dump.sql | docker exec -i $(docker ps -q -f name={{ stack_name }}_db) /usr/bin/mariadb -p{{ reims2_db_root_password }} {{ reims2_db_name }}

@@ -1,25 +1,5 @@
 ---
-# Tasks file for the traefik role
-
-# Infrastructure
-# Ansible instructions to deploy the infrastructure
-# Copyright (C) 2019-2020  Christoph (Sheogorath) Kern
-# Copyright (C) 2020       Alexander Wellbrock
-# Copyright (C) 2020       Saibotk
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, version 3 of the License.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-- name: Create install directory
+- name: Create directories
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -28,17 +8,6 @@
     group: "root"
   with_items:
     - "{{ traefik_install_location }}"
-  become: true
-
-- name: Create data directory
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: "0700"
-    owner: "root"
-    group: "root"
-    setype: "container_file_t"
-  with_items:
     - "{{ traefik_config_location }}"
     - "{{ traefik_acme_location }}"
     - "{{ traefik_db_location }}"
@@ -49,12 +18,58 @@
     name: "{{ proxy_network }}"
     driver: "overlay"
     driver_options:
-      com.docker.network.bridge.name: "{{ traefik_docker_bridge_name }}"
+      com.docker.network.bridge.name: "{{ proxy_network }}"
   become: true
 
-- name: Deploy dynamic_conf.yml
+- name: Init a new swarm with default parameters
+  community.docker.docker_swarm:
+    state: present
+  become: true
+
+- name: Create base docker-compose.yml if not exists
   ansible.builtin.template:
-    src: dynamic_conf.yml
+    src: docker-compose.yml.j2
+    dest: "{{ stack_file }}"
+    mode: "0600"
+    owner: "root"
+    group: "root"
+    force: false
+  tags:
+    - docker
+  become: true
+  notify: reload stack
+
+- name: Add network partial to docker-compose
+  blockinfile:
+    dest: "{{ stack_file }}"
+    content: |
+      networks:
+        {{ proxy_network }}:
+          external: true
+        {{ db_network }}:
+
+    state: present
+    # TODO maybe validate if previous step didn't change
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for network"
+  notify: reload stack
+
+- name: Load traefik compose template
+  set_fact:
+    template_partial: "{{ lookup('template', 'proxy.yml.j2') }}"
+
+- name: Add traefik service to docker-compose
+  blockinfile:
+    dest: "{{ stack_file }}"
+    content: "{{ template_partial }}"
+    state: present
+    validate: docker-compose -f %s config -q
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for proxy"
+    insertafter: "services:"
+  notify: reload stack
+
+- name: Deploy dynamic_conf.yml for traefik
+  ansible.builtin.template:
+    src: dynamic_conf.yml.j2
     dest: "{{ traefik_config_location }}/dynamic_conf.yml"
     owner: "root"
     group: "root"
@@ -62,54 +77,6 @@
   become: true
   when:
     - traefik_dynamic_conf != omit
-
-- name: Init a new swarm with default parameters
-  community.docker.docker_swarm:
-    state: present
-  become: true
-
-- name: Deploy docker-compose.yml
-  ansible.builtin.template:
-    src: docker-compose.yml
-    dest: "{{ traefik_install_location }}/docker-compose.yml"
-    mode: "0600"
-    owner: "root"
-    group: "root"
-    validate: docker-compose -f %s config -q
-  tags:
-    - docker
-  become: true
-
-- name: Deploy stack from a compose file
-  community.docker.docker_stack:
-    state: present
-    name: "{{ stack_name }}"
-    compose:
-      - "{{ traefik_install_location }}/docker-compose.yml"
-    prune: true
-  become: true
-
-- name: Create data directories
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: "0777"
-    owner: "root"
-    group: "root"
-  with_items:
-    - "{{ grafana_data_location }}"
-  become: true
-  tags:
-    - grafana
-
-- name: Copy SQL dump file onto host
-  ansible.builtin.copy:
-    content: "{{ db_dump }}"
-    dest: /tmp/reims-dump.sql
-    mode: "0600"
-    owner: root
-    group: root
-    force: true
-# - name: Restore dump
-#   shell: |
-#     cat /tmp/reims-dump.sql | docker exec -i $(docker ps -q -f name={{ stack_name }}_db) /usr/bin/mariadb -p{{ reims2_db_root_password }} {{ reims2_db_name }}
+  notify:
+    - reload stack
+    - reload proxy
