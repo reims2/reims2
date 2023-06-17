@@ -3,9 +3,9 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: "0700"
+    mode: "0770"
     owner: "root"
-    group: "root"
+    group: "docker"
   with_items:
     - "{{ stack_install_location }}"
   become: true
@@ -26,9 +26,9 @@
   ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: "{{ stack_file }}"
-    mode: "0600"
+    mode: "0660"
     owner: "root"
-    group: "root"
+    group: "docker"
     force: false
   become: true
   notify: reload stack

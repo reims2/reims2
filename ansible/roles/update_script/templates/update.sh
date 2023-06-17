@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 if [ "$#" -ne 3 ]; then
     echo "Illegal number of parameters"
@@ -23,5 +24,5 @@ fi
 docker stack deploy -c "$stack_file" "$stack_name"
 
 # Wait for specific service to be up again
-docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock \
+docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock \
       sudobmitch/docker-stack-wait -n "$service_name" "$stack_name"
