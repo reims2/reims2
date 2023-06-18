@@ -1,0 +1,28 @@
+name: deploy
+
+on:
+  workflow_call:
+    inputs:
+      metadata_json:
+        required: true
+        type: string
+      stack_name:
+        required: true
+        type: string
+      image_name:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency: deploy-reims2
+    steps:
+      - name: deploy via ssh
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: reims2.app
+          username: actions
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: /srv/update_script/update.sh ${{ inputs.stack_name }} ${{ inputs.image_name }} ${{ fromJSON(inputs.metadata_json).tags[0] }}
