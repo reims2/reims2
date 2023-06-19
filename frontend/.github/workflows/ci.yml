@@ -32,7 +32,7 @@ jobs:
   docker:
     needs: ci
     uses: reims2/actions/.github/workflows/docker.yml@main
-    concurrency: docker-reims2
+    concurrency: docker-frontend-${{ github.ref }}
     if: ${{ github.event_name != 'merge_group' }}
     with:
       image-name: ${{ github.repository }}
@@ -42,10 +42,10 @@ jobs:
     needs: docker
     # if: github.ref == 'refs/heads/main'
     uses: reims2/actions/.github/workflows/deploy.yml@main
-    concurrency: deploy-reims2
+    concurrency: deploy-frontend
     with:
       metadata_json: ${{ needs.docker.outputs.metadata_json }}
       stack_name: reims2
-      image_name: backend
+      image_name: frontend
     secrets: inherit # pass all secrets
 
