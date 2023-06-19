@@ -40,7 +40,7 @@ jobs:
 
   deploy:
     needs: docker
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     uses: reims2/actions/.github/workflows/deploy.yml@main
     concurrency: deploy-frontend
     with:
