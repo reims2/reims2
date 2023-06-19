@@ -14,7 +14,6 @@ on:
 
 jobs:
   docker:
-    concurrency: docker-${{ github.ref }}
     runs-on: ubuntu-latest
     outputs:
       json: ${{ steps.meta.outputs.json }}
