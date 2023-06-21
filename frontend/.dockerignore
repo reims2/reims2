@@ -6,6 +6,11 @@ Dockerfile
 .gitignore
 .npmrc
 .nuxt
+.gitpod.yml
+.gitattributes
+.editorconfig
+.github
+.vscode
 dist
 .pnp.*
 .yarn/*
