@@ -8,15 +8,11 @@ on:
     tags: ["v*.*.*"]
   pull_request:
   merge_group:
-
-env:
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  workflow_dispatch:
 
 jobs:
   ci:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3
@@ -30,66 +26,16 @@ jobs:
         run: yarn run build
 
   docker:
-    # Only start publish after successful build & test on main branch
-    needs: ci
-    concurrency: docker-${{ github.ref }}
+    uses: reims2/actions/.github/workflows/docker.yml@main
+    concurrency: docker-docs-${{ github.ref }}
     if: ${{ github.event_name != 'merge_group' }}
-    runs-on: ubuntu-latest
-    outputs:
-      json: ${{ steps.meta.outputs.json }}
-    steps:
-      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
-      - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@ecf95283f03858871ff00b787d79c419715afc34 # v2
+    secrets: inherit # pass all secrets
 
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into Docker registry
-        uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc # v2
-        with:
-          username: reims2
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # v4
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=tag
-            type=ref,event=pr
-            # set latest tag for default branch
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=sha
-
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825 # v4
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
   deploy:
-    # Only start publish after successful build & test on main branch
     needs: docker
-    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    concurrency: deploy-reims2
-    steps:
-      - name: deploy via ssh
-        uses: appleboy/ssh-action@334f9259f2f8eb3376d33fa4c684fff373f2c2a6 # v0.1.10
-        with:
-          host: reims2.app
-          username: actions
-          key: ${{ secrets.PRIVATE_KEY }}
-          port: 22
-          script: /srv/update_script/update.sh reims2 docs ${{ fromJSON(needs.docker.outputs.json).tags[0] }}
+    uses: reims2/actions/.github/workflows/deploy.yml@main
+    concurrency: deploy-docs
+    with:
+      stack_name: reims2
+    secrets: inherit # pass all secrets

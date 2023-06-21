@@ -6,8 +6,13 @@
     ":dependencyDashboard",
     ":prHourlyLimitNone",
     ":separateMajorReleases",
-    "helpers:disableTypesNodeMajor",
     "helpers:pinGitHubActionDigests",
-    "schedule:weekends"
-  ]
+    "schedule:weekends",
+    ":automergeMinor",
+    ":automergeLinters",
+    ":automergeTesters",
+    ":automergeTypes",
+    ":automergePr"
+  ],
+  "platformAutomerge": true
 }
