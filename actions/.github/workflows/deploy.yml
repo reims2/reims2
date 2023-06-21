@@ -10,7 +10,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: "production"
+    environment: 
+      name: production
+      url: https://reims2.app
     steps:
       - name: Extract Docker metadata
         id: meta
