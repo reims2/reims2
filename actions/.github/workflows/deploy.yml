@@ -25,6 +25,13 @@ jobs:
             type=ref,event=pr,priority=250
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha,priority=850
+
+      - name: Get image name (temporary workaround)
+        run: |
+          REPO=${{ github.event.repository.name }}
+          REPO=${REPO#reims2_}
+          echo REPO: $REPO
+          echo "REPO=$REPO" >> $GITHUB_ENV
       - name: deploy via ssh
         uses: appleboy/ssh-action@334f9259f2f8eb3376d33fa4c684fff373f2c2a6 # v0.1.10
         with:
