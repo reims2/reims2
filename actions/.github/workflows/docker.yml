@@ -2,15 +2,10 @@ name: docker build
 
 on:
   workflow_call:
-    inputs:
-      image-name:
-        required: true
-        type: string
     outputs:
       metadata_json:
         description: "JSON from docker metadata step"
         value: ${{ jobs.docker.outputs.json }}
-
 
 jobs:
   docker:
@@ -36,8 +31,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # v4
         with:
-          images: ${{ inputs.image-name }}
+          images: ${{ github.repository }}
           tags: |
+            # CHANGE in deploy.yml as well!!
             type=semver,pattern={{version}}
             type=ref,event=branch
             type=ref,event=pr,priority=250
@@ -56,4 +52,3 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-

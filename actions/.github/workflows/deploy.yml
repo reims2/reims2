@@ -3,13 +3,7 @@ name: deploy
 on:
   workflow_call:
     inputs:
-      metadata_json:
-        required: true
-        type: string
       stack_name:
-        required: true
-        type: string
-      image_name:
         required: true
         type: string
 
@@ -17,6 +11,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # v4
+        with:
+          images: ${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=ref,event=branch
+            type=ref,event=pr,priority=250
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,priority=850
       - name: deploy via ssh
         uses: appleboy/ssh-action@334f9259f2f8eb3376d33fa4c684fff373f2c2a6 # v0.1.10
         with:
@@ -24,4 +29,4 @@ jobs:
           username: actions
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
-          script: /srv/update_script/update.sh ${{ inputs.stack_name }} ${{ inputs.image_name }} ${{ fromJSON(inputs.metadata_json).tags[0] }}
+          script: /srv/update_script/update.sh ${{ inputs.stack_name }} ${{ github.repository }} ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
