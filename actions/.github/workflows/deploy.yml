@@ -39,4 +39,4 @@ jobs:
           username: actions
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
-          script: /srv/update_script/update.sh ${{ inputs.stack_name }} ${{ github.event.repository.name }} ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          script: /srv/update_script/update.sh ${{ inputs.stack_name }} ${{ env.REPO }} ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
