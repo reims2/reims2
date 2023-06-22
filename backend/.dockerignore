@@ -1,6 +1,6 @@
-.dockerignore
+.*
+!.mvn/
 Dockerfile
-.git
-.gitignore
 target
-.travis.yml
+LICENSE
+README.md
