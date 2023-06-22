@@ -31,7 +31,6 @@ jobs:
 
 
   docker:
-    needs: ci
     uses: reims2/actions/.github/workflows/docker.yml@main
     concurrency: docker-backend-${{ github.ref }}
     if: ${{ github.event_name != 'merge_group' }}
