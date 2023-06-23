@@ -1,4 +1,5 @@
 #!/bin/sh
+{{ ansible_managed | comment }}
 set -e
 
 if [ "$#" -ne 3 ]; then

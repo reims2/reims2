@@ -1,0 +1,25 @@
+  db:
+    image: docker.io/mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: '{{ reims2_db_root_password }}'
+      MARIADB_DATABASE: '{{ reims2_db_name }}'
+      MARIADB_USER: '{{ reims2_db_user }}'
+      MARIADB_PASSWORD: '{{ reims2_db_password }}'
+    volumes:
+      - "{{ backend_db_location }}:/var/lib/mysql"
+    networks:
+      {{ db_network }}:
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s

@@ -8,7 +8,16 @@
     group: "docker"
   with_items:
     - "{{ stack_install_location }}"
+    - "{{ log_location }}"
   become: true
+
+- name: Configure logrotate for logs
+  ansible.builtin.template:
+    src: logrotate.conf.j2
+    dest: "/etc/logrotate.d/{{ stack_name }}"
+    owner: root
+    group: root
+    mode: "0644"
 
 - name: Init a new swarm with default parameters
   community.docker.docker_swarm:

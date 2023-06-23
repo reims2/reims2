@@ -12,7 +12,7 @@
 
 - name: Deploy backup script
   ansible.builtin.template:
-    src: backup.sh.j2
+    src: backup.sh
     dest: "{{ s3backup_install_location }}/backup.sh"
     mode: "0755"
     owner: "root"
@@ -25,7 +25,7 @@
   ansible.builtin.cron:
     name: s3backup {{ stack_name }}
     minute: "0"
-    hour: "*/6,11"
+    hour: "*/6"
     user: root
-    job: "sh {{ s3backup_install_location }}/backup.sh"
+    job: "bash {{ s3backup_install_location }}/backup.sh >> {{ log_location }}/backup.log 2>&1"
     cron_file: s3backup-{{ stack_name }}

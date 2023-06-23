@@ -60,4 +60,3 @@ traefik_access_log_enabled: false
 # Optional environment variables that should be added (key value pairs)
 traefik_options: {}
 
-db_network: db

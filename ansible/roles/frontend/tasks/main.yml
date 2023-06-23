@@ -9,6 +9,6 @@
     content: "{{ template_partial }}"
     state: present
     validate: docker-compose -f %s config -q
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for frontend"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for {{role_name}}"
     insertafter: "services:"
   notify: reload stack

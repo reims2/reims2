@@ -1,5 +1,5 @@
   frontend:
-    image: docker.io/reims2/reims2-frontend:latest
+    image: reims2/reims2-frontend:latest
     restart: always
     environment:
       - "BASE_URL_BROWSER=https://{{ app_domain }}"
@@ -29,7 +29,7 @@
 
 
   docs:
-    image: docker.io/reims2/reims2-docs:latest
+    image: reims2/reims2-docs:latest
     restart: always
     networks:
       {{ proxy_network }}:

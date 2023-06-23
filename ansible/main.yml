@@ -2,14 +2,14 @@
 - name: Install reims
   hosts: all
   roles:
-    - update_script
     - backend
     - frontend
-    - monitoring
     - s3backup
+    - update_script
+    - monitoring
   become: true
   vars:
-    reset_docker_stack: true
+    # reset_docker_stack: true
     db_dump: "{{ lookup('file', 'dump.sql', errors='warn') }}"
     reims2_db_password: !vault |
       $ANSIBLE_VAULT;1.1;AES256
