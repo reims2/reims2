@@ -4,14 +4,7 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 
 ## Open Questions
 
-- Glasses that would work well, but OD/OS are swapped => Ask Diane, if that makes sense
-- show bal lens
-  - which range to filter?
-  - sphere only or also sphereical equivalents?
-- monitoring dashboard
-  - anything else? i.e. cyl or axis?
-  - sphere combination. calc avg of glasses or like currently?
-  - smaller resolution? it's possible to do smaller histogram res
+admin account
 
 ## Ideas
 
@@ -22,7 +15,6 @@ Most of them are just nice-to-have and could be done after the rewrite as a QOL 
 - Handwrite OCR with mobile phone for entering glasses
 - Improve the Philscore with ideas from the philscore page
 - Show reasons for philscore in UI, i.e. highlight high deltas, highlight spherical equivalents
-
 
 ## 9.9.22
 
@@ -72,3 +64,17 @@ Most of them are just nice-to-have and could be done after the rewrite as a QOL 
 ## 6.3.23
 
 - BAL lenses: when it's not worth correcting or user has a protheses. BAL lens is used for aestheatic reasons. It means the RX of the other eye doesn't matter, but it's important to keep the Sphere as similiar as possible.
+
+## 23.6.23
+
+- Glasses that would work well, but OD/OS are swapped => rather not, because swapping lenses needs an optometrist on site
+- show bal lens
+  - which range to filter? => +- 1 is fine
+  - sphere only or also sphereical equivalents? => also spherical equivalents
+- monitoring dashboard
+
+  - sphere combination. calc avg of glasses or like currently? => diane will think about it, use OD only for now
+  - smaller resolution? it's possible to do smaller histogram res => grouping into 1.0 bins is fine
+
+- switch disable OD with stuff in ()
+- this years packing day is in october
