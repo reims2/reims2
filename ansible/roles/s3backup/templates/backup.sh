@@ -3,7 +3,7 @@
 set -e 
 
 rm -rf {{ s3backup_data_location }} || true
-mkdir -p {{ s3backup_data_location }}
+mkdir -m 700 -p {{ s3backup_data_location }}
 
 docker exec "$(docker ps -q -f name=reims2_db)" sh -c 'exec mariadb-dump {{ reims2_db_name }} -uroot -p"{{ reims2_db_root_password }}"' > {{ s3backup_data_location }}/dump.sql
 

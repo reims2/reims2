@@ -27,7 +27,7 @@
 - name: Copy deploy script
   ansible.builtin.template:
     src: update.sh
-    dest: "{{ update_script_install_location }}/update.sh"
+    dest: "{{ update_script_path }}"
     mode: "0755"
     owner: "actions"
     group: "actions"

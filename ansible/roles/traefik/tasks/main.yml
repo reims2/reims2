@@ -14,11 +14,14 @@
 
 - name: Create proxy network
   community.docker.docker_network:
-    name: "{{ proxy_network }}"
+    name: "{{ item }}"
     driver: "overlay"
     driver_options:
-      com.docker.network.bridge.name: "{{ proxy_network }}"
+      com.docker.network.bridge.name: "{{ item }}"
   become: true
+  loop:
+    - "{{ proxy_network }}"
+    - "{{ db_network }}"
 
 - name: Add network partial to docker-compose
   ansible.builtin.blockinfile:
@@ -28,6 +31,7 @@
         {{ proxy_network }}:
           external: true
         {{ db_network }}:
+          external: true
 
     state: present
     # TODO maybe validate if previous step didn't change

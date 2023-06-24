@@ -4,7 +4,7 @@
     password: "{{ monitoring_db_password }}"
     priv: "{{ db_name }}.*:SELECT"
     state: present
-    login_password: "{{ db_password.stdout }}"
+    login_password: "{{ db_password }}"
     login_port: "{{ port }}"
     login_user: root
     login_host: 127.0.0.1

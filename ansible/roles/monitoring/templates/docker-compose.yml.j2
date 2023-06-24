@@ -1,3 +1,7 @@
+{{ ansible_managed | comment }}
+
+version: '3'
+services:
   grafana:
     image: grafana/grafana-oss:latest
     networks:
@@ -18,6 +22,7 @@
         - "traefik.http.routers.grafana.middlewares=compress@file"
         - "traefik.http.routers.grafana.tls.certresolver={{ traefik_certresolver }}"
         - "traefik.http.services.grafana.loadbalancer.server.port={{ grafana_port }}"
+        - "traefik.docker.network={{ proxy_network }}"
       update_config:
         order: start-first
         failure_action: rollback
@@ -31,3 +36,8 @@
         max_attempts: 3
         window: 120s
  
+networks:
+  {{ proxy_network }}:
+    external: true
+  {{ db_network }}:
+    external: true

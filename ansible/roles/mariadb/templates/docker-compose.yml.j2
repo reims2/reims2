@@ -1,4 +1,4 @@
-  db:
+  mariadb:
     image: docker.io/mariadb
     restart: always
     environment:
@@ -10,14 +10,23 @@
       - "{{ backend_db_location }}:/var/lib/mysql"
     networks:
       {{ db_network }}:
+    command:
+      - "--port={{ db_port }}"
+    healthcheck:
+        test: ["CMD", 'mariadb-admin', 'ping', '-h', 'localhost', '-uroot', '-p"{{ reims2_db_root_password }}"' ]
+        timeout: 10s
+        retries: 3
+        start_period: 10s
+
     deploy:
       update_config:
-        order: start-first
+        order: stop-first
         failure_action: rollback
-        delay: 10s
+        delay: 5s
       rollback_config:
         parallelism: 0
         order: stop-first
+        delay: 5s
       restart_policy:
         condition: any
         delay: 5s

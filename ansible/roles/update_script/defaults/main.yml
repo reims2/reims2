@@ -1,2 +1,3 @@
 ---
 update_script_install_location: /srv/update_script
+update_script_path: "{{ update_script_install_location }}/update.sh"

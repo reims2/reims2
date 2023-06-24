@@ -7,7 +7,6 @@
     group: "root"
   with_items:
     - "{{ s3backup_install_location }}"
-    - "{{ s3backup_data_location }}"
   become: true
 
 - name: Deploy backup script

@@ -14,17 +14,17 @@
         - "traefik.http.routers.frontend.middlewares=compress@file"
         - "traefik.http.routers.frontend.tls.certresolver={{ traefik_certresolver }}"
         - "traefik.http.services.frontend.loadbalancer.server.port=5000"
+        - "traefik.docker.network={{ proxy_network }}"
       update_config:
         order: start-first
         failure_action: rollback
-        delay: 10s
       rollback_config:
         parallelism: 0
-        order: stop-first
+        order: start-first
       restart_policy:
         condition: any
-        delay: 5s
-        max_attempts: 3
+        delay: 3s
+        max_attempts: 5
         window: 120s
 
 
@@ -41,16 +41,16 @@
         - "traefik.http.routers.docs.middlewares=compress@file"
         - "traefik.http.routers.docs.tls.certresolver={{ traefik_certresolver }}"
         - "traefik.http.services.docs.loadbalancer.server.port=5000"
+        - "traefik.docker.network={{ proxy_network }}"
       update_config:
         order: start-first
         failure_action: rollback
-        delay: 10s
       rollback_config:
         parallelism: 0
-        order: stop-first
+        order: start-first
       restart_policy:
         condition: any
-        delay: 5s
-        max_attempts: 3
+        delay: 3s
+        max_attempts: 5
         window: 120s
  

@@ -2,11 +2,11 @@
     image: reims2/reims2-backend:latest
     restart: always
     depends_on:
-      - db
+      - mariadb
     environment:
       - 'PVH_JWT_SECRET={{ reims2_jwt_secret }}'
-      - "DATABASE_HOST=db"
-      - "DATABASE_PORT=3306"
+      - "DATABASE_HOST=mariadb"
+      - "DATABASE_PORT={{ db_port }}"
       - 'DATABASE_NAME={{ reims2_db_name}}'
       - 'DATABASE_USER={{ reims2_db_user }}'
       - 'DATABASE_PASSWORD={{ reims2_db_password }}'
@@ -21,6 +21,7 @@
         - "traefik.http.routers.backend.middlewares=compress@file"
         - "traefik.http.routers.backend.tls.certresolver={{ traefik_certresolver }}"
         - "traefik.http.services.backend.loadbalancer.server.port=5000"
+        - "traefik.docker.network={{ proxy_network }}"
       update_config:
         order: start-first
         failure_action: rollback
@@ -29,7 +30,6 @@
         parallelism: 0
         order: stop-first
       restart_policy:
-        condition: any
         delay: 5s
-        max_attempts: 3
+        max_attempts: 5
         window: 120s

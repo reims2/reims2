@@ -14,8 +14,6 @@
   with_items:
     - "{{ grafana_install_location }}"
   become: true
-  tags:
-    - grafana
 
 - name: Create data directories
   ansible.builtin.file:
@@ -30,19 +28,18 @@
   tags:
     - grafana
 
-- name: Load docker-compose template
-  ansible.builtin.set_fact:
-    template_partial: "{{ lookup('template', 'docker-compose.yml.j2') }}"
-
-- name: Add compose to stack
-  ansible.builtin.blockinfile:
-    dest: "{{ stack_file }}"
-    content: "{{ template_partial }}"
-    state: present
+- name: Create docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ grafana_install_location }}/docker-compose.yml"
+    mode: "0660"
+    owner: "root"
+    group: "docker"
     validate: docker-compose -f %s config -q
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for {{role_name}}"
-    insertafter: "services:"
-  notify: reload stack
+  become: true
+  notify:
+    - reload grafana
+    - wait for grafana
 
 - name: Copy prometheus config
   ansible.builtin.copy:
@@ -53,9 +50,9 @@
     mode: "0644"
   notify:
     - reload prometheus
-# - name: Expose DB tasks
-#   ansible.builtin.include_tasks: expose_db.yml
-#   vars:
-#     port: "{{ item.port }}"
-#     db_name: "{{ item.name }}"
-#   loop: "{{ db_port_mapping }}"
+#- name: Expose DB tasks
+#  ansible.builtin.include_tasks: expose_db.yml
+#  vars:
+#    port: "{{ db_port }}"
+#    db_name: "{{ reims2_db_name }}"
+#    db_password: "{{ reims2_db_root_password }}"
