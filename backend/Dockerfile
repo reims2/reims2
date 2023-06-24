@@ -20,7 +20,7 @@ COPY --from=build /usr/src/app/target/*.jar ./app.jar
 
 EXPOSE 5000
 
-HEALTHCHECK --interval=5s --timeout=10s --retries=3 --start-period=15s CMD curl --fail http://localhost:$PORT/api || exit 1   
+HEALTHCHECK --interval=5s --timeout=10s --retries=5 --start-period=20s CMD curl --fail http://localhost:$PORT/api || exit 1   
 
 
 ENTRYPOINT ["java",  "-jar", "/usr/src/app/app.jar", "--spring.profiles.active=mysql" ]
