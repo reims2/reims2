@@ -10,7 +10,7 @@ RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn bui
 RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn workspaces focus --production
 
 # PROD IMAGE
-FROM node:18.16.0-bullseye-slim
+FROM node:18.16.1-bullseye-slim
 RUN apt-get update && apt-get upgrade -y && apt install curl -y && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV production
