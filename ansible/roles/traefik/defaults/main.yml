@@ -7,10 +7,6 @@ traefik_acme_location: "{{ traefik_install_location }}/acme"
 traefik_config_location: "{{ traefik_install_location }}/dynamic_conf"
 traefik_certresolver: "leresolver"
 
-# The traefik/dockersocketproxy version to be used
-# renovate: depName=docker.io/library/traefik
-traefik_version: v2.10.1
-
 # The domain for the traefik debug dashboard (only shown if the dashboard auth variable is defined)
 traefik_dashboard_domain: "dashboard.{{ app_domain }}"
 
@@ -59,4 +55,3 @@ traefik_access_log_enabled: false
 
 # Optional environment variables that should be added (key value pairs)
 traefik_options: {}
-

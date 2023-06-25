@@ -1,5 +1,5 @@
   mariadb:
-    image: docker.io/mariadb
+    image: docker.io/mariadb:11.0.2
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: '{{ reims2_db_root_password }}'
