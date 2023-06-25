@@ -1,5 +1,5 @@
   mariadb:
-    image: mariadb:11.0.2
+    image: mariadb:11.0.2@sha256:228396b810760b959bc99fd03d2a5fec0b056ceaef9e525a12e9b3c4b883a3af
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: '{{ reims2_db_root_password }}'
