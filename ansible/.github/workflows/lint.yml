@@ -7,9 +7,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
         with:
           fetch-depth: 0 # needed for progressive mode to work
 
       - name: Run ansible-lint
-        uses: ansible/ansible-lint-action@v6
+        uses: ansible/ansible-lint-action@df0be150a0e1e11ae3a2789e88074077568a91e1 # v6
