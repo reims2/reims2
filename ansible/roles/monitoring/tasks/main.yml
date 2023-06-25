@@ -50,7 +50,7 @@
     mode: "0644"
   notify:
     - reload prometheus
-#- name: Expose DB tasks
+# - name: Expose DB tasks
 #  ansible.builtin.include_tasks: expose_db.yml
 #  vars:
 #    port: "{{ db_port }}"
