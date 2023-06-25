@@ -1,4 +1,8 @@
-  proxy:
+{{ ansible_managed | comment }}
+
+version: '3'
+services:
+  traefik:
     image: traefik:2.10.3@sha256:c272e8c32fb7356c2166bc5d170ab0a2c73da7bfec561234c52f255ece1dd07c
     read_only: true
     restart: always
@@ -34,7 +38,6 @@
 {% endif %}
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.network={{ proxy_network }}"
       - "--providers.docker.swarmMode=true"
 {% if traefik_https_letsencrypt_enabled %}
       - "--certificatesResolvers.{{ traefik_certresolver }}.acme.httpChallenge=true"
@@ -44,7 +47,6 @@
 {% endif %}
 {% if traefik_debug %}
       - "--log.level=DEBUG"
-# FIXME TODO
       - "--api=true"
       - "--api.insecure=true"
       - "--api.dashboard=true"
@@ -88,3 +90,6 @@
     networks:
       {{ proxy_network }}:
 
+networks:
+  {{ proxy_network }}:
+    external: true

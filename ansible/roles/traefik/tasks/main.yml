@@ -21,36 +21,19 @@
   become: true
   loop:
     - "{{ proxy_network }}"
-    - "{{ db_network }}"
 
-- name: Add network partial to docker-compose
-  ansible.builtin.blockinfile:
-    dest: "{{ stack_file }}"
-    content: |
-      networks:
-        {{ proxy_network }}:
-          external: true
-        {{ db_network }}:
-          external: true
-
-    state: present
-    # TODO maybe validate if previous step didn't change
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for network"
-  notify: reload stack
-
-- name: Load traefik compose template
-  ansible.builtin.set_fact:
-    template_partial: "{{ lookup('template', 'docker-compose.yml.j2') }}"
-
-- name: Add traefik service to docker-compose
-  ansible.builtin.blockinfile:
-    dest: "{{ stack_file }}"
-    content: "{{ template_partial }}"
-    state: present
+- name: Create docker-compose for traefik
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ traefik_stack_file }}"
+    mode: "0660"
+    owner: "root"
+    group: "docker"
     validate: docker-compose -f %s config -q
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for proxy"
-    insertafter: "services:"
-  notify: reload stack
+    force: "{{ traefik_force_overwrite_compose }}"
+  notify:
+    - reload proxy
+    - wait for traefik
 
 - name: Deploy dynamic_conf.yml for traefik
   ansible.builtin.template:
@@ -63,5 +46,5 @@
   when:
     - traefik_dynamic_conf != omit
   notify:
-    - reload stack
     - reload proxy
+    - wait for traefik

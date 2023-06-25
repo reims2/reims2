@@ -4,17 +4,21 @@
     environment:
       - "BASE_URL_BROWSER=https://{{ app_domain }}"
       - "BASE_URL_INTERNAL=http://backend:5000"
+{% if frontend_debug %}
+      - "PVH_DEBUG=true"
+{% endif %}
+
     networks:
-      {{ proxy_network }}:
+      {{ stack_network }}:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.frontend.rule=Host(`{{ app_domain }}`)"
-        - "traefik.http.routers.frontend.entrypoints=https"
-        - "traefik.http.routers.frontend.middlewares=compress@file"
-        - "traefik.http.routers.frontend.tls.certresolver={{ traefik_certresolver }}"
-        - "traefik.http.services.frontend.loadbalancer.server.port=5000"
-        - "traefik.docker.network={{ proxy_network }}"
+        - "traefik.http.routers.{{ stack_name }}_frontend.rule=Host(`{{ app_domain }}`)"
+        - "traefik.http.routers.{{ stack_name }}_frontend.entrypoints=https"
+        - "traefik.http.routers.{{ stack_name }}_frontend.middlewares=compress@file"
+        - "traefik.http.routers.{{ stack_name }}_frontend.tls.certresolver={{ traefik_certresolver }}"
+        - "traefik.http.services.{{ stack_name}}_frontend.loadbalancer.server.port=5000"
+        - "traefik.docker.network={{ stack_network }}"
       update_config:
         order: start-first
         failure_action: rollback
@@ -32,16 +36,21 @@
     image: reims2/reims2-docs:latest
     restart: always
     networks:
-      {{ proxy_network }}:
+      {{ stack_network }}:
+{% if frontend_debug %}
+    environment:
+      - "PVH_DEBUG=true"
+{% endif %}
+
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.docs.rule=Host(`{{ app_domain }}`) && PathPrefix(`/docs`)"
-        - "traefik.http.routers.docs.entrypoints=https"
-        - "traefik.http.routers.docs.middlewares=compress@file"
-        - "traefik.http.routers.docs.tls.certresolver={{ traefik_certresolver }}"
-        - "traefik.http.services.docs.loadbalancer.server.port=5000"
-        - "traefik.docker.network={{ proxy_network }}"
+        - "traefik.http.routers.{{ stack_name }}_docs.rule=Host(`{{ app_domain }}`) && PathPrefix(`/docs`)"
+        - "traefik.http.routers.{{ stack_name }}_docs.entrypoints=https"
+        - "traefik.http.routers.{{ stack_name }}_docs.middlewares=compress@file"
+        - "traefik.http.routers.{{ stack_name }}_docs.tls.certresolver={{ traefik_certresolver }}"
+        - "traefik.http.services.{{ stack_name}}_docs.loadbalancer.server.port=5000"
+        - "traefik.docker.network={{ stack_network }}"
       update_config:
         order: start-first
         failure_action: rollback

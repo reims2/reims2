@@ -29,7 +29,7 @@ services:
         delay: 10s
       rollback_config:
         parallelism: 0
-        order: stop-first
+        order: start-first
       restart_policy:
         condition: any
         delay: 5s

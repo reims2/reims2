@@ -1,5 +1,1 @@
-- name: restore dump
-  shell: |
-    set -o pipefail
-    cat /tmp/reims-dump.sql | docker exec -i $(docker ps -q -f name={{ stack_name }}_db) /usr/bin/mariadb -p{{ reims2_db_root_password }} {{ reims2_db_name }}
-  when: db_dump is defined and db_dump is not false
+---

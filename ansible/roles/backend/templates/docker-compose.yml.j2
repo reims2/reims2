@@ -2,6 +2,7 @@
     image: reims2/reims2-backend:latest
     restart: always
     depends_on:
+      # TODO Use condition healthy when this is fixed: https://github.com/docker/cli/issues/3880
       - mariadb
     environment:
       - 'PVH_JWT_SECRET={{ reims2_jwt_secret }}'
@@ -10,18 +11,21 @@
       - 'DATABASE_NAME={{ reims2_db_name}}'
       - 'DATABASE_USER={{ reims2_db_user }}'
       - 'DATABASE_PASSWORD={{ reims2_db_password }}'
+{% if backend_debug %}
+      - "PVH_DEBUG=true"
+{% endif %}
     networks:
-      {{ proxy_network }}:
+      {{ stack_network }}:
       {{ db_network }}:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.backend.rule=Host(`{{ app_domain }}`) && PathPrefix(`/api`)"
-        - "traefik.http.routers.backend.entrypoints=https"
-        - "traefik.http.routers.backend.middlewares=compress@file"
-        - "traefik.http.routers.backend.tls.certresolver={{ traefik_certresolver }}"
-        - "traefik.http.services.backend.loadbalancer.server.port=5000"
-        - "traefik.docker.network={{ proxy_network }}"
+        - "traefik.http.routers.{{ stack_name }}_backend.rule=Host(`{{ app_domain }}`) && PathPrefix(`/api`)"
+        - "traefik.http.routers.{{ stack_name }}_backend.entrypoints=https"
+        - "traefik.http.routers.{{ stack_name }}_backend.middlewares=compress@file"
+        - "traefik.http.routers.{{ stack_name }}_backend.tls.certresolver={{ traefik_certresolver }}"
+        - "traefik.http.services.{{ stack_name}}_backend.loadbalancer.server.port=5000"
+        - "traefik.docker.network={{ stack_network }}"
       update_config:
         order: start-first
         failure_action: rollback

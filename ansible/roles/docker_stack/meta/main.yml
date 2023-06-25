@@ -1,3 +1,7 @@
 ---
 dependencies:
   - role: common
+  - role: traefik
+    vars:
+      # otherwise we break the previous different stack installation becasue networks are deleted
+      traefik_force_overwrite_compose: false

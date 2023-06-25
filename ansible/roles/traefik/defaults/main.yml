@@ -2,24 +2,17 @@
 # Default variables for the traefik role
 
 # The install locations
-traefik_install_location: "{{ stack_install_location }}/traefik"
+traefik_install_location: "/srv/traefik"
 traefik_acme_location: "{{ traefik_install_location }}/acme"
 traefik_config_location: "{{ traefik_install_location }}/dynamic_conf"
 traefik_certresolver: "leresolver"
+traefik_stack_file: "{{ traefik_install_location }}/docker-compose.yml"
 
 # The domain for the traefik debug dashboard (only shown if the dashboard auth variable is defined)
 traefik_dashboard_domain: "dashboard.{{ app_domain }}"
 
-# A basic auth users string (see https://docs.traefik.io/v2.0/middlewares/basicauth/)
-# traefik_dashboard_auth: ""
-
 # The email to use for letencrypt certificate requests
 traefik_letsencrypt_email: letsencrypt@kxlion.de
-
-# The proxy network name and the bridge name (you usually do not touch these)
-# ! Note these are used globally, as every container that wants to use traefik,
-# ! has to be reachable for traefik and all containers, routed with traefik, are connected to the proxy network.
-proxy_network: reims2
 
 # Should a general https redirect middleware be enabled for all hosts on the web endpoint?
 traefik_https_redirect_all: true
@@ -55,3 +48,6 @@ traefik_access_log_enabled: false
 
 # Optional environment variables that should be added (key value pairs)
 traefik_options: {}
+
+# Whether to force overwrite the compose file
+traefik_force_overwrite_compose: true
