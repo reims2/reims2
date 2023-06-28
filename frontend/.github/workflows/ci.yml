@@ -3,8 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - main
-      - dev
+      - "**"
     tags: ["v*.*.*"]
   pull_request:
   merge_group:
@@ -36,12 +35,19 @@ jobs:
     secrets: inherit # pass all secrets
 
   deploy:
-    needs: 
+    needs:
       - docker
       - ci
     if: github.ref == 'refs/heads/main'
     uses: reims2/actions/.github/workflows/deploy.yml@main
-    concurrency: deploy-frontend
-    with:
-      stack_name: reims2
+    concurrency: deploy-${{ github.repository }}
+    secrets: inherit # pass all secrets
+
+  dev-deploy:
+    needs:
+      - docker
+      - ci
+    if: github.event_name == 'workflow_dispatch'
+    uses: reims2/actions/.github/workflows/dev-deploy.yml@main
+    concurrency: dev-deploy-${{ github.repository }}
     secrets: inherit # pass all secrets
