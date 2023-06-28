@@ -4,7 +4,7 @@ npm-debug.log
 Dockerfile
 dist
 LICENSE
-README
+README*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
