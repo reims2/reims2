@@ -1,4 +1,4 @@
-name: deploy
+name: dev-deploy
 
 on:
   workflow_call:
@@ -7,8 +7,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: production
-      url: https://reims2.app
+      name: development
+      url: https://dev.reims2.app
     steps:
       - name: Extract Docker metadata
         id: meta
@@ -29,4 +29,4 @@ jobs:
           username: actions
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
-          script: /srv/update_script/update.sh reims2 ${{ env.REPO }} ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          script: /srv/update_script/update.sh dev-reims2 ${{ env.REPO }} ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
