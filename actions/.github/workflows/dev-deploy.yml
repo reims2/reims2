@@ -15,7 +15,9 @@ jobs:
         uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # v4
         with:
           images: ${{ github.repository }}
-          tags: type=sha,priority=2000
+          tags: |
+            type=sha,priority=2000
+            type=semver,pattern={{version}},priority=2100
 
       - name: Get image name (temporary workaround)
         run: |
