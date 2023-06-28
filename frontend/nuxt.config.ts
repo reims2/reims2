@@ -17,7 +17,7 @@ const config: NuxtConfig = {
   // https://axios.nuxtjs.org/options/#runtime-config
   publicRuntimeConfig: {
     axios: {
-      browserBaseURL: process.env.BASE_URL_BROWSER
+      browserBaseURL: process.env.BASE_URL_BROWSER || process.env.API_URL 
     },
 
     isDev: process.env.PVH_DEBUG === 'true' || false,
@@ -25,7 +25,8 @@ const config: NuxtConfig = {
   },
   privateRuntimeConfig: {
     axios: {
-      baseURL: process.env.BASE_URL_INTERNAL
+      baseURL: process.env.BASE_URL_INTERNAL || process.env.API_URL
+
     }
   },
 
