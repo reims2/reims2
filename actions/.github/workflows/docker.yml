@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
       - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@ecf95283f03858871ff00b787d79c419715afc34 # v2
+        uses: docker/setup-buildx-action@16c0bc4a6e6ada2cfd8afd41d22d95379cf7c32a # v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
