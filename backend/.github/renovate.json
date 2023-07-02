@@ -1,11 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
-    ":dependencyDashboard",
-    ":prHourlyLimitNone",
-    ":separateMajorReleases",
-    "helpers:pinGitHubActionDigests",
-    "schedule:weekends"
+    "github>reims2/renovate"
   ]
 }
