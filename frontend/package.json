@@ -53,5 +53,5 @@
     "vue-enter-to-tab": "1.0.2",
     "webpack": "4.46.0"
   },
-  "packageManager": "yarn@3.6.0"
+  "packageManager": "yarn@3.6.1"
 }
