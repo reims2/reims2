@@ -1,16 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
-    ":prHourlyLimitNone",
-    ":separateMajorReleases",
-    "helpers:pinGitHubActionDigests",
-    "schedule:weekends",
-    ":automergePatch",
-    ":automergeLinters",
-    ":automergeTesters",
-    ":automergeTypes",
-    ":automergePr"
-  ],
-  "platformAutomerge": true
+    "github>reims2/renovate",
+    ":disableDependencyDashboard"
+  ]
 }
