@@ -1,18 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
-    ":dependencyDashboard",
-    ":prHourlyLimitNone",
-    ":separateMajorReleases",
-    "helpers:pinGitHubActionDigests",
-    "schedule:weekends",
-    ":automergePatch",
-    ":automergePr",
-    ":automergeDigest",
-    "docker:pinDigests"
+    "github>reims2/renovate",
+    ":automergeDigest"
   ],
-  "platformAutomerge": true,
   "ansible": {
     "fileMatch": [
       "(^|/)tasks/[^/]+\\.ya?ml$",
