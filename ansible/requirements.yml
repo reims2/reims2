@@ -1,10 +1,11 @@
+---
 roles:
-  - jnv.unattended-upgrades
-  - geerlingguy.swap
-  - geerlingguy.docker
+  - name: jnv.unattended-upgrades
+  - name: geerlingguy.swap
+  - name: geerlingguy.docker
 
 collections:
-  - devsec.hardening
-  - community.general
-  - community.mysql
-  - community.docker
+  - name: devsec.hardening
+  - name: community.general
+  - name: community.mysql
+  - name: community.docker

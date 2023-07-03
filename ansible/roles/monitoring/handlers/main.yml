@@ -13,4 +13,4 @@
   become: true
 
 - name: wait for grafana
-  command: "docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock sudobmitch/docker-stack-wait -n grafana monitoring"
+  ansible.builtin.command: "docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock sudobmitch/docker-stack-wait -n grafana monitoring"
