@@ -10,9 +10,10 @@
     - "{{ traefik_install_location }}"
     - "{{ traefik_config_location }}"
     - "{{ traefik_acme_location }}"
+    - "{{ traefik_composed_location }}"
   become: true
 
-- name: Create proxy network
+- name: Create default proxy network
   community.docker.docker_network:
     name: "{{ item }}"
     driver: "overlay"
@@ -30,7 +31,7 @@
     owner: "root"
     group: "docker"
     validate: docker-compose -f %s config -q
-    force: "{{ traefik_force_overwrite_compose }}"
+    force: true
   notify:
     - reload proxy
     - wait for traefik

@@ -35,40 +35,17 @@
     - "{{ db_network }}"
     - "{{ stack_network }}"
 
-- name: Add stack network to traefik
-  ansible.builtin.blockinfile:
-    dest: "{{ traefik_stack_file }}"
-    state: present
-    validate: docker-compose -f %s config -q
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for networks of compose for {{ stack_name }}"
-    insertafter: "^networks:"
-    content: |
-      # indentation helper comment
-        {{ stack_network }}:
-          external: true
+- name: Add compose.d to traefik for network
+  ansible.builtin.template:
+    src: traefik-docker-compose.yml.j2
+    dest: "{{ traefik_composed_location }}/{{ stack_name }}.yml"
+    mode: "0660"
+    owner: "root"
+    group: "docker"
+    force: false
   notify:
     - reload proxy
     - wait for traefik
-
-- name: Add stack network to traefik
-  ansible.builtin.blockinfile:
-    dest: "{{ traefik_stack_file }}"
-    state: present
-    validate: docker-compose -f %s config -q
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for networks of service for {{ stack_name }}"
-    insertafter: "\\s+networks:"
-    content: |
-      # indentation helper comment
-            {{ stack_network }}:
-  notify:
-    - reload proxy
-    - wait for traefik
-
-- name: Delete existing docker compose when reset_docker_stack is true
-  ansible.builtin.file:
-    path: "{{ stack_file }}"
-    state: absent
-  when: reset_docker_stack
   become: true
 
 - name: Create base docker-compose.yml if not exists
@@ -78,6 +55,6 @@
     mode: "0660"
     owner: "root"
     group: "docker"
-    force: false
+    force: reset_docker_stack
   become: true
   notify: reload stack

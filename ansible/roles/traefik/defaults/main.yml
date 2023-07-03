@@ -7,6 +7,7 @@ traefik_acme_location: "{{ traefik_install_location }}/acme"
 traefik_config_location: "{{ traefik_install_location }}/dynamic_conf"
 traefik_certresolver: "leresolver"
 traefik_stack_file: "{{ traefik_install_location }}/docker-compose.yml"
+traefik_composed_location: "{{ traefik_install_location }}/compose.d"
 
 # The domain for the traefik debug dashboard (only shown if the dashboard auth variable is defined)
 traefik_dashboard_domain: "dashboard.{{ app_domain }}"
@@ -48,6 +49,3 @@ traefik_access_log_enabled: false
 
 # Optional environment variables that should be added (key value pairs)
 traefik_options: {}
-
-# Whether to force overwrite the compose file
-traefik_force_overwrite_compose: true

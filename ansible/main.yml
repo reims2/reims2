@@ -1,12 +1,11 @@
 ---
-- name: Install traefik and update_script
-  hosts: none
+- name: Install update_script
+  hosts: all
   roles:
-    - traefik
     - update_script
 
 - name: Install reims prod
-  hosts: none
+  hosts: all
   roles:
     - backend
     - frontend
