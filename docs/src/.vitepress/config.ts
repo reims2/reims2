@@ -10,7 +10,7 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Manual', link: '/howto' },
+      { text: 'Manual', link: '/' },
       { text: 'For developers', link: '/dev/' }
     ],
     search: {
@@ -18,6 +18,15 @@ export default defineConfig({
     },
 
     sidebar: {
+      '/': [
+        {
+          text: 'Overview',
+          items: [
+            { link: '/', text: 'About REIMS2' },
+            { link: '/howto', text: 'How to use REIMS2' },
+          ]
+        },
+      ],
       '/dev/': [
         {
           text: 'Overview',

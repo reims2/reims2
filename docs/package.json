@@ -3,7 +3,7 @@
     "dev": "vitepress dev src",
     "build": "vitepress build src",
     "preview": "vitepress preview src",
-    "start": "vitepress preview src --host $HOST --port $PORT"
+    "start": "vitepress preview src --port $PORT --base docs"
   },
   "packageManager": "yarn@3.6.1",
   "license": "AGPL-3.0-only",
