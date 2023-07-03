@@ -26,6 +26,6 @@ COPY --chown=node:node --from=build /usr/src/app/src/.vitepress/dist ./src/.vite
 
 EXPOSE 5000
 
-HEALTHCHECK --interval=5s --timeout=10s --retries=2 CMD curl --fail http://localhost:$PORT/docs || exit 1   
+HEALTHCHECK --interval=5s --timeout=10s --retries=2 CMD curl --fail http://localhost:$PORT/docs/ || exit 1   
 
 CMD ["dumb-init", "yarn", "run", "start"]

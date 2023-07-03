@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "vitepress dev src",
     "build": "vitepress build src",
-    "preview": "vitepress preview src",
+    "preview": "vitepress preview src --base docs",
     "start": "vitepress preview src --port $PORT --base docs"
   },
   "packageManager": "yarn@3.6.1",
