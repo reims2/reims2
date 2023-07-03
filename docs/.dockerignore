@@ -4,6 +4,8 @@ npm-debug.log
 Dockerfile
 src/.vitepress/dist
 src/.vitepress/cache
+LICENSE
+README.*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
@@ -11,4 +13,4 @@ src/.vitepress/cache
 !.yarn/versions
 !.yarnrc.yml
 !.nvmrc
-!.vitepress
+!src/.vitepress/config.ts
