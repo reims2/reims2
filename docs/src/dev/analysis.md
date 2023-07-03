@@ -1,6 +1,6 @@
 # Analysis of the old system
 
-REIMS can be downloaded from <a :href="$withBase('/reims-new.zip')">here (ZIP)</a>. The <a :href="$withBase('/reims-manual.pdf')">REIMS manual (PDF)</a> gives a very good overview of REIMS.
+REIMS can be downloaded from [here (ZIP)](/reims-new.zip). The [REIMS manual (PDF)](/reims-manual.pdf) gives a very good overview of REIMS.
 
 It's possible to run REIMS inside VirtualBox Windows 95 (find Windows 95 [here](https://archive.org/details/windows_95_vdi)).
 
@@ -46,7 +46,7 @@ on cdx files: https://stackoverflow.com/q/3618633/4026792
 
 ## PhilScore
 
-<a :href="$withBase('/philscore-breakdown.pdf')">Philscore Breakdown (PDF)</a>
+[Philscore Breakdown (PDF)](/philscore-breakdown.pdf)
 
 ### Helpful stuff to know:
 
