@@ -2,7 +2,8 @@
 node_modules
 npm-debug.log
 Dockerfile
-src/.vuepress/dist
+src/.vitepress/dist
+src/.vitepress/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
@@ -10,4 +11,4 @@ src/.vuepress/dist
 !.yarn/versions
 !.yarnrc.yml
 !.nvmrc
-
+!.vitepress

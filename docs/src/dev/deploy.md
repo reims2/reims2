@@ -1,30 +1,12 @@
 # Deploying REIMS2
 
-REIMS2 consists of two parts:
+REIMS2 consists of multiple parts:
 
 - Backend written in Java with Spring Boot
 - Frontend based on Vue+Vuetify+Nuxt, written in Javascript/Typescript
+- These docs based on Vitepress.
 
-We use Dokku for deploying, because it's very easy and even allows nice stuff like zero downtime deployments.
-
-## Deploying updates of REIMS
-
-1. Once per developer machine:
-   ```bash
-   # Set git remote config
-   cd reims2-backend
-   git remote add api dokku@YOUR_DOKKU_DOMAIN.com:api
-   cd reims2-frontend
-   git remote add frontend dokku@YOUR_DOKKU_DOMAIN.com:frontend
-   cd reims2-docs
-   git remote add docs dokku@YOUR_DOKKU_DOMAIN.com:docs
-   ```
-2. Deploy with Dokku!
-   ```bash
-   git push api
-   git push frontend
-   git push docs
-   ```
+We use Docker Stack and Swarm for deploying. It's configured to automatically deploy on pushed to the `main` branch.
 
 ## Initial server installation
 

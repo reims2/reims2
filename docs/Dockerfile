@@ -22,7 +22,7 @@ USER node
 WORKDIR /usr/src/app
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/package.json ./package.json
-COPY --chown=node:node --from=build /usr/src/app/src/.vuepress ./src/.vuepress
+COPY --chown=node:node --from=build /usr/src/app/src/.vitepress/dist ./src/.vitepress/dist
 
 EXPOSE 5000
 

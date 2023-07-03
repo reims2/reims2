@@ -26,7 +26,7 @@ This is just a very basic overview that's still missing a lot of requirements. I
 
 ## Data format
 
-_See <a :href="$withBase('/working-with-reims.pdf')">Working with REIMS to find glasses (PDF)</a> for a detailled explanation_
+_See [Working with REIMS to find glasses (PDF)](/working-with-reims.pdf) for a detailled explanation_
 
 Data for every entry:
 
@@ -60,7 +60,7 @@ Entering data:
 
 Matching data:
 
-- <a :href="$withBase('/philscore-breakdown.pdf')">Philscore Breakdown (PDF)</a>
+- [Philscore Breakdown (PDF)](/philscore-breakdown.pdf)
 
 Viewing data (America **as well as onsite**):
 
@@ -70,7 +70,7 @@ Viewing data (America **as well as onsite**):
 
 Report generation
 
-- See [user stories](user-stories.html#inventory-analysis)
+- See [user stories](user-stories#inventory-analysis)
 - Export to CSV
 
 ## General / other

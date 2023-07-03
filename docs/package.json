@@ -1,26 +1,16 @@
 {
-  "name": "reims2-docs",
-  "version": "0.0.1",
-  "description": "User Documentation for REIMS2",
-  "main": "index.js",
-  "authors": {
-    "name": "l3d00m",
-    "email": "substantialimpulse@pm.me"
+  "scripts": {
+    "dev": "vitepress dev src",
+    "build": "vitepress build src",
+    "preview": "vitepress preview src",
+    "start": "vitepress preview src --host $HOST --port $PORT"
+  },
+  "packageManager": "yarn@3.6.1",
+  "license": "AGPL-3.0-only",
+  "dependencies": {
+    "vitepress": "1.0.0-beta.3"
   },
   "engines": {
     "node": "18.x"
-  },
-  "repository": "reims2-docs/reims2-docs",
-  "scripts": {
-    "export": "vuepress export src",
-    "dev": "vuepress dev src",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider vuepress build src",
-    "start": "vuepress serve --host $HOST --port $PORT src"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "@snowdog/vuepress-plugin-pdf-export": "1.1.0",
-    "vuepress": "1.9.9",
-    "vuepress-plugin-serve": "2.0.4"
   }
 }
