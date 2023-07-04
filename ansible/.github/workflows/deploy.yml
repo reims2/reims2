@@ -10,11 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-    - name: Run playbook
-      uses: dawidd6/action-ansible-playbook@v2
-      with:
-        playbook: main.yml
-        key: ${{secrets.SSH_PRIVATE_KEY}}
-        vault_password: ${{secrets.VAULT_PASSWORD}}
-        requirements: requirements.yml
-  
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: main.yml
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          vault_password: ${{secrets.VAULT_PASSWORD}}
+          requirements: requirements.yml
+    
