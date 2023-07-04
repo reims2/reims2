@@ -1,7 +1,7 @@
 ---
 roles:
-  - name: jnv.unattended-upgrades
-    version: v1.12.2
+  - name: hifis.unattended_upgrades
+    version: v3.1.0
   - name: geerlingguy.swap
     version: 1.0.2
   - name: geerlingguy.docker

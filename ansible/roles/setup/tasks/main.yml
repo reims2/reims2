@@ -6,9 +6,10 @@
 
 - name: Enable auto upgrade
   ansible.builtin.include_role:
-    name: jnv.unattended-upgrades
+    name: hifis-net.unattended-upgrades
   vars:
-    unattended_automatic_reboot_time: "06:00"
+    unattended_automatic_reboot: true
+    unattended_automatic_reboot_time: "08:00"
     unattended_update_days: '{"Mon"}'
     unattended_download_upgradeable: 7
 
@@ -17,6 +18,16 @@
     name: geerlingguy.swap
   vars:
     swap_file_size_mb: "2048" # some swap for more RAM during Dokku deploys
+
+- name: Clean up docker weekly
+  ansible.builtin.cron:
+    name: docker cleanup
+    minute: "0"
+    hour: "4"
+    weekday: "0"
+    user: root
+    job: "docker system prune -a -f --filter 'until=336h'"
+    cron_file: docker-cleanup
 
 - name: Apt upgrade
   ansible.builtin.apt:
