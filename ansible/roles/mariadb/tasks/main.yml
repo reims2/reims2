@@ -41,7 +41,7 @@
 
     - name: Flush handlers to make restoring dump possible
       ansible.builtin.meta: flush_handlers
-      when: db_dump is not false and not dump_file.failed
+      when: db_dump is not false
 
     - name: Restore dump
       args:
@@ -49,4 +49,8 @@
       ansible.builtin.shell: |
         set -o pipefail
         cat {{ dump_location }} | docker exec -i $(docker ps -q -f name={{ stack_name }}_mariadb) /usr/bin/mariadb -p{{ reims2_db_root_password }} {{ reims2_db_name }}
-      when: db_dump is not false and not dump_file.failed
+      when: db_dump is not false
+  rescue:
+    - name: Print error
+      ansible.builtin.debug:
+        msg: "Failed to restore dump"
