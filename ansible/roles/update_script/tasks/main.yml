@@ -12,6 +12,7 @@
     user: actions
     state: present
     key: "{{ lookup('file', 'creds/deploy_key.pub') }}"
+  ignore_errors: true
 
 - name: Create directories
   ansible.builtin.file:
