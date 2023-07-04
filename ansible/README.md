@@ -1,5 +1,8 @@
 # REIMS2 Ansible role
 
+[![deploy](https://github.com/reims2/reims2-ansible-playbook/actions/workflows/deploy.yml/badge.svg?event=push)](https://github.com/reims2/reims2-ansible-playbook/actions/workflows/deploy.yml)
+[![ansible-lint](https://github.com/reims2/reims2-ansible-playbook/actions/workflows/lint.yml/badge.svg?event=push)](https://github.com/reims2/reims2-ansible-playbook/actions/workflows/lint.yml)
+
 > Ansible is an IT automation tool. It can configure systems and deploy software.
 
 For deploying a complete instance of REIMS2, do the following **on your local dev machine**:
