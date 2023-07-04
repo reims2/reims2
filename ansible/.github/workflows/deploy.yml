@@ -1,0 +1,20 @@
+name: deploy 
+
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+
+jobs:
+  ansible:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: Run playbook
+      uses: dawidd6/action-ansible-playbook@v2
+      with:
+        playbook: main.yml
+        key: ${{secrets.SSH_PRIVATE_KEY}}
+        vault_password: ${{secrets.VAULT_PASSWORD}}
+        requirements: requirements.yml
+  
