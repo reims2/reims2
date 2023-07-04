@@ -55,6 +55,6 @@
     mode: "0660"
     owner: "root"
     group: "docker"
-    force: reset_docker_stack
+    force: "{{reset_docker_stack}}"
   become: true
   notify: reload stack
