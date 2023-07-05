@@ -19,8 +19,8 @@ export default function calculateAllPhilscore(terms:GlassesSearch, glasses: Glas
     .filter(glass => rxOs.isBAL || checkForSingleAxisTolerance(rxOd, glass.os))
     .filter(glass => rxOd.isBAL || checkForTolerances(glass.od, rxOd, tolerance))
     .filter(glass => rxOs.isBAL || checkForTolerances(glass.os, rxOs, tolerance))
-    .filter(glass => !rxOd.isBAL || (Math.abs(glass.od.sphere - rxOs.sphere) <= tolerance))
-    .filter(glass => !rxOs.isBAL || (Math.abs(glass.os.sphere - rxOd.sphere) <= tolerance))
+    .filter(glass => !rxOd.isBAL || checkForTolerances(glass.od, rxOs, 1.0))
+    .filter(glass => !rxOs.isBAL || checkForTolerances(glass.os, rxOd, 1.0))
     .filter(glass => isSinglefocal || rxOd.isBAL || checkForAdditionalTolerance(glass.od, rxOd, tolerance))
     .filter(glass => isSinglefocal || rxOs.isBAL || checkForAdditionalTolerance(glass.os, rxOs, tolerance))
     .map((glass) => {
