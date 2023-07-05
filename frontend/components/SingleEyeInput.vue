@@ -35,7 +35,7 @@
           :input-value="isBAL"
           tabindex="-1"
           class="py-0 my-0"
-          :label="`Disable ${eyeName} (BAL lens)`"
+          :label="`BAL lens (Disable ${eyeName})`"
           hide-details
           @change="val => input('isBAL', val)"
         />

@@ -92,7 +92,7 @@
             <v-list-item-title>Change location</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item href="/docs" target="_blank">
+        <v-list-item href="/docs/" target="_blank">
           <v-list-item-icon>
             <v-icon>{{ mdiFileDocument }}</v-icon>
           </v-list-item-icon>

@@ -28,7 +28,8 @@
             </v-col>
             <v-col class="d-flex justify-center" cols=12 md="auto">
               <v-btn
-                href="/docs"
+                href="/docs/"
+                target="_blank"
                 x-large
                 outlined
               >
