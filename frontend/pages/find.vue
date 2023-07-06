@@ -24,6 +24,7 @@
                 v-bind="odEye"
                 eye-name="OD"
                 :add-enabled="glassesType === 'multifocal'"
+                bal-enabled
                 @input="e => {odEye[e.id] = e.value}"
               />
             </v-col>
@@ -36,6 +37,7 @@
                 v-bind="osEye"
                 eye-name="OS"
                 :add-enabled="glassesType === 'multifocal'"
+                bal-enabled
                 @input="e => {osEye[e.id] = e.value; syncEye = false}"
               />
             </v-col>
