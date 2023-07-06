@@ -76,6 +76,10 @@ export default {
       type: Boolean,
       default: true
     },
+    balEnabled: {
+      type: Boolean,
+      default: false
+    },
     isBAL: {
       type: Boolean,
       default: false
