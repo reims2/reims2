@@ -42,7 +42,7 @@
     mode: "0660"
     owner: "root"
     group: "docker"
-    force: false
+    force: true
   notify:
     - reload proxy
     - wait for traefik
