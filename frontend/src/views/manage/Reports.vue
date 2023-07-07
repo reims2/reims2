@@ -70,9 +70,15 @@
 
 <script>
 import { mdiCalendar } from '@mdi/js'
-import { mapActions, mapState } from 'vuex'
+import { mapState } from 'pinia'
+import { useRootStore } from '@/stores/root'
+import { useGlassesStore } from '@/stores/glasses'
 import { locationNames } from '../../lib/util'
 export default {
+  setup() {
+    const glassesStore = useGlassesStore()
+    return { glassesStore }
+  },
   data: () => ({
     mdiCalendar,
     loadingDispensedReport: false,
@@ -89,7 +95,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['location']),
+    ...mapState(useRootStore, ['location']),
     lastYears() {
       const year = this.$dayjs().year()
       return Array.from(new Array(30), (_, index) => year - index).filter(year => year >= 2022)
@@ -99,15 +105,11 @@ export default {
     this.selectedDispenedYear = this.$dayjs().year()
   },
   methods: {
-    ...mapActions({
-      loadDispensedCsv: 'glasses/loadDispensedCsv',
-      loadInventoryCsv: 'glasses/loadInventoryCsv'
-    }),
     async downloadDispensedReport() {
       this.loadingDispensedReport = true
       const selectedYearStart = this.$dayjs().startOf('year').year(this.selectedDispenedYear)
       try {
-        const csvFile = await this.loadDispensedCsv({
+        const csvFile = await this.glassesStore.loadDispensedCsv({
           startDate: selectedYearStart.format('MM/DD/YYYY'),
           endDate: selectedYearStart.add(1, 'year').format('MM/DD/YYYY')
         })
@@ -121,7 +123,7 @@ export default {
     async downloadInventoryReport() {
       this.loadingInventoryReport = true
       try {
-        const csvFile = await this.loadInventoryCsv()
+        const csvFile = await this.glassesStore.loadInventoryCsv()
         this.filename = `inventory_${this.location}.csv`
         this.downloadCsv(csvFile)
       } catch (error) {

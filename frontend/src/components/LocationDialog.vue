@@ -44,8 +44,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { useRootStore } from '@/stores/root'
 export default {
+  setup() {
+    const rootStore = useRootStore()
+    return {
+      location: rootStore.location
+    }
+  },
   props: {
     value: {
       type: Boolean,
@@ -62,9 +68,6 @@ export default {
         { text: 'Santa Ana', value: 'sa' }
       ]
     }
-  },
-  computed: {
-    ...mapState(['location'])
   },
   mounted() {
     this.newLocation = this.location

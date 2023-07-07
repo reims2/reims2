@@ -22,18 +22,20 @@
 
 <script>
 // from https://github.com/SplusEins/SplusEins/blob/master/web/components/spluseins-error-snackbar.vue
-import { mapMutations, mapState } from 'vuex'
+import { useRootStore } from '@/stores/root'
 
 export default {
+  setup() {
+    const rootStore = useRootStore()
+    return {
+      error: rootStore.error,
+      close: rootStore.clearError
+    }
+  },
   data: () => ({
     snackTimeout: 0,
     snackbarOpen: false
   }),
-  computed: {
-    ...mapState({
-      error: state => state.error
-    })
-  },
   watch: {
     error() {
       if (this.error) {
@@ -50,9 +52,6 @@ export default {
     clearTimeout(this.snackTimeout)
   },
   methods: {
-    ...mapMutations({
-      clearError: 'clearError'
-    }),
     close() {
       this.snackbarOpen = false; this.clearError()
     }
