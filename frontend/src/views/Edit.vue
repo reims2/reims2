@@ -97,8 +97,20 @@
 
 <script>
 import { mdiDotsVertical } from '@mdi/js'
-import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+import { useGlassesStore } from '@/stores/glasses'
+import { useRootStore } from '@/stores/root'
 export default {
+  setup() {
+    const glassesStore = useGlassesStore()
+    const rootStore = useRootStore()
+    return {
+      glasses: glassesStore.allGlasses,
+      getSingle: glassesStore.getSingle,
+      dispense: glassesStore.dispense,
+      undispense: glassesStore.undispense,
+      deleteOfflineGlasses: rootStore.deleteOfflineGlasses
+    }
+  },
   transition: 'main',
   data: () => ({
     valid: false,
@@ -118,12 +130,6 @@ export default {
   },
   title: 'Edit glasses',
   computed: {
-    ...mapState({
-      glasses: state => state.allGlasses
-    }),
-    ...mapGetters({
-      getSingle: 'glasses/getSingle'
-    }),
     selected() {
       const selected = this.getSingle(parseInt(this.sku))
       // horrible hack to always refresh the virtual DOM if something changed
@@ -158,13 +164,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      dispense: 'glasses/dispense',
-      undispense: 'glasses/undispense'
-    }),
-    ...mapMutations({
-      deleteOfflineGlasses: 'deleteOfflineGlasses'
-    }),
     async submitDispension() {
       await this.submitDeletion('DISPENSED')
     },

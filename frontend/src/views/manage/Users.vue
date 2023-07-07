@@ -155,9 +155,17 @@
 
 <script>
 import { mdiDelete, mdiPlus, mdiPencil } from '@mdi/js'
-import { mapActions } from 'vuex'
+import { useUsersStore } from '@/stores/users'
 export default {
   title: 'Manage users',
+  setup() {
+    const usersStore = useUsersStore()
+    return {
+      getUsers: usersStore.get,
+      _addUser: usersStore.add,
+      _deleteUser: usersStore.delete
+    }
+  },
   data: () => ({
     items: [],
     addLoading: false,
@@ -187,11 +195,6 @@ export default {
     this.startLoading()
   },
   methods: {
-    ...mapActions({
-      getUsers: 'users/get',
-      _addUser: 'users/add',
-      _deleteUser: 'users/delete'
-    }),
     async startLoading() {
       try {
         this.items = await this.getUsers()

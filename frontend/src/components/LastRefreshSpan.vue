@@ -12,16 +12,21 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+
+import { useRootStore } from '@/stores/root'
 export default {
+  setup() {
+    const rootStore = useRootStore()
+    return {
+      lastRefresh: rootStore.lastRefresh,
+      isRefreshingGlasses: rootStore.isRefreshingGlasses
+    }
+  },
   data() {
     return {
       lastRefreshString: null,
       refreshInterval: ''
     }
-  },
-  computed: {
-    ...mapState(['lastRefresh', 'isRefreshingGlasses'])
   },
   watch: {
     lastRefresh() {

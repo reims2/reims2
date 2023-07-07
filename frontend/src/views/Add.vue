@@ -98,12 +98,18 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapState } from 'pinia'
 import { generalEyeData, sanitizeEyeValues, clearObjectProperties, locationNames } from '../lib/util'
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
+import { useGlassesStore } from '@/stores/glasses'
+import { useRootStore } from '@/stores/root'
 export default {
   mixins: [ModifiedEnterToTabMixin],
   transition: 'main',
+  setup() {
+    const glassesStore = useGlassesStore()
+    return { glassesStore }
+  },
   data: () => ({
     valid: false,
     loading: false,
@@ -130,7 +136,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['allGlasses', 'location']),
+    ...mapState(useRootStore, ['drawer', 'location']),
     lastAdded() {
       return this.lastAddedSkus.map(sku => this.allGlasses.find(g => g.sku === sku))
     },
@@ -149,17 +155,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      addGlasses: 'glasses/addGlasses',
-      deleteGlasses: 'glasses/dispense'
-    }),
     async submit() {
       if (!this.valid) return
       this.loading = true
       this.glassModel.od = sanitizeEyeValues(this.odEye)
       this.glassModel.os = sanitizeEyeValues(this.osEye)
       try {
-        const newGlasses = await this.addGlasses(this.glassModel)
+        const newGlasses = await this.glassesStore.addGlasses(this.glassModel)
         this.lastAddedSkus.unshift(newGlasses.sku)
       } catch (error) {
         this.loading = false
@@ -190,7 +192,7 @@ export default {
     },
     async submitDeletion(sku) {
       try {
-        await this.deleteGlasses({ sku, reason: 'WRONGLY_ADDED' })
+        await this.glassesStore.deleteGlasses({ sku, reason: 'WRONGLY_ADDED' })
       } catch (error) {
         if (error.status === 404) {
           console.log('Already deleted')

@@ -19,7 +19,6 @@
             <v-col class="d-flex justify-center" cols=12 md="auto">
               <v-btn
                 to="/find"
-                nuxt
                 x-large
                 color="primary"
               >

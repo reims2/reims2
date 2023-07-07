@@ -89,7 +89,6 @@
     </template>
     <template #item.actions="{item}">
       <v-btn
-        nuxt
         :to="{path:'/edit', query: { sku: item.sku }}"
         icon
         small
@@ -101,9 +100,19 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
 import { mdiPencil } from '@mdi/js'
+import { useTableStore } from '@/stores/table'
+import { useRootStore } from '@/stores/root'
 export default {
+  setup() {
+    const tableStore = useTableStore()
+    const rootStore = useRootStore()
+    return {
+      totalItems: tableStore.totalGlassesCount,
+      location: rootStore.location,
+      loadItems: tableStore.loadItems
+    }
+  },
   data: () => ({
     filters: {
       glassesType: [],
@@ -122,10 +131,6 @@ export default {
     mdiPencil
   }),
   computed: {
-    ...mapState({
-      totalItems: state => state.table.totalGlassesCount,
-      location: state => state.location
-    }),
     headers() {
       return [
         { value: 'sku', text: 'SKU' },
@@ -174,9 +179,6 @@ export default {
     this.startLoading()
   },
   methods: {
-    ...mapActions({
-      loadItems: 'table/loadItems'
-    }),
     createSingleFilter(value, filterName) {
       if (value == null) return null
 

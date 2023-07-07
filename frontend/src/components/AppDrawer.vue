@@ -7,13 +7,13 @@
   >
     <template #prepend>
       <div class="mt-5 mx-3 text-h6  font-weight-medium">
-        <NuxtLink
+        <router-link
           :style="miniDrawer ? 'visibility:hidden;': ''"
           class="no-decoration no-color"
           to="/"
         >
           REIMS {{ locationNames[location] }}
-        </NuxtLink>
+        </router-link>
       </div>
       <div v-if="$auth.loggedIn && $auth.user && !miniDrawer" class="text--secondary ml-3 mb-1">
         Logged in as <span class="font-weight-bold">{{ $auth.user.username }}</span>
@@ -30,7 +30,6 @@
           :key="item.title"
           :to="item.to"
           :disabled="item.disabled || false"
-          nuxt
         >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -51,7 +50,6 @@
           :key="item.title"
           :to="item.to"
           :disabled="item.disabled || false"
-          nuxt
         >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>

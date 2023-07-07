@@ -130,12 +130,18 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import * as chroma from '../lib/chroma'
 import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '../lib/util'
 import EditableSpan from './EditableSpan.vue'
+import { useGlassesStore } from '@/stores/glasses'
 
 export default {
+  setup() {
+    const glassesStore = useGlassesStore()
+    return {
+      editGlasses: glassesStore.edit
+    }
+  },
   components: { EditableSpan },
   props: {
     glass: {
@@ -198,9 +204,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      editGlasses: 'glasses/edit'
-    }),
     calcColor(val) {
       const scale = chroma.scale(['#F57F17', '#009688']).domain([2, 0])
       return scale(val).hex()

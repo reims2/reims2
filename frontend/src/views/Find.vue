@@ -109,7 +109,6 @@
             <glass-card :glass="item">
               <template #actions>
                 <v-btn
-                  nuxt
                   :to="{path:'/edit', query: { sku: item.sku }}"
                   text
                   class="mx-0"
@@ -144,12 +143,24 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex'
 import { matchesAsCsvUri, generalEyeData } from '../lib/util'
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
+import { useGlassesStore } from '@/stores/glasses'
+import { useRootStore } from '@/stores/root'
 
 export default {
   mixins: [ModifiedEnterToTabMixin],
+  setup() {
+    const glassesStore = useGlassesStore()
+    const rootStore = useRootStore()
+
+    return {
+      allGlasses: rootStore.allGlasses,
+      philScore: glassesStore.philScore,
+      hasGlassesLoaded: glassesStore.hasGlassesLoaded
+    }
+  },
+
   transition: 'main',
   data: () => ({
     matches: null,
@@ -170,9 +181,6 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      allGlasses: state => state.allGlasses
-    }),
     _matchesAsCSVUri() {
       if (!this.matches) return ''
       return matchesAsCsvUri(this.matches.slice(0, 30))
@@ -246,12 +254,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      philScore: 'glasses/philScore'
-    }),
-    ...mapGetters({
-      hasGlassesLoaded: 'glasses/hasGlassesLoaded'
-    }),
     async submitAndUpdate() {
       if (!this.valid) return
       await this.loadMatches()
