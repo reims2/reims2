@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.7_7-jdk-jammy AS build
+FROM eclipse-temurin:17.0.7_7-jdk-jammy@sha256:34161363f20bc85a98d230f41126b75ac40935580378c8d9ca043ec7a96f23da AS build
 
 ENV PORT 5000
 WORKDIR /usr/src/app
@@ -9,7 +9,7 @@ COPY ./src ./src
 RUN --mount=type=cache,target=/root/.m2 ./mvnw clean install -DskipTests
 
 # PROD IMAGE
-FROM eclipse-temurin:17.0.7_7-jre-jammy
+FROM eclipse-temurin:17.0.7_7-jre-jammy@sha256:f9d5e219ba439970ed373ff6e9f5ba2746db45789949f9f3fa474aa6bab1eae7
 RUN apt-get update && apt-get upgrade -y && apt install curl -y && rm -rf /var/lib/apt/lists/*
 
 ENV HOST 0.0.0.0
