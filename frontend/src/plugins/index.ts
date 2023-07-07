@@ -6,6 +6,7 @@
 
 // Plugins
 import { loadFonts } from './webfontloader'
+import axios from './axios'
 import vuetify from './vuetify'
 import pinia from '../stores'
 import router from '../router'
@@ -19,4 +20,5 @@ export function registerPlugins(app: App) {
     .use(vuetify)
     .use(router)
     .use(pinia)
+    .use(axios)
 }
