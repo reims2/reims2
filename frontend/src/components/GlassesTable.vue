@@ -2,7 +2,7 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    :options.sync="options"
+    v-model:options="options"
     :server-items-length="totalItems"
     :loading="loading"
     dense

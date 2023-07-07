@@ -47,7 +47,7 @@ export default {
     this.updateGlasses()
     this.refreshGlassesInterval = setInterval(() => this.updateGlasses(), 3 * 60 * 1000)
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.refreshGlassesInterval)
   },
   methods: {

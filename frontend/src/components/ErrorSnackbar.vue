@@ -46,7 +46,7 @@ export default {
       }
     }
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearTimeout(this.snackTimeout)
   },
   methods: {

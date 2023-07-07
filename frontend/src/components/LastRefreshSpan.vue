@@ -32,7 +32,7 @@ export default {
     this.refreshInterval = setInterval(() => this.generateTimeString(), 10 * 1000)
     this.generateTimeString()
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.refreshInterval)
   },
   methods: {
