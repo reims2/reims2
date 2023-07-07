@@ -1,5 +1,5 @@
 import { mdiArrowLeftRight, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
-import { Glasses, Eye, EyeSearch } from '~/model/GlassesModel'
+import { Glasses, Eye, EyeSearch } from '@/model/GlassesModel'
 
 const isAllowedStep = (number:number) => {
   if (number == null || !number) return true // we don't handle that

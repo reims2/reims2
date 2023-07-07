@@ -3,7 +3,7 @@
     <app-header />
     <app-drawer :main-items="mainItems" :other-items="otherItems" />
     <v-main class="background">
-      <Nuxt keep-alive class="py-6 px-6" />
+      <router-view keep-alive class="py-6 px-6" />
       <error-snackbar />
     </v-main>
     <app-bottom-bar v-if="$vuetify.breakpoint.mobile" :items="mainItems" />
@@ -13,8 +13,9 @@
 
 <script>
 import { mdiFileFind, mdiPencil, mdiDatabase, mdiPlusCircle, mdiAccountEdit, mdiChartBox } from '@mdi/js'
-import { mapState } from 'vuex'
-import AppFooter from '~/components/AppFooter.vue'
+import AppFooter from '@/components/AppFooter.vue'
+import { useRootStore } from '@/stores/root'
+import { mapState } from 'pinia'
 
 export default {
   components: { AppFooter },
@@ -40,7 +41,7 @@ export default {
       }
       return list
     },
-    ...mapState(['lastRefresh'])
+    ...mapState(useRootStore, ['lastRefresh'])
 
   },
   created() {

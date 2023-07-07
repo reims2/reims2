@@ -114,7 +114,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { useRootStore } from '@/stores/root'
+import { mapState } from 'pinia'
+
 import { mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
 import { locationNames } from '../lib/util'
 export default {
@@ -150,7 +152,7 @@ export default {
     commitUrl: function() {
       return 'https://github.com/reims2/reims2-frontend/commit/' + this.$config.version
     },
-    ...mapState(['drawer', 'location'])
+    ...mapState(useRootStore, ['drawer', 'location'])
   }
 }
 </script>

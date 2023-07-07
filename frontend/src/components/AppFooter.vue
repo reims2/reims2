@@ -23,17 +23,17 @@
   </v-footer>
 </template>
 
-<script>
-import { mapState } from 'vuex'
-export default {
-  props: {
-    showLastUpdate: {
-      type: Boolean,
-      default: true
-    }
-  },
-  computed: {
-    ...mapState(['allGlasses'])
+<script setup lang="ts">
+import { useRootStore } from '@/stores/root'
+import { computed } from 'vue'
+defineProps({
+  showLastUpdate: {
+    type: Boolean,
+    default: true
   }
-}
+
+})
+
+const rootStore = useRootStore()
+const allGlasses = computed(() => rootStore.allGlasses)
 </script>
