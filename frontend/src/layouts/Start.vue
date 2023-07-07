@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <nuxt />
+      <router-view/>
     </v-main>
     <app-footer
       :show-last-update=false

@@ -22,6 +22,7 @@ module.exports = {
     'no-console': 'off',
     '@typescript-eslint/no-var-requires': 'warn',
     semi: ['warn', 'never'],
-    quotes: ['warn', 'single']
+    quotes: ['warn', 'single'],
+    'vue/valid-v-slot': ['error', { allowModifiers: true }]
   }
 }
