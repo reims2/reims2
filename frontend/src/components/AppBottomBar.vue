@@ -17,10 +17,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  items: {
-    type: Array,
-    required: true
-  }
-})
+defineProps<{
+  items: any[]
+}>()
 </script>

@@ -15,7 +15,9 @@ export const useRootStore = defineStore({
     isOutdated: false,
     isRefreshingGlasses: false,
     isOffline: false,
-    isMobile: false
+    isMobile: false,
+    isDev: false,
+    version: '0.0.0'
   }),
   getters: {
     hasGlassesLoaded: (state) => {

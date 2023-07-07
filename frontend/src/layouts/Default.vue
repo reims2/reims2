@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mdiFileFind, mdiPencil, mdiDatabase, mdiPlusCircle, mdiAccountEdit, mdiChartBox } from '@mdi/js'
+import { mdiFileFind, mdiPencil, mdiDatabase, mdiPlusCircle, mdiChartBox } from '@mdi/js'
 import AppFooter from '@/components/AppFooter.vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppDrawer from '@/components/AppDrawer.vue'

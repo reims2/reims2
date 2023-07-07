@@ -20,9 +20,29 @@ const routes = [
         component: () => import('@/view/Add.vue')
       },
       {
-        path: 'find',
+        path: '/find',
         name: 'Find',
         component: () => import('@/view/Find.vue')
+      },
+      {
+        path: '/edit',
+        name: 'Edit',
+        component: () => import('@/view/Edit.vue')
+      },
+      {
+        path: '/view',
+        name: 'View',
+        component: () => import('@/view/View.vue')
+      },
+      {
+        path: '/manage/reports',
+        name: 'Manage reports',
+        component: () => import('@/view/manage/Reports.vue')
+      },
+      {
+        path: '/manage/users',
+        name: 'Manage Users',
+        component: () => import('@/view/manage/Users.vue')
       }
     ]
   },

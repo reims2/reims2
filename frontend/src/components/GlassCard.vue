@@ -45,7 +45,7 @@
                     hide-details
                     style="max-width:130px"
                     autofocus
-                    @input="value => startEdit(null, item.id, value)"
+                    @update:modelValue="value => startEdit(null, item.id, value)"
                     @blur="edit = ''"
                   />
                   <span v-else v-bind="attrs" v-on="on">

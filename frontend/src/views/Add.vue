@@ -25,7 +25,7 @@
                 v-bind="odEye"
                 eye-name="OD"
                 :add-enabled="glassModel['glassesType'] === 'multifocal'"
-                @input="e => {odEye[e.id] = e.value}"
+                @update:modelValue="e => {odEye[e.id] = e.value}"
               />
             </v-col>
             <v-col
@@ -37,7 +37,7 @@
                 v-bind="osEye"
                 eye-name="OS"
                 :add-enabled="glassModel['glassesType'] === 'multifocal'"
-                @input="e => {updateSync(osEye, e.value); osEye[e.id] = e.value}"
+                @update:modelValue="e => {updateSync(osEye, e.value); osEye[e.id] = e.value}"
               />
             </v-col>
             <v-col cols=12 class="px-0 pt-0">
@@ -103,8 +103,14 @@ import { generalEyeData, sanitizeEyeValues, clearObjectProperties, locationNames
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
+import AutoCompleteField from '@/components/AutoCompleteField.vue'
+import SingleEyeInput from '@/components/SingleEyeInput.vue'
+import GlassCard from '@/components/GlassCard.vue'
+import DeleteButton from '@/components/DeleteButton.vue'
+
 export default {
   mixins: [ModifiedEnterToTabMixin],
+  components: { AutoCompleteField, SingleEyeInput, GlassCard, DeleteButton },
   transition: 'main',
   setup() {
     const glassesStore = useGlassesStore()

@@ -14,6 +14,7 @@
 <script>
 
 import { useRootStore } from '@/stores/root'
+
 export default {
   setup() {
     const rootStore = useRootStore()

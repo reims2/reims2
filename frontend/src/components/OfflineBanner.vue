@@ -17,6 +17,8 @@
 <script setup lang="ts">
 import { useRootStore } from '@/stores/root'
 import { computed } from 'vue'
+import LastRefreshSpan from '@/components/LastRefreshSpan.vue'
+
 const rootStore = useRootStore()
 const isOutdated = computed(() => rootStore.isOutdated)
 const lastRefresh = computed(() => rootStore.lastRefresh)

@@ -31,7 +31,7 @@ export default {
     }
   },
   props: {
-    value: {
+    modelValue: {
       type: String,
       required: false,
       default: ''
@@ -72,7 +72,7 @@ export default {
         return this.value
       },
       set(val) {
-        this.$emit('input', val)
+        this.$emit('update:modelValue', val)
       }
     }
   },
@@ -86,7 +86,7 @@ export default {
       if (!data) return
 
       for (const item of data.items) {
-        if (item.startsWith(glassesString.toLowerCase())) return this.$emit('input', item)
+        if (item.startsWith(glassesString.toLowerCase())) return this.$emit('update:modelValue', item)
       }
     },
     focus() {

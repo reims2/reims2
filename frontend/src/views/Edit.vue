@@ -99,7 +99,14 @@
 import { mdiDotsVertical } from '@mdi/js'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
+import GlassCard from '@/components/GlassCard.vue'
+import DeleteButton from '@/components/DeleteButton.vue'
+
 export default {
+  components: {
+    GlassCard,
+    DeleteButton
+  },
   setup() {
     const glassesStore = useGlassesStore()
     const rootStore = useRootStore()

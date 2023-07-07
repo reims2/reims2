@@ -21,7 +21,7 @@
 <script>
 export default {
   props: {
-    value: {
+    modelValue {
       type: String,
       required: true
     },
