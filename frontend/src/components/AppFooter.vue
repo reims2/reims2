@@ -24,6 +24,7 @@
 </template>
 
 <script setup lang="ts">
+import LastRefreshSpan from '@/components/LastRefreshSpan.vue'
 import { useRootStore } from '@/stores/root'
 import { computed } from 'vue'
 defineProps({

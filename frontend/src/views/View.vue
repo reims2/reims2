@@ -9,7 +9,11 @@
 </template>
 
 <script>
+import GlassesTable from '@/components/GlassesTable.vue'
 export default {
+  components: {
+    GlassesTable
+  },
   transition: 'main',
   title: 'View all glasses',
   head() {

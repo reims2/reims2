@@ -22,7 +22,7 @@
           :step="item.step"
           :disabled="item.disabled || isBAL"
           :prefix="eye_data[id].value != null ? item.prefix : ''"
-          @input="val => input(id, val)"
+          @update:modelValue="val => input(id, val)"
           @update:error="val => hasError[id] = val"
           @blur="update(id)"
           @focus="$event.target.select()"

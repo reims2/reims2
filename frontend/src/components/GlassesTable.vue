@@ -103,7 +103,11 @@
 import { mdiPencil } from '@mdi/js'
 import { useTableStore } from '@/stores/table'
 import { useRootStore } from '@/stores/root'
+import GlassCard from '@/components/GlassCard.vue'
+import MinMaxInput from '@/components/MinMaxInput.vue'
+
 export default {
+  components: { GlassCard, MinMaxInput },
   setup() {
     const tableStore = useTableStore()
     const rootStore = useRootStore()

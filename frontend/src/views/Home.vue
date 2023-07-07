@@ -47,6 +47,7 @@
 
 <script>
 import { mdiDatabaseCog, mdiFileDocument } from '@mdi/js'
+
 export default {
   layout: 'start',
   transition: '',

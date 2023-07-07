@@ -1,9 +1,9 @@
 <template>
   <v-dialog
-    :value="value"
+    :model-value="modelValue"
     max-width="400px"
     persistent
-    @input="e => updateDialogState(e)"
+    @update:modelValue="e => updateDialogState(e)"
   >
     <v-card>
       <v-card-title class="text-h5 white--text primary">
@@ -45,6 +45,7 @@
 
 <script>
 import { useRootStore } from '@/stores/root'
+
 export default {
   setup() {
     const rootStore = useRootStore()
@@ -54,7 +55,7 @@ export default {
     }
   },
   props: {
-    value: {
+    modelValue: {
       type: Boolean,
       required: true
 
@@ -93,7 +94,7 @@ export default {
       this.updateDialogState(false)
     },
     updateDialogState(value) {
-      this.$emit('input', value)
+      this.$emit('update:modelValue', value)
       this.newLocation = this.location
     }
   }

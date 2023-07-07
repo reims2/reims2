@@ -19,7 +19,12 @@
 <script>
 import { mdiChevronLeft, mdiMenu } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
+import OfflineBanner from '@/components/OfflineBanner.vue'
+
 export default {
+  components: {
+    OfflineBanner
+  },
   setup() {
     const rootStore = useRootStore()
     return { rootStore }
