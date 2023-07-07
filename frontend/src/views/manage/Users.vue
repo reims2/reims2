@@ -232,7 +232,8 @@ export default {
       this.startLoading()
     },
     isCurrentUser(username) {
-      return this.$auth.user && username === this.$auth.user.username
+      return 'TODO'
+      // return this.$auth.user && username === this.$auth.user.username
     }
   }
 }

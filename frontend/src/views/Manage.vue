@@ -1,5 +1,5 @@
 <template>
   <v-container>
-    <NuxtChild keep-alive />
+    <router-view keep-alive />
   </v-container>
 </template>

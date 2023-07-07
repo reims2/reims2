@@ -49,7 +49,8 @@ export default {
   setup() {
     const rootStore = useRootStore()
     return {
-      location: rootStore.location
+      location: rootStore.location,
+      rootStore
     }
   },
   props: {
@@ -76,16 +77,16 @@ export default {
     async changeLocation() {
       this.loading = true
       this.prevLocation = this.location
-      this.$store.commit('setLocation', this.newLocation)
+      this.location = this.newLocation
 
       try {
-        await this.$store.dispatch('loadGlasses')
+        await this.rootStore.loadGlasses()
       } catch (error) {
         // reset location
         this.newLocation = this.prevLocation
-        this.$store.commit('setLocation', this.newLocation)
+        this.location = this.prevLocation
 
-        this.$store.commit('setError', `Cannot change location (Error ${error.status})`)
+        this.rootStore.setError(`Cannot change location (Error ${error.status})`)
       }
 
       this.loading = false

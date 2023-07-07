@@ -108,7 +108,8 @@ export default {
   transition: 'main',
   setup() {
     const glassesStore = useGlassesStore()
-    return { glassesStore }
+    const rootStore = useRootStore()
+    return { glassesStore, rootStore }
   },
   data: () => ({
     valid: false,
@@ -177,14 +178,14 @@ export default {
       this.$store.commit('clearError')
       this.reset()
       // scroll to bottom on mobile
-      this.$nextTick(() => { if (this.$vuetify.breakpoint.mobile) this.$refs.results.scrollIntoView(true) })
+      this.$nextTick(() => { if (this.rootStore.isMobile) this.$refs.results.scrollIntoView(true) })
     },
     reset() {
       clearObjectProperties(this.odEye)
       clearObjectProperties(this.osEye)
       this.glassModel = {}
       this.$refs.form.reset()
-      if (!this.$vuetify.breakpoint.mobile) this.$refs.firstInput[0].focus()
+      if (!this.rootStore.isMobile) this.$refs.firstInput[0].focus()
       this.syncEyes = true
     },
     updateSync(oldEye, newValue) {

@@ -157,7 +157,8 @@ export default {
     return {
       allGlasses: rootStore.allGlasses,
       philScore: glassesStore.philScore,
-      hasGlassesLoaded: glassesStore.hasGlassesLoaded
+      hasGlassesLoaded: glassesStore.hasGlassesLoaded,
+      rootStore
     }
   },
 
@@ -262,7 +263,7 @@ export default {
 
       this.$nextTick(() => {
         // on desktop, focus input again; on mobile, scroll to bottom
-        if (!this.$vuetify.breakpoint.mobile) this.$refs.firstInput.focus()
+        if (!this.rootStore.isMobile) this.$refs.firstInput.focus()
         else if (this.$refs.results) this.$refs.results.scrollIntoView(true)
       })
     },

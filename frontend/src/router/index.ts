@@ -15,9 +15,14 @@ const routes = [
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue')
       },
       {
-        path: 'add',
+        path: '/add',
         name: 'Add',
-        component: () => import('@/views/Add.vue')
+        component: () => import('@/view/Add.vue')
+      },
+      {
+        path: 'find',
+        name: 'Find',
+        component: () => import('@/view/Find.vue')
       }
     ]
   },
@@ -28,6 +33,7 @@ const routes = [
       auth: false
     }
   }
+
 ]
 
 const router = createRouter({

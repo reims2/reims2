@@ -134,12 +134,15 @@ import * as chroma from '../lib/chroma'
 import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '../lib/util'
 import EditableSpan from './EditableSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
+import { useRootStore } from '@/stores/root'
 
 export default {
   setup() {
     const glassesStore = useGlassesStore()
+    const rootStore = useRootStore()
     return {
-      editGlasses: glassesStore.edit
+      editGlasses: glassesStore.edit,
+      rootStore
     }
   },
   components: { EditableSpan },
@@ -229,9 +232,9 @@ export default {
         if (error.response && error.response.status < 500) {
           // TODO catch network errors because they'll be retried.
           this.edit = ''
-          this.$store.commit('setError', `Glasses can't be edited, sorry (Error ${error.status})`)
+          this.rootStore.commit('setError', `Glasses can't be edited, sorry (Error ${error.status})`)
         } else {
-          this.$store.commit('setError', `Editing was not possible because the server didn't respond. Please retry (Error ${error.status}).`)
+          this.rootStore.commit('setError', `Editing was not possible because the server didn't respond. Please retry (Error ${error.status}).`)
         }
         this.loading = false
         return

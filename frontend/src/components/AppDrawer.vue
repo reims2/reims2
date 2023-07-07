@@ -15,15 +15,15 @@
           REIMS {{ locationNames[location] }}
         </router-link>
       </div>
-      <div v-if="$auth.loggedIn && $auth.user && !miniDrawer" class="text--secondary ml-3 mb-1">
-        Logged in as <span class="font-weight-bold">{{ $auth.user.username }}</span>
+      <div v-if="true && !miniDrawer" class="text--secondary ml-3 mb-1">
+        Logged in as <span class="font-weight-bold"> TODO username </span>
       </div>
     </template>
     <location-dialog v-model="dialog" />
 
     <v-divider v-if="!miniDrawer" class="mt-3" />
 
-    <v-list v-if="!$vuetify.breakpoint.mobile" nav>
+    <v-list v-if="!rootStore.isMobile" nav>
       <v-list-item-group color="accent">
         <v-list-item
           v-for="item in mainItems"
@@ -41,7 +41,7 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
-    <v-divider v-if="!$vuetify.breakpoint.mobile" class="mb-3" />
+    <v-divider v-if="!rootStore.isMobile" class="mb-3" />
 
     <v-list nav subheader>
       <v-list-item-group color="accent">
@@ -98,7 +98,7 @@
             <v-list-item-title>Documentation</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="$auth.logout()">
+        <v-list-item @click="() => {}">
           <v-list-item-icon>
             <v-icon>{{ mdiLogout }}</v-icon>
           </v-list-item-icon>
@@ -118,6 +118,10 @@ import { mapState } from 'pinia'
 import { mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
 import { locationNames } from '../lib/util'
 export default {
+  setup() {
+    const rootStore = useRootStore()
+    return { rootStore }
+  },
   props: {
     mainItems: {
       type: Array,
@@ -140,11 +144,11 @@ export default {
   },
   computed: {
     drawerModel: {
-      get() { return !this.$vuetify.breakpoint.mobile || this.drawer },
-      set(val) { this.$store.commit('setDrawer', val) }
+      get() { return !this.rootStore.isMobile || this.drawer },
+      set(val) { this.rootStore.drawer = val }
     },
     miniDrawer: {
-      get() { return !this.$vuetify.breakpoint.mobile && !this.drawer },
+      get() { return !this.rootStore.isMobile && !this.drawer },
       set() { }
     },
     commitUrl: function() {

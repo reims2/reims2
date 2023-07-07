@@ -10,7 +10,7 @@
       {{ title }}
     </v-toolbar-title>
 
-    <template v-if="$nuxt.isOffline" #extension>
+    <template v-if="rootStore.isOffline" #extension>
       <offline-banner />
     </template>
   </v-app-bar>
@@ -18,7 +18,12 @@
 
 <script>
 import { mdiChevronLeft, mdiMenu } from '@mdi/js'
+import { useRootStore } from '@/stores/root'
 export default {
+  setup() {
+    const rootStore = useRootStore()
+    return { rootStore }
+  },
   data: () => ({
     mdiChevronLeft,
     mdiMenu,
