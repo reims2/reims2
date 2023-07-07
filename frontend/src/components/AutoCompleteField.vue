@@ -5,7 +5,7 @@
     :label="label"
     :rules="rules"
     :hint="hint"
-    :autofocus="first && !$vuetify.breakpoint.mobile"
+    :autofocus="first && !rootStore.isMobile"
     outlined
     clearable
     :persistent-hint="persistentHint"
@@ -21,7 +21,15 @@
 
 <script>
 import { generalEyeData } from '../lib/util'
+
+import { useRootStore } from '@/stores/root'
 export default {
+  setup() {
+    const rootStore = useRootStore()
+    return {
+      rootStore
+    }
+  },
   props: {
     value: {
       type: String,

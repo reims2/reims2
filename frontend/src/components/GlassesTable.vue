@@ -8,7 +8,7 @@
     dense
     must-sort
     sort-by="sku"
-    :mobile-breakpoint="$vuetify.breakpoint.mobileBreakpoint"
+    :mobile-breakpoint="rootStore.isMobileBreakpoint"
     :footer-props="{
       showFirstLastPage: true,
       itemsPerPageOptions: [10,20,50,100,500],
@@ -16,12 +16,12 @@
     }"
     @update:options="startLoading"
   >
-    <template v-if="$vuetify.breakpoint.mobile" #item={item}>
+    <template v-if="rootStore.isMobile" #item={item}>
       <div class="mx-2 pb-1">
         <glass-card :glass="item" />
       </div>
     </template>
-    <template v-if="!$vuetify.breakpoint.mobile" #body.prepend>
+    <template v-if="!rootStore.isMobile" #body.prepend>
       <tr>
         <td />
         <td class="v-data-table__divider">
@@ -110,7 +110,8 @@ export default {
     return {
       totalItems: tableStore.totalGlassesCount,
       location: rootStore.location,
-      loadItems: tableStore.loadItems
+      loadItems: tableStore.loadItems,
+      rootStore
     }
   },
   data: () => ({
@@ -208,7 +209,7 @@ export default {
       return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)
     },
     async startLoading() {
-      setTimeout(() => { if (this.$vuetify.breakpoint.mobile) this.$nuxt.$loading.start() })
+      setTimeout(() => { if (this.rootStore.isMobile) this.$nuxt.$loading.start() })
       this.loading = true
       try {
         this.items = await this.loadItems({ options: this.options, filterString: this.filterString })
@@ -216,7 +217,7 @@ export default {
         if (error.status === 404) {
           this.items = []
         } else {
-          this.$store.commit('setError', `Could not load data, please retry (Error ${error.status})`)
+          this.rootStore.commit('setError', `Could not load data, please retry (Error ${error.status})`)
         }
       }
       this.loading = false

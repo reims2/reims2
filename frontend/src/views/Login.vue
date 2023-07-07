@@ -58,7 +58,8 @@ export default {
     async userLogin() {
       this.errorText = ''
       try {
-        await this.$auth.loginWith('local', { data: { username: this.username, password: this.password } })
+        // TODO
+        // await this.$auth.loginWith('local', { data: { username: this.username, password: this.password } })
       } catch (err) {
         console.log(err)
         if (err.status === 401) {

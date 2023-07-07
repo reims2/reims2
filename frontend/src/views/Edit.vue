@@ -16,7 +16,7 @@
               <v-text-field
                 ref="firstInput"
                 v-model.number="sku"
-                :autofocus="!$vuetify.breakpoint.mobile"
+                :autofocus="!rootStore.isMobile"
                 label="SKU"
                 type="number"
                 :hint="hint"
@@ -108,7 +108,8 @@ export default {
       getSingle: glassesStore.getSingle,
       dispense: glassesStore.dispense,
       undispense: glassesStore.undispense,
-      deleteOfflineGlasses: rootStore.deleteOfflineGlasses
+      deleteOfflineGlasses: rootStore.deleteOfflineGlasses,
+      rootStore
     }
   },
   transition: 'main',
