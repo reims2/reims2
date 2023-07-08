@@ -78,7 +78,8 @@ export default {
   inject: ['dayjs'],
   setup() {
     const glassesStore = useGlassesStore()
-    return { glassesStore }
+    const rootStore = useRootStore()
+    return { glassesStore, rootStore }
   },
   data: () => ({
     mdiCalendar,

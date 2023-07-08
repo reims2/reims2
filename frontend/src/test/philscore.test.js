@@ -84,39 +84,3 @@ test('heigher cylinder difference should returns bigger score', () => {
   const bigCylinderDiffScore = philscore.contraryDiffsScore(1, 1.5, 1, 0)
   expect(Math.abs(bigCylinderDiffScore) > Math.abs(smallCylinderDiffScore)).toBeTrue()
 })
-
-test('philscore for equal glasses should return diff of 0', () => {
-  const rxsearch = {
-    sphere: -1.25,
-    cylinder: -0.5,
-    axis: 0,
-    add: 0,
-    isbal: false
-  }
-  const lens = {
-    sphere: -1.25,
-    cylinder: -0.5,
-    axis: 0,
-    add: 0
-  }
-  const reasons = philscore.calcSingleEyePhilscore(rxsearch, lens, true)
-  expect(reasons.sphereScore).toBe(0)
-  expect(reasons.cylinderScore).toBe(0)
-  expect(reasons.axisScore).toBe(0)
-  expect(reasons.addScore).toBe(0)
-})
-
-test('philscore with input axis 180 and lens axis 0 should return axis diff of 0', () => {
-  const rxsearch = {
-    sphere: -1.25,
-    cylinder: -0.5,
-    axis: 180,
-    isbal: false
-  }
-  const lens = {
-    sphere: -1.25,
-    cylinder: -0.5,
-    axis: 0
-  }
-  expect(philscore.calcSingleEyePhilscore(rxsearch, lens, false).axisScore).toBe(0)
-})

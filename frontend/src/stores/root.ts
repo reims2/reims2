@@ -51,6 +51,9 @@ export const useRootStore = defineStore({
     },
     toggleDrawer() {
       this.drawer = !this.drawer
+    },
+    setError(error: string) {
+      this.error = error
     }
 
   }
