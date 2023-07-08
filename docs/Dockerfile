@@ -12,7 +12,7 @@ RUN yarn build
 FROM node:18.16.1-bullseye-slim@sha256:1ba1ddfc61b385b6436fd0fa0d1d42d322a0cd03c1ff110fa39e828511152aef
 RUN apt-get update && apt-get upgrade -y && apt install curl -y && rm -rf /var/lib/apt/lists/*
 
-# renovate: datasource=npm depName=http=server
+# renovate: datasource=npm depName=http-server
 ENV HTTP_SERVER_VERSION=14.1.0
 RUN npm install -g http-server@${HTTP_SERVER_VERSION}
 
