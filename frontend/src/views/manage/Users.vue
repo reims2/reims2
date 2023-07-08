@@ -155,14 +155,17 @@
 <script>
 import { mdiDelete, mdiPlus, mdiPencil } from '@mdi/js'
 import { useUsersStore } from '@/stores/users'
+import { useRootStore } from '@/stores/root'
 export default {
   title: 'Manage users',
   setup() {
     const usersStore = useUsersStore()
+    const rootStore = useRootStore()
     return {
       getUsers: usersStore.get,
       _addUser: usersStore.add,
-      _deleteUser: usersStore.delete
+      _deleteUser: usersStore.delete,
+      rootStore
     }
   },
   data: () => ({

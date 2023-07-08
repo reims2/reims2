@@ -14,16 +14,14 @@ RUN apt-get update && apt-get upgrade -y && apt install curl -y && rm -rf /var/l
 ENV NODE_ENV production
 ENV HOST 0.0.0.0
 ENV PORT 5000
-
+RUN npm install -g http-server
 COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init
 USER node
 WORKDIR /usr/src/app
-COPY --chown=node:node --from=build /usr/src/app/nuxt.config.ts /usr/src/app/nuxt.config.ts
-COPY --chown=node:node --from=build /usr/src/app/static /usr/src/app/static
+COPY --chown=node:node --from=build /usr/src/app/dist /usr/src/app/dist
 COPY --chown=node:node --from=build /usr/src/app/node_modules /usr/src/app/node_modules
-COPY --chown=node:node --from=build /usr/src/app/.nuxt /usr/src/app/.nuxt
 EXPOSE 5000
 
 HEALTHCHECK --interval=5s --timeout=5s --retries=3 --start-period=15s CMD curl --fail http://localhost:$PORT/ || exit 1   
 
-CMD ["dumb-init", "node", "node_modules/nuxt/bin/nuxt.js", "start"]
+CMD ["dumb-init", "http-server", "dist"]

@@ -66,7 +66,7 @@ export default {
 
 <style lang="scss" scoped>
 .hero-bg {
-  background: url('/img/pfvh-hero.jpg');
+  background: url('@/assets/img/pfvh-hero.jpg');
   background-size: cover;
   background-position: left;
   background-repeat: no-repeat;
