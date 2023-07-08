@@ -40,11 +40,10 @@
                     </v-btn>
                     <div class="d-flex flex-grow-1 justify-end">
                       <v-menu offset-y left>
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ props }">
                           <v-btn
                             icon
-                            v-bind="attrs"
-                            v-on="on"
+                            v-bind="props"
                           >
                             <v-icon> {{ mdiDotsVertical }} </v-icon>
                           </v-btn>
@@ -111,8 +110,8 @@ export default {
     const glassesStore = useGlassesStore()
     const rootStore = useRootStore()
     return {
-      glasses: glassesStore.allGlasses,
-      getSingle: glassesStore.getSingle,
+      glasses: rootStore.allGlasses,
+      getSingle: glassesStore.fetchSingle,
       dispense: glassesStore.dispense,
       undispense: glassesStore.undispense,
       deleteOfflineGlasses: rootStore.deleteOfflineGlasses,
@@ -193,10 +192,10 @@ export default {
       } catch (error) {
         this.isLoading = false
         if (error.status === 404) {
-          this.$store.commit('setError', 'SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
+          this.rootStore.setError('SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
         } else if (error.network || error.server) {
           if (error.server) {
-            this.$store.commit('setError', `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`)
+            this.rootStore.setError(`Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`)
             this.snackbarMessage = `Glasses with SKU ${toDispense.sku} will be dispensed when the server is back online`
             this.deleteOfflineGlasses(toDispense.sku)
           } else {
@@ -206,7 +205,7 @@ export default {
           this.$refs.form.reset()
           this.$refs.firstInput.focus()
         } else {
-          this.$store.commit('setError', `Could not dispense glasses, please retry (Error ${error.status})`)
+          this.rootStore.setError(`Could not dispense glasses, please retry (Error ${error.status})`)
         }
         return
       }
@@ -228,13 +227,13 @@ export default {
       } catch (error) {
         this.isLoading = false
         if (error.status === 400) {
-          this.$store.commit('setError', `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`)
+          this.rootStore.setError(`Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`)
           this.snackbarMessage = ''
         } else if (error.network || error.server) {
-          this.$store.commit('setError', 'Network or server error. Dispension will be automatically reverted as soon as you\'re back online.')
+          this.rootStore.setError('Network or server error. Dispension will be automatically reverted as soon as you\'re back online.')
           this.snackbarMessage = ''
         } else {
-          this.$store.commit('setError', `Could not undo dispension of glasses, please retry (Error ${error.status}).`)
+          this.rootStore.setError(`Could not undo dispension of glasses, please retry (Error ${error.status}).`)
         }
         return
       }

@@ -22,6 +22,7 @@ import { useRootStore } from '@/stores/root'
 import { mapState } from 'pinia'
 
 export default {
+  inject: ['dayjs'],
   setup() {
     const rootStore = useRootStore()
     return { rootStore }
@@ -67,7 +68,7 @@ export default {
       } catch (error) {
         if (!this.lastRefresh) {
           this.rootStore.setError(`Could not load glasses database, please retry (Error ${error.status})`)
-        } else if (this.$dayjs().diff(this.lastRefresh) > 3 * 24 * 60 * 60 * 1000) {
+        } else if (this.dayjs().diff(this.lastRefresh) > 3 * 24 * 60 * 60 * 1000) {
           // if the last successful update is more than three day ago, mark DB as outdated
           this.rootStore.setOutdatedFlag(true)
         }

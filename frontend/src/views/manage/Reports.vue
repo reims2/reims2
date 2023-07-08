@@ -75,6 +75,7 @@ import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 import { locationNames } from '../../lib/util'
 export default {
+  inject: ['dayjs'],
   setup() {
     const glassesStore = useGlassesStore()
     return { glassesStore }
@@ -97,17 +98,17 @@ export default {
   computed: {
     ...mapState(useRootStore, ['location']),
     lastYears() {
-      const year = this.$dayjs().year()
+      const year = this.dayjs().year()
       return Array.from(new Array(30), (_, index) => year - index).filter(year => year >= 2022)
     }
   },
   created() {
-    this.selectedDispenedYear = this.$dayjs().year()
+    this.selectedDispenedYear = this.dayjs().year()
   },
   methods: {
     async downloadDispensedReport() {
       this.loadingDispensedReport = true
-      const selectedYearStart = this.$dayjs().startOf('year').year(this.selectedDispenedYear)
+      const selectedYearStart = this.dayjs().startOf('year').year(this.selectedDispenedYear)
       try {
         const csvFile = await this.glassesStore.loadDispensedCsv({
           startDate: selectedYearStart.format('MM/DD/YYYY'),
@@ -116,7 +117,7 @@ export default {
         this.filename = `dispense_report_${this.location}_${this.selectedDispenedYear}.csv`
         this.downloadCsv(csvFile)
       } catch (error) {
-        this.$store.commit('setError', `Could not create dispense report (Error ${error.status})`)
+        this.rootStore.setError(`Could not create dispense report (Error ${error.status})`)
       }
       this.loadingDispensedReport = false
     },
@@ -127,13 +128,13 @@ export default {
         this.filename = `inventory_${this.location}.csv`
         this.downloadCsv(csvFile)
       } catch (error) {
-        this.$store.commit('setError', `Could not create inventory report (Error ${error.status})`)
+        this.rootStore.setError(`Could not create inventory report (Error ${error.status})`)
       }
       this.loadingInventoryReport = false
     },
     downloadCsv(csvBlob) {
       if (!csvBlob || csvBlob.size === 0) {
-        this.$store.commit('setError', 'Report is empty. Try selecting another year?')
+        this.rootStore.setError('Report is empty. Try selecting another year?')
         return
       }
       const blob = new Blob([csvBlob], { type: 'application/csv' })

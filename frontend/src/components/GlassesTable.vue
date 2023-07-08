@@ -85,7 +85,7 @@
       {{ formatRx(item.os.add) }} D
     </template>
     <template #item.creationDate="{ item }">
-      {{ $dayjs(item.creationDate).format('DD.MM.YYYY') }}
+      {{ dayjs(item.creationDate).format('DD.MM.YYYY') }}
     </template>
     <template #item.actions="{item}">
       <v-btn
@@ -108,6 +108,7 @@ import MinMaxInput from '@/components/MinMaxInput.vue'
 
 export default {
   components: { GlassCard, MinMaxInput },
+  inject: ['dayjs'],
   setup() {
     const tableStore = useTableStore()
     const rootStore = useRootStore()
@@ -213,7 +214,7 @@ export default {
       return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)
     },
     async startLoading() {
-      setTimeout(() => { if (this.rootStore.isMobile) this.$nuxt.$loading.start() })
+      setTimeout(() => { if (this.rootStore.isMobile) this.$nuxt.$loading.start() }) // TODO
       this.loading = true
       try {
         this.items = await this.loadItems({ options: this.options, filterString: this.filterString })
@@ -221,7 +222,7 @@ export default {
         if (error.status === 404) {
           this.items = []
         } else {
-          this.rootStore.commit('setError', `Could not load data, please retry (Error ${error.status})`)
+          this.rootStore.setError(`Could not load data, please retry (Error ${error.status})`)
         }
       }
       this.loading = false
