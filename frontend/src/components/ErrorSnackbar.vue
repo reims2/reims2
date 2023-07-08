@@ -29,7 +29,7 @@ export default {
     const rootStore = useRootStore()
     return {
       error: rootStore.error,
-      close: rootStore.clearError
+      clearError: rootStore.clearError
     }
   },
   data: () => ({
