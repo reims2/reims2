@@ -25,11 +25,14 @@ export default createVuetify({
     }
   },
   theme: {
+    defaultTheme: 'light',
     themes: {
       light: {
         colors: {
-          primary: '#1867C0',
-          secondary: '#5CBBF6'
+          primary: '#005c66',
+          secondary: '#67697C',
+          accent: '#b34c00',
+          background: '#FFF'
         }
       }
     }

@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="ma-0 pa-0 hero-bg" style="height:100%">
-    <v-overlay opacity="0.97" absolute class="pa-0 ma-0">
+    <div absolute class="pa-0 ma-0 opaque" style="height:100%">
       <v-row class="px-3" style="margin-top: -10vh;">
         <v-col class="pb-3 text-center" cols=12>
           <h1 class="text-h2 ">
@@ -41,7 +41,7 @@
           </v-row>
         </v-col>
       </v-row>
-    </v-overlay>
+    </div>
   </v-container>
 </template>
 
@@ -70,5 +70,9 @@ export default {
   background-size: cover;
   background-position: left;
   background-repeat: no-repeat;
+}
+.opaque {
+  opacity: 0.87;
+  background-color: black;
 }
 </style>
