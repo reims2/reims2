@@ -5,7 +5,7 @@
     color="primary"
     extension-height="80px"
   >
-    <v-app-bar-nav-icon @click.stop="$store.commit('toggleDrawer')" />
+    <v-app-bar-nav-icon @click.stop="rootStore.toggleDrawer" />
     <v-toolbar-title>
       {{ title }}
     </v-toolbar-title>

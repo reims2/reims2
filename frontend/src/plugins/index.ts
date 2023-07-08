@@ -6,11 +6,11 @@
 
 // Plugins
 import { loadFonts } from './webfontloader'
-import axios from './axios'
+// import axios from './axios'
 import vuetify from './vuetify'
+import dayjs from './dayjs'
 import pinia from '../stores'
 import router from '../router'
-
 // Types
 import type { App } from 'vue'
 
@@ -20,5 +20,6 @@ export function registerPlugins(app: App) {
     .use(vuetify)
     .use(router)
     .use(pinia)
-    .use(axios)
+    .use(dayjs)
+    // .use(axios)
 }

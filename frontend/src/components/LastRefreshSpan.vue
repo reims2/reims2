@@ -16,6 +16,7 @@
 import { useRootStore } from '@/stores/root'
 
 export default {
+  inject: ['dayjs'],
   setup() {
     const rootStore = useRootStore()
     return {
@@ -45,10 +46,10 @@ export default {
     generateTimeString() {
       if (!this.lastRefresh) {
         this.lastRefreshString = ': none yet'
-      } else if (this.$dayjs().diff(this.lastRefresh) < 5 * 60 * 1000) {
+      } else if (this.dayjs().diff(this.lastRefresh) < 5 * 60 * 1000) {
         this.lastRefreshString = 'now' // don't bother the user with anything less than 5 minutes
       } else {
-        this.lastRefreshString = this.$dayjs().to(this.lastRefresh)
+        this.lastRefreshString = this.dayjs().to(this.lastRefresh)
       }
     }
   }

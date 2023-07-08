@@ -68,13 +68,12 @@
           max-width="500px"
           persistent
         >
-          <template #activator="{ on, attrs }">
+          <template #activator="{ props }">
             <v-btn
               color="primary"
               dark
-              v-bind="attrs"
+              v-bind="props"
               class="mt-3"
-              v-on="on"
             >
               Add new user
             </v-btn>
@@ -199,7 +198,7 @@ export default {
       try {
         this.items = await this.getUsers()
       } catch (error) {
-        this.$store.commit('setError', `Could not load users (Error ${error.status}).`)
+        this.rootStore.setError(`Could not load users (Error ${error.status}).`)
         console.log(error)
       }
     },
@@ -213,7 +212,7 @@ export default {
         })
         this.dialog = false
       } catch (error) {
-        this.$store.commit('setError', `Could not add user (Error ${error.status}).`)
+        this.rootStore.setError(`Could not add user (Error ${error.status}).`)
         console.log(error)
       }
       this.addLoading = false
@@ -225,7 +224,7 @@ export default {
       try {
         await this._deleteUser(userId)
       } catch (error) {
-        this.$store.commit('setError', `Could not delete user (Error ${error.status}).`)
+        this.rootStore.setError(`Could not delete user (Error ${error.status}).`)
         console.log(error)
       }
       this.deleteLoading = false

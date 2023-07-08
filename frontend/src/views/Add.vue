@@ -115,7 +115,11 @@ export default {
   setup() {
     const glassesStore = useGlassesStore()
     const rootStore = useRootStore()
-    return { glassesStore, rootStore }
+    return {
+      glassesStore,
+      rootStore,
+      allGlasses: rootStore.allGlasses
+    }
   },
   data: () => ({
     valid: false,
@@ -174,14 +178,14 @@ export default {
         this.loading = false
         if (error.status === 409) {
           // no free skus left.
-          this.$store.commit('setError', error.message)
+          this.rootStore.setError(error.message)
         } else {
-          this.$store.commit('setError', `Could not add glasses, please retry (${error.status})`)
+          this.rootStore.setError(`Could not add glasses, please retry (${error.status})`)
         }
         return
       }
       this.loading = false
-      this.$store.commit('clearError')
+      this.rootStore.clearError()
       this.reset()
       // scroll to bottom on mobile
       this.$nextTick(() => { if (this.rootStore.isMobile) this.$refs.results.scrollIntoView(true) })
@@ -204,7 +208,7 @@ export default {
         if (error.status === 404) {
           console.log('Already deleted')
         } else {
-          this.$store.commit('setError', `Could not delete glasses, please retry (Error ${error.status})`)
+          this.rootStore.setError(`Could not delete glasses, please retry (Error ${error.status})`)
         }
       }
     }

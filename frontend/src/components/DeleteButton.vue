@@ -3,11 +3,10 @@
     v-model="deleteDialog"
     width="500"
   >
-    <template #activator="{ on, attrs }">
+    <template #activator="{ props }">
       <v-btn
         text
-        v-bind="attrs"
-        v-on="on"
+        v-bind="props"
       >
         Delete
       </v-btn>

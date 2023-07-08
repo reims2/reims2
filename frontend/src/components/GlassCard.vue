@@ -13,15 +13,14 @@
         <v-card-title v-if="glass.sku">
           <div v-if="glass.score != null" class="d-flex align-center">
             <v-tooltip bottom>
-              <template #activator="{ on, attrs }">
+              <template #activator="{ props }">
                 <v-chip
                   class="mr-2 px-2 white--text font-weight-black"
                   :color="calcColor(glass.score)"
                   small
                   label
                   :ripple="false"
-                  v-bind="attrs"
-                  v-on="on"
+                  v-bind="props"
                 >
                   {{ glass.score.toFixed(2) }}
                 </v-chip>
@@ -34,7 +33,7 @@
         <v-card-subtitle class="text--primary pb-2 d-flex align-center">
           <span v-for="item in generalEyeData" :key="item.id" class="pr-2">
             <v-tooltip bottom :disabled="editable && edit == item.id">
-              <template #activator="{ on, attrs }">
+              <template #activator="{ props }">
                 <span class="no-child-padding" @click="edit = item.id">
                   <v-select
                     v-if="editable && edit == item.id"
@@ -48,7 +47,7 @@
                     @update:modelValue="value => startEdit(null, item.id, value)"
                     @blur="edit = ''"
                   />
-                  <span v-else v-bind="attrs" v-on="on">
+                  <span v-else v-bind="props" >
                     <v-icon small color="black">
                       {{ item.icon }}
                     </v-icon>
@@ -70,14 +69,13 @@
                   </div>
                   <div v-if="glass.score != null" class="d-flex align-center">
                     <v-tooltip bottom>
-                      <template #activator="{ on, attrs }">
+                      <template #activator="{ props }">
                         <v-chip
                           class="ml-2 px-2"
                           x-small
                           label
                           :ripple="false"
-                          v-bind="attrs"
-                          v-on="on"
+                          v-bind="props"
                         >
                           {{ (eye.key == 'od' ? glass.odScore : glass.osScore).toFixed(2) }}
                         </v-chip>
@@ -232,9 +230,9 @@ export default {
         if (error.response && error.response.status < 500) {
           // TODO catch network errors because they'll be retried.
           this.edit = ''
-          this.rootStore.commit('setError', `Glasses can't be edited, sorry (Error ${error.status})`)
+          this.rootStore.setError(`Glasses can't be edited, sorry (Error ${error.status})`)
         } else {
-          this.rootStore.commit('setError', `Editing was not possible because the server didn't respond. Please retry (Error ${error.status}).`)
+          this.rootStore.setError(`Editing was not possible because the server didn't respond. Please retry (Error ${error.status}).`)
         }
         this.loading = false
         return

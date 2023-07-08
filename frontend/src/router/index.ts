@@ -17,38 +17,38 @@ const routes = [
       {
         path: '/add',
         name: 'Add',
-        component: () => import('@/view/Add.vue')
+        component: () => import('@/views/Add.vue')
       },
       {
         path: '/find',
         name: 'Find',
-        component: () => import('@/view/Find.vue')
+        component: () => import('@/views/Find.vue')
       },
       {
         path: '/edit',
         name: 'Edit',
-        component: () => import('@/view/Edit.vue')
+        component: () => import('@/views/Edit.vue')
       },
       {
         path: '/view',
         name: 'View',
-        component: () => import('@/view/View.vue')
+        component: () => import('@/views/View.vue')
       },
       {
         path: '/manage/reports',
         name: 'Manage reports',
-        component: () => import('@/view/manage/Reports.vue')
+        component: () => import('@/views/manage/Reports.vue')
       },
       {
         path: '/manage/users',
         name: 'Manage Users',
-        component: () => import('@/view/manage/Users.vue')
+        component: () => import('@/views/manage/Users.vue')
       }
     ]
   },
   {
     path: '/login',
-    component: () => import('@/pages/Login.vue'),
+    component: () => import('@/views/Login.vue'),
     meta: {
       auth: false
     }

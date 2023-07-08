@@ -69,7 +69,7 @@ export default {
   computed: {
     inputVal: {
       get() {
-        return this.value
+        return this.modelValue
       },
       set(val) {
         this.$emit('update:modelValue', val)

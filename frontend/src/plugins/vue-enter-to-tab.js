@@ -1,8 +1,3 @@
-import Vue from 'vue'
-import VueEnterToTab from 'vue-enter-to-tab'
-
-Vue.use(VueEnterToTab, true)
-
 // source from https://github.com/ajomuch92/vue-enter-to-tab
 // it has been modified to 1. include https://github.com/ajomuch92/vue-enter-to-tab/pull/2
 // and 2. to auto click a button if the next element is a button
