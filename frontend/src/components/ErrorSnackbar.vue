@@ -1,21 +1,8 @@
 <template>
-  <v-snackbar
-    :value=snackbarOpen
-    :timeout=-1
-    color="error"
-    right
-    multi-line
-    absolute
-  >
+  <v-snackbar :value="snackbarOpen" :timeout="-1" color="error" right multi-line absolute>
     {{ error }}
     <template #action="{ attrs }">
-      <v-btn
-        text
-        v-bind="attrs"
-        @click="close()"
-      >
-        Close
-      </v-btn>
+      <v-btn text v-bind="attrs" @click="close()"> Close </v-btn>
     </template>
   </v-snackbar>
 </template>
@@ -29,12 +16,12 @@ export default {
     const rootStore = useRootStore()
     return {
       error: rootStore.error,
-      clearError: rootStore.clearError
+      clearError: rootStore.clearError,
     }
   },
   data: () => ({
     snackTimeout: 0,
-    snackbarOpen: false
+    snackbarOpen: false,
   }),
   watch: {
     error() {
@@ -42,19 +29,22 @@ export default {
         this.snackbarOpen = true
         // manual timeout because the timeout has to be refreshed if the message has changed
         clearTimeout(this.snackTimeout)
-        this.snackTimeout = setTimeout(() => { this.close() }, 15 * 1000)
+        this.snackTimeout = setTimeout(() => {
+          this.close()
+        }, 15 * 1000)
       } else {
         this.snackbarOpen = false
       }
-    }
+    },
   },
   beforeUnmount() {
     clearTimeout(this.snackTimeout)
   },
   methods: {
     close() {
-      this.snackbarOpen = false; this.clearError()
-    }
-  }
+      this.snackbarOpen = false
+      this.clearError()
+    },
+  },
 }
 </script>

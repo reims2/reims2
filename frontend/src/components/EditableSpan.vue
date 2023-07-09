@@ -9,13 +9,11 @@
     style="max-width: 60px"
     class="pb-1 prevent-enter-tab"
     autofocus
-    @update:error="val => hasError = val"
+    @update:error="(val) => (hasError = val)"
     @keyup.enter="submit"
     @blur="$emit('blur')"
   />
-  <span v-else>
-    {{ value }} {{ suffix }}
-  </span>
+  <span v-else> {{ value }} {{ suffix }} </span>
 </template>
 
 <script>
@@ -23,25 +21,25 @@ export default {
   props: {
     modelValue: {
       type: String,
-      required: true
+      required: true,
     },
     isEditing: {
       type: Boolean,
-      required: true
+      required: true,
     },
     suffix: {
       type: String,
-      default: ''
+      default: '',
     },
     rules: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       hasError: false,
-      model: this.value
+      model: this.value,
     }
   },
   methods: {
@@ -49,8 +47,7 @@ export default {
       if (!this.hasError) {
         this.$emit('submit', this.model)
       }
-    }
-  }
-
+    },
+  },
 }
 </script>

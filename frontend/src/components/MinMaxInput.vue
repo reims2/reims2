@@ -7,7 +7,7 @@
       label="From"
       hide-details
       dense
-      style="max-width:50px"
+      style="max-width: 50px"
       class="mr-1"
       single-line
       @change="update"
@@ -18,7 +18,7 @@
       step="0.25"
       hide-details
       dense
-      style="max-width:50px"
+      style="max-width: 50px"
       label="To"
       single-line
       @change="update"
@@ -30,12 +30,12 @@
 export default {
   data: () => ({
     min: '',
-    max: ''
+    max: '',
   }),
   methods: {
     update() {
       this.$emit('update', { min: parseFloat(this.min), max: parseFloat(this.max) })
-    }
-  }
+    },
+  },
 }
 </script>

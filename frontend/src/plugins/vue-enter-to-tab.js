@@ -13,16 +13,22 @@ export const ModifiedEnterToTabMixin = {
   methods: {
     $keyDownEventHandler(e) {
       const { target, ctrlKey, keyCode } = e
-      if (keyCode === ENTER_CODE &&
-            !ctrlKey &&
-            target &&
-            target.tagName.toLowerCase() !== 'textarea' &&
-            this.$isEnterToTabEnabled &&
-            !target.preventEnterTab &&
-            !target.closest('.prevent-enter-tab')) {
+      if (
+        keyCode === ENTER_CODE &&
+        !ctrlKey &&
+        target &&
+        target.tagName.toLowerCase() !== 'textarea' &&
+        this.$isEnterToTabEnabled &&
+        !target.preventEnterTab &&
+        !target.closest('.prevent-enter-tab')
+      ) {
         e.preventDefault()
-        const allElementsQuery = this.$el.querySelectorAll('input, button, a, textarea, select, audio, video, [contenteditable]')
-        const allElements = [...allElementsQuery].filter(r => !r.disabled && !r.hidden && r.offsetParent && !r.readOnly && r.tabIndex >= 0)
+        const allElementsQuery = this.$el.querySelectorAll(
+          'input, button, a, textarea, select, audio, video, [contenteditable]',
+        )
+        const allElements = [...allElementsQuery].filter(
+          (r) => !r.disabled && !r.hidden && r.offsetParent && !r.readOnly && r.tabIndex >= 0,
+        )
         const currentIndex = [...allElements].indexOf(target)
         const targetIndex = (currentIndex + 1) % allElements.length
         const nextElement = allElements[targetIndex]
@@ -30,6 +36,6 @@ export const ModifiedEnterToTabMixin = {
         // if the next element is a button, click on it instead of just focusing. otherwise user has to double enter for a button to activate
         if (nextElement.tagName.toLowerCase() === 'button') nextElement.click()
       }
-    }
-  }
+    },
+  },
 }

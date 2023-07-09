@@ -2,21 +2,17 @@
   <v-container>
     <app-header title="Login" />
     <v-row dense class="justify-center">
-      <v-col cols=12 md=6 lg=4>
-        <v-form
-          ref="form"
-          v-model="valid"
-          @submit.prevent="userLogin"
-        >
+      <v-col cols="12" md="6" lg="4">
+        <v-form ref="form" v-model="valid" @submit.prevent="userLogin">
           <v-row>
-            <v-col cols=12>
+            <v-col cols="12">
               <v-alert v-if="errorText" type="error" dense outlined>
                 {{ errorText }}
               </v-alert>
               <v-text-field
                 v-model="username"
                 label="Username"
-                :rules="[v => !!v || 'Item is required']"
+                :rules="[(v) => !!v || 'Item is required']"
                 required
                 autocorrect="off"
                 autocapitalize="off"
@@ -25,16 +21,10 @@
                 v-model="password"
                 label="Password"
                 type="password"
-                :rules="[v => !!v || 'Item is required']"
+                :rules="[(v) => !!v || 'Item is required']"
                 required
               />
-              <v-btn
-                :disabled="!valid"
-                color="primary"
-                type="submit"
-              >
-                Login
-              </v-btn>
+              <v-btn :disabled="!valid" color="primary" type="submit"> Login </v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -48,7 +38,7 @@ import AppHeader from '@/components/AppHeader.vue'
 
 export default {
   components: {
-    AppHeader
+    AppHeader,
   },
   layout: 'start',
   data() {
@@ -56,7 +46,7 @@ export default {
       username: '',
       password: '',
       valid: false,
-      errorText: ''
+      errorText: '',
     }
   },
   methods: {
@@ -73,7 +63,7 @@ export default {
           this.errorText = `Login failed (Error ${err.status})`
         }
       }
-    }
-  }
+    },
+  },
 }
 </script>

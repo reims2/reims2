@@ -1,47 +1,39 @@
 <template>
   <v-container @keyup.a="submit">
     <v-row class="justify-center" dense>
-      <v-col cols=12 md=6 lg=4 class="pb-2 px-2 pt-4">
+      <v-col cols="12" md="6" lg="4" class="pb-2 px-2 pt-4">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
-            <v-col
-              v-for="item in generalEyeData"
-              :key="item.label"
-              cols="12"
-              class="pa-0 pb-5"
-            >
-              <auto-complete-field
-                ref="firstInput"
-                v-model="glassModel[item.id]"
-                v-bind="item"
-              />
+            <v-col v-for="item in generalEyeData" :key="item.label" cols="12" class="pa-0 pb-5">
+              <auto-complete-field ref="firstInput" v-model="glassModel[item.id]" v-bind="item" />
             </v-col>
-            <v-col
-              cols=12
-              md=6
-              class="px-1 pr-md-5 py-0"
-            >
+            <v-col cols="12" md="6" class="px-1 pr-md-5 py-0">
               <single-eye-input
                 v-bind="odEye"
                 eye-name="OD"
                 :add-enabled="glassModel['glassesType'] === 'multifocal'"
-                @update:modelValue="e => {odEye[e.id] = e.value}"
+                @update:modelValue="
+                  (e) => {
+                    odEye[e.id] = e.value
+                  }
+                "
               />
             </v-col>
-            <v-col
-              cols=12
-              md=6
-              class="px-1 pl-md-5 py-0"
-            >
+            <v-col cols="12" md="6" class="px-1 pl-md-5 py-0">
               <single-eye-input
                 v-bind="osEye"
                 eye-name="OS"
                 :add-enabled="glassModel['glassesType'] === 'multifocal'"
-                @update:modelValue="e => {updateSync(osEye, e.value); osEye[e.id] = e.value}"
+                @update:modelValue="
+                  (e) => {
+                    updateSync(osEye, e.value)
+                    osEye[e.id] = e.value
+                  }
+                "
               />
             </v-col>
-            <v-col cols=12 class="px-0 pt-0">
-              <div class="pb-3 text-body-2  text--secondary">
+            <v-col cols="12" class="px-0 pt-0">
+              <div class="pb-3 text-body-2 text--secondary">
                 You are in {{ locationNames[location] }} ({{ freeSlots }} SKUs left)
               </div>
               <div class="d-flex">
@@ -56,13 +48,7 @@
                 >
                   <span class="text-decoration-underline">A</span>dd glasses
                 </v-btn>
-                <v-btn
-                  v-prevent-enter-tab
-                  class="mr-4"
-                  plain
-                  tabindex="-1"
-                  @click="reset"
-                >
+                <v-btn v-prevent-enter-tab class="mr-4" plain tabindex="-1" @click="reset">
                   Clear form
                 </v-btn>
               </div>
@@ -73,23 +59,25 @@
       <v-col
         v-if="lastAdded.length > 0"
         ref="results"
-        cols=12
-        md=4
-        lg=3
+        cols="12"
+        md="4"
+        lg="3"
         class="pl-md-6 pt-3 pt-md-2"
       >
-        <div class="text-h6 pb-2">
-          Recently added
-        </div>
+        <div class="text-h6 pb-2">Recently added</div>
         <glass-card
-          v-for="(item, idx) in lastAdded.slice(0,3)"
+          v-for="(item, idx) in lastAdded.slice(0, 3)"
           :key="item.id"
           :glass="item"
-          :style="'opacity: ' + (1-idx*0.3)"
+          :style="'opacity: ' + (1 - idx * 0.3)"
           editable
         >
           <template #actions>
-            <delete-button :glass="item" fixed-reason="WRONGLY_ADDED" @delete="submitDeletion(item.sku)" />
+            <delete-button
+              :glass="item"
+              fixed-reason="WRONGLY_ADDED"
+              @delete="submitDeletion(item.sku)"
+            />
           </template>
         </glass-card>
       </v-col>
@@ -99,7 +87,12 @@
 
 <script>
 import { mapState } from 'pinia'
-import { generalEyeData, sanitizeEyeValues, clearObjectProperties, locationNames } from '../lib/util'
+import {
+  generalEyeData,
+  sanitizeEyeValues,
+  clearObjectProperties,
+  locationNames,
+} from '../lib/util'
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
@@ -118,7 +111,7 @@ export default {
     return {
       glassesStore,
       rootStore,
-      allGlasses: rootStore.allGlasses
+      allGlasses: rootStore.allGlasses,
     }
   },
   data: () => ({
@@ -130,31 +123,33 @@ export default {
     syncEyes: true,
     output: '',
     generalEyeData,
-    eyes: [{
-      text: 'OD',
-      key: 'od'
-    },
-    {
-      text: 'OS',
-      key: 'os'
-    }],
+    eyes: [
+      {
+        text: 'OD',
+        key: 'od',
+      },
+      {
+        text: 'OS',
+        key: 'os',
+      },
+    ],
     lastAddedSkus: [],
-    locationNames
+    locationNames,
   }),
   head() {
     return {
-      title: 'Add glasses'
+      title: 'Add glasses',
     }
   },
   computed: {
     ...mapState(useRootStore, ['drawer', 'location']),
     lastAdded() {
-      return this.lastAddedSkus.map(sku => this.allGlasses.find(g => g.sku === sku))
+      return this.lastAddedSkus.map((sku) => this.allGlasses.find((g) => g.sku === sku))
     },
     freeSlots() {
       // TODO for the future don't hardcode 5000
       return 5000 - this.allGlasses.length
-    }
+    },
   },
   watch: {
     'odEye.add'(newVal) {
@@ -162,8 +157,10 @@ export default {
       if (this.syncEyes) this.$set(this.osEye, 'add', newVal)
     },
     allGlasses() {
-      this.lastAddedSkus = this.lastAddedSkus.filter(sku => this.allGlasses.find(g => g.sku === sku))
-    }
+      this.lastAddedSkus = this.lastAddedSkus.filter((sku) =>
+        this.allGlasses.find((g) => g.sku === sku),
+      )
+    },
   },
   methods: {
     async submit() {
@@ -188,7 +185,9 @@ export default {
       this.rootStore.clearError()
       this.reset()
       // scroll to bottom on mobile
-      this.$nextTick(() => { if (this.rootStore.isMobile) this.$refs.results.scrollIntoView(true) })
+      this.$nextTick(() => {
+        if (this.rootStore.isMobile) this.$refs.results.scrollIntoView(true)
+      })
     },
     reset() {
       clearObjectProperties(this.odEye)
@@ -211,8 +210,8 @@ export default {
           this.rootStore.setError(`Could not delete glasses, please retry (Error ${error.status})`)
         }
       }
-    }
+    },
   },
-  title: 'Add glasses'
+  title: 'Add glasses',
 }
 </script>

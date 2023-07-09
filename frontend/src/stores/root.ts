@@ -2,7 +2,7 @@ import { Glasses } from '@/model/GlassesModel'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-const arrayContainsSku = (data: Glasses[], sku: number) => data.some(e => e.sku === sku)
+const arrayContainsSku = (data: Glasses[], sku: number) => data.some((e) => e.sku === sku)
 
 export const useRootStore = defineStore({
   id: 'root',
@@ -17,22 +17,25 @@ export const useRootStore = defineStore({
     isOffline: false,
     isMobile: false,
     isDev: false,
-    version: '0.0.0'
+    version: '0.0.0',
   }),
   getters: {
     hasGlassesLoaded: (state) => {
       return state.allGlasses.length > 0
     },
     getSingle: (state) => (sku: number) => {
-      return state.allGlasses.find(glass => glass.sku === sku)
-    }
+      return state.allGlasses.find((glass) => glass.sku === sku)
+    },
   },
   actions: {
     async loadGlasses() {
-      const data = await axios.get(`/api/glasses/${this.location}`, { params: { size: 100000 }, timeout: 60000 }) as any
-      this.allGlasses = (data.glasses)
+      const data = (await axios.get(`/api/glasses/${this.location}`, {
+        params: { size: 100000 },
+        timeout: 60000,
+      })) as any
+      this.allGlasses = data.glasses
       this.lastRefresh = new Date().toISOString()
-      this.isOutdated = (false)
+      this.isOutdated = false
       this.isRefreshingGlasses = false
     },
     clearError() {
@@ -46,7 +49,7 @@ export const useRootStore = defineStore({
     deleteOfflineGlasses(sku: number) {
       if (arrayContainsSku(this.allGlasses, sku)) {
         // call arrayContainsSku to avoid unnecessary reactive changes when replacing the array like this TODO
-        this.allGlasses = this.allGlasses.filter(el => el.sku !== sku)
+        this.allGlasses = this.allGlasses.filter((el) => el.sku !== sku)
       }
     },
     toggleDrawer() {
@@ -54,7 +57,6 @@ export const useRootStore = defineStore({
     },
     setError(error: string) {
       this.error = error
-    }
-
-  }
+    },
+  },
 })

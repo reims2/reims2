@@ -1,10 +1,5 @@
 <template>
-  <v-app-bar
-    app
-    dark
-    color="primary"
-    extension-height="80px"
-  >
+  <v-app-bar app dark color="primary" extension-height="80px">
     <v-app-bar-nav-icon @click.stop="rootStore.toggleDrawer" />
     <v-toolbar-title>
       {{ title }}
@@ -23,7 +18,7 @@ import OfflineBanner from '@/components/OfflineBanner.vue'
 
 export default {
   components: {
-    OfflineBanner
+    OfflineBanner,
   },
   setup() {
     const rootStore = useRootStore()
@@ -32,16 +27,15 @@ export default {
   data: () => ({
     mdiChevronLeft,
     mdiMenu,
-    title: 'REIMS2'
+    title: 'REIMS2',
   }),
   watch: {
     $route(to) {
       this.title = to.meta.title || 'REIMS2'
-    }
+    },
   },
   created() {
     this.title = this.$route.meta.title || 'REIMS2'
-  }
-
+  },
 }
 </script>

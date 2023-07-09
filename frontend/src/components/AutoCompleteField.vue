@@ -27,45 +27,43 @@ export default {
   setup() {
     const rootStore = useRootStore()
     return {
-      rootStore
+      rootStore,
     }
   },
   props: {
     modelValue: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     label: {
       type: String,
-      required: true
+      required: true,
     },
     rules: {
       type: Array,
-      required: true
+      required: true,
     },
     hint: {
       type: String,
-      required: true
+      required: true,
     },
     id: {
       type: String,
-      required: true
+      required: true,
     },
     first: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
     },
     persistentHint: {
       type: [Boolean, String],
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
-  data: () => ({
-
-  }),
+  data: () => ({}),
   computed: {
     inputVal: {
       get() {
@@ -73,25 +71,28 @@ export default {
       },
       set(val) {
         this.$emit('update:modelValue', val)
-      }
-    }
+      },
+    },
   },
   methods: {
     autoComplete(id) {
       /** autocomplete item data based on first characters. i.e. for id=glassesType return single for character s.
-        * Otherwise emit no input i.e. no change */
+       * Otherwise emit no input i.e. no change */
       const glassesString = this.inputVal
       if (!glassesString || typeof glassesString !== 'string' || glassesString === '') return
-      const data = generalEyeData.find((obj) => { return obj.id === id })
+      const data = generalEyeData.find((obj) => {
+        return obj.id === id
+      })
       if (!data) return
 
       for (const item of data.items) {
-        if (item.startsWith(glassesString.toLowerCase())) return this.$emit('update:modelValue', item)
+        if (item.startsWith(glassesString.toLowerCase()))
+          return this.$emit('update:modelValue', item)
       }
     },
     focus() {
       this.$refs.input.focus()
-    }
-  }
+    },
+  },
 }
 </script>

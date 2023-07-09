@@ -8,9 +8,7 @@
       <h1 v-else>
         {{ otherError }}
       </h1>
-      <router-link to="/">
-        Home page
-      </router-link>
+      <router-link to="/"> Home page </router-link>
     </v-container>
   </v-app>
 </template>
@@ -21,22 +19,21 @@ export default {
   props: {
     error: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       pageNotFound: 'Page not found',
-      otherError: 'An error occurred'
+      otherError: 'An error occurred',
     }
   },
   head() {
-    const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
+    const title = this.error.statusCode === 404 ? this.pageNotFound : this.otherError
     return {
-      title
+      title,
     }
-  }
+  },
 }
 </script>
 

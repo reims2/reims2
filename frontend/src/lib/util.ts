@@ -1,7 +1,7 @@
 import { mdiArrowLeftRight, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
 import { Glasses, Eye, EyeSearch } from '@/model/GlassesModel'
 
-const isAllowedStep = (number:number) => {
+const isAllowedStep = (number: number) => {
   if (number == null || !number) return true // we don't handle that
   if (Number.isInteger(number)) return true
   const allowed = [0, 0.2, 0.25, 0.5, 0.7, 0.75]
@@ -12,74 +12,88 @@ const isAllowedStep = (number:number) => {
 
 export const locationNames = {
   sa: 'Santa Ana',
-  sm: 'San Miguel'
+  sm: 'San Miguel',
 }
 
 export const eyeRules = {
   sphere: [
-    (v:any) => (v != null && v !== '') || 'Required',
-    (v:any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
-    (v:any) => (v >= -30 && v <= 30) || 'Out of range',
-    (v:any) => isAllowedStep(v) || 'Not an allowed step'
+    (v: any) => (v != null && v !== '') || 'Required',
+    (v: any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
+    (v: any) => (v >= -30 && v <= 30) || 'Out of range',
+    (v: any) => isAllowedStep(v) || 'Not an allowed step',
   ],
   cylinder: [
-    (v:any) => (!v || !isNaN(parseFloat(v))) || 'Enter a valid number',
-    (v:any) => (!v || Math.abs(v) <= 6) || 'Out of range',
-    (v:any) => isAllowedStep(v) || 'Not an allowed step'
+    (v: any) => !v || !isNaN(parseFloat(v)) || 'Enter a valid number',
+    (v: any) => !v || Math.abs(v) <= 6 || 'Out of range',
+    (v: any) => isAllowedStep(v) || 'Not an allowed step',
   ],
   axis: [
-    (v:any) => (v != null && v !== '') || 'Required',
-    (v:any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
-    (v:any) => Number.isInteger(parseFloat(v)) || 'Must be an integer',
-    (v:any) => v >= 0 || 'Must be positive',
-    (v:any) => v <= 180 || 'Maximum is 180',
-    (v:any) => !v || v.length >= 3 || 'Enter 3 digits (include leading zero)'
+    (v: any) => (v != null && v !== '') || 'Required',
+    (v: any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
+    (v: any) => Number.isInteger(parseFloat(v)) || 'Must be an integer',
+    (v: any) => v >= 0 || 'Must be positive',
+    (v: any) => v <= 180 || 'Maximum is 180',
+    (v: any) => !v || v.length >= 3 || 'Enter 3 digits (include leading zero)',
   ],
   add: [
-    (v:any) => (v != null && v !== '') || 'Required for multifocals',
-    (v:any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
-    (v:any) => v >= 0 || 'Must be positive',
-    (v:any) => v <= 8 || 'Maximum is 8',
-    (v:any) => isAllowedStep(v) || 'Not an allowed step'
-  ]
+    (v: any) => (v != null && v !== '') || 'Required for multifocals',
+    (v: any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
+    (v: any) => v >= 0 || 'Must be positive',
+    (v: any) => v <= 8 || 'Maximum is 8',
+    (v: any) => isAllowedStep(v) || 'Not an allowed step',
+  ],
 }
 export const generalEyeData = [
   {
     id: 'glassesType',
     label: 'Type',
     items: ['single', 'multifocal'],
-    rules: [(v:any) => (v && ('single'.startsWith(v) || 'multifocal'.startsWith(v))) || 'Enter s for single or m for multifocal'],
+    rules: [
+      (v: any) =>
+        (v && ('single'.startsWith(v) || 'multifocal'.startsWith(v))) ||
+        'Enter s for single or m for multifocal',
+    ],
     hint: '(s)ingle or (m)ultifocal',
     first: true,
     icon: mdiGlasses,
-    desc: 'Glasses type (single or multifocal)'
+    desc: 'Glasses type (single or multifocal)',
   },
   {
     id: 'glassesSize',
     label: 'Size',
     items: ['small', 'medium', 'large', 'child'],
     hint: '(s)mall, (m)edium, (l)arge or (c)hild',
-    rules: [(v:any) => (v && ('small'.startsWith(v) || 'medium'.startsWith(v) || 'large'.startsWith(v) || 'child'.startsWith(v))) ||
-      'Enter s for small, m for medium, l for large or c for child'],
+    rules: [
+      (v: any) =>
+        (v &&
+          ('small'.startsWith(v) ||
+            'medium'.startsWith(v) ||
+            'large'.startsWith(v) ||
+            'child'.startsWith(v))) ||
+        'Enter s for small, m for medium, l for large or c for child',
+    ],
     icon: mdiArrowLeftRight,
-    desc: 'Glasses size (small, medium, large or child)'
+    desc: 'Glasses size (small, medium, large or child)',
   },
   {
     id: 'appearance',
     label: 'Appearance',
     items: ['neutral', 'feminine', 'masculine'],
     hint: '(n)eutral, (f)eminine or (m)asculine',
-    rules: [(v:any) => (v && ('neutral'.startsWith(v) || 'feminine'.startsWith(v) || 'masculine'.startsWith(v))) ||
-      'Enter n for neutral, f for feminine or m for masculine'],
+    rules: [
+      (v: any) =>
+        (v && ('neutral'.startsWith(v) || 'feminine'.startsWith(v) || 'masculine'.startsWith(v))) ||
+        'Enter n for neutral, f for feminine or m for masculine',
+    ],
     icon: mdiHumanMaleFemale,
-    desc: 'Glasses appearance (neutral, feminine or masculine)'
-  }
+    desc: 'Glasses appearance (neutral, feminine or masculine)',
+  },
 ]
 
-export function deepCopyGlasses(oldGlasses:any) {
-  const newGlasses:Glasses = Object.assign({}, oldGlasses)
-  const newOd:any = {}
-  const newOs:any = {}
+export function deepCopyGlasses(oldGlasses: any) {
+  const newGlasses: Glasses = Object.assign({}, oldGlasses)
+  const newOd: any = {}
+  const newOs: any = {}
   for (const key of Object.keys(oldGlasses.od)) {
     // copy to new object and convert to Number at once
     newOd[key] = Number(oldGlasses.od[key])
@@ -90,7 +104,7 @@ export function deepCopyGlasses(oldGlasses:any) {
   return newGlasses
 }
 
-export function matchesAsCsvUri(matches:Glasses[]) {
+export function matchesAsCsvUri(matches: Glasses[]) {
   const csvRows = matches.map((glass) => {
     let row = ''
     row += glass.sku + ';'
@@ -106,11 +120,13 @@ export function matchesAsCsvUri(matches:Glasses[]) {
     return row
   })
   // add header
-  csvRows.unshift('"SKU";"OD sphere";"OD cylinder";"OD axis";"OD additional";"OS sphere";"OS cylinder";"OS axis";"OS additional";"PhilScore"')
+  csvRows.unshift(
+    '"SKU";"OD sphere";"OD cylinder";"OD axis";"OD additional";"OS sphere";"OS cylinder";"OS axis";"OS additional";"PhilScore"',
+  )
   return 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
 }
 
-export function dispensedAsCsv(glasses:Glasses[]) {
+export function dispensedAsCsv(glasses: Glasses[]) {
   const csvRows = glasses.map((glass) => {
     let row = ''
     row += glass.dispense?.previousSku + ';'
@@ -126,19 +142,23 @@ export function dispensedAsCsv(glasses:Glasses[]) {
     return row
   })
   // add header
-  csvRows.unshift('"Old SKU";"OD sphere";"OD cylinder";"OD axis";"OD additional";"OS sphere";"OS cylinder";"OS axis";"OS additional";"Date of dispension"')
+  csvRows.unshift(
+    '"Old SKU";"OD sphere";"OD cylinder";"OD axis";"OD additional";"OS sphere";"OS cylinder";"OS axis";"OS additional";"Date of dispension"',
+  )
   return 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
 }
 
 /** convert all props to number type and return as new object */
-export function propsAsNumber(obj:any):Record<string, number> {
+export function propsAsNumber(obj: any): Record<string, number> {
   const temp = JSON.parse(JSON.stringify(obj))
-  Object.keys(temp).forEach((k) => { temp[k] = Number(temp[k]) })
+  Object.keys(temp).forEach((k) => {
+    temp[k] = Number(temp[k])
+  })
   return temp
 }
 
 /** Eye is fixed by applying step rounding and the correct sign for cylinder */
-export function sanitizeEyeValues(singleEye: (Eye|EyeSearch)) : (Eye|EyeSearch) {
+export function sanitizeEyeValues(singleEye: Eye | EyeSearch): Eye | EyeSearch {
   const rx = propsAsNumber(singleEye)
   // easier for calculation
   if (rx.axis === 180) rx.axis = 0
@@ -159,7 +179,7 @@ export function sanitizeEyeValues(singleEye: (Eye|EyeSearch)) : (Eye|EyeSearch) 
   return rx as unknown as Eye
 }
 
-export function clearObjectProperties(obj:any) {
+export function clearObjectProperties(obj: any) {
   for (const key of Object.keys(obj)) {
     obj[key] = ''
   }
