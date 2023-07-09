@@ -6,9 +6,9 @@
 
 // Plugins
 import { loadFonts } from './webfontloader'
-// import axios from './axios'
 import vuetify from './vuetify'
 import dayjs from './dayjs'
+import auth from './auth'
 import pinia from '../stores'
 import router from '../router'
 // Types
@@ -16,6 +16,5 @@ import type { App } from 'vue'
 
 export function registerPlugins(app: App) {
   loadFonts()
-  app.use(vuetify).use(router).use(pinia).use(dayjs)
-  // .use(axios)
+  app.use(vuetify).use(router).use(pinia).use(dayjs).use(auth)
 }

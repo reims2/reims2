@@ -3,11 +3,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '',
+    path: '/',
     component: () => import('@/layouts/Default.vue'),
     children: [
       {
-        path: '',
+        path: '/',
         name: 'Home',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -24,7 +24,7 @@ const routes = [
     ],
   },
   {
-    path: '/as',
+    path: '/',
     component: () => import('@/layouts/Main.vue'),
     children: [
       {

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawerModel" mini-variant-width="72" :mini-variant="miniDrawer" app>
+  <v-navigation-drawer v-model="drawerModel" mini-variant-width="72" :mini-variant="miniDrawer">
     <template #prepend>
       <div class="mt-5 mx-3 text-h6 font-weight-medium">
         <router-link
@@ -25,8 +25,10 @@
         :to="item.to"
         :disabled="item.disabled || false"
         :title="item.title"
-        :icon="item.icon"
       >
+        <template v-slot:prepend>
+          <v-icon :icon="item.icon"></v-icon>
+        </template>
       </v-list-item>
     </v-list>
     <v-divider v-if="!rootStore.isMobile" class="mb-3" />
@@ -37,9 +39,11 @@
         :key="item.title"
         :to="item.to"
         :title="item.title"
-        :icon="item.icon"
         :disabled="item.disabled || false"
       >
+        <template v-slot:prepend>
+          <v-icon :icon="item.icon"></v-icon>
+        </template>
       </v-list-item>
     </v-list>
 
@@ -64,7 +68,10 @@
             <v-icon :icon="mdiMapMarkerMultiple"></v-icon>
           </template>
         </v-list-item>
-        <v-list-item href="/docs/" target="_blank" title="Documentation" :icon="mdiFileDocument">
+        <v-list-item href="/docs/" target="_blank" title="Documentation">
+          <template v-slot:prepend>
+            <v-icon :icon="mdiFileDocument"></v-icon>
+          </template>
         </v-list-item>
         <v-list-item
           @click="
@@ -72,9 +79,11 @@
               console.log('TODO')
             }
           "
-          :icon="mdiLogout"
           title="Logout"
         >
+          <template v-slot:prepend>
+            <v-icon :icon="mdiLogout"></v-icon>
+          </template>
         </v-list-item>
       </v-list>
     </template>
