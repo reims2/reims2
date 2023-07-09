@@ -33,37 +33,34 @@
   </v-container>
 </template>
 
-<script>
-import AppHeader from '@/components/AppHeader.vue'
+<script setup>
+import { ref } from 'vue'
+import { useAuth } from 'vue-auth3'
 
-export default {
-  components: {
-    AppHeader,
-  },
-  layout: 'start',
-  data() {
-    return {
-      username: '',
-      password: '',
-      valid: false,
-      errorText: '',
+import AppHeader from '@/components/AppHeader.vue'
+import router from '@/router'
+
+const username = ref('')
+const password = ref('')
+const valid = ref(false)
+const errorText = ref('')
+
+const auth = useAuth()
+
+const userLogin = async () => {
+  errorText.value = ''
+  try {
+    await auth.login({
+      data: { username: username.value, password: password.value },
+    })
+    router.push('/find')
+  } catch (err) {
+    console.log(err)
+    if (err.status === 401) {
+      errorText.value = err.message
+    } else {
+      errorText.value = `Login failed (Error ${err.status})`
     }
-  },
-  methods: {
-    async userLogin() {
-      this.errorText = ''
-      try {
-        // TODO
-        // await this.$auth.loginWith('local', { data: { username: this.username, password: this.password } })
-      } catch (err) {
-        console.log(err)
-        if (err.status === 401) {
-          this.errorText = err.message
-        } else {
-          this.errorText = `Login failed (Error ${err.status})`
-        }
-      }
-    },
-  },
+  }
 }
 </script>
