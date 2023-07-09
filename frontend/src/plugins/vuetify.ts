@@ -15,14 +15,14 @@ import { VDataTable } from 'vuetify/labs/VDataTable'
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   components: {
-    VDataTable
+    VDataTable,
   },
   icons: {
     defaultSet: 'mdi',
     aliases,
     sets: {
-      mdi
-    }
+      mdi,
+    },
   },
   theme: {
     defaultTheme: 'light',
@@ -32,9 +32,9 @@ export default createVuetify({
           primary: '#005c66',
           secondary: '#67697C',
           accent: '#b34c00',
-          background: '#FFF'
-        }
-      }
-    }
-  }
+          background: '#FFF',
+        },
+      },
+    },
+  },
 })

@@ -7,5 +7,6 @@
     "watch": true,
     "onStartup": ["all-tests"]
   },
-  "jest.jestCommandLine": "jest"
+  "jest.jestCommandLine": "jest",
+  "html.format.wrapAttributes": "force-expand-multiline"
 }

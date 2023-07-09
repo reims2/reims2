@@ -1,10 +1,10 @@
 export interface Role {
-    id?: number;
-    name: string;
+  id?: number
+  name: string
 }
 
 export interface User {
-    id?: number;
-    roles: Array<Role>;
-    username: string;
+  id?: number
+  roles: Array<Role>
+  username: string
 }

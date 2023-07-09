@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex align-center">
     <v-progress-circular
-      :style="{visibility: isRefreshingGlasses ? 'visible' : 'hidden'}"
+      :style="{ visibility: isRefreshingGlasses ? 'visible' : 'hidden' }"
       indeterminate
       size="17"
       color="white"
@@ -12,7 +12,6 @@
 </template>
 
 <script>
-
 import { useRootStore } from '@/stores/root'
 
 export default {
@@ -21,19 +20,19 @@ export default {
     const rootStore = useRootStore()
     return {
       lastRefresh: rootStore.lastRefresh,
-      isRefreshingGlasses: rootStore.isRefreshingGlasses
+      isRefreshingGlasses: rootStore.isRefreshingGlasses,
     }
   },
   data() {
     return {
       lastRefreshString: null,
-      refreshInterval: ''
+      refreshInterval: '',
     }
   },
   watch: {
     lastRefresh() {
       this.generateTimeString()
-    }
+    },
   },
   created() {
     this.refreshInterval = setInterval(() => this.generateTimeString(), 10 * 1000)
@@ -51,8 +50,7 @@ export default {
       } else {
         this.lastRefreshString = this.dayjs().to(this.lastRefresh)
       }
-    }
-  }
-
+    },
+  },
 }
 </script>

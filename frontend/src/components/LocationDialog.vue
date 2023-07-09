@@ -3,32 +3,20 @@
     :model-value="modelValue"
     max-width="400px"
     persistent
-    @update:modelValue="e => updateDialogState(e)"
+    @update:modelValue="(e) => updateDialogState(e)"
   >
     <v-card>
-      <v-card-title class="text-h5 white--text primary">
-        Change location
-      </v-card-title>
+      <v-card-title class="text-h5 white--text primary"> Change location </v-card-title>
 
       <v-card-text>
-        <v-select
-          v-model="newLocation"
-          :items="locations"
-          class="mt-5"
-        />
+        <v-select v-model="newLocation" :items="locations" class="mt-5" />
       </v-card-text>
 
       <v-divider />
 
       <v-card-actions>
         <v-spacer />
-        <v-btn
-
-          text
-          @click="updateDialogState(false)"
-        >
-          Close
-        </v-btn>
+        <v-btn text @click="updateDialogState(false)"> Close </v-btn>
         <v-btn
           color="primary"
           text
@@ -51,15 +39,14 @@ export default {
     const rootStore = useRootStore()
     return {
       location: rootStore.location,
-      rootStore
+      rootStore,
     }
   },
   props: {
     modelValue: {
       type: Boolean,
-      required: true
-
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -67,8 +54,8 @@ export default {
       newLocation: '',
       locations: [
         { text: 'San Miguel', value: 'sm' },
-        { text: 'Santa Ana', value: 'sa' }
-      ]
+        { text: 'Santa Ana', value: 'sa' },
+      ],
     }
   },
   mounted() {
@@ -96,7 +83,7 @@ export default {
     updateDialogState(value) {
       this.$emit('update:modelValue', value)
       this.newLocation = this.location
-    }
-  }
+    },
+  },
 }
 </script>

@@ -29,8 +29,7 @@ export default {
   },
   components: { AppFooter, AppHeader, AppDrawer, AppBottomBar, ErrorSnackbar },
   data: () => ({
-    refreshGlassesInterval: ''
-
+    refreshGlassesInterval: '',
   }),
   computed: {
     mainItems() {
@@ -38,12 +37,17 @@ export default {
         { title: 'Find', icon: mdiFileFind, to: '/find' },
         { title: 'Edit', icon: mdiPencil, to: '/edit' },
         { title: 'View all', icon: mdiDatabase, to: '/view', disabled: this.rootStore.isOffline },
-        { title: 'Add', icon: mdiPlusCircle, to: '/add', disabled: this.rootStore.isOffline }
+        { title: 'Add', icon: mdiPlusCircle, to: '/add', disabled: this.rootStore.isOffline },
       ]
     },
     otherItems() {
       const list = [
-        { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: this.rootStore.isOffline }
+        {
+          title: 'Reports',
+          icon: mdiChartBox,
+          to: '/manage/reports',
+          disabled: this.rootStore.isOffline,
+        },
       ]
       // TODO
       // if (this.$auth.user && this.$auth.user.roles && this.$auth.user.roles.map(el => el.name).includes('ROLE_ADMIN')) {
@@ -51,8 +55,7 @@ export default {
       // }
       return list
     },
-    ...mapState(useRootStore, ['lastRefresh'])
-
+    ...mapState(useRootStore, ['lastRefresh']),
   },
   created() {
     this.updateGlasses()
@@ -67,7 +70,9 @@ export default {
         this.rootStore.loadGlasses()
       } catch (error) {
         if (!this.lastRefresh) {
-          this.rootStore.setError(`Could not load glasses database, please retry (Error ${error.status})`)
+          this.rootStore.setError(
+            `Could not load glasses database, please retry (Error ${error.status})`,
+          )
         } else if (this.dayjs().diff(this.lastRefresh) > 3 * 24 * 60 * 60 * 1000) {
           // if the last successful update is more than three day ago, mark DB as outdated
           this.rootStore.setOutdatedFlag(true)
@@ -75,7 +80,7 @@ export default {
         // else just fail silently because there's still a recent enough version of the DB cached
         console.log('DB update failed', error)
       }
-    }
-  }
+    },
+  },
 }
 </script>

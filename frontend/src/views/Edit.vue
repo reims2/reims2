@@ -1,18 +1,11 @@
 <template>
   <v-container>
     <v-row dense class="justify-center">
-      <v-col cols=12 md=6 lg=4>
-        <div class="text--secondary pb-2">
-          Start by entering a SKU to dispense or edit glasses.
-        </div>
-        <v-form
-          ref="form"
-          v-model="valid"
-          class="pt-3"
-          @submit.prevent="submitDispension"
-        >
+      <v-col cols="12" md="6" lg="4">
+        <div class="text--secondary pb-2">Start by entering a SKU to dispense or edit glasses.</div>
+        <v-form ref="form" v-model="valid" class="pt-3" @submit.prevent="submitDispension">
           <v-row>
-            <v-col cols=12>
+            <v-col cols="12">
               <v-text-field
                 ref="firstInput"
                 v-model.number="sku"
@@ -31,26 +24,20 @@
               <div class="d-flex flex-shrink-1 justify-start">
                 <glass-card :key="selected.key" :glass="selected" editable>
                   <template #actions>
-                    <v-btn
-                      text
-                      class="mx-0"
-                      @click="submitDispension"
-                    >
-                      Dispense
-                    </v-btn>
+                    <v-btn text class="mx-0" @click="submitDispension"> Dispense </v-btn>
                     <div class="d-flex flex-grow-1 justify-end">
                       <v-menu offset-y left>
                         <template #activator="{ props }">
-                          <v-btn
-                            icon
-                            v-bind="props"
-                          >
+                          <v-btn icon v-bind="props">
                             <v-icon> {{ mdiDotsVertical }} </v-icon>
                           </v-btn>
                         </template>
                         <v-list dense>
                           <v-list-item>
-                            <delete-button :glass="selected" @delete="reason => submitDeletion(reason)" />
+                            <delete-button
+                              :glass="selected"
+                              @delete="(reason) => submitDeletion(reason)"
+                            />
                           </v-list-item>
                         </v-list>
                       </v-menu>
@@ -63,14 +50,7 @@
         </v-form>
       </v-col>
     </v-row>
-    <v-snackbar
-      v-if="snackbarMessage != ''"
-      :value=true
-      :timeout="-1"
-      vertical
-      absolute
-      bottom
-    >
+    <v-snackbar v-if="snackbarMessage != ''" :value="true" :timeout="-1" vertical absolute bottom>
       <template #action="{ attrs }">
         <v-btn
           v-if="lastDispensed != null"
@@ -80,12 +60,7 @@
         >
           Undo
         </v-btn>
-        <v-btn
-          text
-          v-bind="attrs"
-          color="primary lighten-3"
-          @click="snackbarMessage = ''"
-        >
+        <v-btn text v-bind="attrs" color="primary lighten-3" @click="snackbarMessage = ''">
           Close
         </v-btn>
       </template>
@@ -104,7 +79,7 @@ import DeleteButton from '@/components/DeleteButton.vue'
 export default {
   components: {
     GlassCard,
-    DeleteButton
+    DeleteButton,
   },
   setup() {
     const glassesStore = useGlassesStore()
@@ -115,7 +90,7 @@ export default {
       dispense: glassesStore.dispense,
       undispense: glassesStore.undispense,
       deleteOfflineGlasses: rootStore.deleteOfflineGlasses,
-      rootStore
+      rootStore,
     }
   },
   transition: 'main',
@@ -128,11 +103,11 @@ export default {
     successMessage: '',
     errorMesssage: '',
     isOfflineDispension: false,
-    mdiDotsVertical
+    mdiDotsVertical,
   }),
   head() {
     return {
-      title: 'Edit glasses'
+      title: 'Edit glasses',
     }
   },
   title: 'Edit glasses',
@@ -151,7 +126,7 @@ export default {
       } else {
         return 'SKU not found'
       }
-    }
+    },
   },
   watch: {
     sku() {
@@ -161,7 +136,7 @@ export default {
         this.$store.dispatch('glasses/fetchSingle', this.sku)
       }
       this.errorMesssage = ''
-    }
+    },
   },
   activated() {
     if (this.$route.query.sku) {
@@ -192,10 +167,14 @@ export default {
       } catch (error) {
         this.isLoading = false
         if (error.status === 404) {
-          this.rootStore.setError('SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
+          this.rootStore.setError(
+            'SKU ' + toDispense.sku + ' not found on server, was it already dispensed?',
+          )
         } else if (error.network || error.server) {
           if (error.server) {
-            this.rootStore.setError(`Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`)
+            this.rootStore.setError(
+              `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`,
+            )
             this.snackbarMessage = `Glasses with SKU ${toDispense.sku} will be dispensed when the server is back online`
             this.deleteOfflineGlasses(toDispense.sku)
           } else {
@@ -205,7 +184,9 @@ export default {
           this.$refs.form.reset()
           this.$refs.firstInput.focus()
         } else {
-          this.rootStore.setError(`Could not dispense glasses, please retry (Error ${error.status})`)
+          this.rootStore.setError(
+            `Could not dispense glasses, please retry (Error ${error.status})`,
+          )
         }
         return
       }
@@ -227,13 +208,19 @@ export default {
       } catch (error) {
         this.isLoading = false
         if (error.status === 400) {
-          this.rootStore.setError(`Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`)
+          this.rootStore.setError(
+            `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`,
+          )
           this.snackbarMessage = ''
         } else if (error.network || error.server) {
-          this.rootStore.setError('Network or server error. Dispension will be automatically reverted as soon as you\'re back online.')
+          this.rootStore.setError(
+            "Network or server error. Dispension will be automatically reverted as soon as you're back online.",
+          )
           this.snackbarMessage = ''
         } else {
-          this.rootStore.setError(`Could not undo dispension of glasses, please retry (Error ${error.status}).`)
+          this.rootStore.setError(
+            `Could not undo dispension of glasses, please retry (Error ${error.status}).`,
+          )
         }
         return
       }
@@ -241,7 +228,7 @@ export default {
       this.lastDispensed = null
       this.sku = glasses.sku
       this.snackbarMessage = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`
-    }
-  }
+    },
+  },
 }
 </script>

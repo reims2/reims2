@@ -2,7 +2,11 @@
   <v-navigation-drawer v-model="drawerModel" mini-variant-width="72" :mini-variant="miniDrawer" app>
     <template #prepend>
       <div class="mt-5 mx-3 text-h6 font-weight-medium">
-        <router-link :style="miniDrawer ? 'visibility:hidden;' : ''" class="no-decoration no-color" to="/">
+        <router-link
+          :style="miniDrawer ? 'visibility:hidden;' : ''"
+          class="no-decoration no-color"
+          to="/"
+        >
           REIMS {{ locationNames[location] }}
         </router-link>
       </div>
@@ -60,11 +64,12 @@
             <v-icon :icon="mdiMapMarkerMultiple"></v-icon>
           </template>
         </v-list-item>
-        <v-list-item href="/docs/" target="_blank" title="Documentation" :icon="mdiFileDocument"> </v-list-item>
+        <v-list-item href="/docs/" target="_blank" title="Documentation" :icon="mdiFileDocument">
+        </v-list-item>
         <v-list-item
           @click="
             () => {
-              console.log('TODO');
+              console.log('TODO')
             }
           "
           :icon="mdiLogout"
@@ -90,17 +95,17 @@ export default {
     return { rootStore }
   },
   components: {
-    LocationDialog
+    LocationDialog,
   },
   props: {
     mainItems: {
       type: Array,
-      required: true
+      required: true,
     },
     otherItems: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -109,7 +114,7 @@ export default {
       locationNames,
       mdiMapMarkerMultiple,
       mdiFileDocument,
-      dialog: false
+      dialog: false,
     }
   },
   computed: {
@@ -119,19 +124,19 @@ export default {
       },
       set(val) {
         this.rootStore.drawer = val
-      }
+      },
     },
     miniDrawer: {
       get() {
         return !this.rootStore.isMobile && !this.drawer
       },
-      set() {}
+      set() {},
     },
-    commitUrl: function() {
+    commitUrl: function () {
       return 'https://github.com/reims2/reims2-frontend/commit/' + this.rootStore.version
     },
-    ...mapState(useRootStore, ['drawer', 'location'])
-  }
+    ...mapState(useRootStore, ['drawer', 'location']),
+  },
 }
 </script>
 

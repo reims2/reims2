@@ -6,12 +6,7 @@
           {{ eyeName }}
         </div>
       </v-col>
-      <v-col
-        v-for="[id, item] in Object.entries(eye_data)"
-        :key="id"
-        cols="12"
-        class="py-0 pl-0"
-      >
+      <v-col v-for="[id, item] in Object.entries(eye_data)" :key="id" cols="12" class="py-0 pl-0">
         <v-text-field
           outlined
           dense
@@ -22,8 +17,8 @@
           :step="item.step"
           :disabled="item.disabled || isBAL"
           :prefix="eye_data[id].value != null ? item.prefix : ''"
-          @update:modelValue="val => input(id, val)"
-          @update:error="val => hasError[id] = val"
+          @update:modelValue="(val) => input(id, val)"
+          @update:error="(val) => (hasError[id] = val)"
           @blur="update(id)"
           @focus="$event.target.select()"
           @keydown.s.prevent
@@ -37,7 +32,7 @@
           class="py-0 my-0"
           :label="`BAL lens (Disable ${eyeName})`"
           hide-details
-          @change="val => input('isBAL', val)"
+          @change="(val) => input('isBAL', val)"
         />
       </v-col>
     </v-row>
@@ -50,45 +45,46 @@ export default {
   props: {
     eyeName: {
       type: String,
-      required: true
+      required: true,
     },
     axis: {
       type: [String, Number],
       required: false,
-      default: ''
+      default: '',
     },
     sphere: {
       type: [String, Number],
       required: false,
-      default: ''
+      default: '',
     },
     add: {
       type: [String, Number],
       required: false,
-      default: ''
+      default: '',
     },
     cylinder: {
       type: [String, Number],
       required: false,
-      default: ''
+      default: '',
     },
     addEnabled: {
       type: Boolean,
-      default: true
+      default: true,
     },
     isBAL: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data: () => ({
     eyeRules,
-    hasError: { // workaround, see https://stackoverflow.com/a/59439106/4026792
+    hasError: {
+      // workaround, see https://stackoverflow.com/a/59439106/4026792
       sphere: true,
       cylinder: false, // allow (initial) empty fields
       axis: true,
-      add: true
-    }
+      add: true,
+    },
   }),
   computed: {
     eye_data() {
@@ -97,27 +93,27 @@ export default {
           label: 'Sphere',
           step: 0.25,
           // prefix: this.sphere > 0 ? '+' : '',
-          value: this.sphere
+          value: this.sphere,
         },
         cylinder: {
           label: 'Cylinder (minus form)',
           step: 0.25,
-          value: this.cylinder
+          value: this.cylinder,
         },
         axis: {
           label: 'Axis',
           disabled: this.cylinder === '' || this.cylinder === '0' || this.cylinder === 0,
-          value: this.axis
+          value: this.axis,
         },
         add: {
           label: 'Additional',
           disabled: !this.addEnabled,
           step: 0.25,
           prefix: '+',
-          value: this.add
-        }
+          value: this.add,
+        },
       }
-    }
+    },
   },
   methods: {
     input(id, value) {
@@ -152,7 +148,7 @@ export default {
           }
         }
       }
-    }
-  }
+    },
+  },
 }
 </script>

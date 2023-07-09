@@ -16,10 +16,6 @@ import type { App } from 'vue'
 
 export function registerPlugins(app: App) {
   loadFonts()
-  app
-    .use(vuetify)
-    .use(router)
-    .use(pinia)
-    .use(dayjs)
-    // .use(axios)
+  app.use(vuetify).use(router).use(pinia).use(dayjs)
+  // .use(axios)
 }

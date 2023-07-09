@@ -11,12 +11,12 @@
     :mobile-breakpoint="rootStore.isMobileBreakpoint"
     :footer-props="{
       showFirstLastPage: true,
-      itemsPerPageOptions: [10,20,50,100,500],
-      showCurrentPage: true
+      itemsPerPageOptions: [10, 20, 50, 100, 500],
+      showCurrentPage: true,
     }"
     @update:options="startLoading"
   >
-    <template v-if="rootStore.isMobile" #item={item}>
+    <template v-if="rootStore.isMobile" #item="{ item }">
       <div class="mx-2 pb-1">
         <glass-card :glass="item" />
       </div>
@@ -33,24 +33,24 @@
             small-chips
             label="Filter"
             :items="['single', 'multifocal']"
-            style="min-width:60px;"
+            style="min-width: 60px"
             class="fit pb-1"
-            @change="value => updateFilter(value, null, 'glassesType')"
+            @change="(value) => updateFilter(value, null, 'glassesType')"
           />
         </td>
         <td>
-          <min-max-input @update="value => updateFilter(value, 'od', 'sphere')" />
+          <min-max-input @update="(value) => updateFilter(value, 'od', 'sphere')" />
         </td>
         <td>
-          <min-max-input @update="value => updateFilter(value, 'od', 'cylinder')" />
+          <min-max-input @update="(value) => updateFilter(value, 'od', 'cylinder')" />
         </td>
         <td />
         <td class="v-data-table__divider" />
         <td>
-          <min-max-input @update="value => updateFilter(value, 'os', 'sphere')" />
+          <min-max-input @update="(value) => updateFilter(value, 'os', 'sphere')" />
         </td>
         <td>
-          <min-max-input @update="value => updateFilter(value, 'os', 'cylinder')" />
+          <min-max-input @update="(value) => updateFilter(value, 'os', 'cylinder')" />
         </td>
         <td />
         <td class="v-data-table__divider" />
@@ -60,39 +60,23 @@
         <td />
       </tr>
     </template>
-    <template #item.od.sphere="{ item }">
-      {{ formatRx(item.od.sphere) }} D
-    </template>
-    <template #item.od.cylinder="{ item }">
-      {{ formatRx(item.od.cylinder) }} D
-    </template>
+    <template #item.od.sphere="{ item }"> {{ formatRx(item.od.sphere) }} D </template>
+    <template #item.od.cylinder="{ item }"> {{ formatRx(item.od.cylinder) }} D </template>
     <template #item.od.axis="{ item }">
       {{ parseInt(item.od.axis).toString().padStart(3, '0') }}
     </template>
-    <template #item.od.add="{ item }">
-      {{ formatRx(item.od.add) }} D
-    </template>
-    <template #item.os.sphere="{ item }">
-      {{ formatRx(item.os.sphere) }} D
-    </template>
-    <template #item.os.cylinder="{ item }">
-      {{ formatRx(item.os.cylinder) }} D
-    </template>
+    <template #item.od.add="{ item }"> {{ formatRx(item.od.add) }} D </template>
+    <template #item.os.sphere="{ item }"> {{ formatRx(item.os.sphere) }} D </template>
+    <template #item.os.cylinder="{ item }"> {{ formatRx(item.os.cylinder) }} D </template>
     <template #item.os.axis="{ item }">
       {{ parseInt(item.os.axis).toString().padStart(3, '0') }}
     </template>
-    <template #item.os.add="{ item }">
-      {{ formatRx(item.os.add) }} D
-    </template>
+    <template #item.os.add="{ item }"> {{ formatRx(item.os.add) }} D </template>
     <template #item.creationDate="{ item }">
       {{ dayjs(item.creationDate).format('DD.MM.YYYY') }}
     </template>
-    <template #item.actions="{item}">
-      <v-btn
-        :to="{path:'/edit', query: { sku: item.sku }}"
-        icon
-        small
-      >
+    <template #item.actions="{ item }">
+      <v-btn :to="{ path: '/edit', query: { sku: item.sku } }" icon small>
         <v-icon>{{ mdiPencil }}</v-icon>
       </v-btn>
     </template>
@@ -116,7 +100,7 @@ export default {
       totalItems: tableStore.totalGlassesCount,
       location: rootStore.location,
       loadItems: tableStore.loadItems,
-      rootStore
+      rootStore,
     }
   },
   data: () => ({
@@ -124,17 +108,17 @@ export default {
       glassesType: [],
       od: {
         sphere: {},
-        cylinder: {}
+        cylinder: {},
       },
       os: {
         sphere: {},
-        cylinder: {}
-      }
+        cylinder: {},
+      },
     },
     options: { itemsPerPage: 20 },
     loading: false,
     items: [],
-    mdiPencil
+    mdiPencil,
   }),
   computed: {
     headers() {
@@ -152,7 +136,7 @@ export default {
         { value: 'appearance', text: 'Appearance' },
         { value: 'glassesSize', text: 'Size' },
         { value: 'creationDate', text: 'Added' },
-        { value: 'actions', text: '', sortable: false }
+        { value: 'actions', text: '', sortable: false },
       ]
     },
     filterString() {
@@ -163,12 +147,15 @@ export default {
       }
       for (const eyeName of ['od', 'os']) {
         for (const valName of ['sphere', 'cylinder']) {
-          const filter = this.createSingleFilter(this.filters[eyeName][valName], `${eyeName}.${valName}`)
+          const filter = this.createSingleFilter(
+            this.filters[eyeName][valName],
+            `${eyeName}.${valName}`,
+          )
           if (filter) filterString += filter + ';'
         }
       }
       return filterString.slice(0, -1)
-    }
+    },
   },
   watch: {
     location() {
@@ -178,10 +165,10 @@ export default {
       handler() {
         this.startLoading()
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
-  activated: function() {
+  activated: function () {
     this.startLoading()
   },
   methods: {
@@ -214,10 +201,15 @@ export default {
       return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)
     },
     async startLoading() {
-      setTimeout(() => { if (this.rootStore.isMobile) this.$nuxt.$loading.start() }) // TODO
+      setTimeout(() => {
+        if (this.rootStore.isMobile) this.$nuxt.$loading.start()
+      }) // TODO
       this.loading = true
       try {
-        this.items = await this.loadItems({ options: this.options, filterString: this.filterString })
+        this.items = await this.loadItems({
+          options: this.options,
+          filterString: this.filterString,
+        })
       } catch (error) {
         if (error.status === 404) {
           this.items = []
@@ -226,9 +218,8 @@ export default {
         }
       }
       this.loading = false
-    }
-
-  }
+    },
+  },
 }
 </script>
 
@@ -236,7 +227,7 @@ export default {
 .v-select.fit {
   width: min-content;
 }
-.v-select.fit  .v-select__selection--comma {
-    text-overflow: unset;
+.v-select.fit .v-select__selection--comma {
+  text-overflow: unset;
 }
 </style>

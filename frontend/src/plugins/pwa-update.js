@@ -1,5 +1,5 @@
 // https://github.com/nuxt-community/pwa-module/issues/239#issuecomment-796807081
-export default async() => {
+export default async () => {
   const workbox = await window.$workbox
 
   if (!workbox) {
