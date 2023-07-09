@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
   "[javascript,vue,js]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "jest.autoRun": {
     "watch": true,
