@@ -32,6 +32,7 @@
       </v-col>
       <v-col cols="12" class="pa-0 pb-4">
         <v-checkbox
+          v-if="balEnabled"
           :input-value="isBAL"
           tabindex="-1"
           class="py-0 my-0"
