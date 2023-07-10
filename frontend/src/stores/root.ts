@@ -29,11 +29,11 @@ export const useRootStore = defineStore({
   },
   actions: {
     async loadGlasses() {
-      const data = (await axios.get(`/api/glasses/${this.location}`, {
+      const response = (await axios.get(`/api/glasses/${this.location}`, {
         params: { size: 100000 },
         timeout: 60000,
-      })) as any
-      this.allGlasses = data.glasses
+      })) 
+      this.allGlasses = response.data.glasses
       this.lastRefresh = new Date().toISOString()
       this.isOutdated = false
       this.isRefreshingGlasses = false

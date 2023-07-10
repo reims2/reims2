@@ -73,7 +73,7 @@
     </template>
     <template #item.os.add="{ item }"> {{ formatRx(item.os.add) }} D </template>
     <template #item.creationDate="{ item }">
-      {{ dayjs(item.creationDate).format('DD.MM.YYYY') }}
+      {{ formatDate(item.creationDate) }}
     </template>
     <template #item.actions="{ item }">
       <v-btn :to="{ path: '/edit', query: { sku: item.sku } }" icon small>
@@ -89,10 +89,10 @@ import { useTableStore } from '@/stores/table'
 import { useRootStore } from '@/stores/root'
 import GlassCard from '@/components/GlassCard.vue'
 import MinMaxInput from '@/components/MinMaxInput.vue'
+import dayjs from 'dayjs'
 
 export default {
   components: { GlassCard, MinMaxInput },
-  inject: ['dayjs'],
   setup() {
     const tableStore = useTableStore()
     const rootStore = useRootStore()
@@ -172,6 +172,9 @@ export default {
     this.startLoading()
   },
   methods: {
+    formatDate(date) {
+      return dayjs(date).format('DD.MM.YYYY')
+    },
     createSingleFilter(value, filterName) {
       if (value == null) return null
 

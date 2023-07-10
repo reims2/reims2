@@ -6,15 +6,15 @@ export const useUsersStore = defineStore({
   id: 'users',
   actions: {
     async add(newGlasses: User): Promise<User> {
-      const data: User = await axios.post('/api/auth/signup', newGlasses)
-      return data
+      const response = await axios.post('/api/auth/signup', newGlasses)
+      return response.data
     },
     async delete(id: number) {
       await axios.delete(`/api/auth/${id}`)
     },
     async get(): Promise<Array<User>> {
-      const data: Array<User> = await axios.get('/api/auth')
-      return data
+      const response = await axios.get('/api/auth')
+      return response.data
     },
   },
 })
