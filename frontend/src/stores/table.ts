@@ -16,9 +16,9 @@ export const useTableStore = defineStore({
       const sortString = options.sortBy[0] + ',' + (options.sortDesc[0] ? 'desc' : 'asc')
       const params: any = { size: options.itemsPerPage, page: options.page - 1, sort: sortString }
       if (filterString != null && filterString !== '') params.search = filterString
-      const data = (await axios.get('/api/glasses', { params })) as any
-      this.totalGlassesCount = data.totalElements
-      return data.glasses
+      const response = (await axios.get('/api/glasses', { params })) as any
+      this.totalGlassesCount = response.data.totalElements
+      return response.data.glasses
     },
   },
 })

@@ -50,8 +50,8 @@ import { mapState } from 'pinia'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 import { locationNames } from '../../lib/util'
+import dayjs from 'dayjs'
 export default {
-  inject: ['dayjs'],
   setup() {
     const glassesStore = useGlassesStore()
     const rootStore = useRootStore()
@@ -75,17 +75,17 @@ export default {
   computed: {
     ...mapState(useRootStore, ['location']),
     lastYears() {
-      const year = this.dayjs().year()
+      const year = dayjs().year()
       return Array.from(new Array(30), (_, index) => year - index).filter((year) => year >= 2022)
     },
   },
   created() {
-    this.selectedDispenedYear = this.dayjs().year()
+    this.selectedDispenedYear = dayjs().year()
   },
   methods: {
     async downloadDispensedReport() {
       this.loadingDispensedReport = true
-      const selectedYearStart = this.dayjs().startOf('year').year(this.selectedDispenedYear)
+      const selectedYearStart = dayjs().startOf('year').year(this.selectedDispenedYear)
       try {
         const csvFile = await this.glassesStore.loadDispensedCsv({
           startDate: selectedYearStart.format('MM/DD/YYYY'),

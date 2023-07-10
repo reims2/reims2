@@ -15,8 +15,8 @@ export const useGlassesStore = defineStore({
       const request = Object.assign({}, newGlasses)
       const rootStore = useRootStore()
       request.location = rootStore.location
-      const data = await axios.post('/api/glasses', request)
-      const addedGlasses = data as unknown as Glasses
+      const reponse = await axios.post('/api/glasses', request)
+      const addedGlasses = reponse.data
       rootStore.addOfflineGlasses(addedGlasses)
       return addedGlasses
     },
@@ -24,9 +24,9 @@ export const useGlassesStore = defineStore({
       const rootStore = useRootStore()
       if (cancelTokenGet) cancelTokenGet.cancel()
       cancelTokenGet = axios.CancelToken.source()
-      let data
+      let response
       try {
-        data = await axios.get(`/api/glasses/${rootStore.location}/${sku}`, {
+        response = await axios.get(`/api/glasses/${rootStore.location}/${sku}`, {
           cancelToken: cancelTokenGet.token,
         })
       } catch (e) {
@@ -37,7 +37,7 @@ export const useGlassesStore = defineStore({
         throw e
       }
 
-      const fetchedGlasses = data as unknown as Glasses
+      const fetchedGlasses = response.data
       rootStore.deleteOfflineGlasses(sku)
       rootStore.addOfflineGlasses(fetchedGlasses)
       return fetchedGlasses
@@ -59,12 +59,11 @@ export const useGlassesStore = defineStore({
     },
     async editGlasses(newGlasses: Glasses): Promise<Glasses> {
       const rootStore = useRootStore()
-      const data = await axios.put(
+      const response = await axios.put(
         `/api/glasses/${rootStore.location}/${newGlasses.sku}`,
         newGlasses,
       )
-      const editedGlasses = data as unknown as Glasses
-      rootStore.deleteOfflineGlasses(newGlasses.sku)
+      const editedGlasses = response.data
       rootStore.addOfflineGlasses(editedGlasses)
       return editedGlasses
     },
@@ -75,18 +74,18 @@ export const useGlassesStore = defineStore({
     async loadDispensedCsv(startDate: string, endDate: string): Promise<any> {
       const rootStore = useRootStore()
       const params: any = { startDate, endDate }
-      const data = await axios.get(`/api/glasses/dispensed/${rootStore.location}.csv`, {
+      const response = await axios.get(`/api/glasses/dispensed/${rootStore.location}.csv`, {
         params,
         responseType: 'blob',
       })
-      return data
+      return response.data
     },
     async loadInventoryCsv(): Promise<any> {
       const rootStore = useRootStore()
-      const data = await axios.get(`/api/glasses/${rootStore.location}.csv`, {
+      const response = await axios.get(`/api/glasses/${rootStore.location}.csv`, {
         responseType: 'blob',
       })
-      return data
+      return response.data
     },
   },
 })

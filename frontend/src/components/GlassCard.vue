@@ -80,7 +80,7 @@
                   </td>
                   <td>
                     <editable-span
-                      :value="dataItem.format(glass[eye.key][dataKey])"
+                      :modelValue="dataItem.format(glass[eye.key][dataKey])"
                       :suffix="dataItem.suffix"
                       :rules="eyeRules[dataKey]"
                       :is-editing="editable && edit == eye.key + dataKey"
@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import * as chroma from '../lib/chroma'
+import chroma from 'chroma-js'
 import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '../lib/util'
 import EditableSpan from './EditableSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'

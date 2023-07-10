@@ -24,7 +24,7 @@
               <div class="d-flex flex-shrink-1 justify-start">
                 <glass-card :key="selected.key" :glass="selected" editable>
                   <template #actions>
-                    <v-btn text class="mx-0" @click="submitDispension"> Dispense </v-btn>
+                    <v-btn variant="text" class="mx-0" @click="submitDispension"> Dispense </v-btn>
                     <div class="d-flex flex-grow-1 justify-end">
                       <v-menu offset-y left>
                         <template #activator="{ props }">
@@ -51,16 +51,11 @@
       </v-col>
     </v-row>
     <v-snackbar v-if="snackbarMessage != ''" :value="true" :timeout="-1" vertical absolute bottom>
-      <template #action="{ attrs }">
-        <v-btn
-          v-if="lastDispensed != null"
-          text
-          v-bind="attrs"
-          @click="undoDispension(lastDispensed)"
-        >
+      <template v-slot:actions>
+        <v-btn v-if="lastDispensed != null" variant="text" @click="undoDispension(lastDispensed)">
           Undo
         </v-btn>
-        <v-btn text v-bind="attrs" color="primary lighten-3" @click="snackbarMessage = ''">
+        <v-btn variant="text" color="primary lighten-3" @click="snackbarMessage = ''">
           Close
         </v-btn>
       </template>
@@ -69,166 +64,142 @@
   </v-container>
 </template>
 
-<script>
+<script setup lang="ts">
 import { mdiDotsVertical } from '@mdi/js'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
 import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
+import { watch, ref } from 'vue'
+import { Glasses } from '@/model/GlassesModel'
+import { VForm } from 'vuetify/lib/components/index.mjs'
 
-export default {
-  components: {
-    GlassCard,
-    DeleteButton,
-  },
-  setup() {
-    const glassesStore = useGlassesStore()
-    const rootStore = useRootStore()
-    return {
-      glasses: rootStore.allGlasses,
-      getSingle: glassesStore.fetchSingle,
-      dispense: glassesStore.dispense,
-      undispense: glassesStore.undispense,
-      deleteOfflineGlasses: rootStore.deleteOfflineGlasses,
-      rootStore,
+const glassesStore = useGlassesStore()
+const rootStore = useRootStore()
+
+const valid = ref(false)
+const sku = ref('')
+const lastDispensed = ref(null)
+const isLoading = ref(false)
+const snackbarMessage = ref('')
+const successMessage = ref('')
+const errorMesssage = ref('')
+const hint = ref('')
+const selected = ref<any>(null)
+
+// Component refs
+const form = ref<VForm | null>(null)
+const firstInput = ref<any | null>(null)
+
+watch(sku, async (newSku, oldSku) => {
+  if (newSku != null && newSku !== '') {
+    successMessage.value = ''
+    // also fetch glasses in background to update database
+    const returnValue = (await glassesStore.fetchSingle(parseInt(newSku))) as any
+    selected.value = returnValue
+    // horrible hack to always refresh the virtual DOM if something changed
+    if (returnValue) {
+      selected.value.key = '' + selected.value.sku + Math.floor(Math.random() * 10000).toString()
+      hint.value = 'Press ENTER to dispense'
+    } else {
+      hint.value = 'SKU not found'
     }
-  },
-  transition: 'main',
-  data: () => ({
-    valid: false,
-    sku: '',
-    lastDispensed: null,
-    isLoading: false,
-    snackbarMessage: '',
-    successMessage: '',
-    errorMesssage: '',
-    isOfflineDispension: false,
-    mdiDotsVertical,
-  }),
-  head() {
-    return {
-      title: 'Edit glasses',
-    }
-  },
-  title: 'Edit glasses',
-  computed: {
-    selected() {
-      const selected = this.getSingle(parseInt(this.sku))
-      // horrible hack to always refresh the virtual DOM if something changed
-      if (selected) selected.key = '' + selected.sku + Math.floor(Math.random() * 10000).toString()
-      return selected
-    },
-    hint() {
-      if (this.selected) {
-        return 'Press ENTER to dispense'
-      } else if (this.sku == null || this.sku === '') {
-        return ''
+  } else {
+    selected.value = null
+    hint.value = ''
+  }
+  errorMesssage.value = ''
+})
+// TODO activated() {
+//   if (this.$route.query.sku) {
+//     this.$nextTick(() => {
+//       this.sku = this.$route.query.sku
+//     })
+//   }
+// },
+
+async function submitDispension() {
+  await submitDeletion('DISPENSED')
+}
+
+async function submitDeletion(reason: string) {
+  if (isLoading.value || sku.value == null || sku.value === '') return
+  if (!selected.value) {
+    errorMesssage.value = 'SKU not found'
+    return
+  }
+  // copy object because the computed `selected` property will get null when it's dispensed
+  const toDispense = selected.value
+  // do dispension
+  snackbarMessage.value = ''
+  errorMesssage.value = ''
+  isLoading.value = true
+  lastDispensed.value = null
+  try {
+    await glassesStore.dispense(toDispense.sku, reason)
+  } catch (error) {
+    isLoading.value = false
+    if (error.status === 404) {
+      rootStore.setError(
+        'SKU ' + toDispense.sku + ' not found on server, was it already dispensed?',
+      )
+    } else if (error.network || error.server) {
+      if (error.server) {
+        rootStore.setError(
+          `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`,
+        )
+        snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be dispensed when the server is back online`
+        rootStore.deleteOfflineGlasses(toDispense.sku)
       } else {
-        return 'SKU not found'
+        snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be dispensed when you're back online`
       }
-    },
-  },
-  watch: {
-    sku() {
-      if (this.sku != null && this.sku !== '') {
-        this.successMessage = ''
-        // also fetch glasses in background to update database
-        this.$store.dispatch('glasses/fetchSingle', this.sku)
-      }
-      this.errorMesssage = ''
-    },
-  },
-  activated() {
-    if (this.$route.query.sku) {
-      this.$nextTick(() => {
-        this.sku = this.$route.query.sku
-      })
+      lastDispensed.value = toDispense
+      if (form.value) form.value.reset()
+      if (firstInput.value) firstInput.value.focus()
+    } else {
+      rootStore.setError(`Could not dispense glasses, please retry (Error ${error.status})`)
     }
-  },
-  methods: {
-    async submitDispension() {
-      await this.submitDeletion('DISPENSED')
-    },
-    async submitDeletion(reason) {
-      if (this.isLoading || this.sku == null || this.sku === '') return
-      if (!this.selected) {
-        this.errorMesssage = 'SKU not found'
-        return
-      }
-      // copy object because the computed `selected` property will get null when it's dispensed
-      const toDispense = this.selected
-      // do dispension
-      this.snackbarMessage = ''
-      this.errorMesssage = ''
-      this.isLoading = true
-      this.lastDispensed = null
-      try {
-        await this.dispense({ sku: toDispense.sku, reason })
-      } catch (error) {
-        this.isLoading = false
-        if (error.status === 404) {
-          this.rootStore.setError(
-            'SKU ' + toDispense.sku + ' not found on server, was it already dispensed?',
-          )
-        } else if (error.network || error.server) {
-          if (error.server) {
-            this.rootStore.setError(
-              `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`,
-            )
-            this.snackbarMessage = `Glasses with SKU ${toDispense.sku} will be dispensed when the server is back online`
-            this.deleteOfflineGlasses(toDispense.sku)
-          } else {
-            this.snackbarMessage = `Glasses with SKU ${toDispense.sku} will be dispensed when you're back online`
-          }
-          this.lastDispensed = toDispense
-          this.$refs.form.reset()
-          this.$refs.firstInput.focus()
-        } else {
-          this.rootStore.setError(
-            `Could not dispense glasses, please retry (Error ${error.status})`,
-          )
-        }
-        return
-      }
-      this.isLoading = false
-      this.lastDispensed = toDispense
-      if (reason === 'DISPENSED') {
-        this.snackbarMessage = `Successfully dispensed glasses with SKU ${toDispense.sku}`
-        this.successMessage = 'Dispension successful'
-      } else {
-        this.snackbarMessage = `Successfully deleted glasses with SKU ${toDispense.sku}`
-      }
-      this.$refs.form.reset()
-      this.$refs.firstInput.focus()
-    },
-    async undoDispension(glasses) {
-      this.isLoading = true
-      try {
-        await this.undispense(glasses)
-      } catch (error) {
-        this.isLoading = false
-        if (error.status === 400) {
-          this.rootStore.setError(
-            `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`,
-          )
-          this.snackbarMessage = ''
-        } else if (error.network || error.server) {
-          this.rootStore.setError(
-            "Network or server error. Dispension will be automatically reverted as soon as you're back online.",
-          )
-          this.snackbarMessage = ''
-        } else {
-          this.rootStore.setError(
-            `Could not undo dispension of glasses, please retry (Error ${error.status}).`,
-          )
-        }
-        return
-      }
-      this.isLoading = false
-      this.lastDispensed = null
-      this.sku = glasses.sku
-      this.snackbarMessage = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`
-    },
-  },
+    return
+  }
+  isLoading.value = false
+  lastDispensed.value = toDispense
+
+  if (reason === 'DISPENSED') {
+    snackbarMessage.value = `Successfully dispensed glasses with SKU ${toDispense.sku}`
+    successMessage.value = 'Dispension successful'
+  } else {
+    snackbarMessage.value = `Successfully deleted glasses with SKU ${toDispense.sku}`
+  }
+  if (form.value) form.value.reset()
+  if (firstInput.value) firstInput.value.focus()
+}
+
+async function undoDispension(glasses: Glasses) {
+  isLoading.value = true
+  try {
+    await glassesStore.undispense(glasses)
+  } catch (error) {
+    isLoading.value = false
+    if (error.status === 400) {
+      rootStore.setError(
+        `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`,
+      )
+      snackbarMessage.value = ''
+    } else if (error.network || error.server) {
+      rootStore.setError(
+        "Network or server error. Dispension will be automatically reverted as soon as you're back online.",
+      )
+      snackbarMessage.value = ''
+    } else {
+      rootStore.setError(
+        `Could not undo dispension of glasses, please retry (Error ${error.status}).`,
+      )
+    }
+    return
+  }
+  isLoading.value = false
+  lastDispensed.value = null
+  sku.value = glasses.sku.toString()
+  snackbarMessage.value = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`
 }
 </script>

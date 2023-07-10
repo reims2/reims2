@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     input(id, value) {
-      this.$emit('input', { id, value })
+      this.$emit('update:modelValue', { id, value })
     },
     update(id) {
       let newVal = this.eye_data[id].value

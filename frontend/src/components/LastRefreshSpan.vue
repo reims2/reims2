@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex align-center">
     <v-progress-circular
-      :style="{ visibility: isRefreshingGlasses ? 'visible' : 'hidden' }"
+      :style="{ visibility: rootStore.isRefreshingGlasses ? 'visible' : 'hidden' }"
       indeterminate
       size="17"
       color="white"
@@ -11,46 +11,33 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, watch, onBeforeUnmount, computed } from 'vue'
 import { useRootStore } from '@/stores/root'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
-export default {
-  inject: ['dayjs'],
-  setup() {
-    const rootStore = useRootStore()
-    return {
-      lastRefresh: rootStore.lastRefresh,
-      isRefreshingGlasses: rootStore.isRefreshingGlasses,
-    }
-  },
-  data() {
-    return {
-      lastRefreshString: null,
-      refreshInterval: '',
-    }
-  },
-  watch: {
-    lastRefresh() {
-      this.generateTimeString()
-    },
-  },
-  created() {
-    this.refreshInterval = setInterval(() => this.generateTimeString(), 10 * 1000)
-    this.generateTimeString()
-  },
-  beforeUnmount() {
-    clearInterval(this.refreshInterval)
-  },
-  methods: {
-    generateTimeString() {
-      if (!this.lastRefresh) {
-        this.lastRefreshString = ': none yet'
-      } else if (this.dayjs().diff(this.lastRefresh) < 5 * 60 * 1000) {
-        this.lastRefreshString = 'now' // don't bother the user with anything less than 5 minutes
-      } else {
-        this.lastRefreshString = this.dayjs().to(this.lastRefresh)
-      }
-    },
-  },
+dayjs.extend(relativeTime)
+
+const rootStore = useRootStore()
+const lastRefresh = computed(() => rootStore.lastRefresh)
+const lastRefreshString = ref<string | null>(null)
+
+watch(lastRefresh, () => {
+  generateTimeString()
+})
+const refreshInterval = setInterval(() => generateTimeString(), 10 * 1000)
+generateTimeString()
+
+onBeforeUnmount(() => clearInterval(refreshInterval))
+
+function generateTimeString() {
+  if (!lastRefresh.value) {
+    lastRefreshString.value = ': none yet'
+  } else if (dayjs().diff(lastRefresh.value) < 5 * 60 * 1000) {
+    lastRefreshString.value = 'now' // don't bother the user with anything less than 5 minutes
+  } else {
+    lastRefreshString.value = dayjs().to(lastRefresh.value)
+  }
 }
 </script>
