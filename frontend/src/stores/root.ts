@@ -9,7 +9,7 @@ export const useRootStore = defineStore({
   state: () => ({
     allGlasses: [] as Glasses[],
     lastRefresh: null as string | null,
-    location: 'sa',
+    reimsSite: 'sa',
     error: '',
     drawer: false,
     isOutdated: false,
@@ -29,10 +29,10 @@ export const useRootStore = defineStore({
   },
   actions: {
     async loadGlasses() {
-      const response = (await axios.get(`/api/glasses/${this.location}`, {
+      const response = await axios.get(`/api/glasses/${this.reimsSite}`, {
         params: { size: 100000 },
         timeout: 60000,
-      })) 
+      })
       this.allGlasses = response.data.glasses
       this.lastRefresh = new Date().toISOString()
       this.isOutdated = false

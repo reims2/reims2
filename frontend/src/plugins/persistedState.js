@@ -2,6 +2,6 @@ import createPersistedState from 'vuex-persistedstate'
 
 export default ({ store }) => {
   createPersistedState({
-    paths: ['location', 'allGlasses', 'lastRefresh'],
+    paths: ['reimsSite', 'allGlasses', 'lastRefresh'],
   })(store)
 }

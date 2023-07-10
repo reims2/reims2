@@ -14,7 +14,7 @@ export const useGlassesStore = defineStore({
     async addGlasses(newGlasses: Glasses): Promise<Glasses> {
       const request = Object.assign({}, newGlasses)
       const rootStore = useRootStore()
-      request.location = rootStore.location
+      request.location = rootStore.reimsSite
       const reponse = await axios.post('/api/glasses', request)
       const addedGlasses = reponse.data
       rootStore.addOfflineGlasses(addedGlasses)
@@ -26,7 +26,7 @@ export const useGlassesStore = defineStore({
       cancelTokenGet = axios.CancelToken.source()
       let response
       try {
-        response = await axios.get(`/api/glasses/${rootStore.location}/${sku}`, {
+        response = await axios.get(`/api/glasses/${rootStore.reimsSite}/${sku}`, {
           cancelToken: cancelTokenGet.token,
         })
       } catch (e) {
@@ -44,7 +44,7 @@ export const useGlassesStore = defineStore({
     },
     async dispense(sku: number, reason: string) {
       const rootStore = useRootStore()
-      await axios.post(`/api/glasses/${rootStore.location}/${sku}/dispense?reason=${reason}`, {})
+      await axios.post(`/api/glasses/${rootStore.reimsSite}/${sku}/dispense?reason=${reason}`, {})
       rootStore.deleteOfflineGlasses(sku)
     },
     async undispense(glasses: Glasses) {
@@ -54,13 +54,13 @@ export const useGlassesStore = defineStore({
     },
     async deleteGlasses(sku: number) {
       const rootStore = useRootStore()
-      await axios.delete(`/api/glasses/${rootStore.location}/${sku}`)
+      await axios.delete(`/api/glasses/${rootStore.reimsSite}/${sku}`)
       rootStore.deleteOfflineGlasses(sku)
     },
     async editGlasses(newGlasses: Glasses): Promise<Glasses> {
       const rootStore = useRootStore()
       const response = await axios.put(
-        `/api/glasses/${rootStore.location}/${newGlasses.sku}`,
+        `/api/glasses/${rootStore.reimsSite}/${newGlasses.sku}`,
         newGlasses,
       )
       const editedGlasses = response.data
@@ -74,7 +74,7 @@ export const useGlassesStore = defineStore({
     async loadDispensedCsv(startDate: string, endDate: string): Promise<any> {
       const rootStore = useRootStore()
       const params: any = { startDate, endDate }
-      const response = await axios.get(`/api/glasses/dispensed/${rootStore.location}.csv`, {
+      const response = await axios.get(`/api/glasses/dispensed/${rootStore.reimsSite}.csv`, {
         params,
         responseType: 'blob',
       })
@@ -82,7 +82,7 @@ export const useGlassesStore = defineStore({
     },
     async loadInventoryCsv(): Promise<any> {
       const rootStore = useRootStore()
-      const response = await axios.get(`/api/glasses/${rootStore.location}.csv`, {
+      const response = await axios.get(`/api/glasses/${rootStore.reimsSite}.csv`, {
         responseType: 'blob',
       })
       return response.data

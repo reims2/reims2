@@ -25,7 +25,7 @@ export default createVuetify({
     },
   },
   display: {
-    mobileBreakpoint: "sm"
+    mobileBreakpoint: 'sm',
   },
   theme: {
     defaultTheme: 'light',

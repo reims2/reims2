@@ -73,7 +73,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(useRootStore, ['location']),
+    ...mapState(useRootStore, ['reimsSite']),
     lastYears() {
       const year = dayjs().year()
       return Array.from(new Array(30), (_, index) => year - index).filter((year) => year >= 2022)
@@ -91,7 +91,7 @@ export default {
           startDate: selectedYearStart.format('MM/DD/YYYY'),
           endDate: selectedYearStart.add(1, 'year').format('MM/DD/YYYY'),
         })
-        this.filename = `dispense_report_${this.location}_${this.selectedDispenedYear}.csv`
+        this.filename = `dispense_report_${this.reimsSite}_${this.selectedDispenedYear}.csv`
         this.downloadCsv(csvFile)
       } catch (error) {
         this.rootStore.setError(`Could not create dispense report (Error ${error.status})`)
@@ -102,7 +102,7 @@ export default {
       this.loadingInventoryReport = true
       try {
         const csvFile = await this.glassesStore.loadInventoryCsv()
-        this.filename = `inventory_${this.location}.csv`
+        this.filename = `inventory_${this.reimsSite}.csv`
         this.downloadCsv(csvFile)
       } catch (error) {
         this.rootStore.setError(`Could not create inventory report (Error ${error.status})`)
