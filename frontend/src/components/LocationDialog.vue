@@ -16,12 +16,12 @@
 
       <v-card-actions>
         <v-spacer />
-        <v-btn text @click="updateDialogState(false)"> Close </v-btn>
+        <v-btn variant="text" @click="updateDialogState(false)"> Close </v-btn>
         <v-btn
           color="primary"
-          text
+          variant="text"
           :loading="loading"
-          :disabled="newLocation == location"
+          :disabled="newLocation == rootStore.location"
           @click="changeLocation"
         >
           Apply
@@ -31,59 +31,49 @@
   </v-dialog>
 </template>
 
-<script>
+<script setup lang="ts">
 import { useRootStore } from '@/stores/root'
+import { ref } from 'vue'
 
-export default {
-  setup() {
-    const rootStore = useRootStore()
-    return {
-      location: rootStore.location,
-      rootStore,
-    }
+const rootStore = useRootStore()
+defineProps({
+  modelValue: {
+    type: Boolean,
+    required: true,
   },
-  props: {
-    modelValue: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      loading: false,
-      newLocation: '',
-      locations: [
-        { text: 'San Miguel', value: 'sm' },
-        { text: 'Santa Ana', value: 'sa' },
-      ],
-    }
-  },
-  mounted() {
-    this.newLocation = this.location
-  },
-  methods: {
-    async changeLocation() {
-      this.loading = true
-      this.prevLocation = this.location
-      this.location = this.newLocation
+})
+const emit = defineEmits(['update:modelValue'])
 
-      try {
-        await this.rootStore.loadGlasses()
-      } catch (error) {
-        // reset location
-        this.newLocation = this.prevLocation
-        this.location = this.prevLocation
+const loading = ref(false)
+const newLocation = ref<string>('')
+const locations = [
+  { title: 'San Miguel', value: 'sm' },
+  { title: 'Santa Ana', value: 'sa' },
+]
+// initial value
+newLocation.value = rootStore.location
 
-        this.rootStore.setError(`Cannot change location (Error ${error.status})`)
-      }
+async function changeLocation() {
+  loading.value = true
+  const prevLocation = rootStore.location
+  rootStore.location = newLocation.value
 
-      this.loading = false
-      this.updateDialogState(false)
-    },
-    updateDialogState(value) {
-      this.$emit('update:modelValue', value)
-      this.newLocation = this.location
-    },
-  },
+  try {
+    await rootStore.loadGlasses()
+  } catch (error) {
+    // reset location
+    newLocation.value = prevLocation
+    rootStore.location = prevLocation
+
+    rootStore.setError(`Cannot change location (Error ${error.status})`)
+  }
+
+  loading.value = false
+  // close dialog and save
+  updateDialogState(false)
+}
+function updateDialogState(value: boolean) {
+  emit('update:modelValue', value)
+  newLocation.value = rootStore.location
 }
 </script>

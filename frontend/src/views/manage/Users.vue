@@ -7,7 +7,7 @@
             <tr>
               <th class="text-left">Username</th>
               <th class="text-left">Roles</th>
-              <th />
+              <th></th>
             </tr>
           </thead>
           <tbody>

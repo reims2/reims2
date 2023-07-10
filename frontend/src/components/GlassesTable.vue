@@ -7,7 +7,7 @@
     :loading="loading"
     dense
     must-sort
-    sort-by="sku"
+    :sort-by="['sku']"
     :mobile-breakpoint="rootStore.isMobileBreakpoint"
     :footer-props="{
       showFirstLastPage: true,
@@ -35,22 +35,22 @@
             :items="['single', 'multifocal']"
             style="min-width: 60px"
             class="fit pb-1"
-            @change="(value) => updateFilter(value, null, 'glassesType')"
+            @change="(value: string) => (glassesTypeFilter = value)"
           />
         </td>
         <td>
-          <min-max-input @update="(value) => updateFilter(value, 'od', 'sphere')" />
+          <min-max-input @update="(value) => updateEyeFilter(value, 'od', 'sphere')" />
         </td>
         <td>
-          <min-max-input @update="(value) => updateFilter(value, 'od', 'cylinder')" />
+          <min-max-input @update="(value) => updateEyeFilter(value, 'od', 'cylinder')" />
         </td>
         <td />
         <td class="v-data-table__divider" />
         <td>
-          <min-max-input @update="(value) => updateFilter(value, 'os', 'sphere')" />
+          <min-max-input @update="(value) => updateEyeFilter(value, 'os', 'sphere')" />
         </td>
         <td>
-          <min-max-input @update="(value) => updateFilter(value, 'os', 'cylinder')" />
+          <min-max-input @update="(value) => updateEyeFilter(value, 'os', 'cylinder')" />
         </td>
         <td />
         <td class="v-data-table__divider" />
@@ -83,146 +83,130 @@
   </v-data-table>
 </template>
 
-<script>
+<script setup lang="ts">
 import { mdiPencil } from '@mdi/js'
 import { useTableStore } from '@/stores/table'
 import { useRootStore } from '@/stores/root'
 import GlassCard from '@/components/GlassCard.vue'
 import MinMaxInput from '@/components/MinMaxInput.vue'
+import { computed, ref, watch, onActivated } from 'vue'
 import dayjs from 'dayjs'
 
-export default {
-  components: { GlassCard, MinMaxInput },
-  setup() {
-    const tableStore = useTableStore()
-    const rootStore = useRootStore()
-    return {
-      totalItems: tableStore.totalGlassesCount,
-      location: rootStore.location,
-      loadItems: tableStore.loadItems,
-      rootStore,
-    }
+const tableStore = useTableStore()
+const rootStore = useRootStore()
+const totalItems = computed(() => tableStore.totalGlassesCount)
+const location = computed(() => rootStore.location)
+const eyeFilters = {
+  od: {
+    sphere: {},
+    cylinder: {},
   },
-  data: () => ({
-    filters: {
-      glassesType: [],
-      od: {
-        sphere: {},
-        cylinder: {},
-      },
-      os: {
-        sphere: {},
-        cylinder: {},
-      },
-    },
-    options: { itemsPerPage: 20 },
-    loading: false,
-    items: [],
-    mdiPencil,
-  }),
-  computed: {
-    headers() {
-      return [
-        { value: 'sku', text: 'SKU' },
-        { value: 'glassesType', text: 'Type', divider: true },
-        { value: 'od.sphere', text: 'OD SPH' },
-        { value: 'od.cylinder', text: 'OD CYL' },
-        { value: 'od.axis', text: 'OD Axis' },
-        { value: 'od.add', text: 'OD Add', divider: true },
-        { value: 'os.sphere', text: 'OS SPH' },
-        { value: 'os.cylinder', text: 'OS CYL' },
-        { value: 'os.axis', text: 'OS Axis' },
-        { value: 'os.add', text: 'OS Add', divider: true },
-        { value: 'appearance', text: 'Appearance' },
-        { value: 'glassesSize', text: 'Size' },
-        { value: 'creationDate', text: 'Added' },
-        { value: 'actions', text: '', sortable: false },
-      ]
-    },
-    filterString() {
-      let filterString = ''
-      for (const valueName of ['glassesType']) {
-        const filter = this.createSingleFilter(this.filters[valueName], valueName)
-        if (filter) filterString += filter + ';'
-      }
-      for (const eyeName of ['od', 'os']) {
-        for (const valName of ['sphere', 'cylinder']) {
-          const filter = this.createSingleFilter(
-            this.filters[eyeName][valName],
-            `${eyeName}.${valName}`,
-          )
-          if (filter) filterString += filter + ';'
-        }
-      }
-      return filterString.slice(0, -1)
-    },
+  os: {
+    sphere: {},
+    cylinder: {},
   },
-  watch: {
-    location() {
-      this.startLoading()
-    },
-    filters: {
-      handler() {
-        this.startLoading()
-      },
-      deep: true,
-    },
-  },
-  activated: function () {
-    this.startLoading()
-  },
-  methods: {
-    formatDate(date) {
-      return dayjs(date).format('DD.MM.YYYY')
-    },
-    createSingleFilter(value, filterName) {
-      if (value == null) return null
+}
+const glassesTypeFilter = ref('')
+const options = ref({ itemsPerPage: 20 })
+const loading = ref(false)
+const items = ref([])
 
-      if (Array.isArray(value)) {
-        let filterString = ''
-        for (const el of value) {
-          filterString += `${filterName}==${el},`
-        }
-        return filterString.slice(0, -1)
-      } else {
-        const min = !isNaN(value.min) ? `${filterName}>=${value.min}` : null
-        const max = !isNaN(value.max) ? `${filterName}<=${value.max}` : null
-        if (min != null && max != null) {
-          // swap min max automatically if entered wrongly
-          if (max < min) return max + ';' + min
-          else return min + ';' + max
-        } else if (min != null) return min
-        else if (max != null) return max
-        else return null
-      }
-    },
-    updateFilter(value, eye, child) {
-      if (eye) this.filters[eye][child] = value
-      else this.filters[child] = value
-    },
-    formatRx(value) {
-      return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)
-    },
-    async startLoading() {
-      setTimeout(() => {
-        if (this.rootStore.isMobile) this.$nuxt.$loading.start()
-      }) // TODO
-      this.loading = true
-      try {
-        this.items = await this.loadItems({
-          options: this.options,
-          filterString: this.filterString,
-        })
-      } catch (error) {
-        if (error.status === 404) {
-          this.items = []
-        } else {
-          this.rootStore.setError(`Could not load data, please retry (Error ${error.status})`)
-        }
-      }
-      this.loading = false
-    },
-  },
+type EyeKey = 'od' | 'os'
+type EyeValueKey = 'sphere' | 'cylinder'
+
+const headers = computed(() => {
+  return [
+    { value: 'sku', text: 'SKU' },
+    { value: 'glassesType', text: 'Type', divider: true },
+    { value: 'od.sphere', text: 'OD SPH' },
+    { value: 'od.cylinder', text: 'OD CYL' },
+    { value: 'od.axis', text: 'OD Axis' },
+    { value: 'od.add', text: 'OD Add', divider: true },
+    { value: 'os.sphere', text: 'OS SPH' },
+    { value: 'os.cylinder', text: 'OS CYL' },
+    { value: 'os.axis', text: 'OS Axis' },
+    { value: 'os.add', text: 'OS Add', divider: true },
+    { value: 'appearance', text: 'Appearance' },
+    { value: 'glassesSize', text: 'Size' },
+    { value: 'creationDate', text: 'Added' },
+    { value: 'actions', text: '', sortable: false },
+  ]
+})
+const filterString = computed(() => {
+  let filterString = ''
+  const filter = createSingleFilter(glassesTypeFilter, 'glassesType')
+  if (filter) filterString += filter + ';'
+  const eyeKeys: EyeKey[] = ['od', 'os']
+  const eyeValueKeys: EyeValueKey[] = ['sphere', 'cylinder']
+  for (const eyeName of eyeKeys) {
+    for (const valName of eyeValueKeys) {
+      const filter = createSingleFilter(eyeFilters[eyeName][valName], `${eyeName}.${valName}`)
+      if (filter) filterString += filter + ';'
+    }
+  }
+  return filterString.slice(0, -1)
+})
+watch(location, () => {
+  startLoading()
+})
+watch(eyeFilters, () => {
+  startLoading() // FIXME deep watch
+})
+onActivated(() => {
+  startLoading()
+})
+
+function formatDate(date: string) {
+  return dayjs(date).format('DD.MM.YYYY')
+}
+
+function createSingleFilter(value: any, filterName: string) {
+  if (value == null) return null
+
+  if (Array.isArray(value)) {
+    let filterString = ''
+    for (const el of value) {
+      filterString += `${filterName}==${el},`
+    }
+    return filterString.slice(0, -1)
+  } else {
+    const min = !isNaN(value.min) ? `${filterName}>=${value.min}` : null
+    const max = !isNaN(value.max) ? `${filterName}<=${value.max}` : null
+    if (min != null && max != null) {
+      // swap min max automatically if entered wrongly
+      if (max < min) return max + ';' + min
+      else return min + ';' + max
+    } else if (min != null) return min
+    else if (max != null) return max
+    else return null
+  }
+}
+
+function updateEyeFilter(value: any, eye: EyeKey, child: EyeValueKey) {
+  eyeFilters[eye][child] = value
+}
+
+function formatRx(value: number) {
+  return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)
+}
+
+async function startLoading() {
+  setTimeout(() => {
+    if (rootStore.isMobile) {
+      // loading bar
+    }
+  })
+  loading.value = true
+  try {
+    items.value = await tableStore.loadItems(options.value, filterString.value)
+  } catch (error) {
+    if (error.status === 404) {
+      items.value = []
+    } else {
+      rootStore.setError(`Could not load data, please retry (Error ${error.status})`)
+    }
+  }
+  loading.value = false
 }
 </script>
 
