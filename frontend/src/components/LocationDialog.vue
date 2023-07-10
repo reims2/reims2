@@ -21,7 +21,7 @@
           color="primary"
           variant="text"
           :loading="loading"
-          :disabled="newLocation == rootStore.location"
+          :disabled="newLocation == rootStore.reimsSite"
           @click="changeLocation"
         >
           Apply
@@ -51,19 +51,19 @@ const locations = [
   { title: 'Santa Ana', value: 'sa' },
 ]
 // initial value
-newLocation.value = rootStore.location
+newLocation.value = rootStore.reimsSite
 
 async function changeLocation() {
   loading.value = true
-  const prevLocation = rootStore.location
-  rootStore.location = newLocation.value
+  const prevLocation = rootStore.reimsSite
+  rootStore.reimsSite = newLocation.value
 
   try {
     await rootStore.loadGlasses()
   } catch (error) {
     // reset location
     newLocation.value = prevLocation
-    rootStore.location = prevLocation
+    rootStore.reimsSite = prevLocation
 
     rootStore.setError(`Cannot change location (Error ${error.status})`)
   }
@@ -74,6 +74,6 @@ async function changeLocation() {
 }
 function updateDialogState(value: boolean) {
   emit('update:modelValue', value)
-  newLocation.value = rootStore.location
+  newLocation.value = rootStore.reimsSite
 }
 </script>

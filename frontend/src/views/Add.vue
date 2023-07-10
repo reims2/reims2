@@ -34,7 +34,7 @@
             </v-col>
             <v-col cols="12" class="px-0 pt-0">
               <div class="pb-3 text-body-2 text--secondary">
-                You are in {{ locationNames[location] }} ({{ freeSlots }} SKUs left)
+                You are in {{ locationNames[reimsSite] }} ({{ freeSlots }} SKUs left)
               </div>
               <div class="d-flex">
                 <v-btn
@@ -142,7 +142,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(useRootStore, ['drawer', 'location']),
+    ...mapState(useRootStore, ['drawer', 'reimsSite']),
     lastAdded() {
       return this.lastAddedSkus.map((sku) => this.allGlasses.find((g) => g.sku === sku))
     },

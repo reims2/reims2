@@ -7,7 +7,7 @@
           class="no-decoration no-color"
           to="/"
         >
-          REIMS {{ locationNames[location] }}
+          REIMS {{ locationNames[reimsSite] }}
         </router-link>
       </div>
       <div v-if="true && !miniDrawer" class="text--secondary ml-3 mb-1">
@@ -144,7 +144,7 @@ export default {
     commitUrl: function () {
       return 'https://github.com/reims2/reims2-frontend/commit/' + this.rootStore.version
     },
-    ...mapState(useRootStore, ['drawer', 'location']),
+    ...mapState(useRootStore, ['drawer', 'reimsSite']),
   },
 }
 </script>

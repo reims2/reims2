@@ -6,36 +6,35 @@
       step="0.25"
       label="From"
       hide-details
-      dense
+      density="compact"
       style="max-width: 50px"
       class="mr-1"
+      variant="underlined"
       single-line
-      @change="update"
+      @change="change"
     />
     <v-text-field
       v-model="max"
       type="number"
       step="0.25"
       hide-details
-      dense
+      density="compact"
       style="max-width: 50px"
       label="To"
+      variant="underlined"
       single-line
-      @change="update"
+      @change="change"
     />
   </div>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    min: '',
-    max: '',
-  }),
-  methods: {
-    update() {
-      this.$emit('update', { min: parseFloat(this.min), max: parseFloat(this.max) })
-    },
-  },
+<script setup lang="ts">
+import { ref } from 'vue'
+const min = ref('')
+const max = ref('')
+const emit = defineEmits(['change'])
+
+function change() {
+  emit('change', { min: parseFloat(min.value), max: parseFloat(max.value) })
 }
 </script>
