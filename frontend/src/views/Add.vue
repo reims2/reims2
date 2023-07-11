@@ -46,7 +46,8 @@
                   :loading="loading"
                   @click="submit"
                 >
-                  <span class="text-decoration-underline">A</span>dd glasses
+                  <span class="text-decoration-underline">A</span>
+                  dd glasses
                 </v-btn>
                 <v-btn v-prevent-enter-tab class="mr-4" plain tabindex="-1" @click="reset">
                   Clear form

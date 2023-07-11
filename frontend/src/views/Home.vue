@@ -15,14 +15,16 @@
               target="”_blank”"
               rel="noopener"
               class="white--text"
-              >Partners for Visual Health</a
-            >.
+            >
+              Partners for Visual Health
+            </a>
+            .
           </p>
         </v-col>
         <v-col cols="12">
           <v-row class="justify-center align-center">
             <v-col class="d-flex justify-center" cols="12" md="auto">
-              <v-btn to="/find" x-large color="primary"> Open REIMS2 </v-btn>
+              <v-btn to="/find" x-large color="primary">Open REIMS2</v-btn>
             </v-col>
             <v-col class="d-flex justify-center" cols="12" md="auto">
               <v-btn href="/docs/" target="_blank" x-large outlined>

@@ -11,7 +11,8 @@
         </router-link>
       </div>
       <div v-if="true && !miniDrawer" class="text--secondary ml-3 mb-1">
-        Logged in as <span class="font-weight-bold"> TODO username </span>
+        Logged in as
+        <span class="font-weight-bold">TODO username</span>
       </div>
     </template>
     <location-dialog v-model="dialog" />

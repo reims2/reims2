@@ -24,12 +24,12 @@
               <div class="d-flex flex-shrink-1 justify-start">
                 <glass-card :key="selected.key" :glass="selected" editable>
                   <template #actions>
-                    <v-btn variant="text" class="mx-0" @click="submitDispension"> Dispense </v-btn>
+                    <v-btn variant="text" class="mx-0" @click="submitDispension">Dispense</v-btn>
                     <div class="d-flex flex-grow-1 justify-end">
                       <v-menu offset-y left>
                         <template #activator="{ props }">
                           <v-btn icon v-bind="props">
-                            <v-icon> {{ mdiDotsVertical }} </v-icon>
+                            <v-icon>{{ mdiDotsVertical }}</v-icon>
                           </v-btn>
                         </template>
                         <v-list dense>
@@ -55,9 +55,7 @@
         <v-btn v-if="lastDispensed != null" variant="text" @click="undoDispension(lastDispensed)">
           Undo
         </v-btn>
-        <v-btn variant="text" color="primary lighten-3" @click="snackbarMessage = ''">
-          Close
-        </v-btn>
+        <v-btn variant="text" color="primary lighten-3" @click="snackbarMessage = ''">Close</v-btn>
       </template>
       <span>{{ snackbarMessage }}</span>
     </v-snackbar>

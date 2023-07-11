@@ -2,5 +2,6 @@
   "semi": false,
   "singleQuote": true,
   "jsxSingleQuote": true,
-  "bracketSameLine": false
+  "bracketSameLine": false,
+  "htmlWhitespaceSensitivity": "ignore"
 }
