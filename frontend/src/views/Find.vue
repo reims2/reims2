@@ -56,7 +56,8 @@
                   type="submit"
                   @click="submitAndUpdate"
                 >
-                  <span class="text-decoration-underline">S</span>earch glasses
+                  <span class="text-decoration-underline">S</span>
+                  earch glasses
                 </v-btn>
                 <v-btn v-prevent-enter-tab class="mr-4" plain tabindex="-1" @click="reset">
                   Clear form

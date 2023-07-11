@@ -24,7 +24,7 @@
                 :rules="[(v) => !!v || 'Item is required']"
                 required
               />
-              <v-btn :disabled="!valid" color="primary" type="submit"> Login </v-btn>
+              <v-btn :disabled="!valid" color="primary" type="submit">Login</v-btn>
             </v-col>
           </v-row>
         </v-form>

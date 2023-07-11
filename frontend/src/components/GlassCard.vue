@@ -20,7 +20,8 @@
               Result (Philscore) - lower values are better
             </v-tooltip>
           </div>
-          <span class="mr-1">SKU</span> {{ glass.sku.toString().padStart(4, '0') }}
+          <span class="mr-1">SKU</span>
+          {{ glass.sku.toString().padStart(4, '0') }}
         </v-card-title>
         <v-card-subtitle class="text--primary pb-2 d-flex align-center">
           <span v-for="item in generalEyeData" :key="item.id" class="pr-2">
@@ -108,10 +109,11 @@
         </v-card-actions>
       </v-card>
     </template>
-    <span
-      >Do you want to edit glasses? Simply <span class="font-weight-bold">click</span> on any
-      value</span
-    >
+    <span>
+      Do you want to edit glasses? Simply
+      <span class="font-weight-bold">click</span>
+      on any value
+    </span>
   </v-tooltip>
 </template>
 

@@ -13,7 +13,7 @@
     @keyup.enter="submit"
     @blur="$emit('blur')"
   />
-  <span v-else> {{ modelValue }} {{ suffix }} </span>
+  <span v-else>{{ modelValue }} {{ suffix }}</span>
 </template>
 
 <script setup lang="ts">

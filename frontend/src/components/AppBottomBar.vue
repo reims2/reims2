@@ -8,7 +8,9 @@
 </template>
 
 <script setup lang="ts">
+import { DrawerItem } from '@/model/ReimsModel'
+
 defineProps<{
-  items: any[]
+  items: DrawerItem[]
 }>()
 </script>

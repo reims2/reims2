@@ -8,7 +8,7 @@
       <h1 v-else>
         {{ otherError }}
       </h1>
-      <router-link to="/"> Home page </router-link>
+      <router-link to="/">Home page</router-link>
     </v-container>
   </v-app>
 </template>

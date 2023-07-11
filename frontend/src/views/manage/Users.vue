@@ -33,14 +33,14 @@
             </tr>
           </tbody>
         </v-simple-table>
-        <v-alert v-else type="warning" outlined dense> No users loaded. </v-alert>
+        <v-alert v-else type="warning" outlined dense>No users loaded.</v-alert>
 
         <v-alert v-if="editInfo" type="info" outlined dense class="mt-4" dismissible>
           If you want to edit an existing user, you have to delete and re-add them.
         </v-alert>
         <v-dialog v-model="dialog" max-width="500px" persistent>
           <template #activator="{ props }">
-            <v-btn color="primary" dark v-bind="props" class="mt-3"> Add new user </v-btn>
+            <v-btn color="primary" dark v-bind="props" class="mt-3">Add new user</v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -89,7 +89,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer />
-              <v-btn text @click="dialog = false"> Cancel </v-btn>
+              <v-btn text @click="dialog = false">Cancel</v-btn>
               <v-btn
                 color="primary"
                 text

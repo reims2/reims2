@@ -62,19 +62,15 @@
         <glass-card :glass="item" />
       </div>
     </template>
-    <template #item.od.sphere="{ item }"> {{ formatRx(item.columns['od.sphere']) }} D </template>
-    <template #item.od.cylinder="{ item }">
-      {{ formatRx(item.columns['od.cylinder']) }} D
-    </template>
-    <template #item.od.axis="{ item }"> {{ formatAxis(item.columns['od.axis']) }} </template>
-    <template #item.od.add="{ item }"> {{ formatRx(item.columns['od.add']) }} D </template>
-    <template #item.os.sphere="{ item }"> {{ formatRx(item.columns['os.sphere']) }} D </template>
-    <template #item.os.cylinder="{ item }">
-      {{ formatRx(item.columns['os.cylinder']) }} D
-    </template>
-    <template #item.os.axis="{ item }"> {{ formatAxis(item.columns['os.axis']) }} </template>
-    <template #item.os.add="{ item }"> {{ formatRx(item.columns['os.add']) }} D </template>
-    <template #item.creationDate="{ item }"> {{ formatDate(item.columns.creationDate) }} </template>
+    <template #item.od.sphere="{ item }">{{ formatRx(item.columns['od.sphere']) }} D</template>
+    <template #item.od.cylinder="{ item }">{{ formatRx(item.columns['od.cylinder']) }} D</template>
+    <template #item.od.axis="{ item }">{{ formatAxis(item.columns['od.axis']) }}</template>
+    <template #item.od.add="{ item }">{{ formatRx(item.columns['od.add']) }} D</template>
+    <template #item.os.sphere="{ item }">{{ formatRx(item.columns['os.sphere']) }} D</template>
+    <template #item.os.cylinder="{ item }">{{ formatRx(item.columns['os.cylinder']) }} D</template>
+    <template #item.os.axis="{ item }">{{ formatAxis(item.columns['os.axis']) }}</template>
+    <template #item.os.add="{ item }">{{ formatRx(item.columns['os.add']) }} D</template>
+    <template #item.creationDate="{ item }">{{ formatDate(item.columns.creationDate) }}</template>
     <template #item.actions="{ item }">
       <v-btn :to="{ path: '/edit', query: { sku: item.columns.sku } }" icon size="x-small">
         <v-icon>{{ mdiPencil }}</v-icon>

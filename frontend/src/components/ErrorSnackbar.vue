@@ -2,7 +2,7 @@
   <v-snackbar :value="snackbarOpen" :timeout="-1" color="error" right multi-line absolute>
     {{ error }}
     <template #action="{ attrs }">
-      <v-btn text v-bind="attrs" @click="close()"> Close </v-btn>
+      <v-btn text v-bind="attrs" @click="close()">Close</v-btn>
     </template>
   </v-snackbar>
 </template>
