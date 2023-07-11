@@ -91,8 +91,8 @@ import {
   generalEyeData,
   sanitizeEyeValues,
   clearObjectProperties,
-  locationNames,
-} from '../lib/util'
+  reimsSiteNames as locationNames,
+} from '@/lib/util'
 import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'

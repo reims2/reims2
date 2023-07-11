@@ -1,5 +1,5 @@
 import { mdiArrowLeftRight, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
-import { Glasses, Eye, EyeSearch } from '@/model/GlassesModel'
+import { Glasses, Eye, EyeSearch, EyeSearchInput } from '@/model/GlassesModel'
 
 const isAllowedStep = (number: number) => {
   if (number == null || !number) return true // we don't handle that
@@ -10,7 +10,7 @@ const isAllowedStep = (number: number) => {
   return false
 }
 
-export const locationNames = {
+export const reimsSiteNames = {
   sa: 'Santa Ana',
   sm: 'San Miguel',
 }
@@ -158,7 +158,7 @@ export function propsAsNumber(obj: any): Record<string, number> {
 }
 
 /** Eye is fixed by applying step rounding and the correct sign for cylinder */
-export function sanitizeEyeValues(singleEye: Eye | EyeSearch): Eye | EyeSearch {
+export function sanitizeEyeValues(singleEye: Eye | EyeSearch | EyeSearchInput): Eye | EyeSearch {
   const rx = propsAsNumber(singleEye)
   // easier for calculation
   if (rx.axis === 180) rx.axis = 0
@@ -183,4 +183,9 @@ export function clearObjectProperties(obj: any) {
   for (const key of Object.keys(obj)) {
     obj[key] = ''
   }
+}
+
+export enum EyeEnum {
+  OD = 'od',
+  OS = 'os',
 }

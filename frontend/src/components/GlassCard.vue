@@ -117,7 +117,7 @@
 
 <script>
 import chroma from 'chroma-js'
-import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '../lib/util'
+import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '@/lib/util'
 import EditableSpan from './EditableSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'

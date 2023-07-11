@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import { ReimsSite } from '@/model/ReimsModel'
 import { useRootStore } from '@/stores/root'
 import { ref } from 'vue'
 
@@ -45,7 +46,7 @@ defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const loading = ref(false)
-const newLocation = ref<string>('')
+const newLocation = ref<ReimsSite | null>(null)
 const locations = [
   { title: 'San Miguel', value: 'sm' },
   { title: 'Santa Ana', value: 'sa' },
@@ -54,6 +55,7 @@ const locations = [
 newLocation.value = rootStore.reimsSite
 
 async function changeLocation() {
+  if (!newLocation.value) return
   loading.value = true
   const prevLocation = rootStore.reimsSite
   rootStore.reimsSite = newLocation.value

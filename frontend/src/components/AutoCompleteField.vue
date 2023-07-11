@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { generalEyeData } from '../lib/util'
+import { generalEyeData } from '@/lib/util'
 
 import { useRootStore } from '@/stores/root'
 export default {

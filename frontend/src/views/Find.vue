@@ -17,9 +17,10 @@
                 v-bind="odEye"
                 eye-name="OD"
                 :add-enabled="glassesType === 'multifocal'"
+                bal-enabled
                 @update:modelValue="
                   (e) => {
-                    odEye[e.id] = e.value
+                    updateKey(e.id, e.value, EyeEnum.OD)
                   }
                 "
               />
@@ -29,10 +30,10 @@
                 v-bind="osEye"
                 eye-name="OS"
                 :add-enabled="glassesType === 'multifocal'"
+                bal-enabled
                 @update:modelValue="
                   (e) => {
-                    osEye[e.id] = e.value
-                    syncEye = false
+                    updateKey(e.id, e.value, EyeEnum.OS)
                   }
                 "
               />
@@ -78,7 +79,7 @@
               <template #actions>
                 <v-btn
                   :to="{ path: '/edit', query: { sku: item.sku } }"
-                  text
+                  variant="text"
                   class="mx-0"
                   color="primary"
                 >
@@ -106,166 +107,185 @@
   </v-container>
 </template>
 
-<script>
-import { matchesAsCsvUri, generalEyeData } from '../lib/util'
-import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
+<script setup lang="ts">
+import { ref, watch, computed, nextTick } from 'vue'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
-import GlassCard from '@/components/GlassCard'
-import SingleEyeInput from '@/components/SingleEyeInput'
-import AutoCompleteField from '@/components/AutoCompleteField'
 
-export default {
-  mixins: [ModifiedEnterToTabMixin],
-  components: {
-    GlassCard,
-    SingleEyeInput,
-    AutoCompleteField,
+import GlassCard from '@/components/GlassCard.vue'
+import SingleEyeInput from '@/components/SingleEyeInput.vue'
+import AutoCompleteField from '@/components/AutoCompleteField.vue'
+
+import { Glasses, GlassesSearch, EyeSearchKey, EyeSearchInput } from '@/model/GlassesModel'
+import { matchesAsCsvUri, generalEyeData, EyeEnum } from '@/lib/util'
+
+// TODO mixins: [ModifiedEnterToTabMixin],
+const glassesStore = useGlassesStore()
+const rootStore = useRootStore()
+const allGlasses = computed(() => rootStore.allGlasses)
+
+const firstInput = ref<HTMLFormElement | null>(null)
+const form = ref<HTMLFormElement | null>(null)
+const results = ref<HTMLElement | null>(null)
+
+const matches = ref<null | Glasses[]>(null)
+const valid = ref(false)
+const page = ref(1)
+const glassesType = ref('')
+const odEye = ref<EyeSearchInput>({
+  axis: '',
+  cylinder: '',
+  sphere: '',
+  add: '',
+  isBAL: false,
+})
+const osEye = ref<EyeSearchInput>({
+  axis: '',
+  cylinder: '',
+  sphere: '',
+  add: '',
+  isBAL: false,
+})
+const highTolerance = ref(false)
+const syncEye = ref(true)
+
+const itemsPerPage = 3
+
+const glassesTypeData = generalEyeData.find((obj) => {
+  return obj.id === 'glassesType'
+})
+if (glassesTypeData === undefined) throw new Error('glassesTypeData is undefined')
+
+const _matchesAsCSVUri = computed(() => {
+  if (!matches.value) return ''
+  return matchesAsCsvUri(matches.value.slice(0, 30))
+})
+const searchButtonDisabled = computed(() => {
+  return !valid.value && rootStore.hasGlassesLoaded
+})
+const paginatedMatches = computed(() => {
+  if (matches.value == null) return null
+  return matches.value.slice(
+    itemsPerPage * (page.value - 1),
+    itemsPerPage * (page.value - 1) + itemsPerPage,
+  )
+})
+watch(
+  () => odEye.value.add,
+  (newValue) => {
+    if (syncEye.value) osEye.value.add = newValue
   },
-  setup() {
-    const glassesStore = useGlassesStore()
-    const rootStore = useRootStore()
-
-    return {
-      allGlasses: rootStore.allGlasses,
-      philScore: glassesStore.philScore,
-      hasGlassesLoaded: glassesStore.hasGlassesLoaded,
-      rootStore,
+)
+watch(
+  () => odEye.value.sphere,
+  (newValue) => {
+    if (osEye.value.isBAL) osEye.value.sphere = newValue
+  },
+)
+watch(
+  () => osEye.value.sphere,
+  (newValue) => {
+    if (odEye.value.isBAL) odEye.value.sphere = newValue
+  },
+)
+watch(
+  () => odEye.value.isBAL,
+  (newValue) => {
+    if (newValue) {
+      syncEye.value = false
+      osEye.value.isBAL = false
+      odEye.value.sphere = osEye.value.sphere
+      odEye.value.cylinder = ''
+      odEye.value.axis = ''
+      odEye.value.add = ''
     }
   },
-
-  transition: 'main',
-  data: () => ({
-    matches: null,
-    valid: false,
-    page: 1,
-    glassesType: '',
-    odEye: { axis: '', cylinder: '', sphere: '', add: '', isBAL: false },
-    osEye: { axis: '', cylinder: '', sphere: '', add: '', isBAL: false },
-    highTolerance: false,
-    syncEye: true,
-    itemsPerPage: 3,
-    glassesTypeData: generalEyeData.find((obj) => {
-      return obj.id === 'glassesType'
-    }),
-  }),
-  title: 'Find glasses',
-  head() {
-    return {
-      title: 'Find matches',
+)
+watch(
+  () => osEye.value.isBAL,
+  (newValue) => {
+    if (newValue) {
+      syncEye.value = false
+      odEye.value.isBAL = false
+      osEye.value.sphere = odEye.value.sphere
+      osEye.value.cylinder = ''
+      osEye.value.axis = ''
+      osEye.value.add = ''
     }
   },
-  computed: {
-    _matchesAsCSVUri() {
-      if (!this.matches) return ''
-      return matchesAsCsvUri(this.matches.slice(0, 30))
-    },
-    searchButtonDisabled() {
-      return !this.valid && this.hasGlassesLoaded
-    },
-    paginatedMatches() {
-      if (this.matches == null) return null
-      return this.matches.slice(
-        this.itemsPerPage * (this.page - 1),
-        this.itemsPerPage * (this.page - 1) + this.itemsPerPage,
-      )
-    },
+)
+watch(
+  odEye,
+  () => {
+    matches.value = null
   },
-  watch: {
-    'odEye.add'(newVal) {
-      if (this.syncEye) {
-        // setting manually to trigger reactive system in SingleEyeInput
-        this.$set(this.osEye, 'add', newVal)
-      }
-    },
-    'odEye.sphere'(newVal) {
-      if (this.osEye.isBAL) {
-        this.$set(this.osEye, 'sphere', newVal)
-      }
-    },
-    'osEye.sphere'(newVal) {
-      if (this.odEye.isBAL) {
-        this.$set(this.odEye, 'sphere', newVal)
-      }
-    },
-    'odEye.isBAL'(newVal) {
-      if (newVal) {
-        this.syncEye = false
-        this.$set(this.osEye, 'isBAL', false) // one eye has to be enabled
-        this.$set(this.odEye, 'sphere', this.osEye.sphere)
-        this.$set(this.odEye, 'cylinder', '')
-        this.$set(this.odEye, 'axis', '')
-        this.$set(this.odEye, 'add', '')
-      }
-    },
-    'osEye.isBAL'(newVal) {
-      if (newVal) {
-        this.syncEye = false
-        this.$set(this.odEye, 'isBAL', false) // one eye has to be enabled
-        this.$set(this.osEye, 'sphere', this.odEye.sphere)
-        this.$set(this.osEye, 'cylinder', '')
-        this.$set(this.osEye, 'axis', '')
-        this.$set(this.osEye, 'add', '')
-      }
-    },
-    odEye: {
-      handler() {
-        // clear matches to avoid confusion
-        this.matches = null
-      },
-      deep: true,
-    },
-    osEye: {
-      handler() {
-        this.matches = null
-      },
-      deep: true,
-    },
-    glassesType() {
-      this.matches = null
-    },
-    highTolerance() {
-      this.matches = null
-    },
-    allGlasses() {
-      if (this.valid) this.loadMatches()
-    },
+  { deep: true },
+)
+watch(
+  osEye,
+  () => {
+    matches.value = null
   },
-  methods: {
-    async submitAndUpdate() {
-      if (!this.valid) return
-      await this.loadMatches()
-      this.page = 1
-      // this.syncEye = true // fixme good hgere?
+  { deep: true },
+)
+watch(glassesType, () => {
+  matches.value = null
+})
+watch(highTolerance, () => {
+  matches.value = null
+})
+watch(allGlasses, () => {
+  if (valid.value) loadMatches()
+})
 
-      this.$nextTick(() => {
-        // on desktop, focus input again; on mobile, scroll to bottom
-        if (!this.rootStore.isMobile) this.$refs.firstInput.focus()
-        else if (this.$refs.results) this.$refs.results.scrollIntoView(true)
-      })
-    },
-    async loadMatches() {
-      const eyeModel = {}
-      eyeModel.glassesType = this.glassesType
-      eyeModel.os = { ...this.osEye }
-      eyeModel.od = { ...this.odEye }
-      eyeModel.highTolerance = this.highTolerance
+async function submitAndUpdate() {
+  if (!valid.value) return
+  await loadMatches()
+  page.value = 1
+  // syncEye.value = true // fixme good hgere?
 
-      this.matches = await this.philScore(eyeModel)
-    },
-    reset() {
-      this.$refs.form.reset()
-      this.matches = null
-      setTimeout(() => {
-        this.$refs.firstInput.focus()
-      })
-      this.syncEye = true
-    },
-    calcPageCount() {
-      if (!this.matches) return 0
-      const pages = Math.ceil(this.matches.length / this.itemsPerPage)
-      return pages > 10 ? 10 : pages
-    },
-  },
+  nextTick(() => {
+    // on desktop, focus input again; on mobile, scroll to bottom
+    if (!rootStore.isMobile) firstInput.value?.focus()
+    else results.value?.scrollIntoView(true)
+  })
+}
+function updateKey(key: EyeSearchKey, value: string | boolean, eye: EyeEnum) {
+  if (eye === EyeEnum.OD) {
+    if (key === 'isBAL') {
+      odEye.value.isBAL = value as boolean
+    } else {
+      odEye.value[key] = value as string
+    }
+  } else if (eye === EyeEnum.OS) {
+    if (key === 'isBAL') {
+      osEye.value.isBAL = value as boolean
+    } else {
+      osEye.value[key] = value as string
+    }
+  }
+}
+async function loadMatches() {
+  const eyeModel: GlassesSearch = {
+    glassesType: glassesType.value,
+    os: { ...osEye.value },
+    od: { ...odEye.value },
+    highTolerance: highTolerance.value,
+  }
+
+  matches.value = glassesStore.philScore(eyeModel)
+}
+function reset() {
+  form.value?.reset()
+  matches.value = null
+  nextTick(() => {
+    firstInput.value?.focus()
+  })
+  syncEye.value = true
+}
+function calcPageCount() {
+  if (!matches.value) return 0
+  const pages = Math.ceil(matches.value.length / itemsPerPage)
+  return pages > 10 ? 10 : pages
 }
 </script>
