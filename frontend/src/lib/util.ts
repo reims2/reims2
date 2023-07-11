@@ -186,6 +186,8 @@ export function clearObjectProperties(obj: any) {
 }
 
 export enum EyeEnum {
+  // eslint-disable-next-line no-unused-vars
   OD = 'od',
+  // eslint-disable-next-line no-unused-vars
   OS = 'os',
 }
