@@ -7,7 +7,7 @@
           class="no-decoration no-color"
           to="/"
         >
-          REIMS {{ locationNames[reimsSite] }}
+          REIMS {{ reimsSiteNames[reimsSite] }}
         </router-link>
       </div>
       <div v-if="true && !miniDrawer" class="text--secondary ml-3 mb-1">
@@ -90,63 +90,38 @@
   </v-navigation-drawer>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, computed } from 'vue'
 import { useRootStore } from '@/stores/root'
-import { mapState } from 'pinia'
 
 import { mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
-import { locationNames } from '../lib/util'
-import LocationDialog from './LocationDialog.vue'
+import { reimsSiteNames } from '@/lib/util'
+import { DrawerItem } from '@/model/ReimsModel'
+import LocationDialog from '@/components/LocationDialog.vue'
 
-export default {
-  setup() {
-    const rootStore = useRootStore()
-    return { rootStore }
+defineProps<{
+  mainItems: DrawerItem[]
+  otherItems: DrawerItem[]
+}>()
+
+const rootStore = useRootStore()
+const reimsSite = computed(() => rootStore.reimsSite)
+
+const dialog = ref(false)
+const drawerModel = computed({
+  get() {
+    return !rootStore.isMobile || rootStore.drawer
   },
-  components: {
-    LocationDialog,
+  set(val: boolean) {
+    rootStore.drawer = val
   },
-  props: {
-    mainItems: {
-      type: Array,
-      required: true,
-    },
-    otherItems: {
-      type: Array,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      mdiLogout,
-      mdiBug,
-      locationNames,
-      mdiMapMarkerMultiple,
-      mdiFileDocument,
-      dialog: false,
-    }
-  },
-  computed: {
-    drawerModel: {
-      get() {
-        return !this.rootStore.isMobile || this.drawer
-      },
-      set(val) {
-        this.rootStore.drawer = val
-      },
-    },
-    miniDrawer: {
-      get() {
-        return !this.rootStore.isMobile && !this.drawer
-      },
-      set() {},
-    },
-    commitUrl: function () {
-      return 'https://github.com/reims2/reims2-frontend/commit/' + this.rootStore.version
-    },
-    ...mapState(useRootStore, ['drawer', 'reimsSite']),
-  },
-}
+})
+const miniDrawer = computed(() => {
+  return !rootStore.isMobile && !rootStore.drawer
+})
+const commitUrl = computed(() => {
+  return 'https://github.com/reims2/reims2-frontend/commit/' + rootStore.version
+})
 </script>
 
 <style scoped>

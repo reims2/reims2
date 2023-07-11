@@ -1,5 +1,5 @@
 import { sanitizeEyeValues } from './util'
-import { Glasses, Eye, GlassesSearch, EyeSearch } from '../model/GlassesModel'
+import { Glasses, Eye, GlassesSearch, EyeSearch } from '@/model/GlassesModel'
 
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 10

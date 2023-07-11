@@ -49,7 +49,7 @@ import { mdiCalendar } from '@mdi/js'
 import { mapState } from 'pinia'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
-import { locationNames } from '../../lib/util'
+import { reimsSiteNames as locationNames } from '@/lib/util'
 import dayjs from 'dayjs'
 export default {
   setup() {

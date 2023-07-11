@@ -1,6 +1,7 @@
 import { Glasses } from '@/model/GlassesModel'
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import { ReimsSite } from '@/model/ReimsModel'
 
 const arrayContainsSku = (data: Glasses[], sku: number) => data.some((e) => e.sku === sku)
 
@@ -9,7 +10,7 @@ export const useRootStore = defineStore({
   state: () => ({
     allGlasses: [] as Glasses[],
     lastRefresh: null as string | null,
-    reimsSite: 'sa',
+    reimsSite: 'sa' as ReimsSite,
     error: '',
     drawer: false,
     isOutdated: false,

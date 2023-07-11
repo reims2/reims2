@@ -23,11 +23,14 @@ const rootStore = useRootStore()
 const lastRefresh = computed(() => rootStore.lastRefresh)
 const lastRefreshString = ref<string | null>(null)
 
-watch(lastRefresh, () => {
-  generateTimeString()
-})
+watch(
+  lastRefresh,
+  () => {
+    generateTimeString()
+  },
+  { immediate: true },
+)
 const refreshInterval = setInterval(() => generateTimeString(), 10 * 1000)
-generateTimeString()
 
 onBeforeUnmount(() => clearInterval(refreshInterval))
 

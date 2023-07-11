@@ -36,9 +36,19 @@ export interface EyeSearch {
   isBAL: boolean
 }
 
+export type EyeSearchKey = keyof EyeSearch
+
+export interface EyeSearchInput {
+  add: string
+  axis: string
+  cylinder: string
+  sphere: string
+  isBAL: boolean
+}
+
 export interface GlassesSearch {
   glassesType: string
-  od: EyeSearch
-  os: EyeSearch
+  od: EyeSearchInput
+  os: EyeSearchInput
   highTolerance?: boolean
 }
