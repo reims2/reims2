@@ -31,7 +31,7 @@
             :items="['single', 'multifocal']"
             style="min-width: 70px"
             class="fit pb-1 px-2"
-            @change="(value: string[]) => (glassesTypeFilter = value)"
+            @change="(value: string[]) => updateTypeFilter(value)"
           />
         </td>
         <td>
@@ -106,7 +106,7 @@ const eyeFilters = reactive({
     cylinder: {},
   },
 })
-const glassesTypeFilter = reactive<string[]>([])
+const glassesTypeFilter = ref<string[]>([])
 const options = ref({ itemsPerPage: 20 })
 const loading = ref(false)
 const items = ref([])
@@ -140,7 +140,7 @@ const headers = computed(() => {
 })
 const filterString = computed(() => {
   let filterString = ''
-  const typeFilter = createSingleTypeFilter(glassesTypeFilter)
+  const typeFilter = createSingleTypeFilter(glassesTypeFilter.value)
   if (typeFilter) filterString += typeFilter + ';'
   const eyeKeys: EyeKey[] = ['od', 'os']
   const eyeValueKeys: EyeValueKey[] = ['sphere', 'cylinder']
@@ -177,6 +177,10 @@ function createSingleFilter(value: any, filterName: string): string | null {
   } else if (min != null) return min
   else if (max != null) return max
   else return null
+}
+
+function updateTypeFilter(value: string[]) {
+  glassesTypeFilter.value = value
 }
 
 function createSingleTypeFilter(value: string[]): string | null {
