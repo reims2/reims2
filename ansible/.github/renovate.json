@@ -14,6 +14,7 @@
     {
       "matchPackagePrefixes": ["reims2"],
       "groupName": "reims2",
+      "automerge": true
     }
   ]
 }
