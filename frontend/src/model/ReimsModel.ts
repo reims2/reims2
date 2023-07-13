@@ -8,3 +8,5 @@ export interface DrawerItem {
   to: string
   disabled?: boolean
 }
+
+export type ValidationRule = (v: any) => boolean | string

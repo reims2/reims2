@@ -18,8 +18,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { ValidationRule } from '@/model/ReimsModel'
 
-type ValidationRule = (v: any) => boolean | string
 interface Props {
   modelValue: string
   isEditing: boolean

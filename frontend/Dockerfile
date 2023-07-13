@@ -1,4 +1,4 @@
-FROM node:18 AS build
+FROM node:20@sha256:b3ca7d32f0c12291df6e45a914d4ee60011a3fce4a978df5e609e356a4a2cb88 AS build
 RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
 WORKDIR /usr/src/app
@@ -7,7 +7,7 @@ RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn ins
 RUN yarn build
 
 # PROD IMAGE
-FROM node:18.16.1-bullseye-slim
+FROM node:20.4.0-bullseye-slim@sha256:77360666adb6622d13d0f32786185b7ddc5e5cd4a9c4140097ee7fdd9b3db527
 RUN apt-get update && apt-get upgrade -y && apt install curl -y && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV production
