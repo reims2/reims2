@@ -59,7 +59,7 @@
 
     <template v-if="rootStore.isMobile" #item="{ item }">
       <div class="mx-2 pb-1">
-        <glass-card :glass="item" />
+        <glass-card v-bind:glass="item" />
       </div>
     </template>
     <template #item.od.sphere="{ item }">{{ formatRx(item.columns['od.sphere']) }} D</template>
@@ -87,6 +87,7 @@ import GlassCard from '@/components/GlassCard.vue'
 import MinMaxInput from '@/components/MinMaxInput.vue'
 import { reactive, computed, ref, watch, onActivated } from 'vue'
 import dayjs from 'dayjs'
+import { EyeIndexKey } from '@/model/GlassesModel'
 
 const tableStore = useTableStore()
 const rootStore = useRootStore()
@@ -113,7 +114,6 @@ interface SortBy {
 }
 const sortBy = [{ key: 'sku', order: 'asc' }] as SortBy[]
 
-type EyeKey = 'od' | 'os'
 type EyeValueKey = 'sphere' | 'cylinder'
 
 const headers = computed(() => {
@@ -138,7 +138,7 @@ const filterString = computed(() => {
   let filterString = ''
   const typeFilter = createSingleTypeFilter(glassesTypeFilter.value)
   if (typeFilter) filterString += typeFilter + ';'
-  const eyeKeys: EyeKey[] = ['od', 'os']
+  const eyeKeys: EyeIndexKey[] = ['od', 'os']
   const eyeValueKeys: EyeValueKey[] = ['sphere', 'cylinder']
   for (const eyeName of eyeKeys) {
     for (const valName of eyeValueKeys) {
@@ -193,7 +193,7 @@ function formatDate(date: string) {
   return dayjs(date).format('DD.MM.YYYY')
 }
 
-function updateEyeFilter(value: any, eye: EyeKey, child: EyeValueKey) {
+function updateEyeFilter(value: any, eye: EyeIndexKey, child: EyeValueKey) {
   eyeFilters[eye][child] = value
 }
 

@@ -41,23 +41,11 @@
   </v-container>
 </template>
 
-<script>
-import { mdiDatabaseCog, mdiFileDocument } from '@mdi/js'
+<script setup lang="ts">
+import { mdiFileDocument } from '@mdi/js'
 
-export default {
-  layout: 'start',
-  transition: '',
-  data: () => ({
-    mdiDatabaseCog,
-    mdiFileDocument,
-  }),
-  head() {
-    return {
-      title: 'Start',
-    }
-  },
-  auth: false,
-}
+//const title = 'Start'
+//TODO useHead({ title })
 </script>
 
 <style lang="scss" scoped>

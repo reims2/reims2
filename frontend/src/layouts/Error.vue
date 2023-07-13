@@ -13,28 +13,22 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  layout: 'empty',
-  props: {
-    error: {
-      type: Object,
-      default: null,
-    },
+<script setup lang="ts">
+import { computed } from 'vue'
+
+const props = defineProps({
+  error: {
+    type: Object,
+    default: null,
   },
-  data() {
-    return {
-      pageNotFound: 'Page not found',
-      otherError: 'An error occurred',
-    }
-  },
-  head() {
-    const title = this.error.statusCode === 404 ? this.pageNotFound : this.otherError
-    return {
-      title,
-    }
-  },
-}
+})
+
+const pageNotFound = 'Page not found'
+const otherError = 'An error occurred'
+
+const title = computed(() => (props.error.statusCode === 404 ? pageNotFound : otherError))
+
+//todo useHead({ title, })
 </script>
 
 <style scoped>

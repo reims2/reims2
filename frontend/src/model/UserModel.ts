@@ -7,4 +7,5 @@ export interface User {
   id?: number
   roles: Array<Role>
   username: string
+  password?: string
 }

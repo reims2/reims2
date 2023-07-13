@@ -7,9 +7,6 @@
   </v-app>
 </template>
 
-<script>
+<script setup lang="ts">
 import AppFooter from '@/components/AppFooter.vue'
-export default {
-  components: { AppFooter },
-}
 </script>

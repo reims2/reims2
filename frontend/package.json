@@ -27,6 +27,7 @@
   "devDependencies": {
     "@babel/types": "7.22.5",
     "@mdi/js": "7.2.96",
+    "@types/chroma-js": "2.4.0",
     "@types/jest": "29.5.3",
     "@types/node": "20.4.2",
     "@types/webfontloader": "1.6.35",

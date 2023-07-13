@@ -11,7 +11,7 @@
               <single-eye-input
                 v-bind="odEye"
                 eye-name="OD"
-                :add-enabled="glassModel['glassesType'] === 'multifocal'"
+                :add-enabled="glassModel?.glassesType === 'multifocal'"
                 @update:modelValue="
                   (e) => {
                     odEye[e.id] = e.value
@@ -23,7 +23,7 @@
               <single-eye-input
                 v-bind="osEye"
                 eye-name="OS"
-                :add-enabled="glassModel['glassesType'] === 'multifocal'"
+                :add-enabled="glassModel?.glassesType === 'multifocal'"
                 @update:modelValue="
                   (e) => {
                     updateSync(osEye, e.value)
@@ -86,133 +86,117 @@
   </v-container>
 </template>
 
-<script>
-import { mapState } from 'pinia'
+<script setup lang="ts">
 import {
   generalEyeData,
   sanitizeEyeValues,
   clearObjectProperties,
   reimsSiteNames as locationNames,
 } from '@/lib/util'
-import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
+// TODO import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
+import { ref, computed, watch, nextTick } from 'vue'
+
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
+import { Eye, Glasses } from '@/model/GlassesModel'
 
-export default {
-  mixins: [ModifiedEnterToTabMixin],
-  components: { AutoCompleteField, SingleEyeInput, GlassCard, DeleteButton },
-  transition: 'main',
-  setup() {
-    const glassesStore = useGlassesStore()
-    const rootStore = useRootStore()
-    return {
-      glassesStore,
-      rootStore,
-      allGlasses: rootStore.allGlasses,
+const glassesStore = useGlassesStore()
+const rootStore = useRootStore()
+const reimsSite = computed(() => rootStore.reimsSite)
+const valid = ref(false)
+const loading = ref(false)
+const glassModel = ref<Glasses | null>(null)
+const odEye = ref({ axis: '', cylinder: '', sphere: '', add: '' })
+const osEye = ref({ axis: '', cylinder: '', sphere: '', add: '' })
+const syncEyes = ref(true)
+const output = ref('')
+const lastAddedSkus = ref([])
+const eyes = ref([
+  {
+    text: 'OD',
+    key: 'od',
+  },
+  {
+    text: 'OS',
+    key: 'os',
+  },
+])
+const results = ref<HTMLElement | null>(null)
+const form = ref<HTMLFormElement | null>(null)
+const firstInput = ref<HTMLElement[] | null>(null)
+
+const lastAdded = computed(() =>
+  lastAddedSkus.value.map((sku) => rootStore.allGlasses.find((g) => g.sku === sku)),
+)
+const freeSlots = computed(() => 5000 - rootStore.allGlasses.length)
+
+watch(
+  () => odEye.value.add,
+  (newVal) => {
+    // set using vue function to trigger reactive system in SingleEyeInput
+    if (syncEyes) osEye.value.add = newVal
+  },
+)
+
+watch(
+  () => rootStore.allGlasses,
+  () => {
+    lastAddedSkus.value = lastAddedSkus.value.filter((sku) =>
+      rootStore.allGlasses.find((g) => g.sku === sku),
+    )
+  },
+)
+async function submit() {
+  if (!valid.value) return
+  loading.value = true
+  glassModel.value.od = sanitizeEyeValues(odEye.value)
+  glassModel.value.os = sanitizeEyeValues(osEye.value)
+
+  try {
+    const newGlasses = await glassesStore.addGlasses(glassModel.value)
+    lastAddedSkus.value = lastAddedSkus.value.filter((sku) => sku !== newGlasses.sku)
+  } catch (error) {
+    loading.value = false
+    if (error.status === 409) {
+      // no free skus left.
+      rootStore.setError(error.message)
+    } else {
+      rootStore.setError(`Could not add glasses, please retry (${error.status})`)
     }
-  },
-  data: () => ({
-    valid: false,
-    loading: false,
-    glassModel: {},
-    odEye: { axis: '', cylinder: '', sphere: '', add: '' },
-    osEye: { axis: '', cylinder: '', sphere: '', add: '' },
-    syncEyes: true,
-    output: '',
-    generalEyeData,
-    eyes: [
-      {
-        text: 'OD',
-        key: 'od',
-      },
-      {
-        text: 'OS',
-        key: 'os',
-      },
-    ],
-    lastAddedSkus: [],
-    locationNames,
-  }),
-  head() {
-    return {
-      title: 'Add glasses',
+    return
+  }
+  loading.value = false
+  rootStore.clearError()
+  reset()
+  // scroll to bottom on mobile
+  nextTick(() => {
+    if (rootStore.isMobile) results.value?.scrollIntoView(true)
+  })
+}
+function reset() {
+  clearObjectProperties(odEye.value)
+  clearObjectProperties(osEye.value)
+  glassModel.value = { od: null, os: null }
+  form.value?.reset()
+  if (!rootStore.isMobile && firstInput.value) firstInput.value[0].focus()
+  syncEyes.value = true
+}
+function updateSync(oldEye: Eye, newValue: number) {
+  if (oldEye.add !== newValue) syncEyes.value = false
+}
+async function submitDeletion(sku: number) {
+  try {
+    await glassesStore.dispense(sku, 'WRONGLY_ADDED')
+  } catch (error) {
+    if (error.status === 404) {
+      console.log('Already deleted')
+    } else {
+      rootStore.setError(`Could not delete glasses, please retry (Error ${error.status})`)
     }
-  },
-  computed: {
-    ...mapState(useRootStore, ['drawer', 'reimsSite']),
-    lastAdded() {
-      return this.lastAddedSkus.map((sku) => this.allGlasses.find((g) => g.sku === sku))
-    },
-    freeSlots() {
-      // TODO for the future don't hardcode 5000
-      return 5000 - this.allGlasses.length
-    },
-  },
-  watch: {
-    'odEye.add'(newVal) {
-      // set using vue function to trigger reactive system in SingleEyeInput
-      if (this.syncEyes) this.$set(this.osEye, 'add', newVal)
-    },
-    allGlasses() {
-      this.lastAddedSkus = this.lastAddedSkus.filter((sku) =>
-        this.allGlasses.find((g) => g.sku === sku),
-      )
-    },
-  },
-  methods: {
-    async submit() {
-      if (!this.valid) return
-      this.loading = true
-      this.glassModel.od = sanitizeEyeValues(this.odEye)
-      this.glassModel.os = sanitizeEyeValues(this.osEye)
-      try {
-        const newGlasses = await this.glassesStore.addGlasses(this.glassModel)
-        this.lastAddedSkus.unshift(newGlasses.sku)
-      } catch (error) {
-        this.loading = false
-        if (error.status === 409) {
-          // no free skus left.
-          this.rootStore.setError(error.message)
-        } else {
-          this.rootStore.setError(`Could not add glasses, please retry (${error.status})`)
-        }
-        return
-      }
-      this.loading = false
-      this.rootStore.clearError()
-      this.reset()
-      // scroll to bottom on mobile
-      this.$nextTick(() => {
-        if (this.rootStore.isMobile) this.$refs.results.scrollIntoView(true)
-      })
-    },
-    reset() {
-      clearObjectProperties(this.odEye)
-      clearObjectProperties(this.osEye)
-      this.glassModel = {}
-      this.$refs.form.reset()
-      if (!this.rootStore.isMobile) this.$refs.firstInput[0].focus()
-      this.syncEyes = true
-    },
-    updateSync(oldEye, newValue) {
-      if (oldEye.add !== newValue) this.syncEyes = false
-    },
-    async submitDeletion(sku) {
-      try {
-        await this.glassesStore.deleteGlasses({ sku, reason: 'WRONGLY_ADDED' })
-      } catch (error) {
-        if (error.status === 404) {
-          console.log('Already deleted')
-        } else {
-          this.rootStore.setError(`Could not delete glasses, please retry (Error ${error.status})`)
-        }
-      }
-    },
-  },
-  title: 'Add glasses',
+  }
 }
 </script>

@@ -1,5 +1,6 @@
 import { mdiArrowLeftRight, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
-import { Glasses, Eye, EyeSearch, EyeSearchInput } from '@/model/GlassesModel'
+import { Glasses, Eye, EyeSearch, EyeSearchInput, GlassesKey } from '@/model/GlassesModel'
+import { ValidationRule } from '@/model/ReimsModel'
 
 const isAllowedStep = (number: number) => {
   if (number == null || !number) return true // we don't handle that
@@ -21,12 +22,12 @@ export const eyeRules = {
     (v: any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
     (v: any) => (v >= -30 && v <= 30) || 'Out of range',
     (v: any) => isAllowedStep(v) || 'Not an allowed step',
-  ],
+  ] as ValidationRule[],
   cylinder: [
     (v: any) => !v || !isNaN(parseFloat(v)) || 'Enter a valid number',
     (v: any) => !v || Math.abs(v) <= 6 || 'Out of range',
     (v: any) => isAllowedStep(v) || 'Not an allowed step',
-  ],
+  ] as ValidationRule[],
   axis: [
     (v: any) => (v != null && v !== '') || 'Required',
     (v: any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
@@ -34,16 +35,28 @@ export const eyeRules = {
     (v: any) => v >= 0 || 'Must be positive',
     (v: any) => v <= 180 || 'Maximum is 180',
     (v: any) => !v || v.length >= 3 || 'Enter 3 digits (include leading zero)',
-  ],
+  ] as ValidationRule[],
   add: [
     (v: any) => (v != null && v !== '') || 'Required for multifocals',
     (v: any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
     (v: any) => v >= 0 || 'Must be positive',
     (v: any) => v <= 8 || 'Maximum is 8',
     (v: any) => isAllowedStep(v) || 'Not an allowed step',
-  ],
+  ] as ValidationRule[],
 }
-export const generalEyeData = [
+
+export type GeneralGlassesData = {
+  id: GlassesKey
+  label: string
+  items: string[]
+  rules: ValidationRule[]
+  hint: string
+  first?: boolean
+  icon: string
+  desc: string
+}
+
+export const generalEyeData: GeneralGlassesData[] = [
   {
     id: 'glassesType',
     label: 'Type',

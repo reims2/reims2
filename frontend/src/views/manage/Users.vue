@@ -11,7 +11,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in items" :key="item.name">
+            <tr v-for="item in items" :key="item.username">
               <td :class="isCurrentUser(item.username) ? 'font-weight-bold' : ''">
                 {{ item.username }}
               </td>
@@ -25,7 +25,7 @@
                   icon
                   color="error"
                   :loading="deleteLoading == item.id"
-                  @click="deleteUser(item.id)"
+                  @click="deleteUser(item.id!)"
                 >
                   <v-icon>{{ mdiDelete }}</v-icon>
                 </v-btn>
@@ -89,10 +89,10 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer />
-              <v-btn text @click="dialog = false">Cancel</v-btn>
+              <v-btn variant="text" @click="dialog = false">Cancel</v-btn>
               <v-btn
                 color="primary"
-                text
+                variant="text"
                 :disabled="!valid"
                 :loading="addLoading"
                 @click="addUser()"
@@ -106,93 +106,75 @@
     </v-row>
   </v-container>
 </template>
+<script setup lang="ts">
+import { mdiDelete, mdiPencil } from '@mdi/js'
 
-<script>
-import { mdiDelete, mdiPlus, mdiPencil } from '@mdi/js'
+import { User } from '@/model/UserModel'
+
+import { ref } from 'vue'
 import { useUsersStore } from '@/stores/users'
 import { useRootStore } from '@/stores/root'
-export default {
-  title: 'Manage users',
-  setup() {
-    const usersStore = useUsersStore()
-    const rootStore = useRootStore()
-    return {
-      getUsers: usersStore.get,
-      _addUser: usersStore.add,
-      _deleteUser: usersStore.delete,
-      rootStore,
-    }
-  },
-  data: () => ({
-    items: [],
-    addLoading: false,
-    deleteLoading: false,
-    mdiDelete,
-    mdiPlus,
-    mdiPencil,
-    newName: '',
-    newRoles: [],
-    newPassword: '',
-    dialog: false,
-    valid: false,
-    editInfo: false,
-  }),
-  head() {
-    return {
-      title: 'Manage users',
-    }
-  },
-  computed: {
-    filterString() {
-      return ''
-    },
-  },
-  mounted() {
-    this.startLoading()
-  },
-  methods: {
-    async startLoading() {
-      try {
-        this.items = await this.getUsers()
-      } catch (error) {
-        this.rootStore.setError(`Could not load users (Error ${error.status}).`)
-        console.log(error)
-      }
-    },
-    async addUser() {
-      this.addLoading = true
-      try {
-        await this._addUser({
-          username: this.newName,
-          roles: this.newRoles.map((el) => {
-            return { name: el }
-          }),
-          password: this.newPassword,
-        })
-        this.dialog = false
-      } catch (error) {
-        this.rootStore.setError(`Could not add user (Error ${error.status}).`)
-        console.log(error)
-      }
-      this.addLoading = false
-      this.startLoading()
-      this.$refs.form.reset()
-    },
-    async deleteUser(userId) {
-      this.deleteLoading = userId
-      try {
-        await this._deleteUser(userId)
-      } catch (error) {
-        this.rootStore.setError(`Could not delete user (Error ${error.status}).`)
-        console.log(error)
-      }
-      this.deleteLoading = false
-      this.startLoading()
-    },
-    isCurrentUser(username) {
-      return 'TODO'
-      // return this.$auth.user && username === this.$auth.user.username
-    },
-  },
+
+const usersStore = useUsersStore()
+const rootStore = useRootStore()
+
+const items = ref<User[]>([])
+const newPassword = ref('')
+const newRoles = ref<string[]>([])
+const newName = ref('')
+
+const valid = ref(false)
+const editInfo = ref(false)
+const addLoading = ref(false)
+const deleteLoading = ref<number | boolean>(false)
+const dialog = ref(false)
+
+const form = ref<HTMLFormElement | null>(null)
+
+const startLoading = async () => {
+  try {
+    items.value = await usersStore.get()
+  } catch (error) {
+    rootStore.setError(`Could not load users (Error ${error.status}).`)
+    console.log(error)
+  }
+}
+
+const addUser = async () => {
+  addLoading.value = true
+  try {
+    await usersStore.add({
+      username: newName.value,
+      roles: newRoles.value.map((el) => {
+        return { name: el }
+      }),
+      password: newPassword.value,
+    })
+    dialog.value = false
+  } catch (error) {
+    rootStore.setError(`Could not add user (Error ${error.status}).`)
+    console.log(error)
+  }
+
+  form.value?.reset()
+  addLoading.value = false
+  startLoading()
+}
+
+const deleteUser = async (userId: number) => {
+  deleteLoading.value = userId
+  try {
+    await usersStore.delete(userId)
+  } catch (error) {
+    rootStore.setError(`Could not delete user (Error ${error.status}).`)
+    console.log(error)
+  }
+  deleteLoading.value = false
+  startLoading()
+}
+
+function isCurrentUser(username: string) {
+  return false
+  // TODO return this.$auth.user && username === this.$auth.user.username
 }
 </script>
