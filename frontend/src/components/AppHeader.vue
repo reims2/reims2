@@ -11,31 +11,18 @@
   </v-app-bar>
 </template>
 
-<script>
-import { mdiChevronLeft, mdiMenu } from '@mdi/js'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { useRootStore } from '@/stores/root'
 import OfflineBanner from '@/components/OfflineBanner.vue'
 
-export default {
-  components: {
-    OfflineBanner,
-  },
-  setup() {
-    const rootStore = useRootStore()
-    return { rootStore }
-  },
-  data: () => ({
-    mdiChevronLeft,
-    mdiMenu,
-    title: 'REIMS2',
-  }),
-  watch: {
-    $route(to) {
-      this.title = to.meta.title || 'REIMS2'
-    },
-  },
-  created() {
-    this.title = this.$route.meta.title || 'REIMS2'
-  },
-}
+const rootStore = useRootStore()
+const title = ref('REIMS2')
+// TODO
+//   $route(to) {
+//     this.title = to.meta.title || 'REIMS2'
+//   }
+// created() {
+//   this.title = this.$route.meta.title || 'REIMS2'
+// }
 </script>

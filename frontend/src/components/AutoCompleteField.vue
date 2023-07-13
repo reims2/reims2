@@ -19,80 +19,60 @@
   />
 </template>
 
-<script>
+<script setup lang="ts">
 import { generalEyeData } from '@/lib/util'
+import { ValidationRule } from '@/model/ReimsModel'
 
 import { useRootStore } from '@/stores/root'
-export default {
-  setup() {
-    const rootStore = useRootStore()
-    return {
-      rootStore,
-    }
-  },
-  props: {
-    modelValue: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-    rules: {
-      type: Array,
-      required: true,
-    },
-    hint: {
-      type: String,
-      required: true,
-    },
-    id: {
-      type: String,
-      required: true,
-    },
-    first: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    persistentHint: {
-      type: [Boolean, String],
-      required: false,
-      default: false,
-    },
-  },
-  data: () => ({}),
-  computed: {
-    inputVal: {
-      get() {
-        return this.modelValue
-      },
-      set(val) {
-        this.$emit('update:modelValue', val)
-      },
-    },
-  },
-  methods: {
-    autoComplete(id) {
-      /** autocomplete item data based on first characters. i.e. for id=glassesType return single for character s.
-       * Otherwise emit no input i.e. no change */
-      const glassesString = this.inputVal
-      if (!glassesString || typeof glassesString !== 'string' || glassesString === '') return
-      const data = generalEyeData.find((obj) => {
-        return obj.id === id
-      })
-      if (!data) return
+import { computed, ref } from 'vue'
 
-      for (const item of data.items) {
-        if (item.startsWith(glassesString.toLowerCase()))
-          return this.$emit('update:modelValue', item)
-      }
-    },
-    focus() {
-      this.$refs.input.focus()
-    },
+const rootStore = useRootStore()
+
+interface Props {
+  modelValue: string
+  label: string
+  rules: ValidationRule[]
+  hint: string
+  id: string
+  first: boolean
+  persistentHint: boolean
+}
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: '',
+  first: false,
+  persistentHint: false,
+})
+const emit = defineEmits(['update:modelValue'])
+
+const input = ref<HTMLInputElement | null>(null)
+
+focus()
+
+const inputVal = computed({
+  get() {
+    return props.modelValue
   },
+  set(val) {
+    emit('update:modelValue', val)
+  },
+})
+
+function autoComplete(id: string) {
+  /** autocomplete item data based on first characters. i.e. for id=glassesType return single for character s.
+   * Otherwise emit no input i.e. no change */
+  const glassesString = inputVal.value
+  if (!glassesString || typeof glassesString !== 'string' || glassesString === '') return
+  const data = generalEyeData.find((obj) => {
+    return obj.id === id
+  })
+  if (!data) return
+
+  for (const item of data.items) {
+    if (item.startsWith(glassesString.toLowerCase())) return emit('update:modelValue', item)
+  }
+}
+
+function focus() {
+  input.value?.focus()
 }
 </script>
