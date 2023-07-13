@@ -44,82 +44,63 @@
   </v-container>
 </template>
 
-<script>
+<script setup lang="ts">
 import { mdiCalendar } from '@mdi/js'
-import { mapState } from 'pinia'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
-import { reimsSiteNames as locationNames } from '@/lib/util'
 import dayjs from 'dayjs'
-export default {
-  setup() {
-    const glassesStore = useGlassesStore()
-    const rootStore = useRootStore()
-    return { glassesStore, rootStore }
-  },
-  data: () => ({
-    mdiCalendar,
-    loadingDispensedReport: false,
-    loadingInventoryReport: false,
-    csvUri: '',
-    filename: '',
-    locationNames,
-    selectedDispenedYear: null,
-  }),
-  title: 'Create reports',
-  head() {
-    return {
-      title: 'Create reports',
-    }
-  },
-  computed: {
-    ...mapState(useRootStore, ['reimsSite']),
-    lastYears() {
-      const year = dayjs().year()
-      return Array.from(new Array(30), (_, index) => year - index).filter((year) => year >= 2022)
-    },
-  },
-  created() {
-    this.selectedDispenedYear = dayjs().year()
-  },
-  methods: {
-    async downloadDispensedReport() {
-      this.loadingDispensedReport = true
-      const selectedYearStart = dayjs().startOf('year').year(this.selectedDispenedYear)
-      try {
-        const csvFile = await this.glassesStore.loadDispensedCsv({
-          startDate: selectedYearStart.format('MM/DD/YYYY'),
-          endDate: selectedYearStart.add(1, 'year').format('MM/DD/YYYY'),
-        })
-        this.filename = `dispense_report_${this.reimsSite}_${this.selectedDispenedYear}.csv`
-        this.downloadCsv(csvFile)
-      } catch (error) {
-        this.rootStore.setError(`Could not create dispense report (Error ${error.status})`)
-      }
-      this.loadingDispensedReport = false
-    },
-    async downloadInventoryReport() {
-      this.loadingInventoryReport = true
-      try {
-        const csvFile = await this.glassesStore.loadInventoryCsv()
-        this.filename = `inventory_${this.reimsSite}.csv`
-        this.downloadCsv(csvFile)
-      } catch (error) {
-        this.rootStore.setError(`Could not create inventory report (Error ${error.status})`)
-      }
-      this.loadingInventoryReport = false
-    },
-    downloadCsv(csvBlob) {
-      if (!csvBlob || csvBlob.size === 0) {
-        this.rootStore.setError('Report is empty. Try selecting another year?')
-        return
-      }
-      const blob = new Blob([csvBlob], { type: 'application/csv' })
-      this.csvUri = URL.createObjectURL(blob)
-      this.$nextTick(() => {
-        this.$refs.downloadLink.click()
-      })
-    },
-  },
+import { ref, nextTick } from 'vue'
+
+const glassesStore = useGlassesStore()
+const rootStore = useRootStore()
+const loadingDispensedReport = ref(false)
+const loadingInventoryReport = ref(false)
+const csvUri = ref('')
+const filename = ref('')
+const selectedDispenedYear = ref<number>(dayjs().year())
+const downloadLink = ref<HTMLAnchorElement | null>(null)
+
+const lastYears = Array.from(new Array(30), (_, index) => dayjs().year() - index).filter(
+  (year) => year >= 2022,
+)
+
+async function downloadDispensedReport() {
+  loadingDispensedReport.value = true
+  const selectedYearStart = dayjs().startOf('year').year(selectedDispenedYear.value!)
+  try {
+    const csvFile = await glassesStore.loadDispensedCsv(
+      selectedYearStart.format('MM/DD/YYYY'),
+      selectedYearStart.add(1, 'year').format('MM/DD/YYYY'),
+    )
+    filename.value = `dispense_report_${rootStore.reimsSite}_${selectedDispenedYear.value}.csv`
+    downloadCsv(csvFile)
+  } catch (error) {
+    rootStore.setError(`Could not create dispense report (Error ${error.status})`)
+  }
+  loadingDispensedReport.value = false
+}
+
+async function downloadInventoryReport() {
+  loadingInventoryReport.value = true
+  try {
+    const csvFile = await glassesStore.loadInventoryCsv()
+    filename.value = `inventory_${rootStore.reimsSite}.csv`
+    downloadCsv(csvFile)
+  } catch (error) {
+    rootStore.setError(`Could not create inventory report (Error ${error.status})`)
+  }
+  loadingInventoryReport.value = false
+}
+
+function downloadCsv(csvBlob: Blob) {
+  if (!csvBlob || csvBlob.size === 0) {
+    rootStore.setError('Report is empty. Try selecting another year?')
+    return
+  }
+  const blob = new Blob([csvBlob], { type: 'application/csv' })
+  csvUri.value = URL.createObjectURL(blob)
+  nextTick(() => {
+    downloadLink.value?.click()
+  })
 }
 </script>

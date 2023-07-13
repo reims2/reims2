@@ -1,10 +1,13 @@
 export interface Eye {
-  id: number // backend ID
+  id?: number // backend ID
   add?: number
   axis: number
   cylinder: number
   sphere: number
 }
+
+export type EyeKey = keyof Eye
+export type EyeIndexKey = 'od' | 'os'
 
 export interface Dispense {
   id: number // backend ID
@@ -25,7 +28,11 @@ export interface Glasses {
   sku: number
   creationDate: number
   score?: number
+  odScore?: number
+  osScore?: number
 }
+
+export type GlassesKey = keyof Glasses
 
 export interface EyeSearch {
   add?: number

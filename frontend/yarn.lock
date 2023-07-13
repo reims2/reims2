@@ -2554,6 +2554,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/chroma-js@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "@types/chroma-js@npm:2.4.0"
+  checksum: aa91adf61a5dee8469c1e6b298d3496041d1baa8bd9938865a61050b5e392adc3425718c7c29b09a3d8dfe0d2e8a1301e98d4b458135e53c2ecb3ecca8cb7d21
+  languageName: node
+  linkType: hard
+
 "@types/estree@npm:0.0.39":
   version: 0.0.39
   resolution: "@types/estree@npm:0.0.39"
@@ -7670,6 +7677,7 @@ __metadata:
   dependencies:
     "@babel/types": 7.22.5
     "@mdi/js": 7.2.96
+    "@types/chroma-js": ^2.4.0
     "@types/jest": 29.5.3
     "@types/node": 20.4.2
     "@types/webfontloader": 1.6.35
