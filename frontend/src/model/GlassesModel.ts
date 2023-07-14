@@ -1,13 +1,14 @@
+import { ReimsSite } from './ReimsModel'
+
+/* eslint-disable no-unused-vars */
 export interface Eye {
-  id?: number // backend ID
   add?: number
   axis: number
   cylinder: number
   sphere: number
 }
 
-export type EyeKey = keyof Eye
-export type EyeIndexKey = 'od' | 'os'
+export type GlassesEyeIndex = 'od' | 'os'
 
 export interface Dispense {
   id: number // backend ID
@@ -15,47 +16,45 @@ export interface Dispense {
   previousSku: number | null
 }
 
-export interface Glasses {
-  id: number // backend ID
+export type GlassesType = 'single' | 'multifocal'
+export type GlassesAppearance = 'masculine' | 'feminine' | 'neutral'
+export type GlassesSize = 'small' | 'medium' | 'large' | 'child'
+export type GeneralGlassesData = GlassesType | GlassesAppearance | GlassesSize
+
+export interface GlassesInput {
   od: Eye
   os: Eye
-  glassesType: string
-  appearance: string
-  dispensed?: boolean
-  dispense?: Dispense
-  glassesSize: string
-  location?: string
-  sku: number
-  creationDate: number
-  score?: number
-  odScore?: number
-  osScore?: number
+  glassesType: GlassesType
+  appearance: GlassesAppearance
+  glassesSize: GlassesSize
 }
 
-export type GlassesKey = keyof Glasses
+export interface Glasses extends GlassesInput {
+  id: number // backend ID
+  sku: number
+  creationDate: number
+  dispensed?: boolean
+  dispense?: Dispense
+  location: ReimsSite
+}
 
-export interface EyeSearch {
-  add?: number
-  axis: number
-  cylinder: number
-  sphere: number
+export type GeneralGlassesDataKey = 'glassesType' | 'appearance' | 'glassesSize'
+
+export interface GlassesResult extends Glasses {
+  score: number
+  odScore: number
+  osScore: number
+}
+
+/** Input to PhilScore function, correctly parsed Eye with isBal */
+export interface EyeSearch extends Eye {
   // is balance lens => ignore this eye and search for similar sphere only
   isBAL: boolean
 }
 
-export type EyeSearchKey = keyof EyeSearch
-
-export interface EyeSearchInput {
-  add: string
-  axis: string
-  cylinder: string
-  sphere: string
-  isBAL: boolean
-}
-
 export interface GlassesSearch {
-  glassesType: string
-  od: EyeSearchInput
-  os: EyeSearchInput
+  glassesType: GlassesType
+  od: EyeSearch
+  os: EyeSearch
   highTolerance?: boolean
 }

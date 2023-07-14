@@ -1,6 +1,12 @@
 import { mdiArrowLeftRight, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
-import { Glasses, Eye, EyeSearch, EyeSearchInput, GlassesKey } from '@/model/GlassesModel'
+import { Glasses, Eye, GlassesResult, GeneralGlassesDataKey } from '@/model/GlassesModel'
 import { ValidationRule } from '@/model/ReimsModel'
+import {
+  EyeInput,
+  EyeSearch,
+  EyeSearchInput,
+  GeneralGlassesDataValue,
+} from '@/model/GlassesInputModel'
 
 const isAllowedStep = (number: number) => {
   if (number == null || !number) return true // we don't handle that
@@ -46,9 +52,9 @@ export const eyeRules = {
 }
 
 export type GeneralGlassesData = {
-  id: GlassesKey
+  id: GeneralGlassesDataKey
   label: string
-  items: string[]
+  items: GeneralGlassesDataValue[]
   rules: ValidationRule[]
   hint: string
   first?: boolean
@@ -103,21 +109,22 @@ export const generalEyeData: GeneralGlassesData[] = [
   },
 ]
 
-export function deepCopyGlasses(oldGlasses: any) {
+export function deepCopyGlasses(oldGlasses: Glasses): Glasses {
   const newGlasses: Glasses = Object.assign({}, oldGlasses)
   const newOd: any = {}
   const newOs: any = {}
   for (const key of Object.keys(oldGlasses.od)) {
     // copy to new object and convert to Number at once
-    newOd[key] = Number(oldGlasses.od[key])
-    newOs[key] = Number(oldGlasses.os[key])
+    const keyTyped = key as keyof Eye
+    newOd[key] = Number(oldGlasses.od[keyTyped])
+    newOs[key] = Number(oldGlasses.os[keyTyped])
   }
   newGlasses.od = newOd
   newGlasses.os = newOs
   return newGlasses
 }
 
-export function matchesAsCsvUri(matches: Glasses[]) {
+export function matchesAsCsvUri(matches: GlassesResult[]) {
   const csvRows = matches.map((glass) => {
     let row = ''
     row += glass.sku + ';'
@@ -129,7 +136,7 @@ export function matchesAsCsvUri(matches: Glasses[]) {
     row += glass.os.cylinder + ';'
     row += glass.os.axis + ';'
     row += glass.os.add + ';'
-    row += glass.score?.toFixed(3)
+    row += glass.score.toFixed(3)
     return row
   })
   // add header
@@ -171,7 +178,7 @@ export function propsAsNumber(obj: any): Record<string, number> {
 }
 
 /** Eye is fixed by applying step rounding and the correct sign for cylinder */
-export function sanitizeEyeValues(singleEye: Eye | EyeSearch | EyeSearchInput): Eye | EyeSearch {
+export function sanitizeEyeValues(singleEye: EyeInput | EyeSearchInput): Eye | EyeSearch {
   const rx = propsAsNumber(singleEye)
   // easier for calculation
   if (rx.axis === 180) rx.axis = 0

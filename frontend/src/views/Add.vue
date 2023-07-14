@@ -5,13 +5,13 @@
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col v-for="item in generalEyeData" :key="item.label" cols="12" class="pa-0 pb-5">
-              <auto-complete-field ref="firstInput" v-model="glassModel[item.id]" v-bind="item" />
+              <auto-complete-field ref="firstInput" v-model="newGlass![item.id]" v-bind="item" />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pr-md-5 py-0">
               <single-eye-input
                 v-bind="odEye"
                 eye-name="OD"
-                :add-enabled="glassModel?.glassesType === 'multifocal'"
+                :add-enabled="newGlass?.glassesType === 'multifocal'"
                 @update:modelValue="
                   (e) => {
                     odEye[e.id] = e.value
@@ -23,7 +23,7 @@
               <single-eye-input
                 v-bind="osEye"
                 eye-name="OS"
-                :add-enabled="glassModel?.glassesType === 'multifocal'"
+                :add-enabled="newGlass?.glassesType === 'multifocal'"
                 @update:modelValue="
                   (e) => {
                     updateSync(osEye, e.value)
@@ -102,29 +102,18 @@ import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
-import { Eye, Glasses } from '@/model/GlassesModel'
+import { Eye, GlassesInput } from '@/model/GlassesModel'
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()
 const reimsSite = computed(() => rootStore.reimsSite)
 const valid = ref(false)
 const loading = ref(false)
-const glassModel = ref<Glasses | null>(null)
+const newGlass = ref<GlassesInput | null>(null)
 const odEye = ref({ axis: '', cylinder: '', sphere: '', add: '' })
 const osEye = ref({ axis: '', cylinder: '', sphere: '', add: '' })
 const syncEyes = ref(true)
-const output = ref('')
 const lastAddedSkus = ref([])
-const eyes = ref([
-  {
-    text: 'OD',
-    key: 'od',
-  },
-  {
-    text: 'OS',
-    key: 'os',
-  },
-])
 const results = ref<HTMLElement | null>(null)
 const form = ref<HTMLFormElement | null>(null)
 const firstInput = ref<HTMLElement[] | null>(null)
@@ -138,7 +127,7 @@ watch(
   () => odEye.value.add,
   (newVal) => {
     // set using vue function to trigger reactive system in SingleEyeInput
-    if (syncEyes) osEye.value.add = newVal
+    if (syncEyes.value) osEye.value.add = newVal
   },
 )
 
@@ -153,11 +142,11 @@ watch(
 async function submit() {
   if (!valid.value) return
   loading.value = true
-  glassModel.value.od = sanitizeEyeValues(odEye.value)
-  glassModel.value.os = sanitizeEyeValues(osEye.value)
+  newGlass.value.od = sanitizeEyeValues(odEye.value)
+  newGlass.value.os = sanitizeEyeValues(osEye.value)
 
   try {
-    const newGlasses = await glassesStore.addGlasses(glassModel.value)
+    const newGlasses = await glassesStore.addGlasses(newGlass.value)
     lastAddedSkus.value = lastAddedSkus.value.filter((sku) => sku !== newGlasses.sku)
   } catch (error) {
     loading.value = false
@@ -180,7 +169,7 @@ async function submit() {
 function reset() {
   clearObjectProperties(odEye.value)
   clearObjectProperties(osEye.value)
-  glassModel.value = { od: null, os: null }
+  newGlass.value = { od: null, os: null }
   form.value?.reset()
   if (!rootStore.isMobile && firstInput.value) firstInput.value[0].focus()
   syncEyes.value = true
