@@ -13,7 +13,7 @@ FROM node:20.4.0-bullseye-slim@sha256:77360666adb6622d13d0f32786185b7ddc5e5cd4a9
 RUN apt-get update && apt-get upgrade -y && apt install curl -y && rm -rf /var/lib/apt/lists/*
 
 # renovate: datasource=npm depName=http-server
-ENV HTTP_SERVER_VERSION=14.1.0
+ENV HTTP_SERVER_VERSION=14.1.1
 RUN npm install -g http-server@${HTTP_SERVER_VERSION}
 
 ENV NODE_ENV production
