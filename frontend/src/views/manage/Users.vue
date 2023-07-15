@@ -40,7 +40,7 @@
         </v-alert>
         <v-dialog v-model="dialog" max-width="500px" persistent>
           <template #activator="{ props }">
-            <v-btn color="primary" dark v-bind="props" class="mt-3">Add new user</v-btn>
+            <v-btn color="primary" v-bind="props" class="mt-3">Add new user</v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -113,13 +113,9 @@ import { User } from '@/model/UserModel'
 
 import { ref } from 'vue'
 import { useUsersStore } from '@/stores/users'
-import { useHead } from '@unhead/vue'
+
 import { useNotification } from '@/lib/notifications'
 const { addError } = useNotification()
-
-useHead({
-  title: 'Manage Users',
-})
 
 const usersStore = useUsersStore()
 

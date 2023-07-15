@@ -50,13 +50,9 @@ import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 import dayjs from 'dayjs'
 import { ref, nextTick } from 'vue'
-import { useHead } from '@unhead/vue'
+
 import { useNotification } from '@/lib/notifications'
 const { addError } = useNotification()
-
-useHead({
-  title: 'Reports',
-})
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()

@@ -10,9 +10,4 @@
 
 <script setup lang="ts">
 import GlassesTable from '@/components/GlassesTable.vue'
-import { useHead } from '@unhead/vue'
-
-useHead({
-  title: 'View Glasses',
-})
 </script>

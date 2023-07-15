@@ -57,7 +57,7 @@
           tabindex="-1"
           target="”_blank”"
           rel="noopener"
-          class="dev-background white--text"
+          class="dev-background text-white"
           title="!! DEV INSTANCE !!"
         >
           <template v-slot:prepend>
@@ -130,5 +130,11 @@ const commitUrl = computed(() => {
 <style scoped>
 .dev-background {
   background: var(--v-accent-darken1) !important;
+}
+.no-decoration {
+  text-decoration: none !important;
+}
+.no-color {
+  color: inherit !important;
 }
 </style>
