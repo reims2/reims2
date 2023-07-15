@@ -5,7 +5,11 @@
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
             <v-col v-for="item in generalGlassesDataKeys" :key="item" cols="12" class="pa-0 pb-5">
-              <auto-complete-field ref="firstInput" v-model="newGlass[item]" v-bind="item" />
+              <auto-complete-field
+                ref="firstInput"
+                v-model="newGlass[item]"
+                v-bind="generalEyeData[item]"
+              />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pr-md-5 py-0">
               <single-eye-input
@@ -93,6 +97,7 @@ import {
   sanitizeEyeValues,
   clearObjectProperties,
   reimsSiteNames as locationNames,
+  generalEyeData,
 } from '@/lib/util'
 // TODO import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 import { useGlassesStore } from '@/stores/glasses'
@@ -105,6 +110,10 @@ import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
 import { Eye, GlassesInput, OptionalEye, generalGlassesDataKeys } from '@/model/GlassesModel'
 import { useHead } from '@unhead/vue'
+import { useDisplay } from 'vuetify'
+import { useNotification } from '@/lib/notifications'
+const { addError, removeNotification } = useNotification()
+const { mobile } = useDisplay()
 
 useHead({
   title: 'Add Glasses',
@@ -161,18 +170,18 @@ async function submit() {
     loading.value = false
     if (error.status === 409) {
       // no free skus left.
-      rootStore.setError(error.message)
+      addError(error.message)
     } else {
-      rootStore.setError(`Could not add glasses, please retry (${error.status})`)
+      addError(`Could not add glasses, please retry (${error.status})`)
     }
     return
   }
   loading.value = false
-  rootStore.clearError()
+  removeNotification() // TODO?
   reset()
   // scroll to bottom on mobile
   nextTick(() => {
-    if (rootStore.isMobile) results.value?.scrollIntoView(true)
+    if (mobile) results.value?.scrollIntoView(true)
   })
 }
 function reset() {
@@ -183,7 +192,9 @@ function reset() {
     os: { sphere: '', cylinder: '', axis: '', add: '' },
   }
   form.value?.reset()
-  if (!rootStore.isMobile && firstInput.value) firstInput.value[0].focus()
+  if (!mobile && firstInput.value && firstInput.value.length) {
+    firstInput.value[0].focus()
+  }
   syncEyes.value = true
 }
 function updateSync(oldEye: OptionalEye, newValue: number) {
@@ -196,7 +207,7 @@ async function submitDeletion(sku: number) {
     if (error.status === 404) {
       console.log('Already deleted')
     } else {
-      rootStore.setError(`Could not delete glasses, please retry (Error ${error.status})`)
+      addError(`Could not delete glasses, please retry (Error ${error.status})`)
     }
   }
 }

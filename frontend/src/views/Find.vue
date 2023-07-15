@@ -120,6 +120,9 @@ import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import { EyeSearch, GlassesResult, GlassesSearch, GlassesType } from '@/model/GlassesModel'
 import { matchesAsCsvUri, generalEyeData, EyeEnum } from '@/lib/util'
 import { useHead } from '@unhead/vue'
+import { useDisplay } from 'vuetify'
+
+const { mobile } = useDisplay()
 
 useHead({
   title: 'Find glasses',
@@ -249,7 +252,7 @@ async function submitAndUpdate() {
 
   nextTick(() => {
     // on desktop, focus input again; on mobile, scroll to bottom
-    if (!rootStore.isMobile) firstInput.value?.focus()
+    if (!mobile) firstInput.value?.focus()
     else results.value?.scrollIntoView(true)
   })
 }

@@ -49,7 +49,7 @@ interface Props extends OptionalEye {
   eyeName: string
   addEnabled: boolean
   isBAL?: boolean
-  balEnabled: boolean
+  balEnabled?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   axis: '',

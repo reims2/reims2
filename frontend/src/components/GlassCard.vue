@@ -1,36 +1,32 @@
 <template>
   <v-card style="min-width: 280px" class="mb-2" :loading="loading">
-    <v-tooltip v-model="showTooltip" location="bottom" activator="parent">
-      Do you want to edit glasses? Simply
-      <span class="font-weight-bold">click</span>
-      on any value
-    </v-tooltip>
-    <v-card-title v-if="glass.sku">
-      <div v-if="isGlassesResult(glass)" class="d-flex align-center">
-        <v-tooltip location="bottom">
-          <template #activator="{ props }">
+    <v-tooltip v-model="showTooltip" location="bottom">
+      <template v-slot:activator>
+        <v-card-title v-if="glass.sku">
+          <div v-if="isGlassesResult(glass)" class="d-flex align-center">
             <v-chip
               class="mr-2 px-2 white--text font-weight-black"
               :color="calcColor(glass.score)"
               small
               label
               :ripple="false"
-              v-bind="props"
             >
+              <v-tooltip activator="parent" location="bottom">
+                Result (Philscore) - lower values are better
+              </v-tooltip>
+
               {{ glass.score.toFixed(2) }}
             </v-chip>
-          </template>
-          Result (Philscore) - lower values are better
-        </v-tooltip>
-      </div>
-      <span class="mr-1">SKU</span>
-      {{ glass.sku.toString().padStart(4, '0') }}
-    </v-card-title>
-    <v-card-subtitle class="text--primary pb-2 d-flex align-center">
-      <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
-        <v-tooltip location="bottom" :disabled="editable && edit == key">
-          <template #activator="{ props }">
+          </div>
+          <span class="mr-1">SKU</span>
+          {{ glass.sku.toString().padStart(4, '0') }}
+        </v-card-title>
+        <v-card-subtitle class="text--primary pb-2 d-flex align-center">
+          <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
             <span class="no-child-padding" @click="edit = key">
+              <v-tooltip location="bottom" activator="parent" :disabled="editable && edit == key">
+                {{ generalEyeData[key].desc }}
+              </v-tooltip>
               <v-select
                 v-if="editable && edit == key"
                 :value="glass[key]"
@@ -50,64 +46,64 @@
                 {{ glass[key] }}
               </span>
             </span>
-          </template>
-          {{ generalEyeData[key].desc }}
-        </v-tooltip>
-      </span>
-    </v-card-subtitle>
-    <v-card-text class="py-0">
-      <v-container class="text--primary pa-0">
-        <v-row dense>
-          <v-col v-for="eye in eyes" :key="eye.key" cols="6">
-            <div class="d-flex">
-              <div class="text-subtitle-1">
-                {{ eye.text }}
-              </div>
-              <div v-if="isGlassesResult(glass)" class="d-flex align-center">
-                <v-tooltip location="bottom">
-                  <template #activator="{ props }">
+          </span>
+        </v-card-subtitle>
+        <v-card-text class="py-0">
+          <v-container class="text--primary pa-0">
+            <v-row dense>
+              <v-col v-for="eye in eyes" :key="eye.key" cols="6">
+                <div class="d-flex">
+                  <div class="text-subtitle-1">
+                    {{ eye.text }}
+                  </div>
+                  <div v-if="isGlassesResult(glass)" class="d-flex align-center">
                     <v-chip class="ml-2 px-2" x-small label :ripple="false" v-bind="props">
+                      <v-tooltip activator="parent" location="bottom">
+                        PhilScore only for {{ eye.text }}
+                      </v-tooltip>
                       {{ (eye.key == 'od' ? glass.odScore! : glass.osScore!).toFixed(2) }}
                     </v-chip>
-                  </template>
-                  PhilScore only for {{ eye.text }}
-                </v-tooltip>
-              </div>
-            </div>
-            <tr v-for="dataKey in eyeDataKeys" :key="dataKey" @click="edit = eye.key + dataKey">
-              <td class="text--secondary pr-2">
-                {{ eyeUIData[dataKey].label }}
-              </td>
-              <td>
-                <editable-span
-                  :modelValue="
-                    eyeUIData[dataKey].format(glass[eye.key as GlassesEyeIndex][dataKey])
-                  "
-                  :suffix="eyeUIData[dataKey].suffix"
-                  :rules="eyeRules[dataKey]"
-                  :is-editing="editable && edit == eye.key + dataKey"
-                  @submit="(value) => editEye(eye.key as GlassesEyeIndex, dataKey, value)"
-                />
-              </td>
-            </tr>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card-text>
-    <v-card-actions class="pt-0 mx-0" style="padding-left: 6px">
-      <v-btn
-        v-if="editable && edit == ''"
-        variant="text"
-        class="mx-0"
-        @click="showTooltip = !showTooltip"
-      >
-        Edit
-      </v-btn>
-      <v-btn v-if="editable && edit != ''" variant="text" class="mx-0" @click="edit = ''">
-        Cancel Edit
-      </v-btn>
-      <slot name="actions" />
-    </v-card-actions>
+                  </div>
+                </div>
+                <tr v-for="dataKey in eyeDataKeys" :key="dataKey" @click="edit = eye.key + dataKey">
+                  <td class="text--secondary pr-2">
+                    {{ eyeUIData[dataKey].label }}
+                  </td>
+                  <td>
+                    <editable-span
+                      :modelValue="
+                        eyeUIData[dataKey].format(glass[eye.key as GlassesEyeIndex][dataKey])
+                      "
+                      :suffix="eyeUIData[dataKey].suffix"
+                      :rules="eyeRules[dataKey]"
+                      :is-editing="editable && edit == eye.key + dataKey"
+                      @submit="(value) => editEye(eye.key as GlassesEyeIndex, dataKey, value)"
+                    />
+                  </td>
+                </tr>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions class="pt-0 mx-0" style="padding-left: 6px">
+          <v-btn
+            v-if="editable && edit == ''"
+            variant="text"
+            class="mx-0"
+            @click="showTooltip = !showTooltip"
+          >
+            Edit
+          </v-btn>
+          <v-btn v-if="editable && edit != ''" variant="text" class="mx-0" @click="edit = ''">
+            Cancel Edit
+          </v-btn>
+          <slot name="actions" />
+        </v-card-actions>
+      </template>
+      Do you want to edit glasses? Simply
+      <span class="font-weight-bold">click</span>
+      on any value
+    </v-tooltip>
   </v-card>
 </template>
 
@@ -116,8 +112,6 @@ import chroma from 'chroma-js'
 import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '@/lib/util'
 import EditableSpan from './EditableSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
-import { useRootStore } from '@/stores/root'
-import { computed, ref, watch } from 'vue'
 import {
   EyeKey,
   GeneralGlassesDataKey,
@@ -130,9 +124,10 @@ import {
   eyeKeys,
   generalGlassesDataKeys,
 } from '@/model/GlassesModel'
+import { useNotification } from '@/lib/notifications'
+const { addError } = useNotification()
 
 const glassesStore = useGlassesStore()
-const rootStore = useRootStore()
 
 const props = withDefaults(defineProps<{ glass: Glasses | GlassesResult; editable: boolean }>(), {
   editable: false,
@@ -234,9 +229,9 @@ async function startEdit(newGlasses: Glasses) {
     if (error.response && error.response.status < 500) {
       // TODO catch network errors because they'll be retried.
       edit.value = ''
-      rootStore.setError(`Glasses can't be edited, sorry (Error ${error.status})`)
+      addError(`Glasses can't be edited, sorry (Error ${error.status})`)
     } else {
-      rootStore.setError(
+      addError(
         `Editing was not possible because the server didn't respond. Please retry (Error ${error.status}).`,
       )
     }

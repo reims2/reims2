@@ -113,15 +113,15 @@ import { User } from '@/model/UserModel'
 
 import { ref } from 'vue'
 import { useUsersStore } from '@/stores/users'
-import { useRootStore } from '@/stores/root'
 import { useHead } from '@unhead/vue'
+import { useNotification } from '@/lib/notifications'
+const { addError } = useNotification()
 
 useHead({
   title: 'Manage Users',
 })
 
 const usersStore = useUsersStore()
-const rootStore = useRootStore()
 
 const items = ref<User[]>([])
 const newPassword = ref('')
@@ -140,7 +140,7 @@ const startLoading = async () => {
   try {
     items.value = await usersStore.get()
   } catch (error) {
-    rootStore.setError(`Could not load users (Error ${error.status}).`)
+    addError(`Could not load users (Error ${error.status}).`)
     console.log(error)
   }
 }
@@ -157,7 +157,7 @@ const addUser = async () => {
     })
     dialog.value = false
   } catch (error) {
-    rootStore.setError(`Could not add user (Error ${error.status}).`)
+    addError(`Could not add user (Error ${error.status}).`)
     console.log(error)
   }
 
@@ -171,7 +171,7 @@ const deleteUser = async (userId: number) => {
   try {
     await usersStore.delete(userId)
   } catch (error) {
-    rootStore.setError(`Could not delete user (Error ${error.status}).`)
+    addError(`Could not delete user (Error ${error.status}).`)
     console.log(error)
   }
   deleteLoading.value = false

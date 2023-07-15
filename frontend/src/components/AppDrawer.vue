@@ -19,7 +19,7 @@
 
     <v-divider v-if="!miniDrawer" class="mt-3" />
 
-    <v-list v-if="!rootStore.isMobile" nav color="accent">
+    <v-list v-if="!mobile" nav color="accent">
       <v-list-item
         v-for="item in mainItems"
         :key="item.title"
@@ -32,7 +32,7 @@
         </template>
       </v-list-item>
     </v-list>
-    <v-divider v-if="!rootStore.isMobile" class="mb-3" />
+    <v-divider v-if="!mobile" class="mb-3" />
 
     <v-list nav subheader>
       <v-list-item
@@ -99,6 +99,8 @@ import { mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/j
 import { reimsSiteNames } from '@/lib/util'
 import { DrawerItem } from '@/model/ReimsModel'
 import LocationDialog from '@/components/LocationDialog.vue'
+import { useDisplay } from 'vuetify'
+const { mobile } = useDisplay()
 
 defineProps<{
   mainItems: DrawerItem[]
@@ -111,14 +113,14 @@ const reimsSite = computed(() => rootStore.reimsSite)
 const dialog = ref(false)
 const drawerModel = computed({
   get() {
-    return !rootStore.isMobile || rootStore.drawer
+    return !mobile || rootStore.drawer
   },
   set(val: boolean) {
     rootStore.drawer = val
   },
 })
 const miniDrawer = computed(() => {
-  return !rootStore.isMobile && !rootStore.drawer
+  return !mobile && !rootStore.drawer
 })
 const commitUrl = computed(() => {
   return 'https://github.com/reims2/reims2-frontend/commit/' + rootStore.version

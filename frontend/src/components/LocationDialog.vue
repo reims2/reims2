@@ -35,6 +35,8 @@
 import { ReimsSite } from '@/model/ReimsModel'
 import { useRootStore } from '@/stores/root'
 import { ref } from 'vue'
+import { useNotification } from '@/lib/notifications'
+const { addError } = useNotification()
 
 const rootStore = useRootStore()
 defineProps({
@@ -67,7 +69,7 @@ async function changeLocation() {
     newLocation.value = prevLocation
     rootStore.reimsSite = prevLocation
 
-    rootStore.setError(`Cannot change location (Error ${error.status})`)
+    addError(`Cannot change location (Error ${error.status})`)
   }
 
   loading.value = false
