@@ -68,12 +68,10 @@ import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
 import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
-import { watch, ref } from 'vue'
 import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRouteQuery } from '@vueuse/router'
 import { useHead } from '@unhead/vue'
-import { watchEffect } from 'vue'
 
 useHead({
   title: 'Edit Glasses',

@@ -10,6 +10,7 @@ module.exports = {
     '@vue/eslint-config-typescript',
     'standard',
     'prettier',
+    './src/.eslintrc-auto-import.json',
   ],
   rules: {
     'vue/multi-word-component-names': 'off',
