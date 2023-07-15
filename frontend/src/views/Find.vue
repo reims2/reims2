@@ -119,14 +119,10 @@ import AutoCompleteField from '@/components/AutoCompleteField.vue'
 
 import { EyeSearch, GlassesResult, GlassesSearch, GlassesType } from '@/model/GlassesModel'
 import { matchesAsCsvUri, generalEyeData, EyeEnum } from '@/lib/util'
-import { useHead } from '@unhead/vue'
+
 import { useDisplay } from 'vuetify'
 
 const { mobile } = useDisplay()
-
-useHead({
-  title: 'Find glasses',
-})
 
 // TODO mixins: [ModifiedEnterToTabMixin],
 const glassesStore = useGlassesStore()

@@ -5,7 +5,7 @@
         <v-card-title v-if="glass.sku">
           <div v-if="isGlassesResult(glass)" class="d-flex align-center">
             <v-chip
-              class="mr-2 px-2 white--text font-weight-black"
+              class="mr-2 px-2 text-white font-weight-black"
               :color="calcColor(glass.score)"
               small
               label

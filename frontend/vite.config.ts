@@ -2,7 +2,6 @@
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { VitePWA } from 'vite-plugin-pwa'
-import UnheadVite from '@unhead/addons/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 
 // Utilities
@@ -20,7 +19,6 @@ export default defineConfig({
       autoImport: true,
     }),
     VitePWA({ registerType: 'autoUpdate' }),
-    UnheadVite(),
     AutoImport({
       imports: ['vue'],
       eslintrc: {

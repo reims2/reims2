@@ -14,7 +14,7 @@
               tabindex="-1"
               target="”_blank”"
               rel="noopener"
-              class="white--text"
+              class="text-white"
             >
               Partners for Visual Health
             </a>
@@ -43,15 +43,6 @@
 
 <script setup lang="ts">
 import { mdiFileDocument } from '@mdi/js'
-import { useHead } from '@unhead/vue'
-
-useHead({
-  title: 'REIMS2',
-  titleTemplate: null,
-})
-
-// const title = 'Start'
-// TODO useHead({ title })
 </script>
 
 <style lang="scss" scoped>

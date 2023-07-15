@@ -71,15 +71,11 @@ import DeleteButton from '@/components/DeleteButton.vue'
 import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRouteQuery } from '@vueuse/router'
-import { useHead } from '@unhead/vue'
+
 import { useDisplay } from 'vuetify'
 import { useNotification } from '@/lib/notifications'
 const { addError } = useNotification()
 const { mobile } = useDisplay()
-
-useHead({
-  title: 'Edit Glasses',
-})
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()

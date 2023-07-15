@@ -109,15 +109,11 @@ import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
 import { Eye, GlassesInput, OptionalEye, generalGlassesDataKeys } from '@/model/GlassesModel'
-import { useHead } from '@unhead/vue'
+
 import { useDisplay } from 'vuetify'
 import { useNotification } from '@/lib/notifications'
 const { addError, removeNotification } = useNotification()
 const { mobile } = useDisplay()
-
-useHead({
-  title: 'Add Glasses',
-})
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()

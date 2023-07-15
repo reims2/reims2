@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <app-header />
     <app-drawer :main-items="mainItems" :other-items="otherItems" />
+    <app-header />
     <v-main class="background">
       <router-view keep-alive class="py-6 px-6" />
       <error-snackbar />
@@ -12,7 +12,14 @@
 </template>
 
 <script setup lang="ts">
-import { mdiFileFind, mdiPencil, mdiDatabase, mdiPlusCircle, mdiChartBox } from '@mdi/js'
+import {
+  mdiFileFind,
+  mdiPencil,
+  mdiDatabase,
+  mdiPlusCircle,
+  mdiChartBox,
+  mdiAccountEdit,
+} from '@mdi/js'
 import { useDisplay } from 'vuetify'
 
 import AppFooter from '@/components/AppFooter.vue'
@@ -22,7 +29,6 @@ import AppBottomBar from '@/components/AppBottomBar.vue'
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'
 import { useOnline } from '@vueuse/core'
 
-import { computed, ref, onBeforeUnmount, watchEffect } from 'vue'
 import { useRootStore } from '@/stores/root'
 
 import dayjs from 'dayjs'
@@ -36,21 +42,23 @@ const refreshGlassesInterval: any | null = ref(null)
 const mainItems = computed(() => [
   { title: 'Find', icon: mdiFileFind, to: '/find' },
   { title: 'Edit', icon: mdiPencil, to: '/edit' },
-  { title: 'View all', icon: mdiDatabase, to: '/view', disabled: rootStore.isOffline },
-  { title: 'Add', icon: mdiPlusCircle, to: '/add', disabled: rootStore.isOffline },
+  { title: 'View all', icon: mdiDatabase, to: '/view', disabled: !isOnline },
+  { title: 'Add', icon: mdiPlusCircle, to: '/add', disabled: !isOnline },
 ])
 const otherItems = computed(() => [
-  { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: rootStore.isOffline },
+  { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: !isOnline },
   // TODO
   // if (this.$auth.user && this.$auth.user.roles && this.$auth.user.roles.map(el => el.name).includes('ROLE_ADMIN')) {
-  //   list.push({ title: 'Users', icon: mdiAccountEdit, to: '/manage/users', disabled: this.rootStore.isOffline })
+  {
+    title: 'Users',
+    icon: mdiAccountEdit,
+    to: '/manage/users',
+    disabled: !isOnline,
+  },
   // }
 ])
 
 const isOnline = useOnline()
-watchEffect(() => {
-  rootStore.isOffline = !isOnline.value
-})
 
 updateGlasses()
 refreshGlassesInterval.value = setInterval(() => updateGlasses(), 3 * 60 * 1000)
