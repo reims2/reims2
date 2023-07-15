@@ -2,6 +2,7 @@ import { Glasses } from '@/model/GlassesModel'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { ReimsSite } from '@/model/ReimsModel'
+import { Notification } from '@/lib/notifications'
 
 const arrayContainsSku = (data: Glasses[], sku: number) => data.some((e) => e.sku === sku)
 
@@ -11,7 +12,7 @@ export const useRootStore = defineStore({
     allGlasses: [] as Glasses[],
     lastRefresh: null as string | null,
     reimsSite: 'sa' as ReimsSite,
-    error: '',
+    notification: null as Notification | null,
     drawer: false,
     isOutdated: false,
     isRefreshingGlasses: false,
@@ -39,9 +40,6 @@ export const useRootStore = defineStore({
       this.isOutdated = false
       this.isRefreshingGlasses = false
     },
-    clearError() {
-      this.error = ''
-    },
     addOfflineGlasses(glasses: Glasses) {
       if (!arrayContainsSku(this.allGlasses, glasses.sku)) {
         this.allGlasses.push(glasses)
@@ -55,9 +53,6 @@ export const useRootStore = defineStore({
     },
     toggleDrawer() {
       this.drawer = !this.drawer
-    },
-    setError(error: string) {
-      this.error = error
     },
   },
 })

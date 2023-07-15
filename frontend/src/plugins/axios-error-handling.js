@@ -16,7 +16,7 @@ export default ({ $axios, app, store }) => {
     }
 
     if (error.status === 401) {
-      store.commit('setError', 'Credentials no longer valid, please login again')
+      //store.commit('setError', 'Credentials no longer valid, please login again')
       // TODO app.$auth.logout()
     }
     throw error

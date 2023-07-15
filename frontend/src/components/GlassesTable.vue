@@ -8,7 +8,7 @@
     dense
     must-sort
     :sort-by="sortBy"
-    :mobile-breakpoint="rootStore.isMobile"
+    :mobile-breakpoint="mobile"
     :footer-props="{
       showFirstLastPage: true,
       itemsPerPageOptions: [10, 20, 50, 100, 500],
@@ -16,7 +16,7 @@
     }"
     @update:options="startLoading"
   >
-    <template v-if="!rootStore.isMobile" #thead>
+    <template v-if="!mobile" #thead>
       <tr>
         <td />
         <td class="v-data-table__divider">
@@ -57,7 +57,7 @@
       </tr>
     </template>
 
-    <template v-if="rootStore.isMobile" #item="{}">
+    <template v-if="mobile" #item="{}">
       <div class="mx-2 pb-1">TODO</div>
     </template>
     <template #item.od.sphere="{ item }">{{ formatRx(item.columns['od.sphere']) }} D</template>
@@ -85,6 +85,11 @@ import MinMaxInput from '@/components/MinMaxInput.vue'
 import { reactive, computed, ref, watch, onActivated } from 'vue'
 import dayjs from 'dayjs'
 import { GlassesEyeIndex } from '@/model/GlassesModel'
+import { useDisplay } from 'vuetify'
+import { useNotification } from '@/lib/notifications'
+const { addError } = useNotification()
+
+const { mobile } = useDisplay()
 
 const tableStore = useTableStore()
 const rootStore = useRootStore()
@@ -204,7 +209,7 @@ function formatAxis(value: string) {
 
 async function startLoading() {
   setTimeout(() => {
-    if (rootStore.isMobile) {
+    if (mobile) {
       // loading bar
     }
   })
@@ -215,7 +220,7 @@ async function startLoading() {
     if (error.status === 404) {
       items.value = []
     } else {
-      rootStore.setError(`Could not load data, please retry (Error ${error.status})`)
+      addError(`Could not load data, please retry (Error ${error.status})`)
     }
   }
   loading.value = false

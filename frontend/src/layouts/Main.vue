@@ -6,13 +6,14 @@
       <router-view keep-alive class="py-6 px-6" />
       <error-snackbar />
     </v-main>
-    <app-bottom-bar v-if="rootStore.isMobile" :items="mainItems" />
-    <app-footer :show-last-update="true" v-if="!rootStore.isMobile" />
+    <app-bottom-bar v-if="mobile" :items="mainItems" />
+    <app-footer :show-last-update="true" v-if="!mobile" />
   </v-app>
 </template>
 
 <script setup lang="ts">
 import { mdiFileFind, mdiPencil, mdiDatabase, mdiPlusCircle, mdiChartBox } from '@mdi/js'
+import { useDisplay } from 'vuetify'
 
 import AppFooter from '@/components/AppFooter.vue'
 import AppHeader from '@/components/AppHeader.vue'
@@ -25,7 +26,10 @@ import { computed, ref, onBeforeUnmount, watchEffect } from 'vue'
 import { useRootStore } from '@/stores/root'
 
 import dayjs from 'dayjs'
+import { useNotification } from '@/lib/notifications'
+const { addError } = useNotification()
 
+const { mobile } = useDisplay()
 const rootStore = useRootStore()
 const refreshGlassesInterval: any | null = ref(null)
 
@@ -60,7 +64,7 @@ async function updateGlasses() {
     rootStore.loadGlasses()
   } catch (error) {
     if (!rootStore.lastRefresh) {
-      rootStore.setError(`Could not load glasses database, please retry (Error ${error.status})`)
+      addError(`Could not load glasses database, please retry (Error ${error.status})`)
     } else if (dayjs().diff(rootStore.lastRefresh) > 3 * 24 * 60 * 60 * 1000) {
       // if the last successful update is more than three day ago, mark DB as outdated
       rootStore.isOutdated = true

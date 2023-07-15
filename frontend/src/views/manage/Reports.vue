@@ -51,6 +51,8 @@ import { useGlassesStore } from '@/stores/glasses'
 import dayjs from 'dayjs'
 import { ref, nextTick } from 'vue'
 import { useHead } from '@unhead/vue'
+import { useNotification } from '@/lib/notifications'
+const { addError } = useNotification()
 
 useHead({
   title: 'Reports',
@@ -80,7 +82,7 @@ async function downloadDispensedReport() {
     filename.value = `dispense_report_${rootStore.reimsSite}_${selectedDispenedYear.value}.csv`
     downloadCsv(csvFile)
   } catch (error) {
-    rootStore.setError(`Could not create dispense report (Error ${error.status})`)
+    addError(`Could not create dispense report (Error ${error.status})`)
   }
   loadingDispensedReport.value = false
 }
@@ -92,14 +94,14 @@ async function downloadInventoryReport() {
     filename.value = `inventory_${rootStore.reimsSite}.csv`
     downloadCsv(csvFile)
   } catch (error) {
-    rootStore.setError(`Could not create inventory report (Error ${error.status})`)
+    addError(`Could not create inventory report (Error ${error.status})`)
   }
   loadingInventoryReport.value = false
 }
 
 function downloadCsv(csvBlob: Blob) {
   if (!csvBlob || csvBlob.size === 0) {
-    rootStore.setError('Report is empty. Try selecting another year?')
+    addError('Report is empty. Try selecting another year?')
     return
   }
   const blob = new Blob([csvBlob], { type: 'application/csv' })

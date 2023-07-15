@@ -3,7 +3,7 @@ import { useHead } from 'unhead'
 
 const head = createHead({})
 useHead({
-  titleTemplate: '%s - REIMS2',
+  titleTemplate: (title?: string) => (title && title !== '' ? `${title} - REIMS2` : 'REIMS2'),
 })
 
 export default head

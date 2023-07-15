@@ -5,7 +5,7 @@
     :label="label"
     :rules="rules"
     :hint="hint"
-    :autofocus="first && !rootStore.isMobile"
+    :autofocus="first && !mobile"
     outlined
     clearable
     :persistent-hint="persistentHint"
@@ -23,19 +23,17 @@
 import { GeneralGlassesData } from '@/model/GlassesModel'
 import { ValidationRule } from '@/model/ReimsModel'
 
-import { useRootStore } from '@/stores/root'
-import { computed, ref } from 'vue'
-
-const rootStore = useRootStore()
+import { useDisplay } from 'vuetify'
+const { mobile } = useDisplay()
 
 interface Props {
-  modelValue: string
+  modelValue?: string
   label: string
   rules: ValidationRule[]
   hint: string
   items: GeneralGlassesData[]
-  first: boolean
-  persistentHint: boolean
+  first?: boolean
+  persistentHint?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',

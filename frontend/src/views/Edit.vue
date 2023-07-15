@@ -9,7 +9,7 @@
               <v-text-field
                 ref="firstInput"
                 v-model.number="sku"
-                :autofocus="!rootStore.isMobile"
+                :autofocus="!mobile"
                 label="SKU"
                 type="number"
                 :hint="hint"
@@ -72,6 +72,10 @@ import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRouteQuery } from '@vueuse/router'
 import { useHead } from '@unhead/vue'
+import { useDisplay } from 'vuetify'
+import { useNotification } from '@/lib/notifications'
+const { addError } = useNotification()
+const { mobile } = useDisplay()
 
 useHead({
   title: 'Edit Glasses',
@@ -145,12 +149,10 @@ async function submitDeletion(reason: string) {
   } catch (error) {
     isLoading.value = false
     if (error.status === 404) {
-      rootStore.setError(
-        'SKU ' + toDispense.sku + ' not found on server, was it already dispensed?',
-      )
+      addError('SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
     } else if (error.network || error.server) {
       if (error.server) {
-        rootStore.setError(
+        addError(
           `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`,
         )
         snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be dispensed when the server is back online`
@@ -162,7 +164,7 @@ async function submitDeletion(reason: string) {
       if (form.value) form.value.reset()
       if (firstInput.value) firstInput.value.focus()
     } else {
-      rootStore.setError(`Could not dispense glasses, please retry (Error ${error.status})`)
+      addError(`Could not dispense glasses, please retry (Error ${error.status})`)
     }
     return
   }
@@ -186,19 +188,17 @@ async function undoDispension(glasses: Glasses) {
   } catch (error) {
     isLoading.value = false
     if (error.status === 400) {
-      rootStore.setError(
+      addError(
         `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`,
       )
       snackbarMessage.value = ''
     } else if (error.network || error.server) {
-      rootStore.setError(
+      addError(
         "Network or server error. Dispension will be automatically reverted as soon as you're back online.",
       )
       snackbarMessage.value = ''
     } else {
-      rootStore.setError(
-        `Could not undo dispension of glasses, please retry (Error ${error.status}).`,
-      )
+      addError(`Could not undo dispension of glasses, please retry (Error ${error.status}).`)
     }
     return
   }
