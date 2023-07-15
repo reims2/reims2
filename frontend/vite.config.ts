@@ -21,7 +21,14 @@ export default defineConfig({
     }),
     VitePWA({ registerType: 'autoUpdate' }),
     UnheadVite(),
-    AutoImport({}),
+    AutoImport({
+      imports: ['vue'],
+      eslintrc: {
+        enabled: true,
+        filepath: 'src/.eslintrc-auto-import.json',
+      },
+      dts: 'src/auto-imports.d.ts',
+    }),
   ],
   define: { 'process.env': {} },
   resolve: {
