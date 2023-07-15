@@ -104,6 +104,11 @@ import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
 import { Eye, GlassesInput, OptionalEye, generalGlassesDataKeys } from '@/model/GlassesModel'
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Add Glasses',
+})
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()

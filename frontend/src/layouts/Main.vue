@@ -19,8 +19,9 @@ import AppHeader from '@/components/AppHeader.vue'
 import AppDrawer from '@/components/AppDrawer.vue'
 import AppBottomBar from '@/components/AppBottomBar.vue'
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'
+import { useOnline } from '@vueuse/core'
 
-import { computed, ref, onBeforeUnmount } from 'vue'
+import { computed, ref, onBeforeUnmount, watchEffect } from 'vue'
 import { useRootStore } from '@/stores/root'
 
 import dayjs from 'dayjs'
@@ -41,6 +42,11 @@ const otherItems = computed(() => [
   //   list.push({ title: 'Users', icon: mdiAccountEdit, to: '/manage/users', disabled: this.rootStore.isOffline })
   // }
 ])
+
+const isOnline = useOnline()
+watchEffect(() => {
+  rootStore.isOffline = !isOnline.value
+})
 
 updateGlasses()
 refreshGlassesInterval.value = setInterval(() => updateGlasses(), 3 * 60 * 1000)

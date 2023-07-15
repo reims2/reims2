@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useHead } from '@unhead/vue'
 
 const props = defineProps({
   error: {
@@ -29,7 +30,9 @@ const otherError = 'An error occurred'
 // eslint-disable-next-line no-unused-vars
 const title = computed(() => (props.error.statusCode === 404 ? pageNotFound : otherError))
 
-// todo useHead({ title, })
+useHead({
+  title: title.value,
+})
 </script>
 
 <style scoped>
