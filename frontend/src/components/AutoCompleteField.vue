@@ -14,13 +14,13 @@
     autocapitalize="off"
     @keyup.a.stop
     @keyup.s.stop
-    @blur="autoComplete(id)"
+    @blur="autoComplete()"
     @focus="$event.target.select()"
   />
 </template>
 
 <script setup lang="ts">
-import { generalEyeData } from '@/lib/util'
+import { GeneralGlassesData } from '@/model/GlassesModel'
 import { ValidationRule } from '@/model/ReimsModel'
 
 import { useRootStore } from '@/stores/root'
@@ -33,7 +33,7 @@ interface Props {
   label: string
   rules: ValidationRule[]
   hint: string
-  id: string
+  items: GeneralGlassesData[]
   first: boolean
   persistentHint: boolean
 }
@@ -57,17 +57,13 @@ const inputVal = computed({
   },
 })
 
-function autoComplete(id: string) {
+function autoComplete() {
   /** autocomplete item data based on first characters. i.e. for id=glassesType return single for character s.
    * Otherwise emit no input i.e. no change */
   const glassesString = inputVal.value
   if (!glassesString || typeof glassesString !== 'string' || glassesString === '') return
-  const data = generalEyeData.find((obj) => {
-    return obj.id === id
-  })
-  if (!data) return
 
-  for (const item of data.items) {
+  for (const item of props.items) {
     if (item.startsWith(glassesString.toLowerCase())) return emit('update:modelValue', item)
   }
 }

@@ -10,3 +10,5 @@ export interface DrawerItem {
 }
 
 export type ValidationRule = (v: any) => boolean | string
+
+export type Nullable<T> = { [K in keyof T]: T[K] | null }

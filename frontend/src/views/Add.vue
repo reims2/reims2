@@ -4,8 +4,8 @@
       <v-col cols="12" md="6" lg="4" class="pb-2 px-2 pt-4">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
-            <v-col v-for="item in generalEyeData" :key="item.label" cols="12" class="pa-0 pb-5">
-              <auto-complete-field ref="firstInput" v-model="newGlass![item.id]" v-bind="item" />
+            <v-col v-for="item in generalGlassesDataKeys" :key="item" cols="12" class="pa-0 pb-5">
+              <auto-complete-field ref="firstInput" v-model="newGlass[item]" v-bind="item" />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pr-md-5 py-0">
               <single-eye-input
@@ -14,7 +14,8 @@
                 :add-enabled="newGlass?.glassesType === 'multifocal'"
                 @update:modelValue="
                   (e) => {
-                    odEye[e.id] = e.value
+                    const index = e.id as keyof Eye
+                    odEye[index] = e.value
                   }
                 "
               />
@@ -26,8 +27,9 @@
                 :add-enabled="newGlass?.glassesType === 'multifocal'"
                 @update:modelValue="
                   (e) => {
+                    const index = e.id as keyof Eye
                     updateSync(osEye, e.value)
-                    osEye[e.id] = e.value
+                    osEye[index] = e.value
                   }
                 "
               />
@@ -68,16 +70,16 @@
         <div class="text-h6 pb-2">Recently added</div>
         <glass-card
           v-for="(item, idx) in lastAdded.slice(0, 3)"
-          :key="item.id"
-          :glass="item"
+          :key="item!.id"
+          :glass="item!"
           :style="'opacity: ' + (1 - idx * 0.3)"
           editable
         >
           <template #actions>
             <delete-button
-              :glass="item"
+              :glass="item!"
               fixed-reason="WRONGLY_ADDED"
-              @delete="submitDeletion(item.sku)"
+              @delete="submitDeletion(item!.sku)"
             />
           </template>
         </glass-card>
@@ -88,7 +90,6 @@
 
 <script setup lang="ts">
 import {
-  generalEyeData,
   sanitizeEyeValues,
   clearObjectProperties,
   reimsSiteNames as locationNames,
@@ -102,16 +103,16 @@ import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
-import { Eye, GlassesInput } from '@/model/GlassesModel'
+import { Eye, GlassesInput, OptionalEye, generalGlassesDataKeys } from '@/model/GlassesModel'
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()
 const reimsSite = computed(() => rootStore.reimsSite)
 const valid = ref(false)
 const loading = ref(false)
-const newGlass = ref<GlassesInput | null>(null)
-const odEye = ref({ axis: '', cylinder: '', sphere: '', add: '' })
-const osEye = ref({ axis: '', cylinder: '', sphere: '', add: '' })
+const newGlass = ref<Partial<GlassesInput>>({})
+const odEye = ref<OptionalEye>({ axis: '', cylinder: '', sphere: '', add: '' })
+const osEye = ref<OptionalEye>({ axis: '', cylinder: '', sphere: '', add: '' })
 const syncEyes = ref(true)
 const lastAddedSkus = ref([])
 const results = ref<HTMLElement | null>(null)
@@ -144,9 +145,12 @@ async function submit() {
   loading.value = true
   newGlass.value.od = sanitizeEyeValues(odEye.value)
   newGlass.value.os = sanitizeEyeValues(osEye.value)
+  if (newGlass.value.glassesType === undefined) throw new Error("glassesType can't be null")
+  if (newGlass.value.appearance === undefined) throw new Error("appearance can't be null")
+  if (newGlass.value.glassesSize === undefined) throw new Error("glassesSize can't be null")
 
   try {
-    const newGlasses = await glassesStore.addGlasses(newGlass.value)
+    const newGlasses = await glassesStore.addGlasses(newGlass.value as GlassesInput)
     lastAddedSkus.value = lastAddedSkus.value.filter((sku) => sku !== newGlasses.sku)
   } catch (error) {
     loading.value = false
@@ -169,12 +173,15 @@ async function submit() {
 function reset() {
   clearObjectProperties(odEye.value)
   clearObjectProperties(osEye.value)
-  newGlass.value = { od: null, os: null }
+  newGlass.value = {
+    od: { sphere: '', cylinder: '', axis: '', add: '' },
+    os: { sphere: '', cylinder: '', axis: '', add: '' },
+  }
   form.value?.reset()
   if (!rootStore.isMobile && firstInput.value) firstInput.value[0].focus()
   syncEyes.value = true
 }
-function updateSync(oldEye: Eye, newValue: number) {
+function updateSync(oldEye: OptionalEye, newValue: number) {
   if (oldEye.add !== newValue) syncEyes.value = false
 }
 async function submitDeletion(sku: number) {

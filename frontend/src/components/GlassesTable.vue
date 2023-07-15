@@ -57,10 +57,8 @@
       </tr>
     </template>
 
-    <template v-if="rootStore.isMobile" #item="{ item }">
-      <div class="mx-2 pb-1">
-        <glass-card v-bind:glass="item" />
-      </div>
+    <template v-if="rootStore.isMobile" #item="{}">
+      <div class="mx-2 pb-1">TODO</div>
     </template>
     <template #item.od.sphere="{ item }">{{ formatRx(item.columns['od.sphere']) }} D</template>
     <template #item.od.cylinder="{ item }">{{ formatRx(item.columns['od.cylinder']) }} D</template>
@@ -83,11 +81,10 @@
 import { mdiPencil } from '@mdi/js'
 import { useTableStore } from '@/stores/table'
 import { useRootStore } from '@/stores/root'
-import GlassCard from '@/components/GlassCard.vue'
 import MinMaxInput from '@/components/MinMaxInput.vue'
 import { reactive, computed, ref, watch, onActivated } from 'vue'
 import dayjs from 'dayjs'
-import { EyeIndexKey } from '@/model/GlassesModel'
+import { GlassesEyeIndex } from '@/model/GlassesModel'
 
 const tableStore = useTableStore()
 const rootStore = useRootStore()
@@ -138,7 +135,7 @@ const filterString = computed(() => {
   let filterString = ''
   const typeFilter = createSingleTypeFilter(glassesTypeFilter.value)
   if (typeFilter) filterString += typeFilter + ';'
-  const eyeKeys: EyeIndexKey[] = ['od', 'os']
+  const eyeKeys: GlassesEyeIndex[] = ['od', 'os']
   const eyeValueKeys: EyeValueKey[] = ['sphere', 'cylinder']
   for (const eyeName of eyeKeys) {
     for (const valName of eyeValueKeys) {
@@ -193,7 +190,7 @@ function formatDate(date: string) {
   return dayjs(date).format('DD.MM.YYYY')
 }
 
-function updateEyeFilter(value: any, eye: EyeIndexKey, child: EyeValueKey) {
+function updateEyeFilter(value: any, eye: GlassesEyeIndex, child: EyeValueKey) {
   eyeFilters[eye][child] = value
 }
 

@@ -6,20 +6,20 @@
           {{ eyeName }}
         </div>
       </v-col>
-      <v-col v-for="[id, item] in Object.entries(eyeData)" :key="id" cols="12" class="py-0 pl-0">
+      <v-col v-for="eyeKey in eyeKeys" :key="eyeKey" cols="12" class="py-0 pl-0">
         <v-text-field
           outlined
           dense
           type="number"
-          :value="eyeData[id].value"
-          :label="item.label"
-          :rules="!(item.disabled || isBAL) ? eyeRules[id] : []"
-          :step="item.step"
-          :disabled="item.disabled || isBAL"
-          :prefix="eyeData[id].value != null ? item.prefix : ''"
-          @update:modelValue="(val) => input(id, val)"
-          @update:error="(val: boolean) => (hasError[id] = val)"
-          @blur="update(id)"
+          :value="eyeData[eyeKey].value"
+          :label="eyeData[eyeKey].label"
+          :rules="!(eyeData[eyeKey].disabled || isBAL) ? eyeRules[eyeKey] : []"
+          :step="eyeData[eyeKey].step"
+          :disabled="eyeData[eyeKey].disabled || isBAL"
+          :prefix="eyeData[eyeKey].value != null ? eyeData[eyeKey].prefix : ''"
+          @update:modelValue="(val) => input(eyeKey, val)"
+          @update:error="(val: boolean) => (hasError[eyeKey] = val)"
+          @blur="update(eyeKey)"
           @focus="$event.target.select()"
           @keydown.s.prevent
           @keydown.a.prevent
@@ -41,17 +41,14 @@
 </template>
 
 <script setup lang="ts">
-import { GeneralGlassesData, eyeRules } from '@/lib/util'
+import { eyeRules } from '@/lib/util'
+import { Eye, EyeKey, OptionalEye, eyeKeys } from '@/model/GlassesModel'
 import { ref, computed } from 'vue'
 
-type Props = {
+interface Props extends OptionalEye {
   eyeName: string
-  axis: string | number
-  sphere: string | number
-  add: string | number
-  cylinder: string | number
   addEnabled: boolean
-  isBAL: boolean
+  isBAL?: boolean
   balEnabled: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
@@ -80,10 +77,8 @@ type EyeData = {
   disabled?: boolean
 }
 type EyeDataMap = {
-  sphere: EyeData
-  cylinder: EyeData
-  axis: EyeData
-  add?: EyeData
+  // eslint-disable-next-line no-unused-vars
+  [key in EyeKey]: EyeData
 }
 const eyeData = computed<EyeDataMap>(() => {
   return {
@@ -100,7 +95,7 @@ const eyeData = computed<EyeDataMap>(() => {
     },
     axis: {
       label: 'Axis',
-      disabled: props.cylinder === '' || props.cylinder === '0' || props.cylinder === 0,
+      disabled: props.cylinder === '' || props.cylinder === 0,
       value: props.axis,
     },
     add: {
@@ -117,7 +112,7 @@ function input(id: string, value: string | number | boolean) {
   emit('update:modelValue', { id, value })
 }
 
-function update(id: string) {
+function update(id: keyof Eye) {
   let newVal = eyeData.value[id].value
   if (id === 'cylinder') {
     // replace empty cylinder with 0
@@ -136,7 +131,7 @@ function update(id: string) {
   }
   if (!hasError.value[id]) {
     const step = eyeData.value[id].step
-    if (step > 0) {
+    if (step !== undefined && step > 0) {
       const number = Math.ceil(Math.abs(Number(newVal)) / step) * step
       if (!isNaN(number)) {
         // re-add the sign

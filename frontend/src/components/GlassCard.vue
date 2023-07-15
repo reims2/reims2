@@ -6,7 +6,7 @@
       on any value
     </v-tooltip>
     <v-card-title v-if="glass.sku">
-      <div v-if="glass.score != null" class="d-flex align-center">
+      <div v-if="isGlassesResult(glass)" class="d-flex align-center">
         <v-tooltip location="bottom">
           <template #activator="{ props }">
             <v-chip
@@ -27,31 +27,31 @@
       {{ glass.sku.toString().padStart(4, '0') }}
     </v-card-title>
     <v-card-subtitle class="text--primary pb-2 d-flex align-center">
-      <span v-for="item in generalEyeData" :key="item.id" class="pr-2">
-        <v-tooltip location="bottom" :disabled="editable && edit == item.id">
+      <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
+        <v-tooltip location="bottom" :disabled="editable && edit == key">
           <template #activator="{ props }">
-            <span class="no-child-padding" @click="edit = item.id">
+            <span class="no-child-padding" @click="edit = key">
               <v-select
-                v-if="editable && edit == item.id"
-                :value="glass[item.id]"
-                :items="item.items"
+                v-if="editable && edit == key"
+                :value="glass[key]"
+                :items="generalEyeData[key].items"
                 auto-select-first
                 single-line
                 hide-details
                 style="max-width: 130px"
                 autofocus
-                @update:modelValue="(value) => startEdit(null, item.id, value)"
+                @update:modelValue="(value) => editMeta(key, value)"
                 @blur="edit = ''"
               />
               <span v-else v-bind="props">
                 <v-icon small color="black">
-                  {{ item.icon }}
+                  {{ generalEyeData[key].icon }}
                 </v-icon>
-                {{ glass[item.id] }}
+                {{ glass[key] }}
               </span>
             </span>
           </template>
-          {{ item.desc }}
+          {{ generalEyeData[key].desc }}
         </v-tooltip>
       </span>
     </v-card-subtitle>
@@ -63,7 +63,7 @@
               <div class="text-subtitle-1">
                 {{ eye.text }}
               </div>
-              <div v-if="glass.score != null" class="d-flex align-center">
+              <div v-if="isGlassesResult(glass)" class="d-flex align-center">
                 <v-tooltip location="bottom">
                   <template #activator="{ props }">
                     <v-chip class="ml-2 px-2" x-small label :ripple="false" v-bind="props">
@@ -74,21 +74,19 @@
                 </v-tooltip>
               </div>
             </div>
-            <tr
-              v-for="[dataKey, dataItem] in Object.entries(eyeData)"
-              :key="dataKey"
-              @click="edit = eye.key + dataKey"
-            >
+            <tr v-for="dataKey in eyeDataKeys" :key="dataKey" @click="edit = eye.key + dataKey">
               <td class="text--secondary pr-2">
-                {{ dataItem.label }}
+                {{ eyeUIData[dataKey].label }}
               </td>
               <td>
                 <editable-span
-                  :modelValue="dataItem.format(glass[eye.key][dataKey])"
-                  :suffix="dataItem.suffix"
+                  :modelValue="
+                    eyeUIData[dataKey].format(glass[eye.key as GlassesEyeIndex][dataKey])
+                  "
+                  :suffix="eyeUIData[dataKey].suffix"
                   :rules="eyeRules[dataKey]"
                   :is-editing="editable && edit == eye.key + dataKey"
-                  @submit="(value) => startEdit(eye.key, dataKey, value)"
+                  @submit="(value) => editEye(eye.key as GlassesEyeIndex, dataKey, value)"
                 />
               </td>
             </tr>
@@ -120,12 +118,23 @@ import EditableSpan from './EditableSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
 import { computed, ref, watch } from 'vue'
-import { Glasses, EyeKey, GlassesKey } from '@/model/GlassesModel'
+import {
+  EyeKey,
+  GeneralGlassesDataKey,
+  Glasses,
+  GlassesAppearance,
+  GlassesEyeIndex,
+  GlassesResult,
+  GlassesSize,
+  GlassesType,
+  eyeKeys,
+  generalGlassesDataKeys,
+} from '@/model/GlassesModel'
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()
 
-const props = withDefaults(defineProps<{ glass: Glasses; editable: boolean }>(), {
+const props = withDefaults(defineProps<{ glass: Glasses | GlassesResult; editable: boolean }>(), {
   editable: false,
 })
 
@@ -145,49 +154,46 @@ const eyes = ref([
 const edit = ref('')
 const showTooltip = ref(false)
 const loading = ref(false)
+const eyeDataKeys = computed(() => {
+  if (props.glass.glassesType === 'multifocal') return eyeKeys
+  else return eyeKeys.filter((k) => k !== 'add')
+})
 type EyeData = {
   label: string
-  format: (v: string | number) => string
+  format: (v: any) => string
   suffix: string
   step?: number
 }
 type EyeDataMap = {
-  sphere: EyeData
-  cylinder: EyeData
-  axis: EyeData
-  add?: EyeData
+  // eslint-disable-next-line no-unused-vars
+  [key in EyeKey]: EyeData
 }
-const eyeData = computed(() => {
-  const tempData: EyeDataMap = {
-    sphere: {
-      label: 'SPH',
-      format: (v) => formatNumber(v as number, 2),
-      suffix: 'D',
-      step: 0.25,
-    },
-    cylinder: {
-      label: 'CYL',
-      format: (v) => formatNumber(v as number, 2),
-      suffix: 'D',
-    },
-    axis: {
-      label: 'Axis',
-      format: (v) =>
-        parseInt(v as string)
-          .toString()
-          .padStart(3, '0'),
-      suffix: '',
-    },
-  }
-  if (props.glass.glassesType !== 'single') {
-    tempData.add = {
-      label: 'Add',
-      format: (v) => formatNumber(v as number, 2),
-      suffix: 'D',
-    }
-  }
-  return tempData
-})
+const eyeUIData: EyeDataMap = {
+  sphere: {
+    label: 'SPH',
+    format: (v: any) => formatNumber(v as number, 2),
+    suffix: 'D',
+    step: 0.25,
+  },
+  cylinder: {
+    label: 'CYL',
+    format: (v: any) => formatNumber(v as number, 2),
+    suffix: 'D',
+  },
+  axis: {
+    label: 'Axis',
+    format: (v: any) =>
+      parseInt(v as string)
+        .toString()
+        .padStart(3, '0'),
+    suffix: '',
+  },
+  add: {
+    label: 'Add',
+    format: (v: any) => formatNumber(v as number, 2),
+    suffix: 'D',
+  },
+}
 
 watch(edit, () => {
   showTooltip.value = false
@@ -201,16 +207,26 @@ function formatNumber(val: number, decimals: number) {
   const prefix = val === 0 ? '' : val < 0 ? '-' : '+'
   return prefix + Math.abs(Number(val)).toFixed(decimals)
 }
-async function startEdit(eyeKey: EyeKey, dataKey: GlassesKey, value: any) {
+async function editMeta(dataKey: GeneralGlassesDataKey, value: any) {
   if (!props.editable) return // just as a "safety" fallback
   const newGlasses: Glasses = deepCopyGlasses(props.glass)
-  if (eyeKey == null) {
-    // edited a glasses general item like size or appearance
-    newGlasses[dataKey] = value
-  } else {
-    newGlasses[eyeKey][dataKey] = Number(value)
-    newGlasses[eyeKey] = sanitizeEyeValues(newGlasses[eyeKey])
+  if (dataKey === 'glassesType') {
+    newGlasses[dataKey] = value as GlassesType
+  } else if (dataKey === 'appearance') {
+    newGlasses[dataKey] = value as GlassesAppearance
+  } else if (dataKey === 'glassesSize') {
+    newGlasses[dataKey] = value as GlassesSize
   }
+  await startEdit(newGlasses)
+}
+async function editEye(eyeKey: GlassesEyeIndex, dataKey: EyeKey, value: any) {
+  if (!props.editable) return // just as a "safety" fallback
+  const newGlasses: Glasses = deepCopyGlasses(props.glass)
+  newGlasses[eyeKey][dataKey] = Number(value)
+  newGlasses[eyeKey] = sanitizeEyeValues(newGlasses[eyeKey])
+  await startEdit(newGlasses)
+}
+async function startEdit(newGlasses: Glasses) {
   try {
     loading.value = true
     await glassesStore.editGlasses(newGlasses)
@@ -230,6 +246,9 @@ async function startEdit(eyeKey: EyeKey, dataKey: GlassesKey, value: any) {
   loading.value = false
   edit.value = ''
   emit('edited', newGlasses)
+}
+function isGlassesResult(value: GlassesResult | Glasses): value is GlassesResult {
+  return (value as GlassesResult).score !== undefined
 }
 </script>
 
