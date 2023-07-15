@@ -1,5 +1,11 @@
 import { sanitizeEyeValues } from './util'
-import { Glasses, Eye, GlassesSearch, EyeSearch } from '@/model/GlassesModel'
+import {
+  Glasses,
+  Eye,
+  SanitizedEyeSearch,
+  GlassesSearch,
+  GlassesResult,
+} from '@/model/GlassesModel'
 
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 10
@@ -7,9 +13,12 @@ const PHILSCORE_CUT_OFF = 10
 const NORMAL_TOLERANCE = 0.5
 const HIGH_TOLERANCE = 1.0
 
-export default function calculateAllPhilscore(terms: GlassesSearch, glasses: Glasses[]): Glasses[] {
-  const rxOd = sanitizeEyeValues(terms.od) as EyeSearch
-  const rxOs = sanitizeEyeValues(terms.os) as EyeSearch
+export default function calculateAllPhilscore(
+  terms: GlassesSearch,
+  glasses: Glasses[],
+): GlassesResult[] {
+  const rxOd = sanitizeEyeValues(terms.od) as SanitizedEyeSearch
+  const rxOs = sanitizeEyeValues(terms.os) as SanitizedEyeSearch
   const isSinglefocal = terms.glassesType === 'single'
   const tolerance =
     terms.highTolerance !== null && terms.highTolerance ? HIGH_TOLERANCE : NORMAL_TOLERANCE
@@ -35,13 +44,14 @@ export default function calculateAllPhilscore(terms: GlassesSearch, glasses: Gla
       const odScore = rxOd.isBAL ? 0 : calcSingleEyePhilscore(rxOd, glass.od, isSinglefocal)
       const osScore = rxOs.isBAL ? 0 : calcSingleEyePhilscore(rxOs, glass.os, isSinglefocal)
 
-      return { ...glass, score: odScore + osScore, odScore, osScore }
+      const result: GlassesResult = { ...glass, score: odScore + osScore, odScore, osScore }
+      return result
     })
     .filter((glass) => glass.score <= PHILSCORE_CUT_OFF)
     .sort((a, b) => (a.score > b.score ? 1 : -1))
 }
 
-function checkForSingleAxisTolerance(rx: EyeSearch, lens: Eye): boolean {
+function checkForSingleAxisTolerance(rx: Eye, lens: Eye): boolean {
   /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
   // Some arbitrary numbers from the PDF, in short: Smaller cylinders allow for a greater tolerance.
   const toleranceYValues = [7, 8, 9, 10, 13, 15, 20, 25, 35, 90]
@@ -74,7 +84,7 @@ function checkForSingleAxisTolerance(rx: EyeSearch, lens: Eye): boolean {
   )
 }
 
-function checkForTolerances(lens: Eye, rx: EyeSearch, tolerance: number): boolean {
+function checkForTolerances(lens: Eye, rx: Eye, tolerance: number): boolean {
   /**
    * Check if the rx itself or any of its spherical equivalents is in the tolerance range of sphere+cylinder of lens.
    */
@@ -88,11 +98,11 @@ function checkForTolerances(lens: Eye, rx: EyeSearch, tolerance: number): boolea
   return false
 }
 
-function checkForAdditionalTolerance(eye: Eye, rx: EyeSearch, tolerance: number): boolean {
+function checkForAdditionalTolerance(eye: Eye, rx: Eye, tolerance: number): boolean {
   return Math.abs(eye.add! - rx.add!) <= tolerance
 }
 
-function calcSingleEyePhilscore(rx: EyeSearch, lens: Eye, isSinglefocal: boolean): number {
+function calcSingleEyePhilscore(rx: Eye, lens: Eye, isSinglefocal: boolean): number {
   /**
    * rx: desired values for a single eye
    * lens: single eye of one available glasses

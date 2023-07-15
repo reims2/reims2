@@ -1,4 +1,4 @@
-import { Glasses, GlassesSearch } from '@/model/GlassesModel'
+import { Glasses, GlassesInput, GlassesResult, GlassesSearch } from '@/model/GlassesModel'
 import calculateAllPhilscore from '@/lib/philscore'
 
 import { defineStore } from 'pinia'
@@ -11,8 +11,8 @@ let cancelTokenGet = axios.CancelToken.source()
 export const useGlassesStore = defineStore({
   id: 'glasses',
   actions: {
-    async addGlasses(newGlasses: Glasses): Promise<Glasses> {
-      const request = Object.assign({}, newGlasses)
+    async addGlasses(newGlasses: GlassesInput): Promise<Glasses> {
+      const request = Object.assign({}, newGlasses) as any
       const rootStore = useRootStore()
       request.location = rootStore.reimsSite
       const reponse = await axios.post('/api/glasses', request)
@@ -67,7 +67,7 @@ export const useGlassesStore = defineStore({
       rootStore.addOfflineGlasses(editedGlasses)
       return editedGlasses
     },
-    philScore(terms: GlassesSearch): Glasses[] {
+    philScore(terms: GlassesSearch): GlassesResult[] {
       const rootStore = useRootStore()
       return calculateAllPhilscore(terms, rootStore.allGlasses || ([] as Glasses[]))
     },

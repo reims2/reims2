@@ -26,9 +26,10 @@ const props = defineProps({
 const pageNotFound = 'Page not found'
 const otherError = 'An error occurred'
 
+// eslint-disable-next-line no-unused-vars
 const title = computed(() => (props.error.statusCode === 404 ? pageNotFound : otherError))
 
-//todo useHead({ title, })
+// todo useHead({ title, })
 </script>
 
 <style scoped>

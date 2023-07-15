@@ -117,7 +117,7 @@ import GlassCard from '@/components/GlassCard.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 
-import { Glasses, GlassesSearch, EyeSearchKey, EyeSearchInput } from '@/model/GlassesModel'
+import { EyeSearch, GlassesResult, GlassesSearch, GlassesType } from '@/model/GlassesModel'
 import { matchesAsCsvUri, generalEyeData, EyeEnum } from '@/lib/util'
 
 // TODO mixins: [ModifiedEnterToTabMixin],
@@ -129,18 +129,18 @@ const firstInput = ref<HTMLFormElement | null>(null)
 const form = ref<HTMLFormElement | null>(null)
 const results = ref<HTMLElement | null>(null)
 
-const matches = ref<null | Glasses[]>(null)
+const matches = ref<null | GlassesResult[]>(null)
 const valid = ref(false)
 const page = ref(1)
 const glassesType = ref('')
-const odEye = ref<EyeSearchInput>({
+const odEye = ref<EyeSearch>({
   axis: '',
   cylinder: '',
   sphere: '',
   add: '',
   isBAL: false,
 })
-const osEye = ref<EyeSearchInput>({
+const osEye = ref<EyeSearch>({
   axis: '',
   cylinder: '',
   sphere: '',
@@ -152,10 +152,7 @@ const syncEye = ref(true)
 
 const itemsPerPage = 3
 
-const glassesTypeData = generalEyeData.find((obj) => {
-  return obj.id === 'glassesType'
-})
-if (glassesTypeData === undefined) throw new Error('glassesTypeData is undefined')
+const glassesTypeData = generalEyeData.glassesType
 
 const _matchesAsCSVUri = computed(() => {
   if (!matches.value) return ''
@@ -251,24 +248,24 @@ async function submitAndUpdate() {
     else results.value?.scrollIntoView(true)
   })
 }
-function updateKey(key: EyeSearchKey, value: string | boolean, eye: EyeEnum) {
+function updateKey(key: keyof EyeSearch, value: number | boolean, eye: EyeEnum) {
   if (eye === EyeEnum.OD) {
     if (key === 'isBAL') {
       odEye.value.isBAL = value as boolean
     } else {
-      odEye.value[key] = value as string
+      odEye.value[key] = value as number | ''
     }
   } else if (eye === EyeEnum.OS) {
     if (key === 'isBAL') {
       osEye.value.isBAL = value as boolean
     } else {
-      osEye.value[key] = value as string
+      osEye.value[key] = value as number | ''
     }
   }
 }
 async function loadMatches() {
   const eyeModel: GlassesSearch = {
-    glassesType: glassesType.value,
+    glassesType: glassesType.value as GlassesType,
     os: { ...osEye.value },
     od: { ...odEye.value },
     highTolerance: highTolerance.value,

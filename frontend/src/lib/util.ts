@@ -1,12 +1,13 @@
 import { mdiArrowLeftRight, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
-import { Glasses, Eye, GlassesResult, GeneralGlassesDataKey } from '@/model/GlassesModel'
-import { ValidationRule } from '@/model/ReimsModel'
 import {
-  EyeInput,
-  EyeSearch,
-  EyeSearchInput,
-  GeneralGlassesDataValue,
-} from '@/model/GlassesInputModel'
+  Glasses,
+  Eye,
+  GlassesResult,
+  GeneralGlassesData,
+  GeneralGlassesDataKey,
+  OptionalEye,
+} from '@/model/GlassesModel'
+import { ValidationRule } from '@/model/ReimsModel'
 
 const isAllowedStep = (number: number) => {
   if (number == null || !number) return true // we don't handle that
@@ -51,10 +52,9 @@ export const eyeRules = {
   ] as ValidationRule[],
 }
 
-export type GeneralGlassesData = {
-  id: GeneralGlassesDataKey
+export type GeneralGlassesUIData = {
   label: string
-  items: GeneralGlassesDataValue[]
+  items: GeneralGlassesData[]
   rules: ValidationRule[]
   hint: string
   first?: boolean
@@ -62,9 +62,13 @@ export type GeneralGlassesData = {
   desc: string
 }
 
-export const generalEyeData: GeneralGlassesData[] = [
-  {
-    id: 'glassesType',
+type AllGeneralGlassesUIData = {
+  // eslint-disable-next-line no-unused-vars
+  [key in GeneralGlassesDataKey]: GeneralGlassesUIData
+}
+
+export const generalEyeData: AllGeneralGlassesUIData = {
+  glassesType: {
     label: 'Type',
     items: ['single', 'multifocal'],
     rules: [
@@ -77,8 +81,7 @@ export const generalEyeData: GeneralGlassesData[] = [
     icon: mdiGlasses,
     desc: 'Glasses type (single or multifocal)',
   },
-  {
-    id: 'glassesSize',
+  glassesSize: {
     label: 'Size',
     items: ['small', 'medium', 'large', 'child'],
     hint: '(s)mall, (m)edium, (l)arge or (c)hild',
@@ -94,8 +97,7 @@ export const generalEyeData: GeneralGlassesData[] = [
     icon: mdiArrowLeftRight,
     desc: 'Glasses size (small, medium, large or child)',
   },
-  {
-    id: 'appearance',
+  appearance: {
     label: 'Appearance',
     items: ['neutral', 'feminine', 'masculine'],
     hint: '(n)eutral, (f)eminine or (m)asculine',
@@ -107,7 +109,7 @@ export const generalEyeData: GeneralGlassesData[] = [
     icon: mdiHumanMaleFemale,
     desc: 'Glasses appearance (neutral, feminine or masculine)',
   },
-]
+}
 
 export function deepCopyGlasses(oldGlasses: Glasses): Glasses {
   const newGlasses: Glasses = Object.assign({}, oldGlasses)
@@ -178,7 +180,7 @@ export function propsAsNumber(obj: any): Record<string, number> {
 }
 
 /** Eye is fixed by applying step rounding and the correct sign for cylinder */
-export function sanitizeEyeValues(singleEye: EyeInput | EyeSearchInput): Eye | EyeSearch {
+export function sanitizeEyeValues(singleEye: OptionalEye): Eye {
   const rx = propsAsNumber(singleEye)
   // easier for calculation
   if (rx.axis === 180) rx.axis = 0
