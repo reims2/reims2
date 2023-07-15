@@ -39,6 +39,11 @@ import { useAuth } from 'vue-auth3'
 
 import AppHeader from '@/components/AppHeader.vue'
 import router from '@/router'
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Login',
+})
 
 const username = ref('')
 const password = ref('')

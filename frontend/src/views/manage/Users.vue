@@ -114,6 +114,11 @@ import { User } from '@/model/UserModel'
 import { ref } from 'vue'
 import { useUsersStore } from '@/stores/users'
 import { useRootStore } from '@/stores/root'
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Manage Users',
+})
 
 const usersStore = useUsersStore()
 const rootStore = useRootStore()

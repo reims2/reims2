@@ -71,6 +71,13 @@ import DeleteButton from '@/components/DeleteButton.vue'
 import { watch, ref } from 'vue'
 import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
+import { useRouteQuery } from '@vueuse/router'
+import { useHead } from '@unhead/vue'
+import { watchEffect } from 'vue'
+
+useHead({
+  title: 'Edit Glasses',
+})
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()
@@ -108,13 +115,15 @@ watch(sku, async (newSku, oldSku) => {
   }
   errorMesssage.value = ''
 })
-// TODO activated() {
-//   if (this.$route.query.sku) {
-//     this.$nextTick(() => {
-//       this.sku = this.$route.query.sku
-//     })
-//   }
-// },
+
+const querySku = useRouteQuery('sku')
+watchEffect(() => {
+  if (querySku.value) {
+    if (Array.isArray(querySku.value)) {
+      sku.value = querySku.value[0]
+    } else sku.value = querySku.value
+  }
+})
 
 async function submitDispension() {
   await submitDeletion('DISPENSED')
