@@ -49,7 +49,13 @@
         </v-form>
       </v-col>
     </v-row>
-    <v-snackbar v-if="snackbarMessage != ''" :value="true" :timeout="-1" vertical absolute bottom>
+    <v-snackbar
+      v-if="snackbarMessage != ''"
+      :model-value="true"
+      :timeout="-1"
+      vertical
+      :attach="true"
+    >
       <template v-slot:actions>
         <v-btn v-if="lastDispensed != null" variant="text" @click="undoDispension(lastDispensed)">
           Undo

@@ -1,5 +1,6 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const routes = [
   {
@@ -13,9 +14,13 @@ const routes = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () => import('@/views/Home.vue'),
+        meta: {
+          auth: false,
+        },
       },
       {
         path: '/login',
+        name: 'Login',
         component: () => import('@/views/Login.vue'),
         meta: {
           auth: false,
@@ -72,6 +77,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+})
+router.beforeEach((to) => {
+  const authStore = useAuthStore()
+  if (!authStore.isLoggedIn) {
+    if (to.meta.auth === undefined || (to.meta.auth && to.name !== 'Login')) {
+      return { name: 'Login', query: { redirect: to.fullPath } }
+    }
+  }
 })
 router.afterEach((to) => {
   nextTick(() => {

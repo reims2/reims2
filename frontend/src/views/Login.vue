@@ -35,25 +35,26 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuth } from 'vue-auth3'
 
 import AppHeader from '@/components/AppHeader.vue'
 import router from '@/router'
+import { useAuthStore } from '@/stores/auth'
+import { useRouteQuery } from '@vueuse/router'
 
 const username = ref('')
 const password = ref('')
 const valid = ref(false)
 const errorText = ref('')
 
-const auth = useAuth()
+const authStore = useAuthStore()
+const redirectQuery = useRouteQuery('redirect')
+const redirect = computed(() => redirectQuery.value?.toString() || '/find')
 
 const userLogin = async () => {
   errorText.value = ''
   try {
-    await auth.login({
-      data: { username: username.value, password: password.value },
-    })
-    router.push('/find')
+    await authStore.login(username.value, password.value)
+    router.push(redirect.value)
   } catch (err) {
     console.log(err)
     if (err.status === 401) {

@@ -3,7 +3,6 @@ import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { VitePWA } from 'vite-plugin-pwa'
 import AutoImport from 'unplugin-auto-import/vite'
-import basicSsl from '@vitejs/plugin-basic-ssl'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -28,7 +27,6 @@ export default defineConfig({
       },
       dts: 'src/auto-imports.d.ts',
     }),
-    basicSsl(),
   ],
   define: { 'process.env': {} },
   resolve: {
@@ -41,10 +39,17 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: process.env.API_URL ?? 'http://localhost:9966',
+        target: 'http://localhost:9966/',
       },
     },
-    https: true,
     strictPort: true,
+  },
+  build: {
+    rollupOptions: {
+      // https://rollupjs.org/guide/en/#outputmanualchunks
+      output: {
+        manualChunks: {},
+      },
+    },
   },
 })

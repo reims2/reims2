@@ -2,24 +2,28 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { Notification } from '@/lib/notifications'
 import { ReimsSite } from '@/model/ReimsModel'
 
-export const useRootStore = defineStore({
-  id: 'root',
-  persist: {
-    paths: ['reimsSite', 'drawer'],
+export const useRootStore = defineStore(
+  'root',
+  () => {
+    const notification = ref(null as Notification | null)
+    const drawer = ref(true)
+    const isDev = ref(false)
+    const reimsSite = ref('sa' as ReimsSite)
+    const version = ref('0.0.0')
+    function toggleDrawer() {
+      drawer.value = !drawer.value
+    }
+    return {
+      notification,
+      drawer,
+      isDev,
+      reimsSite,
+      version,
+      toggleDrawer,
+    }
   },
-  state: () => ({
-    notification: null as Notification | null,
-    drawer: true,
-    isDev: false,
-    reimsSite: 'sa' as ReimsSite,
-    version: '0.0.0',
-  }),
-  actions: {
-    toggleDrawer() {
-      this.drawer = !this.drawer
-    },
-  },
-})
+  { persist: true },
+)
 
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useRootStore, import.meta.hot))

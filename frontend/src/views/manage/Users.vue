@@ -17,13 +17,15 @@
               </td>
               <td>{{ item.roles.map((el) => el.name).join(', ') }}</td>
               <td>
-                <v-btn v-if="!editInfo" icon @click="editInfo = true">
+                <v-btn icon size="x-small" @click="editInfo = true">
                   <v-icon>{{ mdiPencil }}</v-icon>
                 </v-btn>
                 <v-btn
                   v-if="!isCurrentUser(item.username)"
                   icon
+                  size="x-small"
                   color="error"
+                  class="ml-2"
                   :loading="deleteLoading == item.id"
                   @click="deleteUser(item.id!)"
                 >
@@ -38,6 +40,7 @@
         <v-alert
           v-if="editInfo"
           type="info"
+          color="primary"
           variant="outlined"
           density="compact"
           class="mt-4"
@@ -123,11 +126,13 @@ import { User } from '@/model/UserModel'
 
 import { ref } from 'vue'
 import { useUsersStore } from '@/stores/users'
+import { useAuthStore } from '@/stores/auth'
 
 import { useNotification } from '@/lib/notifications'
 const { addError } = useNotification()
 
 const usersStore = useUsersStore()
+const authStore = useAuthStore()
 
 const items = ref<User[]>([])
 const newPassword = ref('')
@@ -141,8 +146,9 @@ const deleteLoading = ref<number | boolean>(false)
 const dialog = ref(false)
 
 const form = ref<HTMLFormElement | null>(null)
+startLoading()
 
-const startLoading = async () => {
+async function startLoading() {
   try {
     items.value = await usersStore.get()
   } catch (error) {
@@ -175,7 +181,7 @@ const addUser = async () => {
 const deleteUser = async (userId: number) => {
   deleteLoading.value = userId
   try {
-    await usersStore.delete(userId)
+    await usersStore.deleteUser(userId)
   } catch (error) {
     addError(`Could not delete user (Error ${error.status}).`)
     console.log(error)
@@ -185,7 +191,6 @@ const deleteUser = async (userId: number) => {
 }
 
 function isCurrentUser(username: string) {
-  return false
-  // TODO return this.$auth.user && username === this.$auth.user.username
+  return username === authStore.user
 }
 </script>

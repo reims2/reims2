@@ -12,7 +12,7 @@
       </div>
       <div v-if="true && !miniDrawer" class="text--secondary ml-3 mb-1">
         Logged in as
-        <span class="font-weight-bold">TODO username</span>
+        <span class="font-weight-bold">{{ authStore.user }}</span>
       </div>
     </template>
     <location-dialog v-model="dialog" />
@@ -77,7 +77,8 @@
         <v-list-item
           @click="
             () => {
-              console.log('TODO')
+              authStore.logout()
+              router.push('/')
             }
           "
           title="Logout"
@@ -94,6 +95,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRootStore } from '@/stores/root'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 
 import { mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
 import { reimsSiteNames } from '@/lib/util'
@@ -108,6 +111,8 @@ defineProps<{
 }>()
 
 const rootStore = useRootStore()
+const authStore = useAuthStore()
+const router = useRouter()
 const reimsSite = computed(() => rootStore.reimsSite)
 
 const dialog = ref(false)
