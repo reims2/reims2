@@ -26,7 +26,8 @@
     - reload stack
     - wait for mariadb
 
-- name: Handle the error
+- name: SQL restore block
+  when: db_dump is not false
   block:
     - name: Copy SQL dump file onto host
       ansible.builtin.copy:
@@ -37,11 +38,9 @@
         group: root
         force: true
       register: dump_file
-      when: db_dump is not false
 
     - name: Flush handlers to make restoring dump possible
       ansible.builtin.meta: flush_handlers
-      when: db_dump is not false
 
     - name: Restore dump
       args:
@@ -49,7 +48,6 @@
       ansible.builtin.shell: |
         set -o pipefail
         cat {{ dump_location }} | docker exec -i $(docker ps -q -f name={{ stack_name }}_mariadb) /usr/bin/mariadb -p{{ reims2_db_root_password }} {{ reims2_db_name }}
-      when: db_dump is not false
   rescue:
     - name: Print error
       ansible.builtin.debug:
