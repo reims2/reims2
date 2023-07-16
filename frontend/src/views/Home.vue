@@ -1,44 +1,53 @@
 <template>
-  <v-container fluid class="ma-0 pa-0 hero-bg" style="height: 100%">
-    <div absolute class="pa-0 ma-0 opaque" style="height: 100%">
-      <v-row class="px-3" style="margin-top: -10vh">
-        <v-col class="pb-3 text-center" cols="12">
-          <h1 class="text-h2">REIMS2</h1>
-        </v-col>
-        <v-col class="pb-6 text-center d-flex justify-center" cols="12">
-          <p class="text-subtitle-1 text-md-h6" style="max-width: 600px">
-            REIMS2 is the next version of the Richmond Eyeglass Inventory Matching System. It
-            supports the annual visual health campaigns run by non-profit
-            <a
-              href="https://partnersforvisualhealth.org/"
-              tabindex="-1"
-              target="”_blank”"
-              rel="noopener"
-              class="text-white"
-            >
-              Partners for Visual Health
-            </a>
-            .
-          </p>
-        </v-col>
-        <v-col cols="12">
-          <v-row class="justify-center align-center">
-            <v-col class="d-flex justify-center" cols="12" md="auto">
-              <v-btn to="/find" x-large color="primary">Open REIMS2</v-btn>
-            </v-col>
-            <v-col class="d-flex justify-center" cols="12" md="auto">
-              <v-btn href="/docs/" target="_blank" x-large outlined>
-                <v-icon left size="24">
-                  {{ mdiFileDocument }}
-                </v-icon>
-                View Manual
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+  <div absolute class="pa-0 ma-0 hero-bg opaque" style="height: 100%">
+    <div style="height: 100%" class="opaque d-flex justify-center align-center">
+      <v-container fluid class="ma-0 pa-0">
+        <v-row class="px-3">
+          <v-col class="pb-3 text-center text-white" cols="12">
+            <h1 class="text-h2">REIMS2</h1>
+          </v-col>
+          <v-col class="pb-6 text-center d-flex justify-center text-white" cols="12">
+            <p class="text-subtitle-1 text-md-h6" style="max-width: 600px">
+              REIMS2 is the next version of the Richmond Eyeglass Inventory Matching System. It
+              supports the annual visual health campaigns run by non-profit
+              <a
+                href="https://partnersforvisualhealth.org/"
+                tabindex="-1"
+                target="”_blank”"
+                rel="noopener"
+                class="text-white"
+              >
+                Partners for Visual Health
+              </a>
+              .
+            </p>
+          </v-col>
+          <v-col cols="12">
+            <v-row class="justify-center align-center">
+              <v-col class="d-flex justify-center" cols="12" md="auto">
+                <v-btn to="/find" size="x-large" color="primary">Open REIMS2</v-btn>
+              </v-col>
+              <v-col class="d-flex justify-center" cols="12" md="auto">
+                <v-btn
+                  href="/docs/"
+                  target="_blank"
+                  size="x-large"
+                  large
+                  variant="outlined"
+                  color="white"
+                >
+                  <v-icon left size="24">
+                    {{ mdiFileDocument }}
+                  </v-icon>
+                  View Manual
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -53,7 +62,7 @@ import { mdiFileDocument } from '@mdi/js'
   background-repeat: no-repeat;
 }
 .opaque {
-  opacity: 0.87;
-  background-color: black;
+  opacity: 0.97;
+  background-color: rgb(33, 33, 33);
 }
 </style>

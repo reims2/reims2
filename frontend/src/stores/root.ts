@@ -9,7 +9,7 @@ export const useRootStore = defineStore({
   },
   state: () => ({
     notification: null as Notification | null,
-    drawer: false,
+    drawer: true,
     isDev: false,
     reimsSite: 'sa' as ReimsSite,
     version: '0.0.0',

@@ -7,7 +7,7 @@
             <v-chip
               class="mr-2 px-2 text-white font-weight-black"
               :color="calcColor(glass.score)"
-              small
+              size="small"
               label
               :ripple="false"
             >
@@ -40,7 +40,7 @@
                 @blur="edit = ''"
               />
               <span v-else v-bind="props">
-                <v-icon small color="black">
+                <v-icon size="small" color="black">
                   {{ generalEyeData[key].icon }}
                 </v-icon>
                 {{ glass[key] }}
@@ -57,7 +57,7 @@
                     {{ eye.text }}
                   </div>
                   <div v-if="isGlassesResult(glass)" class="d-flex align-center">
-                    <v-chip class="ml-2 px-2" x-small label :ripple="false" v-bind="props">
+                    <v-chip class="ml-2 px-2" size="x-small" label :ripple="false" v-bind="props">
                       <v-tooltip activator="parent" location="bottom">
                         PhilScore only for {{ eye.text }}
                       </v-tooltip>

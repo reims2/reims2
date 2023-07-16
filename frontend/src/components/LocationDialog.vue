@@ -6,10 +6,10 @@
     @update:modelValue="(e) => updateDialogState(e)"
   >
     <v-card>
-      <v-card-title class="text-h5 text-white primary">Change location</v-card-title>
+      <v-card-title class="text-h5 text-white bg-primary">Change location</v-card-title>
 
       <v-card-text>
-        <v-select v-model="newLocation" :items="locations" class="mt-5" />
+        <v-select v-model="newLocation" :items="locations" class="mt-2" />
       </v-card-text>
 
       <v-divider />
