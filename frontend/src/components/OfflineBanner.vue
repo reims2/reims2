@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRootStore } from '@/stores/root'
+import { useGlassesStore } from '@/stores/glasses'
 import { computed } from 'vue'
 import LastRefreshSpan from '@/components/LastRefreshSpan.vue'
 
-const rootStore = useRootStore()
-const isOutdated = computed(() => rootStore.isOutdated)
-const lastRefresh = computed(() => rootStore.lastRefresh)
+const glassesStore = useGlassesStore()
+const isOutdated = computed(() => glassesStore.isOutdated)
+const lastRefresh = computed(() => glassesStore.lastRefresh)
 </script>

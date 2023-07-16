@@ -7497,6 +7497,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pinia-plugin-persistedstate@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "pinia-plugin-persistedstate@npm:3.1.0"
+  peerDependencies:
+    pinia: ^2.0.0
+  checksum: 00f5c3b580ec4fffcd0f9cb8dab2cb0dedf9a119034e5385df4c06682e78933cfd85203b602632e0c696dd95ccace5bee21381695319bbd4f6b70ce7115f5140
+  languageName: node
+  linkType: hard
+
 "pinia@npm:2.1.4":
   version: 2.1.4
   resolution: "pinia@npm:2.1.4"
@@ -7795,6 +7804,7 @@ __metadata:
     jest: 29.6.1
     jest-extended: 4.0.0
     pinia: 2.1.4
+    pinia-plugin-persistedstate: ^3.1.0
     prettier: 3.0.0
     roboto-fontface: 0.10.0
     sass: 1.63.6

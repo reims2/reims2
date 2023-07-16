@@ -1,56 +1,20 @@
-import { Glasses } from '@/model/GlassesModel'
 import { defineStore } from 'pinia'
-import axios from 'axios'
-import { ReimsSite } from '@/model/ReimsModel'
 import { Notification } from '@/lib/notifications'
-
-const arrayContainsSku = (data: Glasses[], sku: number) => data.some((e) => e.sku === sku)
+import { ReimsSite } from '@/model/ReimsModel'
 
 export const useRootStore = defineStore({
   id: 'root',
+  persist: {
+    paths: ['reimsSite', 'drawer'],
+  },
   state: () => ({
-    allGlasses: [] as Glasses[],
-    lastRefresh: null as string | null,
-    reimsSite: 'sa' as ReimsSite,
     notification: null as Notification | null,
     drawer: false,
-    isOutdated: false,
-    isRefreshingGlasses: false,
-    isOffline: false,
-    isMobile: false,
     isDev: false,
+    reimsSite: 'sa' as ReimsSite,
     version: '0.0.0',
   }),
-  getters: {
-    hasGlassesLoaded: (state) => {
-      return state.allGlasses.length > 0
-    },
-    getSingle: (state) => (sku: number) => {
-      return state.allGlasses.find((glass) => glass.sku === sku)
-    },
-  },
   actions: {
-    async loadGlasses() {
-      const response = await axios.get(`/api/glasses/${this.reimsSite}`, {
-        params: { size: 100000 },
-        timeout: 60000,
-      })
-      this.allGlasses = response.data.glasses
-      this.lastRefresh = new Date().toISOString()
-      this.isOutdated = false
-      this.isRefreshingGlasses = false
-    },
-    addOfflineGlasses(glasses: Glasses) {
-      if (!arrayContainsSku(this.allGlasses, glasses.sku)) {
-        this.allGlasses.push(glasses)
-      }
-    },
-    deleteOfflineGlasses(sku: number) {
-      if (arrayContainsSku(this.allGlasses, sku)) {
-        // call arrayContainsSku to avoid unnecessary reactive changes when replacing the array like this TODO
-        this.allGlasses = this.allGlasses.filter((el) => el.sku !== sku)
-      }
-    },
     toggleDrawer() {
       this.drawer = !this.drawer
     },

@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import { mdiDotsVertical } from '@mdi/js'
 import { useGlassesStore } from '@/stores/glasses'
-import { useRootStore } from '@/stores/root'
+
 import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
 import { Glasses } from '@/model/GlassesModel'
@@ -78,7 +78,6 @@ const { addError } = useNotification()
 const { mobile } = useDisplay()
 
 const glassesStore = useGlassesStore()
-const rootStore = useRootStore()
 
 const valid = ref(false)
 const sku = ref('')
@@ -152,7 +151,7 @@ async function submitDeletion(reason: string) {
           `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`,
         )
         snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be dispensed when the server is back online`
-        rootStore.deleteOfflineGlasses(toDispense.sku)
+        glassesStore.deleteOfflineGlasses(toDispense.sku)
       } else {
         snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be dispensed when you're back online`
       }

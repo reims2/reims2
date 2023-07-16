@@ -23,11 +23,11 @@
 
 <script setup lang="ts">
 import LastRefreshSpan from '@/components/LastRefreshSpan.vue'
-import { useRootStore } from '@/stores/root'
 import { computed } from 'vue'
+import { useGlassesStore } from '@/stores/glasses'
 
 defineProps<{ showLastUpdate: boolean }>()
 
-const rootStore = useRootStore()
-const glassesCount = computed(() => rootStore.allGlasses.length)
+const glassesStore = useGlassesStore()
+const glassesCount = computed(() => glassesStore.allGlasses.length)
 </script>

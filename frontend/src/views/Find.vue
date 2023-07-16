@@ -111,7 +111,6 @@
 <script setup lang="ts">
 import { ref, watch, computed, nextTick } from 'vue'
 import { useGlassesStore } from '@/stores/glasses'
-import { useRootStore } from '@/stores/root'
 
 import GlassCard from '@/components/GlassCard.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
@@ -126,8 +125,7 @@ const { mobile } = useDisplay()
 
 // TODO mixins: [ModifiedEnterToTabMixin],
 const glassesStore = useGlassesStore()
-const rootStore = useRootStore()
-const allGlasses = computed(() => rootStore.allGlasses)
+const allGlasses = computed(() => glassesStore.allGlasses)
 
 const firstInput = ref<HTMLFormElement | null>(null)
 const form = ref<HTMLFormElement | null>(null)
@@ -163,7 +161,7 @@ const _matchesAsCSVUri = computed(() => {
   return matchesAsCsvUri(matches.value.slice(0, 30))
 })
 const searchButtonDisabled = computed(() => {
-  return !valid.value && rootStore.hasGlassesLoaded
+  return !valid.value && glassesStore.hasGlassesLoaded
 })
 const paginatedMatches = computed(() => {
   if (matches.value == null) return null

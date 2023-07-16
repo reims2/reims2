@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex align-center">
     <v-progress-circular
-      :style="{ visibility: rootStore.isRefreshingGlasses ? 'visible' : 'hidden' }"
+      :style="{ visibility: glassesStore.isRefreshingGlasses ? 'visible' : 'hidden' }"
       indeterminate
       size="17"
       color="white"
@@ -13,14 +13,14 @@
 
 <script setup lang="ts">
 import { ref, watch, onBeforeUnmount, computed } from 'vue'
-import { useRootStore } from '@/stores/root'
+import { useGlassesStore } from '@/stores/glasses'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 dayjs.extend(relativeTime)
 
-const rootStore = useRootStore()
-const lastRefresh = computed(() => rootStore.lastRefresh)
+const glassesStore = useGlassesStore()
+const lastRefresh = computed(() => glassesStore.lastRefresh)
 const lastRefreshString = ref<string | null>(null)
 
 watch(
