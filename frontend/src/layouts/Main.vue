@@ -21,22 +21,22 @@ import {
   mdiAccountEdit,
 } from '@mdi/js'
 import { useDisplay } from 'vuetify'
+import dayjs from 'dayjs'
 
 import AppFooter from '@/components/AppFooter.vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppDrawer from '@/components/AppDrawer.vue'
 import AppBottomBar from '@/components/AppBottomBar.vue'
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'
+
 import { useOnline } from '@vueuse/core'
-
-import { useRootStore } from '@/stores/root'
-
-import dayjs from 'dayjs'
 import { useNotification } from '@/lib/notifications'
+import { useGlassesStore } from '@/stores/glasses'
+
 const { addError } = useNotification()
 
 const { mobile } = useDisplay()
-const rootStore = useRootStore()
+const glassesStore = useGlassesStore()
 const refreshGlassesInterval: any | null = ref(null)
 
 const mainItems = computed(() => [
@@ -69,13 +69,13 @@ onBeforeUnmount(() => {
 
 async function updateGlasses() {
   try {
-    rootStore.loadGlasses()
+    glassesStore.loadGlasses()
   } catch (error) {
-    if (!rootStore.lastRefresh) {
+    if (!glassesStore.lastRefresh) {
       addError(`Could not load glasses database, please retry (Error ${error.status})`)
-    } else if (dayjs().diff(rootStore.lastRefresh) > 3 * 24 * 60 * 60 * 1000) {
+    } else if (dayjs().diff(glassesStore.lastRefresh) > 3 * 24 * 60 * 60 * 1000) {
       // if the last successful update is more than three day ago, mark DB as outdated
-      rootStore.isOutdated = true
+      glassesStore.isOutdated = true
     }
     // else just fail silently because there's still a recent enough version of the DB cached
     console.log('DB update failed', error)

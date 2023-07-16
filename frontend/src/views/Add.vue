@@ -130,9 +130,9 @@ const form = ref<HTMLFormElement | null>(null)
 const firstInput = ref<HTMLElement[] | null>(null)
 
 const lastAdded = computed(() =>
-  lastAddedSkus.value.map((sku) => rootStore.allGlasses.find((g) => g.sku === sku)),
+  lastAddedSkus.value.map((sku) => glassesStore.allGlasses.find((g) => g.sku === sku)),
 )
-const freeSlots = computed(() => 5000 - rootStore.allGlasses.length)
+const freeSlots = computed(() => 5000 - glassesStore.allGlasses.length)
 
 watch(
   () => odEye.value.add,
@@ -143,10 +143,10 @@ watch(
 )
 
 watch(
-  () => rootStore.allGlasses,
+  () => glassesStore.allGlasses,
   () => {
     lastAddedSkus.value = lastAddedSkus.value.filter((sku) =>
-      rootStore.allGlasses.find((g) => g.sku === sku),
+      glassesStore.allGlasses.find((g) => g.sku === sku),
     )
   },
 )

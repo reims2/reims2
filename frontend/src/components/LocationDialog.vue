@@ -34,11 +34,14 @@
 <script setup lang="ts">
 import { ReimsSite } from '@/model/ReimsModel'
 import { useRootStore } from '@/stores/root'
+import { useGlassesStore } from '@/stores/glasses'
 import { ref } from 'vue'
 import { useNotification } from '@/lib/notifications'
 const { addError } = useNotification()
 
 const rootStore = useRootStore()
+const glassesStore = useGlassesStore()
+
 defineProps({
   modelValue: {
     type: Boolean,
@@ -63,7 +66,7 @@ async function changeLocation() {
   rootStore.reimsSite = newLocation.value
 
   try {
-    await rootStore.loadGlasses()
+    await glassesStore.loadGlasses()
   } catch (error) {
     // reset location
     newLocation.value = prevLocation
