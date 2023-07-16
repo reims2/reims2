@@ -68,10 +68,10 @@
         </v-form>
       </v-col>
       <v-col ref="results" cols="12" md="6" lg="5" xl="3" class="pt-10 pt-md-1 px-0 pl-md-6">
-        <v-alert v-if="matches == null" type="info" outlined color="primary" dense>
+        <v-alert v-if="matches == null" type="info" color="primary" density="comfortable">
           Start a new search to display results
         </v-alert>
-        <v-alert v-else-if="matches.length === 0" type="warning" outlined dense>
+        <v-alert v-else-if="matches.length === 0" type="warning" density="comfortable">
           No suitable glasses found. Please try another search.
         </v-alert>
         <div v-else>

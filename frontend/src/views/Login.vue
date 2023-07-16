@@ -6,7 +6,7 @@
         <v-form ref="form" v-model="valid" @submit.prevent="userLogin">
           <v-row>
             <v-col cols="12">
-              <v-alert v-if="errorText" type="error" dense outlined>
+              <v-alert v-if="errorText" type="error" density="comfortable" variant="outlined">
                 {{ errorText }}
               </v-alert>
               <v-text-field

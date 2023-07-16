@@ -17,7 +17,6 @@
                 :loading="isLoading"
                 :error-messages="errorMesssage"
                 :success-messages="successMessage"
-                outlined
               />
             </v-col>
             <v-col v-if="selected">
@@ -32,7 +31,7 @@
                             <v-icon>{{ mdiDotsVertical }}</v-icon>
                           </v-btn>
                         </template>
-                        <v-list dense>
+                        <v-list density="compact">
                           <v-list-item>
                             <delete-button
                               :glass="selected"

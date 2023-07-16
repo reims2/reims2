@@ -12,7 +12,7 @@
             Please select a reason, which is later visible in campaign reports.
           </span>
         </div>
-        <v-select v-if="!fixedReason" v-model="deleteReason" :items="reasons" outlined />
+        <v-select v-if="!fixedReason" v-model="deleteReason" :items="reasons" />
       </v-card-text>
       <v-card-actions>
         <v-spacer />

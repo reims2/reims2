@@ -6,7 +6,6 @@
     :rules="rules"
     :hint="hint"
     :autofocus="first && !mobile"
-    outlined
     clearable
     :persistent-hint="persistentHint"
     hide-details="auto"

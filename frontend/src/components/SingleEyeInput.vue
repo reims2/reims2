@@ -8,8 +8,7 @@
       </v-col>
       <v-col v-for="eyeKey in eyeKeys" :key="eyeKey" cols="12" class="py-0 pl-0">
         <v-text-field
-          outlined
-          dense
+          density="compact"
           type="number"
           :value="eyeData[eyeKey].value"
           :label="eyeData[eyeKey].label"
