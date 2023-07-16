@@ -1,7 +1,7 @@
 <template>
-  <v-card style="min-width: 280px" class="mb-2" :loading="loading">
-    <v-tooltip v-model="showTooltip" location="bottom">
-      <template v-slot:activator>
+  <v-tooltip v-model="showTooltip" location="bottom">
+    <template v-slot:activator>
+      <v-card style="min-width: 280px" class="mb-2" :loading="loading">
         <v-card-title v-if="glass.sku">
           <div v-if="isGlassesResult(glass)" class="d-flex align-center">
             <v-chip
@@ -100,12 +100,12 @@
           </v-btn>
           <slot name="actions" />
         </v-card-actions>
-      </template>
-      Do you want to edit glasses? Simply
-      <span class="font-weight-bold">click</span>
-      on any value
-    </v-tooltip>
-  </v-card>
+      </v-card>
+    </template>
+    Do you want to edit glasses? Simply
+    <span class="font-weight-bold">click</span>
+    on any value
+  </v-tooltip>
 </template>
 
 <script setup lang="ts">

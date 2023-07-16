@@ -32,11 +32,13 @@ import ErrorSnackbar from '@/components/ErrorSnackbar.vue'
 import { useOnline } from '@vueuse/core'
 import { useNotification } from '@/lib/notifications'
 import { useGlassesStore } from '@/stores/glasses'
+import { useAuthStore } from '@/stores/auth'
 
 const { addError } = useNotification()
 
 const { mobile } = useDisplay()
 const glassesStore = useGlassesStore()
+const authStore = useAuthStore()
 const refreshGlassesInterval: any | null = ref(null)
 
 const mainItems = computed(() => [
@@ -45,20 +47,32 @@ const mainItems = computed(() => [
   { title: 'View all', icon: mdiDatabase, to: '/view', disabled: !isOnline },
   { title: 'Add', icon: mdiPlusCircle, to: '/add', disabled: !isOnline },
 ])
-const otherItems = computed(() => [
-  { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: !isOnline },
-  // TODO
-  // if (this.$auth.user && this.$auth.user.roles && this.$auth.user.roles.map(el => el.name).includes('ROLE_ADMIN')) {
-  {
-    title: 'Users',
-    icon: mdiAccountEdit,
-    to: '/manage/users',
-    disabled: !isOnline,
-  },
-  // }
-])
+const otherItems = computed(() => {
+  const items = [
+    { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: !isOnline },
+  ]
+  if (authStore.user && authStore.roles && authStore.roles.includes('ROLE_ADMIN')) {
+    items.push({
+      title: 'Users',
+      icon: mdiAccountEdit,
+      to: '/manage/users',
+      disabled: !isOnline,
+    })
+  }
+  return items
+})
 
 const isOnline = useOnline()
+
+onMounted(() => {
+  authStore.fetchUser()
+  updateGlasses()
+  if (authStore.expirationTime && dayjs().diff(authStore.expirationTime, 'days') > -7) {
+    // Use 7 days as a safety because of service worker retries
+    addError('Your session is expiring soon, please log in again.')
+    authStore.logout()
+  }
+})
 
 updateGlasses()
 refreshGlassesInterval.value = setInterval(() => updateGlasses(), 3 * 60 * 1000)

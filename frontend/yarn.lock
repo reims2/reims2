@@ -6657,6 +6657,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jwt-decode@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "jwt-decode@npm:3.1.2"
+  checksum: 20a4b072d44ce3479f42d0d2c8d3dabeb353081ba4982e40b83a779f2459a70be26441be6c160bfc8c3c6eadf9f6380a036fbb06ac5406b5674e35d8c4205eeb
+  languageName: node
+  linkType: hard
+
 "kleur@npm:^3.0.3":
   version: 3.0.3
   resolution: "kleur@npm:3.0.3"
@@ -7813,6 +7820,7 @@ __metadata:
     eslint-plugin-vue: 9.15.1
     jest: 29.6.1
     jest-extended: 4.0.0
+    jwt-decode: ^3.1.2
     pinia: 2.1.4
     pinia-plugin-persistedstate: 3.1.0
     prettier: 3.0.0
@@ -7827,7 +7835,6 @@ __metadata:
     vite-plugin-vue-devtools: 0.5.1
     vite-plugin-vuetify: 1.0.2
     vue: 3.3.4
-    vue-auth3: 1.0.10
     vue-enter-to-tab: 1.0.2
     vue-router: 4.2.4
     vue-tsc: 1.8.5
@@ -9154,13 +9161,6 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 51c208e53680fa46f7166e49b037625ae43d507f85f1fd3da7e290263bccb77d5f8c466fe82746285927620afeeff949ac3b8e1b6a7b4fe7bfe11419729256b4
-  languageName: node
-  linkType: hard
-
-"vue-auth3@npm:1.0.10":
-  version: 1.0.10
-  resolution: "vue-auth3@npm:1.0.10"
-  checksum: 46713f95b41fd4f3730ac8ab80508c5cd50586992c4516545393b3af3ffeffea3eeeace7618eeb4501e0410040d8d458766127414dc82af1d6bcea4454800e73
   languageName: node
   linkType: hard
 
