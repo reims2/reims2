@@ -10,11 +10,9 @@
       "docker-compose\\.ya?ml(\\.j2)?$"
     ]
   },
-  "packageRules": [
-    {
-      "matchPackagePrefixes": ["reims2"],
-      "groupName": "reims2",
-      "automerge": true
-    }
+  "ignoreDeps": [
+    "reims2/reims2-frontend",
+    "reims2/reims2-backend",
+    "reims2/reims2-docs"
   ]
 }

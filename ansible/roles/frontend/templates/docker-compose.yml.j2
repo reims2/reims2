@@ -1,5 +1,5 @@
   frontend:
-    image: reims2/reims2-frontend:latest@sha256:adf3dad73510ab0be00234095bf5be4a2d84ef9eac1c0352de109f9c76b3cefb
+    image: reims2/reims2-frontend:latest
     restart: always
     environment:
       - "BASE_URL_BROWSER=https://{{ app_domain }}"
@@ -33,7 +33,7 @@
 
 
   docs:
-    image: reims2/reims2-docs:latest@sha256:44efbbcb8c1590c58b93e0848b11e3c05ce71e7f3893205e439d41df5208e709
+    image: reims2/reims2-docs:latest
     restart: always
     networks:
       {{ stack_network }}:
