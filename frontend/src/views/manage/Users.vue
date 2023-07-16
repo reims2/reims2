@@ -43,9 +43,7 @@
             <v-btn color="primary" v-bind="props" class="mt-3">Add new user</v-btn>
           </template>
           <v-card>
-            <v-card-title>
-              <span class="text-h5">Add a new user</span>
-            </v-card-title>
+            <v-card-title class="text-h5 text-white bg-primary">Add new user</v-card-title>
             <v-card-text>
               <v-form ref="form" v-model="valid">
                 <v-container>

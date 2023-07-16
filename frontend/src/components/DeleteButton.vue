@@ -4,8 +4,8 @@
       <v-btn variant="text" v-bind="props">Delete</v-btn>
     </template>
     <v-card>
-      <v-card-title class="headline text-white primary mb-4">Delete glasses</v-card-title>
-      <v-card-text class="text--primary pb-0">
+      <v-card-title class="headline text-white bg-primary">Delete glasses</v-card-title>
+      <v-card-text class="text-high-emphasis pb-0">
         <div class="pb-3">
           This will delete the glasses with SKU {{ glass.sku }}.
           <span v-if="!fixedReason">
