@@ -1,4 +1,5 @@
 FROM eclipse-temurin:17.0.7_7-jdk-jammy@sha256:34161363f20bc85a98d230f41126b75ac40935580378c8d9ca043ec7a96f23da AS build
+RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
 ENV PORT 5000
 WORKDIR /usr/src/app
@@ -16,6 +17,7 @@ ENV HOST 0.0.0.0
 ENV PORT 5000
 
 WORKDIR /usr/src/app
+COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init
 COPY --from=build /usr/src/app/target/*.jar ./app.jar
 
 EXPOSE 5000
@@ -23,4 +25,5 @@ EXPOSE 5000
 HEALTHCHECK --interval=5s --timeout=10s --retries=5 --start-period=20s CMD curl --fail http://localhost:$PORT/api || exit 1   
 
 
-ENTRYPOINT ["java",  "-jar", "/usr/src/app/app.jar", "--spring.profiles.active=mysql" ]
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["java",  "-jar", "/usr/src/app/app.jar", "--spring.profiles.active=mysql" ]
