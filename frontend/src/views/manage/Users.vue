@@ -2,7 +2,7 @@
   <v-container>
     <v-row dense class="d-flex justify-center">
       <v-col cols="12" md="6" lg="5">
-        <v-simple-table v-if="items.length > 0">
+        <v-table v-if="items.length > 0">
           <thead>
             <tr>
               <th class="text-left">Username</th>
@@ -32,10 +32,17 @@
               </td>
             </tr>
           </tbody>
-        </v-simple-table>
-        <v-alert v-else type="warning" outlined dense>No users loaded.</v-alert>
+        </v-table>
+        <v-alert v-else type="warning">No users loaded.</v-alert>
 
-        <v-alert v-if="editInfo" type="info" outlined dense class="mt-4" dismissible>
+        <v-alert
+          v-if="editInfo"
+          type="info"
+          variant="outlined"
+          density="compact"
+          class="mt-4"
+          dismissible
+        >
           If you want to edit an existing user, you have to delete and re-add them.
         </v-alert>
         <v-dialog v-model="dialog" max-width="500px" persistent>
@@ -47,7 +54,12 @@
             <v-card-text>
               <v-form ref="form" v-model="valid">
                 <v-container>
-                  <v-alert v-if="newRoles.includes('ROLE_ADMIN')" type="warning" dense prominent>
+                  <v-alert
+                    v-if="newRoles.includes('ROLE_ADMIN')"
+                    type="warning"
+                    prominent
+                    density="comfortable"
+                  >
                     Users with the admin role can add and delete users, so be careful to apply that
                     role only when necessary.
                   </v-alert>

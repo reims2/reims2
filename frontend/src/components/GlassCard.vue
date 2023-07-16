@@ -32,9 +32,10 @@
                 :value="glass[key]"
                 :items="generalEyeData[key].items"
                 auto-select-first
+                density="compact"
                 single-line
                 hide-details
-                style="max-width: 130px"
+                style="max-width: 160px"
                 autofocus
                 @update:modelValue="(value) => editMeta(key, value)"
                 @blur="edit = ''"

@@ -5,7 +5,7 @@
       :type="lastRefresh && !isOutdated ? 'info' : 'error'"
       prominent
       color="secondary"
-      dense
+      density="compact"
     >
       <span v-if="lastRefresh && isOutdated">
         REIMS is running offline. Database is older than 3 days, which can lead to problems.

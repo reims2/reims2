@@ -3,7 +3,8 @@
     v-if="isEditing"
     v-model="model"
     :rules="rules"
-    dense
+    density="compact"
+    variant="underlined"
     single-line
     hide-details
     style="max-width: 60px"

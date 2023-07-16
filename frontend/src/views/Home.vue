@@ -1,22 +1,16 @@
 <template>
-  <div absolute class="pa-0 ma-0 hero-bg opaque" style="height: 100%">
+  <div class="pa-0 ma-0 hero-bg opaque" style="height: 100%; width: 100%">
     <div style="height: 100%" class="opaque d-flex justify-center align-center">
-      <v-container fluid class="ma-0 pa-0">
+      <v-container>
         <v-row class="px-3">
           <v-col class="pb-3 text-center text-white" cols="12">
-            <h1 class="text-h2">REIMS2</h1>
+            <h1 class="text-h2 font-weight-normal">REIMS2</h1>
           </v-col>
           <v-col class="pb-6 text-center d-flex justify-center text-white" cols="12">
             <p class="text-subtitle-1 text-md-h6" style="max-width: 600px">
               REIMS2 is the next version of the Richmond Eyeglass Inventory Matching System. It
               supports the annual visual health campaigns run by non-profit
-              <a
-                href="https://partnersforvisualhealth.org/"
-                tabindex="-1"
-                target="”_blank”"
-                rel="noopener"
-                class="text-white"
-              >
+              <a href="https://partnersforvisualhealth.org/" target="”_blank”" class="text-white">
                 Partners for Visual Health
               </a>
               .
@@ -24,10 +18,10 @@
           </v-col>
           <v-col cols="12">
             <v-row class="justify-center align-center">
-              <v-col class="d-flex justify-center" cols="12" md="auto">
+              <v-col class="d-flex justify-center" cols="12" sm="auto">
                 <v-btn to="/find" size="x-large" color="primary">Open REIMS2</v-btn>
               </v-col>
-              <v-col class="d-flex justify-center" cols="12" md="auto">
+              <v-col class="d-flex justify-center" cols="12" sm="auto">
                 <v-btn
                   href="/docs/"
                   target="_blank"

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawerModel" mini-variant-width="72" :mini-variant="miniDrawer">
+  <v-navigation-drawer v-model="drawerModel" mini-variant-width="72" :rail="miniDrawer">
     <template #prepend>
       <div class="mt-5 mx-3 text-h6 font-weight-medium">
         <router-link
@@ -50,7 +50,7 @@
 
     <template #append>
       <v-divider />
-      <v-list dense nav>
+      <v-list nav density="comfortable">
         <v-list-item
           v-if="rootStore.isDev"
           :href="commitUrl"

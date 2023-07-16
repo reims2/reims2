@@ -31,8 +31,9 @@
           v-model="selectedDispenedYear"
           :prepend-icon="mdiCalendar"
           :items="lastYears"
-          outlined
           class="pt-4"
+          density="comfortable"
+          style="max-width: 250px"
         />
 
         <v-btn color="accent" :loading="loadingDispensedReport" @click="downloadDispensedReport">
