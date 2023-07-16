@@ -1,6 +1,6 @@
 import { Glasses, GlassesInput, GlassesResult, GlassesSearch } from '@/model/GlassesModel'
 import calculateAllPhilscore from '@/lib/philscore'
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import axios from 'axios'
 import { useRootStore } from './root'
 
@@ -59,11 +59,11 @@ export const useGlassesStore = defineStore({
     },
     async dispense(sku: number, reason: string) {
       const rootStore = useRootStore()
-      await axios.post(`/api/glasses/${rootStore.reimsSite}/${sku}/dispense?reason=${reason}`, {})
+      await axios.put(`/api/glasses/dispense/${rootStore.reimsSite}/${sku}?reason=${reason}`, {})
       this.deleteOfflineGlasses(sku)
     },
     async undispense(glasses: Glasses) {
-      await axios.post(`/api/glasses/undispense/${glasses.id}`, {})
+      await axios.put(`/api/glasses/undispense/${glasses.id}`, {})
       this.addOfflineGlasses(glasses)
     },
     async deleteGlasses(sku: number) {
@@ -124,3 +124,7 @@ export const useGlassesStore = defineStore({
     },
   },
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useGlassesStore, import.meta.hot))
+}

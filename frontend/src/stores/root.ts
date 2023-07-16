@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import { Notification } from '@/lib/notifications'
 import { ReimsSite } from '@/model/ReimsModel'
 
@@ -20,3 +20,7 @@ export const useRootStore = defineStore({
     },
   },
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useRootStore, import.meta.hot))
+}

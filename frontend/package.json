@@ -35,6 +35,7 @@
     "@types/jest": "29.5.3",
     "@types/node": "20.4.2",
     "@types/webfontloader": "1.6.35",
+    "@vitejs/plugin-basic-ssl": "^1.0.1",
     "@vitejs/plugin-vue": "4.2.3",
     "@vue/eslint-config-typescript": "11.0.3",
     "eslint": "8.45.0",
