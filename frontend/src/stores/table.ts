@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import axios from 'axios'
 import { useRootStore } from './root'
 
@@ -26,3 +26,7 @@ export const useTableStore = defineStore({
     },
   },
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useTableStore, import.meta.hot))
+}

@@ -1,5 +1,5 @@
 import { User } from '@/model/UserModel'
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import axios from 'axios'
 
 export const useUsersStore = defineStore({
@@ -18,3 +18,7 @@ export const useUsersStore = defineStore({
     },
   },
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useUsersStore, import.meta.hot))
+}
