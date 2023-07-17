@@ -1,4 +1,5 @@
 import { useRootStore } from '@/stores/root'
+import { Fn, useTimeoutFn } from '@vueuse/core'
 
 type NotificationConfig = {
   type: 'error' | 'success' | 'info'
@@ -13,18 +14,20 @@ export interface Notification {
 export const useNotification = () => {
   const rootStore = useRootStore()
   const notification = computed(() => rootStore.notification)
-  const snackTimeout = ref<any | null>(null)
+  let stopTimeoutFn: Fn = () => {}
 
   const addNotification = (message: string, conf?: NotificationConfig) => {
     rootStore.notification = { message, type: conf?.type || 'info' }
 
-    clearTimeout(snackTimeout.value)
-    snackTimeout.value = setTimeout(
+    stopTimeoutFn()
+    const { stop } = useTimeoutFn(
       () => {
         removeNotification()
       },
       conf?.timeout ? conf.timeout : 10 * 1000,
+      { immediate: true },
     )
+    stopTimeoutFn = stop
   }
 
   const addError = (message: string) => {
@@ -33,10 +36,8 @@ export const useNotification = () => {
 
   const removeNotification = () => {
     rootStore.notification = null
+    stopTimeoutFn()
   }
-  onBeforeUnmount(() => {
-    clearTimeout(snackTimeout.value)
-  })
 
   return {
     notification,

@@ -9,7 +9,7 @@ export const useRootStore = defineStore(
     const drawer = ref(true)
     const isDev = ref(false)
     const reimsSite = ref('sa' as ReimsSite)
-    const version = ref('0.0.0')
+    const version = ref<null | string>(null)
     function toggleDrawer() {
       drawer.value = !drawer.value
     }
