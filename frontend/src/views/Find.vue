@@ -118,12 +118,12 @@ import AutoCompleteField from '@/components/AutoCompleteField.vue'
 
 import { EyeSearch, GlassesResult, GlassesSearch, GlassesType } from '@/model/GlassesModel'
 import { matchesAsCsvUri, generalEyeData, EyeEnum } from '@/lib/util'
+import { useEnterToTab } from '@/lib/enter-to-tab'
 
 import { useDisplay } from 'vuetify'
 
 const { mobile } = useDisplay()
 
-// TODO mixins: [ModifiedEnterToTabMixin],
 const glassesStore = useGlassesStore()
 const allGlasses = computed(() => glassesStore.allGlasses)
 
@@ -170,6 +170,9 @@ const paginatedMatches = computed(() => {
     itemsPerPage * (page.value - 1) + itemsPerPage,
   )
 })
+
+const { vPreventEnterTab } = useEnterToTab(form)
+
 watch(
   () => odEye.value.add,
   (newValue) => {

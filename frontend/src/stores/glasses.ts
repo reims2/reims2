@@ -149,7 +149,7 @@ export const useGlassesStore = defineStore(
       deleteOfflineGlasses,
     }
   },
-  { persist: true },
+  { persist: { paths: ['allGlasses', 'lastRefresh'] } },
 )
 
 if (import.meta.hot) {

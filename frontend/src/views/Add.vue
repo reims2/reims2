@@ -102,7 +102,7 @@ import {
 // TODO import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
-import { ref, computed, watch, nextTick } from 'vue'
+import { useEnterToTab } from '@/lib/enter-to-tab'
 
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
@@ -133,6 +133,8 @@ const lastAdded = computed(() =>
   lastAddedSkus.value.map((sku) => glassesStore.allGlasses.find((g) => g.sku === sku)),
 )
 const freeSlots = computed(() => 5000 - glassesStore.allGlasses.length)
+
+const { vPreventEnterTab } = useEnterToTab(form)
 
 watch(
   () => odEye.value.add,
