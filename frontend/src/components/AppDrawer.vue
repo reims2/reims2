@@ -19,7 +19,7 @@
 
     <v-divider v-if="!miniDrawer" class="mt-3" />
 
-    <v-list v-if="!mobile" nav color="accent">
+    <v-list v-if="!mobile" nav color="accent" class="bigger-text">
       <v-list-item
         v-for="item in mainItems"
         :key="item.title"
@@ -50,7 +50,7 @@
 
     <template #append>
       <v-divider />
-      <v-list nav density="comfortable">
+      <v-list nav>
         <v-list-item
           v-if="rootStore.isDev"
           :href="commitUrl"
@@ -141,5 +141,9 @@ const commitUrl = computed(() => {
 }
 .no-color {
   color: inherit !important;
+}
+
+.bigger-text .v-list-item-title {
+  font-size: 1.2rem !important;
 }
 </style>

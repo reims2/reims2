@@ -84,28 +84,31 @@ const { mobile } = useDisplay()
 
 const glassesStore = useGlassesStore()
 
+type GlassesWithKey = Glasses & { key?: string }
+
 const valid = ref(false)
 const sku = ref('')
-const lastDispensed = ref(null)
+const lastDispensed = ref<Glasses | null>(null)
 const isLoading = ref(false)
 const snackbarMessage = ref('')
 const successMessage = ref('')
 const errorMesssage = ref('')
 const hint = ref('')
-const selected = ref<any>(null)
+const selected = ref<GlassesWithKey | null>(null)
 
 // Component refs
 const form = ref<VForm | null>(null)
 const firstInput = ref<any | null>(null)
 
 watch(sku, async (newSku, oldSku) => {
-  if (newSku != null && newSku !== '') {
+  if (newSku != null && newSku !== '' && newSku !== oldSku) {
     successMessage.value = ''
+    selected.value = glassesStore.allGlasses.find((g) => g.sku === parseInt(newSku)) || null
     // also fetch glasses in background to update database
-    const returnValue = (await glassesStore.fetchSingle(parseInt(newSku))) as any
+    const returnValue = await glassesStore.fetchSingle(parseInt(newSku))
     selected.value = returnValue
-    // horrible hack to always refresh the virtual DOM if something changed
     if (returnValue) {
+      // horrible hack to always refresh the virtual DOM if something changed
       selected.value.key = '' + selected.value.sku + Math.floor(Math.random() * 10000).toString()
       hint.value = 'Press ENTER to dispense'
     } else {
