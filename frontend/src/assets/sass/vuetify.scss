@@ -3,3 +3,9 @@
 @use 'vuetify/settings' with (
     $body-font-family: "Inter Variable"
 );
+
+// Overwrite global vuetify styles here 
+
+.v-theme--light.v-bottom-navigation .v-btn:not(.v-btn--active) {
+    color:rgba(0,0,0,.6) !important 
+}

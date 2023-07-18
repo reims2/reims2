@@ -29,7 +29,7 @@ import AppDrawer from '@/components/AppDrawer.vue'
 import AppBottomBar from '@/components/AppBottomBar.vue'
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'
 
-import { useOnline } from '@vueuse/core'
+import { useOnline, useIntervalFn } from '@vueuse/core'
 import { useNotification } from '@/lib/notifications'
 import { useGlassesStore } from '@/stores/glasses'
 import { useAuthStore } from '@/stores/auth'
@@ -39,7 +39,6 @@ const { addError } = useNotification()
 const { mobile } = useDisplay()
 const glassesStore = useGlassesStore()
 const authStore = useAuthStore()
-const refreshGlassesInterval: any | null = ref(null)
 
 const mainItems = computed(() => [
   { title: 'Find', icon: mdiFileFind, to: '/find' },
@@ -74,12 +73,7 @@ onMounted(() => {
   }
 })
 
-updateGlasses()
-refreshGlassesInterval.value = setInterval(() => updateGlasses(), 3 * 60 * 1000)
-
-onBeforeUnmount(() => {
-  clearInterval(refreshGlassesInterval.value)
-})
+useIntervalFn(() => updateGlasses(), 3 * 60 * 1000, { immediate: true })
 
 async function updateGlasses() {
   try {
