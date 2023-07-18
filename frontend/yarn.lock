@@ -1981,10 +1981,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/inter@npm:5.0.5":
+"@fontsource-variable/inter@npm:5.0.5":
   version: 5.0.5
-  resolution: "@fontsource/inter@npm:5.0.5"
-  checksum: 6888eaf1b2fb2fb134f7f77af36c718b49d1256617400fb78c47c0a62c4ff8435a7495c0d8ec1607ff23ab77e39f5a1e394a9c55f8bf368a535a46e54926371d
+  resolution: "@fontsource-variable/inter@npm:5.0.5"
+  checksum: 00651cf521616e57851eb7b7b744a606d8d2f9ad1ce3c6428bdb3e457deb01440ad9003e98955c788f8da3e9ea4b851590709bbfe2e7dd9a4f9f470db958132b
   languageName: node
   linkType: hard
 
@@ -2832,35 +2832,6 @@ __metadata:
     "@typescript-eslint/types": 5.61.0
     eslint-visitor-keys: ^3.3.0
   checksum: a8d589f61ddfc380787218da4d347e8f9aef0f82f4a93f1daee46786bda889a90961c7ec1b470db5e3261438a728fdfd956f5bda6ee2de22c4be2d2152d6e270
-  languageName: node
-  linkType: hard
-
-"@unhead/dom@npm:1.1.30":
-  version: 1.1.30
-  resolution: "@unhead/dom@npm:1.1.30"
-  dependencies:
-    "@unhead/schema": 1.1.30
-    "@unhead/shared": 1.1.30
-  checksum: 420ba1aa8e5b9532f1d2ca29e8a5af902cb6acfe904866e0d6d4bc374829e27cb964f1586f64eecec067bd5fdfc53c8750f8ab14b0243ae9fd3ad2d8fac22067
-  languageName: node
-  linkType: hard
-
-"@unhead/schema@npm:1.1.30":
-  version: 1.1.30
-  resolution: "@unhead/schema@npm:1.1.30"
-  dependencies:
-    hookable: ^5.5.3
-    zhead: ^2.0.9
-  checksum: 2e127cdeaf679aba376074ca5d842583c6494285146fa92eacd80625f3ff4853dd1867046cbe91e23d76d0bbd7a12493ae6e3cd43e3503d29aaff7da6c777db0
-  languageName: node
-  linkType: hard
-
-"@unhead/shared@npm:1.1.30":
-  version: 1.1.30
-  resolution: "@unhead/shared@npm:1.1.30"
-  dependencies:
-    "@unhead/schema": 1.1.30
-  checksum: 05c52d7a989340afbd2977068f1bdfc35b92e77f89014da1a3e9099ae4fc832d9ec9e4a7287eb3c681285c7493fa843a460711c6e50917c8ce84308b21cc3e66
   languageName: node
   linkType: hard
 
@@ -5514,13 +5485,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hookable@npm:^5.5.3":
-  version: 5.5.3
-  resolution: "hookable@npm:5.5.3"
-  checksum: df659977888398649b6ef8c4470719e7e8384a1d939a6587e332e86fd55b3881806e2f8aaebaabdb4f218f74b83b98f2110e143df225e16d62a39dc271e7e288
-  languageName: node
-  linkType: hard
-
 "html-escaper@npm:^2.0.0":
   version: 2.0.2
   resolution: "html-escaper@npm:2.0.2"
@@ -7798,7 +7762,7 @@ __metadata:
   resolution: "reims2-frontend@workspace:."
   dependencies:
     "@babel/types": 7.22.5
-    "@fontsource/inter": 5.0.5
+    "@fontsource-variable/inter": 5.0.5
     "@mdi/js": 7.2.96
     "@types/chroma-js": 2.4.0
     "@types/jest": 29.5.3
@@ -7827,14 +7791,12 @@ __metadata:
     sass: 1.63.6
     ts-jest: 29.1.1
     typescript: 5.1.6
-    unhead: 1.1.30
     unplugin-auto-import: ^0.16.6
     vite: 4.4.4
     vite-plugin-pwa: 0.16.4
     vite-plugin-vue-devtools: 0.5.1
     vite-plugin-vuetify: 1.0.2
     vue: 3.3.4
-    vue-enter-to-tab: 1.0.2
     vue-router: 4.2.4
     vue-tsc: 1.8.5
     vuetify: 3.3.8
@@ -8791,18 +8753,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unhead@npm:1.1.30":
-  version: 1.1.30
-  resolution: "unhead@npm:1.1.30"
-  dependencies:
-    "@unhead/dom": 1.1.30
-    "@unhead/schema": 1.1.30
-    "@unhead/shared": 1.1.30
-    hookable: ^5.5.3
-  checksum: dd023f777f64f5645f764f53b7ec6ea2e7fba9cb8a1b80969e56f99bc615db52a8949e76ffaf5ea2ffdf289d369d818b794e3464c75e3e5fdb84f94dceacd62a
-  languageName: node
-  linkType: hard
-
 "unicode-canonical-property-names-ecmascript@npm:^2.0.0":
   version: 2.0.0
   resolution: "unicode-canonical-property-names-ecmascript@npm:2.0.0"
@@ -8912,14 +8862,14 @@ __metadata:
   linkType: hard
 
 "unplugin@npm:^1.3.1, unplugin@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "unplugin@npm:1.3.2"
+  version: 1.4.0
+  resolution: "unplugin@npm:1.4.0"
   dependencies:
     acorn: ^8.9.0
     chokidar: ^3.5.3
     webpack-sources: ^3.2.3
     webpack-virtual-modules: ^0.5.0
-  checksum: b075f4c58615168d880077848f504f13a23085bcbab6bf2c98036ce4c0eb7de58d79dd369cf08b65bcfe7f5a181f38ac9dd444ff88c349360f0e2b2678d68e48
+  checksum: 49f586b07988397aa130b44710e8017a0472e825d08a218557031f08d694788b3ee61d686e67af153cb39b73132e2616c2f135222b83ff8aa2f7a89027f74600
   languageName: node
   linkType: hard
 
@@ -9184,13 +9134,6 @@ __metadata:
     vue-demi-fix: bin/vue-demi-fix.js
     vue-demi-switch: bin/vue-demi-switch.js
   checksum: 0fbe9bf8ab7fe498ffa2bbd0cfc8f6f43a6bbaa5eda3e20ef1b70dca7c8b0ddb216a7ff2f632b694fe0735805638975abb441c621ec0bd2e6d4656353f316c15
-  languageName: node
-  linkType: hard
-
-"vue-enter-to-tab@npm:1.0.2":
-  version: 1.0.2
-  resolution: "vue-enter-to-tab@npm:1.0.2"
-  checksum: d242053bca2a53198121f5bd6da0e17858774b6384cf6be0a260df5b9232aefc392a60911612ce92fbaa4221166ddd0f569798907bcc3268a37c1ae87251e210
   languageName: node
   linkType: hard
 
@@ -9697,12 +9640,5 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
-  languageName: node
-  linkType: hard
-
-"zhead@npm:^2.0.9":
-  version: 2.0.9
-  resolution: "zhead@npm:2.0.9"
-  checksum: ee960a17d164a53c27f05f160949c90bbc212430512c4342eb2c2cd2406e1b5ee929c4c7bf5e6dec50ff9cc9d7475fbf54d55af80747d028ff4c55097ac3e301
   languageName: node
   linkType: hard
