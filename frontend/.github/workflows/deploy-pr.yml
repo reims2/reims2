@@ -1,16 +1,23 @@
-name: deploy
+name: Deploy PR
 
 on:
   workflow_run:
-    workflows: ['ci']
+    workflows: ["ci"]
     types:
       - completed
 
 jobs:
-  deploy:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump labels
+        run: |
+          x=${{ toJson(github.event.pull_request.labels.*.name) }}
+          echo $x
+  deploy-instance:
     concurrency: deploy-instance-frontend-${{ github.ref }}
     if: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'deploy') }}
     secrets: inherit # pass all secrets
     uses: reims2/actions/.github/workflows/deploy-instance.yml@main
     with:
-      instance_name: ${{ github.event.number }}
+      instance_name: pr-${{ github.event.number }}
