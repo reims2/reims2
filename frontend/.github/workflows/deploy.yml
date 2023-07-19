@@ -1,0 +1,16 @@
+name: deploy
+
+on:
+  workflow_run:
+    workflows: ['ci']
+    types:
+      - completed
+
+jobs:
+  deploy:
+    concurrency: deploy-instance-frontend-${{ github.ref }}
+    if: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'deploy') }}
+    secrets: inherit # pass all secrets
+    uses: reims2/actions/.github/workflows/deploy-instance.yml@main
+    with:
+      instance_name: ${{ github.event.number }}
