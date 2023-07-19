@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <app-header title="Login" />
+    <app-header />
     <v-row dense class="justify-center">
       <v-col cols="12" md="6" lg="4">
         <v-form ref="form" v-model="valid" @submit.prevent="userLogin">
