@@ -1,0 +1,46 @@
+name: deploy
+
+on:
+  workflow_call:
+    inputs:
+      instance_name:
+        description: 'Name of the newly created instance'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: development
+      url: https://${{ inputs.instance_name }}.reims2.app
+    steps:
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # v4
+        with:
+          images: ${{ github.repository }}
+          tags: |
+            type=sha,priority=2000
+
+      - name: Get image name (temporary workaround)
+        run: |
+          REPO=${{ github.event.repository.name }}
+          REPO=${REPO#reims2-}
+          echo "REPO=$REPO" >> $GITHUB_ENV
+
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
+        with:
+          fetch-depth: 0
+          repository: reims2/reims2-ansible-playbook
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@5d970176ea4bfd99a3f5004d48e293fe0994eda1 # v2
+        with:
+          playbook: single-instance.yml
+          key: ${{secrets.ANSIBLE_PRIVATE_KEY}}
+          requirements: requirements.yml
+          options: |
+            --inventory hosts
+            -e "${{ env.REPO }}_image=${{ steps.meta.outputs.tags }}"
+            -e "stack_name=${{ inputs.instance_name }}"
+            -e "app_domain=${{ inputs.instance_name }}.reims2.app"
