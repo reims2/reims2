@@ -33,6 +33,9 @@ jobs:
         with:
           fetch-depth: 0
           repository: reims2/reims2-ansible-playbook
+      - name: Write SQL dump to file
+        run: |
+          echo "${{ env.SQL_DUMP }}" > dump.sql
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@5d970176ea4bfd99a3f5004d48e293fe0994eda1 # v2
         with:
@@ -42,5 +45,5 @@ jobs:
           options: |
             --inventory hosts
             -e "${{ env.REPO }}_image=${{ steps.meta.outputs.tags }}"
-            -e "stack_name=${{ inputs.instance_name }}"
+            -e "stack_name=reims2-${{ inputs.instance_name }}"
             -e "app_domain=${{ inputs.instance_name }}.reims2.app"
