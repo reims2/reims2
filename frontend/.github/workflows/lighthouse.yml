@@ -1,0 +1,30 @@
+name: Lighthouse
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@e33196f7422957bea03ed53f6fbb155025ffc7b8 # v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+
+      - name: Install dependencies 📦
+        run: yarn install --immutable
+      - name: Run build
+        run: yarn run build
+      - name: Run Lighthouse tests
+        run: |
+          npm install -g @lhci/cli@0.11.x
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
