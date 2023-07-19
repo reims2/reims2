@@ -1,2 +1,4 @@
 ---
 frontend_debug: false
+frontend_image: "reims2/reims2-frontend:latest"
+docs_image: "reims2/reims2-docs:latest"

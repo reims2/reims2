@@ -1,5 +1,5 @@
   backend:
-    image: reims2/reims2-backend:latest
+    image: {{ backend_image }}
     restart: always
     depends_on:
       # TODO Use condition healthy when this is fixed: https://github.com/docker/cli/issues/3880
