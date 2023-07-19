@@ -1,12 +1,59 @@
 // Plugins
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-import { VitePWA } from 'vite-plugin-pwa'
+import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 import AutoImport from 'unplugin-auto-import/vite'
-
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
+
+const statusPlugin = {
+  fetchDidSucceed: ({ response }) => {
+    if (response.status >= 500) {
+      // Throwing anything here will trigger fetchDidFail.
+      throw new Error('Server error.')
+    }
+    // If it's not 5xx, use the response as-is.
+    return response
+  },
+}
+
+// https://vite-pwa-org.netlify.app/guide/
+const vitePWAconf: Partial<VitePWAOptions> = {
+  registerType: 'autoUpdate',
+  workbox: {
+    runtimeCaching: [
+      {
+        handler: 'NetworkOnly',
+        urlPattern: /\/api\/glasses\/(un)?dispense.*/,
+        method: 'PUT',
+        options: {
+          backgroundSync: {
+            name: 'reimsDispenseQueue',
+            options: {
+              maxRetentionTime: 60 * 24 * 60, // retry dispense for 60 days
+            },
+          },
+          plugins: [statusPlugin],
+        },
+      },
+      {
+        handler: 'NetworkOnly',
+        urlPattern: /\/api\/glasses(\/[^/]+){2}\/?/,
+        method: 'PUT',
+        options: {
+          backgroundSync: {
+            name: 'reimsEditQueue',
+            options: {
+              maxRetentionTime: 7 * 24 * 60, // retry edit for 7 days
+            },
+          },
+          plugins: [statusPlugin],
+        },
+      },
+    ],
+  },
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,7 +68,7 @@ export default defineConfig({
         configFile: './src/assets/sass/vuetify.scss',
       },
     }),
-    VitePWA({ registerType: 'autoUpdate' }),
+    VitePWA(vitePWAconf),
     AutoImport({
       imports: ['vue'],
       eslintrc: {

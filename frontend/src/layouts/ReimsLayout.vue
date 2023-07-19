@@ -4,9 +4,11 @@
     <app-header />
     <v-main class="background">
       <router-view v-slot="{ Component }" class="py-6 px-6">
-        <keep-alive>
-          <component :is="Component" />
-        </keep-alive>
+        <transition name="fade">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </transition>
       </router-view>
       <error-snackbar />
     </v-main>
