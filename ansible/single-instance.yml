@@ -1,0 +1,14 @@
+---
+- name: Install reims single instance (github actions)
+  hosts: all
+  roles:
+    - backend
+    - frontend
+  vars:
+    backend_debug: true
+    frontend_debug: true
+    reset_docker_stack: true
+    db_dump: "{{ lookup('file', 'dump.sql') }}"
+    reims2_db_password: reims
+    reims2_db_root_password: root
+    reims2_jwt_secret: thisisalongtestokenthisisalongtestokenthisisalongtestokenthisisalongtestokenthisisalongtestokenthisisalongtestokenthisisalongtestokenthis
