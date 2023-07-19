@@ -4,7 +4,8 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 
 ## Open Questions
 
-admin account
+- admin account
+- OCR
 
 ## Ideas
 
@@ -78,3 +79,14 @@ Most of them are just nice-to-have and could be done after the rewrite as a QOL 
 
 - switch disable OD with stuff in ()
 - this years packing day is in october
+
+## 19.7.23
+
+Grafana use case: Wants to repopulate DB by adding glasses only. Add a new dashboard for that and remove the stats from the main dashboard.
+
+- Needed numbers of glasses that should be added, to make the inventory as close to the last campaigns as possible
+- Maybe show percentage as well, but it's not that important
+- Show number of free slots.
+- Dont show a time picker, its always now
+- Keep the old stats, where one can see which glasses could be deleted for a better inventory. But it's not relevant while adding.
+- Optionally add the old REIMS1 dispension data from previous campaigns
