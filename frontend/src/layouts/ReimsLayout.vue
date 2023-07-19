@@ -3,11 +3,15 @@
     <app-drawer :main-items="mainItems" :other-items="otherItems" />
     <app-header />
     <v-main class="background">
-      <router-view keep-alive class="py-6 px-6" />
+      <router-view v-slot="{ Component }" class="py-6 px-6">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
       <error-snackbar />
     </v-main>
     <app-bottom-bar v-if="mobile" :items="mainItems" />
-    <app-footer :show-last-update="true" v-if="!mobile" />
+    <app-footer v-if="!mobile" :show-last-update="true" />
   </v-app>
 </template>
 

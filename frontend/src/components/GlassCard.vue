@@ -1,6 +1,6 @@
 <template>
   <v-tooltip v-model="showTooltip" location="bottom">
-    <template v-slot:activator>
+    <template #activator>
       <v-card style="min-width: 280px" class="mb-2" :loading="loading">
         <v-card-title v-if="glass.sku">
           <div v-if="isGlassesResult(glass)" class="d-flex align-center">
@@ -37,7 +37,7 @@
                 hide-details
                 style="max-width: 160px"
                 autofocus
-                @update:modelValue="(value) => editMeta(key, value)"
+                @update:model-value="(value) => editMeta(key, value)"
                 @blur="edit = ''"
               />
               <span v-else v-bind="props">
@@ -72,7 +72,7 @@
                   </td>
                   <td>
                     <editable-span
-                      :modelValue="
+                      :model-value="
                         eyeUIData[dataKey].format(glass[eye.key as GlassesEyeIndex][dataKey])
                       "
                       :suffix="eyeUIData[dataKey].suffix"
@@ -113,6 +113,7 @@ import chroma from 'chroma-js'
 import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '@/lib/util'
 import EditableSpan from './EditableSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
+import { isString, isNumber } from '@/model/ReimsModel'
 import {
   EyeKey,
   GeneralGlassesDataKey,
@@ -156,7 +157,7 @@ const eyeDataKeys = computed(() => {
 })
 type EyeData = {
   label: string
-  format: (v: any) => string
+  format: (v: unknown) => string
   suffix: string
   step?: number
 }
@@ -167,26 +168,23 @@ type EyeDataMap = {
 const eyeUIData: EyeDataMap = {
   sphere: {
     label: 'SPH',
-    format: (v: any) => formatNumber(v as number, 2),
+    format: (v: unknown) => (isNumber(v) ? formatNumber(v, 2) : ''),
     suffix: 'D',
     step: 0.25,
   },
   cylinder: {
     label: 'CYL',
-    format: (v: any) => formatNumber(v as number, 2),
+    format: (v: unknown) => (isNumber(v) ? formatNumber(v, 2) : ''),
     suffix: 'D',
   },
   axis: {
     label: 'Axis',
-    format: (v: any) =>
-      parseInt(v as string)
-        .toString()
-        .padStart(3, '0'),
+    format: (v: unknown) => (isString(v) ? parseInt(v).toString().padStart(3, '0') : ''),
     suffix: '',
   },
   add: {
     label: 'Add',
-    format: (v: any) => formatNumber(v as number, 2),
+    format: (v: unknown) => (isNumber(v) ? formatNumber(v, 2) : ''),
     suffix: 'D',
   },
 }
@@ -203,7 +201,7 @@ function formatNumber(val: number, decimals: number) {
   const prefix = val === 0 ? '' : val < 0 ? '-' : '+'
   return prefix + Math.abs(Number(val)).toFixed(decimals)
 }
-async function editMeta(dataKey: GeneralGlassesDataKey, value: any) {
+async function editMeta(dataKey: GeneralGlassesDataKey, value: string) {
   if (!props.editable) return // just as a "safety" fallback
   const newGlasses: Glasses = deepCopyGlasses(props.glass)
   if (dataKey === 'glassesType') {
@@ -215,7 +213,7 @@ async function editMeta(dataKey: GeneralGlassesDataKey, value: any) {
   }
   await startEdit(newGlasses)
 }
-async function editEye(eyeKey: GlassesEyeIndex, dataKey: EyeKey, value: any) {
+async function editEye(eyeKey: GlassesEyeIndex, dataKey: EyeKey, value: string | number) {
   if (!props.editable) return // just as a "safety" fallback
   const newGlasses: Glasses = deepCopyGlasses(props.glass)
   newGlasses[eyeKey][dataKey] = Number(value)

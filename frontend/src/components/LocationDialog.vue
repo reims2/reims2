@@ -3,7 +3,7 @@
     :model-value="modelValue"
     max-width="400px"
     persistent
-    @update:modelValue="(e) => updateDialogState(e)"
+    @update:model-value="(e) => updateDialogState(e)"
   >
     <v-card>
       <v-card-title class="text-h5 text-white bg-primary">Change location</v-card-title>

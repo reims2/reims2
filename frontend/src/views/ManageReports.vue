@@ -70,7 +70,7 @@ const lastYears = Array.from(new Array(30), (_, index) => dayjs().year() - index
 
 async function downloadDispensedReport() {
   loadingDispensedReport.value = true
-  const selectedYearStart = dayjs().startOf('year').year(selectedDispenedYear.value!)
+  const selectedYearStart = dayjs().startOf('year').year(selectedDispenedYear.value)
   try {
     const csvFile = await glassesStore.loadDispensedCsv(
       selectedYearStart.format('MM/DD/YYYY'),

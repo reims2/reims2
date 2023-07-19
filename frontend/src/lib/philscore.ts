@@ -5,6 +5,7 @@ import {
   SanitizedEyeSearch,
   GlassesSearch,
   GlassesResult,
+  hasAdd,
 } from '@/model/GlassesModel'
 
 // glasses with a philscore higher than this will be removed
@@ -99,7 +100,8 @@ function checkForTolerances(lens: Eye, rx: Eye, tolerance: number): boolean {
 }
 
 function checkForAdditionalTolerance(eye: Eye, rx: Eye, tolerance: number): boolean {
-  return Math.abs(eye.add! - rx.add!) <= tolerance
+  if (eye.add === undefined || rx.add === undefined) return true
+  return Math.abs(eye.add - rx.add) <= tolerance
 }
 
 function calcSingleEyePhilscore(rx: Eye, lens: Eye, isSinglefocal: boolean): number {
@@ -110,7 +112,7 @@ function calcSingleEyePhilscore(rx: Eye, lens: Eye, isSinglefocal: boolean): num
    */
   const sphereDiff = Math.abs(lens.sphere - rx.sphere)
   const cylinderDiff = Math.abs(lens.cylinder - rx.cylinder)
-  const addDiff = isSinglefocal ? 0 : Math.abs(lens.add! - rx.add!)
+  const addDiff = !isSinglefocal && hasAdd(lens) && hasAdd(rx) ? Math.abs(lens.add - rx.add) : 0
 
   let axisDiff = Math.abs(lens.axis - rx.axis)
   axisDiff = axisDiff > 90 ? 180 - axisDiff : axisDiff // account for wraparound (e.g. 190 is 10 in reality)
@@ -130,7 +132,9 @@ function calcSingleEyePhilscore(rx: Eye, lens: Eye, isSinglefocal: boolean): num
 
   score += diff
 
-  if (!isSinglefocal) score += multiFocalAddScore(rx.add!, lens.add!)
+  if (!isSinglefocal && hasAdd(rx) && hasAdd(lens)) {
+    score += multiFocalAddScore(rx.add, lens.add)
+  }
   score += smallerLensSphereScore(rx.sphere, lens.sphere)
 
   return score
@@ -216,7 +220,10 @@ function multiFocalAddScore(rxAdd: number, lensAdd: number): number {
   return 0
 }
 
-function calcSphericalEquivalents(rxSphere: number, rxCylinder: number): any[] {
+function calcSphericalEquivalents(
+  rxSphere: number,
+  rxCylinder: number,
+): { sphere: number; cylinder: number }[] {
   /**
    * Calculates all spherical equivalents for provided rxSphere and rxCylinder.
    * Returns those including the original rxSphere+rxCylinder

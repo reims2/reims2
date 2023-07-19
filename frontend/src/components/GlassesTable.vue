@@ -1,8 +1,8 @@
 <template>
   <v-data-table
+    v-model:options="options"
     :headers="headers"
     :items="items"
-    v-model:options="options"
     :server-items-length="totalItems"
     :loading="loading"
     dense
@@ -87,8 +87,11 @@ import dayjs from 'dayjs'
 import { GlassesEyeIndex } from '@/model/GlassesModel'
 import { useDisplay } from 'vuetify'
 import { useNotification } from '@/lib/notifications'
-const { addError } = useNotification()
+import { TableSortBy, MinMaxObject } from '@/model/ReimsModel'
 
+type TableOptions = { itemsPerPage: number; page: number; sortBy: TableSortBy[] }
+
+const { addError } = useNotification()
 const { mobile } = useDisplay()
 
 const tableStore = useTableStore()
@@ -97,24 +100,19 @@ const totalItems = computed(() => tableStore.totalGlassesCount)
 const reimsSite = computed(() => rootStore.reimsSite)
 const eyeFilters = reactive({
   od: {
-    sphere: {},
-    cylinder: {},
+    sphere: {} as MinMaxObject,
+    cylinder: {} as MinMaxObject,
   },
   os: {
-    sphere: {},
-    cylinder: {},
+    sphere: {} as MinMaxObject,
+    cylinder: {} as MinMaxObject,
   },
 })
 const glassesTypeFilter = ref<string[]>([])
-const options = ref({ itemsPerPage: 20 })
+const sortBy = [{ key: 'sku', order: 'asc' }] as TableSortBy[]
+const options = ref<TableOptions>({ itemsPerPage: 20, page: 1, sortBy })
 const loading = ref(false)
 const items = ref([])
-
-interface SortBy {
-  key: string
-  order: 'asc' | 'desc'
-}
-const sortBy = [{ key: 'sku', order: 'asc' }] as SortBy[]
 
 type EyeValueKey = 'sphere' | 'cylinder'
 
@@ -163,11 +161,11 @@ onActivated(() => {
   startLoading()
 })
 
-function createSingleFilter(value: any, filterName: string): string | null {
+function createSingleFilter(value: MinMaxObject, filterName: string): string | null {
   if (value == null) return null
 
-  const min = !isNaN(value.min) ? `${filterName}>=${value.min}` : null
-  const max = !isNaN(value.max) ? `${filterName}<=${value.max}` : null
+  const min = value.min != null && !isNaN(value.min) ? `${filterName}>=${value.min}` : null
+  const max = value.max != null && !isNaN(value.max) ? `${filterName}<=${value.max}` : null
   if (min != null && max != null) {
     // swap min max automatically if entered wrongly
     if (max < min) return max + ';' + min
@@ -195,7 +193,7 @@ function formatDate(date: string) {
   return dayjs(date).format('DD.MM.YYYY')
 }
 
-function updateEyeFilter(value: any, eye: GlassesEyeIndex, child: EyeValueKey) {
+function updateEyeFilter(value: MinMaxObject, eye: GlassesEyeIndex, child: EyeValueKey) {
   eyeFilters[eye][child] = value
 }
 
@@ -215,7 +213,13 @@ async function startLoading() {
   })
   loading.value = true
   try {
-    items.value = await tableStore.loadItems(options.value, filterString.value)
+    const sortBy = options.value.sortBy[0]
+    items.value = await tableStore.loadItems(
+      options.value.page,
+      options.value.itemsPerPage,
+      filterString.value,
+      sortBy,
+    )
   } catch (error) {
     if (error.status === 404) {
       items.value = []

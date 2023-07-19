@@ -7,7 +7,7 @@ import {
   GeneralGlassesDataKey,
   OptionalEye,
 } from '@/model/GlassesModel'
-import { ValidationRule } from '@/model/ReimsModel'
+import { ValidationRule, isNumber, isString } from '@/model/ReimsModel'
 
 const isAllowedStep = (number: number) => {
   if (number == null || !number) return true // we don't handle that
@@ -25,30 +25,36 @@ export const reimsSiteNames = {
 
 export const eyeRules = {
   sphere: [
-    (v: any) => (v != null && v !== '') || 'Required',
-    (v: any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
-    (v: any) => (v >= -30 && v <= 30) || 'Out of range',
-    (v: any) => isAllowedStep(v) || 'Not an allowed step',
+    (v: unknown) => (v != null && v !== '') || 'Required',
+    (v: unknown) =>
+      ((isString(v) || isNumber(v)) && !isNaN(parseFloat(v as string))) || 'Enter a valid number',
+    (v: unknown) => (isNumber(v) && v >= -30 && v <= 30) || 'Out of range',
+    (v: unknown) => (isNumber(v) && isAllowedStep(v)) || 'Not an allowed step',
   ] as ValidationRule[],
   cylinder: [
-    (v: any) => !v || !isNaN(parseFloat(v)) || 'Enter a valid number',
-    (v: any) => !v || Math.abs(v) <= 6 || 'Out of range',
-    (v: any) => isAllowedStep(v) || 'Not an allowed step',
+    (v: unknown) =>
+      ((isString(v) || isNumber(v)) && !isNaN(parseFloat(v as string))) || 'Enter a valid number',
+    (v: unknown) => (isNumber(v) && Math.abs(v) <= 6) || 'Out of range',
+    (v: unknown) => (isNumber(v) && isAllowedStep(v)) || 'Not an allowed step',
   ] as ValidationRule[],
   axis: [
-    (v: any) => (v != null && v !== '') || 'Required',
-    (v: any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
-    (v: any) => Number.isInteger(parseFloat(v)) || 'Must be an integer',
-    (v: any) => v >= 0 || 'Must be positive',
-    (v: any) => v <= 180 || 'Maximum is 180',
-    (v: any) => !v || v.length >= 3 || 'Enter 3 digits (include leading zero)',
+    (v: unknown) => (v != null && v !== '') || 'Required',
+    (v: unknown) =>
+      ((isString(v) || isNumber(v)) && !isNaN(parseFloat(v as string))) || 'Enter a valid number',
+    (v: unknown) =>
+      ((isString(v) || isNumber(v)) && Number.isInteger(parseFloat(v as string))) ||
+      'Must be an integer',
+    (v: unknown) => (isNumber(v) && v >= 0) || 'Must be positive',
+    (v: unknown) => (isNumber(v) && v <= 180) || 'Maximum is 180',
+    (v: unknown) => (isString(v) && v.length >= 3) || 'Enter 3 digits (include leading zero)',
   ] as ValidationRule[],
   add: [
-    (v: any) => (v != null && v !== '') || 'Required for multifocals',
-    (v: any) => !isNaN(parseFloat(v)) || 'Enter a valid number',
-    (v: any) => v >= 0 || 'Must be positive',
-    (v: any) => v <= 8 || 'Maximum is 8',
-    (v: any) => isAllowedStep(v) || 'Not an allowed step',
+    (v: unknown) => (v != null && v !== '') || 'Required for multifocals',
+    (v: unknown) =>
+      ((isString(v) || isNumber(v)) && !isNaN(parseFloat(v as string))) || 'Enter a valid number',
+    (v: unknown) => (isNumber(v) && v >= 0) || 'Must be positive',
+    (v: unknown) => (isNumber(v) && v <= 8) || 'Maximum is 8',
+    (v: unknown) => (isNumber(v) && isAllowedStep(v)) || 'Not an allowed step',
   ] as ValidationRule[],
 }
 
@@ -72,8 +78,8 @@ export const generalEyeData: AllGeneralGlassesUIData = {
     label: 'Type',
     items: ['single', 'multifocal'],
     rules: [
-      (v: any) =>
-        (v && ('single'.startsWith(v) || 'multifocal'.startsWith(v))) ||
+      (v: unknown) =>
+        (isString(v) && ('single'.startsWith(v) || 'multifocal'.startsWith(v))) ||
         'Enter s for single or m for multifocal',
     ],
     hint: '(s)ingle or (m)ultifocal',
@@ -86,8 +92,8 @@ export const generalEyeData: AllGeneralGlassesUIData = {
     items: ['small', 'medium', 'large', 'child'],
     hint: '(s)mall, (m)edium, (l)arge or (c)hild',
     rules: [
-      (v: any) =>
-        (v &&
+      (v: unknown) =>
+        (isString(v) &&
           ('small'.startsWith(v) ||
             'medium'.startsWith(v) ||
             'large'.startsWith(v) ||
@@ -102,8 +108,9 @@ export const generalEyeData: AllGeneralGlassesUIData = {
     items: ['neutral', 'feminine', 'masculine'],
     hint: '(n)eutral, (f)eminine or (m)asculine',
     rules: [
-      (v: any) =>
-        (v && ('neutral'.startsWith(v) || 'feminine'.startsWith(v) || 'masculine'.startsWith(v))) ||
+      (v: unknown) =>
+        (isString(v) &&
+          ('neutral'.startsWith(v) || 'feminine'.startsWith(v) || 'masculine'.startsWith(v))) ||
         'Enter n for neutral, f for feminine or m for masculine',
     ],
     icon: mdiHumanMaleFemale,
@@ -113,16 +120,16 @@ export const generalEyeData: AllGeneralGlassesUIData = {
 
 export function deepCopyGlasses(oldGlasses: Glasses): Glasses {
   const newGlasses: Glasses = Object.assign({}, oldGlasses)
-  const newOd: any = {}
-  const newOs: any = {}
+  const newOd: Partial<Eye> = {}
+  const newOs: Partial<Eye> = {}
   for (const key of Object.keys(oldGlasses.od)) {
     // copy to new object and convert to Number at once
     const keyTyped = key as keyof Eye
-    newOd[key] = Number(oldGlasses.od[keyTyped])
-    newOs[key] = Number(oldGlasses.os[keyTyped])
+    newOd[keyTyped] = Number(oldGlasses.od[keyTyped])
+    newOs[keyTyped] = Number(oldGlasses.os[keyTyped])
   }
-  newGlasses.od = newOd
-  newGlasses.os = newOs
+  newGlasses.od = newOd as Eye
+  newGlasses.os = newOs as Eye
   return newGlasses
 }
 
@@ -171,7 +178,7 @@ export function dispensedAsCsv(glasses: Glasses[]) {
 }
 
 /** convert all props to number type and return as new object */
-export function propsAsNumber(obj: any): Record<string, number> {
+export function propsAsNumber(obj: Record<string, any>): Record<string, number> {
   const temp = JSON.parse(JSON.stringify(obj))
   Object.keys(temp).forEach((k) => {
     temp[k] = Number(temp[k])

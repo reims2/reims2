@@ -1,7 +1,7 @@
 <template>
   <v-snackbar :model-value="snackbarOpen" :timeout="-1" :color="color" multi-line :attach="true">
     {{ notification?.message }}
-    <template v-slot:actions>
+    <template #actions>
       <v-btn variant="text" @click="removeNotification()">Close</v-btn>
     </template>
   </v-snackbar>

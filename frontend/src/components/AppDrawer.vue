@@ -27,7 +27,7 @@
         :disabled="item.disabled || false"
         :title="item.title"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <v-icon :icon="item.icon"></v-icon>
         </template>
       </v-list-item>
@@ -42,7 +42,7 @@
         :title="item.title"
         :disabled="item.disabled || false"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <v-icon :icon="item.icon"></v-icon>
         </template>
       </v-list-item>
@@ -60,30 +60,30 @@
           class="dev-background text-white"
           title="!! DEV INSTANCE !!"
         >
-          <template v-slot:prepend>
+          <template #prepend>
             <v-icon :icon="mdiBug"></v-icon>
           </template>
         </v-list-item>
-        <v-list-item @click.stop="dialog = true" title="Change location">
-          <template v-slot:prepend>
+        <v-list-item title="Change location" @click.stop="dialog = true">
+          <template #prepend>
             <v-icon :icon="mdiMapMarkerMultiple"></v-icon>
           </template>
         </v-list-item>
         <v-list-item href="/docs/" target="_blank" title="Documentation">
-          <template v-slot:prepend>
+          <template #prepend>
             <v-icon :icon="mdiFileDocument"></v-icon>
           </template>
         </v-list-item>
         <v-list-item
+          title="Logout"
           @click="
             () => {
               authStore.logout()
               router.push('/')
             }
           "
-          title="Logout"
         >
-          <template v-slot:prepend>
+          <template #prepend>
             <v-icon :icon="mdiLogout"></v-icon>
           </template>
         </v-list-item>
@@ -134,7 +134,7 @@ const commitUrl = computed(() => {
 
 <style scoped>
 .dev-background {
-  background: var(--v-accent-darken1) !important;
+  background-color: #e57373;
 }
 .no-decoration {
   text-decoration: none !important;

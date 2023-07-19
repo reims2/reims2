@@ -18,7 +18,7 @@
                 eye-name="OD"
                 :add-enabled="glassesType === 'multifocal'"
                 bal-enabled
-                @update:modelValue="
+                @update:model-value="
                   (e) => {
                     updateKey(e.id, e.value, EyeEnum.OD)
                   }
@@ -31,7 +31,7 @@
                 eye-name="OS"
                 :add-enabled="glassesType === 'multifocal'"
                 bal-enabled
-                @update:modelValue="
+                @update:model-value="
                   (e) => {
                     updateKey(e.id, e.value, EyeEnum.OS)
                   }
