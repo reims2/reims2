@@ -36,7 +36,7 @@ export const useAuthStore = defineStore(
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      roles.value = response.data.roles.map((role: any) => role.name)
+      roles.value = response.data.roles.map((role: { name: string; id: number }) => role.name)
       user.value = response.data.username
     }
     function logout() {

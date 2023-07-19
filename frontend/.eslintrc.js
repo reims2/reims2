@@ -5,21 +5,17 @@ module.exports = {
     jest: true,
   },
   extends: [
-    'plugin:vue/vue3-essential',
+    'standard',
+    'plugin:vue/vue3-recommended',
     'eslint:recommended',
     '@vue/eslint-config-typescript',
-    'standard',
-    'prettier',
+    '@vue/eslint-config-typescript/recommended',
     './src/.eslintrc-auto-import.json',
+    'prettier',
   ],
   rules: {
-    'vue/multi-word-component-names': 'off',
-    eqeqeq: 'warn', // don't error on wrong equality signs
-    camelcase: 'warn', // don't error on non camel case
     'spaced-comment': 'warn',
     'no-warning-comments': 'warn',
-    'no-console': 'off',
-    '@typescript-eslint/no-var-requires': 'warn',
-    'vue/valid-v-slot': ['error', { allowModifiers: true }],
+    'vue/valid-v-slot': ['error', { allowModifiers: true }], // FIXME remove this at some point, its ugly
   },
 }

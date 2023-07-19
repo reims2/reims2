@@ -14,7 +14,9 @@ export interface Notification {
 export const useNotification = () => {
   const rootStore = useRootStore()
   const notification = computed(() => rootStore.notification)
-  let stopTimeoutFn: Fn = () => {}
+  let stopTimeoutFn: Fn = () => {
+    // not set by default
+  }
 
   const addNotification = (message: string, conf?: NotificationConfig) => {
     rootStore.notification = { message, type: conf?.type || 'info' }

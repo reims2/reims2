@@ -7,9 +7,9 @@ export const useRootStore = defineStore(
   () => {
     const notification = ref(null as Notification | null)
     const drawer = ref(true)
-    const isDev = ref(false)
+    const isDev = ref(import.meta.env.VITE_PVH_DEBUG === 'true' || false)
     const reimsSite = ref('sa' as ReimsSite)
-    const version = ref<null | string>(null)
+    const version = ref<null | string>(import.meta.env.VITE_GIT_VERSION || null)
     function toggleDrawer() {
       drawer.value = !drawer.value
     }

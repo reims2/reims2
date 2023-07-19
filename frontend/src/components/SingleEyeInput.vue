@@ -16,7 +16,7 @@
           :step="eyeData[eyeKey].step"
           :disabled="eyeData[eyeKey].disabled || isBAL"
           :prefix="eyeData[eyeKey].value != null ? eyeData[eyeKey].prefix : ''"
-          @update:modelValue="(val) => input(eyeKey, val)"
+          @update:model-value="(val) => input(eyeKey, val)"
           @update:error="(val: boolean) => (hasError[eyeKey] = val)"
           @blur="update(eyeKey)"
           @focus="$event.target.select()"

@@ -50,6 +50,10 @@ const authStore = useAuthStore()
 const redirectQuery = useRouteQuery('redirect')
 const redirect = computed(() => redirectQuery.value?.toString() || '/find')
 
+if (authStore.isLoggedIn) {
+  router.push(redirect.value)
+}
+
 const userLogin = async () => {
   errorText.value = ''
   try {

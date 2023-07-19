@@ -15,6 +15,14 @@ export interface Eye extends OptionalEye {
   sphere: number
 }
 
+export interface MultifocalEye extends Eye {
+  add: number
+}
+
+export function hasAdd(data: Eye): data is MultifocalEye {
+  return data.add !== undefined
+}
+
 export const eyeKeys = ['sphere', 'cylinder', 'axis', 'add'] as const
 export type EyeKey = (typeof eyeKeys)[number]
 

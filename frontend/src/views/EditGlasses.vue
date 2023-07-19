@@ -56,7 +56,7 @@
       vertical
       :attach="true"
     >
-      <template v-slot:actions>
+      <template #actions>
         <v-btn v-if="lastDispensed != null" variant="text" @click="undoDispension(lastDispensed)">
           Undo
         </v-btn>
@@ -98,7 +98,7 @@ const selected = ref<GlassesWithKey | null>(null)
 
 // Component refs
 const form = ref<VForm | null>(null)
-const firstInput = ref<any | null>(null)
+const firstInput = ref<HTMLElement | null>(null)
 
 watch(sku, async (newSku, oldSku) => {
   if (newSku != null && newSku !== '' && newSku !== oldSku) {

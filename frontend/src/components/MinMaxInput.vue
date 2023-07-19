@@ -29,10 +29,13 @@
 </template>
 
 <script setup lang="ts">
+import { MinMaxObject } from '@/model/ReimsModel'
 import { ref } from 'vue'
 const min = ref('')
 const max = ref('')
-const emit = defineEmits(['change'])
+const emit = defineEmits<{
+  change: [value: MinMaxObject]
+}>()
 
 function change() {
   emit('change', { min: parseFloat(min.value), max: parseFloat(max.value) })

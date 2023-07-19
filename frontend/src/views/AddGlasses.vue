@@ -16,7 +16,7 @@
                 v-bind="odEye"
                 eye-name="OD"
                 :add-enabled="newGlass?.glassesType === 'multifocal'"
-                @update:modelValue="
+                @update:model-value="
                   (e) => {
                     const index = e.id as keyof Eye
                     odEye[index] = e.value
@@ -29,7 +29,7 @@
                 v-bind="osEye"
                 eye-name="OS"
                 :add-enabled="newGlass?.glassesType === 'multifocal'"
-                @update:modelValue="
+                @update:model-value="
                   (e) => {
                     const index = e.id as keyof Eye
                     updateSync(osEye, e.value)

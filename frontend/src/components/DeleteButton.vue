@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="deleteDialog" width="500">
-    <template #activator="{ props }">
-      <v-btn variant="text" v-bind="props">Delete</v-btn>
+    <template #activator="{ props: activatorProps }">
+      <v-btn variant="text" v-bind="activatorProps">Delete</v-btn>
     </template>
     <v-card>
       <v-card-title class="headline text-white bg-primary">Delete glasses</v-card-title>
