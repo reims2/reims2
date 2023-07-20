@@ -7,7 +7,7 @@
           class="no-decoration no-color"
           to="/"
         >
-          REIMS {{ reimsSiteNames[reimsSite] }}
+          REIMS {{ reimsSiteName }}
         </router-link>
       </div>
       <div v-if="true && !miniDrawer" class="text--secondary ml-3 mb-1">
@@ -99,7 +99,6 @@ import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 
 import { mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
-import { reimsSiteNames } from '@/lib/util'
 import { DrawerItem } from '@/model/ReimsModel'
 import LocationDialog from '@/components/LocationDialog.vue'
 import { useDisplay } from 'vuetify'
@@ -113,7 +112,7 @@ defineProps<{
 const rootStore = useRootStore()
 const authStore = useAuthStore()
 const router = useRouter()
-const reimsSite = computed(() => rootStore.reimsSite)
+const reimsSiteName = computed(() => rootStore.reimsSiteName)
 
 const dialog = ref(false)
 const drawerModel = computed({

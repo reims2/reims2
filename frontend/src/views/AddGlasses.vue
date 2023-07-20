@@ -40,7 +40,7 @@
             </v-col>
             <v-col cols="12" class="px-0 pt-0">
               <div class="pb-3 text-body-2 text--secondary">
-                You are in {{ locationNames[reimsSite] }} ({{ freeSlots }} SKUs left)
+                You are in {{ reimsSiteName }} ({{ freeSlots }} SKUs left)
               </div>
               <div class="d-flex">
                 <v-btn
@@ -55,7 +55,13 @@
                   <span class="text-decoration-underline">A</span>
                   dd glasses
                 </v-btn>
-                <v-btn v-prevent-enter-tab class="mr-4" plain tabindex="-1" @click="reset">
+                <v-btn
+                  v-prevent-enter-tab
+                  class="mr-4"
+                  variant="plain"
+                  tabindex="-1"
+                  @click="reset"
+                >
                   Clear form
                 </v-btn>
               </div>
@@ -93,12 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  sanitizeEyeValues,
-  clearObjectProperties,
-  reimsSiteNames as locationNames,
-  generalEyeData,
-} from '@/lib/util'
+import { sanitizeEyeValues, clearObjectProperties, generalEyeData } from '@/lib/util'
 // TODO import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
@@ -117,7 +118,7 @@ const { mobile } = useDisplay()
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()
-const reimsSite = computed(() => rootStore.reimsSite)
+const reimsSiteName = computed(() => rootStore.reimsSiteName)
 const valid = ref(false)
 const loading = ref(false)
 const newGlass = ref<Partial<GlassesInput>>({})

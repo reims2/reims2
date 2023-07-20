@@ -6,8 +6,10 @@ import {
   GeneralGlassesData,
   GeneralGlassesDataKey,
   OptionalEye,
+  EyeKey,
 } from '@/model/GlassesModel'
 import { ValidationRule, isNumber, isString } from '@/model/ReimsModel'
+import { all } from 'axios'
 
 const isAllowedStep = (number: number) => {
   if (number == null || !number) return true // we don't handle that
@@ -18,43 +20,42 @@ const isAllowedStep = (number: number) => {
   return false
 }
 
-export const reimsSiteNames = {
-  sa: 'Santa Ana',
-  sm: 'San Miguel',
-}
+const requiredRule = (v: unknown) => (v != null && v !== '') || 'Required'
+const validNumberRule = (v: unknown) =>
+  v == null ||
+  v === '' ||
+  isNumber(v) ||
+  (isString(v) && !isNaN(parseFloat(v))) ||
+  'Enter a valid number'
+const allowedStepRule = (v: number) => isAllowedStep(v) || 'Not an allowed step'
+const positiveRule = (v: number) => v >= 0 || 'Must be positive'
 
 export const eyeRules = {
   sphere: [
-    (v: unknown) => (v != null && v !== '') || 'Required',
-    (v: unknown) =>
-      ((isString(v) || isNumber(v)) && !isNaN(parseFloat(v as string))) || 'Enter a valid number',
-    (v: unknown) => (isNumber(v) && v >= -30 && v <= 30) || 'Out of range',
-    (v: unknown) => (isNumber(v) && isAllowedStep(v)) || 'Not an allowed step',
+    requiredRule,
+    validNumberRule,
+    (v: number) => (v >= -30 && v <= 30) || 'Out of range',
+    allowedStepRule,
   ] as ValidationRule[],
   cylinder: [
-    (v: unknown) =>
-      ((isString(v) || isNumber(v)) && !isNaN(parseFloat(v as string))) || 'Enter a valid number',
-    (v: unknown) => (isNumber(v) && Math.abs(v) <= 6) || 'Out of range',
-    (v: unknown) => (isNumber(v) && isAllowedStep(v)) || 'Not an allowed step',
+    validNumberRule,
+    (v: number) => Math.abs(v) <= 6 || 'Out of range',
+    allowedStepRule,
   ] as ValidationRule[],
   axis: [
-    (v: unknown) => (v != null && v !== '') || 'Required',
-    (v: unknown) =>
-      ((isString(v) || isNumber(v)) && !isNaN(parseFloat(v as string))) || 'Enter a valid number',
-    (v: unknown) =>
-      ((isString(v) || isNumber(v)) && Number.isInteger(parseFloat(v as string))) ||
-      'Must be an integer',
-    (v: unknown) => (isNumber(v) && v >= 0) || 'Must be positive',
-    (v: unknown) => (isNumber(v) && v <= 180) || 'Maximum is 180',
-    (v: unknown) => (isString(v) && v.length >= 3) || 'Enter 3 digits (include leading zero)',
+    requiredRule,
+    validNumberRule,
+    (v: string) => Number.isInteger(parseFloat(v)) || 'Must be an integer',
+    positiveRule,
+    (v: number) => v <= 180 || 'Maximum is 180',
+    (v: string) => v.length >= 3 || 'Enter 3 digits (include leading zero)',
   ] as ValidationRule[],
   add: [
     (v: unknown) => (v != null && v !== '') || 'Required for multifocals',
-    (v: unknown) =>
-      ((isString(v) || isNumber(v)) && !isNaN(parseFloat(v as string))) || 'Enter a valid number',
-    (v: unknown) => (isNumber(v) && v >= 0) || 'Must be positive',
-    (v: unknown) => (isNumber(v) && v <= 8) || 'Maximum is 8',
-    (v: unknown) => (isNumber(v) && isAllowedStep(v)) || 'Not an allowed step',
+    validNumberRule,
+    positiveRule,
+    (v: number) => v <= 8 || 'Maximum is 8',
+    allowedStepRule,
   ] as ValidationRule[],
 }
 
@@ -188,24 +189,27 @@ export function propsAsNumber(obj: Record<string, any>): Record<string, number> 
 
 /** Eye is fixed by applying step rounding and the correct sign for cylinder */
 export function sanitizeEyeValues(singleEye: OptionalEye): Eye {
-  const rx = propsAsNumber(singleEye)
+  console.log('sanitizeEyeValues input', singleEye)
+  const rx = propsAsNumber(singleEye) as unknown as OptionalEye
   // easier for calculation
   if (rx.axis === 180) rx.axis = 0
   // can be empty when cyl == 0. Also force to 0 when cyl == 0just in case
   if (!rx.axis || rx.cylinder === 0) rx.axis = 0
-  // can be empty in edge cases
-  if (!rx.cylinder) rx.cylinder = 0
   // cylinder must be negative
+  if (!rx.cylinder) rx.cylinder = 0
   rx.cylinder = -Math.abs(rx.cylinder)
-  for (const prop of ['sphere', 'cylinder', 'additional']) {
+
+  const eyeKeys: EyeKey[] = ['sphere', 'cylinder', 'add']
+  for (const prop of eyeKeys) {
     // if variable is undefined or NaN, set to 0 (used only for cylinder as of now)
-    rx[prop] = !rx[prop] ? 0 : rx[prop]
+    let newValue = rx[prop] == null || isNaN(rx[prop] as number) ? 0 : (rx[prop] as number)
     // user input could have been 1.2 instead of 1.25, so do rounding
-    const isNegative = rx[prop] < 0
-    rx[prop] = Math.ceil(Math.abs(rx[prop]) / 0.25) * 0.25
-    rx[prop] = isNegative ? -rx[prop] : rx[prop]
+    const isNegative = newValue < 0
+    newValue = Math.ceil(Math.abs(newValue) / 0.25) * 0.25
+    rx[prop] = isNegative ? -newValue : newValue
   }
-  return rx as unknown as Eye
+  console.log('sanitizeEyeValues result', rx)
+  return rx as Eye
 }
 
 export function clearObjectProperties(obj: any) {

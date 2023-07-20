@@ -30,7 +30,7 @@ export const useTableStore = defineStore('table', () => {
 
     const response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}`, { params })
 
-    totalGlassesCount.value = response.data.totalElements
+    totalGlassesCount.value = response.data.totalItems
     return response.data.glasses
   }
   return {
