@@ -27,7 +27,6 @@
     - wait for mariadb
 
 - name: SQL restore block
-  when: db_dump is not false
   block:
     - name: Copy SQL dump file onto host
       ansible.builtin.copy:
