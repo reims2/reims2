@@ -2,6 +2,11 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { Notification } from '@/lib/notifications'
 import { ReimsSite } from '@/model/ReimsModel'
 
+const reimsSiteNames: { [site in ReimsSite]: string } = {
+  sa: 'Santa Ana',
+  sm: 'San Miguel',
+}
+
 export const useRootStore = defineStore(
   'root',
   () => {
@@ -10,6 +15,7 @@ export const useRootStore = defineStore(
     const isDev = ref(import.meta.env.VITE_PVH_DEBUG === 'true' || false)
     const reimsSite = ref('sa' as ReimsSite)
     const version = ref<null | string>(import.meta.env.VITE_GIT_VERSION || null)
+    const reimsSiteName = computed(() => reimsSiteNames[reimsSite.value])
     function toggleDrawer() {
       drawer.value = !drawer.value
     }
@@ -18,6 +24,7 @@ export const useRootStore = defineStore(
       drawer,
       isDev,
       reimsSite,
+      reimsSiteName,
       version,
       toggleDrawer,
     }

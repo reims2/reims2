@@ -1,6 +1,4 @@
-import { reimsSiteNames } from '@/lib/util'
-
-export type ReimsSite = keyof typeof reimsSiteNames
+export type ReimsSite = 'sa' | 'sm'
 
 export interface DrawerItem {
   icon: string

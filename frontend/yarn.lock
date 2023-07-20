@@ -3763,7 +3763,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.0.0, chalk@npm:^4.0.2, chalk@npm:^4.1.2":
+"chalk@npm:^4.0.0, chalk@npm:^4.0.2":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
@@ -5056,17 +5056,6 @@ __metadata:
     combined-stream: ^1.0.8
     mime-types: ^2.1.12
   checksum: 01135bf8675f9d5c61ff18e2e2932f719ca4de964e3be90ef4c36aacfc7b9cb2fceb5eca0b7e0190e3383fe51c5b37f4cb80b62ca06a99aaabfcfd6ac7c9328c
-  languageName: node
-  linkType: hard
-
-"fs-extra@npm:^10.0.0":
-  version: 10.1.0
-  resolution: "fs-extra@npm:10.1.0"
-  dependencies:
-    graceful-fs: ^4.2.0
-    jsonfile: ^6.0.1
-    universalify: ^2.0.0
-  checksum: dc94ab37096f813cc3ca12f0f1b5ad6744dfed9ed21e953d72530d103cea193c2f81584a39e9dee1bea36de5ee66805678c0dddc048e8af1427ac19c00fffc50
   languageName: node
   linkType: hard
 
@@ -7733,7 +7722,7 @@ __metadata:
     typescript: 5.1.6
     unplugin-auto-import: ^0.16.6
     vite: 4.4.4
-    vite-plugin-compression: 0.5.1
+    vite-plugin-compression2: 0.10.3
     vite-plugin-pwa: 0.16.4
     vite-plugin-vue-devtools: 0.5.1
     vite-plugin-vuetify: 1.0.2
@@ -8958,16 +8947,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-compression@npm:0.5.1":
-  version: 0.5.1
-  resolution: "vite-plugin-compression@npm:0.5.1"
+"vite-plugin-compression2@npm:0.10.3":
+  version: 0.10.3
+  resolution: "vite-plugin-compression2@npm:0.10.3"
   dependencies:
-    chalk: ^4.1.2
-    debug: ^4.3.3
-    fs-extra: ^10.0.0
-  peerDependencies:
-    vite: ">=2.0.0"
-  checksum: 55f01e7d6c9203776245614d30fa14df995bdf3cdb12ea4e2c0b9120741b74bd010b3aa5c467316f008aceaea6e2fd18fb394143cce06d22da9787d722da5223
+    "@rollup/pluginutils": ^5.0.2
+  checksum: 67cfad94c157773f4c4a42d08ce2324e31f9c9134f5ffcb8a9e225c5254d4eeaa98577d565c7d875a56fdbe149190cb443a96fb4e3a21d4ea06b863c6c41f579
   languageName: node
   linkType: hard
 

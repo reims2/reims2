@@ -72,13 +72,11 @@
                   </td>
                   <td>
                     <editable-span
-                      :model-value="
-                        eyeUIData[dataKey].format(glass[eye.key as GlassesEyeIndex][dataKey])
-                      "
+                      :model-value="formatEyeValues(dataKey, glass[eye.key][dataKey])"
                       :suffix="eyeUIData[dataKey].suffix"
                       :rules="eyeRules[dataKey]"
                       :is-editing="editable && edit == eye.key + dataKey"
-                      @submit="(value) => editEye(eye.key as GlassesEyeIndex, dataKey, value)"
+                      @update:model-value="(value) => editEye(eye.key, dataKey, value)"
                     />
                   </td>
                 </tr>
@@ -131,22 +129,16 @@ const { addError } = useNotification()
 
 const glassesStore = useGlassesStore()
 
-const props = withDefaults(defineProps<{ glass: Glasses | GlassesResult; editable: boolean }>(), {
+const props = withDefaults(defineProps<{ glass: Glasses | GlassesResult; editable?: boolean }>(), {
   editable: false,
 })
 
 const emit = defineEmits(['edited'])
 
-const eyes = ref([
-  {
-    text: 'OD',
-    key: 'od',
-  },
-  {
-    text: 'OS',
-    key: 'os',
-  },
-])
+const eyes: { text: string; key: GlassesEyeIndex }[] = [
+  { text: 'OD', key: 'od' },
+  { text: 'OS', key: 'os' },
+]
 
 const edit = ref('')
 const showTooltip = ref(false)
@@ -157,7 +149,6 @@ const eyeDataKeys = computed(() => {
 })
 type EyeData = {
   label: string
-  format: (v: unknown) => string
   suffix: string
   step?: number
 }
@@ -168,23 +159,19 @@ type EyeDataMap = {
 const eyeUIData: EyeDataMap = {
   sphere: {
     label: 'SPH',
-    format: (v: unknown) => (isNumber(v) ? formatNumber(v, 2) : ''),
     suffix: 'D',
     step: 0.25,
   },
   cylinder: {
     label: 'CYL',
-    format: (v: unknown) => (isNumber(v) ? formatNumber(v, 2) : ''),
     suffix: 'D',
   },
   axis: {
     label: 'Axis',
-    format: (v: unknown) => (isString(v) ? parseInt(v).toString().padStart(3, '0') : ''),
     suffix: '',
   },
   add: {
     label: 'Add',
-    format: (v: unknown) => (isNumber(v) ? formatNumber(v, 2) : ''),
     suffix: 'D',
   },
 }
@@ -192,6 +179,24 @@ const eyeUIData: EyeDataMap = {
 watch(edit, () => {
   showTooltip.value = false
 })
+
+function formatEyeValues(dataKey: EyeKey, v: unknown): string {
+  if (dataKey === 'sphere') {
+    return isNumber(v) ? formatNumber(v, 2) : ''
+  }
+  if (dataKey === 'cylinder') {
+    return isNumber(v) ? formatNumber(v, 2) : ''
+  }
+  if (dataKey === 'axis') {
+    return parseInt(v as string)
+      .toString()
+      .padStart(3, '0')
+  }
+  if (dataKey === 'add') {
+    return isNumber(v) ? formatNumber(v, 2) : ''
+  }
+  return ''
+}
 
 function calcColor(val: number) {
   const scale = chroma.scale(['#F57F17', '#009688']).domain([2, 0])

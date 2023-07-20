@@ -1,14 +1,14 @@
 <template>
   <v-data-table
-    v-model:options="options"
+    v-model:items-per-page="itemsPerPage"
+    v-model:sort-by="sortBy"
+    v-model:page="page"
     :headers="headers"
     :items="items"
-    :server-items-length="totalItems"
+    :items-length="totalItems"
     :loading="loading"
-    dense
+    density="compact"
     must-sort
-    :sort-by="sortBy"
-    :mobile-breakpoint="mobile"
     :footer-props="{
       showFirstLastPage: true,
       itemsPerPageOptions: [10, 20, 50, 100, 500],
@@ -16,11 +16,12 @@
     }"
     @update:options="startLoading"
   >
-    <template v-if="!mobile" #thead>
+    <template #thead>
       <tr>
         <td />
         <td class="v-data-table__divider">
           <v-select
+            v-model="glassesTypeFilter"
             single-line
             multiple
             density="compact"
@@ -31,7 +32,6 @@
             :items="['single', 'multifocal']"
             style="min-width: 70px"
             class="fit pb-1 px-2"
-            @change="(value: string[]) => updateTypeFilter(value)"
           />
         </td>
         <td>
@@ -57,9 +57,6 @@
       </tr>
     </template>
 
-    <template v-if="mobile" #item="{}">
-      <div class="mx-2 pb-1">TODO</div>
-    </template>
     <template #item.od.sphere="{ item }">{{ formatRx(item.columns['od.sphere']) }} D</template>
     <template #item.od.cylinder="{ item }">{{ formatRx(item.columns['od.cylinder']) }} D</template>
     <template #item.od.axis="{ item }">{{ formatAxis(item.columns['od.axis']) }}</template>
@@ -85,14 +82,10 @@ import MinMaxInput from '@/components/MinMaxInput.vue'
 import { reactive, computed, ref, watch, onActivated } from 'vue'
 import dayjs from 'dayjs'
 import { GlassesEyeIndex } from '@/model/GlassesModel'
-import { useDisplay } from 'vuetify'
 import { useNotification } from '@/lib/notifications'
 import { TableSortBy, MinMaxObject } from '@/model/ReimsModel'
 
-type TableOptions = { itemsPerPage: number; page: number; sortBy: TableSortBy[] }
-
 const { addError } = useNotification()
-const { mobile } = useDisplay()
 
 const tableStore = useTableStore()
 const rootStore = useRootStore()
@@ -109,8 +102,9 @@ const eyeFilters = reactive({
   },
 })
 const glassesTypeFilter = ref<string[]>([])
-const sortBy = [{ key: 'sku', order: 'asc' }] as TableSortBy[]
-const options = ref<TableOptions>({ itemsPerPage: 20, page: 1, sortBy })
+const sortBy = ref<TableSortBy[]>([{ key: 'sku', order: 'asc' }])
+const itemsPerPage = ref(10)
+const page = ref(1)
 const loading = ref(false)
 const items = ref([])
 
@@ -148,18 +142,14 @@ const filterString = computed(() => {
   }
   return filterString.slice(0, -1)
 })
-watch(reimsSite, () => {
-  startLoading()
-})
-watch(eyeFilters, () => {
-  startLoading()
-})
-watch(glassesTypeFilter, () => {
-  startLoading()
-})
-onActivated(() => {
-  startLoading()
-})
+
+watch(
+  [reimsSite, filterString],
+  () => {
+    startLoading()
+  },
+  { immediate: true },
+)
 
 function createSingleFilter(value: MinMaxObject, filterName: string): string | null {
   if (value == null) return null
@@ -173,10 +163,6 @@ function createSingleFilter(value: MinMaxObject, filterName: string): string | n
   } else if (min != null) return min
   else if (max != null) return max
   else return null
-}
-
-function updateTypeFilter(value: string[]) {
-  glassesTypeFilter.value = value
 }
 
 function createSingleTypeFilter(value: string[]): string | null {
@@ -206,25 +192,20 @@ function formatAxis(value: string) {
 }
 
 async function startLoading() {
-  setTimeout(() => {
-    if (mobile) {
-      // loading bar
-    }
-  })
   loading.value = true
   try {
-    const sortBy = options.value.sortBy[0]
     items.value = await tableStore.loadItems(
-      options.value.page,
-      options.value.itemsPerPage,
+      page.value,
+      itemsPerPage.value,
       filterString.value,
-      sortBy,
+      sortBy.value[0],
     )
   } catch (error) {
     if (error.status === 404) {
       items.value = []
     } else {
-      addError(`Could not load data, please retry (Error ${error.status})`)
+      console.error(error)
+      addError(`Could not load table data, please retry (Error ${error.status})`)
     }
   }
   loading.value = false

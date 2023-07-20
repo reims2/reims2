@@ -53,7 +53,7 @@
             <v-btn color="primary" v-bind="props" class="mt-3">Add new user</v-btn>
           </template>
           <v-card>
-            <v-card-title class="text-h5 text-white bg-primary">Add new user</v-card-title>
+            <v-toolbar color="primary" title="Add new user"></v-toolbar>
             <v-card-text>
               <v-form ref="form" v-model="valid">
                 <v-container>
