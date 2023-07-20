@@ -2,21 +2,13 @@ name: Deploy PR
 
 on:
   workflow_run:
-    workflows: ["ci"]
+    workflows: ['ci']
     types:
       - completed
-  pull_request:
-    types: [labeled]
+  # pull_request:
+  #   types: [labeled]
 
 jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dump event
-        run: |
-          x=${{ toJson(github.event) }}
-          echo $x
-
   deploy-instance:
     concurrency: deploy-instance-frontend-${{ github.ref }}
     if: |
