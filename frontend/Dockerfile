@@ -27,4 +27,4 @@ EXPOSE 5000
 HEALTHCHECK --interval=5s --timeout=5s --retries=3 --start-period=15s CMD curl --fail http://localhost:$PORT || exit 1   
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["sh", "-c", "http-server -P http://localhost:$PORT? dist"]
+CMD ["sh", "-c", "http-server --brotli --gzip --proxy http://localhost:$PORT? dist"]
