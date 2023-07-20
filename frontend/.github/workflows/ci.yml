@@ -50,3 +50,13 @@ jobs:
     uses: reims2/actions/.github/workflows/dev-deploy.yml@main
     concurrency: dev-deploy-${{ github.repository }}
     secrets: inherit # pass all secrets
+
+  pr-deploy:
+    needs:
+      - docker
+    if: ${{ (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'deploy')) }}
+    uses: reims2/actions/.github/workflows/deploy-instance.yml@main
+    concurrency: pr-deploy-frontend-${{ github.ref }}
+    with:
+      instance_name: pr-${{ github.event.number || 'unknown' }}
+    secrets: inherit # pass all secrets
