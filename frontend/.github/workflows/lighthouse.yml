@@ -3,7 +3,7 @@ name: Lighthouse
 on:
   push:
     branches:
-      - "main"
+      - 'main'
   pull_request:
 
 jobs:
@@ -15,13 +15,16 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@e33196f7422957bea03ed53f6fbb155025ffc7b8 # v3
         with:
-          node-version-file: ".nvmrc"
-          cache: "yarn"
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
 
       - name: Install dependencies 📦
         run: yarn install --immutable
       - name: Run build
         run: yarn run build
+        env:
+          # That way we can test pages that are normally hidden behind /login
+          VITE_REDIRECT_UNAUTHENTICATED: 'false'
       - name: Run Lighthouse tests
         run: |
           npm install -g @lhci/cli@0.11.x
