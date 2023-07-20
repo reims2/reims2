@@ -11,34 +11,36 @@ export const useAxios = () => {
     timeout: 8000,
   })
 
+  instance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      error.status = error.response ? error.response.status : 'Network Error'
+      if (!error.response) {
+        error.network = true
+      } else if (error.response.status >= 500) {
+        error.server = true
+      }
+
+      try {
+        error.message = error.response.data.message
+      } catch (e) {
+        error.message = ''
+      }
+
+      if (error.response.status === 401) {
+        addError('Credentials no longer valid. Please log in again.')
+        authStore.logout()
+      }
+      throw error
+    },
+  )
+
   watchEffect(() => {
     instance.interceptors.request.use((config) => {
-      if (token) config.headers.Authorization = `Bearer ${token.value}`
+      if (token != null) config.headers.Authorization = `Bearer ${token.value}`
+      else delete config.headers.Authorization
       return config
     })
-    instance.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        error.status = error.response ? error.response.status : 'Network Error'
-        if (!error.response) {
-          error.network = true
-        } else if (error.response.status >= 500) {
-          error.server = true
-        }
-
-        try {
-          error.message = error.response.data.message
-        } catch (e) {
-          error.message = ''
-        }
-
-        if (error.response.status === 401) {
-          addError('Credentials no longer valid. Please log in again.')
-          authStore.logout()
-        }
-        throw error
-      },
-    )
   })
 
   return instance

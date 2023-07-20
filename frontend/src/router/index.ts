@@ -80,7 +80,9 @@ const router = createRouter({
 })
 router.beforeEach((to) => {
   const authStore = useAuthStore()
-  if (!authStore.isLoggedIn) {
+  // We set a flag for disabling login redirect while running CI tests
+  const shouldRedirect = import.meta.env.VITE_REDIRECT_UNAUTHENTICATED !== 'false'
+  if (!authStore.isLoggedIn && shouldRedirect) {
     if (to.meta.auth === undefined || (to.meta.auth && to.name !== 'Login')) {
       return { name: 'Login', query: { redirect: to.fullPath } }
     }
