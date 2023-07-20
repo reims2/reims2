@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 import AutoImport from 'unplugin-auto-import/vite'
+import viteCompression from 'vite-plugin-compression'
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
@@ -77,6 +78,7 @@ export default defineConfig({
       },
       dts: 'src/auto-imports.d.ts',
     }),
+    viteCompression({ verbose: false, algorithm: 'brotliCompress' }),
   ],
   define: { 'process.env': {} },
   resolve: {
