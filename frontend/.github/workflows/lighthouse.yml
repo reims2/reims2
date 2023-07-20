@@ -27,6 +27,7 @@ jobs:
           VITE_REDIRECT_UNAUTHENTICATED: 'false'
       - name: Run Lighthouse tests
         run: |
+          npm install -g http-server
           npm install -g @lhci/cli@0.11.x
           lhci autorun
         env:

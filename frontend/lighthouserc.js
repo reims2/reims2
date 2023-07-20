@@ -1,16 +1,16 @@
 module.exports = {
   ci: {
     collect: {
-      staticDistDir: './dist',
+      startServerCommand: 'http-server -p 3000 -P http://localhost:3000? dist',
       url: [
-        'http://localhost/',
-        'http://localhost/login',
-        'http://localhost/add',
-        'http://localhost/edit',
-        'http://localhost/view',
-        'http://localhost/find',
-        'http://localhost/manage/users',
-        'http://localhost/manage/reports',
+        'http://localhost:3000/',
+        'http://localhost:3000/login',
+        'http://localhost:3000/add',
+        'http://localhost:3000/edit',
+        'http://localhost:3000/view',
+        'http://localhost:3000/find',
+        'http://localhost:3000/manage/users',
+        'http://localhost:3000/manage/reports',
       ],
     },
     upload: {
