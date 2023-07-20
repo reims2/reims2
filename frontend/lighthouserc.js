@@ -1,7 +1,8 @@
 module.exports = {
   ci: {
     collect: {
-      startServerCommand: 'http-server -p 3000 -P http://localhost:3000? dist',
+      startServerCommand: 'http-server --brotli --gzip -p 3000 -P http://localhost:3000? dist',
+      startServerReadyPattern: 'available',
       url: [
         'http://localhost:3000/',
         'http://localhost:3000/login',
