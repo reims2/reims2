@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       instance_name:
-        description: 'Name of the newly created instance'
+        description: "Name of the newly created instance"
         required: true
         type: string
 
@@ -22,6 +22,8 @@ jobs:
           images: ${{ github.repository }}
           tags: |
             type=sha,priority=2000
+        env:
+          DOCKER_METADATA_PR_HEAD_SHA: true
 
       - name: Get image name (temporary workaround)
         run: |
