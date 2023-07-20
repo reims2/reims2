@@ -18,6 +18,8 @@ jobs:
           tags: |
             type=sha,priority=2000
             type=semver,pattern={{version}},priority=2100
+        env:
+          DOCKER_METADATA_PR_HEAD_SHA: true
 
       - name: Get image name (temporary workaround)
         run: |
