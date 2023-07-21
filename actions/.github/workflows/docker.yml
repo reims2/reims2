@@ -65,3 +65,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            GIT_VERSION=${{ github.event.pull_request.head.sha || github.sha }}
