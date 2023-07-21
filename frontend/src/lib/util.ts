@@ -9,7 +9,6 @@ import {
   EyeKey,
 } from '@/model/GlassesModel'
 import { ValidationRule, isNumber, isString } from '@/model/ReimsModel'
-import { all } from 'axios'
 
 const isAllowedStep = (number: number) => {
   if (number == null || !number) return true // we don't handle that
