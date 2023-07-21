@@ -19,7 +19,7 @@
                 @update:model-value="
                   (e) => {
                     const index = e.id as keyof Eye
-                    odEye[index] = e.value
+                    odEye[index] = e.value as number
                   }
                 "
               />
@@ -32,14 +32,14 @@
                 @update:model-value="
                   (e) => {
                     const index = e.id as keyof Eye
-                    updateSync(osEye, e.value)
-                    osEye[index] = e.value
+                    updateSync(osEye, e.value as number)
+                    osEye[index] = e.value as number
                   }
                 "
               />
             </v-col>
             <v-col cols="12" class="px-0 pt-0">
-              <div class="pb-3 text-body-2 text--secondary">
+              <div class="pb-3 text-body-2 text-medium-emphasis">
                 You are in {{ reimsSiteName }} ({{ freeSlots }} SKUs left)
               </div>
               <div class="d-flex">
@@ -81,7 +81,7 @@
         <glass-card
           v-for="(item, idx) in lastAdded.slice(0, 3)"
           :key="item!.id"
-          :glass="item!"
+          :model-value="item!"
           :style="'opacity: ' + (1 - idx * 0.3)"
           editable
         >
@@ -100,7 +100,7 @@
 
 <script setup lang="ts">
 import { sanitizeEyeValues, clearObjectProperties, generalEyeData } from '@/lib/util'
-// TODO import { ModifiedEnterToTabMixin } from '@/plugins/vue-enter-to-tab'
+
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
 import { useEnterToTab } from '@/lib/enter-to-tab'
@@ -113,27 +113,30 @@ import { Eye, GlassesInput, OptionalEye, generalGlassesDataKeys } from '@/model/
 
 import { useDisplay } from 'vuetify'
 import { useNotification } from '@/lib/notifications'
+
 const { addError, removeNotification } = useNotification()
 const { mobile } = useDisplay()
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()
+const allGlasses = computed(() => glassesStore.allGlasses)
 const reimsSiteName = computed(() => rootStore.reimsSiteName)
+
 const valid = ref(false)
 const loading = ref(false)
 const newGlass = ref<Partial<GlassesInput>>({})
 const odEye = ref<OptionalEye>({ axis: '', cylinder: '', sphere: '', add: '' })
 const osEye = ref<OptionalEye>({ axis: '', cylinder: '', sphere: '', add: '' })
 const syncEyes = ref(true)
-const lastAddedSkus = ref([])
+const lastAddedSkus = ref<number[]>([])
 const results = ref<HTMLElement | null>(null)
 const form = ref<HTMLFormElement | null>(null)
 const firstInput = ref<HTMLElement[] | null>(null)
 
 const lastAdded = computed(() =>
-  lastAddedSkus.value.map((sku) => glassesStore.allGlasses.find((g) => g.sku === sku)),
+  lastAddedSkus.value.map((sku) => allGlasses.value.find((g) => g.sku === sku)),
 )
-const freeSlots = computed(() => 5000 - glassesStore.allGlasses.length)
+const freeSlots = computed(() => 5000 - allGlasses.value.length)
 
 const { vPreventEnterTab } = useEnterToTab(form)
 
@@ -145,14 +148,13 @@ watch(
   },
 )
 
-watch(
-  () => glassesStore.allGlasses,
-  () => {
-    lastAddedSkus.value = lastAddedSkus.value.filter((sku) =>
-      glassesStore.allGlasses.find((g) => g.sku === sku),
-    )
-  },
-)
+watch(allGlasses, () => {
+  // Filter out deleted glasses
+  lastAddedSkus.value = lastAddedSkus.value.filter((sku) =>
+    allGlasses.value.find((g) => g.sku === sku),
+  )
+})
+
 async function submit() {
   if (!valid.value) return
   loading.value = true
@@ -164,7 +166,7 @@ async function submit() {
 
   try {
     const newGlasses = await glassesStore.addGlasses(newGlass.value as GlassesInput)
-    lastAddedSkus.value = lastAddedSkus.value.filter((sku) => sku !== newGlasses.sku)
+    lastAddedSkus.value.unshift(newGlasses.sku)
   } catch (error) {
     loading.value = false
     if (error.status === 409) {

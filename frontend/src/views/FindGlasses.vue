@@ -18,11 +18,8 @@
                 eye-name="OD"
                 :add-enabled="glassesType === 'multifocal'"
                 bal-enabled
-                @update:model-value="
-                  (e) => {
-                    updateKey(e.id, e.value, EyeEnum.OD)
-                  }
-                "
+                @update:model-value="(e) => updateKey(e.id, e.value, EyeEnum.OD)"
+                @update:is-bal="(val) => (odEye.isBAL = val)"
               />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pl-md-5 py-0">
@@ -31,11 +28,8 @@
                 eye-name="OS"
                 :add-enabled="glassesType === 'multifocal'"
                 bal-enabled
-                @update:model-value="
-                  (e) => {
-                    updateKey(e.id, e.value, EyeEnum.OS)
-                  }
-                "
+                @update:model-value="(e) => updateKey(e.id, e.value, EyeEnum.OS)"
+                @update:is-bal="(val) => (osEye.isBAL = val)"
               />
             </v-col>
             <v-col cols="12" class="pa-0">
@@ -82,7 +76,7 @@
         </v-alert>
         <div v-else>
           <div v-for="item in paginatedMatches" :key="item.id">
-            <glass-card :glass="item">
+            <glass-card :model-value="item">
               <template #actions>
                 <v-btn
                   :to="{ path: '/edit', query: { sku: item.sku } }"
@@ -102,7 +96,7 @@
             <a
               :href="_matchesAsCSVUri"
               target="_blank"
-              class="text--secondary text-caption no-decoration"
+              class="text-medium-emphasis text-caption no-decoration"
               download="matches.csv"
             >
               Download as CSV
@@ -122,7 +116,7 @@ import GlassCard from '@/components/GlassCard.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 
-import { EyeSearch, GlassesResult, GlassesSearch, GlassesType } from '@/model/GlassesModel'
+import { Eye, EyeSearch, GlassesResult, GlassesSearch, GlassesType } from '@/model/GlassesModel'
 import { matchesAsCsvUri, generalEyeData, EyeEnum } from '@/lib/util'
 import { useEnterToTab } from '@/lib/enter-to-tab'
 
@@ -259,19 +253,11 @@ async function submitAndUpdate() {
     else results.value?.scrollIntoView(true)
   })
 }
-function updateKey(key: keyof EyeSearch, value: number | boolean, eye: EyeEnum) {
+function updateKey(key: keyof Eye, value: number | string, eye: EyeEnum) {
   if (eye === EyeEnum.OD) {
-    if (key === 'isBAL') {
-      odEye.value.isBAL = value as boolean
-    } else {
-      odEye.value[key] = value as number | ''
-    }
+    odEye.value[key] = value as number | ''
   } else if (eye === EyeEnum.OS) {
-    if (key === 'isBAL') {
-      osEye.value.isBAL = value as boolean
-    } else {
-      osEye.value[key] = value as number | ''
-    }
+    osEye.value[key] = value as number | ''
   }
 }
 async function loadMatches() {

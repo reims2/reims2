@@ -4,14 +4,6 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Chrome incognito nuxt",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}",
-      "runtimeArgs": ["--incognito"]
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
       "name": "Chrome nuxt",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
@@ -28,25 +20,9 @@
       },
       "env": {
         //"VITE_API_URL": "https://dev.reims2.app", // use remote API (doesnt work yet)
-        "VITE_GIT_VERSION": "190234912639asd",
+        "VITE_GIT_VERSION": "testcommitnotsethere",
         "VITE_PVH_DEBUG": "true"
       }
-    },
-    {
-      "type": "node",
-      "name": "vscode-jest-tests",
-      "request": "launch",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
-      "args": ["run", "test", "--", "--runInBand", "--watchAll=false"]
-    }
-  ],
-  "compounds": [
-    {
-      "name": "Nuxt Server+Client",
-      "configurations": ["Nuxt Server", "Chrome nuxt"]
     }
   ]
 }

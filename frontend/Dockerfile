@@ -14,6 +14,9 @@ ENV NODE_ENV production
 ENV HOST 0.0.0.0
 ENV PORT 5000
 
+ARG GIT_VERSION=unknown
+ENV VITE_GIT_VERSION=${GIT_VERSION}
+
 # renovate: datasource=npm depName=http-server
 ENV HTTP_SERVER_VERSION=14.1.1
 RUN npm install -g http-server@${HTTP_SERVER_VERSION}
