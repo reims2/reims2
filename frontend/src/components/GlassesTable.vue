@@ -1,5 +1,5 @@
 <template>
-  <v-data-table
+  <v-data-table-server
     v-model:items-per-page="itemsPerPage"
     v-model:sort-by="sortBy"
     v-model:page="page"
@@ -31,7 +31,7 @@
             label="Filter"
             :items="['single', 'multifocal']"
             style="min-width: 70px"
-            class="fit pb-1 px-2"
+            class="pb-1 px-2"
           />
         </td>
         <td>
@@ -71,7 +71,7 @@
         <v-icon>{{ mdiPencil }}</v-icon>
       </v-btn>
     </template>
-  </v-data-table>
+  </v-data-table-server>
 </template>
 
 <script setup lang="ts">
@@ -210,9 +210,3 @@ async function startLoading() {
   loading.value = false
 }
 </script>
-
-<style scoped>
-.v-select.fit .v-select__selection--comma {
-  text-overflow: unset;
-}
-</style>

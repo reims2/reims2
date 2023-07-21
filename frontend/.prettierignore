@@ -1,3 +1,4 @@
 .yarn
 dist
 .yarnrc.yml
+**/auto-imports.d.ts
