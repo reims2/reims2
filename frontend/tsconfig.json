@@ -6,7 +6,6 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
-    "allowJs": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -16,8 +15,7 @@
     "noEmit": true,
     "useUnknownInCatchVariables": false,
     "paths": {
-      "@/*": ["src/*"],
-      "@": ["src"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

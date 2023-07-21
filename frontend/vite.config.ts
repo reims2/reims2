@@ -4,8 +4,9 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 import AutoImport from 'unplugin-auto-import/vite'
 import viteCompression from 'vite-plugin-compression2'
+
 // Utilities
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import { fileURLToPath, URL } from 'node:url'
 
 const statusPlugin = {
@@ -110,6 +111,7 @@ export default defineConfig({
     }),
     viteCompression({ algorithm: 'brotliCompress' }),
   ],
+  test: {},
   define: { 'process.env': {} },
   resolve: {
     alias: {
