@@ -3,8 +3,9 @@
     <template #activator>
       <v-card style="min-width: 290px" class="mb-2" :loading="loading">
         <v-card-title v-if="glass.sku" class="pb-0 pt-4">
-          <div v-if="isGlassesResult(glass)" class="d-flex align-center">
+          <div class="d-flex align-center">
             <v-chip
+              v-if="isGlassesResult(glass)"
               class="mr-2 px-2"
               size="small"
               color="white"

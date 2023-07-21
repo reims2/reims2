@@ -54,7 +54,9 @@
       :model-value="true"
       :timeout="-1"
       vertical
-      :attach="true"
+      location="bottom center"
+      max-width="300px"
+      class="position"
     >
       <template #actions>
         <v-btn v-if="lastDispensed != null" variant="text" @click="undoDispension(lastDispensed)">
@@ -215,3 +217,9 @@ async function undoDispension(glasses: Glasses) {
   snackbarMessage.value = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`
 }
 </script>
+
+<style scoped>
+.position {
+  bottom: 50px;
+}
+</style>
