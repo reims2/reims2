@@ -5,20 +5,20 @@
         <v-card-title v-if="glass.sku" class="pb-0 pt-4">
           <div v-if="isGlassesResult(glass)" class="d-flex align-center">
             <v-chip
-              class="mr-2 px-2 text-white font-weight-black"
-              :color="calcColor(glass.score)"
+              class="mr-2 px-2"
               size="small"
+              color="white"
               label
               :ripple="false"
+              :style="{ 'background-color': calcColor(glass.score) }"
             >
               <v-tooltip activator="parent" location="bottom">
                 Result (Philscore) - lower values are better
               </v-tooltip>
-
               {{ glass.score.toFixed(2) }}
             </v-chip>
+            <div class="text-h6">SKU {{ formattedSKU }}</div>
           </div>
-          <div class="text-h6">SKU {{ formattedSKU }}</div>
         </v-card-title>
         <v-card-subtitle class="pb-2 d-flex align-center">
           <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">

@@ -3083,18 +3083,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/router@npm:10.2.1":
-  version: 10.2.1
-  resolution: "@vueuse/router@npm:10.2.1"
-  dependencies:
-    "@vueuse/shared": 10.2.1
-    vue-demi: ">=0.14.5"
-  peerDependencies:
-    vue-router: ">=4.0.0-rc.1"
-  checksum: 2d53a06241a9ead97c81c1e55760a00ea222f3f31de773020c65884e73a4412072e156153d0511164c33bf61702b6952be9cb70ba8f6bd11d4a0ad006845f274
-  languageName: node
-  linkType: hard
-
 "@vueuse/shared@npm:10.2.1":
   version: 10.2.1
   resolution: "@vueuse/shared@npm:10.2.1"
@@ -7700,7 +7688,6 @@ __metadata:
     "@vitejs/plugin-vue": 4.2.3
     "@vue/eslint-config-typescript": 11.0.3
     "@vueuse/core": 10.2.1
-    "@vueuse/router": 10.2.1
     axios: 1.4.0
     chroma-js: 2.4.2
     dayjs: 1.11.9

@@ -2,6 +2,7 @@
   "name": "reims2-frontend",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
@@ -15,7 +16,6 @@
   "dependencies": {
     "@fontsource-variable/inter": "5.0.5",
     "@vueuse/core": "10.2.1",
-    "@vueuse/router": "10.2.1",
     "axios": "1.4.0",
     "chroma-js": "2.4.2",
     "dayjs": "1.11.9",

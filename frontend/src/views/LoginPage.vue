@@ -39,7 +39,7 @@ import { ref } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
-import { useRouteQuery } from '@vueuse/router'
+import { useRoute } from 'vue-router'
 
 const username = ref('')
 const password = ref('')
@@ -47,8 +47,8 @@ const valid = ref(false)
 const errorText = ref('')
 
 const authStore = useAuthStore()
-const redirectQuery = useRouteQuery('redirect')
-const redirect = computed(() => redirectQuery.value?.toString() || '/find')
+const route = useRoute()
+const redirect = computed(() => (route.query.redirect as string) ?? '/find')
 
 if (authStore.isLoggedIn) {
   router.push(redirect.value)

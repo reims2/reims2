@@ -75,7 +75,7 @@ import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
 import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
-import { useRouteQuery } from '@vueuse/router'
+import { useRoute } from 'vue-router'
 
 import { useDisplay } from 'vuetify'
 import { useNotification } from '@/lib/notifications'
@@ -99,6 +99,13 @@ const selected = ref<GlassesWithKey | null>(null)
 // Component refs
 const form = ref<VForm | null>(null)
 const firstInput = ref<HTMLElement | null>(null)
+
+const route = useRoute()
+onActivated(() => {
+  if (route.query.sku != null) {
+    sku.value = route.query.sku as string
+  }
+})
 
 watch(sku, async () => {
   if (sku.value !== '') {
@@ -126,19 +133,6 @@ watch(selected, () => {
     hint.value = 'Press ENTER to dispense'
   }
 })
-
-const querySku = useRouteQuery('sku')
-watch(
-  querySku,
-  () => {
-    if (querySku.value) {
-      if (Array.isArray(querySku.value)) {
-        sku.value = querySku.value[0]
-      } else sku.value = querySku.value
-    }
-  },
-  { immediate: true },
-)
 
 async function submitDispension() {
   await submitDeletion('DISPENSED')
