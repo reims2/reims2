@@ -10,7 +10,7 @@
           REIMS {{ reimsSiteName }}
         </router-link>
       </div>
-      <div v-if="true && !miniDrawer" class="text--secondary ml-3 mb-1">
+      <div v-if="true && !miniDrawer" class="text-medium-emphasis ml-3 mb-1">
         Logged in as
         <span class="font-weight-bold">{{ authStore.user }}</span>
       </div>

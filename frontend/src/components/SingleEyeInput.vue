@@ -2,7 +2,7 @@
   <div>
     <v-row dense>
       <v-col class="text-h5 pb-2">
-        <div :class="isBAL ? 'text--secondary' : ''">
+        <div :class="isBAL ? 'text-medium-emphasis' : ''">
           {{ eyeName }}
         </div>
       </v-col>
@@ -32,7 +32,7 @@
           class="py-0 my-0"
           :label="`BAL lens (Disable ${eyeName})`"
           hide-details
-          @change="(val: boolean) => input('isBAL', val)"
+          @change="(val: boolean) => emit('update:isBal', val)"
         />
       </v-col>
     </v-row>
@@ -59,7 +59,11 @@ const props = withDefaults(defineProps<Props>(), {
   isBAL: false,
   balEnabled: false,
 })
-const emit = defineEmits(['update:modelValue'])
+type UpdateType = { id: keyof Eye; value: number | string }
+const emit = defineEmits<{
+  'update:modelValue': [UpdateType]
+  'update:isBal': [boolean]
+}>()
 
 const hasError = ref({
   // workaround, see https://stackoverflow.com/a/59439106/4026792
@@ -107,7 +111,7 @@ const eyeData = computed<EyeDataMap>(() => {
   }
 })
 
-function input(id: string, value: string | number | boolean) {
+function input(id: keyof Eye, value: number | string) {
   emit('update:modelValue', { id, value })
 }
 

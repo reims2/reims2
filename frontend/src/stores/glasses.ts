@@ -21,8 +21,9 @@ export const useGlassesStore = defineStore(
     const hasGlassesLoaded = computed(() => {
       return allGlasses.value.length > 0
     })
-    const getSingle = (sku: number) => {
-      return allGlasses.value.find((glass) => glass.sku === sku)
+    const getGlassLocal = (sku: number): Glasses | null => {
+      if (isNaN(sku)) return null
+      return allGlasses.value.find((glass) => glass.sku === sku) || null
     }
 
     async function addGlasses(newGlasses: GlassesInput): Promise<Glasses> {
@@ -80,6 +81,7 @@ export const useGlassesStore = defineStore(
         newGlasses,
       )
       const editedGlasses = response.data
+      deleteOfflineGlasses(newGlasses.sku)
       addOfflineGlasses(editedGlasses)
       return editedGlasses
     }
@@ -134,7 +136,7 @@ export const useGlassesStore = defineStore(
       isOutdated,
       isRefreshingGlasses,
       hasGlassesLoaded,
-      getSingle,
+      getGlassLocal,
       addGlasses,
       fetchSingle,
       dispense,

@@ -2,7 +2,7 @@
   <v-container>
     <v-row dense class="justify-center">
       <v-col cols="12" md="6" lg="4">
-        <div class="text--secondary pb-2">Start by entering a SKU to dispense or edit glasses.</div>
+        <div class="pb-2">Start by entering a SKU to dispense or edit glasses.</div>
         <v-form ref="form" v-model="valid" class="pt-3" @submit.prevent="submitDispension">
           <v-row>
             <v-col cols="12">
@@ -21,7 +21,7 @@
             </v-col>
             <v-col v-if="selected">
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card :key="selected.key" :glass="selected" editable>
+                <glass-card :key="selected.key" :model-value="selected" editable>
                   <template #actions>
                     <v-btn variant="text" class="mx-0" @click="submitDispension">Dispense</v-btn>
                     <div class="d-flex flex-grow-1 justify-end">
@@ -60,7 +60,7 @@
         <v-btn v-if="lastDispensed != null" variant="text" @click="undoDispension(lastDispensed)">
           Undo
         </v-btn>
-        <v-btn variant="text" color="primary lighten-3" @click="snackbarMessage = ''">Close</v-btn>
+        <v-btn variant="text" color="primary-lighten-3" @click="snackbarMessage = ''">Close</v-btn>
       </template>
       <span>{{ snackbarMessage }}</span>
     </v-snackbar>
@@ -100,35 +100,45 @@ const selected = ref<GlassesWithKey | null>(null)
 const form = ref<VForm | null>(null)
 const firstInput = ref<HTMLElement | null>(null)
 
-watch(sku, async (newSku, oldSku) => {
-  if (newSku != null && newSku !== '' && newSku !== oldSku) {
+watch(sku, async () => {
+  if (sku.value !== '') {
     successMessage.value = ''
-    selected.value = glassesStore.allGlasses.find((g) => g.sku === parseInt(newSku)) || null
+    errorMesssage.value = ''
+    selected.value = glassesStore.getGlassLocal(parseInt(sku.value))
+    if (!selected.value) hint.value = ''
     // also fetch glasses in background to update database
-    const returnValue = await glassesStore.fetchSingle(parseInt(newSku))
-    selected.value = returnValue
-    if (returnValue) {
-      // horrible hack to always refresh the virtual DOM if something changed
-      selected.value.key = '' + selected.value.sku + Math.floor(Math.random() * 10000).toString()
-      hint.value = 'Press ENTER to dispense'
-    } else {
-      hint.value = 'SKU not found'
-    }
+    selected.value = await glassesStore.fetchSingle(parseInt(sku.value))
   } else {
     selected.value = null
     hint.value = ''
   }
-  errorMesssage.value = ''
+})
+
+watch(
+  () => glassesStore.allGlasses,
+  () => {
+    selected.value = glassesStore.getGlassLocal(parseInt(sku.value))
+  },
+)
+
+watch(selected, () => {
+  if (selected.value) {
+    hint.value = 'Press ENTER to dispense'
+  }
 })
 
 const querySku = useRouteQuery('sku')
-watchEffect(() => {
-  if (querySku.value) {
-    if (Array.isArray(querySku.value)) {
-      sku.value = querySku.value[0]
-    } else sku.value = querySku.value
-  }
-})
+watch(
+  querySku,
+  () => {
+    if (querySku.value) {
+      if (Array.isArray(querySku.value)) {
+        sku.value = querySku.value[0]
+      } else sku.value = querySku.value
+    }
+  },
+  { immediate: true },
+)
 
 async function submitDispension() {
   await submitDeletion('DISPENSED')

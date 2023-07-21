@@ -3,7 +3,7 @@
     <v-row dense class="d-flex justify-center">
       <v-col cols="12" md="6" lg="4">
         <div class="pb-2 text-h5">Live statistics</div>
-        <div class="pb-4 text--secondary">
+        <div class="pb-4 text-medium-emphasis">
           Visit the monitoring dashboard to see live statistics.
         </div>
         <v-btn color="accent" href="https://monitoring.reims2.app" target="_blank">
@@ -13,7 +13,7 @@
         <v-divider class="my-9" />
 
         <div class="pb-2 text-h5">Current inventory report</div>
-        <div class="pb-4 text--secondary">
+        <div class="pb-4 text-medium-emphasis">
           This report contains all active glasses in the storage of the current location.
         </div>
         <v-btn color="accent" :loading="loadingInventoryReport" @click="downloadInventoryReport">
@@ -23,7 +23,7 @@
         <v-divider class="my-9" />
 
         <div class="pb-2 text-h5">Dispense & delete report</div>
-        <div class="pb-2 text--secondary">
+        <div class="pb-2 text-medium-emphasis">
           This report contains all glasses that were dispensed or deleted in the selected year.
         </div>
 

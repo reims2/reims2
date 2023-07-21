@@ -1,8 +1,8 @@
 <template>
   <v-tooltip v-model="showTooltip" location="bottom">
     <template #activator>
-      <v-card style="min-width: 280px" class="mb-2" :loading="loading">
-        <v-card-title v-if="glass.sku">
+      <v-card style="min-width: 290px" class="mb-2" :loading="loading">
+        <v-card-title v-if="glass.sku" class="pb-0 pt-4">
           <div v-if="isGlassesResult(glass)" class="d-flex align-center">
             <v-chip
               class="mr-2 px-2 text-white font-weight-black"
@@ -18,10 +18,9 @@
               {{ glass.score.toFixed(2) }}
             </v-chip>
           </div>
-          <span class="mr-1">SKU</span>
-          {{ glass.sku.toString().padStart(4, '0') }}
+          <div class="text-h6">SKU {{ formattedSKU }}</div>
         </v-card-title>
-        <v-card-subtitle class="text--primary pb-2 d-flex align-center">
+        <v-card-subtitle class="pb-2 d-flex align-center">
           <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
             <span class="no-child-padding" @click="edit = key">
               <v-tooltip location="bottom" activator="parent" :disabled="editable && edit == key">
@@ -40,7 +39,7 @@
                 @update:model-value="(value) => editMeta(key, value)"
                 @blur="edit = ''"
               />
-              <span v-else v-bind="props">
+              <span v-else>
                 <v-icon size="small" color="black">
                   {{ generalEyeData[key].icon }}
                 </v-icon>
@@ -50,7 +49,7 @@
           </span>
         </v-card-subtitle>
         <v-card-text class="py-0">
-          <v-container class="text--primary pa-0">
+          <v-container class="pa-0">
             <v-row dense>
               <v-col v-for="eye in eyes" :key="eye.key" cols="6">
                 <div class="d-flex">
@@ -58,7 +57,7 @@
                     {{ eye.text }}
                   </div>
                   <div v-if="isGlassesResult(glass)" class="d-flex align-center">
-                    <v-chip class="ml-2 px-2" size="x-small" label :ripple="false" v-bind="props">
+                    <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
                       <v-tooltip activator="parent" location="bottom">
                         PhilScore only for {{ eye.text }}
                       </v-tooltip>
@@ -67,7 +66,7 @@
                   </div>
                 </div>
                 <tr v-for="dataKey in eyeDataKeys" :key="dataKey" @click="edit = eye.key + dataKey">
-                  <td class="text--secondary pr-2">
+                  <td class="text-medium-emphasis pr-2">
                     {{ eyeUIData[dataKey].label }}
                   </td>
                   <td>
@@ -111,7 +110,7 @@ import chroma from 'chroma-js'
 import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '@/lib/util'
 import EditableSpan from './EditableSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
-import { isString, isNumber } from '@/model/ReimsModel'
+import { isNumber } from '@/model/ReimsModel'
 import {
   EyeKey,
   GeneralGlassesDataKey,
@@ -129,24 +128,31 @@ const { addError } = useNotification()
 
 const glassesStore = useGlassesStore()
 
-const props = withDefaults(defineProps<{ glass: Glasses | GlassesResult; editable?: boolean }>(), {
-  editable: false,
-})
+const props = withDefaults(
+  defineProps<{ modelValue: Glasses | GlassesResult; editable?: boolean }>(),
+  {
+    editable: false,
+  },
+)
 
-const emit = defineEmits(['edited'])
+const emit = defineEmits(['update:modelValue'])
 
 const eyes: { text: string; key: GlassesEyeIndex }[] = [
   { text: 'OD', key: 'od' },
   { text: 'OS', key: 'os' },
 ]
 
+const glass = computed(() => props.modelValue)
+
 const edit = ref('')
 const showTooltip = ref(false)
 const loading = ref(false)
 const eyeDataKeys = computed(() => {
-  if (props.glass.glassesType === 'multifocal') return eyeKeys
+  if (props.modelValue.glassesType === 'multifocal') return eyeKeys
   else return eyeKeys.filter((k) => k !== 'add')
 })
+const formattedSKU = computed(() => glass.value.sku.toString().padStart(4, '0'))
+
 type EyeData = {
   label: string
   suffix: string
@@ -208,7 +214,7 @@ function formatNumber(val: number, decimals: number) {
 }
 async function editMeta(dataKey: GeneralGlassesDataKey, value: string) {
   if (!props.editable) return // just as a "safety" fallback
-  const newGlasses: Glasses = deepCopyGlasses(props.glass)
+  const newGlasses: Glasses = deepCopyGlasses(props.modelValue)
   if (dataKey === 'glassesType') {
     newGlasses[dataKey] = value as GlassesType
   } else if (dataKey === 'appearance') {
@@ -220,7 +226,7 @@ async function editMeta(dataKey: GeneralGlassesDataKey, value: string) {
 }
 async function editEye(eyeKey: GlassesEyeIndex, dataKey: EyeKey, value: string | number) {
   if (!props.editable) return // just as a "safety" fallback
-  const newGlasses: Glasses = deepCopyGlasses(props.glass)
+  const newGlasses: Glasses = deepCopyGlasses(props.modelValue)
   newGlasses[eyeKey][dataKey] = Number(value)
   newGlasses[eyeKey] = sanitizeEyeValues(newGlasses[eyeKey])
   await startEdit(newGlasses)
@@ -244,7 +250,7 @@ async function startEdit(newGlasses: Glasses) {
   }
   loading.value = false
   edit.value = ''
-  emit('edited', newGlasses)
+  emit('update:modelValue', newGlasses)
 }
 function isGlassesResult(value: GlassesResult | Glasses): value is GlassesResult {
   return (value as GlassesResult).score !== undefined
