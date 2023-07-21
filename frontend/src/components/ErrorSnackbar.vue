@@ -1,5 +1,13 @@
 <template>
-  <v-snackbar :model-value="snackbarOpen" :timeout="-1" :color="color" multi-line :attach="true">
+  <v-snackbar
+    :model-value="snackbarOpen"
+    :timeout="-1"
+    :color="color"
+    multi-line
+    max-width="500px"
+    location="bottom right"
+    class="position"
+  >
     {{ notification?.message }}
     <template #actions>
       <v-btn variant="text" @click="removeNotification()">Close</v-btn>
@@ -20,3 +28,9 @@ const color = computed(() => {
   return ''
 })
 </script>
+<style scoped>
+.position {
+  bottom: 50px;
+  right: 10px;
+}
+</style>
