@@ -7470,7 +7470,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.1.10, postcss@npm:^8.4.25":
+"postcss@npm:^8.1.10":
   version: 8.4.26
   resolution: "postcss@npm:8.4.26"
   dependencies:
@@ -7478,6 +7478,17 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 1cf08ee10d58cbe98f94bf12ac49a5e5ed1588507d333d2642aacc24369ca987274e1f60ff4cbf0081f70d2ab18a5cd3a4a273f188d835b8e7f3ba381b184e57
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.26":
+  version: 8.4.27
+  resolution: "postcss@npm:8.4.27"
+  dependencies:
+    nanoid: ^3.3.6
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 1cdd0c298849df6cd65f7e646a3ba36870a37b65f55fd59d1a165539c263e9b4872a402bf4ed1ca1bc31f58b68b2835545e33ea1a23b161a1f8aa6d5ded81e78
   languageName: node
   linkType: hard
 
@@ -7704,11 +7715,11 @@ __metadata:
     pinia: 2.1.4
     pinia-plugin-persistedstate: 3.1.0
     prettier: 3.0.0
-    sass: 1.63.6
+    sass: 1.64.0
     ts-jest: 29.1.1
     typescript: 5.1.6
     unplugin-auto-import: ^0.16.6
-    vite: 4.4.4
+    vite: 4.4.6
     vite-plugin-compression2: 0.10.3
     vite-plugin-pwa: 0.16.4
     vite-plugin-vue-devtools: 0.5.1
@@ -7716,7 +7727,7 @@ __metadata:
     vue: 3.3.4
     vue-router: 4.2.4
     vue-tsc: 1.8.5
-    vuetify: 3.3.8
+    vuetify: 3.3.9
   languageName: unknown
   linkType: soft
 
@@ -7919,16 +7930,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:1.63.6":
-  version: 1.63.6
-  resolution: "sass@npm:1.63.6"
+"sass@npm:1.64.0":
+  version: 1.64.0
+  resolution: "sass@npm:1.64.0"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
     source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 3372319904658eeafaf78a09a6fcb3368a68e6d76fe3c43c2d009f4f72e475ab22b82ef483ef5c00fcda3ab00066846c0bd88c36b42771b855f6ab80c7eda541
+  checksum: b4eb9b1bdeb1c00e76427d7fe3e5f80d831327178cdee657aa4e014edfc64ebbfe43177147403da1e04d76a24f4093f5a9b1c8d9d80c94579937d8adc5a6ef66
   languageName: node
   linkType: hard
 
@@ -9039,13 +9050,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:4.4.4":
-  version: 4.4.4
-  resolution: "vite@npm:4.4.4"
+"vite@npm:4.4.6":
+  version: 4.4.6
+  resolution: "vite@npm:4.4.6"
   dependencies:
     esbuild: ^0.18.10
     fsevents: ~2.3.2
-    postcss: ^8.4.25
+    postcss: ^8.4.26
     rollup: ^3.25.2
   peerDependencies:
     "@types/node": ">= 14"
@@ -9075,7 +9086,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 51c208e53680fa46f7166e49b037625ae43d507f85f1fd3da7e290263bccb77d5f8c466fe82746285927620afeeff949ac3b8e1b6a7b4fe7bfe11419729256b4
+  checksum: 5a821897f1e03f9786f827acb89e3117a79b8901d184bbc3a2e48d6404b37975a5cdeb6b6969ec24ed1e81d96f1959ed6f9426cbb64501d1e4770bdb20f9c02f
   languageName: node
   linkType: hard
 
@@ -9205,9 +9216,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify@npm:3.3.8":
-  version: 3.3.8
-  resolution: "vuetify@npm:3.3.8"
+"vuetify@npm:3.3.9":
+  version: 3.3.9
+  resolution: "vuetify@npm:3.3.9"
   peerDependencies:
     typescript: ">=4.7"
     vite-plugin-vuetify: ^1.0.0-alpha.12
@@ -9223,7 +9234,7 @@ __metadata:
       optional: true
     webpack-plugin-vuetify:
       optional: true
-  checksum: a3287b1189bc8ca8c1d6f77d0510b376ae1d873dfea3616ae350bd97de61e0cad9c17484e029a25da47f223c34ccfcd8e1c08123fa6fdbe2222e45a9a790cedb
+  checksum: 4fec25155b90f86d4cc31c4e7be54be98eefc3410c76ff8417f53dc7b8813ed0e246fc1957eb215be9ece5eb9896ba99144839cb9a9299a14fe43e42af48dcc6
   languageName: node
   linkType: hard
 
