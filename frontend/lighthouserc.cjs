@@ -13,6 +13,9 @@ module.exports = {
         'http://localhost:3000/manage/users',
         'http://localhost:3000/manage/reports',
       ],
+      "settings": {
+        "preset": "desktop"
+      }
     },
     upload: {
       target: 'temporary-public-storage',
