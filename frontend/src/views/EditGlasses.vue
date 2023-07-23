@@ -6,18 +6,14 @@
         <v-form ref="form" v-model="valid" class="pt-3" @submit.prevent="submitDispension">
           <v-row>
             <v-col cols="12">
-              <v-text-field
+              <select-glasses-input
                 ref="firstInput"
-                v-model.number="sku"
-                :autofocus="!mobile"
-                label="SKU"
-                type="number"
-                :hint="hint"
-                persistent-hint
+                v-model:sku="inputSku"
+                v-model:error-messsage="errorMesssage"
                 :loading="isLoading"
-                :error-messages="errorMesssage"
-                :success-messages="successMessage"
-              />
+                hint-for-selected="Press ENTER to dispense"
+                @change="(glasses) => (selected = glasses)"
+              ></select-glasses-input>
             </v-col>
             <v-col v-if="selected">
               <div class="d-flex flex-shrink-1 justify-start">
@@ -75,28 +71,25 @@ import { useGlassesStore } from '@/stores/glasses'
 
 import GlassCard from '@/components/GlassCard.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
+import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
 import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRoute } from 'vue-router'
 
-import { useDisplay } from 'vuetify'
 import { useNotification } from '@/lib/notifications'
 const { addError } = useNotification()
-const { mobile } = useDisplay()
 
 const glassesStore = useGlassesStore()
 
 type GlassesWithKey = Glasses & { key?: string }
 
 const valid = ref(false)
-const sku = ref('')
 const lastDispensed = ref<Glasses | null>(null)
 const isLoading = ref(false)
 const snackbarMessage = ref('')
-const successMessage = ref('')
 const errorMesssage = ref('')
-const hint = ref('')
 const selected = ref<GlassesWithKey | null>(null)
+const inputSku = ref<number | null>(null)
 
 // Component refs
 const form = ref<VForm | null>(null)
@@ -105,34 +98,7 @@ const firstInput = ref<HTMLElement | null>(null)
 const route = useRoute()
 onActivated(() => {
   if (route.query.sku != null) {
-    sku.value = route.query.sku as string
-  }
-})
-
-watch(sku, async () => {
-  if (sku.value !== '') {
-    successMessage.value = ''
-    errorMesssage.value = ''
-    selected.value = glassesStore.getGlassLocal(parseInt(sku.value))
-    if (!selected.value) hint.value = ''
-    // also fetch glasses in background to update database
-    selected.value = await glassesStore.fetchSingle(parseInt(sku.value))
-  } else {
-    selected.value = null
-    hint.value = ''
-  }
-})
-
-watch(
-  () => glassesStore.allGlasses,
-  () => {
-    selected.value = glassesStore.getGlassLocal(parseInt(sku.value))
-  },
-)
-
-watch(selected, () => {
-  if (selected.value) {
-    hint.value = 'Press ENTER to dispense'
+    inputSku.value = parseInt(route.query.sku as string)
   }
 })
 
@@ -141,7 +107,7 @@ async function submitDispension() {
 }
 
 async function submitDeletion(reason: string) {
-  if (isLoading.value || sku.value == null || sku.value === '') return
+  if (isLoading.value) return
   if (!selected.value) {
     errorMesssage.value = 'SKU not found'
     return
@@ -182,7 +148,6 @@ async function submitDeletion(reason: string) {
 
   if (reason === 'DISPENSED') {
     snackbarMessage.value = `Successfully dispensed glasses with SKU ${toDispense.sku}`
-    successMessage.value = 'Dispension successful'
   } else {
     snackbarMessage.value = `Successfully deleted glasses with SKU ${toDispense.sku}`
   }
@@ -213,7 +178,7 @@ async function undoDispension(glasses: Glasses) {
   }
   isLoading.value = false
   lastDispensed.value = null
-  sku.value = glasses.sku.toString()
+  inputSku.value = glasses.sku
   snackbarMessage.value = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`
 }
 </script>
