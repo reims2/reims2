@@ -249,7 +249,7 @@ async function submitAndUpdate() {
 
   nextTick(() => {
     // on desktop, focus input again; on mobile, scroll to bottom
-    if (!mobile) firstInput.value?.focus()
+    if (!mobile.value) firstInput.value?.focus()
     else results.value?.scrollIntoView(true)
   })
 }

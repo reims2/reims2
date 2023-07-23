@@ -1,23 +1,28 @@
 <template>
-  <v-navigation-drawer v-model="drawerModel" mini-variant-width="72" :rail="miniDrawer">
+  <v-navigation-drawer
+    mini-variant-width="72"
+    :rail="isMiniDrawer"
+    :model-value="isDrawerOpen"
+    @update:model-value="(val) => (rootStore.drawer = val)"
+  >
     <template #prepend>
       <div class="mt-5 mx-3 text-h6 font-weight-medium">
         <router-link
-          :style="miniDrawer ? 'visibility:hidden;' : ''"
+          :style="isMiniDrawer ? 'visibility:hidden;' : ''"
           class="no-decoration no-color"
           to="/"
         >
           REIMS {{ reimsSiteName }}
         </router-link>
       </div>
-      <div v-if="true && !miniDrawer" class="text-medium-emphasis ml-3 mb-1">
+      <div v-if="true && !isMiniDrawer" class="text-medium-emphasis ml-3 mb-1">
         Logged in as
         <span class="font-weight-bold">{{ authStore.user }}</span>
       </div>
     </template>
     <location-dialog v-model="dialog" />
 
-    <v-divider v-if="!miniDrawer" class="mt-3" />
+    <v-divider v-if="!isMiniDrawer" class="mt-3" />
 
     <v-list v-if="!mobile" nav color="accent" class="bigger-text">
       <v-list-item
@@ -115,17 +120,16 @@ const router = useRouter()
 const reimsSiteName = computed(() => rootStore.reimsSiteName)
 
 const dialog = ref(false)
-const drawerModel = computed({
-  get() {
-    return !mobile || rootStore.drawer
-  },
-  set(val: boolean) {
-    rootStore.drawer = val
-  },
+const isDrawerOpen = computed(() => {
+  if (mobile.value) return rootStore.drawer
+  else return true // always open on desktop
 })
-const miniDrawer = computed(() => {
-  return !mobile && !rootStore.drawer
+
+const isMiniDrawer = computed(() => {
+  // Only on desktop and if drawer on mobile would be open
+  return !mobile.value && !rootStore.drawer
 })
+
 const commitUrl = computed(() => {
   return 'https://github.com/reims2/reims2-frontend/commit/' + rootStore.version
 })

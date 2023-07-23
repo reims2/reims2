@@ -182,7 +182,7 @@ async function submit() {
   reset()
   // scroll to bottom on mobile
   nextTick(() => {
-    if (mobile) results.value?.scrollIntoView(true)
+    if (mobile.value) results.value?.scrollIntoView(true)
   })
 }
 function reset() {
@@ -193,7 +193,7 @@ function reset() {
     os: { sphere: '', cylinder: '', axis: '', add: '' },
   }
   form.value?.reset()
-  if (!mobile && firstInput.value && firstInput.value.length) {
+  if (!mobile.value && firstInput.value && firstInput.value.length) {
     firstInput.value[0].focus()
   }
   syncEyes.value = true
