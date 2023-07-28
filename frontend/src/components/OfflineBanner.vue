@@ -1,24 +1,24 @@
 <template>
   <v-overlay
     :model-value="true"
-    :scrim="false"
+    :scrim="isError"
     persistent
     no-click-animation
     scroll-strategy="none"
     class="d-flex justify-end align-end"
   >
     <v-alert
-      :type="lastRefresh && !isOutdated ? 'info' : 'error'"
+      :type="isError ? 'error' : 'info'"
       prominent
-      color="secondary"
-      density="compact"
+      :color="color"
+      density="comfortable"
       max-width="300px"
       class="position"
     >
-      <span v-if="lastRefresh && isOutdated">
+      <span v-if="hasGlassesLoaded && isOutdated">
         REIMS is running offline. Database is older than 3 days, which can lead to problems.
       </span>
-      <span v-else-if="lastRefresh">
+      <span v-else-if="hasGlassesLoaded">
         REIMS is running offline.
         <last-refresh-span :show-spinner="false" />
       </span>
@@ -34,7 +34,15 @@ import LastRefreshSpan from '@/components/LastRefreshSpan.vue'
 
 const glassesStore = useGlassesStore()
 const isOutdated = computed(() => glassesStore.isOutdated)
-const lastRefresh = computed(() => glassesStore.lastRefresh)
+const hasGlassesLoaded = computed(() => glassesStore.hasGlassesLoaded)
+
+const isError = computed(() => !hasGlassesLoaded.value)
+const isWarning = computed(() => isError.value || isOutdated.value)
+const color = computed(() => {
+  if (isError.value) return 'red'
+  else if (isWarning.value) return 'accent'
+  else return 'secondary'
+})
 </script>
 
 <style scoped>
