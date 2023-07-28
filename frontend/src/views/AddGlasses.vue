@@ -107,12 +107,13 @@ import { useEnterToTab } from '@/lib/enter-to-tab'
 
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
-import GlassCard from '@/components/GlassCard.vue'
-import DeleteButton from '@/components/DeleteButton.vue'
 import { Eye, GlassesInput, OptionalEye, generalGlassesDataKeys } from '@/model/GlassesModel'
 
 import { useDisplay } from 'vuetify'
 import { useToast } from 'vue-toastification'
+
+const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
+const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
 
 const toast = useToast()
 

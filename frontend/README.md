@@ -15,4 +15,4 @@ yarn install
 yarn run dev
 ```
 
-Available at http://localhost:3000. The API is expected to be running at http://localhost:9966 (default of [reims2-backend](https://github.com/reims2/reims2-backend)) and can be changed using the `VITE_API_URL` environment variable.
+Available at http://localhost:3000. The API is expected to be running at http://localhost:9966 (default of [reims2-backend](https://github.com/reims2/reims2-backend)) and can be changed using the `VITE_API_URL` environment variable or inside `./.env.development`.

@@ -9,6 +9,8 @@ import viteCompression from 'vite-plugin-compression2'
 import { defineConfig } from 'vitest/config'
 import { fileURLToPath, URL } from 'node:url'
 
+import { loadEnv } from 'vite'
+
 const statusPlugin = {
   fetchDidSucceed: ({ response }) => {
     if (response.status >= 500) {
@@ -88,52 +90,58 @@ const vitePWAconf: Partial<VitePWAOptions> = {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    vue({
-      template: { transformAssetUrls },
-    }),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
-    vuetify({
-      autoImport: true,
-      styles: {
-        configFile: './src/assets/sass/vuetify.scss',
+export default ({ mode }) => {
+  // Load app-level env vars to node-level env vars.
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
+  return defineConfig({
+    plugins: [
+      vue({
+        template: { transformAssetUrls },
+      }),
+      // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
+      vuetify({
+        autoImport: true,
+        styles: {
+          configFile: './src/assets/sass/vuetify.scss',
+        },
+      }),
+      VitePWA(vitePWAconf),
+      AutoImport({
+        imports: ['vue'],
+        eslintrc: {
+          enabled: true,
+          filepath: 'src/.eslintrc-auto-import.json',
+        },
+        dts: 'src/auto-imports.d.ts',
+      }),
+      viteCompression({ algorithm: 'brotliCompress' }),
+    ],
+    define: { 'process.env': {} },
+    resolve: {
+      alias: {
+        '@/': fileURLToPath(new URL('./src/', import.meta.url)),
       },
-    }),
-    VitePWA(vitePWAconf),
-    AutoImport({
-      imports: ['vue'],
-      eslintrc: {
-        enabled: true,
-        filepath: 'src/.eslintrc-auto-import.json',
-      },
-      dts: 'src/auto-imports.d.ts',
-    }),
-    viteCompression({ algorithm: 'brotliCompress' }),
-  ],
-  test: {},
-  define: { 'process.env': {} },
-  resolve: {
-    alias: {
-      '@/': fileURLToPath(new URL('./src/', import.meta.url)),
+      extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
     },
-    extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
-  },
-  server: {
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: process.env.VITE_API_URL || 'http://localhost:9966/',
+    server: {
+      port: 3000,
+      proxy: {
+        '/api': {
+          target: process.env.VITE_API_URL,
+          secure: false,
+          autoRewrite: true,
+          changeOrigin: true,
+        },
+      },
+      strictPort: true,
+    },
+    build: {
+      rollupOptions: {
+        // https://rollupjs.org/guide/en/#outputmanualchunks
+        output: {
+          manualChunks: {},
+        },
       },
     },
-    strictPort: true,
-  },
-  build: {
-    rollupOptions: {
-      // https://rollupjs.org/guide/en/#outputmanualchunks
-      output: {
-        manualChunks: {},
-      },
-    },
-  },
-})
+  })
+}
