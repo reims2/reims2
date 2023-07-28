@@ -108,6 +108,7 @@ export const useGlassesStore = defineStore(
       return response.data
     }
     async function loadGlasses() {
+      isRefreshingGlasses.value = true
       const rootStore = useRootStore()
       const response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}`, {
         params: { size: 100000 },
