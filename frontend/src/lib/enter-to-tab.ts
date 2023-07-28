@@ -37,9 +37,9 @@ export const useEnterToTab = (element: MaybeRefOrGetter<HTMLElement | null | und
 
       const allElements: HTMLElement[] = []
       allElementsQuery.forEach((e) => {
-        const r = e as any
+        const r = e as HTMLInputElement
         if (!r.disabled && !r.hidden && r.offsetParent && !r.readOnly && r.tabIndex >= 0) {
-          allElements.push(r as HTMLElement)
+          allElements.push(r)
         }
       })
       console.log('allElements', allElements)

@@ -79,7 +79,7 @@ async function downloadDispensedReport() {
     filename.value = `dispense_report_${rootStore.reimsSite}_${selectedDispenedYear.value}.csv`
     downloadCsv(csvFile)
   } catch (error) {
-    toast.error(`Could not load dispense report (Error ${error.status})`)
+    toast.error(`Could not load dispense report (${error.message})`)
   }
   loadingDispensedReport.value = false
 }
@@ -91,7 +91,7 @@ async function downloadInventoryReport() {
     filename.value = `inventory_${rootStore.reimsSite}.csv`
     downloadCsv(csvFile)
   } catch (error) {
-    toast.error(`Could not load inventory report (Error ${error.status})`)
+    toast.error(`Could not load inventory report (${error.message})`)
   }
   loadingInventoryReport.value = false
 }

@@ -76,6 +76,10 @@
       </v-btn>
     </template>
   </v-data-table-server>
+
+  <v-btn v-prevent-enter-tab class="mr-4" variant="plain" tabindex="-1" @click="reset">
+    Reset table
+  </v-btn>
 </template>
 
 <script setup lang="ts">
@@ -87,6 +91,7 @@ import dayjs from 'dayjs'
 import { GlassesEyeIndex } from '@/model/GlassesModel'
 import { useToast } from 'vue-toastification'
 import { TableSortBy, MinMaxObject } from '@/model/ReimsModel'
+import { ReimsAxiosError } from '@/lib/axios'
 
 const toast = useToast()
 
@@ -155,13 +160,19 @@ const filterString = computed(() => {
   return filterString.slice(0, -1)
 })
 
-watch(
-  [reimsSite, filterString],
-  () => {
-    startLoading()
-  },
-  { immediate: true },
-)
+watch([reimsSite, filterString], () => {
+  startLoading()
+})
+
+function reset() {
+  glassesTypeFilter.value = []
+  eyeFilters.od.sphere = {}
+  eyeFilters.od.cylinder = {}
+  eyeFilters.os.sphere = {}
+  eyeFilters.os.cylinder = {}
+  sortBy.value = [{ key: 'sku', order: 'asc' }]
+  page.value = 1
+}
 
 function createSingleFilter(value: MinMaxObject, filterName: string): string | null {
   if (value == null) return null
@@ -213,11 +224,11 @@ async function startLoading() {
       sortBy.value[0],
     )
   } catch (error) {
-    if (error.status === 404) {
+    if (error instanceof ReimsAxiosError && error.statusCode === 404) {
       items.value = []
     } else {
       console.error(error)
-      toast.error(`Could not load table data, please retry (Error ${error.status})`)
+      toast.error(`Could not load table data, please retry (${error.message})`)
     }
   }
   loading.value = false

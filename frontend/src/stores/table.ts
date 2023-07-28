@@ -12,6 +12,7 @@ type Params = {
 
 export const useTableStore = defineStore('table', () => {
   const axiosInstance = useAxios()
+  const rootStore = useRootStore()
   const totalGlassesCount = ref(0)
   const hasGlassesLoaded = computed(() => {
     return totalGlassesCount.value > 0
@@ -22,7 +23,6 @@ export const useTableStore = defineStore('table', () => {
     filterString: string | null,
     sortBy: TableSortBy,
   ) {
-    const rootStore = useRootStore()
     const sortString = sortBy.key + ',' + sortBy.order
 
     const params: Params = { size: itemsPerPage, page: currentPage - 1, sort: sortString }

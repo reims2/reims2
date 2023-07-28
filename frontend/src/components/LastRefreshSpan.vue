@@ -1,5 +1,5 @@
 <template>
-  <span v-if="props.showSpinner" class="d-flex align-center">
+  <div v-if="props.showSpinner" class="d-flex align-center" @click="glassesStore.loadGlasses()">
     <v-progress-circular
       :style="{ visibility: glassesStore.isRefreshingGlasses ? 'visible' : 'hidden' }"
       indeterminate
@@ -8,7 +8,7 @@
       class="mr-2 ma-0 pa-0"
     />
     Last update {{ lastRefreshString }}
-  </span>
+  </div>
   <span v-else>Last update {{ lastRefreshString }}.</span>
 </template>
 
@@ -42,8 +42,8 @@ onBeforeUnmount(() => clearInterval(refreshInterval))
 function generateTimeString() {
   if (!lastRefresh.value) {
     lastRefreshString.value = ': none yet'
-  } else if (dayjs().diff(lastRefresh.value) < 5 * 60 * 1000) {
-    lastRefreshString.value = 'now' // don't bother the user with anything less than 5 minutes
+  } else if (dayjs().diff(lastRefresh.value) < 1 * 60 * 1000) {
+    lastRefreshString.value = 'now' // don't bother the user with anything less than X minutes
   } else {
     lastRefreshString.value = dayjs().to(lastRefresh.value)
   }

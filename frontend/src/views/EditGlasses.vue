@@ -12,8 +12,8 @@
                 v-model:error-messsage="errorMesssage"
                 :loading="isLoading"
                 hint-for-selected="Press ENTER to dispense"
-                @change="(glasses) => (selected = glasses)"
                 style="max-width: 500px"
+                @change="(glasses) => (selected = glasses)"
               ></select-glasses-input>
             </v-col>
             <v-col v-if="selected">
@@ -53,7 +53,7 @@
         lg="3"
         class="pl-md-6 pt-3 pt-md-2"
       >
-        <div class="text-h6 pb-2">Last dispensed or deleted</div>
+        <div class="text-h6 pb-2">Recently dispensed or deleted</div>
         <div
           v-for="glasses in rootStore.lastDisensedGlasses.slice(0, 3)"
           :key="glasses.sku"
@@ -76,6 +76,7 @@
       :timeout="-1"
       vertical
       location="bottom center"
+      :attach="true"
       max-width="300px"
       class="position"
     >
@@ -98,6 +99,7 @@ import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRoute } from 'vue-router'
 
 import { useToast } from 'vue-toastification'
+import { ReimsAxiosError } from '@/lib/axios'
 
 const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
@@ -126,6 +128,10 @@ onActivated(() => {
     inputSku.value = parseInt(route.query.sku as string)
   }
 })
+onDeactivated(() => {
+  // reset snackbar
+  snackbarMessage.value = ''
+})
 
 async function submitDispension() {
   await submitDeletion('DISPENSED')
@@ -146,24 +152,23 @@ async function submitDeletion(reason: string) {
   try {
     await glassesStore.dispense(toDispense.sku, reason)
   } catch (error) {
-    isLoading.value = false
-    if (error.status === 404) {
-      toast.warning('SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
-    } else if (error.network || error.server) {
-      if (error.server) {
-        toast.warning(
-          `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`,
+    if (error instanceof ReimsAxiosError) {
+      isLoading.value = false
+      if (error.statusCode === 404) {
+        toast.warning('SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
+      } else if (error.isServerSide) {
+        toast.error(
+          `Could not dispense glasses. Please report this to the REIMS2 developers (Error ${error.apiMessage})`,
         )
-        snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be dispensed when the server is back online`
-        glassesStore.deleteOfflineGlasses(toDispense.sku)
-      } else {
+      } else if (error.isNetwork) {
         snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be dispensed when you're back online`
+        glassesStore.deleteOfflineGlasses(toDispense.sku)
+        rootStore.lastDisensedGlasses.unshift(toDispense)
+        if (form.value) form.value.reset()
+        if (firstInput.value) firstInput.value.$el.focus()
       }
-      rootStore.lastDisensedGlasses.unshift(toDispense)
-      if (form.value) form.value.reset()
-      if (firstInput.value) firstInput.value.$el.focus()
     } else {
-      toast.error(`Could not dispense glasses, please retry (Error ${error.status})`)
+      toast.error(`Could not dispense glasses, please retry (${error.message})`)
     }
     return
   }
@@ -184,19 +189,21 @@ async function undoDispension(glasses: Glasses) {
   try {
     await glassesStore.undispense(glasses)
   } catch (error) {
-    isLoading.value = false
-    if (error.status === 400) {
-      toast.error(
-        `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`,
-      )
-      snackbarMessage.value = ''
-    } else if (error.network || error.server) {
-      toast.error(
-        "Network or server error. Dispension will be automatically reverted as soon as you're back online.",
-      )
-      snackbarMessage.value = ''
+    if (error instanceof ReimsAxiosError) {
+      isLoading.value = false
+      if (error.statusCode === 400) {
+        toast.error(
+          `Reverting is not possible here, please readd glasses manually (Error: ${error.apiMessage}).`,
+        )
+        snackbarMessage.value = ''
+      } else if (error.isServerSide || error.isNetwork) {
+        toast.error(
+          "Network or server error. Dispension will be automatically reverted as soon as you're back online.",
+        )
+        snackbarMessage.value = ''
+      }
     } else {
-      toast.error(`Could not undo dispension of glasses, please retry (Error ${error.status}).`)
+      toast.error(`Could not undo dispension of glasses, please retry (${error.message}).`)
     }
     return
   }
