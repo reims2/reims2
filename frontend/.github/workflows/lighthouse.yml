@@ -25,10 +25,16 @@ jobs:
         env:
           # That way we can test pages that are normally hidden behind /login
           VITE_REDIRECT_UNAUTHENTICATED: 'false'
+      - name: Install global dependencies
+        run: |
+          # renovate datasource=npm depName=http-server
+          HTTP_SERVER_VERSION=14.1.1
+          npm install -g http-server@$HTTP_SERVER_VERSION
+          # renovate datasource=npm depName=@lhci/cli
+          LHCI_CLI_VERSION=0.11.1
+          npm install -g @lhci/cli@$LHCI_CLI_VERSION
       - name: Run Lighthouse tests
         run: |
-          npm install -g http-server
-          npm install -g @lhci/cli@0.11.x
           lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
