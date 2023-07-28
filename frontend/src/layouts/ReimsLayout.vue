@@ -10,6 +10,8 @@
           </keep-alive>
         </transition>
       </router-view>
+      <offline-banner v-if="!isOnline" />
+      <div v-if="!isOnline" style="min-height: 100px"></div>
     </v-main>
     <app-bottom-bar v-if="mobile" :items="mainItems" />
     <app-footer v-if="!mobile" :show-last-update="true" />
@@ -37,6 +39,8 @@ import { useOnline } from '@vueuse/core'
 import { useToast } from 'vue-toastification'
 import { useAuthStore } from '@/stores/auth'
 import { useUpdatesGlassesInterval } from '@/lib/update-glasses'
+
+const OfflineBanner = defineAsyncComponent(() => import('@/components/OfflineBanner.vue'))
 
 const toast = useToast()
 useUpdatesGlassesInterval()
