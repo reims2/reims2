@@ -124,6 +124,7 @@ import {
   generalGlassesDataKeys,
 } from '@/model/GlassesModel'
 import { useToast } from 'vue-toastification'
+import { ReimsAxiosError } from '@/lib/axios'
 
 const toast = useToast()
 
@@ -254,14 +255,13 @@ async function startEdit(newGlasses: Glasses) {
     loading.value = true
     await glassesStore.editGlasses(newGlasses)
   } catch (error) {
-    if (error.response && error.response.status < 500) {
+    if (error instanceof ReimsAxiosError && error.isServerSide) {
       // TODO catch network errors because they'll be retried.
-      edit.value = ''
-      toast.error(`Glasses can't be edited, sorry (Error ${error.status})`)
-    } else {
       toast.error(
-        `Editing was not possible because the server didn't respond. Please retry (Error ${error.status}).`,
+        `Editing was not possible because the server didn't respond. Please retry (${error.message}).`,
       )
+    } else {
+      toast.error(`Glasses can't be edited, sorry (${error.message})`)
     }
     loading.value = false
     return

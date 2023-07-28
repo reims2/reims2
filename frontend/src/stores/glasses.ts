@@ -3,7 +3,7 @@ import calculateAllPhilscore from '@/lib/philscore'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useRootStore } from './root'
 import axios from 'axios'
-import { useAxios } from '@/lib/axios'
+import { ReimsAxiosError, useAxios } from '@/lib/axios'
 
 const arrayContainsSku = (data: Glasses[], sku: number) => data.some((e) => e.sku === sku)
 
@@ -12,6 +12,7 @@ let cancelTokenGet = axios.CancelToken.source()
 export const useGlassesStore = defineStore(
   'glasses',
   () => {
+    const rootStore = useRootStore()
     const axiosInstance = useAxios()
     const allGlasses = ref([] as Glasses[])
     const lastRefresh = ref(null as string | null)
@@ -28,7 +29,6 @@ export const useGlassesStore = defineStore(
 
     async function addGlasses(newGlasses: GlassesInput): Promise<Glasses> {
       const request = Object.assign({}, newGlasses) as Glasses
-      const rootStore = useRootStore()
       request.location = rootStore.reimsSite
       const response = await axiosInstance.post('/api/glasses', request)
       const addedGlasses = response.data
@@ -36,7 +36,6 @@ export const useGlassesStore = defineStore(
       return addedGlasses
     }
     async function fetchSingle(sku: number): Promise<Glasses> {
-      const rootStore = useRootStore()
       if (cancelTokenGet) cancelTokenGet.cancel()
       cancelTokenGet = axios.CancelToken.source()
       let response
@@ -45,7 +44,7 @@ export const useGlassesStore = defineStore(
           cancelToken: cancelTokenGet.token,
         })
       } catch (e) {
-        if (e.response && e.response.status === 404) {
+        if (e instanceof ReimsAxiosError && e.statusCode === 404) {
           // delete glasses from local db if it doesn't exist on server
           deleteOfflineGlasses(sku)
         }
@@ -58,7 +57,6 @@ export const useGlassesStore = defineStore(
       return fetchedGlasses
     }
     async function dispense(sku: number, reason: string) {
-      const rootStore = useRootStore()
       await axiosInstance.put(
         `/api/glasses/dispense/${rootStore.reimsSite}/${sku}?reason=${reason}`,
         {},
@@ -70,12 +68,10 @@ export const useGlassesStore = defineStore(
       addOfflineGlasses(glasses)
     }
     async function deleteGlasses(sku: number) {
-      const rootStore = useRootStore()
       await axiosInstance.delete(`/api/glasses/${rootStore.reimsSite}/${sku}`)
       deleteOfflineGlasses(sku)
     }
     async function editGlasses(newGlasses: Glasses): Promise<Glasses> {
-      const rootStore = useRootStore()
       const response = await axiosInstance.put(
         `/api/glasses/${rootStore.reimsSite}/${newGlasses.sku}`,
         newGlasses,
@@ -89,7 +85,6 @@ export const useGlassesStore = defineStore(
       return calculateAllPhilscore(terms, allGlasses.value || ([] as Glasses[]))
     }
     async function loadDispensedCsv(startDate: string, endDate: string): Promise<Blob> {
-      const rootStore = useRootStore()
       const params = { startDate, endDate }
       const response = await axiosInstance.get(
         `/api/glasses/dispensed/${rootStore.reimsSite}.csv`,
@@ -101,23 +96,26 @@ export const useGlassesStore = defineStore(
       return response.data
     }
     async function loadInventoryCsv(): Promise<Blob> {
-      const rootStore = useRootStore()
       const response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}.csv`, {
         responseType: 'blob',
       })
       return response.data
     }
     async function loadGlasses() {
+      if (isRefreshingGlasses.value) return
       isRefreshingGlasses.value = true
-      const rootStore = useRootStore()
-      const response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}`, {
-        params: { size: 100000 },
-        timeout: 60000,
-      })
+      let response
+      try {
+        response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}`, {
+          params: { size: 100000 },
+          timeout: 60000,
+        })
+      } finally {
+        isRefreshingGlasses.value = false
+      }
       allGlasses.value = response.data.glasses
       lastRefresh.value = new Date().toISOString()
       isOutdated.value = false
-      isRefreshingGlasses.value = false
     }
     function addOfflineGlasses(glasses: Glasses) {
       if (!arrayContainsSku(allGlasses.value, glasses.sku)) {

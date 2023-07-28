@@ -72,7 +72,7 @@ async function changeLocation() {
     newLocation.value = prevLocation
     rootStore.reimsSite = prevLocation
 
-    toast.error(`Cannot change location (Error ${error.status})`)
+    toast.error(`Cannot change location (${error.message})`)
   }
 
   loading.value = false

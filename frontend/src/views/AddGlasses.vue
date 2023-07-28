@@ -117,6 +117,7 @@ import {
 
 import { useDisplay } from 'vuetify'
 import { useToast } from 'vue-toastification'
+import { ReimsAxiosError } from '@/lib/axios'
 
 const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
@@ -178,11 +179,11 @@ async function submit() {
     rootStore.lastAddedSkus.unshift(newGlasses.sku)
   } catch (error) {
     loading.value = false
-    if (error.status === 409) {
+    if (error instanceof ReimsAxiosError && error.statusCode === 409) {
       // no free skus left.
       toast.error(error.message)
     } else {
-      toast.error(`Could not add glasses, please retry (${error.status})`)
+      toast.error(`Could not add glasses, please retry (${error.message})`)
     }
     return
   }
@@ -212,10 +213,10 @@ async function submitDeletion(sku: number) {
   try {
     await glassesStore.dispense(sku, 'WRONGLY_ADDED')
   } catch (error) {
-    if (error.status === 404) {
+    if (error instanceof ReimsAxiosError && error.statusCode === 404) {
       console.log('Already deleted')
     } else {
-      toast.error(`Could not delete glasses, please retry (Error ${error.status})`)
+      toast.error(`Could not delete glasses, please retry (${error.message})`)
     }
   }
 }

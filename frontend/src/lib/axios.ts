@@ -1,7 +1,38 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { useAuthStore } from '@/stores/auth'
 import { useToast } from 'vue-toastification'
 import { useRouter } from 'vue-router'
+
+export class ReimsAxiosError extends Error {
+  isNetwork: boolean
+  isServerSide: boolean
+  isClientSide: boolean
+  statusCode: number | null
+  apiMessage: string | null
+  constructor(
+    message: string,
+    isNetwork = false,
+    isServer = false,
+    apiMessage: string | null = null,
+    statusCode: number | null = null,
+  ) {
+    super(message)
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, ReimsAxiosError.prototype)
+    this.name = 'ReimsAxiosError'
+    this.isNetwork = isNetwork
+    this.isServerSide = isServer
+    this.apiMessage = apiMessage
+    this.isClientSide = !isNetwork && !isServer
+    this.statusCode = statusCode
+  }
+}
+
+type ApiErrorResponse = {
+  message: string
+  timestamp: number
+  status: number
+}
 
 export const useAxios = () => {
   const authStore = useAuthStore()
@@ -15,26 +46,34 @@ export const useAxios = () => {
 
   instance.interceptors.response.use(
     (response) => response,
-    (error) => {
-      error.status = error.response ? error.response.status : 'Network Error'
+    (error: AxiosError) => {
       if (!error.response) {
-        error.network = true
-      } else if (error.response.status >= 500) {
-        error.server = true
+        throw new ReimsAxiosError('Network error', true)
+      }
+      const request = error.request as XMLHttpRequest | null
+      const requestUrl = request?.responseURL || null
+      console.log(request)
+      const apiError = error.response.data as ApiErrorResponse | null
+      const apiMessage = apiError?.message || null
+
+      if (error.response.status >= 500) {
+        throw new ReimsAxiosError('Server error', false, true, apiMessage, error.response.status)
       }
 
-      try {
-        error.message = error.response.data.message
-      } catch (e) {
-        error.message = ''
-      }
-
-      if (error.response.status === 401) {
-        toast.warning('Credentials no longer valid. Please log in again.')
+      if (error.response.status === 401 && !(requestUrl && requestUrl.includes('/api/auth'))) {
+        toast.warning('Credentials no longer valid. Please reload to log in again.')
         authStore.logout()
         router.push({ name: 'Login' })
+        throw new ReimsAxiosError('Unauthorized')
       }
-      throw error
+
+      throw new ReimsAxiosError(
+        `Error ${error.response.status}`,
+        false,
+        false,
+        apiMessage,
+        error.response.status,
+      )
     },
   )
 

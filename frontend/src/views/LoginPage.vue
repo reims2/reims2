@@ -6,9 +6,6 @@
         <v-form ref="form" v-model="valid" @submit.prevent="userLogin">
           <v-row>
             <v-col cols="12">
-              <v-alert v-if="errorText" type="error" density="comfortable" variant="outlined">
-                {{ errorText }}
-              </v-alert>
               <v-text-field
                 v-model="username"
                 label="Username"
@@ -40,6 +37,9 @@ import AppHeader from '@/components/AppHeader.vue'
 import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
 import { useRoute } from 'vue-router'
+import { ReimsAxiosError } from '@/lib/axios'
+import { useToast } from 'vue-toastification'
+const toast = useToast()
 
 const username = ref('')
 const password = ref('')
@@ -61,10 +61,10 @@ const userLogin = async () => {
     router.push(redirect.value)
   } catch (err) {
     console.log(err)
-    if (err.status === 401) {
-      errorText.value = err.message
+    if (err instanceof ReimsAxiosError && err.statusCode === 401 && err.apiMessage != null) {
+      toast.error(err.apiMessage)
     } else {
-      errorText.value = `Login failed (Error ${err.status})`
+      toast.error('Login failed (${err.message)')
     }
   }
 }
