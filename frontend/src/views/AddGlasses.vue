@@ -70,7 +70,7 @@
         </v-form>
       </v-col>
       <v-col
-        v-if="lastAdded.length > 0"
+        v-if="lastAdded != null && lastAdded.length > 0"
         ref="results"
         cols="12"
         md="4"
@@ -78,21 +78,21 @@
         class="pl-md-6 pt-3 pt-md-2"
       >
         <div class="text-h6 pb-2">Recently added</div>
-        <glass-card
+        <div
           v-for="(item, idx) in lastAdded.slice(0, 3)"
-          :key="item!.id"
-          :model-value="item!"
-          :style="'opacity: ' + (1 - idx * 0.3)"
-          editable
+          :key="item.id"
+          :style="'opacity: ' + (1 - idx * 0.2)"
         >
-          <template #actions>
-            <delete-button
-              :glass="item!"
-              fixed-reason="WRONGLY_ADDED"
-              @delete="submitDeletion(item!.sku)"
-            />
-          </template>
-        </glass-card>
+          <glass-card :model-value="item" editable>
+            <template #actions>
+              <delete-button
+                :glass="item"
+                fixed-reason="WRONGLY_ADDED"
+                @delete="submitDeletion(item.sku)"
+              />
+            </template>
+          </glass-card>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -107,7 +107,13 @@ import { useEnterToTab } from '@/lib/enter-to-tab'
 
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
-import { Eye, GlassesInput, OptionalEye, generalGlassesDataKeys } from '@/model/GlassesModel'
+import {
+  Glasses,
+  Eye,
+  GlassesInput,
+  OptionalEye,
+  generalGlassesDataKeys,
+} from '@/model/GlassesModel'
 
 import { useDisplay } from 'vuetify'
 import { useToast } from 'vue-toastification'
@@ -130,14 +136,15 @@ const newGlass = ref<Partial<GlassesInput>>({})
 const odEye = ref<OptionalEye>({ axis: '', cylinder: '', sphere: '', add: '' })
 const osEye = ref<OptionalEye>({ axis: '', cylinder: '', sphere: '', add: '' })
 const syncEyes = ref(true)
-const lastAddedSkus = ref<number[]>([])
 const results = ref<ComponentPublicInstance | null>(null)
 const form = ref<HTMLFormElement | null>(null)
 const firstInput = ref<ComponentPublicInstance[] | null>(null)
 
-const lastAdded = computed(() =>
-  lastAddedSkus.value.map((sku) => allGlasses.value.find((g) => g.sku === sku)),
-)
+const lastAdded = computed(() => {
+  return rootStore.lastAddedSkus
+    .map((sku) => allGlasses.value.find((g) => g.sku === sku))
+    .filter((itm) => itm != null) as Glasses[]
+})
 const freeSlots = computed(() => 5000 - allGlasses.value.length)
 
 const { vPreventEnterTab } = useEnterToTab(form)
@@ -152,7 +159,7 @@ watch(
 
 watch(allGlasses, () => {
   // Filter out deleted glasses
-  lastAddedSkus.value = lastAddedSkus.value.filter((sku) =>
+  rootStore.lastAddedSkus = rootStore.lastAddedSkus.filter((sku) =>
     allGlasses.value.find((g) => g.sku === sku),
   )
 })
@@ -168,7 +175,7 @@ async function submit() {
 
   try {
     const newGlasses = await glassesStore.addGlasses(newGlass.value as GlassesInput)
-    lastAddedSkus.value.unshift(newGlasses.sku)
+    rootStore.lastAddedSkus.unshift(newGlasses.sku)
   } catch (error) {
     loading.value = false
     if (error.status === 409) {
