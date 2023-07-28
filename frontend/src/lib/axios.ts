@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
-import { useNotification } from './notifications'
+import { useToast } from 'vue-toastification'
 
 export const useAxios = () => {
   const authStore = useAuthStore()
-  const { addError } = useNotification()
+  const toast = useToast()
   const token = computed(() => authStore.accessToken)
 
   const instance = axios.create({
@@ -28,7 +28,7 @@ export const useAxios = () => {
       }
 
       if (error.response.status === 401) {
-        addError('Credentials no longer valid. Please log in again.')
+        toast.error('Credentials no longer valid. Please log in again.')
         authStore.logout()
       }
       throw error

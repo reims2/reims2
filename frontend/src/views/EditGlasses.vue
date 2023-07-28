@@ -76,8 +76,9 @@ import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRoute } from 'vue-router'
 
-import { useNotification } from '@/lib/notifications'
-const { addError } = useNotification()
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 const glassesStore = useGlassesStore()
 
@@ -124,10 +125,10 @@ async function submitDeletion(reason: string) {
   } catch (error) {
     isLoading.value = false
     if (error.status === 404) {
-      addError('SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
+      toast.warning('SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
     } else if (error.network || error.server) {
       if (error.server) {
-        addError(
+        toast.warning(
           `Server error. But the glasses will be automatically dispensed as soon as the server is reachable (Error ${error.status})`,
         )
         snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be dispensed when the server is back online`
@@ -139,7 +140,7 @@ async function submitDeletion(reason: string) {
       if (form.value) form.value.reset()
       if (firstInput.value) firstInput.value.focus()
     } else {
-      addError(`Could not dispense glasses, please retry (Error ${error.status})`)
+      toast.error(`Could not dispense glasses, please retry (Error ${error.status})`)
     }
     return
   }
@@ -162,17 +163,17 @@ async function undoDispension(glasses: Glasses) {
   } catch (error) {
     isLoading.value = false
     if (error.status === 400) {
-      addError(
+      toast.error(
         `Sorry, reverting the dispension is not possible. Please readd glasses manually (Error ${error.status}).`,
       )
       snackbarMessage.value = ''
     } else if (error.network || error.server) {
-      addError(
+      toast.error(
         "Network or server error. Dispension will be automatically reverted as soon as you're back online.",
       )
       snackbarMessage.value = ''
     } else {
-      addError(`Could not undo dispension of glasses, please retry (Error ${error.status}).`)
+      toast.error(`Could not undo dispension of glasses, please retry (Error ${error.status}).`)
     }
     return
   }

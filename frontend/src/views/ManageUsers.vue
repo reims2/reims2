@@ -128,8 +128,8 @@ import { ref } from 'vue'
 import { useUsersStore } from '@/stores/users'
 import { useAuthStore } from '@/stores/auth'
 
-import { useNotification } from '@/lib/notifications'
-const { addError } = useNotification()
+import { useToast } from 'vue-toastification'
+const toast = useToast()
 
 const usersStore = useUsersStore()
 const authStore = useAuthStore()
@@ -152,7 +152,7 @@ async function startLoading() {
   try {
     items.value = await usersStore.get()
   } catch (error) {
-    addError(`Could not load users (Error ${error.status}).`)
+    toast.error(`Could not load users (Error ${error.status}).`)
     console.log(error)
   }
 }
@@ -169,7 +169,7 @@ const addUser = async () => {
     })
     dialog.value = false
   } catch (error) {
-    addError(`Could not add user (Error ${error.status}).`)
+    toast.error(`Could not add user (Error ${error.status}).`)
     console.log(error)
   }
 
@@ -183,7 +183,7 @@ const deleteUser = async (userId: number) => {
   try {
     await usersStore.deleteUser(userId)
   } catch (error) {
-    addError(`Could not delete user (Error ${error.status}).`)
+    toast.error(`Could not delete user (Error ${error.status}).`)
     console.log(error)
   }
   deleteLoading.value = false

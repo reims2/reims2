@@ -10,7 +10,6 @@
           </keep-alive>
         </transition>
       </router-view>
-      <error-snackbar />
     </v-main>
     <app-bottom-bar v-if="mobile" :items="mainItems" />
     <app-footer v-if="!mobile" :show-last-update="true" />
@@ -33,14 +32,13 @@ import AppFooter from '@/components/AppFooter.vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppDrawer from '@/components/AppDrawer.vue'
 import AppBottomBar from '@/components/AppBottomBar.vue'
-import ErrorSnackbar from '@/components/ErrorSnackbar.vue'
 
 import { useOnline, useIntervalFn } from '@vueuse/core'
-import { useNotification } from '@/lib/notifications'
+import { useToast } from 'vue-toastification'
 import { useGlassesStore } from '@/stores/glasses'
 import { useAuthStore } from '@/stores/auth'
 
-const { addError } = useNotification()
+const toast = useToast()
 
 const { mobile } = useDisplay()
 const glassesStore = useGlassesStore()
@@ -74,7 +72,7 @@ onMounted(() => {
   updateGlasses()
   if (authStore.expirationTime && dayjs().diff(authStore.expirationTime, 'days') > -7) {
     // Use 7 days as a safety because of service worker retries
-    addError('Your session is expiring soon, please log in again.')
+    toast.warning('Your session is expiring soon, please log in again.')
     authStore.logout()
   }
 })
@@ -86,7 +84,9 @@ async function updateGlasses() {
     glassesStore.loadGlasses()
   } catch (error) {
     if (!glassesStore.lastRefresh) {
-      addError(`Could not load glasses database, please retry (Error ${error.status})`)
+      toast.error(
+        `Could not load glasses database, please reload or retry later (Error ${error.status})`,
+      )
     } else if (dayjs().diff(glassesStore.lastRefresh) > 3 * 24 * 60 * 60 * 1000) {
       // if the last successful update is more than three day ago, mark DB as outdated
       glassesStore.isOutdated = true

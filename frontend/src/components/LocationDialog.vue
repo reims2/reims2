@@ -36,9 +36,9 @@ import { ReimsSite } from '@/model/ReimsModel'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 import { ref } from 'vue'
-import { useNotification } from '@/lib/notifications'
-const { addError } = useNotification()
+import { useToast } from 'vue-toastification'
 
+const toast = useToast()
 const rootStore = useRootStore()
 const glassesStore = useGlassesStore()
 
@@ -72,7 +72,7 @@ async function changeLocation() {
     newLocation.value = prevLocation
     rootStore.reimsSite = prevLocation
 
-    addError(`Cannot change location (Error ${error.status})`)
+    toast.error(`Cannot change location (Error ${error.status})`)
   }
 
   loading.value = false

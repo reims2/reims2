@@ -81,10 +81,10 @@ import { useRootStore } from '@/stores/root'
 import MinMaxInput from '@/components/MinMaxInput.vue'
 import dayjs from 'dayjs'
 import { GlassesEyeIndex } from '@/model/GlassesModel'
-import { useNotification } from '@/lib/notifications'
+import { useToast } from 'vue-toastification'
 import { TableSortBy, MinMaxObject } from '@/model/ReimsModel'
 
-const { addError } = useNotification()
+const toast = useToast()
 
 const tableStore = useTableStore()
 const rootStore = useRootStore()
@@ -204,7 +204,7 @@ async function startLoading() {
       items.value = []
     } else {
       console.error(error)
-      addError(`Could not load table data, please retry (Error ${error.status})`)
+      toast.error(`Could not load table data, please retry (Error ${error.status})`)
     }
   }
   loading.value = false
