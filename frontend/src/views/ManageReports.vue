@@ -96,15 +96,14 @@ async function downloadInventoryReport() {
   loadingInventoryReport.value = false
 }
 
-function downloadCsv(csvBlob: Blob) {
+async function downloadCsv(csvBlob: Blob) {
   if (!csvBlob || csvBlob.size === 0) {
     toast.warning('Report is empty. Try selecting another year?')
     return
   }
   const blob = new Blob([csvBlob], { type: 'application/csv' })
   csvUri.value = URL.createObjectURL(blob)
-  nextTick(() => {
-    downloadLink.value?.click()
-  })
+  await nextTick()
+  downloadLink.value?.click()
 }
 </script>

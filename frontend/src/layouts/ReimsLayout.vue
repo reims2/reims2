@@ -33,33 +33,33 @@ import AppHeader from '@/components/AppHeader.vue'
 import AppDrawer from '@/components/AppDrawer.vue'
 import AppBottomBar from '@/components/AppBottomBar.vue'
 
-import { useOnline, useIntervalFn } from '@vueuse/core'
+import { useOnline } from '@vueuse/core'
 import { useToast } from 'vue-toastification'
-import { useGlassesStore } from '@/stores/glasses'
 import { useAuthStore } from '@/stores/auth'
+import { useUpdatesGlassesInterval } from '@/lib/update-glasses'
 
 const toast = useToast()
+useUpdatesGlassesInterval()
 
 const { mobile } = useDisplay()
-const glassesStore = useGlassesStore()
 const authStore = useAuthStore()
 
 const mainItems = computed(() => [
   { title: 'Find', icon: mdiFileFind, to: '/find' },
   { title: 'Edit', icon: mdiPencil, to: '/edit' },
-  { title: 'View all', icon: mdiDatabase, to: '/view', disabled: !isOnline },
-  { title: 'Add', icon: mdiPlusCircle, to: '/add', disabled: !isOnline },
+  { title: 'View all', icon: mdiDatabase, to: '/view', disabled: !isOnline.value },
+  { title: 'Add', icon: mdiPlusCircle, to: '/add', disabled: !isOnline.value },
 ])
 const otherItems = computed(() => {
   const items = [
-    { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: !isOnline },
+    { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: !isOnline.value },
   ]
   if (authStore.user && authStore.roles && authStore.roles.includes('ROLE_ADMIN')) {
     items.push({
       title: 'Users',
       icon: mdiAccountEdit,
       to: '/manage/users',
-      disabled: !isOnline,
+      disabled: !isOnline.value,
     })
   }
   return items
@@ -69,30 +69,10 @@ const isOnline = useOnline()
 
 onMounted(() => {
   authStore.fetchUser()
-  updateGlasses()
   if (authStore.expirationTime && dayjs().diff(authStore.expirationTime, 'days') > -7) {
     // Use 7 days as a safety because of service worker retries
     toast.warning('Your session is expiring soon, please log in again.')
     authStore.logout()
   }
 })
-
-useIntervalFn(() => updateGlasses(), 3 * 60 * 1000, { immediate: true })
-
-async function updateGlasses() {
-  try {
-    glassesStore.loadGlasses()
-  } catch (error) {
-    if (!glassesStore.lastRefresh) {
-      toast.error(
-        `Could not load glasses database, please reload or retry later (Error ${error.status})`,
-      )
-    } else if (dayjs().diff(glassesStore.lastRefresh) > 3 * 24 * 60 * 60 * 1000) {
-      // if the last successful update is more than three day ago, mark DB as outdated
-      glassesStore.isOutdated = true
-    }
-    // else just fail silently because there's still a recent enough version of the DB cached
-    console.log('DB update failed', error)
-  }
-}
 </script>

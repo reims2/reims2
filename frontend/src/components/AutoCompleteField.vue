@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emit = defineEmits(['update:modelValue'])
 
-const input = ref<HTMLInputElement | null>(null)
+const input = ref<ComponentPublicInstance | null>(null)
 
 focus()
 
@@ -66,6 +66,6 @@ function autoComplete() {
 }
 
 function focus() {
-  input.value?.focus()
+  input.value?.$el.focus()
 }
 </script>

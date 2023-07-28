@@ -131,9 +131,9 @@ const odEye = ref<OptionalEye>({ axis: '', cylinder: '', sphere: '', add: '' })
 const osEye = ref<OptionalEye>({ axis: '', cylinder: '', sphere: '', add: '' })
 const syncEyes = ref(true)
 const lastAddedSkus = ref<number[]>([])
-const results = ref<HTMLElement | null>(null)
+const results = ref<ComponentPublicInstance | null>(null)
 const form = ref<HTMLFormElement | null>(null)
-const firstInput = ref<HTMLElement[] | null>(null)
+const firstInput = ref<ComponentPublicInstance[] | null>(null)
 
 const lastAdded = computed(() =>
   lastAddedSkus.value.map((sku) => allGlasses.value.find((g) => g.sku === sku)),
@@ -182,9 +182,8 @@ async function submit() {
   loading.value = false
   reset()
   // scroll to bottom on mobile
-  nextTick(() => {
-    if (mobile.value) results.value?.scrollIntoView(true)
-  })
+  await nextTick()
+  if (mobile.value) results.value?.$el.scrollIntoView(true)
 }
 function reset() {
   clearObjectProperties(odEye.value)
@@ -195,7 +194,7 @@ function reset() {
   }
   form.value?.reset()
   if (!mobile.value && firstInput.value && firstInput.value.length) {
-    firstInput.value[0].focus()
+    firstInput.value[0].$el.focus()
   }
   syncEyes.value = true
 }

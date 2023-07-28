@@ -95,7 +95,7 @@ const inputSku = ref<number | null>(null)
 
 // Component refs
 const form = ref<VForm | null>(null)
-const firstInput = ref<HTMLElement | null>(null)
+const firstInput = ref<ComponentPublicInstance| null>(null)
 
 const route = useRoute()
 onActivated(() => {
@@ -139,7 +139,7 @@ async function submitDeletion(reason: string) {
       }
       lastDispensed.value = toDispense
       if (form.value) form.value.reset()
-      if (firstInput.value) firstInput.value.focus()
+      if (firstInput.value) firstInput.value.$el.focus()
     } else {
       toast.error(`Could not dispense glasses, please retry (Error ${error.status})`)
     }
@@ -154,7 +154,7 @@ async function submitDeletion(reason: string) {
     snackbarMessage.value = `Successfully deleted glasses with SKU ${toDispense.sku}`
   }
   if (form.value) form.value.reset()
-  if (firstInput.value) firstInput.value.focus()
+  if (firstInput.value) firstInput.value.$el.focus()
 }
 
 async function undoDispension(glasses: Glasses) {

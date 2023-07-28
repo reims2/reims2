@@ -109,7 +109,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, nextTick } from 'vue'
 import { useGlassesStore } from '@/stores/glasses'
 
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
@@ -128,9 +127,9 @@ const { mobile } = useDisplay()
 const glassesStore = useGlassesStore()
 const allGlasses = computed(() => glassesStore.allGlasses)
 
-const firstInput = ref<HTMLFormElement | null>(null)
+const firstInput = ref<ComponentPublicInstance | null>(null)
 const form = ref<HTMLFormElement | null>(null)
-const results = ref<HTMLElement | null>(null)
+const results = ref<ComponentPublicInstance | null>(null)
 
 const matches = ref<null | GlassesResult[]>(null)
 const valid = ref(false)
@@ -248,11 +247,10 @@ async function submitAndUpdate() {
   page.value = 1
   // syncEye.value = true // fixme good hgere?
 
-  nextTick(() => {
-    // on desktop, focus input again; on mobile, scroll to bottom
-    if (!mobile.value) firstInput.value?.focus()
-    else results.value?.scrollIntoView(true)
-  })
+  await nextTick()
+  // on desktop, focus input again; on mobile, scroll to bottom
+  if (!mobile.value) firstInput.value?.$el.focus()
+  else results.value?.$el.scrollIntoView(true)
 }
 function updateKey(key: keyof Eye, value: number | string, eye: EyeEnum) {
   if (eye === EyeEnum.OD) {
@@ -271,13 +269,12 @@ async function loadMatches() {
 
   matches.value = glassesStore.philScore(eyeModel)
 }
-function reset() {
+async function reset() {
   form.value?.reset()
   matches.value = null
-  nextTick(() => {
-    firstInput.value?.focus()
-  })
   syncEye.value = true
+  await nextTick()
+  firstInput.value?.$el.focus()
 }
 function calcPageCount() {
   if (!matches.value) return 0
