@@ -124,8 +124,9 @@ import {
   eyeKeys,
   generalGlassesDataKeys,
 } from '@/model/GlassesModel'
-import { useNotification } from '@/lib/notifications'
-const { addError } = useNotification()
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 const glassesStore = useGlassesStore()
 
@@ -240,9 +241,9 @@ async function startEdit(newGlasses: Glasses) {
     if (error.response && error.response.status < 500) {
       // TODO catch network errors because they'll be retried.
       edit.value = ''
-      addError(`Glasses can't be edited, sorry (Error ${error.status})`)
+      toast.error(`Glasses can't be edited, sorry (Error ${error.status})`)
     } else {
-      addError(
+      toast.error(
         `Editing was not possible because the server didn't respond. Please retry (Error ${error.status}).`,
       )
     }

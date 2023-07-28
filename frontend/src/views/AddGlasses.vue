@@ -112,9 +112,10 @@ import DeleteButton from '@/components/DeleteButton.vue'
 import { Eye, GlassesInput, OptionalEye, generalGlassesDataKeys } from '@/model/GlassesModel'
 
 import { useDisplay } from 'vuetify'
-import { useNotification } from '@/lib/notifications'
+import { useToast } from 'vue-toastification'
 
-const { addError, removeNotification } = useNotification()
+const toast = useToast()
+
 const { mobile } = useDisplay()
 
 const glassesStore = useGlassesStore()
@@ -171,14 +172,13 @@ async function submit() {
     loading.value = false
     if (error.status === 409) {
       // no free skus left.
-      addError(error.message)
+      toast.error(error.message)
     } else {
-      addError(`Could not add glasses, please retry (${error.status})`)
+      toast.error(`Could not add glasses, please retry (${error.status})`)
     }
     return
   }
   loading.value = false
-  removeNotification() // TODO?
   reset()
   // scroll to bottom on mobile
   nextTick(() => {
@@ -208,7 +208,7 @@ async function submitDeletion(sku: number) {
     if (error.status === 404) {
       console.log('Already deleted')
     } else {
-      addError(`Could not delete glasses, please retry (Error ${error.status})`)
+      toast.error(`Could not delete glasses, please retry (Error ${error.status})`)
     }
   }
 }
