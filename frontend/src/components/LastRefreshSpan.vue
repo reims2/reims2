@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-center">
+  <span v-if="props.showSpinner" class="d-flex align-center">
     <v-progress-circular
       :style="{ visibility: glassesStore.isRefreshingGlasses ? 'visible' : 'hidden' }"
       indeterminate
@@ -8,7 +8,8 @@
       class="mr-2 ma-0 pa-0"
     />
     Last update {{ lastRefreshString }}
-  </div>
+  </span>
+  <span v-else>Last update {{ lastRefreshString }}.</span>
 </template>
 
 <script setup lang="ts">
@@ -22,6 +23,10 @@ dayjs.extend(relativeTime)
 const glassesStore = useGlassesStore()
 const lastRefresh = computed(() => glassesStore.lastRefresh)
 const lastRefreshString = ref<string | null>(null)
+
+const props = withDefaults(defineProps<{ showSpinner?: boolean }>(), {
+  showSpinner: true,
+})
 
 watch(
   lastRefresh,

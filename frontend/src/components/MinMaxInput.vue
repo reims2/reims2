@@ -11,7 +11,7 @@
       class="mr-1"
       variant="underlined"
       single-line
-      @change="change"
+      @update:model-value="change"
     />
     <v-text-field
       v-model="max"
@@ -23,7 +23,7 @@
       label="To"
       variant="underlined"
       single-line
-      @change="change"
+      @update:model-value="change"
     />
   </div>
 </template>
@@ -34,10 +34,10 @@ import { ref } from 'vue'
 const min = ref('')
 const max = ref('')
 const emit = defineEmits<{
-  change: [value: MinMaxObject]
+  'update:model-value': [value: MinMaxObject]
 }>()
 
 function change() {
-  emit('change', { min: parseFloat(min.value), max: parseFloat(max.value) })
+  emit('update:model-value', { min: parseFloat(min.value), max: parseFloat(max.value) })
 }
 </script>

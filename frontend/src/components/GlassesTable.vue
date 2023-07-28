@@ -9,11 +9,7 @@
     :loading="loading"
     density="compact"
     must-sort
-    :footer-props="{
-      showFirstLastPage: true,
-      itemsPerPageOptions: [10, 20, 50, 100, 500],
-      showCurrentPage: true,
-    }"
+    :items-per-page-options="itemsPerPageOptions"
     @update:options="startLoading"
   >
     <template #thead>
@@ -35,18 +31,26 @@
           />
         </td>
         <td>
-          <min-max-input @change="(value: any) => updateEyeFilter(value, 'od', 'sphere')" />
+          <min-max-input
+            @update:model-value="(value: any) => updateEyeFilter(value, 'od', 'sphere')"
+          />
         </td>
         <td>
-          <min-max-input @change="(value: any) => updateEyeFilter(value, 'od', 'cylinder')" />
+          <min-max-input
+            @update:model-value="(value: any) => updateEyeFilter(value, 'od', 'cylinder')"
+          />
         </td>
         <td />
         <td class="v-data-table__divider" />
         <td>
-          <min-max-input @change="(value: any) => updateEyeFilter(value, 'os', 'sphere')" />
+          <min-max-input
+            @update:model-value="(value: any) => updateEyeFilter(value, 'os', 'sphere')"
+          />
         </td>
         <td>
-          <min-max-input @change="(value: any) => updateEyeFilter(value, 'os', 'cylinder')" />
+          <min-max-input
+            @update:model-value="(value: any) => updateEyeFilter(value, 'os', 'cylinder')"
+          />
         </td>
         <td />
         <td class="v-data-table__divider" />
@@ -102,7 +106,7 @@ const eyeFilters = reactive({
 })
 const glassesTypeFilter = ref<string[]>([])
 const sortBy = ref<TableSortBy[]>([{ key: 'sku', order: 'asc' }])
-const itemsPerPage = ref(10)
+const itemsPerPage = ref(20)
 const page = ref(1)
 const loading = ref(false)
 const items = ref([])
@@ -127,6 +131,15 @@ const headers = computed(() => {
     { key: 'actions', title: '', sortable: false },
   ]
 })
+
+const itemsPerPageOptions = [
+  { value: 10, title: '10' },
+  { value: 25, title: '20' },
+  { value: 50, title: '50' },
+  { value: 100, title: '100' },
+  { value: 500, title: '250' },
+]
+
 const filterString = computed(() => {
   let filterString = ''
   const typeFilter = createSingleTypeFilter(glassesTypeFilter.value)

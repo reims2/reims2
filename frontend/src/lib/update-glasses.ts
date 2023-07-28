@@ -10,8 +10,9 @@ export const useUpdatesGlassesInterval = () => {
   useIntervalFn(() => updateGlasses(), 3 * 60 * 1000, { immediate: true })
 
   async function updateGlasses() {
+    console.log('Updating glasses database')
     try {
-      glassesStore.loadGlasses()
+      await glassesStore.loadGlasses()
     } catch (error) {
       if (!glassesStore.lastRefresh) {
         toast.error(

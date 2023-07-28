@@ -95,7 +95,7 @@ const inputSku = ref<number | null>(null)
 
 // Component refs
 const form = ref<VForm | null>(null)
-const firstInput = ref<ComponentPublicInstance| null>(null)
+const firstInput = ref<ComponentPublicInstance | null>(null)
 
 const route = useRoute()
 onActivated(() => {

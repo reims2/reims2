@@ -4,20 +4,12 @@
     <v-toolbar-title>
       {{ title }}
     </v-toolbar-title>
-
-    <template v-if="!isOnline" #extension>
-      <offline-banner />
-    </template>
   </v-app-bar>
 </template>
 
 <script setup lang="ts">
 import { useRootStore } from '@/stores/root'
 import { useRoute } from 'vue-router'
-import { useOnline } from '@vueuse/core'
-const OfflineBanner = defineAsyncComponent(() => import('@/components/OfflineBanner.vue'))
-
-const isOnline = useOnline()
 const route = useRoute()
 const title = computed(() => route.meta.title || 'REIMS2')
 
