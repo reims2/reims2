@@ -69,7 +69,7 @@
             <v-icon :icon="mdiBug"></v-icon>
           </template>
         </v-list-item>
-        <v-list-item title="Change location" @click.stop="dialog = true">
+        <v-list-item title="Change location" :disabled="!isOnline" @click.stop="dialog = true">
           <template #prepend>
             <v-icon :icon="mdiMapMarkerMultiple"></v-icon>
           </template>
@@ -106,9 +106,11 @@ import { useRouter } from 'vue-router'
 import { mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
 import { DrawerItem } from '@/model/ReimsModel'
 import { useDisplay } from 'vuetify'
+import { useOnline } from '@vueuse/core'
 
 const LocationDialog = defineAsyncComponent(() => import('@/components/LocationDialog.vue'))
 
+const isOnline = useOnline()
 const { mobile } = useDisplay()
 
 defineProps<{
