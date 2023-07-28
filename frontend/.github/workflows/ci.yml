@@ -6,12 +6,18 @@ on:
       - '**'
     tags: ['v*.*.*']
   pull_request:
+    types:
+      - 'opened'
+      - 'synchronize'
+      - 'reopened'
+      - 'labeled'
   merge_group:
   workflow_dispatch:
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'labeled' }}
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3
@@ -31,7 +37,7 @@ jobs:
   docker:
     uses: reims2/actions/.github/workflows/docker.yml@main
     concurrency: docker-frontend-${{ github.ref }}
-    if: ${{ github.event_name != 'merge_group' }}
+    if: ${{ github.event_name != 'merge_group' && github.event.action != 'labeled' }}
     secrets: inherit # pass all secrets
 
   deploy:
