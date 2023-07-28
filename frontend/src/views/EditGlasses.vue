@@ -69,14 +69,15 @@
 import { mdiDotsVertical } from '@mdi/js'
 import { useGlassesStore } from '@/stores/glasses'
 
-import GlassCard from '@/components/GlassCard.vue'
-import DeleteButton from '@/components/DeleteButton.vue'
 import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
 import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRoute } from 'vue-router'
 
 import { useToast } from 'vue-toastification'
+
+const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
+const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
 
 const toast = useToast()
 

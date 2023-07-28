@@ -1,5 +1,4 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
-import { Notification } from '@/lib/notifications'
 import { ReimsSite } from '@/model/ReimsModel'
 
 const reimsSiteNames: { [site in ReimsSite]: string } = {

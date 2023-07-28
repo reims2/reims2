@@ -13,9 +13,10 @@
 
 <script setup lang="ts">
 import { useRootStore } from '@/stores/root'
-import OfflineBanner from '@/components/OfflineBanner.vue'
 import { useRoute } from 'vue-router'
 import { useOnline } from '@vueuse/core'
+const OfflineBanner = defineAsyncComponent(() => import('@/components/OfflineBanner.vue'))
+
 const isOnline = useOnline()
 const route = useRoute()
 const title = computed(() => route.meta.title || 'REIMS2')

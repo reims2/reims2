@@ -2371,15 +2371,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-basic-ssl@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@vitejs/plugin-basic-ssl@npm:1.0.1"
-  peerDependencies:
-    vite: ^3.0.0 || ^4.0.0
-  checksum: 9060dd9b02b51f48f9e655d920214879157db5b8bea9681465ab199e1be4f207cc968393410f93935a0443f8c2b302cef2a3ac0a69087af68fb33a8795e1e203
-  languageName: node
-  linkType: hard
-
 "@vitejs/plugin-vue@npm:4.2.3":
   version: 4.2.3
   resolution: "@vitejs/plugin-vue@npm:4.2.3"
@@ -3312,13 +3303,6 @@ __metadata:
   version: 2.0.0
   resolution: "chownr@npm:2.0.0"
   checksum: c57cf9dd0791e2f18a5ee9c1a299ae6e801ff58fee96dc8bfd0dcb4738a6ce58dd252a3605b1c93c6418fe4f9d5093b28ffbf4d66648cb2a9c67eaef9679be2f
-  languageName: node
-  linkType: hard
-
-"chroma-js@npm:2.4.2":
-  version: 2.4.2
-  resolution: "chroma-js@npm:2.4.2"
-  checksum: cf9884c02d406286e4370599bcd1afbf089384407df46b3a69edfedcba7bb99e8f959a5cfdbfec750b305c441c06ca40cd1f70ba3a6c2ce739ac09a92520ddae
   languageName: node
   linkType: hard
 
@@ -6509,13 +6493,11 @@ __metadata:
     "@types/chroma-js": 2.4.0
     "@types/jest": 29.5.3
     "@types/node": 20.4.5
-    "@vitejs/plugin-basic-ssl": 1.0.1
     "@vitejs/plugin-vue": 4.2.3
     "@vitest/coverage-v8": 0.33.0
     "@vue/eslint-config-typescript": 11.0.3
     "@vueuse/core": 10.2.1
     axios: 1.4.0
-    chroma-js: 2.4.2
     dayjs: 1.11.9
     eslint: 8.45.0
     eslint-config-prettier: 8.9.0

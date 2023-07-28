@@ -112,7 +112,6 @@
 import { ref, watch, computed, nextTick } from 'vue'
 import { useGlassesStore } from '@/stores/glasses'
 
-import GlassCard from '@/components/GlassCard.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 
@@ -121,6 +120,8 @@ import { matchesAsCsvUri, generalEyeData, EyeEnum } from '@/lib/util'
 import { useEnterToTab } from '@/lib/enter-to-tab'
 
 import { useDisplay } from 'vuetify'
+
+const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 
 const { mobile } = useDisplay()
 

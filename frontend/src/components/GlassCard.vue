@@ -107,7 +107,6 @@
 </template>
 
 <script setup lang="ts">
-import chroma from 'chroma-js'
 import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '@/lib/util'
 import EditableSpan from './EditableSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
@@ -206,10 +205,27 @@ function formatEyeValues(dataKey: EyeKey, v: unknown): string {
   return ''
 }
 
-function calcColor(val: number) {
-  const scale = chroma.scale(['#F57F17', '#009688']).domain([2, 0])
-  return scale(val).hex()
+function calcColor(value: number): string {
+  const domain = [0, 2]
+  const colors = ['#009688', '#F57F17']
+  const [color1, color2] = colors
+  const [min, max] = domain
+  const clampedValue = Math.max(Math.min(value, max), min)
+  const ratio = (clampedValue - min) / (max - min)
+  const r1 = parseInt(color1.substring(1, 3), 16)
+  const g1 = parseInt(color1.substring(3, 5), 16)
+  const b1 = parseInt(color1.substring(5, 7), 16)
+  const r2 = parseInt(color2.substring(1, 3), 16)
+  const g2 = parseInt(color2.substring(3, 5), 16)
+  const b2 = parseInt(color2.substring(5, 7), 16)
+  const r = Math.round(r1 * (1 - ratio) + r2 * ratio)
+  const g = Math.round(g1 * (1 - ratio) + g2 * ratio)
+  const b = Math.round(b1 * (1 - ratio) + b2 * ratio)
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b
+    .toString(16)
+    .padStart(2, '0')}`
 }
+
 function formatNumber(val: number, decimals: number) {
   const prefix = val === 0 ? '' : val < 0 ? '-' : '+'
   return prefix + Math.abs(Number(val)).toFixed(decimals)

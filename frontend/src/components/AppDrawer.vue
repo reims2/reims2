@@ -105,8 +105,10 @@ import { useRouter } from 'vue-router'
 
 import { mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
 import { DrawerItem } from '@/model/ReimsModel'
-import LocationDialog from '@/components/LocationDialog.vue'
 import { useDisplay } from 'vuetify'
+
+const LocationDialog = defineAsyncComponent(() => import('@/components/LocationDialog.vue'))
+
 const { mobile } = useDisplay()
 
 defineProps<{
