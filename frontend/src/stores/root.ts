@@ -1,5 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { ReimsSite } from '@/model/ReimsModel'
+import { Glasses } from '@/model/GlassesModel'
 
 const reimsSiteNames: { [site in ReimsSite]: string } = {
   sa: 'Santa Ana',
@@ -15,6 +16,8 @@ export const useRootStore = defineStore(
     const reimsSite = ref('sa' as ReimsSite)
     const version = ref<null | string>(import.meta.env.VITE_GIT_VERSION || null)
     const reimsSiteName = computed(() => reimsSiteNames[reimsSite.value])
+    const lastDisensedGlasses = ref([] as Glasses[])
+    const lastAddedSkus = ref([] as number[])
     function toggleDrawer() {
       drawer.value = !drawer.value
     }
@@ -25,6 +28,8 @@ export const useRootStore = defineStore(
       reimsSite,
       reimsSiteName,
       version,
+      lastDisensedGlasses,
+      lastAddedSkus,
       toggleDrawer,
     }
   },

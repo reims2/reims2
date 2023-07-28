@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row dense class="justify-center">
-      <v-col cols="12" md="6" lg="4">
+      <v-col cols="12" md="6" lg="5">
         <div class="pb-2">Start by entering a SKU to dispense or edit glasses.</div>
         <v-form ref="form" v-model="valid" class="pt-3" @submit.prevent="submitDispension">
           <v-row>
@@ -13,6 +13,7 @@
                 :loading="isLoading"
                 hint-for-selected="Press ENTER to dispense"
                 @change="(glasses) => (selected = glasses)"
+                style="max-width: 500px"
               ></select-glasses-input>
             </v-col>
             <v-col v-if="selected">
@@ -44,7 +45,31 @@
           </v-row>
         </v-form>
       </v-col>
+
+      <v-col
+        v-if="rootStore.lastDisensedGlasses.length > 0"
+        cols="12"
+        md="4"
+        lg="3"
+        class="pl-md-6 pt-3 pt-md-2"
+      >
+        <div class="text-h6 pb-2">Last dispensed or deleted</div>
+        <div
+          v-for="glasses in rootStore.lastDisensedGlasses.slice(0, 3)"
+          :key="glasses.sku"
+          style="opacity: 80%"
+        >
+          <glass-card :model-value="glasses">
+            <template #actions>
+              <v-btn variant="text" color="red" class="mx-0" @click="undoDispension(glasses)">
+                Undo
+              </v-btn>
+            </template>
+          </glass-card>
+        </div>
+      </v-col>
     </v-row>
+
     <v-snackbar
       v-if="snackbarMessage != ''"
       :model-value="true"
@@ -55,9 +80,6 @@
       class="position"
     >
       <template #actions>
-        <v-btn v-if="lastDispensed != null" variant="text" @click="undoDispension(lastDispensed)">
-          Undo
-        </v-btn>
         <v-btn variant="text" color="primary-lighten-3" @click="snackbarMessage = ''">Close</v-btn>
       </template>
       <span>{{ snackbarMessage }}</span>
@@ -68,6 +90,7 @@
 <script setup lang="ts">
 import { mdiDotsVertical } from '@mdi/js'
 import { useGlassesStore } from '@/stores/glasses'
+import { useRootStore } from '@/stores/root'
 
 import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
 import { Glasses } from '@/model/GlassesModel'
@@ -82,11 +105,11 @@ const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButto
 const toast = useToast()
 
 const glassesStore = useGlassesStore()
+const rootStore = useRootStore()
 
 type GlassesWithKey = Glasses & { key?: string }
 
 const valid = ref(false)
-const lastDispensed = ref<Glasses | null>(null)
 const isLoading = ref(false)
 const snackbarMessage = ref('')
 const errorMesssage = ref('')
@@ -120,7 +143,6 @@ async function submitDeletion(reason: string) {
   snackbarMessage.value = ''
   errorMesssage.value = ''
   isLoading.value = true
-  lastDispensed.value = null
   try {
     await glassesStore.dispense(toDispense.sku, reason)
   } catch (error) {
@@ -137,7 +159,7 @@ async function submitDeletion(reason: string) {
       } else {
         snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be dispensed when you're back online`
       }
-      lastDispensed.value = toDispense
+      rootStore.lastDisensedGlasses.unshift(toDispense)
       if (form.value) form.value.reset()
       if (firstInput.value) firstInput.value.$el.focus()
     } else {
@@ -146,7 +168,7 @@ async function submitDeletion(reason: string) {
     return
   }
   isLoading.value = false
-  lastDispensed.value = toDispense
+  rootStore.lastDisensedGlasses.unshift(toDispense)
 
   if (reason === 'DISPENSED') {
     snackbarMessage.value = `Successfully dispensed glasses with SKU ${toDispense.sku}`
@@ -179,7 +201,7 @@ async function undoDispension(glasses: Glasses) {
     return
   }
   isLoading.value = false
-  lastDispensed.value = null
+  rootStore.lastDisensedGlasses = rootStore.lastDisensedGlasses.filter((g) => g.sku !== glasses.sku)
   inputSku.value = glasses.sku
   snackbarMessage.value = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`
 }

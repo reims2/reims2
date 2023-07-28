@@ -35,7 +35,7 @@
                 density="compact"
                 single-line
                 hide-details
-                style="max-width: 160px"
+                style="max-width: 160px; min-width: 90px"
                 autofocus
                 @update:model-value="(value) => editMeta(key, value)"
                 @blur="edit = ''"
