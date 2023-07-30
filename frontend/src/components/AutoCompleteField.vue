@@ -14,7 +14,6 @@
     @keyup.a.stop
     @keyup.s.stop
     @blur="autoComplete()"
-    @focus="$event.target.select()"
   />
 </template>
 

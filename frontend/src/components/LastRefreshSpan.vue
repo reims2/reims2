@@ -43,7 +43,7 @@ function generateTimeString() {
   if (!lastRefresh.value) {
     lastRefreshString.value = ': none yet'
   } else if (dayjs().diff(lastRefresh.value) < 1 * 60 * 1000) {
-    lastRefreshString.value = 'now' // don't bother the user with anything less than X minutes
+    lastRefreshString.value = 'just now' // don't bother the user with anything less than X minutes
   } else {
     lastRefreshString.value = dayjs().to(lastRefresh.value)
   }

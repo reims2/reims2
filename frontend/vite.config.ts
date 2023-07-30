@@ -116,6 +116,13 @@ export default ({ mode }) => {
       }),
       viteCompression({ algorithm: 'brotliCompress' }),
     ],
+    test: {
+      globals: true,
+      environment: 'happy-dom',
+      deps: {
+        inline: ['vuetify'],
+      },
+    },
     define: { 'process.env': {} },
     resolve: {
       alias: {
