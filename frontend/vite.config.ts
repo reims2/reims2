@@ -122,6 +122,12 @@ export default ({ mode }) => {
       deps: {
         inline: ['vuetify'],
       },
+      coverage: {
+        provider: 'v8',
+        all: true,
+        exclude: ['.yarn/**', '**/test/**'],
+        include: ['src/**'],
+      },
     },
     define: { 'process.env': {} },
     resolve: {
