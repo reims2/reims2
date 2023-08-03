@@ -1,9 +1,10 @@
-import { Glasses, GlassesInput, GlassesResult, GlassesSearch } from '@/model/GlassesModel'
+import { Glasses, GlassesResult, GlassesSearch, SanitizedGlassesInput } from '@/model/GlassesModel'
 import calculateAllPhilscore from '@/lib/philscore'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useRootStore } from './root'
 import axios from 'axios'
 import { ReimsAxiosError, useAxios } from '@/lib/axios'
+import { ReimsSite } from '@/model/ReimsModel'
 
 const arrayContainsSku = (data: Glasses[], sku: number) => data.some((e) => e.sku === sku)
 
@@ -27,8 +28,11 @@ export const useGlassesStore = defineStore(
       return allGlasses.value.find((glass) => glass.sku === sku) || null
     }
 
-    async function addGlasses(newGlasses: GlassesInput): Promise<Glasses> {
-      const request = Object.assign({}, newGlasses) as Glasses
+    async function addGlasses(newGlasses: SanitizedGlassesInput): Promise<Glasses> {
+      interface GlassesRequest extends SanitizedGlassesInput {
+        location: ReimsSite
+      }
+      const request = Object.assign({}, newGlasses) as GlassesRequest
       request.location = rootStore.reimsSite
       const response = await axiosInstance.post('/api/glasses', request)
       const addedGlasses = response.data

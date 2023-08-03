@@ -7,5 +7,11 @@
 // Overwrite global vuetify styles here
 
 .v-theme--light.v-bottom-navigation .v-btn:not(.v-btn--active) {
+  // Bottom navigation buttons should be grey when not active
   color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.v-text-field--prefixed.v-text-field .v-field__input {
+  // No padding on text fields that have a prefix
+  --v-field-padding-start: 0px;
 }

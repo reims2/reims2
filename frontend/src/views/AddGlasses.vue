@@ -13,29 +13,16 @@
             </v-col>
             <v-col cols="12" md="6" class="px-1 pr-md-5 py-0">
               <single-eye-input
-                v-bind="odEye"
+                v-model="odEye"
                 eye-name="OD"
                 :add-enabled="newGlass?.glassesType === 'multifocal'"
-                @update:model-value="
-                  (e) => {
-                    const index = e.id as keyof Eye
-                    odEye[index] = e.value as number
-                  }
-                "
               />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pl-md-5 py-0">
               <single-eye-input
-                v-bind="osEye"
+                v-model="osEye"
                 eye-name="OS"
                 :add-enabled="newGlass?.glassesType === 'multifocal'"
-                @update:model-value="
-                  (e) => {
-                    const index = e.id as keyof Eye
-                    updateSync(osEye, e.value as number)
-                    osEye[index] = e.value as number
-                  }
-                "
               />
             </v-col>
             <v-col cols="12" class="px-0 pt-0">
@@ -108,11 +95,11 @@ import { useEnterToTab } from '@/lib/enter-to-tab'
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import {
+  DisplayedEye,
   Glasses,
-  Eye,
   GlassesInput,
-  OptionalEye,
   generalGlassesDataKeys,
+  SanitizedGlassesInput,
 } from '@/model/GlassesModel'
 
 import { useDisplay } from 'vuetify'
@@ -134,8 +121,8 @@ const reimsSiteName = computed(() => rootStore.reimsSiteName)
 const valid = ref(false)
 const loading = ref(false)
 const newGlass = ref<Partial<GlassesInput>>({})
-const odEye = ref<OptionalEye>({ axis: '', cylinder: '', sphere: '', add: '' })
-const osEye = ref<OptionalEye>({ axis: '', cylinder: '', sphere: '', add: '' })
+const odEye = ref<DisplayedEye>({ axis: '', cylinder: '', sphere: '', add: '' })
+const osEye = ref<DisplayedEye>({ axis: '', cylinder: '', sphere: '', add: '' })
 const syncEyes = ref(true)
 const results = ref<ComponentPublicInstance | null>(null)
 const form = ref<HTMLFormElement | null>(null)
@@ -153,8 +140,13 @@ const { vPreventEnterTab } = useEnterToTab(form)
 watch(
   () => odEye.value.add,
   (newVal) => {
-    // set using vue function to trigger reactive system in SingleEyeInput
     if (syncEyes.value) osEye.value.add = newVal
+  },
+)
+watch(
+  () => osEye.value.add,
+  (newVal, oldVal) => {
+    if (newVal !== oldVal && !oldVal) syncEyes.value = false
   },
 )
 
@@ -168,17 +160,21 @@ watch(allGlasses, () => {
 async function submit() {
   if (!valid.value) return
   loading.value = true
-  newGlass.value.od = sanitizeEyeValues(odEye.value)
-  newGlass.value.os = sanitizeEyeValues(osEye.value)
   if (newGlass.value.glassesType === undefined) throw new Error("glassesType can't be null")
   if (newGlass.value.appearance === undefined) throw new Error("appearance can't be null")
   if (newGlass.value.glassesSize === undefined) throw new Error("glassesSize can't be null")
 
+  const requestGlasses: SanitizedGlassesInput = {
+    glassesType: newGlass.value.glassesType,
+    glassesSize: newGlass.value.glassesSize,
+    appearance: newGlass.value.appearance,
+    od: sanitizeEyeValues(odEye.value),
+    os: sanitizeEyeValues(osEye.value),
+  }
   try {
-    const newGlasses = await glassesStore.addGlasses(newGlass.value as GlassesInput)
+    const newGlasses = await glassesStore.addGlasses(requestGlasses)
     rootStore.lastAddedSkus.unshift(newGlasses.sku)
   } catch (error) {
-    loading.value = false
     if (error instanceof ReimsAxiosError && error.statusCode === 409) {
       // no free skus left.
       toast.error(error.message)
@@ -186,8 +182,9 @@ async function submit() {
       toast.error(`Could not add glasses, please retry (${error.message})`)
     }
     return
+  } finally {
+    loading.value = false
   }
-  loading.value = false
   reset()
   // scroll to bottom on mobile
   await nextTick()
@@ -206,9 +203,7 @@ function reset() {
   }
   syncEyes.value = true
 }
-function updateSync(oldEye: OptionalEye, newValue: number) {
-  if (oldEye.add !== newValue) syncEyes.value = false
-}
+
 async function submitDeletion(sku: number) {
   try {
     await glassesStore.dispense(sku, 'WRONGLY_ADDED')

@@ -1,8 +1,8 @@
 <template>
   <v-text-field
     v-if="props.isEditing"
-    :model-value="props.modelValue"
-    :rules="rules"
+    :model-value="model"
+    :rules="props.rules"
     density="compact"
     variant="underlined"
     single-line
@@ -11,7 +11,6 @@
     class="pb-1 prevent-enter-tab"
     autofocus
     @update:model-value="model = $event"
-    @update:error="(val: boolean) => (hasError = val)"
     @keyup.enter="submit"
     @update:focused="focusChanged"
   />
@@ -19,12 +18,13 @@
 </template>
 
 <script setup lang="ts">
+import { isValidForRules } from '@/lib/util'
 import { ValidationRule } from '@/model/ReimsModel'
 
 interface Props {
   modelValue: string
   isEditing: boolean
-  suffix: string
+  suffix?: string
   rules: ValidationRule[]
 }
 
@@ -33,8 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits(['update:modelValue', 'blur'])
-
-const hasError = ref(false)
 
 const model = ref('')
 watch(
@@ -48,13 +46,10 @@ watch(
 )
 
 function submit() {
-  if (!hasError.value) {
-    emit('update:modelValue', model.value)
-  }
+  if (!isValidForRules(model.value, props.rules)) return
+  emit('update:modelValue', model.value)
 }
 function focusChanged(val: boolean) {
-  if (!val) {
-    emit('blur')
-  }
+  if (!val) emit('blur')
 }
 </script>

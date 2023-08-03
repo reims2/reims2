@@ -15,7 +15,6 @@ export const useUpdatesGlassesInterval = () => {
   })
 
   async function updateGlasses() {
-    console.log('Updating glasses database')
     try {
       await glassesStore.loadGlasses()
     } catch (error) {

@@ -153,7 +153,6 @@ async function submitDeletion(reason: string) {
     await glassesStore.dispense(toDispense.sku, reason)
   } catch (error) {
     if (error instanceof ReimsAxiosError) {
-      isLoading.value = false
       if (error.statusCode === 404) {
         toast.warning('SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
       } else if (error.isServerSide) {
@@ -171,8 +170,9 @@ async function submitDeletion(reason: string) {
       toast.error(`Could not dispense glasses, please retry (${error.message})`)
     }
     return
+  } finally {
+    isLoading.value = false
   }
-  isLoading.value = false
   rootStore.lastDisensedGlasses.unshift(toDispense)
 
   if (reason === 'DISPENSED') {
@@ -180,8 +180,8 @@ async function submitDeletion(reason: string) {
   } else {
     snackbarMessage.value = `Successfully deleted glasses with SKU ${toDispense.sku}`
   }
-  if (form.value) form.value.reset()
-  if (firstInput.value) firstInput.value.$el.focus()
+  form.value?.reset()
+  firstInput.value?.$el.focus()
 }
 
 async function undoDispension(glasses: Glasses) {
@@ -190,7 +190,6 @@ async function undoDispension(glasses: Glasses) {
     await glassesStore.undispense(glasses)
   } catch (error) {
     if (error instanceof ReimsAxiosError) {
-      isLoading.value = false
       if (error.statusCode === 400) {
         toast.error(
           `Reverting is not possible here, please readd glasses manually (Error: ${error.apiMessage}).`,
@@ -206,8 +205,10 @@ async function undoDispension(glasses: Glasses) {
       toast.error(`Could not undo dispension of glasses, please retry (${error.message}).`)
     }
     return
+  } finally {
+    isLoading.value = false
   }
-  isLoading.value = false
+
   rootStore.lastDisensedGlasses = rootStore.lastDisensedGlasses.filter((g) => g.sku !== glasses.sku)
   inputSku.value = glasses.sku
   snackbarMessage.value = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`

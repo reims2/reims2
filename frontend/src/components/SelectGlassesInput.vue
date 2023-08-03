@@ -52,7 +52,11 @@ watch(
       emit('change', selected.value)
       if (!selected.value) hint.value = ''
       // also fetch glasses in background to update database
-      selected.value = await glassesStore.fetchSingle(props.sku)
+      try {
+        selected.value = await glassesStore.fetchSingle(props.sku)
+      } catch (error) {
+        // do nothing, we fallback to local DB cache
+      }
     } else {
       selected.value = null
       hint.value = ''

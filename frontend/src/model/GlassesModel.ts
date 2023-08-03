@@ -15,6 +15,13 @@ export interface Eye extends OptionalEye {
   sphere: number
 }
 
+export interface DisplayedEye {
+  add: string
+  axis: string
+  cylinder: string
+  sphere: string
+}
+
 export interface MultifocalEye extends Eye {
   add: number
 }
@@ -40,18 +47,28 @@ export type GlassesSize = 'small' | 'medium' | 'large' | 'child'
 export type GeneralGlassesData = GlassesType | GlassesAppearance | GlassesSize
 
 export type GlassesInput = {
-  od: OptionalEye
-  os: OptionalEye
+  od: DisplayedEye
+  os: DisplayedEye
   glassesType: GlassesType
   appearance: GlassesAppearance
   glassesSize: GlassesSize
 }
 
-export interface Glasses extends GlassesInput {
-  id: number // backend ID
-  sku: number
+export interface DisplayedGlasses extends GlassesInput {
+  sku?: string
+}
+
+export interface SanitizedGlassesInput {
   od: Eye
   os: Eye
+  glassesType: GlassesType
+  appearance: GlassesAppearance
+  glassesSize: GlassesSize
+}
+
+export interface Glasses extends SanitizedGlassesInput {
+  id: number // backend ID
+  sku: number
   creationDate: number
   dispensed?: boolean
   dispense?: Dispense
@@ -68,7 +85,7 @@ export interface GlassesResult extends Glasses {
 }
 
 /** Input to PhilScore function, correctly parsed Eye with isBal */
-export interface EyeSearch extends OptionalEye {
+export interface EyeSearch extends DisplayedEye {
   // is balance lens => ignore this eye and search for similar sphere only
   isBAL: boolean
 }
@@ -79,7 +96,7 @@ export interface SanitizedEyeSearch extends Eye {
 
 export interface GlassesSearch {
   glassesType: GlassesType
-  od: OptionalEye
-  os: OptionalEye
+  od: OptionalEye | DisplayedEye
+  os: OptionalEye | DisplayedEye
   highTolerance?: boolean
 }

@@ -33,7 +33,6 @@ export const useEnterToTab = (element: MaybeRefOrGetter<HTMLElement | null | und
       const allElementsQuery = elementValue.querySelectorAll(
         'input, button, a, textarea, select, audio, video, [contenteditable]',
       )
-      console.log('allElementsQuery', allElementsQuery)
 
       const allElements: HTMLElement[] = []
       allElementsQuery.forEach((e) => {
@@ -42,13 +41,9 @@ export const useEnterToTab = (element: MaybeRefOrGetter<HTMLElement | null | und
           allElements.push(r)
         }
       })
-      console.log('allElements', allElements)
       const currentIndex = [...allElements].indexOf(target)
-      console.log('currentIndex', currentIndex)
       const targetIndex = (currentIndex + 1) % allElements.length
-      console.log('targetIndex', targetIndex)
       const nextElement = allElements[targetIndex]
-      console.log('nextElement', nextElement)
       nextElement.focus()
       // if the next element is a button, click on it instead of just focusing. otherwise user has to double enter for a button to activate
       if (nextElement.tagName.toLowerCase() === 'button') nextElement.click()

@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { GeneralGlassesData } from '@/model/GlassesModel'
 import { ValidationRule } from '@/model/ReimsModel'
+import { useVModel } from '@vueuse/core'
 
 import { useDisplay } from 'vuetify'
 const { mobile } = useDisplay()
@@ -39,18 +40,12 @@ const props = withDefaults(defineProps<Props>(), {
   persistentHint: false,
 })
 const emit = defineEmits(['update:modelValue'])
+const inputVal = useVModel(props, 'modelValue', emit)
 
 const input = ref<ComponentPublicInstance | null>(null)
 
-focus()
-
-const inputVal = computed({
-  get() {
-    return props.modelValue
-  },
-  set(val) {
-    emit('update:modelValue', val)
-  },
+onMounted(() => {
+  input.value?.$el.focus()
 })
 
 function autoComplete() {
@@ -62,9 +57,5 @@ function autoComplete() {
   for (const item of props.items) {
     if (item.startsWith(glassesString.toLowerCase())) return emit('update:modelValue', item)
   }
-}
-
-function focus() {
-  input.value?.$el.focus()
 }
 </script>

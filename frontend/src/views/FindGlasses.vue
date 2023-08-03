@@ -14,21 +14,21 @@
             </v-col>
             <v-col cols="12" md="6" class="px-1 pr-md-5 py-md-0 py-1">
               <single-eye-input
-                v-bind="odEye"
+                v-model="odEye"
                 eye-name="OD"
                 :add-enabled="glassesType === 'multifocal'"
                 bal-enabled
-                @update:model-value="(e) => updateKey(e.id, e.value, EyeEnum.OD)"
+                :is-bal="odEye.isBAL"
                 @update:is-bal="(val) => (odEye.isBAL = val)"
               />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pl-md-5 py-0">
               <single-eye-input
-                v-bind="osEye"
+                v-model="osEye"
                 eye-name="OS"
                 :add-enabled="glassesType === 'multifocal'"
                 bal-enabled
-                @update:model-value="(e) => updateKey(e.id, e.value, EyeEnum.OS)"
+                :is-bal="osEye.isBAL"
                 @update:is-bal="(val) => (osEye.isBAL = val)"
               />
             </v-col>
@@ -114,8 +114,8 @@ import { useGlassesStore } from '@/stores/glasses'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 
-import { Eye, EyeSearch, GlassesResult, GlassesSearch, GlassesType } from '@/model/GlassesModel'
-import { matchesAsCsvUri, generalEyeData, EyeEnum } from '@/lib/util'
+import { EyeSearch, GlassesResult, GlassesSearch, GlassesType } from '@/model/GlassesModel'
+import { matchesAsCsvUri, generalEyeData } from '@/lib/util'
 import { useEnterToTab } from '@/lib/enter-to-tab'
 
 import { useDisplay } from 'vuetify'
@@ -177,6 +177,12 @@ watch(
   () => odEye.value.add,
   (newValue) => {
     if (syncEye.value) osEye.value.add = newValue
+  },
+)
+watch(
+  () => osEye.value.add,
+  (newVal, oldVal) => {
+    if (newVal !== oldVal && !oldVal) syncEye.value = false
   },
 )
 watch(
@@ -249,16 +255,11 @@ async function submitAndUpdate() {
 
   await nextTick()
   // on desktop, focus input again; on mobile, scroll to bottom
+
   if (!mobile.value) firstInput.value?.$el.focus()
   else results.value?.$el.scrollIntoView(true)
 }
-function updateKey(key: keyof Eye, value: number | string, eye: EyeEnum) {
-  if (eye === EyeEnum.OD) {
-    odEye.value[key] = value as number | ''
-  } else if (eye === EyeEnum.OS) {
-    osEye.value[key] = value as number | ''
-  }
-}
+
 async function loadMatches() {
   const eyeModel: GlassesSearch = {
     glassesType: glassesType.value as GlassesType,

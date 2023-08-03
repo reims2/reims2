@@ -2,7 +2,7 @@
   <div>
     <v-row dense>
       <v-col class="text-h5 pb-2">
-        <div :class="isBAL ? 'text-medium-emphasis' : ''">
+        <div :class="isBal ? 'text-medium-emphasis' : ''">
           {{ eyeName }}
         </div>
       </v-col>
@@ -10,14 +10,13 @@
         <v-text-field
           density="compact"
           type="number"
-          :value="eyeData[eyeKey].value"
+          :model-value="eyeData[eyeKey].value"
           :label="eyeData[eyeKey].label"
-          :rules="!(eyeData[eyeKey].disabled || isBAL) ? eyeRules[eyeKey] : []"
+          :rules="!(eyeData[eyeKey].disabled || isBal) ? eyeRules[eyeKey] : []"
           :step="eyeData[eyeKey].step"
-          :disabled="eyeData[eyeKey].disabled || isBAL"
+          :disabled="eyeData[eyeKey].disabled || isBal"
           :prefix="eyeData[eyeKey].value != null ? eyeData[eyeKey].prefix : ''"
           @update:model-value="(val) => input(eyeKey, val)"
-          @update:error="(val: boolean) => (hasError[eyeKey] = val)"
           @blur="update(eyeKey)"
           @focus="$event.target.select()"
           @keydown.s.prevent
@@ -27,7 +26,7 @@
       <v-col cols="12" class="pa-0 pb-4">
         <v-checkbox
           v-if="balEnabled"
-          :model-value="isBAL"
+          :model-value="isBal"
           tabindex="-1"
           class="py-0 my-0"
           :label="`BAL lens (Disable ${eyeName})`"
@@ -40,38 +39,27 @@
 </template>
 
 <script setup lang="ts">
-import { eyeRules } from '@/lib/util'
-import { Eye, EyeKey, OptionalEye, eyeKeys } from '@/model/GlassesModel'
-import { ref, computed } from 'vue'
+import { eyeRules, isValidForRules } from '@/lib/util'
+import { DisplayedEye, Eye, EyeKey, eyeKeys } from '@/model/GlassesModel'
 
-interface Props extends OptionalEye {
+interface Props {
+  modelValue: DisplayedEye
   eyeName: string
   addEnabled: boolean
-  isBAL?: boolean
+  isBal?: boolean
   balEnabled?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
-  axis: '',
-  sphere: '',
-  add: '',
-  cylinder: '',
   addEnabled: true,
-  isBAL: false,
+  isBal: false,
   balEnabled: false,
 })
-type UpdateType = { id: keyof Eye; value: number | string }
+
 const emit = defineEmits<{
-  'update:modelValue': [UpdateType]
+  'update:modelValue': [DisplayedEye]
   'update:isBal': [boolean]
 }>()
 
-const hasError = ref({
-  // workaround, see https://stackoverflow.com/a/59439106/4026792
-  sphere: true,
-  cylinder: false, // allow (initial) empty fields
-  axis: true,
-  add: true,
-})
 type EyeData = {
   label: string
   step?: number
@@ -88,31 +76,33 @@ const eyeData = computed<EyeDataMap>(() => {
     sphere: {
       label: 'Sphere',
       step: 0.25,
-      // prefix: this.sphere > 0 ? '+' : '',
-      value: props.sphere,
+      prefix: Number(props.modelValue.sphere) > 0 ? '+' : '',
+      value: props.modelValue.sphere,
     },
     cylinder: {
       label: 'Cylinder (minus form)',
       step: 0.25,
-      value: props.cylinder,
+      value: props.modelValue.cylinder,
     },
     axis: {
       label: 'Axis',
-      disabled: props.cylinder === '' || props.cylinder === 0,
-      value: props.axis,
+      disabled: props.modelValue.cylinder === '' || Number(props.modelValue.cylinder) === 0,
+      value: props.modelValue.axis,
     },
     add: {
       label: 'Additional',
       disabled: !props.addEnabled,
       step: 0.25,
       prefix: '+',
-      value: props.add,
+      value: props.modelValue.add || '',
     },
   }
 })
 
-function input(id: keyof Eye, value: number | string) {
-  emit('update:modelValue', { id, value })
+function input(id: keyof Eye, value: string | null) {
+  const eye = { ...props.modelValue }
+  eye[id] = value ?? ''
+  emit('update:modelValue', eye)
 }
 
 function update(id: keyof Eye) {
@@ -125,23 +115,23 @@ function update(id: keyof Eye) {
     newVal = -Math.abs(Number(newVal))
 
     if (newVal === 0) {
-      // emit cylinder value here already to force update
-      input(id, 0)
+      // emit cylinder value here already to force update FIXME
+      input(id, '0')
       // reset axis if cylinder is 0 and force update
-      input('axis', '000')
+      input('axis', '')
       return
     }
   }
-  if (!hasError.value[id]) {
-    const step = eyeData.value[id].step
-    if (step !== undefined && step > 0) {
-      const number = Math.ceil(Math.abs(Number(newVal)) / step) * step
-      if (!isNaN(number)) {
-        // re-add the sign
-        // nicer number formatting with leading decimals, doesn't really work now because we use "number" type input fields
-        const numberString = (Number(newVal) < 0 ? '-' : '') + number.toFixed(2)
-        input(id, Number(numberString))
-      }
+
+  if (!isValidForRules(eyeData.value[id].value, eyeRules[id])) return
+  const step = eyeData.value[id].step
+  if (step !== undefined && step > 0) {
+    const number = Math.ceil(Math.abs(Number(newVal)) / step) * step
+    if (!isNaN(number)) {
+      // re-add the sign
+      // nicer number formatting with leading decimals, doesn't really work now because we use "number" type input fields
+      const numberString = (Number(newVal) < 0 ? '-' : '') + number.toFixed(2)
+      input(id, numberString)
     }
   }
 }
