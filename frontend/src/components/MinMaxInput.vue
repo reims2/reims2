@@ -30,7 +30,6 @@
 
 <script setup lang="ts">
 import { MinMaxObject } from '@/model/ReimsModel'
-import { ref } from 'vue'
 const min = ref('')
 const max = ref('')
 const emit = defineEmits<{

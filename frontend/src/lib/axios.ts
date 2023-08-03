@@ -52,7 +52,6 @@ export const useAxios = () => {
       }
       const request = error.request as XMLHttpRequest | null
       const requestUrl = request?.responseURL || null
-      console.log(request)
       const apiError = error.response.data as ApiErrorResponse | null
       const apiMessage = apiError?.message || null
 

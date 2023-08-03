@@ -77,9 +77,7 @@
     </template>
   </v-data-table-server>
 
-  <v-btn v-prevent-enter-tab class="mr-4" variant="plain" tabindex="-1" @click="reset">
-    Reset table
-  </v-btn>
+  <v-btn class="mr-4" variant="plain" tabindex="-1" @click="reset">Reset table</v-btn>
 </template>
 
 <script setup lang="ts">
@@ -227,10 +225,10 @@ async function startLoading() {
     if (error instanceof ReimsAxiosError && error.statusCode === 404) {
       items.value = []
     } else {
-      console.error(error)
       toast.error(`Could not load table data, please retry (${error.message})`)
     }
+  } finally {
+    loading.value = false
   }
-  loading.value = false
 }
 </script>

@@ -7,6 +7,7 @@ import {
   GeneralGlassesDataKey,
   OptionalEye,
   EyeKey,
+  DisplayedEye,
 } from '@/model/GlassesModel'
 import { ValidationRule, isNumber, isString } from '@/model/ReimsModel'
 
@@ -177,19 +178,14 @@ export function dispensedAsCsv(glasses: Glasses[]) {
   return 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
 }
 
-/** convert all props to number type and return as new object */
-export function propsAsNumber(obj: Record<string, any>): Record<string, number> {
-  const temp = JSON.parse(JSON.stringify(obj))
-  Object.keys(temp).forEach((k) => {
-    temp[k] = Number(temp[k])
-  })
-  return temp
-}
-
 /** Eye is fixed by applying step rounding and the correct sign for cylinder */
-export function sanitizeEyeValues(singleEye: OptionalEye): Eye {
-  console.log('sanitizeEyeValues input', singleEye)
-  const rx = propsAsNumber(singleEye) as unknown as OptionalEye
+export function sanitizeEyeValues(singleEye: OptionalEye | DisplayedEye): Eye {
+  const rx: Eye = {
+    sphere: Number(singleEye.sphere),
+    cylinder: Number(singleEye.cylinder),
+    axis: Number(singleEye.axis),
+    add: Number(singleEye.add) || 0,
+  }
   // easier for calculation
   if (rx.axis === 180) rx.axis = 0
   // can be empty when cyl == 0. Also force to 0 when cyl == 0just in case
@@ -207,19 +203,22 @@ export function sanitizeEyeValues(singleEye: OptionalEye): Eye {
     newValue = Math.ceil(Math.abs(newValue) / 0.25) * 0.25
     rx[prop] = isNegative ? -newValue : newValue
   }
-  console.log('sanitizeEyeValues result', rx)
   return rx as Eye
 }
 
-export function clearObjectProperties(obj: any) {
+export function clearObjectProperties(obj: Record<string, unknown>) {
   for (const key of Object.keys(obj)) {
     obj[key] = ''
   }
 }
 
-export enum EyeEnum {
-  // eslint-disable-next-line no-unused-vars
-  OD = 'od',
-  // eslint-disable-next-line no-unused-vars
-  OS = 'os',
+export function isValidForRules(value: unknown, rules: ValidationRule[]): boolean {
+  // run rules manually
+  for (let index = 0; index < rules.length; index++) {
+    const rule = rules[index]
+    if (rule(value) !== true) {
+      return false
+    }
+  }
+  return true
 }

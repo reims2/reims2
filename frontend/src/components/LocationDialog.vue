@@ -73,11 +73,12 @@ async function changeLocation() {
     rootStore.reimsSite = prevLocation
 
     toast.error(`Cannot change location (${error.message})`)
+    return
+  } finally {
+    loading.value = false
+    // close dialog and save
+    updateDialogState(false)
   }
-
-  loading.value = false
-  // close dialog and save
-  updateDialogState(false)
 }
 function updateDialogState(value: boolean) {
   emit('update:modelValue', value)

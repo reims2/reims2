@@ -2,23 +2,23 @@
   <v-tooltip v-model="showTooltip" location="bottom">
     <template #activator>
       <v-card style="min-width: 290px" class="mb-2" :loading="loading">
-        <v-card-title v-if="glass.sku" class="pb-0 pt-4">
+        <v-card-title v-if="displayedGlass.sku" class="pb-0 pt-4">
           <div class="d-flex align-center">
             <v-chip
-              v-if="isGlassesResult(glass)"
+              v-if="isGlassesResult(props.modelValue)"
               class="mr-2 px-2"
               size="small"
               color="white"
               label
               :ripple="false"
-              :style="{ 'background-color': calcColor(glass.score) }"
+              :style="{ 'background-color': calcColorGradient(props.modelValue.score) }"
             >
               <v-tooltip activator="parent" location="bottom">
                 Result (Philscore) - lower values are better
               </v-tooltip>
-              {{ glass.score.toFixed(2) }}
+              {{ props.modelValue.score.toFixed(2) }}
             </v-chip>
-            <div class="text-h6">SKU {{ formattedSKU }}</div>
+            <div class="text-h6">SKU {{ displayedGlass.sku }}</div>
           </div>
         </v-card-title>
         <v-card-subtitle class="pb-2 d-flex align-center">
@@ -29,7 +29,7 @@
               </v-tooltip>
               <v-select
                 v-if="editable && edit == key"
-                :value="glass[key]"
+                :model-value="displayedGlass[key]"
                 :items="generalEyeData[key].items"
                 auto-select-first
                 density="compact"
@@ -44,7 +44,7 @@
                 <v-icon size="small" color="black">
                   {{ generalEyeData[key].icon }}
                 </v-icon>
-                {{ glass[key] }}
+                {{ displayedGlass[key] }}
               </span>
             </span>
           </span>
@@ -57,12 +57,17 @@
                   <div class="text-subtitle-1">
                     {{ eye.text }}
                   </div>
-                  <div v-if="isGlassesResult(glass)" class="d-flex align-center">
+                  <div v-if="isGlassesResult(props.modelValue)" class="d-flex align-center">
                     <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
                       <v-tooltip activator="parent" location="bottom">
                         PhilScore only for {{ eye.text }}
                       </v-tooltip>
-                      {{ (eye.key == 'od' ? glass.odScore! : glass.osScore!).toFixed(2) }}
+                      {{
+                        (eye.key == 'od'
+                          ? props.modelValue.odScore
+                          : props.modelValue.osScore
+                        ).toFixed(2)
+                      }}
                     </v-chip>
                   </div>
                 </div>
@@ -72,11 +77,12 @@
                   </td>
                   <td>
                     <editable-span
-                      :model-value="formatEyeValues(dataKey, glass[eye.key][dataKey])"
+                      :model-value="displayedGlass[eye.key][dataKey]"
                       :suffix="eyeUIData[dataKey].suffix"
                       :rules="eyeRules[dataKey]"
                       :is-editing="editable && edit == eye.key + dataKey"
                       @update:model-value="(value) => editEye(eye.key, dataKey, value)"
+                      @blur="edit = ''"
                     />
                   </td>
                 </tr>
@@ -110,8 +116,10 @@
 import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '@/lib/util'
 import EditableSpan from './EditableSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
-import { isNumber } from '@/model/ReimsModel'
 import {
+  Eye,
+  DisplayedEye,
+  DisplayedGlasses,
   EyeKey,
   GeneralGlassesDataKey,
   Glasses,
@@ -125,6 +133,7 @@ import {
 } from '@/model/GlassesModel'
 import { useToast } from 'vue-toastification'
 import { ReimsAxiosError } from '@/lib/axios'
+import { calcColorGradient } from '@/lib/color'
 
 const toast = useToast()
 
@@ -144,8 +153,6 @@ const eyes: { text: string; key: GlassesEyeIndex }[] = [
   { text: 'OS', key: 'os' },
 ]
 
-const glass = computed(() => props.modelValue)
-
 const edit = ref('')
 const showTooltip = ref(false)
 const loading = ref(false)
@@ -153,7 +160,6 @@ const eyeDataKeys = computed(() => {
   if (props.modelValue.glassesType === 'multifocal') return eyeKeys
   else return eyeKeys.filter((k) => k !== 'add')
 })
-const formattedSKU = computed(() => glass.value.sku.toString().padStart(4, '0'))
 
 type EyeData = {
   label: string
@@ -188,46 +194,29 @@ watch(edit, () => {
   showTooltip.value = false
 })
 
-function formatEyeValues(dataKey: EyeKey, v: unknown): string {
-  if (dataKey === 'sphere') {
-    return isNumber(v) ? formatNumber(v, 2) : ''
+const displayedGlass = computed(() => {
+  const displayedGlasses: DisplayedGlasses = {
+    od: formatEyeValues(props.modelValue.od),
+    os: formatEyeValues(props.modelValue.os),
+    glassesSize: props.modelValue.glassesSize,
+    glassesType: props.modelValue.glassesType,
+    appearance: props.modelValue.appearance,
+    sku: props.modelValue.sku?.toString().padStart(4, '0') || undefined,
   }
-  if (dataKey === 'cylinder') {
-    return isNumber(v) ? formatNumber(v, 2) : ''
+  return displayedGlasses
+})
+
+function formatEyeValues(eye: Eye): DisplayedEye {
+  return {
+    sphere: formatNumber(eye.sphere, 2),
+    cylinder: formatNumber(eye.cylinder, 2),
+    axis: eye.axis.toString().padStart(3, '0'),
+    add: formatNumber(eye.add, 2),
   }
-  if (dataKey === 'axis') {
-    return parseInt(v as string)
-      .toString()
-      .padStart(3, '0')
-  }
-  if (dataKey === 'add') {
-    return isNumber(v) ? formatNumber(v, 2) : ''
-  }
-  return ''
 }
 
-function calcColor(value: number): string {
-  const domain = [0, 2]
-  const colors = ['#009688', '#F57F17']
-  const [color1, color2] = colors
-  const [min, max] = domain
-  const clampedValue = Math.max(Math.min(value, max), min)
-  const ratio = (clampedValue - min) / (max - min)
-  const r1 = parseInt(color1.substring(1, 3), 16)
-  const g1 = parseInt(color1.substring(3, 5), 16)
-  const b1 = parseInt(color1.substring(5, 7), 16)
-  const r2 = parseInt(color2.substring(1, 3), 16)
-  const g2 = parseInt(color2.substring(3, 5), 16)
-  const b2 = parseInt(color2.substring(5, 7), 16)
-  const r = Math.round(r1 * (1 - ratio) + r2 * ratio)
-  const g = Math.round(g1 * (1 - ratio) + g2 * ratio)
-  const b = Math.round(b1 * (1 - ratio) + b2 * ratio)
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b
-    .toString(16)
-    .padStart(2, '0')}`
-}
-
-function formatNumber(val: number, decimals: number) {
+function formatNumber(val: number | undefined, decimals: number) {
+  if (val === undefined) return ''
   const prefix = val === 0 ? '' : val < 0 ? '-' : '+'
   return prefix + Math.abs(Number(val)).toFixed(decimals)
 }
@@ -244,31 +233,29 @@ async function editMeta(dataKey: GeneralGlassesDataKey, value: string) {
   await startEdit(newGlasses)
 }
 async function editEye(eyeKey: GlassesEyeIndex, dataKey: EyeKey, value: string | number) {
-  if (!props.editable) return // just as a "safety" fallback
   const newGlasses: Glasses = deepCopyGlasses(props.modelValue)
   newGlasses[eyeKey][dataKey] = Number(value)
   newGlasses[eyeKey] = sanitizeEyeValues(newGlasses[eyeKey])
   await startEdit(newGlasses)
 }
 async function startEdit(newGlasses: Glasses) {
+  if (!props.editable) return // just as a "safety" fallback
   try {
     loading.value = true
     await glassesStore.editGlasses(newGlasses)
   } catch (error) {
-    if (error instanceof ReimsAxiosError && error.isServerSide) {
-      // TODO catch network errors because they'll be retried.
-      toast.error(
-        `Editing was not possible because the server didn't respond. Please retry (${error.message}).`,
-      )
+    if (error instanceof ReimsAxiosError && (error.isServerSide || error.isNetwork)) {
+      toast.error(`Glasses will be automatically edited as soon as the connection is back.`)
+      // no return here, we act like it's successful
     } else {
-      toast.error(`Glasses can't be edited, sorry (${error.message})`)
+      toast.error(`Glasses can't be edited (${error.message}). Please retry later`)
+      return
     }
+  } finally {
     loading.value = false
-    return
   }
-  loading.value = false
-  edit.value = ''
   emit('update:modelValue', newGlasses)
+  edit.value = ''
 }
 function isGlassesResult(value: GlassesResult | Glasses): value is GlassesResult {
   return (value as GlassesResult).score !== undefined

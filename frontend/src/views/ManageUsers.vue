@@ -153,7 +153,6 @@ async function startLoading() {
     items.value = await usersStore.get()
   } catch (error) {
     toast.error(`Could not load users (${error.message}).`)
-    console.log(error)
   }
 }
 
@@ -170,7 +169,6 @@ const addUser = async () => {
     dialog.value = false
   } catch (error) {
     toast.error(`Could not add user (${error.message}).`)
-    console.log(error)
   }
 
   form.value?.reset()
@@ -184,7 +182,6 @@ const deleteUser = async (userId: number) => {
     await usersStore.deleteUser(userId)
   } catch (error) {
     toast.error(`Could not delete user (${error.message}).`)
-    console.log(error)
   }
   deleteLoading.value = false
   startLoading()

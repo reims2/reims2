@@ -60,11 +60,11 @@ const userLogin = async () => {
     await authStore.login(username.value, password.value)
     router.push(redirect.value)
   } catch (err) {
-    console.log(err)
     if (err instanceof ReimsAxiosError && err.statusCode === 401 && err.apiMessage != null) {
       toast.error(err.apiMessage)
     } else {
       toast.error('Login failed (${err.message)')
+      console.error(err)
     }
   }
 }
