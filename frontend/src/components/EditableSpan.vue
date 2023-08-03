@@ -35,7 +35,18 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['update:modelValue', 'blur'])
 
 const hasError = ref(false)
-const model = ref(props.modelValue)
+
+const model = ref('')
+watch(
+  () => props.modelValue,
+  (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+      // Update on external changes (for example on DB update)
+      model.value = newValue
+    }
+  },
+)
+
 function submit() {
   if (!hasError.value) {
     emit('update:modelValue', model.value)
