@@ -4,7 +4,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useRootStore } from './root'
 import axios from 'axios'
 import { ReimsAxiosError, useAxios } from '@/lib/axios'
-import { ReimsSite } from '@/model/ReimsModel'
+import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
 
 const arrayContainsSku = (data: Glasses[], sku: number) => data.some((e) => e.sku === sku)
 
@@ -60,7 +60,7 @@ export const useGlassesStore = defineStore(
       addOfflineGlasses(fetchedGlasses)
       return fetchedGlasses
     }
-    async function dispense(sku: number, reason: string) {
+    async function dispense(sku: number, reason: DeletionReason) {
       await axiosInstance.put(
         `/api/glasses/dispense/${rootStore.reimsSite}/${sku}?reason=${reason}`,
         {},

@@ -24,24 +24,19 @@
 </template>
 
 <script setup lang="ts">
+import { Glasses } from '@/model/GlassesModel'
+import { DeletionReason } from '@/model/ReimsModel'
 import { ref } from 'vue'
 
-const props = defineProps({
-  glass: {
-    type: Object,
-    required: true,
-  },
-  fixedReason: {
-    type: String,
-    default: null,
-    required: false,
-  },
+const props = withDefaults(defineProps<{ glass: Glasses; fixedReason?: DeletionReason | null }>(), {
+  fixedReason: null,
 })
+
 const emit = defineEmits(['delete'])
 
 const deleteDialog = ref(false)
-const deleteReason = ref('TOO_HIGH_VALUES') // preselect most common reason for doing mass removals
-const reasons = ref([
+const deleteReason = ref<DeletionReason>('TOO_HIGH_VALUES') // preselect most common reason for doing mass removals
+const reasons: Ref<{ title: string; value: DeletionReason }[]> = ref([
   { title: 'Glasses have too high values', value: 'TOO_HIGH_VALUES' },
   { title: 'Not found in storage', value: 'NOT_FOUND' },
   { title: 'Glasses damaged / broken', value: 'BROKEN' },

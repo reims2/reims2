@@ -3,7 +3,7 @@
     <v-row dense class="justify-center">
       <v-col cols="12" md="6" lg="5">
         <div class="pb-2">Start by entering a SKU to dispense or edit glasses.</div>
-        <v-form ref="form" v-model="valid" class="pt-3" @submit.prevent="submitDispension">
+        <v-form ref="form" v-model="valid" class="pt-3" @submit.prevent="startDispension">
           <v-row>
             <v-col cols="12">
               <select-glasses-input
@@ -20,7 +20,7 @@
               <div class="d-flex flex-shrink-1 justify-start">
                 <glass-card :key="selected.key" :model-value="selected" editable>
                   <template #actions>
-                    <v-btn variant="text" class="mx-0" @click="submitDispension">Dispense</v-btn>
+                    <v-btn variant="text" class="mx-0" @click="startDispension">Dispense</v-btn>
                     <div class="d-flex flex-grow-1 justify-end">
                       <v-menu offset-y left>
                         <template #activator="{ props }">
@@ -46,19 +46,9 @@
         </v-form>
       </v-col>
 
-      <v-col
-        v-if="rootStore.lastDisensedGlasses.length > 0"
-        cols="12"
-        md="4"
-        lg="3"
-        class="pl-md-6 pt-3 pt-md-2"
-      >
+      <v-col v-if="lastDispensed.length > 0" cols="12" md="4" lg="3" class="pl-md-6 pt-3 pt-md-2">
         <div class="text-h6 pb-2">Recently dispensed or deleted</div>
-        <div
-          v-for="glasses in rootStore.lastDisensedGlasses.slice(0, 3)"
-          :key="glasses.sku"
-          style="opacity: 80%"
-        >
+        <div v-for="glasses in lastDispensed" :key="glasses.sku" style="opacity: 80%">
           <glass-card :model-value="glasses">
             <template #actions>
               <v-btn variant="text" color="red" class="mx-0" @click="undoDispension(glasses)">
@@ -90,30 +80,19 @@
 
 <script setup lang="ts">
 import { mdiDotsVertical } from '@mdi/js'
-import { useGlassesStore } from '@/stores/glasses'
-import { useRootStore } from '@/stores/root'
 
 import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
 import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRoute } from 'vue-router'
-
-import { useToast } from 'vue-toastification'
-import { ReimsAxiosError } from '@/lib/axios'
+import { useEditGlasses } from '@/lib/edit'
 
 const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
 
-const toast = useToast()
-
-const glassesStore = useGlassesStore()
-const rootStore = useRootStore()
-
 type GlassesWithKey = Glasses & { key?: string }
 
 const valid = ref(false)
-const isLoading = ref(false)
-const snackbarMessage = ref('')
 const errorMesssage = ref('')
 const selected = ref<GlassesWithKey | null>(null)
 const inputSku = ref<number | null>(null)
@@ -122,96 +101,27 @@ const inputSku = ref<number | null>(null)
 const form = ref<VForm | null>(null)
 const firstInput = ref<ComponentPublicInstance | null>(null)
 
+const { isLoading, lastDispensed, submitDeletion, undoDispension, snackbarMessage } =
+  useEditGlasses(selected, onDeleted)
+
 const route = useRoute()
 onActivated(() => {
   if (route.query.sku != null) {
     inputSku.value = parseInt(route.query.sku as string)
   }
 })
-onDeactivated(() => {
-  // reset snackbar
-  snackbarMessage.value = ''
-})
 
-async function submitDispension() {
-  await submitDeletion('DISPENSED')
-}
-
-async function submitDeletion(reason: string) {
-  if (isLoading.value) return
+function startDispension() {
   if (!selected.value) {
     errorMesssage.value = 'SKU not found'
     return
   }
-  // copy object because the computed `selected` property will get null when it's dispensed
-  const toDispense = selected.value
-  // do dispension
-  snackbarMessage.value = ''
-  errorMesssage.value = ''
-  isLoading.value = true
-  try {
-    await glassesStore.dispense(toDispense.sku, reason)
-  } catch (error) {
-    if (error instanceof ReimsAxiosError) {
-      if (error.statusCode === 404) {
-        toast.warning('SKU ' + toDispense.sku + ' not found on server, was it already dispensed?')
-      } else if (error.isServerSide) {
-        toast.error(
-          `Could not dispense glasses. Please report this to the REIMS2 developers (Error ${error.apiMessage})`,
-        )
-      } else if (error.isNetwork) {
-        snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be dispensed when you're back online`
-        glassesStore.deleteOfflineGlasses(toDispense.sku)
-        rootStore.lastDisensedGlasses.unshift(toDispense)
-        if (form.value) form.value.reset()
-        if (firstInput.value) firstInput.value.$el.focus()
-      }
-    } else {
-      toast.error(`Could not dispense glasses, please retry (${error.message})`)
-    }
-    return
-  } finally {
-    isLoading.value = false
-  }
-  rootStore.lastDisensedGlasses.unshift(toDispense)
-
-  if (reason === 'DISPENSED') {
-    snackbarMessage.value = `Successfully dispensed glasses with SKU ${toDispense.sku}`
-  } else {
-    snackbarMessage.value = `Successfully deleted glasses with SKU ${toDispense.sku}`
-  }
-  form.value?.reset()
-  firstInput.value?.$el.focus()
+  submitDeletion('DISPENSED')
 }
 
-async function undoDispension(glasses: Glasses) {
-  isLoading.value = true
-  try {
-    await glassesStore.undispense(glasses)
-  } catch (error) {
-    if (error instanceof ReimsAxiosError) {
-      if (error.statusCode === 400) {
-        toast.error(
-          `Reverting is not possible here, please readd glasses manually (Error: ${error.apiMessage}).`,
-        )
-        snackbarMessage.value = ''
-      } else if (error.isServerSide || error.isNetwork) {
-        toast.error(
-          "Network or server error. Dispension will be automatically reverted as soon as you're back online.",
-        )
-        snackbarMessage.value = ''
-      }
-    } else {
-      toast.error(`Could not undo dispension of glasses, please retry (${error.message}).`)
-    }
-    return
-  } finally {
-    isLoading.value = false
-  }
-
-  rootStore.lastDisensedGlasses = rootStore.lastDisensedGlasses.filter((g) => g.sku !== glasses.sku)
-  inputSku.value = glasses.sku
-  snackbarMessage.value = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`
+function onDeleted() {
+  firstInput.value?.$el.focus()
+  form.value?.reset()
 }
 </script>
 

@@ -1,4 +1,5 @@
-import { MaybeRefOrGetter, useEventListener } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
+import { MaybeRefOrGetter } from 'vue'
 
 // source from https://github.com/ajomuch92/vue-enter-to-tab
 // it has been modified to 1. to auto click a button if the next element is a button

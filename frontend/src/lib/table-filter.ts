@@ -1,8 +1,8 @@
 import { GlassesEyeIndex } from '@/model/GlassesModel'
 import { MinMaxObject } from '@/model/ReimsModel'
+import { MaybeRefOrGetter } from 'vue'
 
-export const useTableFilter = () => {
-  const glassesTypeFilter = ref<string[]>([])
+export const useTableFilter = (glassesTypeFilter: MaybeRefOrGetter<string[]>) => {
   const eyeFilters = reactive({
     od: {
       sphere: {} as MinMaxObject,
@@ -17,7 +17,7 @@ export const useTableFilter = () => {
   type EyeValueKey = 'sphere' | 'cylinder'
   const filterString = computed(() => {
     let filterString = ''
-    const typeFilter = createSingleTypeFilter(glassesTypeFilter.value)
+    const typeFilter = createSingleTypeFilter(toValue(glassesTypeFilter))
     if (typeFilter) filterString += typeFilter + ';'
     const eyeKeys: GlassesEyeIndex[] = ['od', 'os']
     const eyeValueKeys: EyeValueKey[] = ['sphere', 'cylinder']
@@ -59,7 +59,6 @@ export const useTableFilter = () => {
   }
 
   function resetFilters() {
-    glassesTypeFilter.value = []
     eyeFilters.od.sphere = {}
     eyeFilters.od.cylinder = {}
     eyeFilters.os.sphere = {}
