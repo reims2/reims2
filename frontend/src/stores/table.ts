@@ -13,10 +13,6 @@ type Params = {
 export const useTableStore = defineStore('table', () => {
   const axiosInstance = useAxios()
   const rootStore = useRootStore()
-  const totalGlassesCount = ref(0)
-  const hasGlassesLoaded = computed(() => {
-    return totalGlassesCount.value > 0
-  })
   async function loadItems(
     currentPage: number,
     itemsPerPage: number,
@@ -30,12 +26,12 @@ export const useTableStore = defineStore('table', () => {
 
     const response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}`, { params })
 
-    totalGlassesCount.value = response.data.totalItems
-    return response.data.glasses
+    return {
+      glasses: response.data.glasses,
+      totalItems: response.data.totalItems,
+    }
   }
   return {
-    totalGlassesCount,
-    hasGlassesLoaded,
     loadItems,
   }
 })
