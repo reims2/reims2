@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <app-drawer :main-items="mainItems" :other-items="otherItems" />
-    <app-header />
+    <the-drawer :main-items="mainItems" :other-items="otherItems" />
+    <the-header />
     <v-main class="background">
       <router-view v-slot="{ Component }" class="py-6 px-6">
         <transition name="fade">
@@ -13,8 +13,8 @@
       <offline-banner v-if="!isOnline" />
       <div v-if="!isOnline" style="min-height: 100px"></div>
     </v-main>
-    <app-bottom-bar v-if="mobile" :items="mainItems" />
-    <app-footer v-if="!mobile" :show-last-update="true" />
+    <the-bottom-bar v-if="mobile" :items="mainItems" />
+    <the-footer v-if="!mobile" :show-last-update="true" />
   </v-app>
 </template>
 
@@ -30,10 +30,10 @@ import {
 import { useDisplay } from 'vuetify'
 import dayjs from 'dayjs'
 
-import AppFooter from '@/components/AppFooter.vue'
-import AppHeader from '@/components/AppHeader.vue'
-import AppDrawer from '@/components/AppDrawer.vue'
-import AppBottomBar from '@/components/AppBottomBar.vue'
+import TheFooter from '@/components/TheFooter.vue'
+import TheHeader from '@/components/TheHeader.vue'
+import TheDrawer from '@/components/TheDrawer.vue'
+import TheBottomBar from '@/components/TheBottomBar.vue'
 
 import { useOnline } from '@vueuse/core'
 import { useToast } from 'vue-toastification'

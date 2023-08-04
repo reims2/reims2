@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <app-header />
+    <the-header />
     <v-row dense class="justify-center">
       <v-col cols="12" md="6" lg="4">
         <v-form ref="form" v-model="valid" @submit.prevent="userLogin">
@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import AppHeader from '@/components/AppHeader.vue'
+import TheHeader from '@/components/TheHeader.vue'
 import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
 import { useRoute } from 'vue-router'

@@ -76,7 +76,7 @@
                     {{ eyeUIData[dataKey].label }}
                   </td>
                   <td>
-                    <editable-span
+                    <glass-card-input-span
                       :model-value="displayedGlass[eye.key][dataKey]"
                       :suffix="eyeUIData[dataKey].suffix"
                       :rules="eyeRules[dataKey]"
@@ -114,7 +114,7 @@
 
 <script setup lang="ts">
 import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '@/lib/util'
-import EditableSpan from './EditableSpan.vue'
+import GlassCardInputSpan from './GlassCardInputSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
 import {
   Eye,
