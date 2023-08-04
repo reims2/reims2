@@ -20,7 +20,7 @@
     "@nuxtjs/dayjs": "1.4.1",
     "@nuxtjs/pwa": "3.3.5",
     "chroma-js": "2.4.2",
-    "core-js": "3.31.1",
+    "core-js": "3.32.0",
     "nuxt": "2.17.1",
     "nuxt-route-meta": "2.3.6",
     "vue": "2.7.14",
