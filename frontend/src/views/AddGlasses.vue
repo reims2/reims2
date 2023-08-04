@@ -7,23 +7,15 @@
             <v-col v-for="item in generalGlassesDataKeys" :key="item" cols="12" class="pa-0 pb-5">
               <auto-complete-field
                 ref="firstInput"
-                v-model="newGlass[item]"
+                v-model="glassesMeta[item]"
                 v-bind="generalEyeData[item]"
               />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pr-md-5 py-0">
-              <single-eye-input
-                v-model="odEye"
-                eye-name="OD"
-                :add-enabled="newGlass?.glassesType === 'multifocal'"
-              />
+              <single-eye-input v-model="odEye" eye-name="OD" :add-enabled="isMultifocal" />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pl-md-5 py-0">
-              <single-eye-input
-                v-model="osEye"
-                eye-name="OS"
-                :add-enabled="newGlass?.glassesType === 'multifocal'"
-              />
+              <single-eye-input v-model="osEye" eye-name="OS" :add-enabled="isMultifocal" />
             </v-col>
             <v-col cols="12" class="px-0 pt-0">
               <div class="pb-3 text-body-2 text-medium-emphasis">
@@ -75,7 +67,7 @@
               <delete-button
                 :glass="item"
                 fixed-reason="WRONGLY_ADDED"
-                @delete="submitDeletion(item.sku)"
+                @delete="submitDeletion(item)"
               />
             </template>
           </glass-card>
@@ -86,133 +78,69 @@
 </template>
 
 <script setup lang="ts">
-import { sanitizeEyeValues, clearObjectProperties, generalEyeData } from '@/lib/util'
+import { generalEyeData } from '@/lib/util'
 
-import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
 import { useEnterToTab } from '@/lib/enter-to-tab'
 
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
-import {
-  DisplayedEye,
-  Glasses,
-  GlassesInput,
-  generalGlassesDataKeys,
-  SanitizedGlassesInput,
-} from '@/model/GlassesModel'
+import { Glasses, generalGlassesDataKeys } from '@/model/GlassesModel'
 
 import { useDisplay } from 'vuetify'
-import { useToast } from 'vue-toastification'
-import { ReimsAxiosError } from '@/lib/axios'
+import { useAddGlasses } from '@/lib/add'
+import { useEditGlasses } from '@/lib/edit'
 
 const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
 
-const toast = useToast()
-
 const { mobile } = useDisplay()
 
-const glassesStore = useGlassesStore()
 const rootStore = useRootStore()
-const allGlasses = computed(() => glassesStore.allGlasses)
 const reimsSiteName = computed(() => rootStore.reimsSiteName)
 
 const valid = ref(false)
-const loading = ref(false)
-const newGlass = ref<Partial<GlassesInput>>({})
-const odEye = ref<DisplayedEye>({ axis: '', cylinder: '', sphere: '', add: '' })
-const osEye = ref<DisplayedEye>({ axis: '', cylinder: '', sphere: '', add: '' })
-const syncEyes = ref(true)
 const results = ref<ComponentPublicInstance | null>(null)
 const form = ref<HTMLFormElement | null>(null)
 const firstInput = ref<ComponentPublicInstance[] | null>(null)
 
-const lastAdded = computed(() => {
-  return rootStore.lastAddedSkus
-    .map((sku) => allGlasses.value.find((g) => g.sku === sku))
-    .filter((itm) => itm != null) as Glasses[]
-})
-const freeSlots = computed(() => 5000 - allGlasses.value.length)
+const {
+  loading,
+  glassesMeta,
+  odEye,
+  osEye,
+  isMultifocal,
+  lastAdded,
+  freeSlots,
+  submit: submitAdd,
+  reset: resetAdd,
+} = useAddGlasses(onSuccess)
+
+const selectedForDeletion = ref<Glasses | null>(null)
+const { submitDeletion: startDeletion } = useEditGlasses(selectedForDeletion)
 
 const { vPreventEnterTab } = useEnterToTab(form)
 
-watch(
-  () => odEye.value.add,
-  (newVal) => {
-    if (syncEyes.value) osEye.value.add = newVal
-  },
-)
-watch(
-  () => osEye.value.add,
-  (newVal, oldVal) => {
-    if (newVal !== oldVal && !oldVal) syncEyes.value = false
-  },
-)
-
-watch(allGlasses, () => {
-  // Filter out deleted glasses
-  rootStore.lastAddedSkus = rootStore.lastAddedSkus.filter((sku) =>
-    allGlasses.value.find((g) => g.sku === sku),
-  )
-})
-
 async function submit() {
   if (!valid.value) return
-  loading.value = true
-  if (newGlass.value.glassesType === undefined) throw new Error("glassesType can't be null")
-  if (newGlass.value.appearance === undefined) throw new Error("appearance can't be null")
-  if (newGlass.value.glassesSize === undefined) throw new Error("glassesSize can't be null")
-
-  const requestGlasses: SanitizedGlassesInput = {
-    glassesType: newGlass.value.glassesType,
-    glassesSize: newGlass.value.glassesSize,
-    appearance: newGlass.value.appearance,
-    od: sanitizeEyeValues(odEye.value),
-    os: sanitizeEyeValues(osEye.value),
-  }
-  try {
-    const newGlasses = await glassesStore.addGlasses(requestGlasses)
-    rootStore.lastAddedSkus.unshift(newGlasses.sku)
-  } catch (error) {
-    if (error instanceof ReimsAxiosError && error.statusCode === 409) {
-      // no free skus left.
-      toast.error(error.message)
-    } else {
-      toast.error(`Could not add glasses, please retry (${error.message})`)
-    }
-    return
-  } finally {
-    loading.value = false
-  }
+  submitAdd()
+}
+async function onSuccess() {
   reset()
   // scroll to bottom on mobile
   await nextTick()
   if (mobile.value) results.value?.$el.scrollIntoView(true)
 }
+async function submitDeletion(glasses: Glasses) {
+  selectedForDeletion.value = glasses
+  await startDeletion('WRONGLY_ADDED')
+}
+
 function reset() {
-  clearObjectProperties(odEye.value)
-  clearObjectProperties(osEye.value)
-  newGlass.value = {
-    od: { sphere: '', cylinder: '', axis: '', add: '' },
-    os: { sphere: '', cylinder: '', axis: '', add: '' },
-  }
+  resetAdd()
   form.value?.reset()
   if (!mobile.value && firstInput.value && firstInput.value.length) {
     firstInput.value[0].$el.focus()
-  }
-  syncEyes.value = true
-}
-
-async function submitDeletion(sku: number) {
-  try {
-    await glassesStore.dispense(sku, 'WRONGLY_ADDED')
-  } catch (error) {
-    if (error instanceof ReimsAxiosError && error.statusCode === 404) {
-      console.log('Already deleted')
-    } else {
-      toast.error(`Could not delete glasses, please retry (${error.message})`)
-    }
   }
 }
 </script>

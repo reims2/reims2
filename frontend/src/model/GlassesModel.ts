@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { ReimsSite } from './ReimsModel'
+import { DeletionReason, ReimsSite } from './ReimsModel'
 
 export interface OptionalEye {
   add?: number | ''
@@ -39,6 +39,7 @@ export interface Dispense {
   id: number // backend ID
   modifyDate: Date | null
   previousSku: number | null
+  dispenseReason: DeletionReason | null
 }
 
 export type GlassesType = 'single' | 'multifocal'
@@ -46,12 +47,15 @@ export type GlassesAppearance = 'masculine' | 'feminine' | 'neutral'
 export type GlassesSize = 'small' | 'medium' | 'large' | 'child'
 export type GeneralGlassesData = GlassesType | GlassesAppearance | GlassesSize
 
-export type GlassesInput = {
-  od: DisplayedEye
-  os: DisplayedEye
+export type GlassesMeta = {
   glassesType: GlassesType
   appearance: GlassesAppearance
   glassesSize: GlassesSize
+}
+
+export interface GlassesInput extends GlassesMeta {
+  od: DisplayedEye
+  os: DisplayedEye
 }
 
 export interface DisplayedGlasses extends GlassesInput {
@@ -59,12 +63,9 @@ export interface DisplayedGlasses extends GlassesInput {
   creationDate?: string
 }
 
-export interface SanitizedGlassesInput {
+export interface SanitizedGlassesInput extends GlassesMeta {
   od: Eye
   os: Eye
-  glassesType: GlassesType
-  appearance: GlassesAppearance
-  glassesSize: GlassesSize
 }
 
 export interface Glasses extends SanitizedGlassesInput {

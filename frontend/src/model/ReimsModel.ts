@@ -1,5 +1,13 @@
 export type ReimsSite = 'sa' | 'sm'
 
+export type DeletionReason =
+  | 'DISPENSED'
+  | 'TOO_HIGH_VALUES'
+  | 'NOT_FOUND'
+  | 'BROKEN'
+  | 'OTHER'
+  | 'WRONGLY_ADDED'
+
 export interface DrawerItem {
   icon: string
   title: string
