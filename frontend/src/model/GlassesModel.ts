@@ -56,6 +56,7 @@ export type GlassesInput = {
 
 export interface DisplayedGlasses extends GlassesInput {
   sku?: string
+  creationDate?: string
 }
 
 export interface SanitizedGlassesInput {

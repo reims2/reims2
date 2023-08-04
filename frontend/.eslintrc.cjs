@@ -16,6 +16,5 @@ module.exports = {
   rules: {
     'spaced-comment': 'warn',
     'no-warning-comments': 'warn',
-    'vue/valid-v-slot': ['error', { allowModifiers: true }], // FIXME remove this at some point, its ugly
   },
 }
