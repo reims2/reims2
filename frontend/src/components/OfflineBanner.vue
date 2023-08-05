@@ -1,20 +1,13 @@
 <template>
   <v-overlay
     :model-value="true"
-    :scrim="isError"
+    :scrim="alertType === 'error'"
     persistent
     no-click-animation
     scroll-strategy="none"
     class="d-flex justify-end align-end"
   >
-    <v-alert
-      :type="isError ? 'error' : 'info'"
-      prominent
-      :color="color"
-      density="comfortable"
-      max-width="300px"
-      class="position"
-    >
+    <v-alert :type="alertType" prominent density="comfortable" max-width="300px" class="position">
       <span v-if="hasGlassesLoaded && isOutdated">
         REIMS is running offline. Database is older than 3 days, which can lead to problems.
       </span>
@@ -36,12 +29,10 @@ const glassesStore = useGlassesStore()
 const isOutdated = computed(() => glassesStore.isOutdated)
 const hasGlassesLoaded = computed(() => glassesStore.hasGlassesLoaded)
 
-const isError = computed(() => !hasGlassesLoaded.value)
-const isWarning = computed(() => isError.value || isOutdated.value)
-const color = computed(() => {
-  if (isError.value) return 'red'
-  else if (isWarning.value) return 'accent'
-  else return 'secondary'
+const alertType = computed(() => {
+  if (!hasGlassesLoaded.value) return 'error'
+  else if (isOutdated.value) return 'warning'
+  else return 'info'
 })
 </script>
 

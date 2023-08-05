@@ -1,6 +1,5 @@
 <template>
   <v-navigation-drawer
-    mini-variant-width="72"
     :rail="isMiniDrawer"
     :model-value="isDrawerOpen"
     @update:model-value="(val) => (rootStore.drawer = val)"
