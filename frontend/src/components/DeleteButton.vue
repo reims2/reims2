@@ -7,9 +7,9 @@
       <v-toolbar color="primary" title="Delete glasses"></v-toolbar>
       <v-card-text class="text-high-emphasis pb-0">
         <div class="pb-3">
-          This will delete the glasses with SKU {{ glass.sku }}.
+          Glasses with SKU {{ glass.sku }} will be deleted.
           <span v-if="!fixedReason">
-            Please select a reason, which is later visible in campaign reports.
+            Please select a reason. This is later visible in campaign reports.
           </span>
         </div>
         <v-select v-if="!fixedReason" v-model="deleteReason" :items="reasons" />
