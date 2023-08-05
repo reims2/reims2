@@ -10,19 +10,18 @@ const reimsSiteNames: { [site in ReimsSite]: string } = {
 export const useRootStore = defineStore(
   'root',
   () => {
-    const notification = ref(null as Notification | null)
     const drawer = ref(true)
     const isDev = ref(import.meta.env.VITE_PVH_DEBUG === 'true' || false)
     const reimsSite = ref('sa' as ReimsSite)
     const version = ref<null | string>(import.meta.env.VITE_GIT_VERSION || null)
-    const reimsSiteName = computed(() => reimsSiteNames[reimsSite.value])
     const lastDispensedGlasses = ref([] as Glasses[])
     const lastAddedSkus = ref([] as number[])
+
+    const reimsSiteName = computed(() => reimsSiteNames[reimsSite.value])
     function toggleDrawer() {
       drawer.value = !drawer.value
     }
     return {
-      notification,
       drawer,
       isDev,
       reimsSite,
@@ -33,7 +32,11 @@ export const useRootStore = defineStore(
       toggleDrawer,
     }
   },
-  { persist: true },
+  {
+    persist: {
+      paths: ['reimsSite', 'drawer', 'lastDispensedGlasses', 'lastAddedSkus'],
+    },
+  },
 )
 
 if (import.meta.hot) {
