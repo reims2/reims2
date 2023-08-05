@@ -2,7 +2,7 @@
   <v-container>
     <v-row dense class="d-flex justify-center">
       <v-col cols="12" md="6" lg="5">
-        <v-table v-if="items.length > 0">
+        <v-table>
           <thead>
             <tr>
               <th class="text-left">Username</th>
@@ -10,7 +10,9 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <v-progress-circular v-if="items == null" indeterminate />
+          <v-alert v-else-if="items.length == 0" type="warning">No users loaded.</v-alert>
+          <tbody v-else>
             <tr v-for="item in items" :key="item.username">
               <td :class="isCurrentUser(item.username) ? 'font-weight-bold' : ''">
                 {{ item.username }}
@@ -35,7 +37,6 @@
             </tr>
           </tbody>
         </v-table>
-        <v-alert v-else type="warning">No users loaded.</v-alert>
 
         <v-alert
           v-if="editInfo"
@@ -134,7 +135,7 @@ const toast = useToast()
 const usersStore = useUsersStore()
 const authStore = useAuthStore()
 
-const items = ref<User[]>([])
+const items = ref<User[] | null>(null)
 const newPassword = ref('')
 const newRoles = ref<string[]>([])
 const newName = ref('')
@@ -157,6 +158,7 @@ async function startLoading() {
 }
 
 const addUser = async () => {
+  if (addLoading.value) return
   addLoading.value = true
   try {
     await usersStore.add({
@@ -172,19 +174,20 @@ const addUser = async () => {
   }
 
   form.value?.reset()
+  await startLoading()
   addLoading.value = false
-  startLoading()
 }
 
 const deleteUser = async (userId: number) => {
+  if (deleteLoading.value) return
   deleteLoading.value = userId
   try {
     await usersStore.deleteUser(userId)
   } catch (error) {
     toast.error(`Could not delete user (${error.message}).`)
   }
+  await startLoading()
   deleteLoading.value = false
-  startLoading()
 }
 
 function isCurrentUser(username: string) {
