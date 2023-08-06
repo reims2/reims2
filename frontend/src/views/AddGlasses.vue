@@ -102,7 +102,7 @@ const reimsSiteName = computed(() => rootStore.reimsSiteName)
 const valid = ref(false)
 const results = ref<ComponentPublicInstance | null>(null)
 const form = ref<HTMLFormElement | null>(null)
-const firstInput = ref<ComponentPublicInstance[] | null>(null)
+const firstInput = ref<HTMLElement[] | null>(null)
 
 const {
   loading,
@@ -140,7 +140,7 @@ function reset() {
   resetAdd()
   form.value?.reset()
   if (!mobile.value && firstInput.value && firstInput.value.length) {
-    firstInput.value[0].$el.focus()
+    firstInput.value[0]?.focus()
   }
 }
 </script>

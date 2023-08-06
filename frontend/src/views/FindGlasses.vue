@@ -127,7 +127,7 @@ const { mobile } = useDisplay()
 const glassesStore = useGlassesStore()
 const allGlasses = computed(() => glassesStore.allGlasses)
 
-const firstInput = ref<ComponentPublicInstance | null>(null)
+const firstInput = ref<HTMLElement | null>(null)
 const form = ref<HTMLFormElement | null>(null)
 const results = ref<ComponentPublicInstance | null>(null)
 
@@ -256,7 +256,7 @@ async function submitAndUpdate() {
   await nextTick()
   // on desktop, focus input again; on mobile, scroll to bottom
 
-  if (!mobile.value) firstInput.value?.$el.focus()
+  if (!mobile.value) firstInput.value?.focus()
   else results.value?.$el.scrollIntoView(true)
 }
 
@@ -275,7 +275,7 @@ async function reset() {
   matches.value = null
   syncEye.value = true
   await nextTick()
-  firstInput.value?.$el.focus()
+  firstInput.value?.focus()
 }
 function calcPageCount() {
   if (!matches.value) return 0

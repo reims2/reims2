@@ -43,6 +43,7 @@ watch(
       model.value = newValue
     }
   },
+  { immediate: true },
 )
 
 function submit() {

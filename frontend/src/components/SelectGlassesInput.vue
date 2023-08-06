@@ -1,5 +1,6 @@
 <template>
   <v-text-field
+    ref="input"
     :model-value="props.sku"
     :autofocus="!mobile"
     label="SKU"
@@ -42,6 +43,7 @@ const glassesStore = useGlassesStore()
 
 const hint = ref('')
 const selected = ref<Glasses | null>(null)
+const input = ref<HTMLElement | null>(null)
 
 watch(
   () => props.sku,
@@ -79,4 +81,9 @@ watch(selected, () => {
     hint.value = props.hintForSelected
   }
 })
+
+function focus() {
+  input.value?.focus()
+}
+defineExpose({ focus })
 </script>
