@@ -41,7 +41,7 @@
                 @blur="edit = ''"
               />
               <span v-else>
-                <v-icon size="small" color="black">
+                <v-icon size="small">
                   {{ generalEyeData[key].icon }}
                 </v-icon>
                 {{ displayedGlass[key] }}

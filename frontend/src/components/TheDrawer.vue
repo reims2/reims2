@@ -73,7 +73,13 @@
             <v-icon :icon="mdiMapMarkerMultiple"></v-icon>
           </template>
         </v-list-item>
-        <v-list-item href="/docs/" target="_blank" title="Documentation">
+        <v-list-item
+          href="/docs/"
+          target="_blank"
+          title="Documentation"
+          rel="noopener noreferrer"
+          :disabled="!isOnline"
+        >
           <template #prepend>
             <v-icon :icon="mdiFileDocument"></v-icon>
           </template>
@@ -140,7 +146,7 @@ const commitUrl = computed(() => {
 
 <style scoped>
 .dev-background {
-  background-color: #e57373;
+  background-color: rgb(var(--v-theme-accent));
 }
 .no-decoration {
   text-decoration: none !important;
