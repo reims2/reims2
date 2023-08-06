@@ -4,8 +4,8 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 
 ## Open Questions
 
+- Do we have a SKU 0? What's with SKU 5000 and 10000 then?
 - admin account
-- OCR
 
 ## Ideas
 
