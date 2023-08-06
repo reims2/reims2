@@ -28,7 +28,8 @@ const vitePWAconf: Partial<VitePWAOptions> = {
   manifest: {
     name: 'REIMS2',
     short_name: 'REIMS2',
-    description: 'REIMS2',
+    description:
+      'REIMS2 is the next version of the Richmond Eyeglass Inventory Matching System. It supports the annual visual health campaigns run by Partners for Visual Health.',
     theme_color: '#005c66',
     icons: [
       {

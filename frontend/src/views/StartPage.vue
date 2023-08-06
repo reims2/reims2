@@ -25,6 +25,7 @@
                 <v-btn
                   href="/docs/"
                   target="_blank"
+                  rel="noopener noreferrer"
                   size="x-large"
                   large
                   variant="outlined"

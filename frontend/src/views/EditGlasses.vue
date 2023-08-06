@@ -51,7 +51,7 @@
         <div v-for="glasses in lastDispensed" :key="glasses.sku" style="opacity: 80%">
           <glass-card :model-value="glasses">
             <template #actions>
-              <v-btn variant="text" color="red" class="mx-0" @click="undoDispension(glasses)">
+              <v-btn variant="text" color="accent" class="mx-0" @click="undoDispension(glasses)">
                 Undo
               </v-btn>
             </template>
