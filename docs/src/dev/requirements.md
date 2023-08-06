@@ -24,22 +24,22 @@ This is just a very basic overview that's still missing a lot of requirements. I
 
 - It should never be possible to have the same SKU for two active (i.e. non dispensed) glasses.
 
-## Data format
+## Glasses data structure
 
 _See [Working with REIMS to find glasses (PDF)](/working-with-reims.pdf) for a detailled explanation_
 
 Data for every entry:
 
-- `Type` can be single (standard glasses), bifocal (single, but with a different lens power at the bottom) or progressive (bifocal, but with a smooth transition. German: "Gleitsichtbrille"). In the future, reader (simple reading glasses with `Sphere` only should be possible as well).
+- `Type` can be single (standard glasses), bifocal (single, but with a different lens power at the bottom) or progressive (bifocal, but with a smooth transition. German: "Gleitsichtbrille"). In REIMS2, it is simplified to either `single` or `multifocal`. In the future, reader (simple reading glasses with `Sphere` only could be possible as well).
 - `Size` can be small, medium, large, child
 - `Appearance` can be neutral, feminine or masculine
 
 The following data is stored for **each** eye (OD=right eye, OS=left):
 
-- `Sphere`/lens power in diopters. Negative numbers means near sighted, positive is far sighted. Range from -20 to +20 in 0.25 increments.
-- `Cylinder` Lens power to correct astigmatism (German: "Hornhautverkrümmung"). Range from 0 to -6 in 0.25 increments => Negative only
-- `Axis` Also some value to correct astigmatism. Range from 1 to 180 in 1 increments.
-- `Add` **only for bifocal or progressive lenses**, this described the lens power of the additional bottom lens. Range from 0.25 to 4 in 0.25 increments => Positive only.
+- `Sphere`/lens power in diopters. Negative numbers means near sighted, positive is far sighted. Range from -20 to +20 in 0.25 increments. Usually between -6 to +6.
+- `Cylinder` Lens power to correct astigmatism (German: "Hornhautverkrümmung"). Range from 0 to -6 in 0.25 increments => Negative only. Usually between 0 to -3.
+- `Axis` Also some value to correct astigmatism. Range from 0 to 180 in 1 increments. (0 equals 180, wraparound). Always specified with 3 digits (zero padding).
+- `Add` **only for bifocal or progressive lenses**, this described the lens power of the additional bottom lens. Range from 0.25 to 4 in 0.25 increments => Positive only. Usually between 0.75 to 3.50.
 
 ## Frontend
 
