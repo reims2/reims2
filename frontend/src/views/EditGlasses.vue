@@ -99,7 +99,7 @@ const inputSku = ref<number | null>(null)
 
 // Component refs
 const form = ref<VForm | null>(null)
-const firstInput = ref<ComponentPublicInstance | null>(null)
+const firstInput = ref<HTMLElement | null>(null)
 
 const { isLoading, lastDispensed, submitDeletion, undoDispension, snackbarMessage } =
   useEditGlasses(selected, onDeleted)
@@ -120,7 +120,7 @@ function startDispension() {
 }
 
 function onDeleted() {
-  firstInput.value?.$el.focus()
+  firstInput.value?.focus()
   form.value?.reset()
 }
 </script>

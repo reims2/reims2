@@ -42,11 +42,17 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['update:modelValue'])
 const inputVal = useVModel(props, 'modelValue', emit)
 
-const input = ref<ComponentPublicInstance | null>(null)
+const input = ref<HTMLElement | null>(null)
 
 onMounted(() => {
-  input.value?.$el.focus()
+  focus()
 })
+
+function focus() {
+  input.value?.focus()
+}
+
+defineExpose({ focus })
 
 function autoComplete() {
   /** autocomplete item data based on first characters. i.e. for id=glassesType return single for character s.
