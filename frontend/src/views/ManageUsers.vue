@@ -18,7 +18,7 @@
                 {{ item.username }}
               </td>
               <td>{{ item.roles.map((el) => el.name).join(', ') }}</td>
-              <td>
+              <td class="d-flex align-center">
                 <v-btn icon size="x-small" @click="editInfo = true">
                   <v-icon>{{ mdiPencil }}</v-icon>
                 </v-btn>
