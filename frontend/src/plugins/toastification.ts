@@ -8,6 +8,7 @@ export default {
       position: 'bottom-center',
       transition: 'Vue-Toastification__fade',
       maxToasts: 5,
+      draggable: false,
     })
   },
 }

@@ -277,7 +277,7 @@ function reset() {
   resetEyeInput(osEye.value)
   form.value?.reset()
   syncEye.value = true
-  firstInput.value?.focus()
+  if (!mobile.value) firstInput.value?.focus()
 }
 function calcPageCount() {
   if (!matches.value) return 0

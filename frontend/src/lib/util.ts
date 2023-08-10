@@ -9,6 +9,7 @@ import {
   EyeKey,
   DisplayedEye,
   EyeSearch,
+  SanitizedEyeSearch,
 } from '@/model/GlassesModel'
 import { ValidationRule, isNumber, isString } from '@/model/ReimsModel'
 
@@ -180,7 +181,7 @@ export function dispensedAsCsv(glasses: Glasses[]) {
 }
 
 /** Eye is fixed by applying step rounding and the correct sign for cylinder */
-export function sanitizeEyeValues(singleEye: OptionalEye | DisplayedEye): Eye {
+export function sanitizeEyeValues(singleEye: OptionalEye | DisplayedEye | EyeSearch): Eye {
   const rx: Eye = {
     sphere: Number(singleEye.sphere),
     cylinder: Number(singleEye.cylinder),
@@ -204,7 +205,14 @@ export function sanitizeEyeValues(singleEye: OptionalEye | DisplayedEye): Eye {
     newValue = Math.ceil(Math.abs(newValue) / 0.25) * 0.25
     rx[prop] = isNegative ? -newValue : newValue
   }
-  return rx as Eye
+  if ('isBAL' in singleEye) {
+    return {
+      ...rx,
+      isBAL: Boolean(singleEye.isBAL),
+    } as SanitizedEyeSearch
+  } else {
+    return rx
+  }
 }
 
 export function resetEyeInput(eye: DisplayedEye | EyeSearch) {
