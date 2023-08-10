@@ -18,8 +18,6 @@
                 eye-name="OD"
                 :add-enabled="glassesType === 'multifocal'"
                 bal-enabled
-                :is-bal="odEye.isBAL"
-                @update:is-bal="(val) => (odEye.isBAL = val)"
               />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pl-md-5 py-0">
@@ -28,8 +26,6 @@
                 eye-name="OS"
                 :add-enabled="glassesType === 'multifocal'"
                 bal-enabled
-                :is-bal="osEye.isBAL"
-                @update:is-bal="(val) => (osEye.isBAL = val)"
               />
             </v-col>
             <v-col cols="12" class="pa-0">
@@ -114,8 +110,14 @@ import { useGlassesStore } from '@/stores/glasses'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 
-import { EyeSearch, GlassesResult, GlassesSearch, GlassesType } from '@/model/GlassesModel'
-import { matchesAsCsvUri, generalEyeData } from '@/lib/util'
+import {
+  EyeSearch,
+  GlassesResult,
+  GlassesSearch,
+  GlassesType,
+  SanitizedEyeSearch,
+} from '@/model/GlassesModel'
+import { matchesAsCsvUri, generalEyeData, resetEyeInput, sanitizeEyeValues } from '@/lib/util'
 import { useEnterToTab } from '@/lib/enter-to-tab'
 
 import { useDisplay } from 'vuetify'
@@ -263,18 +265,18 @@ async function submitAndUpdate() {
 async function loadMatches() {
   const eyeModel: GlassesSearch = {
     glassesType: glassesType.value as GlassesType,
-    os: { ...osEye.value },
-    od: { ...odEye.value },
+    os: sanitizeEyeValues(osEye.value) as SanitizedEyeSearch,
+    od: sanitizeEyeValues(odEye.value) as SanitizedEyeSearch,
     highTolerance: highTolerance.value,
   }
 
   matches.value = glassesStore.philScore(eyeModel)
 }
-async function reset() {
+function reset() {
+  resetEyeInput(odEye.value)
+  resetEyeInput(osEye.value)
   form.value?.reset()
-  matches.value = null
   syncEye.value = true
-  await nextTick()
   firstInput.value?.focus()
 }
 function calcPageCount() {

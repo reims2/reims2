@@ -1,12 +1,4 @@
-import { sanitizeEyeValues } from './util'
-import {
-  Glasses,
-  Eye,
-  SanitizedEyeSearch,
-  GlassesSearch,
-  GlassesResult,
-  hasAdd,
-} from '@/model/GlassesModel'
+import { Glasses, Eye, GlassesSearch, GlassesResult, hasAdd } from '@/model/GlassesModel'
 
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 10
@@ -18,8 +10,8 @@ export default function calculateAllPhilscore(
   terms: GlassesSearch,
   glasses: Glasses[],
 ): GlassesResult[] {
-  const rxOd = sanitizeEyeValues(terms.od) as SanitizedEyeSearch
-  const rxOs = sanitizeEyeValues(terms.os) as SanitizedEyeSearch
+  const rxOd = terms.od
+  const rxOs = terms.os
   const isSinglefocal = terms.glassesType === 'single'
   const tolerance =
     terms.highTolerance !== null && terms.highTolerance ? HIGH_TOLERANCE : NORMAL_TOLERANCE

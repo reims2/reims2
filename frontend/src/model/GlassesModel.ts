@@ -98,7 +98,7 @@ export interface SanitizedEyeSearch extends Eye {
 
 export interface GlassesSearch {
   glassesType: GlassesType
-  od: OptionalEye | DisplayedEye
-  os: OptionalEye | DisplayedEye
+  od: SanitizedEyeSearch
+  os: SanitizedEyeSearch
   highTolerance?: boolean
 }

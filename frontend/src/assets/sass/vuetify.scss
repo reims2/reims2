@@ -1,7 +1,7 @@
-@use '@fontsource-variable/inter' as *;
+@use '@fontsource-variable/roboto-flex' as *;
 
 @use 'vuetify/settings' with (
-  $body-font-family: 'Inter Variable'
+  $body-font-family: 'Roboto Flex Variable'
 );
 
 // Overwrite global vuetify styles here
