@@ -8,6 +8,7 @@ import {
   OptionalEye,
   EyeKey,
   DisplayedEye,
+  EyeSearch,
 } from '@/model/GlassesModel'
 import { ValidationRule, isNumber, isString } from '@/model/ReimsModel'
 
@@ -206,10 +207,12 @@ export function sanitizeEyeValues(singleEye: OptionalEye | DisplayedEye): Eye {
   return rx as Eye
 }
 
-export function clearObjectProperties(obj: Record<string, unknown>) {
-  for (const key of Object.keys(obj)) {
-    obj[key] = ''
-  }
+export function resetEyeInput(eye: DisplayedEye | EyeSearch) {
+  eye.sphere = ''
+  eye.cylinder = ''
+  eye.axis = ''
+  eye.add = ''
+  if ('isBAL' in eye) eye.isBAL = false
 }
 
 export function isValidForRules(value: unknown, rules: ValidationRule[]): boolean {

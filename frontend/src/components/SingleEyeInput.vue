@@ -26,12 +26,11 @@
       <v-col cols="12" class="pa-0 pb-4">
         <v-checkbox
           v-if="balEnabled"
-          :model-value="isBal"
+          v-model="isBal"
           tabindex="-1"
           class="py-0 my-0"
           :label="`BAL lens (Disable ${eyeName})`"
           hide-details
-          @update:model-value="(val: boolean) => emit('update:isBal', val)"
         />
       </v-col>
     </v-row>
@@ -43,21 +42,18 @@ import { eyeRules, isValidForRules } from '@/lib/util'
 import { DisplayedEye, Eye, EyeKey, eyeKeys } from '@/model/GlassesModel'
 
 interface Props {
-  modelValue: DisplayedEye
+  modelValue: DisplayedEye & { isBAL?: boolean }
   eyeName: string
   addEnabled: boolean
-  isBal?: boolean
   balEnabled?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   addEnabled: true,
-  isBal: false,
   balEnabled: false,
 })
 
 const emit = defineEmits<{
   'update:modelValue': [DisplayedEye]
-  'update:isBal': [boolean]
 }>()
 
 type EyeData = {
@@ -97,6 +93,17 @@ const eyeData = computed<EyeDataMap>(() => {
       value: props.modelValue.add || '',
     },
   }
+})
+
+const isBal = computed({
+  get() {
+    return props.modelValue.isBAL
+  },
+  set(val: boolean | undefined) {
+    const eye = { ...props.modelValue }
+    eye.isBAL = val
+    emit('update:modelValue', eye)
+  },
 })
 
 function input(id: keyof Eye, value: string | null) {

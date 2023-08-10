@@ -1,4 +1,4 @@
-import { sanitizeEyeValues, clearObjectProperties } from '@/lib/util'
+import { sanitizeEyeValues, resetEyeInput } from '@/lib/util'
 
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
@@ -85,8 +85,8 @@ export const useAddGlasses = (onSuccessFn?: () => void) => {
     onSuccessFn?.()
   }
   function reset() {
-    clearObjectProperties(odEye.value)
-    clearObjectProperties(osEye.value)
+    resetEyeInput(odEye.value)
+    resetEyeInput(osEye.value)
     glassesMeta.value = {}
     syncEyes.value = true
   }
