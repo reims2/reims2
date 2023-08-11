@@ -47,7 +47,15 @@
       </v-col>
 
       <v-col v-if="lastDispensed.length > 0" cols="12" md="4" lg="3" class="pl-md-6 pt-3 pt-md-2">
-        <div class="text-h6 pb-2">Recently dispensed or deleted</div>
+        <div class="text-h6 pb-4 d-flex align-center">
+          Recently dispensed or deleted
+          <v-progress-circular
+            v-if="isLastDispensedLoading"
+            indeterminate
+            size="x-small"
+            class="ml-2"
+          ></v-progress-circular>
+        </div>
         <v-alert v-if="!isOnline" type="warning" variant="outlined" density="compact">
           Go online to view recently dispensed glasses
         </v-alert>
@@ -91,10 +99,8 @@ const inputSku = ref<number | null>(null)
 const form = ref<VForm | null>(null)
 const firstInput = ref<HTMLElement | null>(null)
 
-const { isLoading, lastDispensed, submitDeletion, undoDispension } = useEditGlasses(
-  selected,
-  onDeleted,
-)
+const { isLoading, lastDispensed, isLastDispensedLoading, submitDeletion, undoDispension } =
+  useEditGlasses(selected, onDeleted)
 
 const route = useRoute()
 onActivated(() => {

@@ -17,7 +17,11 @@ export const useEditGlasses = (
 ) => {
   const skuValue = computed(() => toValue(selected)?.sku ?? null)
 
-  const { lastDispensed, updateLastDispensed } = useLastDispensed()
+  const {
+    lastDispensed,
+    isLoading: isLastDispensedLoading,
+    updateLastDispensed,
+  } = useLastDispensed()
 
   const { isLoading: isDeletionLoading, deleteGlasses: submitDeletion } = useDeleteGlasses(
     skuValue,
@@ -39,6 +43,7 @@ export const useEditGlasses = (
   return {
     isLoading,
     lastDispensed,
+    isLastDispensedLoading,
     submitDispension,
     submitDeletion,
     undoDispension,
@@ -48,22 +53,29 @@ export const useEditGlasses = (
 export const useLastDispensed = () => {
   const glassesStore = useGlassesStore()
   const lastDispensed = ref<Glasses[]>([])
+  const isLoading = ref(false)
 
   const updateLastDispensed = async () => {
-    const glasses = await glassesStore.getDispensedGlasses(
-      dayjs().subtract(1, 'week'),
-      dayjs().add(1, 'day'),
-    )
-    if (!glasses || !glasses.length) lastDispensed.value = []
-    else {
-      lastDispensed.value = glasses
-        .sort((a, b) => {
-          if (!a.dispense?.modifyDate) return 1
-          if (!b.dispense?.modifyDate) return -1
-          if (a.dispense.modifyDate > b.dispense.modifyDate) return -1
-          return 1
-        })
-        .slice(0, 3)
+    if (isLoading.value) return
+    isLoading.value = true
+    try {
+      const glasses = await glassesStore.getDispensedGlasses(
+        dayjs().subtract(1, 'week'),
+        dayjs().add(1, 'day'),
+      )
+      if (!glasses || !glasses.length) lastDispensed.value = []
+      else {
+        lastDispensed.value = glasses
+          .sort((a, b) => {
+            if (!a.dispense?.modifyDate) return 1
+            if (!b.dispense?.modifyDate) return -1
+            if (a.dispense.modifyDate > b.dispense.modifyDate) return -1
+            return 1
+          })
+          .slice(0, 3)
+      }
+    } finally {
+      isLoading.value = false
     }
   }
 
@@ -73,6 +85,7 @@ export const useLastDispensed = () => {
   })
   return {
     lastDispensed,
+    isLoading,
     updateLastDispensed,
   }
 }
