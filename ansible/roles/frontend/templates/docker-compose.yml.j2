@@ -1,11 +1,8 @@
   frontend:
     image: {{ frontend_image }}
     restart: always
-    environment:
-      - "BASE_URL_BROWSER=https://{{ app_domain }}"
-      - "BASE_URL_INTERNAL=http://backend:5000"
 {% if frontend_debug %}
-      - "PVH_DEBUG=true"
+    environment:
       - "VITE_PVH_DEBUG=true"
 {% endif %}
 
