@@ -1,6 +1,5 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { ReimsSite } from '@/model/ReimsModel'
-import { Glasses } from '@/model/GlassesModel'
 
 const reimsSiteNames: { [site in ReimsSite]: string } = {
   sa: 'Santa Ana',
@@ -14,7 +13,6 @@ export const useRootStore = defineStore(
     const isDev = ref(import.meta.env.VITE_PVH_DEBUG === 'true' || false)
     const reimsSite = ref('sa' as ReimsSite)
     const version = ref<null | string>(import.meta.env.VITE_GIT_VERSION || null)
-    const lastDispensedGlasses = ref([] as Glasses[])
     const lastAddedSkus = ref([] as number[])
 
     const reimsSiteName = computed(() => reimsSiteNames[reimsSite.value])
@@ -27,14 +25,13 @@ export const useRootStore = defineStore(
       reimsSite,
       reimsSiteName,
       version,
-      lastDispensedGlasses,
       lastAddedSkus,
       toggleDrawer,
     }
   },
   {
     persist: {
-      paths: ['reimsSite', 'drawer', 'lastDispensedGlasses', 'lastAddedSkus'],
+      paths: ['reimsSite', 'drawer'],
     },
   },
 )

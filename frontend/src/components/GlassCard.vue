@@ -191,10 +191,17 @@ const displayedGlass = computed(() => {
     glassesSize: props.modelValue.glassesSize,
     glassesType: props.modelValue.glassesType,
     appearance: props.modelValue.appearance,
-    sku: props.modelValue.sku?.toString().padStart(4, '0') || undefined,
+    sku: getAndConvertSku(),
   }
   return displayedGlasses
 })
+
+function getAndConvertSku() {
+  if (props.modelValue.sku != null) return props.modelValue.sku.toString().padStart(4, '0')
+  else if (props.modelValue.dispense?.previousSku != null) {
+    return props.modelValue.dispense.previousSku.toString().padStart(4, '0')
+  } else return undefined
+}
 
 function formatEyeValues(eye: Eye): DisplayedEye {
   return {

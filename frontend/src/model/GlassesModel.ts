@@ -37,7 +37,7 @@ export type GlassesEyeIndex = 'od' | 'os'
 
 export interface Dispense {
   id: number // backend ID
-  modifyDate: Date | null
+  modifyDate: number | null
   previousSku: number | null
   dispenseReason: DeletionReason | null
 }
