@@ -73,8 +73,8 @@ async function downloadDispensedReport() {
   const selectedYearStart = dayjs().startOf('year').year(selectedDispenedYear.value)
   try {
     const csvFile = await glassesStore.loadDispensedCsv(
-      selectedYearStart.format('MM/DD/YYYY'),
-      selectedYearStart.add(1, 'year').format('MM/DD/YYYY'),
+      selectedYearStart,
+      selectedYearStart.add(1, 'year'),
     )
     filename.value = `dispense_report_${rootStore.reimsSite}_${selectedDispenedYear.value}.csv`
     downloadCsv(csvFile)

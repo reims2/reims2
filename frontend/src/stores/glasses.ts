@@ -5,6 +5,7 @@ import { useRootStore } from './root'
 import axios from 'axios'
 import { ReimsAxiosError, useAxios } from '@/lib/axios'
 import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
+import { Dayjs } from 'dayjs'
 
 const arrayContainsSku = (data: Glasses[], sku: number) => data.some((e) => e.sku === sku)
 
@@ -88,8 +89,11 @@ export const useGlassesStore = defineStore(
     function philScore(terms: GlassesSearch): GlassesResult[] {
       return calculateAllPhilscore(terms, allGlasses.value || ([] as Glasses[]))
     }
-    async function loadDispensedCsv(startDate: string, endDate: string): Promise<Blob> {
-      const params = { startDate, endDate }
+    async function loadDispensedCsv(startDate: Dayjs, endDate: Dayjs): Promise<Blob> {
+      const params = {
+        startDate: startDate.format('MM/DD/YYYY'),
+        endDate: endDate.format('MM/DD/YYYY'),
+      }
       const response = await axiosInstance.get(
         `/api/glasses/dispensed/${rootStore.reimsSite}.csv`,
         {
@@ -102,6 +106,16 @@ export const useGlassesStore = defineStore(
     async function loadInventoryCsv(): Promise<Blob> {
       const response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}.csv`, {
         responseType: 'blob',
+      })
+      return response.data
+    }
+    async function getDispensedGlasses(startDate: Dayjs, endDate: Dayjs): Promise<Glasses[]> {
+      const params = {
+        startDate: startDate.format('MM/DD/YYYY'),
+        endDate: endDate.format('MM/DD/YYYY'),
+      }
+      const response = await axiosInstance.get(`/api/glasses/dispensed/${rootStore.reimsSite}`, {
+        params,
       })
       return response.data
     }
@@ -149,6 +163,7 @@ export const useGlassesStore = defineStore(
       philScore,
       loadDispensedCsv,
       loadInventoryCsv,
+      getDispensedGlasses,
       loadGlasses,
       addOfflineGlasses,
       deleteOfflineGlasses,

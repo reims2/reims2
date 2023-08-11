@@ -89,7 +89,7 @@ import { Glasses, generalGlassesDataKeys } from '@/model/GlassesModel'
 
 import { useDisplay } from 'vuetify'
 import { useAddGlasses } from '@/lib/add'
-import { useEditGlasses } from '@/lib/edit'
+import { useDeleteGlasses } from '@/lib/edit'
 
 const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
@@ -116,9 +116,6 @@ const {
   reset: resetAdd,
 } = useAddGlasses(onSuccess)
 
-const selectedForDeletion = ref<Glasses | null>(null)
-const { submitDeletion: startDeletion } = useEditGlasses(selectedForDeletion)
-
 const { vPreventEnterTab } = useEnterToTab(form)
 
 async function submit() {
@@ -132,8 +129,8 @@ async function onSuccess() {
   if (mobile.value) results.value?.$el.scrollIntoView(true)
 }
 async function submitDeletion(glasses: Glasses) {
-  selectedForDeletion.value = glasses
-  await startDeletion('WRONGLY_ADDED')
+  const { deleteGlasses } = useDeleteGlasses(glasses.sku)
+  await deleteGlasses('WRONGLY_ADDED')
 }
 
 function reset() {

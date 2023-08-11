@@ -48,7 +48,10 @@
 
       <v-col v-if="lastDispensed.length > 0" cols="12" md="4" lg="3" class="pl-md-6 pt-3 pt-md-2">
         <div class="text-h6 pb-2">Recently dispensed or deleted</div>
-        <div v-for="glasses in lastDispensed" :key="glasses.sku" style="opacity: 80%">
+        <v-alert v-if="!isOnline" type="warning" variant="outlined" density="compact">
+          Go online to view recently dispensed glasses
+        </v-alert>
+        <div v-for="glasses in lastDispensed" v-else :key="glasses.sku" style="opacity: 80%">
           <glass-card :model-value="glasses">
             <template #actions>
               <v-btn variant="text" color="accent" class="mx-0" @click="undoDispension(glasses)">
@@ -59,22 +62,6 @@
         </div>
       </v-col>
     </v-row>
-
-    <v-snackbar
-      v-if="snackbarMessage != ''"
-      :model-value="true"
-      :timeout="-1"
-      vertical
-      location="bottom center"
-      :attach="true"
-      max-width="300px"
-      class="position"
-    >
-      <template #actions>
-        <v-btn variant="text" color="primary-lighten-3" @click="snackbarMessage = ''">Close</v-btn>
-      </template>
-      <span>{{ snackbarMessage }}</span>
-    </v-snackbar>
   </v-container>
 </template>
 
@@ -86,9 +73,12 @@ import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRoute } from 'vue-router'
 import { useEditGlasses } from '@/lib/edit'
+import { useOnline } from '@vueuse/core'
 
 const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
+
+const isOnline = useOnline()
 
 type GlassesWithKey = Glasses & { key?: string }
 
@@ -101,8 +91,10 @@ const inputSku = ref<number | null>(null)
 const form = ref<VForm | null>(null)
 const firstInput = ref<HTMLElement | null>(null)
 
-const { isLoading, lastDispensed, submitDeletion, undoDispension, snackbarMessage } =
-  useEditGlasses(selected, onDeleted)
+const { isLoading, lastDispensed, submitDeletion, undoDispension } = useEditGlasses(
+  selected,
+  onDeleted,
+)
 
 const route = useRoute()
 onActivated(() => {

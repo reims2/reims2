@@ -1,5 +1,4 @@
 import { useGlassesStore } from '@/stores/glasses'
-import { useRootStore } from '@/stores/root'
 
 import { Glasses } from '@/model/GlassesModel'
 
@@ -7,6 +6,8 @@ import { useToast } from 'vue-toastification'
 import { ReimsAxiosError } from '@/lib/axios'
 import { MaybeRefOrGetter } from 'vue'
 import { DeletionReason } from '@/model/ReimsModel'
+import dayjs from 'dayjs'
+import { useIntervalFn } from '@vueuse/core'
 
 type GlassesWithKey = Glasses & { key?: string }
 
@@ -14,67 +15,69 @@ export const useEditGlasses = (
   selected: MaybeRefOrGetter<GlassesWithKey | null>,
   onDeletedFn?: () => void,
 ) => {
-  const toast = useToast()
-
   const glassesStore = useGlassesStore()
-  const rootStore = useRootStore()
 
-  const isLoading = ref(false)
-  const snackbarMessage = ref('')
-  const lastDispensed = computed(() => rootStore.lastDispensedGlasses.slice(0, 3))
+  const lastDispensed = ref<Glasses[]>([])
+  const skuValue = computed(() => toValue(selected)?.sku ?? null)
 
-  onDeactivated(() => {
-    // reset snackbar
-    snackbarMessage.value = ''
+  const updateLastDispensed = async () => {
+    const glasses = await glassesStore.getDispensedGlasses(
+      dayjs().subtract(1, 'week'),
+      dayjs().add(1, 'day'),
+    )
+    if (!glasses || !glasses.length) lastDispensed.value = []
+    else {
+      lastDispensed.value = glasses
+        .sort((a, b) => {
+          if (!a.dispense?.modifyDate) return 1
+          if (!b.dispense?.modifyDate) return -1
+          if (a.dispense.modifyDate > b.dispense.modifyDate) return -1
+          return 1
+        })
+        .slice(0, 3)
+    }
+  }
+
+  useIntervalFn(updateLastDispensed, 1000 * 60 * 2)
+  onActivated(() => {
+    updateLastDispensed()
   })
 
-  async function submitDispension() {
-    await submitDeletion('DISPENSED')
+  const { isLoading: isDeletionLoading, deleteGlasses } = useDeleteGlasses(skuValue, () => {
+    updateLastDispensed()
+    onDeletedFn?.()
+  })
+
+  const { isLoading: isUndoLoading, undo: undoDispension } = useUndoDispension(() => {
+    updateLastDispensed()
+  })
+
+  function submitDispension() {
+    submitDeletion('DISPENSED')
   }
 
-  async function submitDeletion(reason: DeletionReason): Promise<void> {
-    if (isLoading.value) return
-    // copy object because the computed `selected` property will get null when it's dispensed
-    const toDispense = toValue(selected)
-    if (!toDispense) return
-    // do dispension
-    snackbarMessage.value = ''
-    // show user the correct action string, even though it's the same in the backend
-    const actionString = reason === 'DISPENSED' ? 'dispense' : 'delete'
-    isLoading.value = true
-    try {
-      await glassesStore.dispense(toDispense.sku, reason)
-    } catch (error) {
-      if (error instanceof ReimsAxiosError) {
-        if (error.statusCode === 404) {
-          toast.warning(
-            `SKU ${toDispense.sku} not found on server, was it already ${actionString}d?`,
-          )
-        } else if (error.isServerSide) {
-          toast.error(
-            `Could not ${actionString} glasses. Please report this to the REIMS2 developers (Error ${error.apiMessage})`,
-          )
-        } else if (error.isNetwork) {
-          snackbarMessage.value = `Glasses with SKU ${toDispense.sku} will be ${actionString}d when you're back online`
-          glassesStore.deleteOfflineGlasses(toDispense.sku)
-          rootStore.lastDispensedGlasses.unshift(toDispense)
-          onDeletedFn?.()
-
-          return
-        }
-      } else {
-        toast.error(`Could not ${actionString} glasses, please retry (${error.message})`)
-      }
-      return
-    } finally {
-      isLoading.value = false
-    }
-    rootStore.lastDispensedGlasses.unshift(toDispense)
-
-    snackbarMessage.value = `Successfully ${actionString}d glasses with SKU ${toDispense.sku}`
+  function submitDeletion(reason: DeletionReason) {
+    deleteGlasses(reason)
   }
 
-  async function undoDispension(glasses: Glasses): Promise<void> {
+  const isLoading = computed(() => isUndoLoading.value || isDeletionLoading.value)
+  return {
+    isLoading,
+    lastDispensed,
+    submitDispension,
+    submitDeletion,
+    undoDispension,
+  }
+}
+
+export const useUndoDispension = (onSuccessFn?: () => void) => {
+  const toast = useToast()
+  const isLoading = ref(false)
+  const glassesStore = useGlassesStore()
+
+  async function undo(glassesInput: MaybeRefOrGetter<Glasses>): Promise<void> {
+    const glasses = toValue(glassesInput)
+    if (isLoading.value || !glasses) return
     isLoading.value = true
     try {
       await glassesStore.undispense(glasses)
@@ -84,12 +87,11 @@ export const useEditGlasses = (
           toast.error(
             `Reverting is not possible here, please readd glasses manually (Error: ${error.apiMessage}).`,
           )
-          snackbarMessage.value = ''
         } else if (error.isServerSide || error.isNetwork) {
-          toast.error(
+          toast.warning(
             "Network or server error. Dispension/deletion will be automatically reverted as soon as you're back online.",
           )
-          snackbarMessage.value = ''
+          onSuccessFn?.()
         }
       } else {
         toast.error(
@@ -101,18 +103,59 @@ export const useEditGlasses = (
       isLoading.value = false
     }
 
-    rootStore.lastDispensedGlasses = rootStore.lastDispensedGlasses.filter(
-      (g) => g.sku !== glasses.sku,
-    )
-    snackbarMessage.value = `Reverted dispension/deletion of SKU ${glasses.sku} successfully`
-    onDeletedFn?.()
+    toast.info(`Reverted dispension/deletion of SKU ${glasses.sku} successfully`)
+    onSuccessFn?.()
   }
   return {
     isLoading,
-    snackbarMessage,
-    lastDispensed,
-    submitDispension,
-    submitDeletion,
-    undoDispension,
+    undo,
+  }
+}
+
+export const useDeleteGlasses = (
+  skuInput: MaybeRefOrGetter<number | null>,
+  onSuccessFn?: () => void,
+) => {
+  const isLoading = ref(false)
+  const glassesStore = useGlassesStore()
+
+  const toast = useToast()
+
+  async function deleteGlasses(reason: DeletionReason): Promise<void> {
+    const sku = toValue(skuInput)
+    if (isLoading.value || !sku) return
+    // show user the correct action string, even though it's the same in the backend
+    const actionString = reason === 'DISPENSED' ? 'dispense' : 'delete'
+    isLoading.value = true
+    try {
+      await glassesStore.dispense(sku, reason)
+    } catch (error) {
+      if (error instanceof ReimsAxiosError) {
+        if (error.statusCode === 404) {
+          toast.warning(`SKU ${sku} not found on server, was it already ${actionString}d?`)
+        } else if (error.isServerSide) {
+          toast.error(
+            `Could not ${actionString} glasses. Please report this to the REIMS2 developers (Error ${error.apiMessage})`,
+          )
+        } else if (error.isNetwork) {
+          glassesStore.deleteOfflineGlasses(sku)
+          toast.warning(`Glasses with SKU ${sku} will be ${actionString}d when you're back online`)
+          onSuccessFn?.()
+          return
+        }
+      } else {
+        toast.error(`Could not ${actionString} glasses, please retry (${error.message})`)
+      }
+      return
+    } finally {
+      isLoading.value = false
+    }
+
+    toast.info(`Successfully ${actionString}d glasses with SKU ${sku}`)
+    onSuccessFn?.()
+  }
+  return {
+    isLoading,
+    deleteGlasses,
   }
 }
