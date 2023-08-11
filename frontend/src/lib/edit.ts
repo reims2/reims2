@@ -15,10 +15,39 @@ export const useEditGlasses = (
   selected: MaybeRefOrGetter<GlassesWithKey | null>,
   onDeletedFn?: () => void,
 ) => {
-  const glassesStore = useGlassesStore()
-
-  const lastDispensed = ref<Glasses[]>([])
   const skuValue = computed(() => toValue(selected)?.sku ?? null)
+
+  const { lastDispensed, updateLastDispensed } = useLastDispensed()
+
+  const { isLoading: isDeletionLoading, deleteGlasses: submitDeletion } = useDeleteGlasses(
+    skuValue,
+    () => {
+      updateLastDispensed()
+      onDeletedFn?.()
+    },
+  )
+
+  const { isLoading: isUndoLoading, undo: undoDispension } = useUndoDispension(() => {
+    updateLastDispensed()
+  })
+
+  function submitDispension() {
+    submitDeletion('DISPENSED')
+  }
+
+  const isLoading = computed(() => isUndoLoading.value || isDeletionLoading.value)
+  return {
+    isLoading,
+    lastDispensed,
+    submitDispension,
+    submitDeletion,
+    undoDispension,
+  }
+}
+
+export const useLastDispensed = () => {
+  const glassesStore = useGlassesStore()
+  const lastDispensed = ref<Glasses[]>([])
 
   const updateLastDispensed = async () => {
     const glasses = await glassesStore.getDispensedGlasses(
@@ -42,31 +71,9 @@ export const useEditGlasses = (
   onActivated(() => {
     updateLastDispensed()
   })
-
-  const { isLoading: isDeletionLoading, deleteGlasses } = useDeleteGlasses(skuValue, () => {
-    updateLastDispensed()
-    onDeletedFn?.()
-  })
-
-  const { isLoading: isUndoLoading, undo: undoDispension } = useUndoDispension(() => {
-    updateLastDispensed()
-  })
-
-  function submitDispension() {
-    submitDeletion('DISPENSED')
-  }
-
-  function submitDeletion(reason: DeletionReason) {
-    deleteGlasses(reason)
-  }
-
-  const isLoading = computed(() => isUndoLoading.value || isDeletionLoading.value)
   return {
-    isLoading,
     lastDispensed,
-    submitDispension,
-    submitDeletion,
-    undoDispension,
+    updateLastDispensed,
   }
 }
 
@@ -103,7 +110,7 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
       isLoading.value = false
     }
 
-    toast.info(`Reverted dispension/deletion of SKU ${glasses.sku} successfully`)
+    toast.info(`Reverted dispension/deletion of SKU ${glasses.dispense?.previousSku} successfully`)
     onSuccessFn?.()
   }
   return {
