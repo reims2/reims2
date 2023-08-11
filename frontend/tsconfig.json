@@ -1,45 +1,29 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
+    "baseUrl": ".",
+    "target": "ESNext",
+    "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "lib": [
-      "ESNext",
-      "ESNext.AsyncIterable",
-      "DOM"
-    ],
-    "jsx": "preserve",
-    "esModuleInterop": true,
-    "allowJs": true,
-    "sourceMap": true,
     "strict": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+    "skipLibCheck": true,
     "noEmit": true,
-    "experimentalDecorators": true,
-    "baseUrl": ".",
+    "useUnknownInCatchVariables": false,
     "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["src/*"]
     },
-    "types": [
-      "@nuxt/types",
-      "@nuxtjs/axios",
-      "@types/node",
-      "@nuxtjs/auth-next",
-      "@nuxtjs/vuetify"
-    ]
+    "types": ["vitest/globals"]
   },
-  "vueCompilerOptions": {
-    "target": 2.7,
-    // "target": 2, // For Vue version <= 2.6.14
-  },
-  "exclude": [
-    "node_modules",
-    ".nuxt",
-    "dist"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "exclude": ["node_modules"]
 }
