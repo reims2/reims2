@@ -5,9 +5,15 @@
     persistent
     no-click-animation
     scroll-strategy="none"
-    class="d-flex justify-end align-end"
+    class="d-flex justify-end align-end positioned-overlay"
   >
-    <v-alert :type="alertType" prominent density="comfortable" max-width="300px" class="position">
+    <v-alert
+      :type="alertType"
+      prominent
+      density="comfortable"
+      max-width="300px"
+      class="mr-3 mr-md-7 mb-3 mb-md-0"
+    >
       <span v-if="hasGlassesLoaded && isOutdated">
         REIMS is running offline. Database is older than 3 days, which can lead to problems.
       </span>
@@ -36,9 +42,8 @@ const alertType = computed(() => {
 })
 </script>
 
-<style scoped>
-.position {
-  bottom: 60px;
-  left: -20px;
+<style>
+.positioned-overlay .v-overlay__content {
+  bottom: 55px;
 }
 </style>
