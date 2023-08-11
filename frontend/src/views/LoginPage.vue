@@ -63,7 +63,7 @@ const userLogin = async () => {
     if (err instanceof ReimsAxiosError && err.statusCode === 401 && err.apiMessage != null) {
       toast.error(err.apiMessage)
     } else {
-      toast.error('Login failed (${err.message)')
+      toast.error(`Login failed (${err.message})`)
       console.error(err)
     }
   }
