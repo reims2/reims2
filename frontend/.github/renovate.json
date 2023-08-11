@@ -1,18 +1,4 @@
-{  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "github>reims2/renovate"
-  ],
-  "packageRules": [
-    {
-      "matchPackageNames": [
-        "vue",
-        "nuxt",
-        "webpack",
-        "nuxt-route-meta",
-        "ts-loader"
-      ],
-      "matchUpdateTypes": ["major"],
-      "enabled": false
-    }
-  ]
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>reims2/renovate"]
 }

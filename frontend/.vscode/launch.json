@@ -1,68 +1,28 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Chrome incognito nuxt",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}",
-            "runtimeArgs": [
-                "--incognito"
-            ]
-        },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Chrome nuxt",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "16.19.0",
-            "request": "launch",
-            "name": "Nuxt Server",
-            "args": [
-                "dev"
-            ],
-            "outputCapture": "std",
-            "linux": {
-                "program": "${workspaceFolder}/node_modules/.bin/nuxt"
-            },
-            "windows": {
-                "program": "${workspaceFolder}/node_modules/nuxt/bin/nuxt.js"
-            },
-            "env": {
-                //"API_URL": "http://localhost:9966", // local API
-                "API_URL": "https://dev.reims2.app", // for AXIOS
-                "PVH_DEBUG": "true",
-            }
-        },
-        {
-            "type": "node",
-            "name": "vscode-jest-tests",
-            "request": "launch",
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "cwd": "${workspaceFolder}",
-            "runtimeExecutable": "npm",
-            "args": [
-                "run",
-                "test",
-                "--",
-                "--runInBand",
-                "--watchAll=false"
-            ]
-        }
-    ],
-    "compounds": [
-        {
-            "name": "Nuxt Server+Client",
-            "configurations": [
-                "Nuxt Server",
-                "Chrome nuxt"
-            ]
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Chrome nuxt",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "runtimeVersion": "16.19.0",
+      "request": "launch",
+      "name": "Vite Dev",
+      "args": ["dev"],
+      "outputCapture": "std",
+      "linux": {
+        "program": "${workspaceFolder}/node_modules/.bin/vite"
+      },
+      "env": {
+        //"VITE_API_URL": "https://dev.reims2.app", // use remote API (doesnt work yet)
+        "VITE_GIT_VERSION": "testcommitnotsethere",
+        "VITE_PVH_DEBUG": "true"
+      }
+    }
+  ]
 }
