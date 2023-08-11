@@ -1,115 +1,110 @@
 <template>
-  <v-tooltip v-model="showTooltip" location="bottom">
-    <template #activator>
-      <v-card style="min-width: 290px" class="mb-2" :loading="loading">
-        <v-card-title v-if="displayedGlass.sku" class="pb-0 pt-4">
-          <div class="d-flex align-center">
-            <v-chip
-              v-if="isGlassesResult(props.modelValue)"
-              class="mr-2 px-2"
-              size="small"
-              color="white"
-              label
-              :ripple="false"
-              :style="{ 'background-color': calcColorGradient(props.modelValue.score) }"
-            >
-              <v-tooltip activator="parent" location="bottom">
-                Result (Philscore) - lower values are better
-              </v-tooltip>
-              {{ props.modelValue.score.toFixed(2) }}
-            </v-chip>
-            <div class="text-h6">SKU {{ displayedGlass.sku }}</div>
-          </div>
-        </v-card-title>
-        <v-card-subtitle class="pb-2 d-flex align-center">
-          <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
-            <span class="no-child-padding" @click="edit = key">
-              <v-tooltip location="bottom" activator="parent" :disabled="editable && edit == key">
-                {{ generalEyeData[key].desc }}
-              </v-tooltip>
-              <v-select
-                v-if="editable && edit == key"
-                :model-value="displayedGlass[key]"
-                :items="generalEyeData[key].items"
-                auto-select-first
-                density="compact"
-                single-line
-                hide-details
-                style="max-width: 160px; min-width: 90px"
-                autofocus
-                @update:model-value="(value) => editMeta(key, value)"
-                @blur="edit = ''"
-              />
-              <span v-else>
-                <v-icon size="small">
-                  {{ generalEyeData[key].icon }}
-                </v-icon>
-                {{ displayedGlass[key] }}
-              </span>
-            </span>
+  <v-card style="min-width: 290px" class="mb-2" :loading="loading">
+    <v-card-title v-if="displayedGlass.sku" class="pb-0 pt-4">
+      <div class="d-flex align-center">
+        <v-chip
+          v-if="isGlassesResult(props.modelValue)"
+          class="mr-2 px-2"
+          size="small"
+          color="white"
+          label
+          :ripple="false"
+          :style="{ 'background-color': calcColorGradient(props.modelValue.score) }"
+        >
+          <v-tooltip activator="parent" location="bottom">
+            Result (Philscore) - lower values are better
+          </v-tooltip>
+          {{ props.modelValue.score.toFixed(2) }}
+        </v-chip>
+        <div class="text-h6">SKU {{ displayedGlass.sku }}</div>
+      </div>
+    </v-card-title>
+    <v-card-subtitle class="pb-2 d-flex align-center">
+      <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
+        <span class="no-child-padding" @click="edit = key">
+          <v-tooltip location="bottom" activator="parent" :disabled="editable && edit == key">
+            {{ generalEyeData[key].desc }}
+          </v-tooltip>
+          <v-select
+            v-if="editable && edit == key"
+            :model-value="displayedGlass[key]"
+            :items="generalEyeData[key].items"
+            auto-select-first
+            density="compact"
+            single-line
+            hide-details
+            style="max-width: 160px; min-width: 90px"
+            autofocus
+            @update:model-value="(value) => editMeta(key, value)"
+            @blur="edit = ''"
+          />
+          <span v-else>
+            <v-icon size="small">
+              {{ generalEyeData[key].icon }}
+            </v-icon>
+            {{ displayedGlass[key] }}
           </span>
-        </v-card-subtitle>
-        <v-card-text class="py-0">
-          <v-container class="pa-0">
-            <v-row dense>
-              <v-col v-for="eye in eyes" :key="eye.key" cols="6">
-                <div class="d-flex">
-                  <div class="text-subtitle-1">
-                    {{ eye.text }}
-                  </div>
-                  <div v-if="isGlassesResult(props.modelValue)" class="d-flex align-center">
-                    <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
-                      <v-tooltip activator="parent" location="bottom">
-                        PhilScore only for {{ eye.text }}
-                      </v-tooltip>
-                      {{
-                        (eye.key == 'od'
-                          ? props.modelValue.odScore
-                          : props.modelValue.osScore
-                        ).toFixed(2)
-                      }}
-                    </v-chip>
-                  </div>
-                </div>
-                <tr v-for="dataKey in eyeDataKeys" :key="dataKey" @click="edit = eye.key + dataKey">
-                  <td class="text-medium-emphasis pr-2">
-                    {{ eyeUIData[dataKey].label }}
-                  </td>
-                  <td>
-                    <glass-card-input-span
-                      :model-value="displayedGlass[eye.key][dataKey]"
-                      :suffix="eyeUIData[dataKey].suffix"
-                      :rules="eyeRules[dataKey]"
-                      :is-editing="editable && edit == eye.key + dataKey"
-                      @update:model-value="(value) => editEye(eye.key, dataKey, value)"
-                      @blur="edit = ''"
-                    />
-                  </td>
-                </tr>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions class="pt-0 mx-0" style="padding-left: 6px">
-          <v-btn
-            v-if="editable && edit == ''"
-            variant="text"
-            class="mx-0"
-            @click="showTooltip = !showTooltip"
-          >
+        </span>
+      </span>
+    </v-card-subtitle>
+    <v-card-text class="py-0">
+      <v-container class="pa-0">
+        <v-row dense>
+          <v-col v-for="eye in eyes" :key="eye.key" cols="6">
+            <div class="d-flex">
+              <div class="text-subtitle-1">
+                {{ eye.text }}
+              </div>
+              <div v-if="isGlassesResult(props.modelValue)" class="d-flex align-center">
+                <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
+                  <v-tooltip activator="parent" location="bottom">
+                    PhilScore only for {{ eye.text }}
+                  </v-tooltip>
+                  {{
+                    (eye.key == 'od' ? props.modelValue.odScore : props.modelValue.osScore).toFixed(
+                      2,
+                    )
+                  }}
+                </v-chip>
+              </div>
+            </div>
+            <tr v-for="dataKey in eyeDataKeys" :key="dataKey" @click="edit = eye.key + dataKey">
+              <td class="text-medium-emphasis pr-2">
+                {{ eyeUIData[dataKey].label }}
+              </td>
+              <td>
+                <glass-card-input-span
+                  :model-value="displayedGlass[eye.key][dataKey]"
+                  :suffix="eyeUIData[dataKey].suffix"
+                  :rules="eyeRules[dataKey]"
+                  :is-editing="editable && edit == eye.key + dataKey"
+                  @update:model-value="(value) => editEye(eye.key, dataKey, value)"
+                  @blur="edit = ''"
+                />
+              </td>
+            </tr>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card-text>
+    <v-card-actions class="pt-0 mx-0" style="padding-left: 6px">
+      <v-tooltip location="bottom">
+        <template #activator="{ props: tooltipProps }">
+          <v-btn v-if="editable && edit == ''" v-bind="tooltipProps" variant="text" class="mx-0">
             Edit
           </v-btn>
-          <v-btn v-if="editable && edit != ''" variant="text" class="mx-0" @click="edit = ''">
-            Cancel Edit
-          </v-btn>
-          <slot name="actions" />
-        </v-card-actions>
-      </v-card>
-    </template>
-    Do you want to edit glasses? Simply
-    <span class="font-weight-bold">click</span>
-    on any value
-  </v-tooltip>
+        </template>
+        Do you want to edit glasses? Simply
+        <span class="font-weight-bold">click</span>
+        on the value
+      </v-tooltip>
+
+      <v-btn v-if="editable && edit != ''" variant="text" class="mx-0" @click="edit = ''">
+        Cancel Edit
+      </v-btn>
+      <slot name="actions" />
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script setup lang="ts">
@@ -154,7 +149,6 @@ const eyes: { text: string; key: GlassesEyeIndex }[] = [
 ]
 
 const edit = ref('')
-const showTooltip = ref(false)
 const loading = ref(false)
 const eyeDataKeys = computed(() => {
   if (props.modelValue.glassesType === 'multifocal') return eyeKeys
@@ -189,10 +183,6 @@ const eyeUIData: EyeDataMap = {
     suffix: 'D',
   },
 }
-
-watch(edit, () => {
-  showTooltip.value = false
-})
 
 const displayedGlass = computed(() => {
   const displayedGlasses: DisplayedGlasses = {

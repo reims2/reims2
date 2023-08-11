@@ -38,7 +38,7 @@
     </v-list>
     <v-divider v-if="!mobile" class="mb-3" />
 
-    <v-list nav subheader>
+    <v-list nav color="accent">
       <v-list-item
         v-for="item in otherItems"
         :key="item.title"
