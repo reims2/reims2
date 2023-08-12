@@ -17,3 +17,6 @@ warn_list: # or 'skip_list' to silence them completely
   - meta-no-info
   - var-naming[no-role-prefix]
   - yaml[new-line-at-end-of-file]
+
+exclude_paths:
+  - "../.github/"
