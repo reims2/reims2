@@ -1,6 +1,6 @@
 <template>
   <v-card style="min-width: 290px" class="mb-2" :loading="loading">
-    <v-card-title v-if="displayedGlass.sku" class="pb-0 pt-4">
+    <v-card-title class="pb-0 pt-4">
       <div class="d-flex align-center">
         <v-chip
           v-if="isGlassesResult(props.modelValue)"
@@ -23,12 +23,12 @@
       <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
         <span class="no-child-padding" @click="edit = key">
           <v-tooltip location="bottom" activator="parent" :disabled="editable && edit == key">
-            {{ generalEyeData[key].desc }}
+            {{ generalGlassesData[key].desc }}
           </v-tooltip>
           <v-select
             v-if="editable && edit == key"
             :model-value="displayedGlass[key]"
-            :items="generalEyeData[key].items"
+            :items="generalGlassesData[key].items"
             auto-select-first
             density="compact"
             single-line
@@ -40,7 +40,7 @@
           />
           <span v-else>
             <v-icon size="small">
-              {{ generalEyeData[key].icon }}
+              {{ generalGlassesData[key].icon }}
             </v-icon>
             {{ displayedGlass[key] }}
           </span>
@@ -108,12 +108,16 @@
 </template>
 
 <script setup lang="ts">
-import { deepCopyGlasses, eyeRules, generalEyeData, sanitizeEyeValues } from '@/lib/util'
+import {
+  deepCopyGlasses,
+  eyeRules,
+  generalGlassesData,
+  getAndConvertSku,
+} from '@/lib/glasses-utils'
+import { formatEyeValues, sanitizeEyeValues } from '@/lib/eye-utils'
 import GlassCardInputSpan from './GlassCardInputSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
 import {
-  Eye,
-  DisplayedEye,
   DisplayedGlasses,
   EyeKey,
   GeneralGlassesDataKey,
@@ -168,7 +172,6 @@ const eyeUIData: EyeDataMap = {
   sphere: {
     label: 'SPH',
     suffix: 'D',
-    step: 0.25,
   },
   cylinder: {
     label: 'CYL',
@@ -191,32 +194,11 @@ const displayedGlass = computed(() => {
     glassesSize: props.modelValue.glassesSize,
     glassesType: props.modelValue.glassesType,
     appearance: props.modelValue.appearance,
-    sku: getAndConvertSku(),
+    sku: getAndConvertSku(props.modelValue),
   }
   return displayedGlasses
 })
 
-function getAndConvertSku() {
-  if (props.modelValue.sku != null) return props.modelValue.sku.toString().padStart(4, '0')
-  else if (props.modelValue.dispense?.previousSku != null) {
-    return props.modelValue.dispense.previousSku.toString().padStart(4, '0')
-  } else return undefined
-}
-
-function formatEyeValues(eye: Eye): DisplayedEye {
-  return {
-    sphere: formatNumber(eye.sphere, 2),
-    cylinder: formatNumber(eye.cylinder, 2),
-    axis: eye.axis.toString().padStart(3, '0'),
-    add: formatNumber(eye.add, 2),
-  }
-}
-
-function formatNumber(val: number | undefined, decimals: number) {
-  if (val === undefined) return ''
-  const prefix = val === 0 ? '' : val < 0 ? '-' : '+'
-  return prefix + Math.abs(Number(val)).toFixed(decimals)
-}
 async function editMeta(dataKey: GeneralGlassesDataKey, value: string) {
   if (!props.editable) return // just as a "safety" fallback
   const newGlasses: Glasses = deepCopyGlasses(props.modelValue)

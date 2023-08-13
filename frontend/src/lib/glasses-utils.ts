@@ -1,16 +1,5 @@
 import { mdiArrowLeftRight, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
-import {
-  Glasses,
-  Eye,
-  GlassesResult,
-  GeneralGlassesData,
-  GeneralGlassesDataKey,
-  OptionalEye,
-  EyeKey,
-  DisplayedEye,
-  EyeSearch,
-  SanitizedEyeSearch,
-} from '@/model/GlassesModel'
+import { Glasses, Eye, GeneralGlassesData, GeneralGlassesDataKey } from '@/model/GlassesModel'
 import { ValidationRule, isNumber, isString } from '@/model/ReimsModel'
 
 const isAllowedStep = (number: number) => {
@@ -76,7 +65,7 @@ type AllGeneralGlassesUIData = {
   [key in GeneralGlassesDataKey]: GeneralGlassesUIData
 }
 
-export const generalEyeData: AllGeneralGlassesUIData = {
+export const generalGlassesData: AllGeneralGlassesUIData = {
   glassesType: {
     label: 'Type',
     items: ['single', 'multifocal'],
@@ -136,93 +125,6 @@ export function deepCopyGlasses(oldGlasses: Glasses): Glasses {
   return newGlasses
 }
 
-export function matchesAsCsvUri(matches: GlassesResult[]) {
-  const csvRows = matches.map((glass) => {
-    let row = ''
-    row += glass.sku + ';'
-    row += glass.od.sphere + ';'
-    row += glass.od.cylinder + ';'
-    row += glass.od.axis + ';'
-    row += glass.od.add + ';'
-    row += glass.os.sphere + ';'
-    row += glass.os.cylinder + ';'
-    row += glass.os.axis + ';'
-    row += glass.os.add + ';'
-    row += glass.score.toFixed(3)
-    return row
-  })
-  // add header
-  csvRows.unshift(
-    '"SKU";"OD sphere";"OD cylinder";"OD axis";"OD additional";"OS sphere";"OS cylinder";"OS axis";"OS additional";"PhilScore"',
-  )
-  return 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
-}
-
-export function dispensedAsCsv(glasses: Glasses[]) {
-  const csvRows = glasses.map((glass) => {
-    let row = ''
-    row += glass.dispense?.previousSku + ';'
-    row += glass.od.sphere + ';'
-    row += glass.od.cylinder + ';'
-    row += glass.od.axis + ';'
-    row += glass.od.add + ';'
-    row += glass.os.sphere + ';'
-    row += glass.os.cylinder + ';'
-    row += glass.os.axis + ';'
-    row += glass.os.add + ';'
-    row += glass.dispense?.modifyDate + ';'
-    return row
-  })
-  // add header
-  csvRows.unshift(
-    '"Old SKU";"OD sphere";"OD cylinder";"OD axis";"OD additional";"OS sphere";"OS cylinder";"OS axis";"OS additional";"Date of dispension"',
-  )
-  return 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
-}
-
-/** Eye is fixed by applying step rounding and the correct sign for cylinder */
-export function sanitizeEyeValues(singleEye: OptionalEye | DisplayedEye | EyeSearch): Eye {
-  const rx: Eye = {
-    sphere: Number(singleEye.sphere),
-    cylinder: Number(singleEye.cylinder),
-    axis: Number(singleEye.axis),
-    add: Number(singleEye.add) || 0,
-  }
-  // easier for calculation
-  if (rx.axis === 180) rx.axis = 0
-  // can be empty when cyl == 0. Also force to 0 when cyl == 0just in case
-  if (!rx.axis || rx.cylinder === 0) rx.axis = 0
-  // cylinder must be negative
-  if (!rx.cylinder) rx.cylinder = 0
-  rx.cylinder = -Math.abs(rx.cylinder)
-
-  const eyeKeys: EyeKey[] = ['sphere', 'cylinder', 'add']
-  for (const prop of eyeKeys) {
-    // if variable is undefined or NaN, set to 0 (used only for cylinder as of now)
-    let newValue = rx[prop] == null || isNaN(rx[prop] as number) ? 0 : (rx[prop] as number)
-    // user input could have been 1.2 instead of 1.25, so do rounding
-    const isNegative = newValue < 0
-    newValue = Math.ceil(Math.abs(newValue) / 0.25) * 0.25
-    rx[prop] = isNegative ? -newValue : newValue
-  }
-  if ('isBAL' in singleEye) {
-    return {
-      ...rx,
-      isBAL: Boolean(singleEye.isBAL),
-    } as SanitizedEyeSearch
-  } else {
-    return rx
-  }
-}
-
-export function resetEyeInput(eye: DisplayedEye | EyeSearch) {
-  eye.sphere = ''
-  eye.cylinder = ''
-  eye.axis = ''
-  eye.add = ''
-  if ('isBAL' in eye) eye.isBAL = false
-}
-
 export function isValidForRules(value: unknown, rules: ValidationRule[]): boolean {
   // run rules manually
   for (let index = 0; index < rules.length; index++) {
@@ -232,4 +134,16 @@ export function isValidForRules(value: unknown, rules: ValidationRule[]): boolea
     }
   }
   return true
+}
+
+export function getAndConvertSku(glasses: Glasses): string {
+  if (glasses.sku != null) {
+    return formatSku(glasses.sku)
+  } else if (glasses.dispense?.previousSku != null) {
+    return formatSku(glasses.dispense.previousSku)
+  } else return '????'
+}
+
+export function formatSku(value: number): string {
+  return value.toString().padStart(4, '0')
 }

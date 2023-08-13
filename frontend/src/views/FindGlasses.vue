@@ -88,16 +88,6 @@
           <div class="text-center">
             <v-pagination v-model="page" :length="calcPageCount()" circle />
           </div>
-          <div class="mt-2 text-right">
-            <a
-              :href="_matchesAsCSVUri"
-              target="_blank"
-              class="text-medium-emphasis text-caption no-decoration"
-              download="matches.csv"
-            >
-              Download as CSV
-            </a>
-          </div>
         </div>
       </v-col>
     </v-row>
@@ -117,7 +107,8 @@ import {
   GlassesType,
   SanitizedEyeSearch,
 } from '@/model/GlassesModel'
-import { matchesAsCsvUri, generalEyeData, resetEyeInput, sanitizeEyeValues } from '@/lib/util'
+import { generalGlassesData } from '@/lib/glasses-utils'
+import { sanitizeEyeValues, resetEyeInput } from '@/lib/eye-utils'
 import { useEnterToTab } from '@/lib/enter-to-tab'
 
 import { useDisplay } from 'vuetify'
@@ -156,12 +147,8 @@ const syncEye = ref(true)
 
 const itemsPerPage = 3
 
-const glassesTypeData = generalEyeData.glassesType
+const glassesTypeData = generalGlassesData.glassesType
 
-const _matchesAsCSVUri = computed(() => {
-  if (!matches.value) return ''
-  return matchesAsCsvUri(matches.value.slice(0, 30))
-})
 const searchButtonDisabled = computed(() => {
   return !valid.value && glassesStore.hasGlassesLoaded
 })

@@ -1,4 +1,4 @@
-import { sanitizeEyeValues, resetEyeInput } from '@/lib/util'
+import { sanitizeEyeValues, resetEyeInput } from '@/lib/eye-utils'
 
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
