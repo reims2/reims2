@@ -50,21 +50,4 @@ export function resetEyeInput(eye: DisplayedEye | EyeSearch) {
   if ('isBAL' in eye) eye.isBAL = false
 }
 
-export function formatEyeValues(eye: Eye): DisplayedEye {
-  return {
-    sphere: formatDiopter(eye.sphere),
-    cylinder: formatDiopter(eye.cylinder),
-    axis: formatAxis(eye.axis),
-    add: formatDiopter(eye.add),
-  }
-}
 
-export function formatDiopter(val: number | undefined) {
-  if (val === undefined) return ''
-  return (val >= 0 ? '+' : '-') + Math.abs(val).toFixed(2)
-}
-
-export function formatAxis(val: number | undefined) {
-  if (val === undefined) return ''
-  return val.toString().padStart(3, '0')
-}

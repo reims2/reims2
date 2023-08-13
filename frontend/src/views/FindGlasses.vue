@@ -7,7 +7,7 @@
             <v-col cols="12" class="px-0 pb-3">
               <auto-complete-field
                 ref="firstInput"
-                v-model="glassesType"
+                v-model="glassesTypeInput"
                 v-bind="glassesTypeData"
                 :persistent-hint="true"
               />
@@ -16,7 +16,7 @@
               <single-eye-input
                 v-model="odEye"
                 eye-name="OD"
-                :add-enabled="glassesType === 'multifocal'"
+                :add-enabled="glassesTypeInput === 'multifocal'"
                 bal-enabled
               />
             </v-col>
@@ -24,7 +24,7 @@
               <single-eye-input
                 v-model="osEye"
                 eye-name="OS"
-                :add-enabled="glassesType === 'multifocal'"
+                :add-enabled="glassesTypeInput === 'multifocal'"
                 bal-enabled
               />
             </v-col>
@@ -44,6 +44,7 @@
                   color="primary"
                   class="mr-4"
                   type="submit"
+                  :loading="isLoading"
                   @click="submitAndUpdate"
                 >
                   <span class="text-decoration-underline">S</span>
@@ -86,7 +87,7 @@
             </glass-card>
           </div>
           <div class="text-center">
-            <v-pagination v-model="page" :length="calcPageCount()" circle />
+            <v-pagination v-model="page" :length="pageCount" rounded="circle" />
           </div>
         </div>
       </v-col>
@@ -100,17 +101,12 @@ import { useGlassesStore } from '@/stores/glasses'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 
-import {
-  EyeSearch,
-  GlassesResult,
-  GlassesSearch,
-  GlassesType,
-  SanitizedEyeSearch,
-} from '@/model/GlassesModel'
+import { EyeSearch } from '@/model/GlassesModel'
 import { glassesMetaUIData } from '@/lib/glasses-utils'
-import { sanitizeEyeValues, resetEyeInput } from '@/lib/eye-utils'
-import { useEnterToTab } from '@/lib/enter-to-tab'
+import { resetEyeInput } from '@/lib/eye-utils'
 
+import { useEnterToTab } from '@/lib/enter-to-tab'
+import { useFindGlasses } from '@/lib/find'
 import { useDisplay } from 'vuetify'
 
 const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
@@ -118,16 +114,14 @@ const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'
 const { mobile } = useDisplay()
 
 const glassesStore = useGlassesStore()
-const allGlasses = computed(() => glassesStore.allGlasses)
 
 const firstInput = ref<HTMLElement | null>(null)
 const form = ref<HTMLFormElement | null>(null)
 const results = ref<ComponentPublicInstance | null>(null)
 
-const matches = ref<null | GlassesResult[]>(null)
 const valid = ref(false)
 const page = ref(1)
-const glassesType = ref('')
+const glassesTypeInput = ref('')
 const odEye = ref<EyeSearch>({
   axis: '',
   cylinder: '',
@@ -149,6 +143,14 @@ const itemsPerPage = 3
 
 const glassesTypeData = glassesMetaUIData.glassesType
 
+const { isLoading, matches, startSearch } = useFindGlasses(
+  odEye,
+  osEye,
+  glassesTypeInput,
+  highTolerance,
+  valid,
+)
+
 const searchButtonDisabled = computed(() => {
   return !valid.value && glassesStore.hasGlassesLoaded
 })
@@ -158,6 +160,12 @@ const paginatedMatches = computed(() => {
     itemsPerPage * (page.value - 1),
     itemsPerPage * (page.value - 1) + itemsPerPage,
   )
+})
+
+const pageCount = computed(() => {
+  if (!matches.value) return 0
+  const pages = Math.ceil(matches.value.length / itemsPerPage)
+  return pages > 10 ? 10 : pages
 })
 
 const { vPreventEnterTab } = useEnterToTab(form)
@@ -212,63 +220,22 @@ watch(
     }
   },
 )
-watch(
-  odEye,
-  () => {
-    matches.value = null
-  },
-  { deep: true },
-)
-watch(
-  osEye,
-  () => {
-    matches.value = null
-  },
-  { deep: true },
-)
-watch(glassesType, () => {
-  matches.value = null
-})
-watch(highTolerance, () => {
-  matches.value = null
-})
-watch(allGlasses, () => {
-  if (valid.value) loadMatches()
-})
 
 async function submitAndUpdate() {
-  if (!valid.value) return
-  await loadMatches()
-  page.value = 1
+  startSearch()
+
   // syncEye.value = true // fixme good hgere?
-
-  await nextTick()
+  page.value = 1
   // on desktop, focus input again; on mobile, scroll to bottom
-
   if (!mobile.value) firstInput.value?.focus()
   else results.value?.$el.scrollIntoView(true)
 }
 
-async function loadMatches() {
-  const eyeModel: GlassesSearch = {
-    glassesType: glassesType.value as GlassesType,
-    os: sanitizeEyeValues(osEye.value) as SanitizedEyeSearch,
-    od: sanitizeEyeValues(odEye.value) as SanitizedEyeSearch,
-    highTolerance: highTolerance.value,
-  }
-
-  matches.value = glassesStore.philScore(eyeModel)
-}
 function reset() {
   resetEyeInput(odEye.value)
   resetEyeInput(osEye.value)
   form.value?.reset()
   syncEye.value = true
   if (!mobile.value) firstInput.value?.focus()
-}
-function calcPageCount() {
-  if (!matches.value) return 0
-  const pages = Math.ceil(matches.value.length / itemsPerPage)
-  return pages > 10 ? 10 : pages
 }
 </script>
