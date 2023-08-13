@@ -70,7 +70,7 @@ export const useAddGlasses = (onSuccessFn?: () => void) => {
     loading.value = true
     try {
       const newGlasses = await glassesStore.addGlasses(requestGlasses)
-      rootStore.lastAddedSkus.unshift(newGlasses.sku)
+      if (newGlasses.sku != null) rootStore.lastAddedSkus.unshift(newGlasses.sku)
     } catch (error) {
       if (error instanceof ReimsAxiosError && error.statusCode === 409) {
         // no free skus left.
