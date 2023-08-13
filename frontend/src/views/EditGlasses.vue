@@ -59,10 +59,10 @@
         <v-alert v-if="!isOnline" type="warning" variant="outlined" density="compact">
           Go online to view recently dispensed glasses
         </v-alert>
-        <div v-else-if="lastDispensed.length > 0" class="text-medium-emphasis">
+        <div v-else-if="lastDispensed.length == 0" class="text-medium-emphasis">
           No glasses were dispensed or deleted recently.
         </div>
-        <div v-for="glasses in lastDispensed" v-else :key="glasses.sku" style="opacity: 80%">
+        <div v-for="glasses in lastDispensed" v-else :key="glasses.id" style="opacity: 80%">
           <glass-card :model-value="glasses">
             <template #actions>
               <v-btn variant="text" color="accent" class="mx-0" @click="undoDispension(glasses)">

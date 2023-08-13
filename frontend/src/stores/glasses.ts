@@ -1,5 +1,4 @@
-import { Glasses, GlassesResult, GlassesSearch, SanitizedGlassesInput } from '@/model/GlassesModel'
-import calculateAllPhilscore from '@/lib/philscore'
+import { Glasses, SanitizedGlassesInput } from '@/model/GlassesModel'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useRootStore } from './root'
 import axios from 'axios'
@@ -7,8 +6,10 @@ import { ReimsAxiosError, useAxios } from '@/lib/axios'
 import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
 import { Dayjs } from 'dayjs'
 
-const arrayContainsSku = (data: Glasses[], sku: number) => data.some((e) => e.sku === sku)
-
+const arrayContainsSku = (data: Glasses[], sku: number | null) => {
+  if (sku === null) return false
+  return data.some((e) => e.sku === sku)
+}
 let cancelTokenGet = axios.CancelToken.source()
 
 export const useGlassesStore = defineStore(
@@ -84,7 +85,7 @@ export const useGlassesStore = defineStore(
         newGlasses,
       )
       const editedGlasses = response.data
-      deleteOfflineGlasses(newGlasses.sku)
+      if (newGlasses.sku) deleteOfflineGlasses(newGlasses.sku)
       addOfflineGlasses(editedGlasses)
       return editedGlasses
     }
