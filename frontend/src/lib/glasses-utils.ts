@@ -1,5 +1,5 @@
 import { mdiArrowLeftRight, mdiGlasses, mdiHumanMaleFemale } from '@mdi/js'
-import { Glasses, Eye, GeneralGlassesData, GeneralGlassesDataKey } from '@/model/GlassesModel'
+import { Glasses, GeneralGlassesData, GeneralGlassesDataKey } from '@/model/GlassesModel'
 import { ValidationRule, isNumber, isString } from '@/model/ReimsModel'
 
 const isAllowedStep = (number: number) => {
@@ -50,7 +50,7 @@ export const eyeRules = {
   ] as ValidationRule[],
 }
 
-export type GeneralGlassesUIData = {
+export type GlassesMetaUIData = {
   label: string
   items: GeneralGlassesData[]
   rules: ValidationRule[]
@@ -60,12 +60,12 @@ export type GeneralGlassesUIData = {
   desc: string
 }
 
-type AllGeneralGlassesUIData = {
+type AllGlassesMetaUiData = {
   // eslint-disable-next-line no-unused-vars
-  [key in GeneralGlassesDataKey]: GeneralGlassesUIData
+  [key in GeneralGlassesDataKey]: GlassesMetaUIData
 }
 
-export const generalGlassesData: AllGeneralGlassesUIData = {
+export const glassesMetaUIData: AllGlassesMetaUiData = {
   glassesType: {
     label: 'Type',
     items: ['single', 'multifocal'],
@@ -111,18 +111,12 @@ export const generalGlassesData: AllGeneralGlassesUIData = {
 }
 
 export function deepCopyGlasses(oldGlasses: Glasses): Glasses {
-  const newGlasses: Glasses = Object.assign({}, oldGlasses)
-  const newOd: Partial<Eye> = {}
-  const newOs: Partial<Eye> = {}
-  for (const key of Object.keys(oldGlasses.od)) {
-    // copy to new object and convert to Number at once
-    const keyTyped = key as keyof Eye
-    newOd[keyTyped] = Number(oldGlasses.od[keyTyped])
-    newOs[keyTyped] = Number(oldGlasses.os[keyTyped])
+  return {
+    ...oldGlasses,
+    od: { ...oldGlasses.od },
+    os: { ...oldGlasses.os },
+    dispense: oldGlasses.dispense ? { ...oldGlasses.dispense } : undefined,
   }
-  newGlasses.od = newOd as Eye
-  newGlasses.os = newOs as Eye
-  return newGlasses
 }
 
 export function isValidForRules(value: unknown, rules: ValidationRule[]): boolean {

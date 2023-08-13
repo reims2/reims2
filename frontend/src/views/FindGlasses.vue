@@ -107,7 +107,7 @@ import {
   GlassesType,
   SanitizedEyeSearch,
 } from '@/model/GlassesModel'
-import { generalGlassesData } from '@/lib/glasses-utils'
+import { glassesMetaUIData } from '@/lib/glasses-utils'
 import { sanitizeEyeValues, resetEyeInput } from '@/lib/eye-utils'
 import { useEnterToTab } from '@/lib/enter-to-tab'
 
@@ -147,7 +147,7 @@ const syncEye = ref(true)
 
 const itemsPerPage = 3
 
-const glassesTypeData = generalGlassesData.glassesType
+const glassesTypeData = glassesMetaUIData.glassesType
 
 const searchButtonDisabled = computed(() => {
   return !valid.value && glassesStore.hasGlassesLoaded

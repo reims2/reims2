@@ -23,12 +23,12 @@
       <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
         <span class="no-child-padding" @click="edit = key">
           <v-tooltip location="bottom" activator="parent" :disabled="editable && edit == key">
-            {{ generalGlassesData[key].desc }}
+            {{ glassesMetaUIData[key].desc }}
           </v-tooltip>
           <v-select
             v-if="editable && edit == key"
             :model-value="displayedGlass[key]"
-            :items="generalGlassesData[key].items"
+            :items="glassesMetaUIData[key].items"
             auto-select-first
             density="compact"
             single-line
@@ -40,7 +40,7 @@
           />
           <span v-else>
             <v-icon size="small">
-              {{ generalGlassesData[key].icon }}
+              {{ glassesMetaUIData[key].icon }}
             </v-icon>
             {{ displayedGlass[key] }}
           </span>
@@ -108,14 +108,9 @@
 </template>
 
 <script setup lang="ts">
-import {
-  deepCopyGlasses,
-  eyeRules,
-  generalGlassesData,
-  getAndConvertSku,
-} from '@/lib/glasses-utils'
+import { deepCopyGlasses, eyeRules, glassesMetaUIData, getAndConvertSku } from '@/lib/glasses-utils'
 import { formatEyeValues, sanitizeEyeValues } from '@/lib/eye-utils'
-import GlassCardInputSpan from './GlassCardInputSpan.vue'
+import GlassCardInputSpan from '@/components/GlassCardInputSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
 import {
   DisplayedGlasses,
