@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { DeletionReason, ReimsSite } from './ReimsModel'
+import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
 
 export interface OptionalEye {
   add?: number | ''

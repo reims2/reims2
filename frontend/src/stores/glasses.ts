@@ -33,8 +33,10 @@ export const useGlassesStore = defineStore(
       interface GlassesRequest extends SanitizedGlassesInput {
         location: ReimsSite
       }
-      const request = Object.assign({}, newGlasses) as GlassesRequest
-      request.location = rootStore.reimsSite
+      const request = {
+        ...newGlasses,
+        location: rootStore.reimsSite,
+      } as GlassesRequest
       const response = await axiosInstance.post('/api/glasses', request)
       const addedGlasses = response.data
       addOfflineGlasses(addedGlasses)
