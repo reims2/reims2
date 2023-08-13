@@ -8,10 +8,13 @@ import { MaybeRefOrGetter } from 'vue'
 
 type HTMLElementWithPrevent = HTMLElement & { preventEnterTab?: boolean }
 
-export const useEnterToTab = (element: MaybeRefOrGetter<HTMLElement | null | undefined>) => {
+export const useEnterToTab = (
+  element: MaybeRefOrGetter<HTMLElement | null | undefined>,
+  { autoClickButton = true, waitForNextTick = true } = {},
+) => {
   const isEnterToTabEnabled = ref(true)
 
-  useEventListener(element, 'keydown', (e: KeyboardEvent) => {
+  useEventListener(element, 'keydown', async (e: KeyboardEvent) => {
     const { ctrlKey, code, altKey, shiftKey } = e
     const target = e.target as HTMLElementWithPrevent
     if (
@@ -22,8 +25,7 @@ export const useEnterToTab = (element: MaybeRefOrGetter<HTMLElement | null | und
       target &&
       target.tagName.toLowerCase() !== 'textarea' &&
       isEnterToTabEnabled &&
-      !target.preventEnterTab &&
-      !target.closest('.prevent-enter-tab')
+      !target.preventEnterTab
     ) {
       e.preventDefault()
       const elementValue = toValue(element)
@@ -31,6 +33,8 @@ export const useEnterToTab = (element: MaybeRefOrGetter<HTMLElement | null | und
         console.warn('cant convert enter to tab, element is null')
         return
       }
+      // wait for the next tick so that any changes are considered
+      if (waitForNextTick) await nextTick()
       const allElementsQuery = elementValue.querySelectorAll(
         'input, button, a, textarea, select, audio, video, [contenteditable]',
       )
@@ -47,7 +51,7 @@ export const useEnterToTab = (element: MaybeRefOrGetter<HTMLElement | null | und
       const nextElement = allElements[targetIndex]
       nextElement.focus()
       // if the next element is a button, click on it instead of just focusing. otherwise user has to double enter for a button to activate
-      if (nextElement.tagName.toLowerCase() === 'button') nextElement.click()
+      if (autoClickButton && nextElement.tagName.toLowerCase() === 'button') nextElement.click()
     }
   })
 

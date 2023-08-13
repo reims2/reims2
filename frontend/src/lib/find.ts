@@ -19,7 +19,6 @@ export const useFindGlasses = (
   isValid: MaybeRefOrGetter<boolean>,
 ) => {
   const matches = ref<null | GlassesResult[]>(null)
-  const isLoading = ref(false)
   const glassesStore = useGlassesStore()
   const allGlasses = computed(() => glassesStore.allGlasses)
 
@@ -31,12 +30,7 @@ export const useFindGlasses = (
       od: sanitizeEyeValues(toValue(odEye)) as SanitizedEyeSearch,
       highTolerance: toValue(highTolerance),
     }
-    isLoading.value = true
-    try {
-      matches.value = philScore(eyeModel)
-    } finally {
-      isLoading.value = false
-    }
+    matches.value = philScore(eyeModel)
   }
 
   function reset() {
@@ -61,7 +55,6 @@ export const useFindGlasses = (
   }
   return {
     matches,
-    isLoading,
     startSearch,
     reset,
   }
