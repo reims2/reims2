@@ -6,6 +6,8 @@ import { useToast } from 'vue-toastification'
 import { ReimsAxiosError } from '@/lib/axios'
 
 import { TableSortBy } from '@/model/ReimsModel'
+import { formatEyeValues } from '@/lib/eye-utils'
+import { formatSku } from '@/lib/glasses-utils'
 
 export const useTableData = (
   currentPage: Ref<number>,
@@ -31,18 +33,8 @@ export const useTableData = (
         appearance: item.appearance,
         sku: formatSku(item.sku),
         creationDate: formatDate(item.creationDate),
-        od: {
-          sphere: formatRx(item.od.sphere),
-          cylinder: formatRx(item.od.cylinder),
-          axis: formatAxis(item.od.axis),
-          add: formatRx(item.od.add),
-        },
-        os: {
-          sphere: formatRx(item.os.sphere),
-          cylinder: formatRx(item.os.cylinder),
-          axis: formatAxis(item.os.axis),
-          add: formatRx(item.os.add),
-        },
+        od: formatEyeValues(item.od),
+        os: formatEyeValues(item.os),
       }
       return newItem
     })
@@ -50,19 +42,6 @@ export const useTableData = (
 
   function formatDate(date: number) {
     return dayjs(date).format('DD.MM.YYYY')
-  }
-
-  function formatRx(value: number | undefined) {
-    if (value == null) return ''
-    return (value >= 0 ? '+' : '-') + Math.abs(value).toFixed(2)
-  }
-
-  function formatAxis(value: number) {
-    return value.toString().padStart(3, '0')
-  }
-
-  function formatSku(value: number) {
-    return value.toString().padStart(4, '0')
   }
 
   watch(

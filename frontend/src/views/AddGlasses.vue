@@ -8,7 +8,7 @@
               <auto-complete-field
                 ref="firstInput"
                 v-model="glassesMeta[item]"
-                v-bind="generalEyeData[item]"
+                v-bind="generalGlassesData[item]"
               />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pr-md-5 py-0">
@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { generalEyeData } from '@/lib/util'
+import { generalGlassesData } from '@/lib/glasses-utils'
 
 import { useRootStore } from '@/stores/root'
 import { useEnterToTab } from '@/lib/enter-to-tab'

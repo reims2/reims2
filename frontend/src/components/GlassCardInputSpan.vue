@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { isValidForRules } from '@/lib/util'
+import { isValidForRules } from '@/lib/glasses-utils'
 import { ValidationRule } from '@/model/ReimsModel'
 
 interface Props {
