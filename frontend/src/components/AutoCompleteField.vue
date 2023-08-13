@@ -45,7 +45,7 @@ const inputVal = useVModel(props, 'modelValue', emit)
 const input = ref<HTMLElement | null>(null)
 
 onMounted(() => {
-  focus()
+  if (!mobile.value) focus()
 })
 
 function focus() {

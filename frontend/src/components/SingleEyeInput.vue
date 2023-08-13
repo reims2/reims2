@@ -16,8 +16,8 @@
           :step="eyeData[eyeKey].step"
           :disabled="eyeData[eyeKey].disabled || isBal"
           :prefix="eyeData[eyeKey].value != null ? eyeData[eyeKey].prefix : ''"
-          @update:model-value="(val) => input(eyeKey, val)"
-          @blur="update(eyeKey)"
+          @update:model-value="(val) => emitUpdate(eyeKey, val)"
+          @blur="formatAndEmit(eyeKey)"
           @focus="$event.target.select()"
           @keydown.s.prevent
           @keydown.a.prevent
@@ -42,7 +42,7 @@ import { eyeRules, isValidForRules } from '@/lib/glasses-utils'
 import { DisplayedEye, Eye, EyeKey, eyeKeys } from '@/model/GlassesModel'
 
 interface Props {
-  modelValue: DisplayedEye & { isBAL?: boolean }
+  modelValue: DisplayedEye & { isBAL?: boolean | null }
   eyeName: string
   addEnabled: boolean
   balEnabled?: boolean
@@ -97,7 +97,7 @@ const eyeData = computed<EyeDataMap>(() => {
 
 const isBal = computed({
   get() {
-    return props.modelValue.isBAL
+    return props.modelValue.isBAL || false
   },
   set(val: boolean | undefined) {
     const eye = { ...props.modelValue }
@@ -106,26 +106,28 @@ const isBal = computed({
   },
 })
 
-function input(id: keyof Eye, value: string | null) {
+function emitUpdate(id: keyof Eye, value: string | null) {
   const eye = { ...props.modelValue }
   eye[id] = value ?? ''
   emit('update:modelValue', eye)
 }
 
-function update(id: keyof Eye) {
-  let newVal = eyeData.value[id].value
+function formatAndEmit(id: keyof Eye) {
+  let newVal = Number(eyeData.value[id].value)
   if (id === 'cylinder') {
     // replace empty cylinder with 0
-    if (newVal === undefined || newVal == null || newVal === '') newVal = 0
+    if (isNaN(newVal)) newVal = 0
 
-    // always use negative cylinder internally
+    // always use negative cylinder
     newVal = -Math.abs(Number(newVal))
 
     if (newVal === 0) {
-      // emit cylinder value here already to force update FIXME
-      input(id, '0')
       // reset axis if cylinder is 0 and force update
-      input('axis', '')
+      emit('update:modelValue', {
+        ...props.modelValue,
+        cylinder: '0.00',
+        axis: '',
+      })
       return
     }
   }
@@ -133,12 +135,11 @@ function update(id: keyof Eye) {
   if (!isValidForRules(eyeData.value[id].value, eyeRules[id])) return
   const step = eyeData.value[id].step
   if (step !== undefined && step > 0) {
-    const number = Math.ceil(Math.abs(Number(newVal)) / step) * step
-    if (!isNaN(number)) {
-      // re-add the sign
-      // nicer number formatting with leading decimals, doesn't really work now because we use "number" type input fields
-      const numberString = (Number(newVal) < 0 ? '-' : '') + number.toFixed(2)
-      input(id, numberString)
+    const numberAbs = Math.ceil(Math.abs(Number(newVal)) / step) * step
+    if (!isNaN(numberAbs)) {
+      // readd the sign and format (no prefix +, doesn't work in firefox)
+      const numberString = (Number(newVal) < 0 ? '-' : '') + numberAbs.toFixed(2)
+      emitUpdate(id, numberString)
     }
   }
 }
