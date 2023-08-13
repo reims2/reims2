@@ -88,9 +88,7 @@ export const useGlassesStore = defineStore(
       addOfflineGlasses(editedGlasses)
       return editedGlasses
     }
-    function philScore(terms: GlassesSearch): GlassesResult[] {
-      return calculateAllPhilscore(terms, allGlasses.value || ([] as Glasses[]))
-    }
+
     async function loadDispensedCsv(startDate: Dayjs, endDate: Dayjs): Promise<Blob> {
       const params = {
         startDate: startDate.format('MM/DD/YYYY'),
@@ -162,7 +160,6 @@ export const useGlassesStore = defineStore(
       undispense,
       deleteGlasses,
       editGlasses,
-      philScore,
       loadDispensedCsv,
       loadInventoryCsv,
       getDispensedGlasses,

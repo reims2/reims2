@@ -130,14 +130,4 @@ export function isValidForRules(value: unknown, rules: ValidationRule[]): boolea
   return true
 }
 
-export function getAndConvertSku(glasses: Glasses): string {
-  if (glasses.sku != null) {
-    return formatSku(glasses.sku)
-  } else if (glasses.dispense?.previousSku != null) {
-    return formatSku(glasses.dispense.previousSku)
-  } else return '????'
-}
 
-export function formatSku(value: number): string {
-  return value.toString().padStart(4, '0')
-}

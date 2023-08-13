@@ -1,13 +1,11 @@
 import { useTableStore } from '@/stores/table'
 import { useRootStore } from '@/stores/root'
-import dayjs from 'dayjs'
-import { DisplayedGlasses, Glasses } from '@/model/GlassesModel'
+import { Glasses } from '@/model/GlassesModel'
 import { useToast } from 'vue-toastification'
 import { ReimsAxiosError } from '@/lib/axios'
 
 import { TableSortBy } from '@/model/ReimsModel'
-import { formatEyeValues } from '@/lib/eye-utils'
-import { formatSku } from '@/lib/glasses-utils'
+import { formatGlassesForDisplay } from '@/lib/format-glasses'
 
 export const useTableData = (
   currentPage: Ref<number>,
@@ -26,23 +24,8 @@ export const useTableData = (
   const totalItems = ref(0)
 
   const formattedItems = computed(() => {
-    return items.value.map((item: Glasses) => {
-      const newItem: DisplayedGlasses = {
-        glassesType: item.glassesType,
-        glassesSize: item.glassesSize,
-        appearance: item.appearance,
-        sku: formatSku(item.sku),
-        creationDate: formatDate(item.creationDate),
-        od: formatEyeValues(item.od),
-        os: formatEyeValues(item.os),
-      }
-      return newItem
-    })
+    return items.value.map((item: Glasses) => formatGlassesForDisplay(item))
   })
-
-  function formatDate(date: number) {
-    return dayjs(date).format('DD.MM.YYYY')
-  }
 
   watch(
     [reimsSite, filterString, itemsPerPage, sortBy, currentPage],

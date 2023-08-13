@@ -108,12 +108,11 @@
 </template>
 
 <script setup lang="ts">
-import { deepCopyGlasses, eyeRules, glassesMetaUIData, getAndConvertSku } from '@/lib/glasses-utils'
-import { formatEyeValues, sanitizeEyeValues } from '@/lib/eye-utils'
+import { deepCopyGlasses, eyeRules, glassesMetaUIData } from '@/lib/glasses-utils'
+import { sanitizeEyeValues } from '@/lib/eye-utils'
 import GlassCardInputSpan from '@/components/GlassCardInputSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
 import {
-  DisplayedGlasses,
   EyeKey,
   GeneralGlassesDataKey,
   Glasses,
@@ -128,6 +127,7 @@ import {
 import { useToast } from 'vue-toastification'
 import { ReimsAxiosError } from '@/lib/axios'
 import { calcColorGradient } from '@/lib/color'
+import { formatGlassesForDisplay } from '@/lib/format-glasses'
 
 const toast = useToast()
 
@@ -182,17 +182,7 @@ const eyeUIData: EyeDataMap = {
   },
 }
 
-const displayedGlass = computed(() => {
-  const displayedGlasses: DisplayedGlasses = {
-    od: formatEyeValues(props.modelValue.od),
-    os: formatEyeValues(props.modelValue.os),
-    glassesSize: props.modelValue.glassesSize,
-    glassesType: props.modelValue.glassesType,
-    appearance: props.modelValue.appearance,
-    sku: getAndConvertSku(props.modelValue),
-  }
-  return displayedGlasses
-})
+const displayedGlass = computed(() => formatGlassesForDisplay(props.modelValue))
 
 async function editMeta(dataKey: GeneralGlassesDataKey, value: string) {
   if (!props.editable) return // just as a "safety" fallback

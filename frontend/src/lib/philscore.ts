@@ -1,5 +1,4 @@
 import { Glasses, Eye, GlassesSearch, GlassesResult, hasAdd } from '@/model/GlassesModel'
-import { deepCopyGlasses } from '@/lib/glasses-utils'
 
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 10
@@ -39,7 +38,7 @@ export default function calculateAllPhilscore(
       const osScore = rxOs.isBAL ? 0 : calcSingleEyePhilscore(rxOs, glass.os, isSinglefocal)
 
       const result: GlassesResult = {
-        ...deepCopyGlasses(glass),
+        ...glass,
         score: odScore + osScore,
         odScore,
         osScore,
