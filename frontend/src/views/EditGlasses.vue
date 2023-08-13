@@ -46,7 +46,7 @@
         </v-form>
       </v-col>
 
-      <v-col v-if="lastDispensed.length > 0" cols="12" md="4" lg="3" class="pl-md-6 pt-3 pt-md-2">
+      <v-col cols="12" md="4" lg="3" class="pl-md-6 pt-3 pt-md-2">
         <div class="text-h6 pb-4 d-flex align-center">
           Recently dispensed or deleted
           <v-progress-circular
@@ -59,6 +59,9 @@
         <v-alert v-if="!isOnline" type="warning" variant="outlined" density="compact">
           Go online to view recently dispensed glasses
         </v-alert>
+        <div v-else-if="lastDispensed.length > 0" class="text-medium-emphasis">
+          No glasses were dispensed or deleted recently.
+        </div>
         <div v-for="glasses in lastDispensed" v-else :key="glasses.sku" style="opacity: 80%">
           <glass-card :model-value="glasses">
             <template #actions>
@@ -82,6 +85,9 @@ import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRoute } from 'vue-router'
 import { useEditGlasses } from '@/lib/edit'
 import { useOnline } from '@vueuse/core'
+import { useDisplay } from 'vuetify'
+
+const { mobile } = useDisplay()
 
 const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
@@ -118,7 +124,7 @@ function startDispension() {
 }
 
 function onDeleted() {
-  firstInput.value?.focus()
+  if (!mobile.value) firstInput.value?.focus()
   form.value?.reset()
 }
 </script>
