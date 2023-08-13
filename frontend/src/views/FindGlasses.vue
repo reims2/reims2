@@ -44,7 +44,6 @@
                   color="primary"
                   class="mr-4"
                   type="submit"
-                  :loading="isLoading"
                   @click="submitAndUpdate"
                 >
                   <span class="text-decoration-underline">S</span>
@@ -143,7 +142,7 @@ const itemsPerPage = 3
 
 const glassesTypeData = glassesMetaUIData.glassesType
 
-const { isLoading, matches, startSearch } = useFindGlasses(
+const { matches, startSearch } = useFindGlasses(
   odEye,
   osEye,
   glassesTypeInput,
