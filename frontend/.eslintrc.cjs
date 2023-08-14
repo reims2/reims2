@@ -16,5 +16,6 @@ module.exports = {
   rules: {
     'spaced-comment': 'warn',
     'no-warning-comments': 'warn',
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
   },
 }
