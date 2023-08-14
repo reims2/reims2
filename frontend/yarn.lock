@@ -1993,6 +1993,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pinia/testing@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@pinia/testing@npm:0.1.3"
+  dependencies:
+    vue-demi: ">=0.14.5"
+  peerDependencies:
+    pinia: ">=2.1.5"
+  checksum: 02df818686f63b8f7b2521f05ecbf5f7fea1ab934d3dec8575a8d5146ebfcfb0605c61b64474271e6a954586f60510fba83dadd1a9498f7765c1187e58954c26
+  languageName: node
+  linkType: hard
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -6896,6 +6907,7 @@ __metadata:
     "@babel/types": 7.22.10
     "@fontsource-variable/roboto-flex": 5.0.8
     "@mdi/js": 7.2.96
+    "@pinia/testing": 0.1.3
     "@testing-library/vue": 7.0.0
     "@types/jest": 29.5.3
     "@types/node": 20.4.9

@@ -9,11 +9,11 @@ import 'vuetify/styles'
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
 // Composables
-import { createVuetify } from 'vuetify'
+import { VuetifyOptions, createVuetify } from 'vuetify'
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-export default createVuetify({
+export const vuetifyOptions: VuetifyOptions = {
   components: {
     VDataTableServer,
   },
@@ -49,4 +49,5 @@ export default createVuetify({
       darken: 1,
     },
   },
-})
+}
+export default createVuetify(vuetifyOptions)

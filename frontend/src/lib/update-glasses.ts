@@ -27,7 +27,7 @@ export const useUpdatesGlassesInterval = () => {
         glassesStore.isOutdated = true
       }
       // else just fail silently because there's still a recent enough version of the DB cached
-      console.log('DB update failed', error)
+      console.warn('DB update failed', error)
     }
   }
 }
