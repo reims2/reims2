@@ -3,8 +3,6 @@
     <div v-if="showLastUpdate" class="d-flex">
       <last-refresh-span />
       <span class="px-2">—</span>
-      {{ glassesCount }} glasses stored
-      <span class="px-2">—</span>
     </div>
     <span>
       &copy;
@@ -23,11 +21,6 @@
 
 <script setup lang="ts">
 import LastRefreshSpan from '@/components/LastRefreshSpan.vue'
-import { computed } from 'vue'
-import { useGlassesStore } from '@/stores/glasses'
 
 defineProps<{ showLastUpdate: boolean }>()
-
-const glassesStore = useGlassesStore()
-const glassesCount = computed(() => glassesStore.allGlasses.length)
 </script>

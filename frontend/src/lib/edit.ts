@@ -74,7 +74,6 @@ export const useLastDispensed = () => {
           })
           .slice(0, 3)
       }
-      console.log(lastDispensed.value)
     } finally {
       isLoading.value = false
     }
@@ -85,7 +84,6 @@ export const useLastDispensed = () => {
     updateLastDispensed()
   })
 
-  updateLastDispensed()
   return {
     lastDispensed,
     isLoading,

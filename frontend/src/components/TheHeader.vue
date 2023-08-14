@@ -11,7 +11,7 @@
 import { useRootStore } from '@/stores/root'
 import { useRoute } from 'vue-router'
 const route = useRoute()
-const title = computed(() => route.meta.title || 'REIMS2')
+const title = computed(() => (rootStore.isDev ? 'Develop: ' : '') + route.meta.title || 'REIMS2')
 
 const rootStore = useRootStore()
 </script>
