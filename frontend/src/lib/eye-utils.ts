@@ -49,5 +49,3 @@ export function resetEyeInput(eye: DisplayedEye | EyeSearch) {
   eye.add = ''
   if ('isBAL' in eye) eye.isBAL = false
 }
-
-

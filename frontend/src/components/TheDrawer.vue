@@ -55,19 +55,6 @@
     <template #append>
       <v-divider />
       <v-list nav>
-        <v-list-item
-          v-if="rootStore.isDev"
-          :href="commitUrl"
-          tabindex="-1"
-          target="”_blank”"
-          rel="noopener"
-          class="dev-background text-white"
-          title="!! DEV INSTANCE !!"
-        >
-          <template #prepend>
-            <v-icon :icon="mdiBug"></v-icon>
-          </template>
-        </v-list-item>
         <v-list-item title="Change location" :disabled="!isOnline" @click.stop="dialog = true">
           <template #prepend>
             <v-icon :icon="mdiMapMarkerMultiple"></v-icon>
@@ -84,6 +71,12 @@
             <v-icon :icon="mdiFileDocument"></v-icon>
           </template>
         </v-list-item>
+        <v-list-item title="About REIMS2" @click="aboutDialog = true">
+          <template #prepend>
+            <v-icon :icon="mdiInformation"></v-icon>
+          </template>
+        </v-list-item>
+
         <v-list-item
           title="Logout"
           @click="
@@ -98,6 +91,7 @@
           </template>
         </v-list-item>
       </v-list>
+      <about-dialog v-model="aboutDialog" />
     </template>
   </v-navigation-drawer>
 </template>
@@ -107,8 +101,9 @@ import { ref, computed } from 'vue'
 import { useRootStore } from '@/stores/root'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
+import AboutDialog from './AboutDialog.vue'
 
-import { mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
+import { mdiInformation, mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
 import { DrawerItem } from '@/model/ReimsModel'
 import { useDisplay } from 'vuetify'
 import { useOnline } from '@vueuse/core'
@@ -133,14 +128,11 @@ const isDrawerOpen = computed(() => {
   if (mobile.value) return rootStore.drawer
   else return true // always open on desktop
 })
+const aboutDialog = ref(false)
 
 const isMiniDrawer = computed(() => {
   // Only on desktop and if drawer on mobile would be open
   return !mobile.value && !rootStore.drawer
-})
-
-const commitUrl = computed(() => {
-  return 'https://github.com/reims2/reims2-frontend/commit/' + rootStore.version
 })
 </script>
 

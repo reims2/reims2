@@ -129,5 +129,3 @@ export function isValidForRules(value: unknown, rules: ValidationRule[]): boolea
   }
   return true
 }
-
-
