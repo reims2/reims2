@@ -6,6 +6,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
+
+import java.util.Calendar;
 import java.util.Date;
 
 public class GlassesSpecs {
@@ -27,7 +29,11 @@ public class GlassesSpecs {
     public static Specification<Glasses> dispensedInRange(Date startDate, Date endDate) {
         return (root, query, criteriaBuilder) -> {
             Join<Glasses, Dispense> groupJoin = root.join("dispense");
-            return criteriaBuilder.between(groupJoin.<Date>get("modifyDate"), startDate, endDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(endDate);
+            c.add(Calendar.DATE, 1);
+            Date endDatePlus1 = c.getTime();
+            return criteriaBuilder.between(groupJoin.<Date>get("modifyDate"), startDate, endDatePlus1);
         };
     }
 
