@@ -50,4 +50,11 @@ public class Dispense extends BaseEntity {
     public void setDispenseReason(DispenseReasonEnum dispenseReason) {
         this.dispenseReason = dispenseReason != null ? dispenseReason.name() : null;
     }
+
+    @Override
+    public String toString() {
+        return "Dispense [modifyDate=" + modifyDate + ", previousSku=" + previousSku + ", dispenseReason="
+                + dispenseReason + "]";
+    }
+    
 }

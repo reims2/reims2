@@ -137,4 +137,9 @@ public class MainServiceImpl implements MainService {
                 .and(GlassesSpecs.dispensedInRange(startDate, endDate)));
     }
 
+    @Override
+    public List<Glasses> findAllByLocationAndNotDispensed(String location) {
+        return glassesRepository.findAll(Specification.where(GlassesSpecs.hasLocation(location)).and(GlassesSpecs.isDispensed(false)));
+    }
+
 }

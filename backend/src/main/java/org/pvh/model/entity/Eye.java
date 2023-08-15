@@ -70,4 +70,10 @@ public class Eye extends BaseEntity {
     public void setAdd(BigDecimal add) {
         this.add = add;
     }
+
+    @Override
+    public String toString() {
+        return "Eye [sphere=" + sphere + ", cylinder=" + cylinder + ", axis=" + axis + ", add=" + add + "]";
+    }
+    
 }

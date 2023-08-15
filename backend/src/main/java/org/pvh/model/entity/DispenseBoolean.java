@@ -11,4 +11,9 @@ public class DispenseBoolean {
 
     private boolean dispensed;
 
+    @Override
+    public String toString() {
+        return "DispenseBoolean [dispensed=" + dispensed + "]";
+    }
+    
 }

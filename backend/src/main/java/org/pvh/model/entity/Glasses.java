@@ -153,4 +153,12 @@ public class Glasses extends BaseEntity {
     public void setGlassesType(GlassesTypeEnum glassesType) {
         this.glassesType = glassesType.name();
     }
+
+    @Override
+    public String toString() {
+        return "Glasses [sku=" + sku + ", glassesType=" + glassesType + ", glassesSize=" + glassesSize + ", appearance="
+                + appearance + ", location=" + location + ", dispensed=" + dispensed + ", creationDate=" + creationDate.toString()
+                + ", dispense=" + dispense.toString() + ", os=" + os.toString() + ", od=" + od.toString() + "]";
+    }
+    
 }

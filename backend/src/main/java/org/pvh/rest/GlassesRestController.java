@@ -29,9 +29,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.google.common.hash.Hashing;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -120,6 +124,7 @@ public class GlassesRestController {
         WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
     }
 
+
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping(path = "/dispensed/{location}")
     @ResponseBody
@@ -160,6 +165,21 @@ public class GlassesRestController {
 
         return GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(glasses.get());
     }
+
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping(path = "/changes/{location}", produces = "application/json")
+    public String getGlassesChange(@PathVariable("location") String location) {
+        List<Glasses> glasses = this.mainService.findAllByLocationAndNotDispensed(location);
+        if (glasses.isEmpty())
+            throw new PVHException("Glasses not found!", HttpStatus.NOT_FOUND);
+        StringBuilder concatenatedValues = new StringBuilder();
+        for (Glasses glasses2 : glasses) {
+            concatenatedValues.append(Hashing.sha256().hashString(glasses2.toString(), StandardCharsets.UTF_8).toString());
+        }
+        return Hashing.sha256().hashString(concatenatedValues, StandardCharsets.UTF_8).toString();
+    }
+
 
     private static final Lock lock = new ReentrantLock();
 

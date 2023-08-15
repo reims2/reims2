@@ -39,4 +39,6 @@ public interface MainService {
 
     List<Glasses> findDispensedBetween(Date startDate, Date endDate, String location);
 
+    List<Glasses> findAllByLocationAndNotDispensed(String location);
+
 }
