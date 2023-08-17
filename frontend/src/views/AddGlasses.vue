@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { glassesMetaUIData } from '@/lib/glasses-utils'
+import { glassesMetaUIData } from '@/util/glasses-utils'
 
 import { useRootStore } from '@/stores/root'
 import { useEnterToTab } from '@/lib/enter-to-tab'
@@ -88,8 +88,8 @@ import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import { Glasses, generalGlassesDataKeys } from '@/model/GlassesModel'
 
 import { useDisplay } from 'vuetify'
-import { useAddGlasses } from '@/lib/add'
-import { useDeleteGlasses } from '@/lib/edit'
+import { useAddGlasses } from '@/composables/add'
+import { useDeleteGlasses } from '@/composables/edit'
 
 const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))

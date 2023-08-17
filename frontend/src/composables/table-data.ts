@@ -5,7 +5,7 @@ import { useToast } from 'vue-toastification'
 import { ReimsAxiosError } from '@/lib/axios'
 
 import { TableSortBy } from '@/model/ReimsModel'
-import { formatGlassesForDisplay } from '@/lib/format-glasses'
+import { formatGlassesForDisplay } from '@/util/format-glasses'
 
 export const useTableData = (
   currentPage: Ref<number>,

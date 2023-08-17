@@ -83,7 +83,7 @@ import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
 import { Glasses } from '@/model/GlassesModel'
 import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRoute } from 'vue-router'
-import { useEditGlasses } from '@/lib/edit'
+import { useEditGlasses } from '@/composables/edit'
 import { useOnline } from '@vueuse/core'
 import { useDisplay } from 'vuetify'
 

@@ -108,8 +108,8 @@
 </template>
 
 <script setup lang="ts">
-import { deepCopyGlasses, eyeRules, glassesMetaUIData } from '@/lib/glasses-utils'
-import { sanitizeEyeValues } from '@/lib/eye-utils'
+import { deepCopyGlasses, eyeRules, glassesMetaUIData } from '@/util/glasses-utils'
+import { sanitizeEyeValues } from '@/util/eye-utils'
 import GlassCardInputSpan from '@/components/GlassCardInputSpan.vue'
 import { useGlassesStore } from '@/stores/glasses'
 import {
@@ -127,7 +127,7 @@ import {
 import { useToast } from 'vue-toastification'
 import { ReimsAxiosError } from '@/lib/axios'
 import { calcColorGradient } from '@/lib/color'
-import { formatGlassesForDisplay } from '@/lib/format-glasses'
+import { formatGlassesForDisplay } from '@/util/format-glasses'
 
 const toast = useToast()
 

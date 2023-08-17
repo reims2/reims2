@@ -70,8 +70,8 @@
 <script setup lang="ts">
 import { mdiPencil } from '@mdi/js'
 import MinMaxInput from '@/components/MinMaxInput.vue'
-import { useTableData } from '@/lib/table-data'
-import { useTableFilter } from '@/lib/table-filter'
+import { useTableData } from '@/composables/table-data'
+import { useTableFilter } from '@/composables/table-filter'
 import { TableSortBy } from '@/model/ReimsModel'
 
 const headers = [
