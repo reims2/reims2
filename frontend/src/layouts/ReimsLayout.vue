@@ -72,7 +72,6 @@ const otherItems = computed(() => {
 const isOnline = useOnline()
 
 onMounted(() => {
-  authStore.fetchUser()
   if (authStore.expirationTime && dayjs().diff(authStore.expirationTime, 'days') > -7) {
     // Use 7 days as a safety because of service worker retries
     toast.warning('Your session is expiring soon, please log in again.')

@@ -1,13 +1,14 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import jwtDecode from 'jwt-decode'
 import { useAxios } from '@/lib/axios'
+import { UserRole } from '@/model/ReimsModel'
 
 export const useAuthStore = defineStore(
   'auth',
   () => {
     const axiosInstance = useAxios()
     const accessToken = ref(null as string | null)
-    const roles = ref([] as string[])
+    const roles = ref([] as UserRole[])
     const user = ref(null as string | null)
 
     const expirationTime = computed(() => {
@@ -25,20 +26,13 @@ export const useAuthStore = defineStore(
       return !!accessToken.value
     })
 
-    async function login(username: string, password: string) {
+    async function login(username: string, password: string): Promise<void> {
       const response = await axiosInstance.post('/api/auth/signin', { username, password })
       accessToken.value = response.data.accessToken
-      fetchUser()
-    }
-    async function fetchUser() {
-      const response = await axiosInstance.get('/api/auth/user', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
       roles.value = response.data.roles.map((role: { name: string; id: number }) => role.name)
       user.value = response.data.username
     }
+
     function logout() {
       accessToken.value = null
       roles.value = []
@@ -51,7 +45,6 @@ export const useAuthStore = defineStore(
       expirationTime,
       isLoggedIn,
       login,
-      fetchUser,
       logout,
     }
   },
