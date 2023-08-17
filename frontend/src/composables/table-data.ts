@@ -1,11 +1,11 @@
 import { useTableStore } from '@/stores/table'
+import { useRootStore } from '@/stores/root'
 import { Glasses } from '@/model/GlassesModel'
 import { useToast } from 'vue-toastification'
 import { ReimsAxiosError } from '@/lib/axios'
 
 import { TableSortBy } from '@/model/ReimsModel'
 import { formatGlassesForDisplay } from '@/util/format-glasses'
-import { useGlassesStore } from '@/stores/glasses'
 
 export const useTableData = (
   currentPage: Ref<number>,
@@ -16,8 +16,8 @@ export const useTableData = (
   const toast = useToast()
 
   const tableStore = useTableStore()
-  const glassesStore = useGlassesStore()
-  const allGlassesHash = computed(() => glassesStore.allGlassesHash)
+  const rootStore = useRootStore()
+  const reimsSite = computed(() => rootStore.reimsSite)
 
   const loading = ref(false)
   const items = ref([])
@@ -28,7 +28,7 @@ export const useTableData = (
   })
 
   watch(
-    [filterString, itemsPerPage, sortBy, currentPage, allGlassesHash],
+    [reimsSite, filterString, itemsPerPage, sortBy, currentPage],
     () => {
       startLoading()
     },

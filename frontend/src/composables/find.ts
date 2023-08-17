@@ -23,7 +23,6 @@ export const useFindGlasses = (
   const glassesStore = useGlassesStore()
   const rootStore = useRootStore()
   const allGlasses = computed(() => glassesStore.allGlasses)
-  const reimsSite = computed(() => rootStore.reimsSite)
 
   function startSearch() {
     if (!toValue(isValid)) return
@@ -41,14 +40,15 @@ export const useFindGlasses = (
   }
 
   watch(
-    () => glassesStore.allGlassesHash,
+    () => rootStore.reimsSite,
     () => {
+      reset()
       if (matches.value != null) startSearch()
     },
   )
 
   watch(
-    () => [osEye, odEye, glassesTypeInput, highTolerance, reimsSite],
+    () => [osEye, odEye, glassesTypeInput, highTolerance],
     () => {
       reset()
     },
