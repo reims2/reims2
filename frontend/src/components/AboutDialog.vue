@@ -15,21 +15,18 @@
           It is written using
           <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue.js 3</a>
           and
-          <a href="https://vuetifyjs.com/" target="_blank" rel="noopener">Vuetify</a>
-          .
+          <a href="https://vuetifyjs.com/" target="_blank" rel="noopener">Vuetify.</a>
         </div>
 
         <div class="pt-2 text-medium-emphasis">
           Version:
           <a :href="commitUrl" target="_blank" rel="noopener" style="text-decoration: none">
-            <code>{{ rootStore.version || 'unknown' }}</code>
+            <code>{{ gitHash }}</code>
           </a>
           <br />
           Glasses stored: {{ glassesCount }}
           <br />
           Last update: {{ lastRefresh }}
-          <br />
-          Offline support: {{ offlineReady ? 'enabled' : 'not available' }}
         </div>
       </v-card-text>
       <v-card-actions>
@@ -45,7 +42,6 @@
 import { useVModel } from '@vueuse/core'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
-import { useRegisterSW } from 'virtual:pwa-register/vue'
 import dayjs from 'dayjs'
 
 const rootStore = useRootStore()
@@ -56,8 +52,6 @@ const props = defineProps<{ modelValue: boolean }>()
 const emit = defineEmits(['update:modelValue'])
 const dialog = useVModel(props, 'modelValue', emit)
 
-const { offlineReady } = useRegisterSW()
-
 const glassesCount = computed(() => glassesStore.allGlasses.length)
 const commitUrl = computed(() => {
   return rootStore.version
@@ -65,6 +59,12 @@ const commitUrl = computed(() => {
     : undefined
 })
 const lastRefresh = computed(() => {
+  if (!glassesStore.lastRefresh) return 'none yet'
   return dayjs(glassesStore.lastRefresh).format('YYYY-MM-DD HH:mm:ss')
+})
+
+const gitHash = computed(() => {
+  if (!rootStore.version) return 'development'
+  return rootStore.version.length > 7 ? rootStore.version.substring(0, 7) : rootStore.version
 })
 </script>
