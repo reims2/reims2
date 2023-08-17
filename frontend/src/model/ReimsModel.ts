@@ -36,3 +36,5 @@ export interface MinMaxObject {
   min?: number
   max?: number
 }
+
+export type UserRole = 'ROLE_ADMIN' | 'ROLE_USER'
