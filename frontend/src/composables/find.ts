@@ -6,10 +6,11 @@ import {
   GlassesType,
   SanitizedEyeSearch,
 } from '@/model/GlassesModel'
-import { sanitizeEyeValues } from '@/lib/eye-utils'
+import { sanitizeEyeValues } from '@/util/eye-utils'
 import { MaybeRefOrGetter } from 'vue'
 import calculateAllPhilscore from '@/lib/philscore'
 import { useGlassesStore } from '@/stores/glasses'
+import { useRootStore } from '@/stores/root'
 
 export const useFindGlasses = (
   osEye: MaybeRefOrGetter<EyeSearch>,
@@ -20,6 +21,7 @@ export const useFindGlasses = (
 ) => {
   const matches = ref<null | GlassesResult[]>(null)
   const glassesStore = useGlassesStore()
+  const rootStore = useRootStore()
   const allGlasses = computed(() => glassesStore.allGlasses)
 
   function startSearch() {
@@ -37,10 +39,13 @@ export const useFindGlasses = (
     matches.value = null
   }
 
-  watch(allGlasses, () => {
-    reset()
-    if (matches.value != null) startSearch()
-  })
+  watch(
+    () => rootStore.reimsSite,
+    () => {
+      reset()
+      if (matches.value != null) startSearch()
+    },
+  )
 
   watch(
     () => [osEye, odEye, glassesTypeInput, highTolerance],

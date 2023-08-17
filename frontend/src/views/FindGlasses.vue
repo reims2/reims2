@@ -101,11 +101,11 @@ import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 
 import { EyeSearch } from '@/model/GlassesModel'
-import { glassesMetaUIData } from '@/lib/glasses-utils'
-import { resetEyeInput } from '@/lib/eye-utils'
+import { glassesMetaUIData } from '@/util/glasses-utils'
+import { resetEyeInput } from '@/util/eye-utils'
 
 import { useEnterToTab } from '@/lib/enter-to-tab'
-import { useFindGlasses } from '@/lib/find'
+import { useFindGlasses } from '@/composables/find'
 import { useDisplay } from 'vuetify'
 
 const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))

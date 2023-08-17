@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { eyeRules, isValidForRules } from '@/lib/glasses-utils'
+import { eyeRules, isValidForRules } from '@/util/glasses-utils'
 import { DisplayedEye, Eye, EyeKey, eyeKeys } from '@/model/GlassesModel'
 
 interface Props {

@@ -38,7 +38,7 @@ import TheBottomBar from '@/components/TheBottomBar.vue'
 import { useOnline } from '@vueuse/core'
 import { useToast } from 'vue-toastification'
 import { useAuthStore } from '@/stores/auth'
-import { useUpdatesGlassesInterval } from '@/lib/update-glasses'
+import { useUpdatesGlassesInterval } from '@/composables/update-glasses'
 
 const OfflineBanner = defineAsyncComponent(() => import('@/components/OfflineBanner.vue'))
 
