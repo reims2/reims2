@@ -18,7 +18,6 @@ export const useGlassesStore = defineStore(
     const rootStore = useRootStore()
     const axiosInstance = useAxios()
     const allGlasses = ref([] as Glasses[])
-    const allGlassesHash = ref('')
     const lastRefresh = ref(null as string | null)
     const isOutdated = ref(false)
     const isRefreshingGlasses = ref(false)
@@ -121,24 +120,8 @@ export const useGlassesStore = defineStore(
       })
       return response.data
     }
-    async function loadGlassesIfChanged() {
-      if (isRefreshingGlasses.value) return
-      isRefreshingGlasses.value = true
-      let newHash = ''
-      try {
-        const response = await axiosInstance.get(`/api/glasses/changes/${rootStore.reimsSite}`)
-        newHash = response.data
-        if (newHash !== allGlassesHash.value) {
-          await loadGlasses()
-        }
-        allGlassesHash.value = newHash
-        lastRefresh.value = new Date().toISOString()
-        isOutdated.value = false
-      } finally {
-        isRefreshingGlasses.value = false
-      }
-    }
     async function loadGlasses() {
+      if (isRefreshingGlasses.value) return
       isRefreshingGlasses.value = true
       let response
       try {
@@ -160,8 +143,7 @@ export const useGlassesStore = defineStore(
     }
     function deleteOfflineGlasses(sku: number) {
       if (arrayContainsSku(allGlasses.value, sku)) {
-        // call arrayContainsSku to avoid unnecessary reactive changes when replacing the array like this
-        // TODO?
+        // call arrayContainsSku to avoid unnecessary reactive changes when replacing the array like this TODO
         allGlasses.value = allGlasses.value.filter((el) => el.sku !== sku)
       }
     }
@@ -170,7 +152,6 @@ export const useGlassesStore = defineStore(
       allGlasses,
       lastRefresh,
       isOutdated,
-      allGlassesHash,
       isRefreshingGlasses,
       hasGlassesLoaded,
       getGlassLocal,
@@ -183,13 +164,12 @@ export const useGlassesStore = defineStore(
       loadDispensedCsv,
       loadInventoryCsv,
       getDispensedGlasses,
-      loadGlassesIfChanged,
       loadGlasses,
       addOfflineGlasses,
       deleteOfflineGlasses,
     }
   },
-  { persist: { paths: ['allGlasses', 'lastRefresh', 'allGlassesHash', 'isOutdated'] } },
+  { persist: { paths: ['allGlasses', 'lastRefresh'] } },
 )
 
 if (import.meta.hot) {

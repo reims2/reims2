@@ -76,15 +76,7 @@ export const useLastDispensed = () => {
     }
   }
 
-  watch(
-    () => glassesStore.allGlassesHash,
-    () => {
-      updateLastDispensed()
-    },
-  )
-
-  // additional interval, but shoudn't really be required due to watching for allGlassesHash above
-  const { pause, resume } = useIntervalFn(updateLastDispensed, 1000 * 60 * 10)
+  const { pause, resume } = useIntervalFn(updateLastDispensed, 1000 * 60 * 2)
   onActivated(() => {
     resume()
     updateLastDispensed()
