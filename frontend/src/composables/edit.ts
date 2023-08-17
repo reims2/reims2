@@ -79,9 +79,13 @@ export const useLastDispensed = () => {
     }
   }
 
-  useIntervalFn(updateLastDispensed, 1000 * 60 * 2)
+  const { pause, resume } = useIntervalFn(updateLastDispensed, 1000 * 60 * 2)
   onActivated(() => {
+    resume()
     updateLastDispensed()
+  })
+  onDeactivated(() => {
+    pause()
   })
 
   return {
