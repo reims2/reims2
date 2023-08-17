@@ -8,7 +8,7 @@ export const useUpdatesGlassesInterval = () => {
   const toast = useToast()
   const isOnline = useOnline()
 
-  useIntervalFn(() => updateGlasses(), 3 * 60 * 1000)
+  useIntervalFn(() => updateGlasses(), 60 * 1000)
   onMounted(() => updateGlasses())
   watch(isOnline, (nowOnline, previouslyOnline) => {
     if (!previouslyOnline && nowOnline) updateGlasses()
@@ -16,7 +16,7 @@ export const useUpdatesGlassesInterval = () => {
 
   async function updateGlasses() {
     try {
-      await glassesStore.loadGlasses()
+      await glassesStore.loadGlassesIfChanged()
     } catch (error) {
       if (!glassesStore.lastRefresh) {
         toast.error(
