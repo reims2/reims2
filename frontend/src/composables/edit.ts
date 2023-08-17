@@ -59,10 +59,7 @@ export const useLastDispensed = () => {
     if (isLoading.value) return
     isLoading.value = true
     try {
-      const glasses = await glassesStore.getDispensedGlasses(
-        dayjs().subtract(1, 'week'),
-        dayjs().add(1, 'day'),
-      )
+      const glasses = await glassesStore.getDispensedGlasses(dayjs().subtract(3, 'days'), dayjs())
       if (!glasses || !glasses.length) lastDispensed.value = []
       else {
         lastDispensed.value = glasses
