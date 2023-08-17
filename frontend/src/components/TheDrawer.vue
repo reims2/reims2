@@ -71,7 +71,7 @@
             <v-icon :icon="mdiFileDocument"></v-icon>
           </template>
         </v-list-item>
-        <v-list-item title="About REIMS2" @click="aboutDialog = true">
+        <v-list-item title="About REIMS2" @click="aboutDialogState = true">
           <template #prepend>
             <v-icon :icon="mdiInformation"></v-icon>
           </template>
@@ -91,7 +91,7 @@
           </template>
         </v-list-item>
       </v-list>
-      <about-dialog v-model="aboutDialog" />
+      <about-dialog v-model="aboutDialogState" />
     </template>
   </v-navigation-drawer>
 </template>
@@ -103,7 +103,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import AboutDialog from './AboutDialog.vue'
 
-import { mdiInformation, mdiLogout, mdiMapMarkerMultiple, mdiBug, mdiFileDocument } from '@mdi/js'
+import { mdiInformation, mdiLogout, mdiMapMarkerMultiple, mdiFileDocument } from '@mdi/js'
 import { DrawerItem } from '@/model/ReimsModel'
 import { useDisplay } from 'vuetify'
 import { useOnline } from '@vueuse/core'
@@ -128,7 +128,7 @@ const isDrawerOpen = computed(() => {
   if (mobile.value) return rootStore.drawer
   else return true // always open on desktop
 })
-const aboutDialog = ref(false)
+const aboutDialogState = ref(false)
 
 const isMiniDrawer = computed(() => {
   // Only on desktop and if drawer on mobile would be open
