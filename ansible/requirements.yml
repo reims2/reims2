@@ -11,7 +11,7 @@ collections:
   - name: devsec.hardening
     version: 8.8.0
   - name: community.general
-    version: 7.2.1
+    version: 7.3.0
   - name: community.mysql
     version: 3.7.2
   - name: community.docker
