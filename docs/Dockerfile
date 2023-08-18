@@ -1,4 +1,4 @@
-FROM node:20@sha256:525d7cc45c28d0cc6ab50fe0abb6dd7620ed95489970fe5582cb77e8da2517a3 AS build
+FROM node:20@sha256:8d9887b3b05d2e65598a18616c37cfc271346d12248dfcbeadd7b7bf4da1e827 AS build
 RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
 ENV NODE_OPTIONS --openssl-legacy-provider
