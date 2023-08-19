@@ -41,7 +41,7 @@ onBeforeUnmount(() => clearInterval(refreshInterval))
 function generateTimeString() {
   if (!lastRefresh.value) {
     lastRefreshString.value = ': none yet'
-  } else if (dayjs().diff(lastRefresh.value) < 1 * 60 * 1000) {
+  } else if (dayjs().diff(lastRefresh.value, 'minute') < 1) {
     lastRefreshString.value = 'just now' // don't bother the user with anything less than X minutes
   } else {
     lastRefreshString.value = dayjs().to(lastRefresh.value)
