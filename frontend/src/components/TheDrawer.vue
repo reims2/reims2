@@ -77,15 +77,7 @@
           </template>
         </v-list-item>
 
-        <v-list-item
-          title="Logout"
-          @click="
-            () => {
-              authStore.logout()
-              router.push('/')
-            }
-          "
-        >
+        <v-list-item title="Logout" @click="authStore.logout()">
           <template #prepend>
             <v-icon :icon="mdiLogout"></v-icon>
           </template>
@@ -97,10 +89,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import { useRootStore } from '@/stores/root'
 import { useAuthStore } from '@/stores/auth'
-import { useRouter } from 'vue-router'
 import AboutDialog from './AboutDialog.vue'
 
 import { mdiInformation, mdiLogout, mdiMapMarkerMultiple, mdiFileDocument } from '@mdi/js'
@@ -120,7 +110,6 @@ defineProps<{
 
 const rootStore = useRootStore()
 const authStore = useAuthStore()
-const router = useRouter()
 const reimsSiteName = computed(() => rootStore.reimsSiteName)
 
 const dialog = ref(false)

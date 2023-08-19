@@ -1,7 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { useAuthStore } from '@/stores/auth'
 import { useToast } from 'vue-toastification'
-import { useRouter } from 'vue-router'
 
 export class ReimsAxiosError extends Error {
   isNetwork: boolean
@@ -38,7 +37,6 @@ export const useAxios = () => {
   const authStore = useAuthStore()
   const toast = useToast()
   const token = computed(() => authStore.accessToken)
-  const router = useRouter()
 
   const instance = axios.create({
     timeout: 8000,
@@ -62,7 +60,6 @@ export const useAxios = () => {
       if (error.response.status === 401 && !(requestUrl && requestUrl.includes('/api/auth'))) {
         toast.warning('Credentials no longer valid. Please reload to log in again.')
         authStore.logout()
-        router.push({ name: 'Login' })
         throw new ReimsAxiosError('Unauthorized')
       }
 
