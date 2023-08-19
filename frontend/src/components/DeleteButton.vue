@@ -26,7 +26,6 @@
 <script setup lang="ts">
 import { Glasses } from '@/model/GlassesModel'
 import { DeletionReason } from '@/model/ReimsModel'
-import { ref } from 'vue'
 
 const props = withDefaults(defineProps<{ glass: Glasses; fixedReason?: DeletionReason | null }>(), {
   fixedReason: null,

@@ -125,7 +125,6 @@ import { mdiDelete, mdiPencil } from '@mdi/js'
 
 import { User } from '@/model/UserModel'
 
-import { ref } from 'vue'
 import { useUsersStore } from '@/stores/users'
 import { useAuthStore } from '@/stores/auth'
 

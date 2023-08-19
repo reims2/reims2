@@ -10,7 +10,8 @@
           </keep-alive>
         </transition>
       </router-view>
-      <offline-banner v-if="!isOnline" />
+      <initial-load-overlay v-if="!hasGlassesLoaded" />
+      <offline-banner v-else-if="!isOnline" />
       <div v-if="!isOnline" style="min-height: 100px"></div>
     </v-main>
     <the-bottom-bar v-if="mobile" :items="mainItems" />
@@ -39,8 +40,15 @@ import { useOnline } from '@vueuse/core'
 import { useToast } from 'vue-toastification'
 import { useAuthStore } from '@/stores/auth'
 import { useUpdatesGlassesInterval } from '@/composables/update-glasses'
+import { useGlassesStore } from '@/stores/glasses'
+import { useRouter } from 'vue-router'
 
 const OfflineBanner = defineAsyncComponent(() => import('@/components/OfflineBanner.vue'))
+const InitialLoadOverlay = defineAsyncComponent(() => import('@/components/InitialLoadOverlay.vue'))
+
+const router = useRouter()
+const glassesStore = useGlassesStore()
+const hasGlassesLoaded = computed(() => glassesStore.hasGlassesLoaded)
 
 const toast = useToast()
 useUpdatesGlassesInterval()
@@ -78,4 +86,14 @@ onMounted(() => {
     authStore.logout()
   }
 })
+
+// Auto redirect to Login when logged out
+watch(
+  () => authStore.isLoggedIn,
+  (isLoggedIn) => {
+    if (!isLoggedIn) {
+      router.push({ name: 'Login' })
+    }
+  },
+)
 </script>

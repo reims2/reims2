@@ -1,29 +1,41 @@
 <template>
   <v-container>
     <the-header />
-    <v-row dense class="justify-center">
-      <v-col cols="12" md="6" lg="4">
-        <v-form ref="form" v-model="valid" @submit.prevent="userLogin">
-          <v-row>
-            <v-col cols="12">
-              <v-text-field
-                v-model="username"
-                label="Username"
-                :rules="[(v) => !!v || 'Item is required']"
-                required
-                autocorrect="off"
-                autocapitalize="off"
-              />
-              <v-text-field
-                v-model="password"
-                label="Password"
-                type="password"
-                :rules="[(v) => !!v || 'Item is required']"
-                required
-              />
-              <v-btn :disabled="!valid" color="primary" type="submit">Login</v-btn>
-            </v-col>
-          </v-row>
+    <v-row>
+      <v-col cols="12" class="d-flex justify-center mt-8">
+        <v-form
+          ref="form"
+          v-model="valid"
+          style="max-width: 350px"
+          class="flex-grow-1"
+          @submit.prevent="userLogin"
+        >
+          <v-text-field
+            v-model="username"
+            label="Username"
+            :rules="[(v) => !!v || 'Item is required']"
+            required
+            autocorrect="off"
+            autocapitalize="off"
+            class="mb-1"
+          />
+          <v-text-field
+            v-model="password"
+            label="Password"
+            type="password"
+            :rules="[(v) => !!v || 'Item is required']"
+            required
+            class="mb-1"
+          />
+
+          <v-select
+            v-model="rootStore.reimsSite"
+            :items="reimsSiteSelects"
+            class="mb-3"
+            label="Location"
+          />
+
+          <v-btn :disabled="!valid" color="primary" type="submit" :loading="isLoading">Login</v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -31,21 +43,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
 import TheHeader from '@/components/TheHeader.vue'
 import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
 import { useRoute } from 'vue-router'
 import { ReimsAxiosError } from '@/lib/axios'
 import { useToast } from 'vue-toastification'
+import { reimsSiteSelects } from '@/util/util'
+import { useRootStore } from '@/stores/root'
+
 const toast = useToast()
 
 const username = ref('')
 const password = ref('')
 const valid = ref(false)
-const errorText = ref('')
+const isLoading = ref(false)
 
+const rootStore = useRootStore()
 const authStore = useAuthStore()
 const route = useRoute()
 const redirect = computed(() => (route.query.redirect as string) ?? '/find')
@@ -55,10 +69,10 @@ if (authStore.isLoggedIn) {
 }
 
 const userLogin = async () => {
-  errorText.value = ''
+  isLoading.value = true
   try {
     await authStore.login(username.value, password.value)
-    router.push(redirect.value)
+    await router.push(redirect.value)
   } catch (err) {
     if (err instanceof ReimsAxiosError && err.statusCode === 401 && err.apiMessage != null) {
       toast.error(err.apiMessage)
@@ -66,6 +80,8 @@ const userLogin = async () => {
       toast.error(`Login failed (${err.message})`)
       console.error(err)
     }
+  } finally {
+    isLoading.value = false
   }
 }
 </script>

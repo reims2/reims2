@@ -50,7 +50,6 @@ import { mdiCalendar } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 import dayjs from 'dayjs'
-import { ref, nextTick } from 'vue'
 
 import { useToast } from 'vue-toastification'
 const toast = useToast()

@@ -9,7 +9,7 @@
       <v-toolbar color="primary" title="Change location"></v-toolbar>
 
       <v-card-text>
-        <v-select v-model="newLocation" :items="locations" class="mt-2" />
+        <v-select v-model="newLocation" :items="reimsSiteSelects" class="mt-2" />
       </v-card-text>
 
       <v-divider />
@@ -35,8 +35,8 @@
 import { ReimsSite } from '@/model/ReimsModel'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
-import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
+import { reimsSiteSelects } from '@/util/util'
 
 const toast = useToast()
 const rootStore = useRootStore()
@@ -52,10 +52,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const loading = ref(false)
 const newLocation = ref<ReimsSite | null>(null)
-const locations = [
-  { title: 'San Miguel', value: 'sm' },
-  { title: 'Santa Ana', value: 'sa' },
-]
+
 // initial value
 newLocation.value = rootStore.reimsSite
 
