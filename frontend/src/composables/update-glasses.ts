@@ -1,4 +1,4 @@
-import { useIntervalFn, useOnline } from '@vueuse/core'
+import { useOnline } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
 import { useToast } from 'vue-toastification'
 import dayjs from 'dayjs'
@@ -7,9 +7,16 @@ export const useUpdatesGlassesInterval = () => {
   const glassesStore = useGlassesStore()
   const toast = useToast()
   const isOnline = useOnline()
+  const interval = ref<NodeJS.Timer | null>(null)
 
-  useIntervalFn(() => updateGlasses(), 60 * 1000)
-  onMounted(() => updateGlasses())
+  onMounted(() => {
+    interval.value = setInterval(() => updateGlasses(), 60 * 1000)
+    updateGlasses()
+  })
+  onUnmounted(() => {
+    if (interval.value) clearInterval(interval.value)
+  })
+
   watch(isOnline, (nowOnline, previouslyOnline) => {
     if (!previouslyOnline && nowOnline) updateGlasses()
   })
