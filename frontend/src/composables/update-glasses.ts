@@ -11,7 +11,7 @@ export const useUpdatesGlassesInterval = () => {
 
   onMounted(() => {
     interval.value = setInterval(() => updateGlasses(), 60 * 1000)
-    updateGlasses()
+    updateGlasses(true)
   })
   onUnmounted(() => {
     if (interval.value) clearInterval(interval.value)
@@ -21,16 +21,15 @@ export const useUpdatesGlassesInterval = () => {
     if (!previouslyOnline && nowOnline) updateGlasses()
   })
 
-  async function updateGlasses() {
+  async function updateGlasses(firstLoad = false) {
     try {
-      await glassesStore.loadGlassesIfChanged()
+      if (firstLoad) await glassesStore.loadGlasses()
+      else await glassesStore.loadGlassesIfChanged()
     } catch (error) {
-      if (!glassesStore.lastRefresh) {
-        toast.error(
-          `Could not load glasses database, please reload or retry later (${error.message})`,
-        )
-      } else if (dayjs().diff(glassesStore.lastRefresh) > 3 * 24 * 60 * 60 * 1000) {
-        // if the last successful update is more than three day ago, mark DB as outdated
+      if (!glassesStore.hasGlassesLoaded) {
+        toast.error(`Could not load glasses database, please retry later (${error.message})`)
+      } else if (dayjs().diff(glassesStore.lastRefresh, 'day') > 3) {
+        // if the last successful update is longer ago, mark DB as outdated
         glassesStore.isOutdated = true
       }
       // else just fail silently because there's still a recent enough version of the DB cached
