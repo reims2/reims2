@@ -11,6 +11,6 @@
     "vitepress": "1.0.0-rc.4"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.5.1"
   }
 }
