@@ -6933,7 +6933,7 @@ __metadata:
     typescript: 5.1.6
     unplugin-auto-import: 0.16.6
     vite: 4.4.9
-    vite-plugin-compression2: 0.10.3
+    vite-plugin-compression2: 0.10.4
     vite-plugin-pwa: 0.16.4
     vite-plugin-vue-devtools: 1.0.0-rc.2
     vite-plugin-vuetify: 1.0.2
@@ -8047,12 +8047,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-compression2@npm:0.10.3":
-  version: 0.10.3
-  resolution: "vite-plugin-compression2@npm:0.10.3"
+"vite-plugin-compression2@npm:0.10.4":
+  version: 0.10.4
+  resolution: "vite-plugin-compression2@npm:0.10.4"
   dependencies:
     "@rollup/pluginutils": ^5.0.2
-  checksum: 67cfad94c157773f4c4a42d08ce2324e31f9c9134f5ffcb8a9e225c5254d4eeaa98577d565c7d875a56fdbe149190cb443a96fb4e3a21d4ea06b863c6c41f579
+  checksum: 7d32422c8c52ebdce4b69130dfacc9ff258faded4b5496a6f14e382b45cd499f2e79c1cbda49188f7db77d7505f9adeaf92f2b39572a6d3b5f9ef64a58d87fd3
   languageName: node
   linkType: hard
 
