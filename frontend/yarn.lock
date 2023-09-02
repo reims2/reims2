@@ -364,6 +364,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/parser@npm:^7.22.11":
+  version: 7.22.14
+  resolution: "@babel/parser@npm:7.22.14"
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: a2293971f0889726a3d5a35fcceedc71d2fa4c8d97f438fc348fe0cf7e739affc6e2665e4c6ddd4900714772e19bfd5d6feb967ca1f623b894c0099ecb148b52
+  languageName: node
+  linkType: hard
+
 "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@npm:^7.22.5":
   version: 7.22.5
   resolution: "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@npm:7.22.5"
@@ -2422,18 +2431,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vite-plugin-vue-devtools/core@npm:1.0.0-rc.2":
-  version: 1.0.0-rc.2
-  resolution: "@vite-plugin-vue-devtools/core@npm:1.0.0-rc.2"
+"@vite-plugin-vue-devtools/core@npm:1.0.0-rc.3":
+  version: 1.0.0-rc.3
+  resolution: "@vite-plugin-vue-devtools/core@npm:1.0.0-rc.3"
   dependencies:
-    "@babel/parser": ^7.22.7
-    birpc: ^0.2.12
+    "@babel/parser": ^7.22.11
+    birpc: ^0.2.13
     estree-walker: ^2.0.2
-    magic-string: ^0.30.2
+    magic-string: ^0.30.3
     vite-hot-client: ^0.2.1
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0
-  checksum: c2f1838e340666f9678595df08687f52b73141362decbb36980ea3997886709f636f9a74355b8298ee003c583fea917e7848dba41679096572c9fd571a4e6d5d
+  checksum: 71f2d37b3ea542416e00cf07526453e4e205949addeca34b8def7d610d6a2c3bb4feb168a970389c055a55b74be918aa536544d7f5c9174c74fd895911206bdc
   languageName: node
   linkType: hard
 
@@ -3189,10 +3198,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"birpc@npm:^0.2.12":
-  version: 0.2.12
-  resolution: "birpc@npm:0.2.12"
-  checksum: c527078bc7a2801f3e2b9ed0f6bb6229e4f4d15bf4f759178e9d59c4f0a35e6e2ed363fea06824ddb2e7479cc8e1c62ca353da0b2333ec1c436a6e41ce12ccc1
+"birpc@npm:^0.2.13":
+  version: 0.2.13
+  resolution: "birpc@npm:0.2.13"
+  checksum: bab740bfb14507af59b20597fb69b36711c825f130e999db48aaba31ef7d331fd0d300772548312e02d8ddae4b9764ae179e2b428e44e324025e671709f65d39
   languageName: node
   linkType: hard
 
@@ -3854,6 +3863,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"error-stack-parser-es@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "error-stack-parser-es@npm:0.1.1"
+  checksum: 1f9d5067f4fa546af95c6f2128506421dde21dc1059638b9d5f8af4c1d2442065de8c48db0c91c561e5c7d8bb1248aadce31ef6c4ee73b5d3166ca26ee2e3264
+  languageName: node
+  linkType: hard
+
 "es-abstract@npm:^1.19.0, es-abstract@npm:^1.20.4, es-abstract@npm:^1.21.2":
   version: 1.22.1
   resolution: "es-abstract@npm:1.22.1"
@@ -4468,20 +4484,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^7.2.0":
-  version: 7.2.0
-  resolution: "execa@npm:7.2.0"
+"execa@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "execa@npm:8.0.1"
   dependencies:
     cross-spawn: ^7.0.3
-    get-stream: ^6.0.1
-    human-signals: ^4.3.0
+    get-stream: ^8.0.1
+    human-signals: ^5.0.0
     is-stream: ^3.0.0
     merge-stream: ^2.0.0
     npm-run-path: ^5.1.0
     onetime: ^6.0.0
-    signal-exit: ^3.0.7
+    signal-exit: ^4.1.0
     strip-final-newline: ^3.0.0
-  checksum: 14fd17ba0ca8c87b277584d93b1d9fc24f2a65e5152b31d5eb159a3b814854283eaae5f51efa9525e304447e2f757c691877f7adff8fde5746aae67eb1edd1cc
+  checksum: cac1bf86589d1d9b73bdc5dda65c52012d1a9619c44c526891956745f7b366ca2603d29fe3f7460bacc2b48c6eab5d6a4f7afe0534b31473d3708d1265545e1f
   languageName: node
   linkType: hard
 
@@ -4820,6 +4836,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"get-stream@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "get-stream@npm:8.0.1"
+  checksum: 01e3d3cf29e1393f05f44d2f00445c5f9ec3d1c49e8179b31795484b9c117f4c695e5e07b88b50785d5c8248a788c85d9913a79266fc77e3ef11f78f10f1b974
+  languageName: node
+  linkType: hard
+
 "get-symbol-description@npm:^1.0.0":
   version: 1.0.0
   resolution: "get-symbol-description@npm:1.0.0"
@@ -5106,6 +5129,13 @@ __metadata:
   version: 4.3.1
   resolution: "human-signals@npm:4.3.1"
   checksum: 6f12958df3f21b6fdaf02d90896c271df00636a31e2bbea05bddf817a35c66b38a6fdac5863e2df85bd52f34958997f1f50350ff97249e1dff8452865d5235d1
+  languageName: node
+  linkType: hard
+
+"human-signals@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "human-signals@npm:5.0.0"
+  checksum: 6504560d5ed91444f16bea3bd9dfc66110a339442084e56c3e7fa7bbdf3f406426d6563d662bdce67064b165eac31eeabfc0857ed170aaa612cf14ec9f9a464c
   languageName: node
   linkType: hard
 
@@ -5950,12 +5980,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.30.2":
-  version: 0.30.2
-  resolution: "magic-string@npm:0.30.2"
+"magic-string@npm:^0.30.3":
+  version: 0.30.3
+  resolution: "magic-string@npm:0.30.3"
   dependencies:
     "@jridgewell/sourcemap-codec": ^1.4.15
-  checksum: c0bbb9b27b2772e6bfaa5d0f6452d47c462d588ae7c43fbaac062b07836d3ec0140fcdd42a57aa53ed990abafcdd0fc17907813921b5df04eccf43e67674bc57
+  checksum: a5a9ddf9bd3bf49a2de1048bf358464f1bda7b3cc1311550f4a0ba8f81a4070e25445d53a5ee28850161336f1bff3cf28aa3320c6b4aeff45ce3e689f300b2f3
   languageName: node
   linkType: hard
 
@@ -6935,7 +6965,7 @@ __metadata:
     vite: 4.4.9
     vite-plugin-compression2: 0.10.4
     vite-plugin-pwa: 0.16.4
-    vite-plugin-vue-devtools: 1.0.0-rc.2
+    vite-plugin-vue-devtools: 1.0.0-rc.3
     vite-plugin-vuetify: 1.0.2
     vitest: 0.34.1
     vue: 3.3.4
@@ -7237,6 +7267,13 @@ __metadata:
   version: 4.0.2
   resolution: "signal-exit@npm:4.0.2"
   checksum: 41f5928431cc6e91087bf0343db786a6313dd7c6fd7e551dbc141c95bb5fb26663444fd9df8ea47c5d7fc202f60aa7468c3162a9365cbb0615fc5e1b1328fe31
+  languageName: node
+  linkType: hard
+
+"signal-exit@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "signal-exit@npm:4.1.0"
+  checksum: 64c757b498cb8629ffa5f75485340594d2f8189e9b08700e69199069c8e3070fb3e255f7ab873c05dc0b3cec412aea7402e10a5990cb6a050bd33ba062a6c549
   languageName: node
   linkType: hard
 
@@ -8056,13 +8093,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-inspect@npm:^0.7.35":
-  version: 0.7.35
-  resolution: "vite-plugin-inspect@npm:0.7.35"
+"vite-plugin-inspect@npm:^0.7.38":
+  version: 0.7.38
+  resolution: "vite-plugin-inspect@npm:0.7.38"
   dependencies:
     "@antfu/utils": ^0.7.5
     "@rollup/pluginutils": ^5.0.2
     debug: ^4.3.4
+    error-stack-parser-es: ^0.1.1
     fs-extra: ^11.1.1
     open: ^9.1.0
     picocolors: ^1.0.0
@@ -8072,7 +8110,7 @@ __metadata:
   peerDependenciesMeta:
     "@nuxt/kit":
       optional: true
-  checksum: 673307f1ac51a4e81759d896a3460f177592e27073e91fab84fc451a762d4ed068c017abd0f267ab90b88d0e68f6aec0349e20dec8d726e96e8a143dd2ba1f42
+  checksum: 7258b741ebd43c43906d53d99e580a4faf7db72506dc98b09af6cb7ce987fe8bb7f810551fff9c9f6582d7faa5e152700ba63ce5dc55801cf374741be292d438
   languageName: node
   linkType: hard
 
@@ -8093,20 +8131,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-devtools@npm:1.0.0-rc.2":
-  version: 1.0.0-rc.2
-  resolution: "vite-plugin-vue-devtools@npm:1.0.0-rc.2"
+"vite-plugin-vue-devtools@npm:1.0.0-rc.3":
+  version: 1.0.0-rc.3
+  resolution: "vite-plugin-vue-devtools@npm:1.0.0-rc.3"
   dependencies:
-    "@vite-plugin-vue-devtools/core": 1.0.0-rc.2
+    "@vite-plugin-vue-devtools/core": 1.0.0-rc.3
     "@webfansplz/vuedoc-parser": ^0.0.4
-    birpc: ^0.2.12
-    execa: ^7.2.0
+    birpc: ^0.2.13
+    execa: ^8.0.1
     sirv: ^2.0.3
-    vite-plugin-inspect: ^0.7.35
+    vite-plugin-inspect: ^0.7.38
     vite-plugin-vue-inspector: ^3.6.0
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0
-  checksum: 86fb7292e60bd96939e581233cac213b2590f40d1b28f52eb57dfa11adc41655034a81fc1bf8ec2badd23948f40c87fcea642b804ae64f9575195483cb2e1baf
+  checksum: 4bebcd99288f573a70eb03da80ba21b4f4e645284b5e45e71501e1df66e91d58f3e5fb8ebf697ec484ceb774a7e4100a896bea4b55e538546c9a15a8a5bf87ef
   languageName: node
   linkType: hard
 
