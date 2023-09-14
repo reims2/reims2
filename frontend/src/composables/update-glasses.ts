@@ -1,4 +1,4 @@
-import { useOnline } from '@vueuse/core'
+import { useNow, useOnline, watchThrottled } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
 import { useToast } from 'vue-toastification'
 import dayjs from 'dayjs'
@@ -7,19 +7,22 @@ export const useUpdatesGlassesInterval = () => {
   const glassesStore = useGlassesStore()
   const toast = useToast()
   const isOnline = useOnline()
-  const interval = ref<NodeJS.Timer | null>(null)
+  const now = useNow()
+  const lastRefresh = computed(() => glassesStore.lastRefresh)
 
   onMounted(() => {
-    interval.value = setInterval(() => updateGlasses(), 60 * 1000)
     updateGlasses(true)
   })
-  onUnmounted(() => {
-    if (interval.value) clearInterval(interval.value)
-  })
 
-  watch(isOnline, (nowOnline, previouslyOnline) => {
-    if (!previouslyOnline && nowOnline) updateGlasses()
-  })
+  watchThrottled(
+    [isOnline, now],
+    () => {
+      if (dayjs(now.value).diff(lastRefresh.value, 'minute') >= 1) {
+        updateGlasses()
+      }
+    },
+    { throttle: 2000 },
+  )
 
   async function updateGlasses(firstLoad = false) {
     try {
