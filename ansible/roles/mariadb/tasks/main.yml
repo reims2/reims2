@@ -27,7 +27,7 @@
     - wait for mariadb
 
 - name: SQL restore block
-  when: db_dump is not false
+  when: db_dump and db_dump | length > 0
   block:
     - name: Copy SQL dump file onto host
       ansible.builtin.copy:
@@ -48,7 +48,3 @@
       ansible.builtin.shell: |
         set -o pipefail
         cat {{ dump_location }} | docker exec -i $(docker ps -q -f name={{ stack_name }}_mariadb) /usr/bin/mariadb -p{{ reims2_db_root_password }} {{ reims2_db_name }}
-  rescue:
-    - name: Print error
-      ansible.builtin.debug:
-        msg: "Failed to restore dump"
