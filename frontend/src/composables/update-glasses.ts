@@ -21,7 +21,7 @@ export const useUpdatesGlassesInterval = () => {
         updateGlasses()
       }
     },
-    { throttle: 2000 },
+    { throttle: 10000 },
   )
 
   async function updateGlasses(firstLoad = false) {
