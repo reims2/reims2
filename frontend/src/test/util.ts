@@ -3,8 +3,8 @@ import { createVuetify } from 'vuetify'
 import { createTestingPinia, TestingPinia } from '@pinia/testing'
 import { vuetifyOptions } from '@/plugins/vuetify'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function renderWithVuetify(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: any,
   options: RenderOptions,
   pinia?: TestingPinia | undefined,
