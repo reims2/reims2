@@ -109,6 +109,7 @@ const isBal = computed({
 function emitUpdate(id: keyof Eye, value: string | null) {
   const eye = { ...props.modelValue }
   eye[id] = value ?? ''
+  if (props.modelValue[id] === value) return
   emit('update:modelValue', eye)
 }
 
