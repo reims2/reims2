@@ -67,7 +67,7 @@ type AllGlassesMetaUiData = {
 
 export const glassesMetaUIData: AllGlassesMetaUiData = {
   glassesType: {
-    label: 'Type',
+    label: 'Category',
     items: ['single', 'multifocal'],
     rules: [
       (v: unknown) =>
@@ -77,10 +77,10 @@ export const glassesMetaUIData: AllGlassesMetaUiData = {
     hint: '(s)ingle or (m)ultifocal',
     first: true,
     icon: mdiGlasses,
-    desc: 'Glasses type (single or multifocal)',
+    desc: 'Glasses category (single or multifocal)',
   },
   glassesSize: {
-    label: 'Size',
+    label: 'Frame size',
     items: ['small', 'medium', 'large', 'child'],
     hint: '(s)mall, (m)edium, (l)arge or (c)hild',
     rules: [
@@ -93,10 +93,10 @@ export const glassesMetaUIData: AllGlassesMetaUiData = {
         'Enter s for small, m for medium, l for large or c for child',
     ],
     icon: mdiArrowLeftRight,
-    desc: 'Glasses size (small, medium, large or child)',
+    desc: 'Frame size (small, medium, large or child)',
   },
   appearance: {
-    label: 'Appearance',
+    label: 'Frame appearance',
     items: ['neutral', 'feminine', 'masculine'],
     hint: '(n)eutral, (f)eminine or (m)asculine',
     rules: [
@@ -106,7 +106,7 @@ export const glassesMetaUIData: AllGlassesMetaUiData = {
         'Enter n for neutral, f for feminine or m for masculine',
     ],
     icon: mdiHumanMaleFemale,
-    desc: 'Glasses appearance (neutral, feminine or masculine)',
+    desc: 'Frame appearance (neutral, feminine or masculine)',
   },
 }
 
