@@ -22,10 +22,11 @@
             </v-col>
             <v-col cols="12" md="6" class="px-1 pl-md-5 py-0">
               <single-eye-input
-                v-model="osEye"
                 eye-name="OS"
                 :add-enabled="glassesTypeInput === 'multifocal'"
                 bal-enabled
+                :model-value="osEye"
+                @update:model-value="(val) => updateOsEye(val)"
               />
             </v-col>
             <v-col cols="12" class="pa-0">
@@ -100,7 +101,7 @@ import { useGlassesStore } from '@/stores/glasses'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 
-import { EyeSearch } from '@/model/GlassesModel'
+import { DisplayedEye, EyeSearch } from '@/model/GlassesModel'
 import { glassesMetaUIData } from '@/util/glasses-utils'
 import { resetEyeInput } from '@/util/eye-utils'
 
@@ -176,12 +177,6 @@ watch(
   },
 )
 watch(
-  () => osEye.value.add,
-  (newVal, oldVal) => {
-    if (newVal !== oldVal && !oldVal) syncEye.value = false
-  },
-)
-watch(
   () => odEye.value.sphere,
   (newValue) => {
     if (osEye.value.isBAL) osEye.value.sphere = newValue
@@ -228,6 +223,11 @@ async function submitAndUpdate() {
   // on desktop, focus input again; on mobile, scroll to bottom
   if (!mobile.value) firstInput.value?.focus()
   else results.value?.$el.scrollIntoView(true)
+}
+
+function updateOsEye(newValue: DisplayedEye & { isBAL?: boolean }) {
+  if (newValue.add !== osEye.value.add) syncEye.value = false
+  osEye.value = { ...newValue, isBAL: newValue.isBAL ?? false }
 }
 
 function reset() {

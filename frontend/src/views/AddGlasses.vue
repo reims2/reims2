@@ -15,7 +15,12 @@
               <single-eye-input v-model="odEye" eye-name="OD" :add-enabled="isMultifocal" />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pl-md-5 py-0">
-              <single-eye-input v-model="osEye" eye-name="OS" :add-enabled="isMultifocal" />
+              <single-eye-input
+                eye-name="OS"
+                :add-enabled="isMultifocal"
+                :model-value="osEye"
+                @update:model-value="(val) => updateOsEye(val)"
+              />
             </v-col>
             <v-col cols="12" class="px-0 pt-0">
               <div class="pb-3 text-body-2 text-medium-emphasis">
@@ -112,6 +117,7 @@ const {
   isMultifocal,
   lastAdded,
   freeSlots,
+  updateOsEye,
   submit: submitAdd,
   reset: resetAdd,
 } = useAddGlasses(onSuccess)

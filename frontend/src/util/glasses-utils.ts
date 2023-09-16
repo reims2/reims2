@@ -71,7 +71,7 @@ export const glassesMetaUIData: AllGlassesMetaUiData = {
     items: ['single', 'multifocal'],
     rules: [
       (v: unknown) =>
-        (isString(v) && ('single'.startsWith(v) || 'multifocal'.startsWith(v))) ||
+        (isString(v) && v !== '' && ('single'.startsWith(v) || 'multifocal'.startsWith(v))) ||
         'Enter s for single or m for multifocal',
     ],
     hint: '(s)ingle or (m)ultifocal',
