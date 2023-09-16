@@ -29,7 +29,7 @@ export const useAuthStore = defineStore(
     async function login(username: string, password: string): Promise<void> {
       const response = await axiosInstance.post('/api/auth/signin', { username, password })
       accessToken.value = response.data.accessToken
-      roles.value = response.data.roles.map((role: { name: string; id: number }) => role.name)
+      roles.value = response.data.roles
       user.value = response.data.username
     }
 
