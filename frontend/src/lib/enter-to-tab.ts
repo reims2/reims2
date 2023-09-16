@@ -10,7 +10,7 @@ type HTMLElementWithPrevent = HTMLElement & { preventEnterTab?: boolean }
 
 export const useEnterToTab = (
   element: MaybeRefOrGetter<HTMLElement | null | undefined>,
-  { autoClickButton = true, waitForNextTick = true } = {},
+  { autoClickButton = true } = {},
 ) => {
   const isEnterToTabEnabled = ref(true)
 
@@ -33,8 +33,6 @@ export const useEnterToTab = (
         console.warn('cant convert enter to tab, element is null')
         return
       }
-      // wait for the next tick so that any changes are considered
-      if (waitForNextTick) await nextTick()
       const allElementsQuery = elementValue.querySelectorAll(
         'input, button, a, textarea, select, audio, video, [contenteditable]',
       )
@@ -51,7 +49,11 @@ export const useEnterToTab = (
       const nextElement = allElements[targetIndex]
       nextElement.focus()
       // if the next element is a button, click on it instead of just focusing. otherwise user has to double enter for a button to activate
-      if (autoClickButton && nextElement.tagName.toLowerCase() === 'button') nextElement.click()
+      if (autoClickButton && nextElement.tagName.toLowerCase() === 'button') {
+        // wait so that any changes from unfocusing of old element are considered
+        await nextTick()
+        nextElement.click()
+      }
     }
   })
 
