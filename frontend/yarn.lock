@@ -354,7 +354,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.18.11, @babel/parser@npm:^7.20.15, @babel/parser@npm:^7.21.3, @babel/parser@npm:^7.22.11, @babel/parser@npm:^7.22.15, @babel/parser@npm:^7.22.16":
+"@babel/parser@npm:^7.18.11, @babel/parser@npm:^7.20.15, @babel/parser@npm:^7.21.3, @babel/parser@npm:^7.22.15, @babel/parser@npm:^7.22.16":
   version: 7.22.16
   resolution: "@babel/parser@npm:7.22.16"
   bin:
@@ -2238,18 +2238,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vite-plugin-vue-devtools/core@npm:1.0.0-rc.3":
-  version: 1.0.0-rc.3
-  resolution: "@vite-plugin-vue-devtools/core@npm:1.0.0-rc.3"
+"@vite-plugin-vue-devtools/core@npm:1.0.0-rc.4":
+  version: 1.0.0-rc.4
+  resolution: "@vite-plugin-vue-devtools/core@npm:1.0.0-rc.4"
   dependencies:
-    "@babel/parser": ^7.22.11
-    birpc: ^0.2.13
+    "@babel/parser": ^7.22.16
+    birpc: ^0.2.14
     estree-walker: ^2.0.2
     magic-string: ^0.30.3
-    vite-hot-client: ^0.2.1
+    vite-hot-client: ^0.2.2
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0
-  checksum: 71f2d37b3ea542416e00cf07526453e4e205949addeca34b8def7d610d6a2c3bb4feb168a970389c055a55b74be918aa536544d7f5c9174c74fd895911206bdc
+  checksum: 41ada9b8a6e92e3b1fddc548a0d2ba34704f021abbecdab51e8dc1b3eeb1d1145c7ef9fe83a30e262e02396dfd5c6b32be3fcef537b1bc10bd787726df1e8137
   languageName: node
   linkType: hard
 
@@ -3004,7 +3004,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"birpc@npm:^0.2.13":
+"birpc@npm:^0.2.14":
   version: 0.2.14
   resolution: "birpc@npm:0.2.14"
   checksum: bf706eae9a0d02d239a6cba48413aec77e20e2a5440b551311b7adf8621a8d932fba0adc4697ceb28b3a6b4a36fcd08a070d28e4dfa3b4b7895dcb6b1b47bcf5
@@ -6667,7 +6667,7 @@ __metadata:
     vite: 4.4.9
     vite-plugin-compression2: 0.10.4
     vite-plugin-pwa: 0.16.5
-    vite-plugin-vue-devtools: 1.0.0-rc.3
+    vite-plugin-vue-devtools: 1.0.0-rc.4
     vite-plugin-vuetify: 1.0.2
     vitest: 0.34.1
     vue: 3.3.4
@@ -7752,7 +7752,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-hot-client@npm:^0.2.1":
+"vite-hot-client@npm:^0.2.2":
   version: 0.2.2
   resolution: "vite-hot-client@npm:0.2.2"
   peerDependencies:
@@ -7824,24 +7824,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-devtools@npm:1.0.0-rc.3":
-  version: 1.0.0-rc.3
-  resolution: "vite-plugin-vue-devtools@npm:1.0.0-rc.3"
+"vite-plugin-vue-devtools@npm:1.0.0-rc.4":
+  version: 1.0.0-rc.4
+  resolution: "vite-plugin-vue-devtools@npm:1.0.0-rc.4"
   dependencies:
-    "@vite-plugin-vue-devtools/core": 1.0.0-rc.3
+    "@vite-plugin-vue-devtools/core": 1.0.0-rc.4
     "@webfansplz/vuedoc-parser": ^0.0.4
-    birpc: ^0.2.13
+    birpc: ^0.2.14
     execa: ^8.0.1
     sirv: ^2.0.3
     vite-plugin-inspect: ^0.7.38
-    vite-plugin-vue-inspector: ^3.6.0
+    vite-plugin-vue-inspector: ^3.7.1
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0
-  checksum: 4bebcd99288f573a70eb03da80ba21b4f4e645284b5e45e71501e1df66e91d58f3e5fb8ebf697ec484ceb774a7e4100a896bea4b55e538546c9a15a8a5bf87ef
+  checksum: 1b413f9c09ed7cfa1a5dab35f23fbce026a67b6338392e765098c0d27f9eda49d51ebb63f0cd22e279e273b0bfacf604570ec3db1987e06197d63db8a3aa5c0a
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-inspector@npm:^3.6.0":
+"vite-plugin-vue-inspector@npm:^3.7.1":
   version: 3.7.1
   resolution: "vite-plugin-vue-inspector@npm:3.7.1"
   dependencies:
