@@ -85,7 +85,7 @@ export interface GlassesResult extends Glasses {
   osScore: number
 }
 
-/** Input to PhilScore function, correctly parsed Eye with isBal */
+/** Input to PhilScore function, correctly parsed Eye with isBAL */
 export interface EyeSearch extends DisplayedEye {
   // is balance lens => ignore this eye and search for similar sphere only
   isBAL: boolean

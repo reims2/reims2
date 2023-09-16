@@ -35,12 +35,11 @@ export const useAddGlasses = (onSuccessFn?: () => void) => {
       if (syncEyes.value) osEye.value.add = newVal
     },
   )
-  watch(
-    () => osEye.value.add,
-    (newVal, oldVal) => {
-      if (newVal !== oldVal && !oldVal) syncEyes.value = false
-    },
-  )
+
+  function updateOsEye(newValue: DisplayedEye) {
+    if (newValue.add !== osEye.value.add) syncEyes.value = false
+    osEye.value = newValue
+  }
 
   watch(allGlasses, () => {
     // Filter out deleted glasses
@@ -99,6 +98,7 @@ export const useAddGlasses = (onSuccessFn?: () => void) => {
     isMultifocal,
     lastAdded,
     freeSlots,
+    updateOsEye,
     submit,
     reset,
   }

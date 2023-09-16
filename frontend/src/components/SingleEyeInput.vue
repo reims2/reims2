@@ -2,7 +2,7 @@
   <div>
     <v-row dense>
       <v-col class="text-h5 pb-2">
-        <div :class="isBal ? 'text-medium-emphasis' : ''">
+        <div :class="isBAL ? 'text-medium-emphasis' : ''">
           {{ eyeName }}
         </div>
       </v-col>
@@ -12,9 +12,9 @@
           type="number"
           :model-value="eyeData[eyeKey].value"
           :label="eyeData[eyeKey].label"
-          :rules="!(eyeData[eyeKey].disabled || isBal) ? eyeRules[eyeKey] : []"
+          :rules="!(eyeData[eyeKey].disabled || isBAL) ? eyeRules[eyeKey] : []"
           :step="eyeData[eyeKey].step"
-          :disabled="eyeData[eyeKey].disabled || isBal"
+          :disabled="eyeData[eyeKey].disabled || isBAL"
           :prefix="eyeData[eyeKey].value != null ? eyeData[eyeKey].prefix : ''"
           @update:model-value="(val) => emitUpdate(eyeKey, val)"
           @blur="formatAndEmit(eyeKey)"
@@ -26,7 +26,7 @@
       <v-col cols="12" class="pa-0 pb-4">
         <v-checkbox
           v-if="balEnabled"
-          v-model="isBal"
+          v-model="isBAL"
           tabindex="-1"
           class="py-0 my-0"
           :label="`BAL lens (Disable ${eyeName})`"
@@ -39,10 +39,10 @@
 
 <script setup lang="ts">
 import { eyeRules, isValidForRules } from '@/util/glasses-utils'
-import { DisplayedEye, Eye, EyeKey, eyeKeys } from '@/model/GlassesModel'
+import { DisplayedEye, Eye, EyeKey, EyeSearch, eyeKeys } from '@/model/GlassesModel'
 
 interface Props {
-  modelValue: DisplayedEye & { isBAL?: boolean | null }
+  modelValue: DisplayedEye & { isBAL?: boolean }
   eyeName: string
   addEnabled: boolean
   balEnabled?: boolean
@@ -53,7 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  'update:modelValue': [DisplayedEye]
+  'update:modelValue': [DisplayedEye & { isBAL?: boolean }]
 }>()
 
 type EyeData = {
@@ -64,7 +64,6 @@ type EyeData = {
   disabled?: boolean
 }
 type EyeDataMap = {
-  // eslint-disable-next-line no-unused-vars
   [key in EyeKey]: EyeData
 }
 const eyeData = computed<EyeDataMap>(() => {
@@ -95,13 +94,12 @@ const eyeData = computed<EyeDataMap>(() => {
   }
 })
 
-const isBal = computed({
+const isBAL = computed({
   get() {
-    return props.modelValue.isBAL || false
+    return props.modelValue.isBAL ?? false
   },
   set(val: boolean | undefined) {
-    const eye = { ...props.modelValue }
-    eye.isBAL = val
+    const eye: EyeSearch = { ...props.modelValue, isBAL: val ?? false }
     emit('update:modelValue', eye)
   },
 })
