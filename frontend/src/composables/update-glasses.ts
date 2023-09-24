@@ -17,7 +17,7 @@ export const useUpdatesGlassesInterval = () => {
   watchThrottled(
     [isOnline, now],
     () => {
-      if (dayjs(now.value).diff(lastRefresh.value, 'minute') >= 5) {
+      if (dayjs(now.value).diff(lastRefresh.value, 'minute') >= 15) {
         updateGlasses()
       }
     },
