@@ -39,7 +39,7 @@ export const useAxios = () => {
   const token = computed(() => authStore.accessToken)
 
   const instance = axios.create({
-    timeout: 8000,
+    timeout: 12000,
   })
 
   instance.interceptors.response.use(
