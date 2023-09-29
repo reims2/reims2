@@ -1818,6 +1818,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nolyfill/es-aggregate-error@npm:^1.0.21":
+  version: 1.0.21
+  resolution: "@nolyfill/es-aggregate-error@npm:1.0.21"
+  dependencies:
+    "@nolyfill/shared": 1.0.21
+  checksum: b885ba62be34d05aad18af4f5a3e1ebd588ffa969d3c7ae4abfa56c1836f9e8cfbb607761dc0b382b572d79c5919808e8239692c2d697bfabb02478799fc7c86
+  languageName: node
+  linkType: hard
+
+"@nolyfill/shared@npm:1.0.21":
+  version: 1.0.21
+  resolution: "@nolyfill/shared@npm:1.0.21"
+  checksum: 6b0a3044bdc2c5b50cfb5a83ba29e78a0012d0321256b728c6f78b5ed3dff247112ea942ca49c38d0c9a8680adbe662eac3d8007cf27f143f0b600f4910100be
+  languageName: node
+  linkType: hard
+
 "@npmcli/fs@npm:^3.1.0":
   version: 3.1.0
   resolution: "@npmcli/fs@npm:3.1.0"
@@ -6660,7 +6676,7 @@ __metadata:
     typescript: 5.2.2
     unplugin-auto-import: 0.16.6
     vite: 4.4.9
-    vite-plugin-compression2: 0.10.4
+    vite-plugin-compression2: 0.10.5
     vite-plugin-pwa: 0.16.5
     vite-plugin-vue-devtools: 1.0.0-rc.4
     vite-plugin-vuetify: 1.0.2
@@ -7763,12 +7779,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-compression2@npm:0.10.4":
-  version: 0.10.4
-  resolution: "vite-plugin-compression2@npm:0.10.4"
+"vite-plugin-compression2@npm:0.10.5":
+  version: 0.10.5
+  resolution: "vite-plugin-compression2@npm:0.10.5"
   dependencies:
+    "@nolyfill/es-aggregate-error": ^1.0.21
     "@rollup/pluginutils": ^5.0.2
-  checksum: 7d32422c8c52ebdce4b69130dfacc9ff258faded4b5496a6f14e382b45cd499f2e79c1cbda49188f7db77d7505f9adeaf92f2b39572a6d3b5f9ef64a58d87fd3
+  checksum: b4667d1fced63b8d5904d60dd71a1ded6b449cc6e9614af07a5ae6b3f87423603041b86533d394a6b961907457dbc4d980c74439fc162df00d484836f8c20475
   languageName: node
   linkType: hard
 
