@@ -2273,9 +2273,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vite-plugin-vue-devtools/core@npm:1.0.0-rc.4":
-  version: 1.0.0-rc.4
-  resolution: "@vite-plugin-vue-devtools/core@npm:1.0.0-rc.4"
+"@vite-plugin-vue-devtools/core@npm:1.0.0-rc.5":
+  version: 1.0.0-rc.5
+  resolution: "@vite-plugin-vue-devtools/core@npm:1.0.0-rc.5"
   dependencies:
     "@babel/parser": ^7.22.16
     birpc: ^0.2.14
@@ -2284,7 +2284,7 @@ __metadata:
     vite-hot-client: ^0.2.2
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0
-  checksum: 41ada9b8a6e92e3b1fddc548a0d2ba34704f021abbecdab51e8dc1b3eeb1d1145c7ef9fe83a30e262e02396dfd5c6b32be3fcef537b1bc10bd787726df1e8137
+  checksum: 3d970893bbc3e879f1ba99d0cb78ea3af94e224c7e3f292c902332526ff6412eb7862fa7005bb0d3274ea7ecb576342c0e334742d8e79ff738641748af8db74f
   languageName: node
   linkType: hard
 
@@ -6678,7 +6678,7 @@ __metadata:
     vite: 4.4.9
     vite-plugin-compression2: 0.10.5
     vite-plugin-pwa: 0.16.5
-    vite-plugin-vue-devtools: 1.0.0-rc.4
+    vite-plugin-vue-devtools: 1.0.0-rc.5
     vite-plugin-vuetify: 1.0.2
     vitest: 0.34.1
     vue: 3.3.4
@@ -7827,11 +7827,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-devtools@npm:1.0.0-rc.4":
-  version: 1.0.0-rc.4
-  resolution: "vite-plugin-vue-devtools@npm:1.0.0-rc.4"
+"vite-plugin-vue-devtools@npm:1.0.0-rc.5":
+  version: 1.0.0-rc.5
+  resolution: "vite-plugin-vue-devtools@npm:1.0.0-rc.5"
   dependencies:
-    "@vite-plugin-vue-devtools/core": 1.0.0-rc.4
+    "@vite-plugin-vue-devtools/core": 1.0.0-rc.5
     "@webfansplz/vuedoc-parser": ^0.0.4
     birpc: ^0.2.14
     execa: ^8.0.1
@@ -7840,7 +7840,7 @@ __metadata:
     vite-plugin-vue-inspector: ^3.7.1
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0
-  checksum: 1b413f9c09ed7cfa1a5dab35f23fbce026a67b6338392e765098c0d27f9eda49d51ebb63f0cd22e279e273b0bfacf604570ec3db1987e06197d63db8a3aa5c0a
+  checksum: 7798e308268db329e094dbfbc40c5a9ed666060aa52316f66a94fda55610a5b68b3cc39f554da38acd80d0c7019733aa413fa5d834cd13a124cb33097df360aa
   languageName: node
   linkType: hard
 
