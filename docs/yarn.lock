@@ -455,6 +455,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/linkify-it@npm:*":
+  version: 3.0.3
+  resolution: "@types/linkify-it@npm:3.0.3"
+  checksum: a734becc4e7476833b0e6951ec133c006a34809639c722d3e28b7cf88f5f6ccbb433f195788be5e56209b1e9e6e0778879291dd2db401acee3bb585c44dcc329
+  languageName: node
+  linkType: hard
+
+"@types/markdown-it@npm:^13.0.1":
+  version: 13.0.2
+  resolution: "@types/markdown-it@npm:13.0.2"
+  dependencies:
+    "@types/linkify-it": "*"
+    "@types/mdurl": "*"
+  checksum: fe1f6a12ee8ad2246359376431a30d22c9b603e63e93e3e27d6920840934b9764034679a4d0b01ec54b0693c8d5c42012ec34715cba4f5b0736b8a4b66db4c74
+  languageName: node
+  linkType: hard
+
+"@types/mdurl@npm:*":
+  version: 1.0.3
+  resolution: "@types/mdurl@npm:1.0.3"
+  checksum: 5bbed4f0eb9f60040fa26be77aa2158ca468b6423876cec0d2043e7f8298e83b8e5b95fb66056327b02d747c4d376aed16c11ff3fdc4cb3dca327a6931a71f18
+  languageName: node
+  linkType: hard
+
 "@types/web-bluetooth@npm:^0.0.17":
   version: 0.0.17
   resolution: "@types/web-bluetooth@npm:0.0.17"
@@ -1685,7 +1709,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    vitepress: 1.0.0-rc.14
+    vitepress: 1.0.0-rc.20
   languageName: unknown
   linkType: soft
 
@@ -1949,12 +1973,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitepress@npm:1.0.0-rc.14":
-  version: 1.0.0-rc.14
-  resolution: "vitepress@npm:1.0.0-rc.14"
+"vitepress@npm:1.0.0-rc.20":
+  version: 1.0.0-rc.20
+  resolution: "vitepress@npm:1.0.0-rc.20"
   dependencies:
     "@docsearch/css": ^3.5.2
     "@docsearch/js": ^3.5.2
+    "@types/markdown-it": ^13.0.1
     "@vue/devtools-api": ^6.5.0
     "@vueuse/core": ^10.4.1
     "@vueuse/integrations": ^10.4.1
@@ -1966,12 +1991,15 @@ __metadata:
     vue: ^3.3.4
   peerDependencies:
     markdown-it-mathjax3: ^4.3.2
+    postcss: ^8.4.30
   peerDependenciesMeta:
     markdown-it-mathjax3:
       optional: true
+    postcss:
+      optional: true
   bin:
     vitepress: bin/vitepress.js
-  checksum: fc1f6a537ca2873f230a871719e2159e8293a8df92f92d245c2be258aba4e38f0c40e47970ffc4805c6e7d82a09ee577c2bfa2fcc9ef8d7c8972f09ebbfa7ae8
+  checksum: 8ae9326554ea0bd1a4037d275f05a3a37a2b5b34f5b40ac40058fdceba10848ff11cad5adb6b91db72e33e28389dfa6931213668f484db4202ad814b2b2d239c
   languageName: node
   linkType: hard
 
