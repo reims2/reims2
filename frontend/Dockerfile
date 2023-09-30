@@ -1,4 +1,4 @@
-FROM node:20@sha256:d327a809e8043487432b314189f2662143c4e1be8c45329dfac58aca67847e30 AS build
+FROM node:20@sha256:6b3f9aa7eefa8d4c93d43914e78aa2bfea9a12808b0059e5da78854dfa8b8768 AS build
 RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
 WORKDIR /usr/src/app
