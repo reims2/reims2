@@ -49,7 +49,7 @@ export default function calculateAllPhilscore(
     .sort((a, b) => (a.score > b.score ? 1 : -1))
 }
 
-function checkForSingleAxisTolerance(rx: Eye, lens: Eye): boolean {
+export function checkForSingleAxisTolerance(rx: Eye, lens: Eye): boolean {
   /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
   // Some arbitrary numbers from the PDF, in short: Smaller cylinders allow for a greater tolerance.
   const toleranceYValues = [7, 8, 9, 10, 13, 15, 20, 25, 35, 90]
@@ -210,14 +210,14 @@ export function sphericalEquivalentScore(
   return 0
 }
 
-function multiFocalAddScore(rxAdd: number, lensAdd: number): number {
+export function multiFocalAddScore(rxAdd: number, lensAdd: number): number {
   if (lensAdd > rxAdd) {
     return -(lensAdd - rxAdd) / 100
   }
   return 0
 }
 
-function calcSphericalEquivalents(
+export function calcSphericalEquivalents(
   rxSphere: number,
   rxCylinder: number,
 ): { sphere: number; cylinder: number }[] {
