@@ -7,6 +7,7 @@ This is a page for meeting notes and all the ideas I had while exploring the cur
 - Do we have a SKU 0? What's with SKU 5000 and 10000 then?
 - admin account
 - other orgs
+- philscore docs notes
 
 ## Ideas
 
@@ -23,7 +24,7 @@ Most of them are just nice-to-have and could be done after the rewrite as a QOL 
 - empty cyl = 0
 - change wording leading zeros
 - horizotnal input fields would be nicer
-  
+
 ## 6.4.22 Feedback analysis
 
 ### Find

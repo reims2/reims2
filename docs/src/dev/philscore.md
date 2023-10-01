@@ -74,6 +74,21 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
 - Not sure why steps 3 and 4 are only applied when previous steps did not apply. Maybe change that?
 - Use a better (=> higher) weight for the additional delta in the initial Philscore. That way we can avoid the filtering by additional.
 - Use a better weight (maybe even nonlinear based on lens cylinder) for the axis, so we can avoid the filtering by axis.
+- Spherical equivs: Can they go negative like this?
+  ```json
+     {
+        cylinder: -1,
+        sphere: 0.25,
+     },
+     {
+        cylinder: -0.5,
+        sphere: 0.0,
+     },
+     {
+        cylinder: 0.0,
+        sphere: -0.25,
+     }
+  ```
 
 ## Further reading
 
