@@ -97,7 +97,7 @@ function checkForTolerances(lens: Eye, rx: Eye, tolerance: number): boolean {
 }
 
 function checkForAdditionalTolerance(eye: Eye, rx: Eye, tolerance: number): boolean {
-  if (eye.add === undefined || rx.add === undefined) return true
+  if (!hasAdd(eye) || !hasAdd(rx)) return false
   return Math.abs(eye.add - rx.add) <= tolerance
 }
 
@@ -107,6 +107,21 @@ function calcSingleEyePhilscore(rx: Eye, lens: Eye, isSinglefocal: boolean): num
    * lens: single eye of one available glasses
    * glassesType: single or multifocal
    */
+  const initScore = calcInitialDiffScore(rx, lens, isSinglefocal)
+  let score = initScore
+
+  /* In the following that score gets improved (=smaller) or worse (=bigger) to account for some optometry special cases */
+
+  score += applyMutuallyExclusiveRules(score, rx, lens)
+
+  if (!isSinglefocal) score += multiFocalAddScore(rx.add, lens.add)
+
+  score += smallerLensSphereScore(rx.sphere, lens.sphere)
+
+  return score
+}
+
+function calcInitialDiffScore(rx: Eye, lens: Eye, isSinglefocal: boolean): number {
   const sphereDiff = Math.abs(lens.sphere - rx.sphere)
   const cylinderDiff = Math.abs(lens.cylinder - rx.cylinder)
   const addDiff = !isSinglefocal && hasAdd(lens) && hasAdd(rx) ? Math.abs(lens.add - rx.add) : 0
@@ -115,26 +130,24 @@ function calcSingleEyePhilscore(rx: Eye, lens: Eye, isSinglefocal: boolean): num
   axisDiff = axisDiff > 90 ? 180 - axisDiff : axisDiff // account for wraparound (e.g. 190 is 10 in reality)
 
   // This is our main score, weighting the difference of glass and lens on all parameters
-  const initScore = sphereDiff + cylinderDiff + addDiff * 0.1 + axisDiff / 3600
-  let score = initScore
+  return sphereDiff + cylinderDiff + addDiff * 0.1 + axisDiff / 3600
+}
 
-  /* In the following that score gets improved (=smaller) or worse (=bigger) based on a few rules to account for some optometry special cases */
-
-  // Those first 3 rules are applied mutually exclusive in order (as soon as one applies, the others aren't applied). Why? No one knows
+function applyMutuallyExclusiveRules(score: number, rx: Eye, lens: Eye): number {
+  // Those 3 rules are applied mutually exclusive in order (i.e. as soon as one applies, the others aren't applied). Why? No one knows.
+  // But otherwise we could have scores below zero, so maybe bc of that?
   let diff = 0
-  if (diff === 0)
-    diff = sphericalEquivalentScore(rx.sphere, lens.sphere, rx.cylinder, lens.cylinder)
-  if (diff === 0) diff = contraryDiffsScore(rx.sphere, lens.sphere, rx.cylinder, lens.cylinder)
-  if (diff === 0) diff = equalSphereAndSmallCylinderScore(rx.sphere, lens.sphere, cylinderDiff)
 
-  score += diff
+  diff = sphericalEquivalentScore(rx.sphere, lens.sphere, rx.cylinder, lens.cylinder)
+  if (diff !== 0) return diff
 
-  if (!isSinglefocal && hasAdd(rx) && hasAdd(lens)) {
-    score += multiFocalAddScore(rx.add, lens.add)
-  }
-  score += smallerLensSphereScore(rx.sphere, lens.sphere)
+  diff = contraryDiffsScore(rx.sphere, lens.sphere, rx.cylinder, lens.cylinder)
+  if (diff !== 0) return diff
 
-  return score
+  diff = equalSphereAndSmallCylinderScore(rx.sphere, lens.sphere, rx.cylinder, lens.cylinder)
+  if (diff !== 0) return diff
+
+  return 0
 }
 
 export function smallerLensSphereScore(rxSphere: number, lensSphere: number): number {
@@ -148,12 +161,14 @@ export function smallerLensSphereScore(rxSphere: number, lensSphere: number): nu
 export function equalSphereAndSmallCylinderScore(
   rxSphere: number,
   lensSphere: number,
-  cylinderDiff: number,
+  rxCylinder: number,
+  lensCylinder: number,
 ): number {
   /**
    * If sphere matches and the cylinder difference is small, substract an additonal amount
    * because this makes the glasses near perfect even though they have a difference in cylinder
    */
+  const cylinderDiff = Math.abs(lensCylinder - rxCylinder)
   if (rxSphere === lensSphere && cylinderDiff !== 0 && cylinderDiff <= 0.75) {
     return -0.12
   }
@@ -210,7 +225,8 @@ export function sphericalEquivalentScore(
   return 0
 }
 
-export function multiFocalAddScore(rxAdd: number, lensAdd: number): number {
+export function multiFocalAddScore(rxAdd: number | undefined, lensAdd: number | undefined): number {
+  if (rxAdd == null || lensAdd == null) return 0
   if (lensAdd > rxAdd) {
     return -(lensAdd - rxAdd) / 100
   }
