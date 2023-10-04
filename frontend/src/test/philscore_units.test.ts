@@ -11,19 +11,19 @@ import { test, expect } from 'vitest'
 /** equalSphereAndSmallCylinderScore tests */
 
 test('equal sphere and small cylinder diff returns negative score', () => {
-  expect(equalSphereAndSmallCylinderScore(1, 1, 0.1)).toBe(-0.12)
+  expect(equalSphereAndSmallCylinderScore(1, 1, 1, 0.75)).toBe(-0.12)
 })
 
 test('unequal sphere and small cylinder diff returns no score', () => {
-  expect(equalSphereAndSmallCylinderScore(1, 0, 0.1)).toBe(0)
+  expect(equalSphereAndSmallCylinderScore(1, 0, 1, 0.75)).toBe(0)
 })
 
 test('equal sphere and big cylinder diff returns no score', () => {
-  expect(equalSphereAndSmallCylinderScore(1, 1, 1)).toBe(0)
+  expect(equalSphereAndSmallCylinderScore(1, 1, 1, 2)).toBe(0)
 })
 
 test('equal sphere and no cylinder diff returns no score', () => {
-  expect(equalSphereAndSmallCylinderScore(1, 1, 0)).toBe(0)
+  expect(equalSphereAndSmallCylinderScore(1, 1, 1, 1)).toBe(0)
 })
 
 /** smallerLensSphereScore tests */
