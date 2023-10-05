@@ -1,4 +1,11 @@
-import { Glasses, Eye, GlassesSearch, GlassesResult, hasAdd } from '@/model/GlassesModel'
+import {
+  Glasses,
+  Eye,
+  GlassesSearch,
+  GlassesResult,
+  hasAdd,
+  SanitizedEyeSearch,
+} from '@/model/GlassesModel'
 
 // glasses with a philscore higher than this will be removed
 const PHILSCORE_CUT_OFF = 10
@@ -19,20 +26,8 @@ export default function calculateAllPhilscore(
   return glasses
     .slice()
     .filter((glass) => terms.glassesType === glass.glassesType)
-    .filter((glass) => rxOd.isBAL || checkForSingleAxisTolerance(rxOd, glass.od))
-    .filter((glass) => rxOs.isBAL || checkForSingleAxisTolerance(rxOd, glass.os))
-    .filter((glass) => rxOd.isBAL || checkForTolerances(glass.od, rxOd, tolerance))
-    .filter((glass) => rxOs.isBAL || checkForTolerances(glass.os, rxOs, tolerance))
-    .filter((glass) => !rxOd.isBAL || checkForTolerances(glass.od, rxOs, 1.0))
-    .filter((glass) => !rxOs.isBAL || checkForTolerances(glass.os, rxOd, 1.0))
-    .filter(
-      (glass) =>
-        isSinglefocal || rxOd.isBAL || checkForAdditionalTolerance(glass.od, rxOd, tolerance),
-    )
-    .filter(
-      (glass) =>
-        isSinglefocal || rxOs.isBAL || checkForAdditionalTolerance(glass.os, rxOs, tolerance),
-    )
+    .filter((glass) => filterLens(rxOd, glass.od, tolerance, isSinglefocal, rxOs))
+    .filter((glass) => filterLens(rxOs, glass.os, tolerance, isSinglefocal, rxOd))
     .map((glass) => {
       const odScore = rxOd.isBAL ? 0 : calcSingleEyePhilscore(rxOd, glass.od, isSinglefocal)
       const osScore = rxOs.isBAL ? 0 : calcSingleEyePhilscore(rxOs, glass.os, isSinglefocal)
@@ -47,6 +42,24 @@ export default function calculateAllPhilscore(
     })
     .filter((glass) => glass.score <= PHILSCORE_CUT_OFF)
     .sort((a, b) => (a.score > b.score ? 1 : -1))
+}
+
+function filterLens(
+  targetEyeRx: SanitizedEyeSearch,
+  lens: Eye,
+  tolerance: number,
+  isSinglefocal: boolean,
+  otherEyeRx: SanitizedEyeSearch,
+): boolean {
+  if (!targetEyeRx.isBAL) {
+    if (!checkForSingleAxisTolerance(targetEyeRx, lens)) return false
+    if (!checkForTolerances(lens, targetEyeRx, tolerance)) return false
+    if (!isSinglefocal && !checkForAdditionalTolerance(lens, targetEyeRx, tolerance)) return false
+  } else {
+    // is disabled/BAL, so check for RX of other eye
+    if (!checkForTolerances(lens, otherEyeRx, 1.0)) return false
+  }
+  return true
 }
 
 function calcAxisTolerance(cylinder: number): number {
@@ -217,7 +230,7 @@ function sphericalEquivalentScore(
 ): number {
   /**
    * Account for the fact that one can transform glasses based on sphere+cylinder
-   * adding a value to Rx cylinder and subtracting half of that value from the Rx sphere, will give you roughly the same Rx. (but remember cyl > 0 not possible)
+   * adding a value to Rx cylinder and subtracting half of that value from the Rx sphere, will give you roughly the same Rx. (hint: cyl > 0 is not a valid input)
    */
   const cylinderDiff = Math.abs(lensCylinder - rxCylinder)
   if (
