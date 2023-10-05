@@ -62,7 +62,7 @@ function calcAxisTolerance(cylinder: number): number {
   return result
 }
 
-export function checkForSingleAxisTolerance(rx: Eye, lens: Eye): boolean {
+function checkForSingleAxisTolerance(rx: Eye, lens: Eye): boolean {
   /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
   const allowedTolerance = calcAxisTolerance(lens.cylinder)
 
@@ -155,7 +155,7 @@ function applyMutuallyExclusiveRules(score: number, rx: Eye, lens: Eye): number 
   return 0
 }
 
-export function smallerLensSphereScore(rxSphere: number, lensSphere: number): number {
+function smallerLensSphereScore(rxSphere: number, lensSphere: number): number {
   if (rxSphere > lensSphere && rxSphere > 0) {
     // ADDING to the score, so it seems to be bad if that is the case
     return +0.25
@@ -163,7 +163,7 @@ export function smallerLensSphereScore(rxSphere: number, lensSphere: number): nu
   return 0
 }
 
-export function equalSphereAndSmallCylinderScore(
+function equalSphereAndSmallCylinderScore(
   rxSphere: number,
   lensSphere: number,
   rxCylinder: number,
@@ -180,7 +180,7 @@ export function equalSphereAndSmallCylinderScore(
   return 0
 }
 
-export function contraryDiffsScore(
+function contraryDiffsScore(
   rxSphere: number,
   lensSphere: number,
   rxCylinder: number,
@@ -209,7 +209,7 @@ export function contraryDiffsScore(
   return 0
 }
 
-export function sphericalEquivalentScore(
+function sphericalEquivalentScore(
   rxSphere: number,
   lensSphere: number,
   rxCylinder: number,
@@ -230,7 +230,7 @@ export function sphericalEquivalentScore(
   return 0
 }
 
-export function multiFocalAddScore(rxAdd: number | undefined, lensAdd: number | undefined): number {
+function multiFocalAddScore(rxAdd: number | undefined, lensAdd: number | undefined): number {
   if (rxAdd == null || lensAdd == null) return 0
   if (lensAdd > rxAdd) {
     return -(lensAdd - rxAdd) / 100
@@ -238,7 +238,7 @@ export function multiFocalAddScore(rxAdd: number | undefined, lensAdd: number | 
   return 0
 }
 
-export function calcSphericalEquivalents(
+function calcSphericalEquivalents(
   rxSphere: number,
   rxCylinder: number,
 ): { sphere: number; cylinder: number }[] {
