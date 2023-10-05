@@ -197,6 +197,22 @@ test('Filter based on bigger axis diff when lens cylinder is big too', () => {
   expect(result).toHaveLength(0)
 })
 
+test('Dont filter axis diff also if there is no wraparound', () => {
+  // same as above, but with smaller cylinder
+  const glasses = createGlassesEqualOdOs('single', {
+    sphere: 0,
+    cylinder: -1,
+    axis: 80,
+  })
+  const search = createSearchEqualLens('single', {
+    sphere: 0,
+    cylinder: -1,
+    axis: 75,
+  })
+  const result = calculateAllPhilscore(search, glasses)
+  expect(result).toHaveLength(1)
+})
+
 test('Dont filter bigger axis diff if (lens) cylinder is small', () => {
   // same as above, but with smaller cylinder
   const glasses = createGlassesEqualOdOs('single', {
