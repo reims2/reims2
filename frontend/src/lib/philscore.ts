@@ -49,23 +49,28 @@ export default function calculateAllPhilscore(
     .sort((a, b) => (a.score > b.score ? 1 : -1))
 }
 
-export function checkForSingleAxisTolerance(rx: Eye, lens: Eye): boolean {
-  /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
-  // Some arbitrary numbers from the PDF, in short: Smaller cylinders allow for a greater tolerance.
+function calcAxisTolerance(cylinder: number): number {
+  // Some arbitrary numbers from REIMS1, in short: Smaller cylinders allow for a greater tolerance.
   const toleranceYValues = [7, 8, 9, 10, 13, 15, 20, 25, 35, 90]
   const toleranceXValues = [-4, -3, -2, -1.75, -1.25, -1, -0.75, -0.5, -0.25, 0]
   // Implement simple "lookup table"
-  let selectedTolerance = toleranceYValues[0]
+  let result = toleranceYValues[0]
   for (let i = 0; i < toleranceXValues.length; i++) {
-    if (lens.cylinder < toleranceXValues[i]) break
-    selectedTolerance = toleranceYValues[i]
+    if (cylinder < toleranceXValues[i]) break
+    result = toleranceYValues[i]
   }
+  return result
+}
+
+export function checkForSingleAxisTolerance(rx: Eye, lens: Eye): boolean {
+  /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
+  const allowedTolerance = calcAxisTolerance(lens.cylinder)
 
   // Now calculate the minima and maxima. We have two pairs of min and max because we have to account for "wraparound"
   // An axis of 0 with a tolerance of plus and minus 10, has to be between 170-180 and 0-10, because 180 wraps around to 0.
   // This is all we do here really
-  const axisSub = rx.axis - selectedTolerance
-  const axisAdd = rx.axis + selectedTolerance
+  const axisSub = rx.axis - allowedTolerance
+  const axisAdd = rx.axis + allowedTolerance
 
   const minimum1 = axisAdd > 180 || axisSub < 0 ? 0 : axisSub
   const maximum1 = axisAdd > 180 ? axisAdd - 180 : axisAdd
@@ -239,7 +244,7 @@ export function calcSphericalEquivalents(
 ): { sphere: number; cylinder: number }[] {
   /**
    * Calculates all spherical equivalents for provided rxSphere and rxCylinder.
-   * Returns those including the original rxSphere+rxCylinder
+   * Returns those, including the original rxSphere+rxCylinder
    */
   const equivalents = [{ sphere: rxSphere, cylinder: rxCylinder }]
   if (rxCylinder <= -0.5) equivalents.push({ sphere: rxSphere - 0.25, cylinder: rxCylinder + 0.5 })
