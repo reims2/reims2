@@ -105,7 +105,7 @@ import { DisplayedEye, EyeSearch } from '@/model/GlassesModel'
 import { glassesMetaUIData } from '@/util/glasses-utils'
 import { resetEyeInput } from '@/util/eye-utils'
 
-import { useEnterToTab } from '@/lib/enter-to-tab'
+import { useEnterToTab } from 'vue3-enter-to-tab'
 import { useFindGlasses } from '@/composables/find'
 import { useDisplay } from 'vuetify'
 
