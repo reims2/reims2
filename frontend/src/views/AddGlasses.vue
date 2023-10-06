@@ -86,7 +86,7 @@
 import { glassesMetaUIData } from '@/util/glasses-utils'
 
 import { useRootStore } from '@/stores/root'
-import { useEnterToTab } from '@/lib/enter-to-tab'
+import { useEnterToTab } from 'vue3-enter-to-tab'
 
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
