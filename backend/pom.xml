@@ -304,7 +304,7 @@
                         <annotationProcessorPath>
                             <groupId>org.hibernate</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
-                            <version>6.2.13.Final</version>
+                            <version>6.3.1.Final</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>
