@@ -1,9 +1,14 @@
 package org.pvh.model.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NegativeOrZero;
+import jakarta.validation.constraints.PositiveOrZero;
 
 /**
  * A DTO for the {@link org.pvh.model.entity.Eye} entity

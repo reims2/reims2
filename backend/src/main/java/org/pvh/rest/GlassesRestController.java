@@ -3,6 +3,10 @@ package org.pvh.rest;
 
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+
 import org.pvh.error.NoSkusLeftException;
 import org.pvh.error.PVHException;
 import org.pvh.model.dto.GlassesRequestDTO;
@@ -30,10 +34,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.google.common.hash.Hashing;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;

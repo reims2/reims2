@@ -2,8 +2,7 @@ package org.pvh.security.model.entity;
 
 import org.pvh.security.model.enums.ERole;
 
-import javax.persistence.*;
-
+import jakarta.persistence.*;
 @Entity
 @Table(name = "roles")
 public class Role {

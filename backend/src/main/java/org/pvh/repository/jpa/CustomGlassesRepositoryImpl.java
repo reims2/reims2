@@ -5,9 +5,10 @@ import org.pvh.model.entity.Glasses;
 import org.pvh.repository.CustomGlassesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
+
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -38,7 +39,7 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
 
             try {
                 // JPA returns BigInteger even though it really is just a java int => convert it
-                nextSKU = ((BigInteger) findNextSKUQuery.getSingleResult()).intValue();
+                nextSKU = ((Number)findNextSKUQuery.getSingleResult()).intValue();
             } catch (NoResultException e) {
                 throw new NoSkusLeftException("No free SKU");
             }

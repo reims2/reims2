@@ -1,9 +1,15 @@
 package org.pvh.model.dto;
 
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+
+import org.pvh.model.enums.AppearanceEnum;
+import org.pvh.model.enums.GlassesSizeEnum;
+import org.pvh.model.enums.GlassesTypeEnum;
+import org.pvh.model.validator.IEnumValidator;
+
+import jakarta.validation.constraints.Pattern;
 
 /**
  * A DTO for the {@link org.pvh.model.entity.Glasses} entity
@@ -12,8 +18,11 @@ public class GlassesResponseDTO implements Serializable {
 
     private Long id;
     private Integer sku;
+    @IEnumValidator(enumClass = GlassesTypeEnum.class)
     private String glassesType;
+    @IEnumValidator(enumClass = GlassesSizeEnum.class)
     private String glassesSize;
+    @IEnumValidator(enumClass = AppearanceEnum.class)
     private String appearance;
     @Pattern(regexp = "sm|sa")
     private String location;

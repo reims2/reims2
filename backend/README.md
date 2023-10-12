@@ -12,11 +12,13 @@ export PVH_JWT_SECRET=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNe
 ```
 
 Then you can the API Endpoints via:
-http://localhost:9966/pvh/api/glasses
+http://localhost:9966/api/glasses
 
 # Swagger Documentation
 
-http://localhost:9966/pvh/v2/api-docs
+http://localhost:9966/v3/api-docs
+
+http://localhost:9966/swagger-ui/index.html
 
 # Security
 
@@ -43,7 +45,7 @@ Or, with a one-liner in curl
 Then you can log in with:
 
 ```
-http://localhost:9966/pvh/api/auth/signin
+http://localhost:9966/api/auth/signin
 ```
 
 With Following Example Body:

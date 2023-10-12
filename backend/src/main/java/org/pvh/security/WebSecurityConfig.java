@@ -46,9 +46,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, AuthEntryPointJwt unauthorizedHandler) throws Exception {
         http.cors().and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/test/**").permitAll().antMatchers("/api")
-                .permitAll().antMatchers("/error").permitAll().antMatchers("/")
+                .authorizeRequests().requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/test/**").permitAll().requestMatchers("/api")
+                .permitAll().requestMatchers("/error").permitAll().requestMatchers("/")
                 .permitAll().anyRequest().authenticated().and().csrf().disable();
         // .csrf()
         // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
@@ -59,7 +59,7 @@ public class WebSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().antMatchers("/swagger-ui.html/**", "/configuration/**", "/swagger-resources/**", "/v2/api-docs",
+        return web -> web.ignoring().requestMatchers("/swagger-ui.html/**", "/configuration/**", "/swagger-resources/**", "/v2/api-docs",
                 "/webjars/**");
     }
 

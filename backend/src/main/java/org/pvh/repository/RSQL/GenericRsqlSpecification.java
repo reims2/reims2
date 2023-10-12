@@ -1,14 +1,20 @@
 package org.pvh.repository.RSQL;
 
 import cz.jirutka.rsql.parser.ast.ComparisonOperator;
-import org.hibernate.query.criteria.internal.path.PluralAttributePath;
-import org.hibernate.query.criteria.internal.path.SingularAttributePath;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.metamodel.*;
+
 import org.pvh.error.PVHException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 
-import javax.persistence.criteria.*;
-import javax.persistence.metamodel.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,16 +92,16 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
             try {
                 for (int i = 1; i <= pathSteps.length - 1; i++) {
 
-                    if (path instanceof PluralAttributePath) {
-                        PluralAttribute attr = ((PluralAttributePath) path).getAttribute();
+                    if (path instanceof PluralAttribute) {
+                        PluralAttribute attr = (PluralAttribute) path;
                         Join join = getJoin(attr, lastFrom);
                         if (join == null) {
                             throw new PVHException("Path parameters are not set correctly...", HttpStatus.INTERNAL_SERVER_ERROR);
                         }
                         path = join.get(pathSteps[i]);
                         lastFrom = join;
-                    } else if (path instanceof SingularAttributePath) {
-                        SingularAttribute attr = ((SingularAttributePath) path).getAttribute();
+                    } else if (path instanceof SingularAttribute) {
+                        SingularAttribute attr = (SingularAttribute) path;
                         if (attr.getPersistentAttributeType() != Attribute.PersistentAttributeType.BASIC) {
                             Join join = lastFrom.join(attr, JoinType.LEFT);
                             path = join.get(pathSteps[i]);
