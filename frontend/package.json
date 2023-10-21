@@ -52,7 +52,7 @@
     "sass": "1.69.4",
     "typescript": "5.2.2",
     "unplugin-auto-import": "0.16.6",
-    "vite": "4.4.11",
+    "vite": "4.5.0",
     "vite-plugin-compression2": "0.10.5",
     "vite-plugin-pwa": "0.16.5",
     "vite-plugin-vue-devtools": "1.0.0-rc.5",
