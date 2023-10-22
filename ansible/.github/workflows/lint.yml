@@ -12,4 +12,4 @@ jobs:
           fetch-depth: 0 # needed for progressive mode to work
 
       - name: Run ansible-lint
-        uses: ansible/ansible-lint@v6.21.1
+        uses: ansible/ansible-lint@b4d48101af3a26f66e304db200e80716fdf8b719 # v6.21.1
