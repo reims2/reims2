@@ -19,4 +19,4 @@ warn_list: # or 'skip_list' to silence them completely
   - yaml[new-line-at-end-of-file]
 
 exclude_paths:
-  - "../.github/"
+  - ".github/"
