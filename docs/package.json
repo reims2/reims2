@@ -5,7 +5,7 @@
     "build": "vitepress build src",
     "preview": "vitepress preview src"
   },
-  "packageManager": "yarn@3.6.4",
+  "packageManager": "yarn@4.0.0",
   "license": "AGPL-3.0-only",
   "dependencies": {
     "vitepress": "1.0.0-rc.22"
