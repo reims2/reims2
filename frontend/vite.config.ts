@@ -3,7 +3,6 @@ import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 import AutoImport from 'unplugin-auto-import/vite'
-import viteCompression from 'vite-plugin-compression2'
 
 // Utilities
 import { defineConfig } from 'vitest/config'
@@ -116,7 +115,6 @@ export default ({ mode }) => {
         },
         dts: 'src/auto-imports.d.ts',
       }),
-      viteCompression({ algorithm: 'brotliCompress' }),
     ],
     test: {
       globals: true,
