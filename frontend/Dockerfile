@@ -1,8 +1,11 @@
 FROM node:20@sha256:bd20621deff56cb66c6cd10772d26db1a0d480f2b08609eb96b799ba6260f3ed AS build
-RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
 WORKDIR /usr/src/app
-COPY . /usr/src/app/
+COPY .yarn/releases/ .yarn/releases/
+COPY public/ public/
+COPY src/ src/
+COPY .yarnrc.yml index.html package.json yarn.lock tsconfig.json tsconfig.node.json vite.config.ts .browserslistrc ./
+
 RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn install --immutable
 
 ARG GIT_VERSION=unknown
@@ -10,22 +13,12 @@ ENV VITE_GIT_VERSION=${GIT_VERSION}
 RUN yarn build
 
 # PROD IMAGE
-FROM node:20.8.1-bullseye-slim@sha256:682c1557c5a8cd6f8a78db3bd315ed968b3a854de2a16c2b8ce713cc92152062
-RUN apt-get update && apt-get upgrade -y && apt install curl -y && rm -rf /var/lib/apt/lists/*
+FROM caddy:2.7.5-alpine
 
-# renovate: datasource=npm depName=http-server
-ENV HTTP_SERVER_VERSION=14.1.1
-RUN npm install -g http-server@${HTTP_SERVER_VERSION}
+COPY LICENSE LICENSE
+COPY ./Caddyfile /etc/caddy/Caddyfile
+COPY --from=build /usr/src/app/dist /usr/share/caddy
 
-COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init
-USER node
-WORKDIR /usr/src/app
-COPY --chown=node:node --from=build /usr/src/app/dist /usr/src/app/dist
 EXPOSE 5000
+HEALTHCHECK --interval=5s --timeout=5s --retries=3 --start-period=15s CMD wget -nv -t1 --spider 'http://localhost:5000' || exit 1
 
-ENV PORT 5000
-
-HEALTHCHECK --interval=5s --timeout=5s --retries=3 --start-period=15s CMD curl --fail http://localhost:$PORT || exit 1   
-
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["sh", "-c", "http-server --brotli --gzip --proxy http://localhost:$PORT? dist"]

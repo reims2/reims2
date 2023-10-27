@@ -1,0 +1,7 @@
+http://localhost:5000 {
+	root * /usr/share/caddy
+	file_server
+
+	# Vue router support https://router.vuejs.org/guide/essentials/history-mode.html#Caddy-v2
+	try_files {path} /
+}
