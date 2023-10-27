@@ -1,33 +1,21 @@
 FROM node:20@sha256:5f21943fe97b24ae1740da6d7b9c56ac43fe3495acb47c1b232b0a352b02a25c AS build
-RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
-
-ENV NODE_OPTIONS --openssl-legacy-provider
 
 WORKDIR /usr/src/app
-COPY . /usr/src/app/
+COPY .yarn/ .yarn/
+COPY src/ src/
+COPY .yarnrc.yml package.json yarn.lock ./
+
 RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn install --immutable
+
 RUN yarn build
 
 # PROD IMAGE
-FROM node:20.9.0-bullseye-slim@sha256:9cb48d12eeccb9e6ad25e987dda1077399cd63877a46e9e848273c44690ca175
-RUN apt-get update && apt-get upgrade -y && apt install curl -y && rm -rf /var/lib/apt/lists/*
+FROM caddy:2.7.5-alpine
 
-# renovate: datasource=npm depName=http-server
-ENV HTTP_SERVER_VERSION=14.1.1
-RUN npm install -g http-server@${HTTP_SERVER_VERSION}
-
-ENV NODE_ENV production
-ENV HOST 0.0.0.0
-ENV PORT 5000
-
-COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init
-USER node
-WORKDIR /usr/src/app
-COPY --chown=node:node --from=build /usr/src/app/src/.vitepress/dist ./dist/docs
+COPY LICENSE LICENSE
+COPY ./Caddyfile /etc/caddy/Caddyfile
+COPY --from=build /usr/src/app/src/.vitepress/dist /usr/share/caddy/docs
 
 EXPOSE 5000
 
-HEALTHCHECK --interval=5s --timeout=10s --retries=2 CMD curl --fail http://localhost:$PORT/docs/ || exit 1   
-
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["http-server", "dist"]
+HEALTHCHECK --interval=5s --timeout=5s --retries=3 --start-period=15s CMD wget -nv -t1 --spider 'http://localhost:5000/docs/' || exit 1
