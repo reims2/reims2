@@ -1,7 +1,7 @@
 FROM node:20@sha256:bd20621deff56cb66c6cd10772d26db1a0d480f2b08609eb96b799ba6260f3ed AS build
 
 WORKDIR /usr/src/app
-COPY .yarn/releases/ .yarn/releases/
+COPY .yarn/ .yarn/
 COPY public/ public/
 COPY src/ src/
 COPY .yarnrc.yml index.html package.json yarn.lock tsconfig.json tsconfig.node.json vite.config.ts .browserslistrc ./
