@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk-jammy@sha256:b6076d31c45f26919a942fc8f8a0a4f14411001d4344352796f5ca042a4d0533 AS build
+FROM eclipse-temurin:21.0.1_12-jdk-jammy@sha256:b6076d31c45f26919a942fc8f8a0a4f14411001d4344352796f5ca042a4d0533 AS build
 RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
 ENV PORT 5000
@@ -10,7 +10,7 @@ COPY ./src ./src
 RUN --mount=type=cache,target=/root/.m2 ./mvnw clean install -DskipTests
 
 # PROD IMAGE
-FROM eclipse-temurin:21-jre-jammy@sha256:8e6ea561ce4b5e02960b16f2578b3db4758f1d47a479de2194cd10f8e25df2d1
+FROM eclipse-temurin:21.0.1_12-jre-jammy@sha256:8e6ea561ce4b5e02960b16f2578b3db4758f1d47a479de2194cd10f8e25df2d1
 RUN apt-get update && apt-get upgrade -y && apt install curl -y && rm -rf /var/lib/apt/lists/*
 
 ENV HOST 0.0.0.0
