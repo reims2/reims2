@@ -10,13 +10,9 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
 // Composables
 import { VuetifyOptions, createVuetify } from 'vuetify'
-import { VDataTableServer } from 'vuetify/labs/VDataTable'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export const vuetifyOptions: VuetifyOptions = {
-  components: {
-    VDataTableServer,
-  },
   icons: {
     defaultSet: 'mdi',
     aliases,
