@@ -1,5 +1,5 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
-import jwtDecode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 import { useAxios } from '@/lib/axios'
 import { UserRole } from '@/model/ReimsModel'
 

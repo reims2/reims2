@@ -5896,10 +5896,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jwt-decode@npm:3.1.2":
-  version: 3.1.2
-  resolution: "jwt-decode@npm:3.1.2"
-  checksum: 20a4b072d44ce3479f42d0d2c8d3dabeb353081ba4982e40b83a779f2459a70be26441be6c160bfc8c3c6eadf9f6380a036fbb06ac5406b5674e35d8c4205eeb
+"jwt-decode@npm:4.0.0":
+  version: 4.0.0
+  resolution: "jwt-decode@npm:4.0.0"
+  checksum: 87b569e4a9a0067fb0d592bcf3b2ac3e638e49beee28620eeb07bef1b4470f4077dea68c15d191dd68e076846c3af8394be3bcaecffedc6e97433b221fdbbcf3
   languageName: node
   linkType: hard
 
@@ -7031,7 +7031,7 @@ __metadata:
     eslint-plugin-promise: "npm:6.1.1"
     eslint-plugin-vue: "npm:9.18.1"
     happy-dom: "npm:12.10.3"
-    jwt-decode: "npm:3.1.2"
+    jwt-decode: "npm:4.0.0"
     pinia: "npm:2.1.7"
     pinia-plugin-persistedstate: "npm:3.2.0"
     prettier: "npm:3.0.3"
@@ -7048,7 +7048,7 @@ __metadata:
     vue-toastification: "npm:2.0.0-rc.5"
     vue-tsc: "npm:1.8.22"
     vue3-enter-to-tab: "npm:2.0.0"
-    vuetify: "npm:3.3.23"
+    vuetify: "npm:3.4.0"
   languageName: unknown
   linkType: soft
 
@@ -8487,13 +8487,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify@npm:3.3.23":
-  version: 3.3.23
-  resolution: "vuetify@npm:3.3.23"
+"vuetify@npm:3.4.0":
+  version: 3.4.0
+  resolution: "vuetify@npm:3.4.0"
   peerDependencies:
     typescript: ">=4.7"
     vite-plugin-vuetify: ^1.0.0-alpha.12
-    vue: ^3.2.0
+    vue: ^3.3.0
     vue-i18n: ^9.0.0
     webpack-plugin-vuetify: ^2.0.0-alpha.11
   peerDependenciesMeta:
@@ -8505,7 +8505,7 @@ __metadata:
       optional: true
     webpack-plugin-vuetify:
       optional: true
-  checksum: 9de67b3b2789d32c8e87f8963a45c5980ce473801692647af625bbf6d96ac0040a4a7ff5d5cd0ccaaf031ce89f7fd409288c07493afa0ac1b1a926ac98025a2f
+  checksum: cafa5ccec2ffa699255a2a0f1d018557a1798a76236dba9735f199bc24f0f2fd4626ca337a3d53e01298afa65641c831ebb7875c583613618daff3f4c586d2a3
   languageName: node
   linkType: hard
 
