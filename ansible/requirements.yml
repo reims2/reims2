@@ -9,7 +9,7 @@ roles:
 
 collections:
   - name: devsec.hardening
-    version: 8.8.0
+    version: 9.0.0
   - name: community.general
     version: 7.4.0
   - name: community.mysql
