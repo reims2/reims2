@@ -6973,7 +6973,7 @@ __metadata:
     vue-toastification: "npm:2.0.0-rc.5"
     vue-tsc: "npm:1.8.22"
     vue3-enter-to-tab: "npm:3.0.0"
-    vuetify: "npm:3.4.1"
+    vuetify: "npm:3.4.2"
   languageName: unknown
   linkType: soft
 
@@ -8417,9 +8417,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify@npm:3.4.1":
-  version: 3.4.1
-  resolution: "vuetify@npm:3.4.1"
+"vuetify@npm:3.4.2":
+  version: 3.4.2
+  resolution: "vuetify@npm:3.4.2"
   peerDependencies:
     typescript: ">=4.7"
     vite-plugin-vuetify: ^1.0.0-alpha.12
@@ -8435,7 +8435,7 @@ __metadata:
       optional: true
     webpack-plugin-vuetify:
       optional: true
-  checksum: e2f4eb292266b91b84ce8b036be29f3f3912e90aca2a5fb423c07762593ecda124fea993fcaa882496fdde3f090f24c2f65901dc948740b57d66aa3a4c83388f
+  checksum: 6972a38df26ddc1ea4a7bae92f3bd641e4ae3f6e6f812ea67b4edc18216156ba62a3d7aaf00280cc74f4cb47f639f2459433a5c8f054d0ea1c1abc049f96c146
   languageName: node
   linkType: hard
 
