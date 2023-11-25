@@ -1613,6 +1613,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mrmime@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "mrmime@npm:1.0.1"
+  checksum: a157e833ffe76648ab2107319deeff024b80b136ec66c60fae9d339009a1bb72c57ec1feecfd6a905dfd3df29e2299e850bff84b69cad790cc9bd9ab075834d1
+  languageName: node
+  linkType: hard
+
 "ms@npm:2.1.2":
   version: 2.1.2
   resolution: "ms@npm:2.1.2"
@@ -1847,7 +1854,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    vitepress: "npm:1.0.0-rc.26"
+    vitepress: "npm:1.0.0-rc.29"
   languageName: unknown
   linkType: soft
 
@@ -2111,9 +2118,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitepress@npm:1.0.0-rc.26":
-  version: 1.0.0-rc.26
-  resolution: "vitepress@npm:1.0.0-rc.26"
+"vitepress@npm:1.0.0-rc.29":
+  version: 1.0.0-rc.29
+  resolution: "vitepress@npm:1.0.0-rc.29"
   dependencies:
     "@docsearch/css": "npm:^3.5.2"
     "@docsearch/js": "npm:^3.5.2"
@@ -2125,6 +2132,7 @@ __metadata:
     focus-trap: "npm:^7.5.4"
     mark.js: "npm:8.11.1"
     minisearch: "npm:^6.2.0"
+    mrmime: "npm:^1.0.1"
     shiki: "npm:^0.14.5"
     vite: "npm:^5.0.0"
     vue: "npm:^3.3.8"
@@ -2138,7 +2146,7 @@ __metadata:
       optional: true
   bin:
     vitepress: bin/vitepress.js
-  checksum: bb3c5b3afc6de05909093ed18723b6d6a921dd0b1860ac501d7bddd6ca526bab2d59b5a26587a4d5b03efade0e3ad274066a6b59e9d4104fd46d28677e64e61e
+  checksum: 85916d1c216883df70b55514de967c5f9d9b360da1c52bacf5aa34f56f5a91a6840c2d5b4ef1b8302f8d61ca58ed8d867a7ed02e3a45001632c6b78cf554c9ce
   languageName: node
   linkType: hard
 
