@@ -4270,9 +4270,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:9.18.1":
-  version: 9.18.1
-  resolution: "eslint-plugin-vue@npm:9.18.1"
+"eslint-plugin-vue@npm:9.19.2":
+  version: 9.19.2
+  resolution: "eslint-plugin-vue@npm:9.19.2"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.4.0"
     natural-compare: "npm:^1.4.0"
@@ -4283,7 +4283,7 @@ __metadata:
     xml-name-validator: "npm:^4.0.0"
   peerDependencies:
     eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
-  checksum: de064eac9ff28315e1f086bd035f2797cf921ec58dd16193b7b6b4aa2898f5d5b7c06e9effe455b3e06744f840e118f05d99943e62052ffd9beaa83959ff7aee
+  checksum: 4cadfd71ef2acd2873302b21675951cb6b397b158adc0bf131ae6425fcf1b7a21c0ec989798684e203521e078863f53f8313ab0635c21882b50e2581682e319f
   languageName: node
   linkType: hard
 
@@ -6949,7 +6949,7 @@ __metadata:
     eslint-plugin-import: "npm:2.29.0"
     eslint-plugin-n: "npm:16.3.1"
     eslint-plugin-promise: "npm:6.1.1"
-    eslint-plugin-vue: "npm:9.18.1"
+    eslint-plugin-vue: "npm:9.19.2"
     happy-dom: "npm:12.10.3"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:2.1.7"
