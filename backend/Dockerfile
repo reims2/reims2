@@ -10,7 +10,7 @@ COPY ./src ./src
 RUN --mount=type=cache,target=/root/.m2 ./mvnw clean install -DskipTests
 
 # PROD IMAGE
-FROM eclipse-temurin:21.0.1_12-jre-jammy@sha256:21628a404fffff882686af8cc4e27d276c5f55296f5baad46822c684e41305c5
+FROM eclipse-temurin:21.0.1_12-jre-jammy@sha256:5f85d29db9d2a08724c958d0788763e36a72aadf71632761881a81e87bff260e
 RUN apt-get update && apt-get upgrade -y && apt install curl -y && rm -rf /var/lib/apt/lists/*
 
 ENV HOST 0.0.0.0
