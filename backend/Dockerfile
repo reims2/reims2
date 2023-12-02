@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21.0.1_12-jdk-jammy@sha256:7e0eb82a18de613ada8a494b10c0d42fffd09240ec5b6a55a19407c2df442e94 AS build
+FROM eclipse-temurin:21.0.1_12-jdk-jammy@sha256:948e69a959820ea040f843e34122d2537a2b28ddd07b4b707e6e852f66c20a74 AS build
 RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
 ENV PORT 5000
