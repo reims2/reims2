@@ -6985,7 +6985,7 @@ __metadata:
     typescript: "npm:5.3.2"
     unplugin-auto-import: "npm:0.17.2"
     vite: "npm:4.5.1"
-    vite-plugin-pwa: "npm:0.17.2"
+    vite-plugin-pwa: "npm:0.17.3"
     vite-plugin-vue-devtools: "npm:1.0.0-rc.5"
     vite-plugin-vuetify: "npm:1.0.2"
     vitest: "npm:0.34.6"
@@ -8116,9 +8116,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-pwa@npm:0.17.2":
-  version: 0.17.2
-  resolution: "vite-plugin-pwa@npm:0.17.2"
+"vite-plugin-pwa@npm:0.17.3":
+  version: 0.17.3
+  resolution: "vite-plugin-pwa@npm:0.17.3"
   dependencies:
     debug: "npm:^4.3.4"
     fast-glob: "npm:^3.3.2"
@@ -8129,7 +8129,7 @@ __metadata:
     vite: ^3.1.0 || ^4.0.0 || ^5.0.0
     workbox-build: ^7.0.0
     workbox-window: ^7.0.0
-  checksum: 147d77d2aa77dbe3eeb9e6fab112b6dc4dca27e5b76cd717405ebbd02c5cd2e5df8bdafb83bb1d2aa889cfcf56e7dcd396445210fe00387ff11ca5f93b318870
+  checksum: 0b638fa85a38e410ade634271a700d23a235e7b0cd7f855f90dad5cef43edb2f83d5afbeeae151ead49da0d9d8fafe6ccf8976e35bf50046040f6df4e9e54e48
   languageName: node
   linkType: hard
 
