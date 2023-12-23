@@ -6971,12 +6971,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia-plugin-persistedstate@npm:3.2.0":
-  version: 3.2.0
-  resolution: "pinia-plugin-persistedstate@npm:3.2.0"
+"pinia-plugin-persistedstate@npm:3.2.1":
+  version: 3.2.1
+  resolution: "pinia-plugin-persistedstate@npm:3.2.1"
   peerDependencies:
     pinia: ^2.0.0
-  checksum: b80b5f2661189998ab756aead0325f2fcc9f2f8c4097558fe4c7d79525644134c86a33c66844d550510b4d27c2730bde436fadfe48312cb205bfe7a577e6cf89
+  checksum: 972c2d1cd6bf15162218099dad97f76c1e0e63eeb6c310306bfd2cd7da2a90e397162f7ab2b5dbc121413cf75df52db36d7471053cb13f544649467e712c58a0
   languageName: node
   linkType: hard
 
@@ -7280,7 +7280,7 @@ __metadata:
     happy-dom: "npm:12.10.3"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:2.1.7"
-    pinia-plugin-persistedstate: "npm:3.2.0"
+    pinia-plugin-persistedstate: "npm:3.2.1"
     prettier: "npm:3.1.0"
     sass: "npm:1.69.5"
     typescript: "npm:5.3.3"
