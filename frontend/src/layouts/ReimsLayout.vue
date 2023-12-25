@@ -37,7 +37,6 @@ import TheDrawer from '@/components/TheDrawer.vue'
 import TheBottomBar from '@/components/TheBottomBar.vue'
 
 import { useOnline } from '@vueuse/core'
-import { useToast } from 'vue-toastification'
 import { useAuthStore } from '@/stores/auth'
 import { useUpdatesGlassesInterval } from '@/composables/update-glasses'
 import { useGlassesStore } from '@/stores/glasses'
@@ -50,7 +49,6 @@ const router = useRouter()
 const glassesStore = useGlassesStore()
 const hasGlassesLoaded = computed(() => glassesStore.hasGlassesLoaded)
 
-const toast = useToast()
 useUpdatesGlassesInterval()
 
 const { mobile } = useDisplay()
@@ -82,7 +80,6 @@ const isOnline = useOnline()
 onMounted(() => {
   if (authStore.expirationTime && dayjs().diff(authStore.expirationTime, 'days') > -7) {
     // Use 7 days as a safety because of service worker retries
-    toast.warning('Your session is expiring soon, please log in again.')
     authStore.logout()
   }
 })
