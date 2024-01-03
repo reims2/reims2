@@ -84,6 +84,31 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
+  db_exporter:
+    image: prom/mysqld-exporter:latest
+    restart: always
+    networks:
+      {{ monitoring_network }}:
+      {{ db_network }}:
+    volumes:
+      - "{{db_exporter_config_location}}:/etc/my.cnf"
+    command:
+      - "--config.my-cnf=/etc/my.cnf"
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: start-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+
 
  
 networks:

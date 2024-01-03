@@ -2,7 +2,7 @@
   community.mysql.mysql_user:
     name: monitoring
     password: "{{ monitoring_db_password }}"
-    priv: "{{ db_name }}.*:SELECT"
+    priv: "SELECT on *.*, PROCESS, REPLICATION CLIENT"
     state: present
     login_password: "{{ db_password }}"
     login_port: "{{ port }}"

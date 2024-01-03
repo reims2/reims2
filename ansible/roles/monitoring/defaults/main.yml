@@ -7,6 +7,7 @@ grafana_data_location: "{{ grafana_install_location }}/data"
 prometheus_install_location: "/srv/prometheus"
 prometheus_data_location: "{{ prometheus_install_location }}/data"
 prometheus_config_location: "{{ prometheus_install_location }}/prometheus.yml"
+db_exporter_config_location: "{{ prometheus_install_location }}/db_exporter.cnf"
 
 grafana_port: "3000"
 prometheus_port: "9090"
