@@ -37,7 +37,7 @@ services:
         max_attempts: 3
         window: 120s
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.45.2
     networks:
       {{ monitoring_network }}:
     volumes:
@@ -58,7 +58,7 @@ services:
         max_attempts: 3
         window: 120s
   node_exporter:
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:v1.7.0
     restart: always
     volumes:
       - /proc:/host/proc:ro
@@ -85,7 +85,7 @@ services:
         max_attempts: 3
         window: 120s
   db_exporter:
-    image: prom/mysqld-exporter:latest
+    image: prom/mysqld-exporter:v0.15.1
     restart: always
     networks:
       {{ monitoring_network }}:
