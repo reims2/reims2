@@ -22,7 +22,5 @@ scrape_configs:
       - targets: ["localhost:{{prometheus_port}}"]
 
   - job_name: node
-    # If prometheus-node-exporter is installed, grab stats about the local
-    # machine by default.
     static_configs:
-      - targets: ["node-exporter:9100"]
+      - targets: ["node_exporter:9100"]
