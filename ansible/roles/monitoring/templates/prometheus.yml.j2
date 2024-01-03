@@ -1,4 +1,4 @@
-# MANAGED BY ANSIBLE; DO NOT CHANGE HERE
+{{ ansible_managed | comment }}
 
 global:
   scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
@@ -19,10 +19,10 @@ scrape_configs:
   - job_name: "prometheus"
 
     static_configs:
-      - targets: ["localhost:9090"]
+      - targets: ["localhost:{{prometheus_port}}"]
 
   - job_name: node
     # If prometheus-node-exporter is installed, grab stats about the local
     # machine by default.
     static_configs:
-      - targets: ["localhost:9100"]
+      - targets: ["node-exporter:9100"]
