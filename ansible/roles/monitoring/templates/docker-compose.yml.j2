@@ -93,7 +93,34 @@ services:
     volumes:
       - "{{db_exporter_config_location}}:/etc/my.cnf"
     command:
-      - "--config.my-cnf=/etc/my.cnf"
+      - "--mysqld.address=mariadb:{{ db_port }}"
+      - "--mysqld.username=monitoring"
+      - "--collect.auto_increment.columns"
+      - "--collect.binlog_size"
+      - "--collect.engine_innodb_status"
+      - "--collect.global_status"
+      - "--collect.global_variables"
+      - "--collect.heartbeat"
+      - "--collect.info_schema.clientstats"
+      - "--collect.info_schema.innodb_metrics"
+      - "--collect.info_schema.innodb_tablespaces"
+      - "--collect.info_schema.innodb_cmp"
+      - "--collect.info_schema.innodb_cmpmem"
+      - "--collect.info_schema.processlist"
+      - "--collect.info_schema.tables"
+      - "--collect.info_schema.tablestats"
+      - "--collect.info_schema.schemastats"
+      - "--collect.info_schema.userstats"
+      - "--collect.perf_schema.eventsstatements"
+      - "--collect.perf_schema.eventsstatementssum"
+      - "--collect.perf_schema.eventswaits"
+      - "--collect.perf_schema.file_events"
+      - "--collect.perf_schema.indexiowaits"
+      - "--collect.perf_schema.memory_events"
+      - "--collect.perf_schema.tableiowaits"
+      - "--collect.perf_schema.tablelocks"
+    environment:
+      MYSQLD_EXPORTER_PASSWORD: "{{ monitoring_db_password }}"
     deploy:
       update_config:
         order: start-first

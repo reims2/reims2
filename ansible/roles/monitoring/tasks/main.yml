@@ -45,16 +45,6 @@
     - reload monitoring
     - wait for grafana
 
-- name: Copy mysqld exporter config
-  ansible.builtin.template:
-    src: mysqld-exporter.yml.j2
-    dest: "{{ db_exporter_config_location }}"
-    owner: root
-    group: root
-    mode: "0644"
-  notify:
-    - reload monitoring
-
 - name: Copy prometheus config
   ansible.builtin.template:
     src: prometheus.yml.j2
