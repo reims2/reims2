@@ -37,7 +37,7 @@ services:
         max_attempts: 3
         window: 120s
   prometheus:
-    image: prom/prometheus:v2.45.2@sha256:8cf63a779c484564428c8ab5aa61899f41b72e92232d930b2b001661d978bed8
+    image: prom/prometheus:v2.48.1@sha256:a67e5e402ff5410b86ec48b39eab1a3c4df2a7e78a71bf025ec5e32e09090ad4
     networks:
       {{ monitoring_network }}:
     volumes:
