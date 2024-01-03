@@ -3,4 +3,8 @@ monitoring_domain: monitoring.{{ app_domain }}
 grafana_install_location: "/srv/grafana"
 grafana_data_location: "{{ grafana_install_location }}/data"
 
+prometheus_install_location: "/srv/prometheus"
+prometheus_data_location: "{{ prometheus_install_location }}/data"
+prometheus_config_location: "{{ prometheus_install_location }}/prometheus.yml"
+
 grafana_port: "3000"

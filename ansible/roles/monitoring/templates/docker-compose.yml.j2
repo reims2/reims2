@@ -35,6 +35,28 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
+  prometheus:
+    image: prom/prometheus
+    networks:
+      {{ db_network }}:
+    volumes:
+     - "{{prometheus_data_location}}:/prometheus"
+     - "{{prometheus_config_location}}:/etc/prometheus/prometheus.yml"
+    restart: always
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: start-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
  
 networks:
   {{ proxy_network }}:
