@@ -8,6 +8,7 @@
       MARIADB_PASSWORD: '{{ reims2_db_password }}'
     volumes:
       - "{{ backend_db_location }}:/var/lib/mysql"
+      - "{{ mariadb_cnf_location }}:/etc/mysql/conf.d/custom.cnf"
     networks:
       {{ db_network }}:
     command:

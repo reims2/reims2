@@ -26,6 +26,17 @@
     - reload stack
     - wait for mariadb
 
+- name: Copy mariadb config
+  ansible.builtin.template:
+    src: mariadb_custom.cnf.j2
+    dest: "{{ mariadb_cnf_location }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - reload stack
+    - wait for mariadb
+
 - name: SQL restore block
   when: db_dump and db_dump | length > 0
   block:
