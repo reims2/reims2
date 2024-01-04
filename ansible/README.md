@@ -33,7 +33,7 @@ ansible-playbook -i hosts main.yml --vault-id <plaintext-file-with-vault-passwor
 
 If you use the example `dump.sql`, the initial username is `test` and password `testtest`. It's recommended to create a new admin user, login as that and delete this initial user.
 
-A grafana monitoring solution will be available at `monitoring.<yourdomain>`. Don't forget to configure it with a password. You can add a Mysql datasource in grafana with domain `mariadb:3306`. Username is `monitoring` and password is set using the `monitoring_db_password` variable (not yet working).
+A grafana monitoring solution will be available at `monitoring.<yourdomain>`. Don't forget to configure it with a password. You must create a user in the database with name `monitoring` and password like the variable `monitoring_db_password`. It should have the privileges `SELECT on *.*, PROCESS, REPLICATION CLIENT`.
 
 ## Important role variables
 

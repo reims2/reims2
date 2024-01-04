@@ -20,6 +20,7 @@
   with_items:
     - "{{ grafana_data_location }}"
     - "{{ prometheus_data_location }}"
+    - "{{ grafana_provisioning_location }}/datasources"
   become: true
 
 - name: Create networks
@@ -55,6 +56,17 @@
   notify:
     - reload monitoring
     - wait for prometheus
+
+- name: Copy grafana datasources config
+  ansible.builtin.template:
+    src: grafana-datasources.yml.j2
+    dest: "{{ grafana_provisioning_location }}/datasources/custom.yaml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - reload monitoring
+    - wait for grafana
 # - name: Expose DB tasks
 #  ansible.builtin.include_tasks: expose_db.yml
 #  vars:

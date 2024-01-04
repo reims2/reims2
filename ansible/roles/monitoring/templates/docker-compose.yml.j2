@@ -10,6 +10,7 @@ services:
       {{ monitoring_network }}:
     volumes:
      - "{{grafana_data_location}}:/var/lib/grafana"
+     - "{{grafana_provisioning_location}}:/etc/grafana/provisioning/"
     environment:
      - GF_SERVER_ROOT_URL=https://%(domain)s/
      - GF_SERVER_ENFORCE_DOMAIN=true
