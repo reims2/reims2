@@ -34,6 +34,9 @@ export const useFindGlasses = (
       highTolerance: toValue(highTolerance),
     }
     matches.value = philScore(eyeModel)
+    if (matches.value.length === 0) {
+      glassesStore.addUnsuccessfulSearch(eyeModel)
+    }
   }
 
   function reset() {

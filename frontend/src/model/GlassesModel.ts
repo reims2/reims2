@@ -101,3 +101,11 @@ export interface GlassesSearch {
   os: SanitizedEyeSearch
   highTolerance?: boolean
 }
+
+export interface UnsuccessfulGlassesSearch {
+  glassesType: GlassesType
+  od: Eye
+  os: Eye
+  highTolerance?: boolean
+  balLens: 'DISABLE_OD' | 'DISABLE_OS' | 'DISABLE_NONE'
+}
