@@ -59,6 +59,7 @@ export const useGlassesStore = defineStore(
         location: rootStore.reimsSite,
         balLens,
         searchDate: Date.now(),
+        increaseSearchTolerance: glassesSearch.highTolerance,
       } as UnsuccessfulGlassesSearch
       await axiosInstance.post(`/api/glasses/${rootStore.reimsSite}/unsuccessfulSearch`, request)
     }
