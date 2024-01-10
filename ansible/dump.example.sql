@@ -10,6 +10,20 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `changevalue`
+--
+
+DROP TABLE IF EXISTS `changevalue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `changevalue` (
+  `hash_value` varchar(255) NOT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`hash_value`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `dispense`
 --
 
@@ -17,13 +31,13 @@ DROP TABLE IF EXISTS `dispense`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dispense` (
+  `previous_sku` int(11) DEFAULT NULL,
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `modify_date` datetime(6) DEFAULT NULL,
-  `previous_sku` int(11) DEFAULT NULL,
+  `dispense_reason` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `eye`
@@ -33,15 +47,14 @@ DROP TABLE IF EXISTS `eye`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `eye` (
+  `additional` decimal(38,2) DEFAULT NULL,
+  `axis` int(11) DEFAULT NULL CHECK (`axis` <= 180),
+  `cylinder` decimal(38,2) DEFAULT NULL,
+  `sphere` decimal(38,2) DEFAULT NULL,
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `additional` float DEFAULT NULL,
-  `axis` int(11) DEFAULT NULL,
-  `cylinder` float DEFAULT NULL,
-  `sphere` float DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `glasses`
@@ -51,19 +64,19 @@ DROP TABLE IF EXISTS `glasses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `glasses` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `appearance` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `creation_date` datetime(6) DEFAULT NULL,
   `dispensed` bit(1) DEFAULT NULL,
-  `glasses_size` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `glasses_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sku` int(11) DEFAULT NULL,
+  `creation_date` datetime(6) DEFAULT NULL,
   `dispense_id` bigint(20) DEFAULT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `od_id` bigint(20) DEFAULT NULL,
   `os_id` bigint(20) DEFAULT NULL,
+  `appearance` varchar(255) DEFAULT NULL,
+  `glasses_size` varchar(255) DEFAULT NULL,
+  `glasses_type` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKn7g5jsbuiwnmpeh90i89y4gv0` (`dispense_id`),
+  UNIQUE KEY `UK_3lcjb01rnq2hn89tl7v1k7yld` (`dispense_id`),
   KEY `FKovw8a7k5pow8in36qh2k3t0ja` (`od_id`),
   KEY `FKnnd7mfxvhrbjwv8p5xiswnai8` (`os_id`),
   KEY `sku` (`sku`),
@@ -82,9 +95,33 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `unsuccessful_search`
+--
+
+DROP TABLE IF EXISTS `unsuccessful_search`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `unsuccessful_search` (
+  `increase_search_tolerance` bit(1) DEFAULT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `od_id` bigint(20) DEFAULT NULL,
+  `os_id` bigint(20) DEFAULT NULL,
+  `search_date` datetime(6) DEFAULT NULL,
+  `bal_lens` varchar(255) DEFAULT NULL,
+  `glasses_type` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK7t97hwa6fd36m3mobo5bfgxk3` (`od_id`),
+  KEY `FK2jxxit8euqbtutk6vmrs1pb6l` (`os_id`),
+  CONSTRAINT `FK2jxxit8euqbtutk6vmrs1pb6l` FOREIGN KEY (`os_id`) REFERENCES `eye` (`id`),
+  CONSTRAINT `FK7t97hwa6fd36m3mobo5bfgxk3` FOREIGN KEY (`od_id`) REFERENCES `eye` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,10 +132,10 @@ DROP TABLE IF EXISTS `user_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_roles` (
-  `user_id` bigint(20) NOT NULL,
   `role_id` int(11) NOT NULL,
-  PRIMARY KEY (`user_id`,`role_id`),
-  KEY `FKh8ciramu9cc9q3qcqiv4ue8a6` (`role_id`),
+  `user_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`role_id`,`user_id`),
+  KEY `FKhfh9dx7w3ubf1co1vdev94g3f` (`user_id`),
   CONSTRAINT `FKh8ciramu9cc9q3qcqiv4ue8a6` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
   CONSTRAINT `FKhfh9dx7w3ubf1co1vdev94g3f` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -114,8 +151,8 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `password` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `username` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `username` varchar(20) DEFAULT NULL,
+  `password` varchar(120) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UKr43af9ap4edm43mmtq01oddj6` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
