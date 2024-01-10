@@ -1,4 +1,9 @@
-import { Glasses, GlassesSearch, SanitizedGlassesInput } from '@/model/GlassesModel'
+import {
+  Glasses,
+  GlassesSearch,
+  SanitizedGlassesInput,
+  UnsuccessfulGlassesSearch,
+} from '@/model/GlassesModel'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useRootStore } from './root'
 import axios from 'axios'
@@ -44,18 +49,18 @@ export const useGlassesStore = defineStore(
       addOfflineGlasses(addedGlasses)
       return addedGlasses
     }
-    async function addUnsuccessfulSearch(newGlasses: GlassesSearch): Promise<void> {
-      interface GlassesRequest extends SanitizedGlassesInput {
-        location: ReimsSite
-      }
-      // todo: temporary workaround until backend changed
+    async function addUnsuccessfulSearch(glassesSearch: GlassesSearch): Promise<void> {
+      let balLens = 'DISABLE_NONE'
+      if (glassesSearch.os.isBAL) balLens = 'DISABLE_OS'
+      if (glassesSearch.od.isBAL) balLens = 'DISABLE_OD'
       const request = {
-        ...newGlasses,
+        ...glassesSearch,
+        // todo remove location in future
         location: rootStore.reimsSite,
-        appearance: 'neutral',
-        glassesSize: 'medium',
-      } as GlassesRequest
-      await axiosInstance.post('/api/glasses/unsuccessfulSearch', request)
+        balLens,
+        searchDate: Date.now(),
+      } as UnsuccessfulGlassesSearch
+      await axiosInstance.post(`/api/glasses/${rootStore.reimsSite}/unsuccessfulSearch`, request)
     }
     async function fetchSingle(sku: number): Promise<Glasses> {
       if (cancelTokenGet) cancelTokenGet.cancel()
