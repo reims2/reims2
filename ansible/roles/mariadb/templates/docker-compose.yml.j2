@@ -13,6 +13,11 @@
       {{ db_network }}:
     command:
       - "--port={{ db_port }}"
+{% if backend_debug %}
+      - "--innodb-buffer-pool-size=67108864"
+{% else %}
+      - "--innodb-buffer-pool-size=268435456"
+{% endif %}
     healthcheck:
         test: ["CMD", 'mariadb-admin', 'ping', '-h', 'localhost', '-uroot', '-p"{{ reims2_db_root_password }}"' ]
         timeout: 10s
