@@ -108,4 +108,6 @@ export interface UnsuccessfulGlassesSearch {
   os: Eye
   highTolerance?: boolean
   balLens: 'DISABLE_OD' | 'DISABLE_OS' | 'DISABLE_NONE'
+  location: ReimsSite
+  searchDate: number
 }
