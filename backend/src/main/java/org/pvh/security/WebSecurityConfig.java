@@ -8,11 +8,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 @ConditionalOnProperty(name = "pvh.security.enable", havingValue = "true")
 public class WebSecurityConfig {
     @Autowired
@@ -44,23 +44,26 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthEntryPointJwt unauthorizedHandler) throws Exception {
-        http.cors().and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/test/**").permitAll().requestMatchers("/api")
-                .permitAll().requestMatchers("/error").permitAll().requestMatchers("/")
-                .permitAll().anyRequest().authenticated().and().csrf().disable();
-        // .csrf()
-        // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
+        http
+                .cors(Customizer.withDefaults())
+                .exceptionHandling(Customizer.withDefaults())
+                .csrf((csrf) -> csrf.disable())
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/test/**").permitAll()
+                        .requestMatchers("/api", "/").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/webjars/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/swagger-ui.html/**", "/configuration/**", "/swagger-resources/**", "/v2/api-docs",
-                "/webjars/**");
     }
 
 }
