@@ -143,11 +143,10 @@ export const useGlassesStore = defineStore(
       if (isRefreshingGlasses.value) return
       isRefreshingGlasses.value = true
       try {
-        // const response = await axiosInstance.get(`/api/glasses/changes/${rootStore.reimsSite}`)
-        // newHash = response.data
-        // TODO workaround until backend endpoint is changed
-        const newHash = new Date().toISOString()
+        const response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}/changes`)
+        const newHash = response.data
         if (newHash !== allGlassesHash.value) {
+          console.log('loading glasses, new hash')
           await loadGlasses()
         }
         allGlassesHash.value = newHash
