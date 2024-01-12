@@ -47,7 +47,7 @@ public class WebSecurityConfig {
 
         http
                 .cors(Customizer.withDefaults())
-                .exceptionHandling(Customizer.withDefaults())
+                .exceptionHandling((exceptionHandling) -> exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/auth/**").permitAll()
