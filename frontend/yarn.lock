@@ -2762,13 +2762,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-core@npm:^7.0.5":
-  version: 7.0.5
-  resolution: "@vue/devtools-core@npm:7.0.5"
+"@vue/devtools-core@npm:^7.0.7":
+  version: 7.0.8
+  resolution: "@vue/devtools-core@npm:7.0.8"
   dependencies:
-    "@vue/devtools-kit": "npm:^7.0.5"
-    "@vue/devtools-schema": "npm:^7.0.5"
-    "@vue/devtools-shared": "npm:^7.0.5"
+    "@vue/devtools-kit": "npm:^7.0.8"
+    "@vue/devtools-schema": "npm:^7.0.8"
+    "@vue/devtools-shared": "npm:^7.0.8"
     birpc: "npm:^0.2.14"
     fast-glob: "npm:^3.3.2"
     image-meta: "npm:^0.2.0"
@@ -2777,37 +2777,37 @@ __metadata:
     vite-dev-rpc: "npm:^0.1.4"
     vite-hot-client: "npm:^0.2.3"
     vite-plugin-inspect: "npm:^0.8.1"
-  checksum: d3cfaaa6133df4f6ecfc34a51a4654225477d283f818aab2be9788b20e4e48e2499b6ece35ed94f2936bfd1291042a9d8587f699c8881aa1034cdc9ad331de6a
+  checksum: d02cdc9b1d2badd11af2027e90538db9c146d0dd1d705024a25d706face77e6e2e1139931502dc2e913a4e635064272b5d81d6bdee9a1b2234bc94da3b6c08bf
   languageName: node
   linkType: hard
 
-"@vue/devtools-kit@npm:^7.0.5":
-  version: 7.0.5
-  resolution: "@vue/devtools-kit@npm:7.0.5"
+"@vue/devtools-kit@npm:^7.0.7, @vue/devtools-kit@npm:^7.0.8":
+  version: 7.0.8
+  resolution: "@vue/devtools-kit@npm:7.0.8"
   dependencies:
-    "@vue/devtools-schema": "npm:^7.0.5"
-    "@vue/devtools-shared": "npm:^7.0.5"
+    "@vue/devtools-schema": "npm:^7.0.8"
+    "@vue/devtools-shared": "npm:^7.0.8"
     hookable: "npm:^5.5.3"
     mitt: "npm:^3.0.1"
     perfect-debounce: "npm:^1.0.0"
     speakingurl: "npm:^14.0.1"
-  checksum: 05da3e4f0cd8070f7bc226c763152c820dda28cbf3ede48610e888f61dc4afd3d926fcd38151aa128db62acee11a022a8a0e1accc26c027e10b0f54e07b2d99d
+  checksum: 8557041c228dc10e6ae4f4dcd5f45b8398bb0d98ede3ee05696d8a38835bfa137cae1fd93f2a8d0723e5fd4618dfb5b9c5dcec7a37d63dbb3c7e756703c34334
   languageName: node
   linkType: hard
 
-"@vue/devtools-schema@npm:^7.0.5":
-  version: 7.0.5
-  resolution: "@vue/devtools-schema@npm:7.0.5"
-  checksum: 3fe6422218f90a961064427309d665f2709fb3336fa2cc5cafc88a1bb6e164f4b0baec4d8f39ffedd558f7e70320462c792cfaa18b3fb8dd939118be3a694c2c
+"@vue/devtools-schema@npm:^7.0.8":
+  version: 7.0.8
+  resolution: "@vue/devtools-schema@npm:7.0.8"
+  checksum: 5e79308128e3b385a9452e1685e68920da58e65e43076c19d911a25597bf4322bdeba3e3f50137565b82ae7ff1e38f6fd63060149d8f00d8a0a2158cbe5994ad
   languageName: node
   linkType: hard
 
-"@vue/devtools-shared@npm:^7.0.5":
-  version: 7.0.5
-  resolution: "@vue/devtools-shared@npm:7.0.5"
+"@vue/devtools-shared@npm:^7.0.7, @vue/devtools-shared@npm:^7.0.8":
+  version: 7.0.8
+  resolution: "@vue/devtools-shared@npm:7.0.8"
   dependencies:
     rfdc: "npm:^1.3.0"
-  checksum: 184ccb13e89202ceb52a37772ff8805e9c2ce08eb002b4e334cc844a82c4a7f086dac953b07ae02170d4bf152514e12e1f7cb66a75558545f1af2f5d9feeb894
+  checksum: a9fd83e1e44fbeb39edb44c22b5cf9d95b9f9c07fde4278f0e8b9a36aac558e7c685aa95bf7d5b8125bda217170cb4c0db113275bf8389b50227801199e5b7a4
   languageName: node
   linkType: hard
 
@@ -7082,7 +7082,7 @@ __metadata:
     unplugin-auto-import: "npm:0.17.3"
     vite: "npm:5.0.11"
     vite-plugin-pwa: "npm:0.17.4"
-    vite-plugin-vue-devtools: "npm:7.0.5"
+    vite-plugin-vue-devtools: "npm:7.0.7"
     vite-plugin-vuetify: "npm:2.0.1"
     vitest: "npm:1.1.1"
     vue: "npm:3.3.13"
@@ -8294,13 +8294,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-devtools@npm:7.0.5":
-  version: 7.0.5
-  resolution: "vite-plugin-vue-devtools@npm:7.0.5"
+"vite-plugin-vue-devtools@npm:7.0.7":
+  version: 7.0.7
+  resolution: "vite-plugin-vue-devtools@npm:7.0.7"
   dependencies:
-    "@vue/devtools-core": "npm:^7.0.5"
-    "@vue/devtools-kit": "npm:^7.0.5"
-    "@vue/devtools-shared": "npm:^7.0.5"
+    "@vue/devtools-core": "npm:^7.0.7"
+    "@vue/devtools-kit": "npm:^7.0.7"
+    "@vue/devtools-shared": "npm:^7.0.7"
     birpc: "npm:^0.2.14"
     execa: "npm:^8.0.1"
     sirv: "npm:^2.0.4"
@@ -8308,7 +8308,7 @@ __metadata:
     vite-plugin-vue-inspector: "npm:^4.0.2"
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0 || ^5.0.0-0
-  checksum: 53fdfa0f493bbf3e1927af8faa4278d3115deaad6543d55d808f4dcca989f0eb659cf8df10fa88aaf07a7823795acdc837998480c387c6de7cf8624cbd1d0562
+  checksum: 48ce02f33e974329e88d80e30d52c0a6005f4d8892d34895d529ff2971d92f2e729c21db332c9f8fcb83363bb904dba580f5ef4dbd3682e0fed5314c45254c9f
   languageName: node
   linkType: hard
 
