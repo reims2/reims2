@@ -25,7 +25,7 @@ export const useFindGlasses = (
   const allGlasses = computed(() => glassesStore.allGlasses)
   const reimsSite = computed(() => rootStore.reimsSite)
 
-  function startSearch() {
+  function startSearch(isUserSubmitted = true) {
     if (!toValue(isValid)) return
     const eyeModel: GlassesSearch = {
       glassesType: toValue(glassesTypeInput) as GlassesType,
@@ -34,7 +34,7 @@ export const useFindGlasses = (
       highTolerance: toValue(highTolerance),
     }
     matches.value = philScore(eyeModel)
-    if (matches.value.length === 0) {
+    if (matches.value.length === 0 && isUserSubmitted) {
       glassesStore.addUnsuccessfulSearch(eyeModel)
     }
   }
@@ -46,7 +46,7 @@ export const useFindGlasses = (
   watch(
     () => glassesStore.allGlassesHash,
     () => {
-      if (matches.value != null) startSearch()
+      if (matches.value != null) startSearch(false)
     },
   )
 
