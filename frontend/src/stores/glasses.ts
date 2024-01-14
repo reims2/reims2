@@ -55,8 +55,6 @@ export const useGlassesStore = defineStore(
       if (glassesSearch.od.isBAL) balLens = 'DISABLE_OD'
       const request = {
         ...glassesSearch,
-        // todo remove location in future
-        location: rootStore.reimsSite,
         balLens,
         searchDate: Date.now(),
         increaseSearchTolerance: glassesSearch.highTolerance,
@@ -145,13 +143,13 @@ export const useGlassesStore = defineStore(
       isRefreshingGlasses.value = true
       try {
         const response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}/changes`)
-        const newHash = response.data
+        const newHash = response.data.hashValue
         if (newHash !== allGlassesHash.value) {
-          console.log('loading glasses, new hash')
           await loadGlasses()
         }
         allGlassesHash.value = newHash
         lastRefresh.value = new Date().toISOString()
+        // TODO: wird nie auf true gesetzt
         isOutdated.value = false
       } finally {
         isRefreshingGlasses.value = false
