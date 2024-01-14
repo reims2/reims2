@@ -32,7 +32,8 @@ public class MainServiceImpl implements MainService {
     private UnsuccessfulSearchRepository unsuccessfulSearchRepository;
 
     @Autowired
-    public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository, UnsuccessfulSearchRepository unsuccessfulSearchRepository) {
+    public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository,
+            UnsuccessfulSearchRepository unsuccessfulSearchRepository) {
         this.glassesRepository = glassesRepository;
         this.eyeRepository = eyeRepository;
         this.dispenseRepository = dispenseRepository;
@@ -91,7 +92,7 @@ public class MainServiceImpl implements MainService {
     @Transactional
     public Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException {
         // dispenseRepository.save(glasses.getDispense());
-        
+
         return glassesRepository.save(glasses);
     }
 

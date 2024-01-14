@@ -14,5 +14,5 @@ public class ChangeValueDTO {
     public void setHashValue(String hashValue) {
         this.hashValue = hashValue;
     }
-    
+
 }

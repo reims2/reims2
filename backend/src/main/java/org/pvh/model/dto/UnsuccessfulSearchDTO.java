@@ -16,7 +16,6 @@ public class UnsuccessfulSearchDTO {
     private EyeDTO os;
     private EyeDTO od;
 
-    
 
 
     public UnsuccessfulSearchDTO(@IEnumValidator(enumClass = GlassesTypeEnum.class) String glassesType,
@@ -29,28 +28,35 @@ public class UnsuccessfulSearchDTO {
         this.os = os;
         this.od = od;
     }
-    
+
     public String getGlassesType() {
         return glassesType;
     }
+
     public void setGlassesType(String glassesType) {
         this.glassesType = glassesType;
     }
+
     public Date getSearchDate() {
         return searchDate;
     }
+
     public void setSearchDate(Date searchDate) {
         this.searchDate = searchDate;
     }
+
     public EyeDTO getOs() {
         return os;
     }
+
     public void setOs(EyeDTO os) {
         this.os = os;
     }
+
     public EyeDTO getOd() {
         return od;
     }
+
     public void setOd(EyeDTO od) {
         this.od = od;
     }
@@ -71,5 +77,5 @@ public class UnsuccessfulSearchDTO {
         this.increaseSearchTolerance = increaseSearchTolerance;
     }
 
-    
+
 }

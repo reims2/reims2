@@ -35,7 +35,7 @@ public class ChangeServiceImpl implements ChangeService {
     public void setNewHashValue(String location) {
         ChangeValue changeValue = changeValueRepository.findByLocation(location).get().isEmpty() ? null
                 : changeValueRepository.findByLocation(location).get().get(0);
-                
+
         if (changeValue != null) {
             changeValueRepository.delete(changeValue);
             logger.debug("ChangeValue at location " + location + " has been deleted");

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UnsuccessfulSearchRepository extends JpaRepository<UnsuccessfulSearch, Long> {
-    
+
 }

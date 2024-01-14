@@ -15,5 +15,5 @@ public class DispenseBoolean {
     public String toString() {
         return "DispenseBoolean [dispensed=" + dispensed + "]";
     }
-    
+
 }

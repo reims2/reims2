@@ -70,7 +70,7 @@ public class GlassesRestController {
     @Autowired
     private MainService mainService;
     @Autowired
-	private ChangeService changeService;
+    private ChangeService changeService;
 
 
 
@@ -327,17 +327,19 @@ public class GlassesRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    
+
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping(path = "/{location}/unsuccessfulSearch", produces = "application/json")
-    public ResponseEntity<Void> addUnsuccessfulSearch(@PathVariable("location") String location, @RequestBody @Valid UnsuccessfulSearchDTO unsuccessfulSearchDTO, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> addUnsuccessfulSearch(@PathVariable("location") String location,
+            @RequestBody @Valid UnsuccessfulSearchDTO unsuccessfulSearchDTO, UriComponentsBuilder ucBuilder) {
         UnsuccessfulSearch searchResponse;
         try {
             HttpHeaders headers = new HttpHeaders();
             if (unsuccessfulSearchDTO == null) {
                 return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
             }
-            UnsuccessfulSearch search = UnsuccessfulSearchMapperImpl.getInstance().unsuccessfulSearchDTOToUnsuccessfulSearch(unsuccessfulSearchDTO,location);
+            UnsuccessfulSearch search =
+                    UnsuccessfulSearchMapperImpl.getInstance().unsuccessfulSearchDTOToUnsuccessfulSearch(unsuccessfulSearchDTO, location);
             searchResponse = this.mainService.saveUnsuccessfulSearch(search);
         } catch (RuntimeException e) {
             throw new PVHException("Something bad happened while adding unsuccessful search.", HttpStatus.INTERNAL_SERVER_ERROR);

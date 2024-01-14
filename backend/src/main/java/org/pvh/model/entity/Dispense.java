@@ -62,5 +62,5 @@ public class Dispense extends BaseEntity {
         return "Dispense [modifyDate=" + modifyDate + ", previousSku=" + previousSku + ", dispenseReason="
                 + dispenseReason + "]";
     }
-    
+
 }

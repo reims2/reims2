@@ -103,6 +103,7 @@ public class UnsuccessfulSearch extends BaseEntity {
     public void setSearchDate(Date searchDate) {
         this.searchDate = searchDate;
     }
+
     public Boolean getIncreaseSearchTolerance() {
         return increaseSearchTolerance;
     }
@@ -118,5 +119,5 @@ public class UnsuccessfulSearch extends BaseEntity {
                 + os + ", od=" + od + "]";
     }
 
-    
+
 }

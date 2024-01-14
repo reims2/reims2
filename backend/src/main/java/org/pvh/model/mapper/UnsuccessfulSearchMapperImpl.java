@@ -11,8 +11,7 @@ public class UnsuccessfulSearchMapperImpl implements UnsuccessfulSearchMapper {
 
     private static UnsuccessfulSearchMapperImpl mapper;
 
-    private UnsuccessfulSearchMapperImpl() {
-    }
+    private UnsuccessfulSearchMapperImpl() {}
 
     public static UnsuccessfulSearchMapperImpl getInstance() {
         if (mapper == null) {

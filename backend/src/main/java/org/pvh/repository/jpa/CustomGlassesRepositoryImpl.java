@@ -39,7 +39,7 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
 
             try {
                 // JPA returns BigInteger even though it really is just a java int => convert it
-                nextSKU = ((Number)findNextSKUQuery.getSingleResult()).intValue();
+                nextSKU = ((Number) findNextSKUQuery.getSingleResult()).intValue();
             } catch (NoResultException e) {
                 throw new NoSkusLeftException("No free SKU");
             }

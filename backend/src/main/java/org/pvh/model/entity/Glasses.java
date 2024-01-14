@@ -170,5 +170,5 @@ public class Glasses extends BaseEntity {
                 + appearance + ", location=" + location + ", dispensed=" + dispensed + ", creationDate=" + creationDate.toString()
                 + ", dispense=" + dispense.toString() + ", os=" + os.toString() + ", od=" + od.toString() + "]";
     }
-    
+
 }

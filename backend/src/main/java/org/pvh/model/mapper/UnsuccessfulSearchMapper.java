@@ -8,6 +8,7 @@ import org.pvh.model.entity.UnsuccessfulSearch;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface UnsuccessfulSearchMapper {
     UnsuccessfulSearchDTO unsuccessfulSearchToUnsuccessfulSearchDTO(UnsuccessfulSearch unsuccessfulSearch);
+
     UnsuccessfulSearch unsuccessfulSearchDTOToUnsuccessfulSearch(UnsuccessfulSearchDTO unsuccessfulSearch, String location);
 
 }

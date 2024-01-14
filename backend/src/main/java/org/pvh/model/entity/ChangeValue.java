@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "changevalue")
-public class ChangeValue{
+public class ChangeValue {
     @Id
     @Column(name = "hash_value")
     private String hashValue;
@@ -26,7 +26,7 @@ public class ChangeValue{
 
     }
 
-    
+
     public String getHashValue() {
         return hashValue;
     }
@@ -43,5 +43,5 @@ public class ChangeValue{
         this.location = location;
     }
 
-    
+
 }
