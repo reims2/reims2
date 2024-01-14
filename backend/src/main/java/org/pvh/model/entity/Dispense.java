@@ -1,5 +1,7 @@
 package org.pvh.model.entity;
 
+import java.util.Date;
+
 import org.pvh.model.enums.DispenseReasonEnum;
 
 import jakarta.persistence.Column;
@@ -7,8 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-
-import java.util.Date;
 
 @Entity
 @Table(name = "dispense")

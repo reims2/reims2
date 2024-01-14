@@ -1,20 +1,31 @@
 
 package org.pvh.rest;
 
-import cz.jirutka.rsql.parser.RSQLParser;
-import cz.jirutka.rsql.parser.ast.Node;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 import org.pvh.error.NoSkusLeftException;
 import org.pvh.error.PVHException;
+import org.pvh.model.dto.ChangeValueDTO;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
+import org.pvh.model.dto.UnsuccessfulSearchDTO;
 import org.pvh.model.entity.Glasses;
+import org.pvh.model.entity.UnsuccessfulSearch;
 import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.mapper.GlassesMapperImpl;
+import org.pvh.model.mapper.UnsuccessfulSearchMapperImpl;
 import org.pvh.repository.RSQL.CustomRsqlVisitor;
+import org.pvh.service.ChangeService;
 import org.pvh.service.MainService;
 import org.pvh.util.WriteCsvToResponse;
 import org.slf4j.Logger;
@@ -30,16 +41,23 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.google.common.hash.Hashing;
-
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
+import cz.jirutka.rsql.parser.RSQLParser;
+import cz.jirutka.rsql.parser.ast.Node;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
@@ -51,6 +69,8 @@ public class GlassesRestController {
     private static final String ENTITY_NOT_FOUND = "Entity not found!";
     @Autowired
     private MainService mainService;
+    @Autowired
+	private ChangeService changeService;
 
 
 
@@ -168,16 +188,13 @@ public class GlassesRestController {
 
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @GetMapping(path = "/changes/{location}", produces = "application/json")
-    public String getGlassesChange(@PathVariable("location") String location) {
-        List<Glasses> glasses = this.mainService.findAllByLocationAndNotDispensed(location);
-        if (glasses.isEmpty())
-            throw new PVHException("Glasses not found!", HttpStatus.NOT_FOUND);
-        StringBuilder concatenatedValues = new StringBuilder();
-        for (Glasses glasses2 : glasses) {
-            concatenatedValues.append(Hashing.sha256().hashString(glasses2.toString(), StandardCharsets.UTF_8).toString());
-        }
-        return Hashing.sha256().hashString(concatenatedValues, StandardCharsets.UTF_8).toString();
+    @GetMapping(path = "/{location}/changes", produces = "application/json")
+    public ChangeValueDTO getGlassesChange(@PathVariable("location") String location) {
+
+        String currentHashValue = changeService.getHashValue(location);
+        ChangeValueDTO currentHashValueDTO = new ChangeValueDTO(currentHashValue);
+        return currentHashValueDTO;
+
     }
 
 
@@ -205,7 +222,7 @@ public class GlassesRestController {
         } finally {
             lock.unlock();
         }
-
+        changeService.setNewHashValue(glassesResponse.getLocation());
         logger.info("Added new glasses in {}. SKU is {}.", glassesResponse.getLocation(), glassesResponse.getSku());
         return new ResponseEntity<>(GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(glassesResponse), HttpStatus.CREATED);
     }
@@ -224,6 +241,7 @@ public class GlassesRestController {
         }
         Glasses glasses1 = GlassesMapperImpl.getInstance().updateGlassesFromGlassesRequestDTO(glasses, currentGlasses.get());
         logger.info("Edited glasses with SKU {} (in {})", sku, location);
+        changeService.setNewHashValue(location);
         return new ResponseEntity<>(
                 GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(this.mainService.saveGlassesAfterEdit(glasses1)),
                 HttpStatus.OK);
@@ -253,8 +271,12 @@ public class GlassesRestController {
             currentGlasses.get().getDispense().setDispenseReason(DispenseReasonEnum.DISPENSED);
 
         currentGlasses.get().setSku(null);
-
-        this.mainService.saveGlassesAfterDispense(currentGlasses.get());
+        try {
+            this.mainService.saveGlassesAfterDispense(currentGlasses.get());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        changeService.setNewHashValue(location);
         logger.info("Dispensed glasses with SKU {} (in {}) with reason {}", sku, location,
                 currentGlasses.get().getDispense().getDispenseReason());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -287,13 +309,13 @@ public class GlassesRestController {
         currentGlasses.get().getDispense().setPreviousSku(null);
 
         this.mainService.saveGlassesAfterDispense(currentGlasses.get());
+        changeService.setNewHashValue(currentGlasses.get().getLocation());
         logger.info("Undispensed glasses with SKU {}", currentGlasses.get().getSku());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/{location}/{sku}", produces = "application/json")
-    @Transactional
     public ResponseEntity<Void> deleteGlasses(@PathVariable("sku") int sku, @PathVariable("location") String location) {
         Optional<Glasses> glasses = this.mainService.findAllBySkuAndLocation(sku, location);
         if (glasses.isEmpty()) {
@@ -301,7 +323,28 @@ public class GlassesRestController {
         }
         this.mainService.deleteGlasses(glasses.get());
         logger.info("Completely deleted glasses with SKU {} (in {})", sku, location);
+        changeService.setNewHashValue(location);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PostMapping(path = "/{location}/unsuccessfulSearch", produces = "application/json")
+    public ResponseEntity<Void> addUnsuccessfulSearch(@PathVariable("location") String location, @RequestBody @Valid UnsuccessfulSearchDTO unsuccessfulSearchDTO, UriComponentsBuilder ucBuilder) {
+        UnsuccessfulSearch searchResponse;
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            if (unsuccessfulSearchDTO == null) {
+                return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
+            }
+            UnsuccessfulSearch search = UnsuccessfulSearchMapperImpl.getInstance().unsuccessfulSearchDTOToUnsuccessfulSearch(unsuccessfulSearchDTO,location);
+            searchResponse = this.mainService.saveUnsuccessfulSearch(search);
+        } catch (RuntimeException e) {
+            throw new PVHException("Something bad happened while adding unsuccessful search.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        logger.info("Added new unsuccessful search with following Attributes: {}", searchResponse.toString());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 
 }

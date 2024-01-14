@@ -2,6 +2,7 @@ package org.pvh.service;
 
 import org.pvh.error.NoSkusLeftException;
 import org.pvh.model.entity.Glasses;
+import org.pvh.model.entity.UnsuccessfulSearch;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,4 +42,7 @@ public interface MainService {
 
     List<Glasses> findAllByLocationAndNotDispensed(String location);
 
+    List<Glasses> findAllAndNotDispensed();
+
+    UnsuccessfulSearch saveUnsuccessfulSearch(UnsuccessfulSearch search);
 }

@@ -216,7 +216,6 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-
 # Eclipse m2e generated files
 # Eclipse Core
 .project

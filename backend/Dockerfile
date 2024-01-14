@@ -26,4 +26,4 @@ HEALTHCHECK --interval=5s --timeout=10s --retries=5 --start-period=20s CMD curl 
 
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["java",  "-jar", "/usr/src/app/app.jar", "--spring.profiles.active=mysql" ]
+CMD ["java",  "-jar", "/usr/src/app/app.jar", "--spring.profiles.active=prod" ]

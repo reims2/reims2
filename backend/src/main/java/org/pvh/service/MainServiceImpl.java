@@ -1,11 +1,17 @@
 package org.pvh.service;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
 import org.pvh.error.NoSkusLeftException;
 import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Glasses;
+import org.pvh.model.entity.UnsuccessfulSearch;
 import org.pvh.repository.DispenseRepository;
 import org.pvh.repository.EyeRepository;
 import org.pvh.repository.GlassesRepository;
+import org.pvh.repository.UnsuccessfulSearchRepository;
 import org.pvh.util.GlassesSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -17,26 +23,23 @@ import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class MainServiceImpl implements MainService {
 
     private GlassesRepository glassesRepository;
     private EyeRepository eyeRepository;
     private DispenseRepository dispenseRepository;
+    private UnsuccessfulSearchRepository unsuccessfulSearchRepository;
 
     @Autowired
-    public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository) {
+    public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository, UnsuccessfulSearchRepository unsuccessfulSearchRepository) {
         this.glassesRepository = glassesRepository;
         this.eyeRepository = eyeRepository;
         this.dispenseRepository = dispenseRepository;
+        this.unsuccessfulSearchRepository = unsuccessfulSearchRepository;
     }
 
     @Override
-    @Transactional
     public Optional<Glasses> findGlassesById(long glassesId) {
         Optional<Glasses> glasses;
         try {
@@ -85,12 +88,15 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    @Transactional
     public Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException {
-        dispenseRepository.save(glasses.getDispense());
+        // dispenseRepository.save(glasses.getDispense());
+        
         return glassesRepository.save(glasses);
     }
 
     @Override
+    @Transactional
     public Glasses saveGlassesAfterEdit(Glasses glasses) throws DataAccessException {
         eyeRepository.save(glasses.getOs());
         eyeRepository.save(glasses.getOd());
@@ -108,7 +114,6 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    @Transactional
     public Page<Glasses> findAllGlasses(Pageable pageable) throws DataAccessException {
         return glassesRepository.findAll(pageable);
     }
@@ -140,6 +145,16 @@ public class MainServiceImpl implements MainService {
     @Override
     public List<Glasses> findAllByLocationAndNotDispensed(String location) {
         return glassesRepository.findAll(Specification.where(GlassesSpecs.hasLocation(location)).and(GlassesSpecs.isDispensed(false)));
+    }
+
+    @Override
+    public List<Glasses> findAllAndNotDispensed() {
+        return glassesRepository.findAll(Specification.where(GlassesSpecs.isDispensed(false)));
+    }
+
+    @Override
+    public UnsuccessfulSearch saveUnsuccessfulSearch(UnsuccessfulSearch search) {
+        return unsuccessfulSearchRepository.save(search);
     }
 
 }

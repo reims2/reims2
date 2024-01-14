@@ -1,21 +1,31 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Spring Boot-PVHApplication<spring-pvh-rest>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "org.pvh.PVHApplication",
-            "projectName": "spring-pvh-rest",
-            "args": "",
-            "env": {
-                "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException",
-                "PVH_DEBUG": "true",
-            }
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Backend Spring HSQL",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "org.pvh.PVHApplication",
+      "projectName": "spring-pvh-rest",
+      "args": "",
+      "env": {
+        "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException",
+        "PVH_DEBUG": "true"
+      }
+    },
+    {
+      "type": "java",
+      "name": "Backend Spring MariaDB local",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "org.pvh.PVHApplication",
+      "projectName": "spring-pvh-rest",
+      "args": "--spring.profiles.active=local",
+      "env": {
+        "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException",
+        "PVH_DEBUG": "true"
+      }
+    }
+  ]
 }
