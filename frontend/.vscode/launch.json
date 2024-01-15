@@ -10,17 +10,29 @@
     },
     {
       "type": "node",
-      "runtimeVersion": "16.19.0",
       "request": "launch",
-      "name": "Vite Dev",
+      "name": "Vite Dev (remote API)",
       "args": ["dev"],
       "outputCapture": "std",
       "linux": {
         "program": "${workspaceFolder}/node_modules/.bin/vite"
       },
       "env": {
-        //"VITE_API_URL": "https://dev.reims2.app", // use remote API (doesnt work yet)
-        "VITE_GIT_VERSION": "testcommitnotsethere",
+        "VITE_API_URL": "https://dev.reims2.app/",
+        "VITE_PVH_DEBUG": "true"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Vite Dev (local API)",
+      "args": ["dev"],
+      "outputCapture": "std",
+      "linux": {
+        "program": "${workspaceFolder}/node_modules/.bin/vite"
+      },
+      "env": {
+        "VITE_API_URL": "http://localhost:9966/",
         "VITE_PVH_DEBUG": "true"
       }
     }
