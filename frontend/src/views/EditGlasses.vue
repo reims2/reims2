@@ -123,6 +123,10 @@ function startDispension() {
   submitDeletion('DISPENSED')
 }
 
+watchEffect(() => {
+  if (selected.value) errorMesssage.value = ''
+})
+
 function onDeleted() {
   if (!mobile.value) firstInput.value?.focus()
   form.value?.reset()
