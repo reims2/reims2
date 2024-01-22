@@ -11,6 +11,7 @@
 	# Redirect all files to / (except API) and let Vue handle the routing
 	@try_files {
 		not path /api/*
+		not path /docs/*
 		file {
 			try_files {path} /
 		}
@@ -22,7 +23,6 @@
 	respond /api/* "Bad Gateway (/api reached frontend)" 502 {
 		close
 	}
-
 
 	log error_log {
 		output stderr
