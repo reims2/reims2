@@ -1,16 +1,21 @@
-name: deploy 
+name: deploy
 
 on:
-  push:
-    tags: "*"
   workflow_dispatch:
 
 jobs:
   ansible:
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - name: Release new version
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@00765f79cffbf77b8bef397c00d492d8241502be # v2
         with:
@@ -20,4 +25,3 @@ jobs:
           requirements: requirements.yml
           options: |
             --inventory hosts
-          
