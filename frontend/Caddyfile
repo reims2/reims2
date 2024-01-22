@@ -19,9 +19,10 @@
 
 	# API requests should never reach this frontend server
 	# If they do, fail explicitly with a bad gateway error
-	handle_path /api/* {
-		respond 502
+	respond /api/* "Bad Gateway (/api reached frontend)" 502 {
+		close
 	}
+
 
 	log error_log {
 		output stderr
