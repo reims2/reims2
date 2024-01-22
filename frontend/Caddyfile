@@ -7,5 +7,24 @@
 	file_server
 
 	# Vue router support https://router.vuejs.org/guide/essentials/history-mode.html#Caddy-v2
-	try_files {path} /
+	# Using expanded form https://caddyserver.com/docs/caddyfile/directives/try_files#expanded-form
+	# Redirect all files to / (except API) and let Vue handle the routing
+	@try_files {
+		not path /api/*
+		file {
+			try_files {path} /
+		}
+	}
+	rewrite @try_files {file_match.relative}
+
+	# API requests should never reach this frontend server
+	# If they do, fail explicitly with a bad gateway error
+	handle_path /api/* {
+		respond 502
+	}
+
+	log error_log {
+		output stderr
+		level ERROR
+	}
 }
