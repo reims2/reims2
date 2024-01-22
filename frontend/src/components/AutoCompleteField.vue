@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['update:modelValue'])
 const inputVal = useVModel(props, 'modelValue', emit)
 
-const input = ref<HTMLElement | null>(null)
+const input = ref<HTMLInputElement | null>(null)
 
 onMounted(() => {
   if (!mobile.value) focus()
@@ -50,6 +50,7 @@ onMounted(() => {
 
 function focus() {
   input.value?.focus()
+  input.value?.select()
 }
 
 defineExpose({ focus })
