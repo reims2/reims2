@@ -2,14 +2,13 @@ name: deploy
 
 on:
   workflow_dispatch:
+  
 
 jobs:
   ansible:
     runs-on: ubuntu-latest
     environment: production
-    permissions:
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
+    permissions: write-all
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - name: Use Node.js 20
