@@ -1,5 +1,9 @@
 # How to use REIMS2
 
+Common tasks and how to do them with REIMS2:
+
+[[toc]]
+
 ## Change the location
 
 In the top left it shows which location REIMS currently uses. To change that, click on "Change location" in the bottom left. After clicking apply, it'll take a few seconds to download the database of the new location. After that, it shows the new location in the top left.
