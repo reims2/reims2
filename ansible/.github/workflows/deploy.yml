@@ -12,6 +12,10 @@ jobs:
       issues: write # to be able to comment on released issues
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
       - name: Release new version
         run: npx semantic-release
         env:
