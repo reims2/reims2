@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20.x"
+      - name: Install dependencies
+        run: npm install conventional-changelog-conventionalcommits
       - name: Release new version
         run: npx semantic-release
         env:
