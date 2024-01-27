@@ -1838,7 +1838,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    vitepress: "npm:1.0.0-rc.39"
+    vitepress: "npm:1.0.0-rc.40"
   languageName: unknown
   linkType: soft
 
@@ -1890,28 +1890,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shikiji-core@npm:0.9.19, shikiji-core@npm:^0.9.19":
-  version: 0.9.19
-  resolution: "shikiji-core@npm:0.9.19"
-  checksum: 086137d5dd27227557c8c2f376cedfc6ac73616863e644ae07fbc284a164097295612c9c901fda2a0617234ddeb9482394e9975e43c714d81dc3d0852950abc7
+"shikiji-core@npm:0.10.2, shikiji-core@npm:^0.10.0":
+  version: 0.10.2
+  resolution: "shikiji-core@npm:0.10.2"
+  checksum: 847bb9f4bf00e6a1311f3e7eab3bd1b4e68016612eba636151cb1c9b5143d18f961cd1d029bca1a112bdd7749cf60f42739d12bc340ba76cf91208dbad3b8502
   languageName: node
   linkType: hard
 
-"shikiji-transformers@npm:^0.9.19":
-  version: 0.9.19
-  resolution: "shikiji-transformers@npm:0.9.19"
+"shikiji-transformers@npm:^0.10.0":
+  version: 0.10.2
+  resolution: "shikiji-transformers@npm:0.10.2"
   dependencies:
-    shikiji: "npm:0.9.19"
-  checksum: ff6366698ba5b12f185a62d939cd9d2804e27e871a8bb0f1020107c5388384ee5982596741cc311bf61de54dd5a480c44f71efbaa1d04a0cdf603a2c4f2f13b8
+    shikiji: "npm:0.10.2"
+  checksum: 029e2806a41c72b80ae8d1190ebd28596e9f888d367d6f0decd3d698cf9c19a210408f061dcf85d4748f900aac3385548259f5863f6a798c86ea10c4d57b1b00
   languageName: node
   linkType: hard
 
-"shikiji@npm:0.9.19, shikiji@npm:^0.9.19":
-  version: 0.9.19
-  resolution: "shikiji@npm:0.9.19"
+"shikiji@npm:0.10.2, shikiji@npm:^0.10.0":
+  version: 0.10.2
+  resolution: "shikiji@npm:0.10.2"
   dependencies:
-    shikiji-core: "npm:0.9.19"
-  checksum: 0ebd0c4eb0605e32e51003912a3ff7c3339fd5b83ca375406ddcedca6063be00d6e751809d2c689f7b6d7f04a7ab30776b1450c1bf3646bb915d2bbdd836611f
+    shikiji-core: "npm:0.10.2"
+  checksum: fe03b3af25042c7b5979e2355b544b62517ab5df39f8d232ce108437595f010ee1f6663e8da2466ce77c9d2529e3da8081af36d95978e7bf19c1780469a85ddf
   languageName: node
   linkType: hard
 
@@ -2075,9 +2075,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.11":
-  version: 5.0.11
-  resolution: "vite@npm:5.0.11"
+"vite@npm:^5.0.12":
+  version: 5.0.12
+  resolution: "vite@npm:5.0.12"
   dependencies:
     esbuild: "npm:^0.19.3"
     fsevents: "npm:~2.3.3"
@@ -2111,13 +2111,13 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: f1a8fea35ed9f162d7a10fd13efb2c96637028b0a319d726aeec8b31e20e4d047272bda5df82167618e7774a520236c66f3093ed172802660aec5227814072f4
+  checksum: ed0bb26a0d0c8e1dae0b70af9e36adffd7e15d80297443fe4da762596dc81570bad7f0291f590a57c1553f5e435338d8c7ffc483bd9431a95c09d9ac90665fad
   languageName: node
   linkType: hard
 
-"vitepress@npm:1.0.0-rc.39":
-  version: 1.0.0-rc.39
-  resolution: "vitepress@npm:1.0.0-rc.39"
+"vitepress@npm:1.0.0-rc.40":
+  version: 1.0.0-rc.40
+  resolution: "vitepress@npm:1.0.0-rc.40"
   dependencies:
     "@docsearch/css": "npm:^3.5.2"
     "@docsearch/js": "npm:^3.5.2"
@@ -2129,11 +2129,11 @@ __metadata:
     focus-trap: "npm:^7.5.4"
     mark.js: "npm:8.11.1"
     minisearch: "npm:^6.3.0"
-    shikiji: "npm:^0.9.19"
-    shikiji-core: "npm:^0.9.19"
-    shikiji-transformers: "npm:^0.9.19"
-    vite: "npm:^5.0.11"
-    vue: "npm:^3.4.14"
+    shikiji: "npm:^0.10.0"
+    shikiji-core: "npm:^0.10.0"
+    shikiji-transformers: "npm:^0.10.0"
+    vite: "npm:^5.0.12"
+    vue: "npm:^3.4.15"
   peerDependencies:
     markdown-it-mathjax3: ^4.3.2
     postcss: ^8.4.33
@@ -2144,7 +2144,7 @@ __metadata:
       optional: true
   bin:
     vitepress: bin/vitepress.js
-  checksum: 57710b45b267062cb21b7ed65a9eeb062c264d395bb94219dc2d28db4ab9211dff3c41e86dcfe5f8ce8804300db2ec9484aaba9c057ff49b7f92898739a429eb
+  checksum: c382e1c8a06e395ee4b838825fa0552cff7cf035e2435acc57ec0df18e9de27230f658ecdb54be1391921e5729c8710e90a6a52ae6fd05cc8f7ee3c6965b8d1f
   languageName: node
   linkType: hard
 
@@ -2164,7 +2164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.4.14":
+"vue@npm:^3.4.15":
   version: 3.4.15
   resolution: "vue@npm:3.4.15"
   dependencies:
