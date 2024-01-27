@@ -3761,13 +3761,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css.escape@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "css.escape@npm:1.5.1"
-  checksum: f6d38088d870a961794a2580b2b2af1027731bb43261cfdce14f19238a88664b351cc8978abc20f06cc6bbde725699dec8deb6fe9816b139fc3f2af28719e774
-  languageName: node
-  linkType: hard
-
 "cssesc@npm:^3.0.0":
   version: 3.0.0
   resolution: "cssesc@npm:3.0.0"
@@ -5086,17 +5079,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:13.1.4":
-  version: 13.1.4
-  resolution: "happy-dom@npm:13.1.4"
+"happy-dom@npm:13.2.2":
+  version: 13.2.2
+  resolution: "happy-dom@npm:13.2.2"
   dependencies:
-    css.escape: "npm:^1.5.1"
     entities: "npm:^4.5.0"
-    iconv-lite: "npm:^0.6.3"
     webidl-conversions: "npm:^7.0.0"
-    whatwg-encoding: "npm:^2.0.0"
     whatwg-mimetype: "npm:^3.0.0"
-  checksum: 4aef8805f0d1a9c9da3972d2de383c2fecdadbcdc3e33f5f78bc9a6937d90b541405a0b1cace884bcbaea48c5b42c74b4f5b39004b74e284add25c674228454a
+  checksum: 673f3fe114ee810ee4bf09ed2857c9e6d6acec91f08f38e22e826c816619e470fa1e9ac0095f0fce4e237374e592afaa630c85d7097a8f2f93681512f437d626
   languageName: node
   linkType: hard
 
@@ -5266,7 +5256,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iconv-lite@npm:0.6.3, iconv-lite@npm:^0.6.2, iconv-lite@npm:^0.6.3":
+"iconv-lite@npm:^0.6.2":
   version: 0.6.3
   resolution: "iconv-lite@npm:0.6.3"
   dependencies:
@@ -7079,7 +7069,7 @@ __metadata:
     eslint-plugin-n: "npm:16.6.0"
     eslint-plugin-promise: "npm:6.1.1"
     eslint-plugin-vue: "npm:9.19.2"
-    happy-dom: "npm:13.1.4"
+    happy-dom: "npm:13.2.2"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:2.1.7"
     pinia-plugin-persistedstate: "npm:3.2.1"
@@ -8644,15 +8634,6 @@ __metadata:
   version: 0.6.1
   resolution: "webpack-virtual-modules@npm:0.6.1"
   checksum: 12a43ecdb910185c9d7e4ec19cc3b13bff228dae362e8a487c0bd292b393555e017ad16f771d5ce5b692d91d65b71a7bcd64763958d39066a5351ea325395539
-  languageName: node
-  linkType: hard
-
-"whatwg-encoding@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "whatwg-encoding@npm:2.0.0"
-  dependencies:
-    iconv-lite: "npm:0.6.3"
-  checksum: 162d712d88fd134a4fe587e53302da812eb4215a1baa4c394dfd86eff31d0a079ff932c05233857997de07481093358d6e7587997358f49b8a580a777be22089
   languageName: node
   linkType: hard
 
