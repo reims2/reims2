@@ -17,17 +17,21 @@ Patient with bad sight visits the clinc in El Salvador and leaves with matching 
    - The fetching process takes a few minutes.
    - Meanwhile, the computer person might repeat the matching process for other patients, so other guys can fetch their best matching glasses simultanously
 7. The patient tries out the 3 glasses and picks their favorite. They leave the clinic with their favorite glasses.
-8. The empty plastic bag, which the picked glasses were in, is stored in a seperate "dispensed" container. The computer person records them as "dispensed" in the DB as soon as he has some time inbetween.
+8. The empty plastic bag, which the picked glasses were in, is stored in a seperate "dispensed" container. The computer person marks it as "dispensed" in the DB as soon as they have some time inbetween.
 
 ### Other things that happen on site
 
-A retrieved SKU bag has been empty.
+Shortly after arrival, all newly added glasses are put into the inventory (see also below). During that process, they usually go through the whole inventory and check it. The following might happen: 
+
+#### A retrieved SKU bag has been empty.
 
 - The computer person marks the bag as deleted (and not dispensed?), so it can be refilled back in America.
 
-The Rx on the bag is different (because wrong data was entered).
+Same happens when a SKU still exists in the inventory, but a new glass was already assigned that SKU because it wasn't in the database anymore (AFAIK this doesn't happen very often?)
 
-- The computer person directly corrects the Rx in the DB so it's correct in the future
+#### The Rx on the bag is different (because wrong data was entered).
+
+- The computer person edits the Rx in the DB so it's correct in the future
 
 ## Back in America
 
@@ -49,9 +53,12 @@ The decision is done by a manual analysis with excel. For the current state it w
 One or multiple persons in America refill the glasses inventory to the possible 10k glasses.
 
 1. The donated glasses from all over America are collected. Glasses are cleaned and measured. All glasses are stored in a plastic bag with the measured Rx written on them.
-   - Those glasses are not yet recorded inside the DB, as it'd be too tedious to enter them all.
+   - Those glasses are not yet recorded inside the DB, as it'd be too tedious to enter them all. 
 2. They pick new glasses for entering to inventory (after analysis, see previous section) and enter them into the program (mostly with a USB numpad only).
    - It should be possible to do this step and the next one with multiple people simultanously all over America.
 3. The program outputs the selected SKU and the person writes it also on the plastic bag.
    - The SKU is selected simply by the next free slot, which opened after the dispensing in the previous campaign.
 4. This process is repeated until all 10k glasses are refilled again.
+
+The new glasses are then stored separately and when the next campaign starts, people will just transport them in their flight luggage to El Salvador. So the process of integrating the new glasses into the physical inventory actually happens very shortly (usually just a day) before the actual campaign starts.
+
