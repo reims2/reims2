@@ -14,7 +14,7 @@ After matching glasses have been found for a patient, it's important to mark tho
 
 ## Edit existing glasses
 
-If glasses are entered with wrong data, it's possible to correct that. Switch to the "Edit" page and enter the SKU you want to change. On the appearing glasses, click on the value you want to change. A text field will open, where it's possible to enter the new value. Click "Save" to save the changes.
+If glasses are entered with wrong data, it's possible to correct that. Switch to the "Edit" page and enter the SKU you want to change. On the appearing glasses, click on the value you want to change. A text field will open, where it's possible to enter the new value. Hit ENTER to save the changes. A message will show if the edit was successful.
 
 ## Working offline
 
