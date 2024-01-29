@@ -144,8 +144,8 @@ const itemsPerPage = 3
 const glassesTypeData = glassesMetaUIData.glassesType
 
 const { matches, startSearch } = useFindGlasses(
-  odEye,
   osEye,
+  odEye,
   glassesTypeInput,
   highTolerance,
   valid,
