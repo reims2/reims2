@@ -4397,20 +4397,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:9.19.2":
-  version: 9.19.2
-  resolution: "eslint-plugin-vue@npm:9.19.2"
+"eslint-plugin-vue@npm:9.20.1":
+  version: 9.20.1
+  resolution: "eslint-plugin-vue@npm:9.20.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.4.0"
     natural-compare: "npm:^1.4.0"
     nth-check: "npm:^2.1.1"
     postcss-selector-parser: "npm:^6.0.13"
     semver: "npm:^7.5.4"
-    vue-eslint-parser: "npm:^9.3.1"
+    vue-eslint-parser: "npm:^9.4.0"
     xml-name-validator: "npm:^4.0.0"
   peerDependencies:
     eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
-  checksum: 4cadfd71ef2acd2873302b21675951cb6b397b158adc0bf131ae6425fcf1b7a21c0ec989798684e203521e078863f53f8313ab0635c21882b50e2581682e319f
+  checksum: b9d2d2400aad7a77b3da6844f261cc2d9e86d99ae0febd7d544ababbf316be7eddfc3ff610e5d1d0ea3c9db0d24bbafe3129b1b8472ff10fe81162ded402736c
   languageName: node
   linkType: hard
 
@@ -6861,12 +6861,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.1.1":
-  version: 3.1.1
-  resolution: "prettier@npm:3.1.1"
+"prettier@npm:3.2.4":
+  version: 3.2.4
+  resolution: "prettier@npm:3.2.4"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 26a249f321b97d26c04483f1bf2eeb22e082a76f4222a2c922bebdc60111691aad4ec3979610e83942e0b956058ec361d9e9c81c185172264eb6db9aa678082b
+  checksum: e2b735d0552501b3a7ac8bd3ba3b6de2920bb35bd4cd02d08cb9057ebe3e96d83b9a7e4b903d987b7530a50223b12c74d107c154337236ae2c68156ba1e65cd2
   languageName: node
   linkType: hard
 
@@ -7079,12 +7079,12 @@ __metadata:
     eslint-plugin-import: "npm:2.29.1"
     eslint-plugin-n: "npm:16.6.2"
     eslint-plugin-promise: "npm:6.1.1"
-    eslint-plugin-vue: "npm:9.19.2"
+    eslint-plugin-vue: "npm:9.20.1"
     happy-dom: "npm:13.1.4"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:2.1.7"
     pinia-plugin-persistedstate: "npm:3.2.1"
-    prettier: "npm:3.1.1"
+    prettier: "npm:3.2.4"
     sass: "npm:1.69.7"
     typescript: "npm:5.3.3"
     unplugin-auto-import: "npm:0.17.3"
@@ -8522,6 +8522,23 @@ __metadata:
   peerDependencies:
     eslint: ">=6.0.0"
   checksum: 08411df1bde8182d946c13b364789c5d48f97c5d822e2291c632865b5852997d5abf29d2ad232f35060a9e05f730e3f6f20ad6841c4dbcefbb0caf04f1452a33
+  languageName: node
+  linkType: hard
+
+"vue-eslint-parser@npm:^9.4.0":
+  version: 9.4.2
+  resolution: "vue-eslint-parser@npm:9.4.2"
+  dependencies:
+    debug: "npm:^4.3.4"
+    eslint-scope: "npm:^7.1.1"
+    eslint-visitor-keys: "npm:^3.3.0"
+    espree: "npm:^9.3.1"
+    esquery: "npm:^1.4.0"
+    lodash: "npm:^4.17.21"
+    semver: "npm:^7.3.6"
+  peerDependencies:
+    eslint: ">=6.0.0"
+  checksum: 59ee81f32a1ac9014671eac3d56fa0eb1a2d24e00c811f21aa0652617d216293ab8f7d31971146995018d074e321d3781609670a14a0190c20f5138f6eb716cf
   languageName: node
   linkType: hard
 
