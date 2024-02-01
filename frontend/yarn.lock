@@ -4366,9 +4366,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-n@npm:16.6.0":
-  version: 16.6.0
-  resolution: "eslint-plugin-n@npm:16.6.0"
+"eslint-plugin-n@npm:16.6.2":
+  version: 16.6.2
+  resolution: "eslint-plugin-n@npm:16.6.2"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.4.0"
     builtins: "npm:^5.0.1"
@@ -4383,7 +4383,7 @@ __metadata:
     semver: "npm:^7.5.3"
   peerDependencies:
     eslint: ">=7.0.0"
-  checksum: 2903714c726b89bf3c107c0ec9fe2bc441d5ac0a8b4dce6d259c57a8777c6629a04a3d8fafd6f542c90d9637a75d53024b887fc0466c4c3ce98dc3d3d11481f5
+  checksum: e0f600d03d3a3df57e9a811648b1b534a6d67c90ea9406340ddf3763c2b87cf5ef910b390f787ca5cb27c8d8ff36aad42d70209b54e2a1cb4cc2507ca417229a
   languageName: node
   linkType: hard
 
@@ -7076,7 +7076,7 @@ __metadata:
     eslint-config-prettier: "npm:9.1.0"
     eslint-config-standard: "npm:17.1.0"
     eslint-plugin-import: "npm:2.29.1"
-    eslint-plugin-n: "npm:16.6.0"
+    eslint-plugin-n: "npm:16.6.2"
     eslint-plugin-promise: "npm:6.1.1"
     eslint-plugin-vue: "npm:9.19.2"
     happy-dom: "npm:13.1.4"
