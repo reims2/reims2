@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21.0.2_13-jdk-jammy@sha256:feacf32a39822acd503b5ba0cda9944c465ae0c8a50ee71d094d584272927508 AS build
+FROM eclipse-temurin:21.0.2_13-jdk-jammy@sha256:70389666bc0dcf87f5cab6ffb08d7878b44fd99fa72ddb26797b369f689d2e25 AS build
 
 ENV PORT 5000
 WORKDIR /usr/src/app
