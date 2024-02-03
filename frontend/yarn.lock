@@ -2760,7 +2760,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-core@npm:^7.0.13":
+"@vue/devtools-core@npm:^7.0.14":
   version: 7.0.14
   resolution: "@vue/devtools-core@npm:7.0.14"
   dependencies:
@@ -2780,7 +2780,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-kit@npm:^7.0.13, @vue/devtools-kit@npm:^7.0.14":
+"@vue/devtools-kit@npm:^7.0.14":
   version: 7.0.14
   resolution: "@vue/devtools-kit@npm:7.0.14"
   dependencies:
@@ -2801,7 +2801,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-shared@npm:^7.0.13, @vue/devtools-shared@npm:^7.0.14":
+"@vue/devtools-shared@npm:^7.0.14":
   version: 7.0.14
   resolution: "@vue/devtools-shared@npm:7.0.14"
   dependencies:
@@ -6968,7 +6968,7 @@ __metadata:
     unplugin-auto-import: "npm:0.17.5"
     vite: "npm:5.0.12"
     vite-plugin-pwa: "npm:0.17.5"
-    vite-plugin-vue-devtools: "npm:7.0.13"
+    vite-plugin-vue-devtools: "npm:7.0.14"
     vite-plugin-vuetify: "npm:2.0.1"
     vitest: "npm:1.1.3"
     vue: "npm:3.3.13"
@@ -8147,21 +8147,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-devtools@npm:7.0.13":
-  version: 7.0.13
-  resolution: "vite-plugin-vue-devtools@npm:7.0.13"
+"vite-plugin-vue-devtools@npm:7.0.14":
+  version: 7.0.14
+  resolution: "vite-plugin-vue-devtools@npm:7.0.14"
   dependencies:
-    "@vue/devtools-core": "npm:^7.0.13"
-    "@vue/devtools-kit": "npm:^7.0.13"
-    "@vue/devtools-shared": "npm:^7.0.13"
-    birpc: "npm:^0.2.14"
+    "@vue/devtools-core": "npm:^7.0.14"
+    "@vue/devtools-kit": "npm:^7.0.14"
+    "@vue/devtools-shared": "npm:^7.0.14"
+    birpc: "npm:^0.2.15"
     execa: "npm:^8.0.1"
     sirv: "npm:^2.0.4"
     vite-plugin-inspect: "npm:^0.8.3"
     vite-plugin-vue-inspector: "npm:^4.0.2"
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0 || ^5.0.0-0
-  checksum: 747f2f3663da7954df99fe7853172fd6d60075af54ec132d6c3eb1de490c578ecf9dd69f8074ffe09b7d1c743d758cd9d52f3f7144450998a59ddf7c7a486075
+  checksum: ef5a828f270ce4aecbd45f96700d6e17565f463294d9161ae1a1579aedb5055711a39fbac25f779cce1c67f818bf618fa21753945a6021bcd663482a8f6ed93d
   languageName: node
   linkType: hard
 
