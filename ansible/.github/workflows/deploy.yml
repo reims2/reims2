@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - name: Run playbook
-        uses: dawidd6/action-ansible-playbook@00765f79cffbf77b8bef397c00d492d8241502be # v2
+        uses: dawidd6/action-ansible-playbook@c97d71562fcba83cc1ea0602d5a77013427f7571 # v2
         with:
           playbook: main.yml
           key: ${{secrets.SSH_PRIVATE_KEY}}
