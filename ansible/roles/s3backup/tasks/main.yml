@@ -24,7 +24,7 @@
   ansible.builtin.cron:
     name: s3backup {{ stack_name }}
     minute: "0"
-    hour: "*/2"
+    hour: "*/6"
     user: root
     job: "bash {{ s3backup_install_location }}/backup.sh >> {{ log_location }}/backup.log 2>&1"
     cron_file: s3backup-{{ stack_name }}
