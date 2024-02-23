@@ -13,6 +13,6 @@ collections:
   - name: community.general
     version: 8.3.0
   - name: community.mysql
-    version: 3.8.0
+    version: 3.9.0
   - name: community.docker
     version: 3.7.0
