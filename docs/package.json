@@ -8,7 +8,7 @@
   "packageManager": "yarn@4.1.0",
   "license": "AGPL-3.0-only",
   "dependencies": {
-    "vitepress": "1.0.0-rc.42"
+    "vitepress": "1.0.0-rc.44"
   },
   "engines": {
     "node": "20.11.1"
