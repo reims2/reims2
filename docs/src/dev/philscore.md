@@ -2,7 +2,7 @@
 
 This page describes how the matching currently works. It starts with a high level overview of the process and then describes each part in more detail.
 
-The corresponding [code can be found here](https://github.com/reims2/reims2-frontend/blob/main/lib/philscore.ts).
+The corresponding [code can be found here](https://github.com/reims2/reims2-frontend/blob/main/src/lib/philscore.ts).
 
 **Glossary**
 
