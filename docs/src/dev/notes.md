@@ -91,3 +91,14 @@ Grafana use case: Wants to repopulate DB by adding glasses only. Add a new dashb
 - Dont show a time picker, its always now
 - Keep the old stats, where one can see which glasses could be deleted for a better inventory. But it's not relevant while adding.
 - Optionally add the old REIMS1 dispension data from previous campaigns
+
+## 26.2.24
+
+- first mail example 3 is really close tho
+- first maill 1vs2 is fine, ignore
+- first mial notperfect is fine as well, its just axis and ignroe it for now
+
+- second mail, ex2 modify axis maybe, check with REIMS1
+- second mail, ex1 probably a bug, theres 0 cyl but axis still filtering?? bi3 should show up in non BAL search
+
+- third mail, similiar to shanti
