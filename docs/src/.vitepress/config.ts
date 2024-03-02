@@ -7,6 +7,7 @@ export default defineConfig({
   lastUpdated: true,
   appearance: true,
   base: '/docs',
+  cleanUrls: true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -26,13 +27,17 @@ export default defineConfig({
             { link: '/howto', text: 'How to use REIMS2' },
           ],
         },
+        {
+          text: 'Internals',
+          items: [{ link: '/philscore', text: 'PhilScore' }],
+        },
       ],
       '/dev/': [
         {
           text: 'Overview',
           items: [
-            { link: '/dev/philscore', text: 'PhilScore' },
-            { link: '/dev/deploy ', text: 'Deploy' },
+            { link: '/dev/deploy ', text: 'System overview' },
+            { link: '/dev/analysis', text: 'REIMS1 analysis' },
           ],
         },
         {
@@ -43,10 +48,10 @@ export default defineConfig({
           ],
         },
         {
-          text: 'Other stuff',
+          text: 'Notes',
           items: [
-            { link: '/dev/analysis', text: 'Analysis' },
-            { link: '/dev/notes', text: 'Notes' },
+            { link: '/dev/notes', text: 'Meetings' },
+            { link: '/dev/ideas', text: 'Ideas' },
           ],
         },
       ],
