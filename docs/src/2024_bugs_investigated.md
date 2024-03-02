@@ -2,7 +2,7 @@
 search: false
 ---
 
-# Investigation Report: Suspected Bugs in 2024 Campaign
+# Suspected Bugs in 2024 Campaign
 
 [[toc]]
 
@@ -26,7 +26,7 @@ Below are the screenshots demonstrating this issue:
 
 ### Investigation Process
 
-To determine if this is an issue specific to the new REIMS2 system, we compared the results with the old REIMS1 system.
+To determine if this is an issue specific to new REIMS2, we compared the results with the old REIMS1.
 
 - SKU 2752 was added to the REIMS1 system:
 
@@ -44,7 +44,7 @@ To determine if this is an issue specific to the new REIMS2 system, we compared 
 
 ### Findings and Conclusion
 
-The investigation revealed that this is not a bug in the new REIMS2 system. The old REIMS1 system exhibits the same behavior.
+The investigation revealed that this is not a bug in REIMS2. REIMS1 exhibits the same behavior.
 
 The explanation for the behaviour in REIMS1 and REIMS2 is as follows:
 
