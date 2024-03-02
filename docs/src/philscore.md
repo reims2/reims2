@@ -9,6 +9,12 @@ The corresponding [code can be found here](https://github.com/reims2/reims2-fron
 >
 > Future plans include improving the algorithm, but for now, we are focusing on replicating the old system.
 
+## Glossary
+
+- `lens`: Refers to either OS or OD of an existing pair of glasses in the storage.
+- `rx`: The desired prescription.
+- `delta`: The absolute difference between a value of the desired prescription and the lens.
+
 ## Algorithm Overview
 
 The glasses matching process is executed in the following sequence:
