@@ -1,9 +1,5 @@
----
-title: Overview
----
+# Technical Documentation
 
-# Technical docs for the REIMS2 project
+This section of the documentation is specifically designed for developers involved in the REIMS2 project. It provides insights into the technical aspects of the project, including its general architecture, system requirements, and also notes from meetings with Partners for Visual Health.
 
-This is a collection of all the stuff that is needed for building a new version of the [REIMS](https://vosh.org/get-involved/vosh-fellow/suggested-reading/reims-system/) system.
-
-It contains information for understanding the old REIMS and help on setting up and understanding REIMS2 from a developer's perspective..
+Please note that this section is not intended for end-users. For user-specific instructions and guides, please refer to [the user documentation](/).

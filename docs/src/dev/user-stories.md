@@ -1,6 +1,6 @@
 # User stories
 
-Rx = Prescription = A pair of glasses descriped by its parameters like strength and others
+This document is a collection of user stories. It's not a complete list, but it should give a good overview of the requirements.
 
 ## Process on site
 

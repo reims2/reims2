@@ -35,6 +35,7 @@ export default defineConfig({
         {
           text: 'Overview',
           items: [
+            { link: '/dev/', text: 'Introduction' },
             { link: '/dev/deploy ', text: 'System overview' },
             { link: '/dev/analysis', text: 'REIMS1 analysis' },
           ],

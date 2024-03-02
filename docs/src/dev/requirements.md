@@ -1,6 +1,6 @@
 # Requirements
 
-This is just a very basic overview that's still missing a lot of requirements. It's more helpful to check the [user stories](./user-stories)
+This was basically just a note-taking document for the first few months. It's not intended to be a complete list. It's more helpful to check the [user stories](./user-stories).
 
 ## Backend
 

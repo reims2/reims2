@@ -2,6 +2,8 @@
 
 REIMS can be downloaded from [here (ZIP)](/reims-new.zip). The [REIMS manual (PDF)](/reims-manual.pdf) gives a very good overview of REIMS.
 
+[Link to the info page of REIMS1](http://web.archive.org/web/20230325142050/https://vosh.org/get-involved/vosh-fellow/suggested-reading/reims-system/)
+
 It's possible to run REIMS inside VirtualBox Windows 95 (find Windows 95 [here](https://archive.org/details/windows_95_vdi)).
 
 _Using a newer Windows might be possible as well._
@@ -114,6 +116,8 @@ For RANK() see also [this source code from 5 years ago](https://github.com/reims
 > SA and SM are the 2 sites
 
 > There is no correlation between the SKU and the power of the glasses that is assigned to it (so the SKU can be generated automatically)
+
+> Rx = Prescription = A pair of glasses descriped by its parameters like strength and others
 
 SKU= Stock keeping unit i.e. serial number
 
