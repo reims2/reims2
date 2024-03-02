@@ -15,6 +15,7 @@ We are open to refining the algorithm, see [Potential Improvements](#potential-i
 - `lens`: Refers to either OS or OD of an existing pair of glasses in the storage.
 - `rx`: The desired prescription.
 - `delta`: The absolute difference between a value of the desired prescription and the lens.
+- `PhilScore`: Name of the resulting score. The lower the PhilScore, the better the match. A PhilScore of 0 is a perfect match.
 
 ## Algorithm Overview
 
@@ -30,11 +31,11 @@ Initially, we exclude glasses based on the following criteria:
 > [!NOTE]
 > If the rx has BAL enabled for an eye, we bypass steps 2 and 4 for that eye and only filter the sphere and cylinder tolerance for that eye using the sphere and cylinder of the non-BAL eye. This is done using [`checkForTolerances`](#checkfortolerances) with an increased tolerance of 1.0.
 
-After filtering, we calculate the PhilScore.
+After filtering, we calculate the PhilScore for the remaining glasses using the following steps:
 
 1. Calculate the initial PhilScore for OD and OS separately using [`calcInitialDiffScore`](#calcinitialdiffscore).
 2. Adjust the initial PhilScore for OD and OS separately based on the rules in [`calcSingleEyePhilscore`](#calcsingleeyephilscore).
-3. Add both OD+OS philscore to get the final PhilScore.
+3. Sum the OD and OS philscore to get the final PhilScore.
 4. Arrange the glasses by PhilScore in ascending order.
 
 ## Filtering Function Descriptions
@@ -116,10 +117,20 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
      :::
 2. Only if step 2 did not apply: **Improve** the score if lens sphere is larger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder larger).
    ::: details Additional details
+
+   - This is the exact condition:
+
+   ```ts
+     if (lensSphere > rxSphere AND rxCylinder > lensCylinder)
+        OR
+        (lensSphere < rxSphere AND rxCylinder < lensCylinder)
+   ```
+
    - _The score gets improved more if sphere delta matches cylinder delta_
    - _The score also gets improved more if the cylinder delta is larger than 0.25_
-   - This is the exact condition: `if (lensSphere > rxSphere AND rxCylinder > lensCylinder) OR (lensSphere < rxSphere AND rxCylinder < lensCylinder)`
-     :::
+
+   :::
+
 3. Only if step 2 or 3 did not apply: **Improve** the score (by 0.12) if the spheres are equal and the cylinder delta is small (<= 0.75).
 4. **Improve** the score if the search is multifocal and the lens additional is larger than the desired additional.
    - Score gets improved more if the difference is larger.
