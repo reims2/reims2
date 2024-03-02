@@ -7,8 +7,6 @@ import {
   SanitizedEyeSearch,
 } from '@/model/GlassesModel'
 
-// glasses with a philscore higher than this will be removed
-const PHILSCORE_CUT_OFF = 10
 // Glasses with a sphere/cylinder/additional delta of more than this will be removed
 const NORMAL_TOLERANCE = 0.5
 const HIGH_TOLERANCE = 1.0
@@ -40,7 +38,6 @@ export default function calculateAllPhilscore(
       }
       return result
     })
-    .filter((glass) => glass.score <= PHILSCORE_CUT_OFF)
     .sort((a, b) => (a.score > b.score ? 1 : -1))
 }
 
