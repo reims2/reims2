@@ -6,6 +6,7 @@ export default defineConfig({
   description: 'This is the documentation for REIMS2',
   lastUpdated: true,
   appearance: true,
+  cleanUrls: true,
   base: '/docs',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
