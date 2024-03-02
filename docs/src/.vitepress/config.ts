@@ -36,7 +36,7 @@ export default defineConfig({
           text: 'Overview',
           items: [
             { link: '/dev/', text: 'Introduction' },
-            { link: '/dev/deploy ', text: 'System overview' },
+            { link: '/dev/system', text: 'System overview' },
             { link: '/dev/analysis', text: 'REIMS1 analysis' },
           ],
         },
@@ -55,6 +55,12 @@ export default defineConfig({
           ],
         },
       ],
+    },
+    lastUpdated: {
+      formatOptions: {
+        timeStyle: undefined,
+        dateStyle: 'long',
+      },
     },
 
     socialLinks: [{ icon: 'github', link: 'https://github.com/reims2' }],
