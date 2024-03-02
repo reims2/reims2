@@ -24,7 +24,7 @@ The glasses matching process is executed in the following sequence:
 8. Arrange the glasses by PhilScore in ascending order.
 
 > [!NOTE]
-> If the rx has BAL enabled for an eye, we bypass steps 2 and 4 for that eye and only filter the sphere and cylinder tolerance for that eye using the sphere and cylinder of the non-BAL eye. This is done using [`checkForTolerances`](#checkfortolerances).
+> If the rx has BAL enabled for an eye, we bypass steps 2 and 4 for that eye and only filter the sphere and cylinder tolerance for that eye using the sphere and cylinder of the non-BAL eye. This is done using [`checkForTolerances`](#checkfortolerances) with an increased tolerance of 1.0.
 
 ## Function Descriptions
 
@@ -35,11 +35,26 @@ This function verifies if the sphere and cylinder of a lens are within the desir
 It also checks against every spherical equivalent of the prescription. If the lens is within the tolerance of any spherical equivalent, it is also considered.
 
 > [!NOTE]
-> The default tolerance is 0.5. If the user specified "high tolerance" in the UI, the tolerance is increased to 1.0. If the input is a lens of an eye with BAL enabled, the tolerance is also increased to 1.0.
+> The default tolerance is 0.5. If the user specified "high tolerance" in the UI, the tolerance is increased to 1.0.
 
 ### checkForAxisTolerance
 
 This function is invoked for every single `lens`. It calculates the absolute axis tolerance based on the `lens` cylinder. A higher lens cylinder allows for less axis tolerance. It calculates the allowed range, that is, rx axis plus or minus tolerance (and accounts for wraparound at 180 degrees). It checks whether the lens axis is inside the range.
+
+#### Example for `checkForAxisTolerance`
+
+Let's consider the following inputs:
+
+- Available lens cylinder: -1.0
+- Available lens axis: 178
+- Desired prescription (rx) axis: 10
+
+Here's how it works with these inputs:
+
+1. The function refers to a table that maps each cylinder value to an axis tolerance. For a cylinder of -1.0, the axis tolerance is ±15 degrees.
+2. With a desired prescription axis of 10, the initially calculated allowed range is -5 to 25 degrees.
+3. However, an axis of -5 degrees doesn't exist. So, the function adjusts the allowed range to 175 to 180 degrees (for the negative part) and 0 to 25 degrees (for the positive part).
+4. The function then checks if the lens axis (178 degrees) falls within this allowed range. In this case, the lens is _allowed_ because 178 is between 175 and 180.
 
 ### calcSingleEyePhilscore
 
