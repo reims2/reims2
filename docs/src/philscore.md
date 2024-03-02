@@ -5,21 +5,15 @@ This document provides an explanation of the glasses matching algorithm. The alg
 The corresponding [code can be found here](https://github.com/reims2/reims2-frontend/blob/main/src/lib/philscore.ts).
 
 > [!NOTE]
-> The algorithm is the same as in the old REIMS1 system. We have signficant testing in place to ensure that the REIMS2 implementation matches the REIMS1 implementation. Any differences are considered bugs and should be reported.
+> The algorithm is a replica of the one used in the old REIMS1 system. We have extensive testing in place to ensure that the REIMS2 implementation matches the REIMS1 implementation. Any discrepancies are considered bugs and should be reported.
 >
-> In the future we will consider to improve the algorithm, but for now we are just replicating the old system.
-
-## Glossary
-
-- `lens`: Refers to either OS or OD of an existing pair of glasses in the storage.
-- `rx`: The desired prescription.
-- `delta`: The absolute difference between a value of the desired prescription and the lens.
+> Future plans include improving the algorithm, but for now, we are focusing on replicating the old system.
 
 ## Algorithm Overview
 
 The glasses matching process is executed in the following sequence:
 
-First, we exclude glasses based on the following criteria:
+Initially, we exclude glasses based on the following criteria:
 
 1. Filter glasses by type (single- or multifocal).
 2. Exclude glasses with incorrect axis using [`checkForAxisTolerance`](#checkforaxistolerance). This is performed once for OD and once for OS.
@@ -31,8 +25,8 @@ First, we exclude glasses based on the following criteria:
 
 After filtering, we calculate the PhilScore.
 
-1. Calculate the initial PhilScore for OD and OS seperately using [`calcInitialDiffScore`](#calcinitialdiffscore).
-2. Adjust the initial PhilScore for OD and OS seperately based on the rules in [`calcSingleEyePhilscore`](#calcsingleeyephilscore).
+1. Calculate the initial PhilScore for OD and OS separately using [`calcInitialDiffScore`](#calcinitialdiffscore).
+2. Adjust the initial PhilScore for OD and OS separately based on the rules in [`calcSingleEyePhilscore`](#calcsingleeyephilscore).
 3. Add both OD+OS philscore to get the final PhilScore.
 4. Arrange the glasses by PhilScore in ascending order.
 
@@ -122,6 +116,6 @@ The function then returns the final PhilScore for the lens.
 ## Potential Improvements
 
 - The conditions in `calcSingleEyePhilscore` could be evaluated independently, rather than skipping some if others apply.
-- The reason for improving the score more in condition 2 if the cylinder delta is larger is not clear.
-- The reason for improving the score more in condition 4 if the difference is larger is not clear.
+- The rationale for improving the score more in condition 2 if the cylinder delta is larger is unclear.
+- The rationale for improving the score more in condition 4 if the difference is larger is unclear.
 - The weights for the additional delta and axis in the initial PhilScore could be adjusted to avoid the need for separate filtering steps.
