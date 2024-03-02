@@ -7,7 +7,6 @@ export default defineConfig({
   lastUpdated: true,
   appearance: true,
   base: '/docs',
-  cleanUrls: true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
