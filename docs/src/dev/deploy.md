@@ -1,18 +1,18 @@
-# REIMS2 system overview
+# REIMS2 System Overview
 
-REIMS2 consists of multiple parts:
+REIMS2 is composed of:
 
-- Backend written in Java 21 with Spring Boot 3
-- Database using MariaDB
-- Frontend based on Vue 3 with Vuetify 3, written in Typescript
-- These docs based on Vitepress.
-- Grafana instance for monitoring, used with Prometheus
-- A small backup script for regular backups to AWS S3
-- Proxy server with Traefix
+- A backend implemented in Java 21 with Spring Boot 3
+- A MariaDB database
+- A frontend constructed with Vue 3 and Vuetify 3 written in Typescript
+- These docs generated with Vitepress
+- A Grafana instance for system monitoring, using Prometheus for data collection
+- A script for regular backups to AWS S3
+- A Traefik proxy server for connecting the different components
 
-All of these services are deployed as Docker containers.
+Each component is deployed as a Docker container.
 
-We then use Docker Stack and Swarm for deploying. It's configured to automatically deploy on pushed to the `main` branch.
+Deployment is orchestrated using Docker Stack and Swarm, configured for automatic deployment upon pushes to the `main` branch using GitHub Actions.
 
-To setup a new instance, you need to use the provided ansible scripts. They are also relevant to get an overview of REIMS2 in more detail.
-[ansible scripts](https://github.com/reims2/reims2-ansible-playbook)
+For setting up a new instance, refer to the provided Ansible scripts. These scripts also provide a detailed overview of the REIMS2 system.
+[Ansible scripts](https://github.com/reims2/reims2-ansible-playbook)
