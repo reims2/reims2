@@ -51,6 +51,21 @@ It also checks against every spherical equivalent of the prescription. If the le
 
 This function is invoked for every single `lens`. It calculates the absolute axis tolerance based on the `lens` cylinder. A higher lens cylinder allows for less axis tolerance. It calculates the allowed range, that is, rx axis plus or minus tolerance (and accounts for wraparound at 180 degrees). It checks whether the lens axis is inside the range.
 
+This is the table that maps each cylinder value to an axis tolerance:
+
+| Cylinder       | Axis tolerance |
+| -------------- | -------------- |
+| Less than -3   | 7              |
+| -3 to -2.25    | 8              |
+| -2             | 9              |
+| -1.75 and -1.5 | 10             |
+| -1.25          | 13             |
+| -1             | 15             |
+| -0.75          | 20             |
+| -0.5           | 25             |
+| -0.25          | 35             |
+| 0              | 90             |
+
 #### Example for `checkForAxisTolerance`
 
 Let's consider the following inputs:
@@ -61,7 +76,7 @@ Let's consider the following inputs:
 
 Here's how it works with these inputs:
 
-1. The function refers to a table that maps each cylinder value to an axis tolerance. For a cylinder of -1.0, the axis tolerance is ±15 degrees.
+1. Using the above table, we know that a cylinder of -1.0 has an axis tolerance of ±15 degrees.
 2. With a desired prescription axis of 10, the initially calculated allowed range is -5 to 25 degrees.
 3. However, an axis of -5 degrees doesn't exist. So, the function adjusts the allowed range to 175 to 180 degrees (for the negative part) and 0 to 25 degrees (for the positive part).
 4. The function then checks if the lens axis (178 degrees) falls within this allowed range. In this case, the lens is _allowed_ because 178 is between 175 and 180.
