@@ -4,6 +4,8 @@ WORKDIR /usr/src/app
 COPY .yarn/ .yarn/
 COPY src/ src/
 COPY .yarnrc.yml package.json yarn.lock ./
+# For last modified time in vitepress
+COPY .git/ .git/
 
 RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn install --immutable
 
