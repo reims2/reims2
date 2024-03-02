@@ -62,6 +62,9 @@ export default defineConfig({
         dateStyle: 'long',
       },
     },
+    footer: {
+      copyright: 'Licensed under CC-BY-SA-4.0.',
+    },
 
     socialLinks: [{ icon: 'github', link: 'https://github.com/reims2' }],
     editLink: {
