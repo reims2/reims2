@@ -22,13 +22,13 @@ export default defineConfig({
         {
           text: 'Overview',
           items: [
-            { link: '/', text: 'About REIMS2' },
-            { link: '/howto', text: 'How to use REIMS2' },
+            { link: '/', text: 'Introduction' },
+            { link: '/howto', text: 'User Guide' },
           ],
         },
         {
           text: 'Internals',
-          items: [{ link: '/philscore', text: 'PhilScore' }],
+          items: [{ link: '/philscore', text: 'Matching Algorithm' }],
         },
       ],
       '/dev/': [
