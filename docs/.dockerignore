@@ -12,3 +12,5 @@ README.*
 !.yarn/versions
 !.yarnrc.yml
 !src/.vitepress/config.ts
+# for last updated time in the footer
+!.git/
