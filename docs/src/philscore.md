@@ -51,7 +51,7 @@ It also checks against every spherical equivalent of the prescription. If the le
 
 ### checkForAxisTolerance
 
-This function is invoked for every single `lens`. It calculates the absolute axis tolerance based on the `lens` cylinder. A higher lens cylinder allows for less axis tolerance. It calculates the allowed range, that is, rx axis plus or minus tolerance (and accounts for wraparound at 180 degrees). It checks whether the lens axis is inside the range.
+This function is invoked for every single lens. It calculates the absolute axis tolerance based on the `lens` (:exclamation: crucially, not rx :exclamation:) cylinder. A higher lens cylinder allows for less axis tolerance. It calculates the allowed range, that is, rx axis plus or minus tolerance (and accounts for wraparound at 180 degrees). It checks whether the lens axis is inside the range.
 
 ::: details Details: Axis tolerance mapping table
 
