@@ -52,8 +52,7 @@ It also checks against every spherical equivalent of the prescription. If the le
 
 This function is invoked for every single `lens`. It calculates the absolute axis tolerance based on the `lens` cylinder. A higher lens cylinder allows for less axis tolerance. It calculates the allowed range, that is, rx axis plus or minus tolerance (and accounts for wraparound at 180 degrees). It checks whether the lens axis is inside the range.
 
-::: details
-This is the table that maps each cylinder value to an axis tolerance:
+::: details Details: Axis tolerance mapping table
 
 | Cylinder       | Axis tolerance |
 | -------------- | -------------- |
@@ -112,9 +111,11 @@ The score is then adjusted based on several conditions related to the sphere, cy
 _Improving the score means subtracting from it so it gets smaller. Worsening it means adding to it._
 
 1. **Improve** the score (by 0.5) if the glasses matches after sphere+cylinder transformation (_spherical equivalent_)
+   ::: details Additional details
    - _The score gets improved slightly more (by a total of 0.55) if the lens sphere is positive_
+     :::
 2. Only if step 2 did not apply: **Improve** the score if lens sphere is larger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder larger).
-   ::: details
+   ::: details Additional details
    - _The score gets improved more if sphere delta matches cylinder delta_
    - _The score also gets improved more if the cylinder delta is larger than 0.25_
    - This is the exact condition: `if (lensSphere > rxSphere AND rxCylinder > lensCylinder) OR (lensSphere < rxSphere AND rxCylinder < lensCylinder)`
@@ -127,6 +128,8 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
 The function then returns the final PhilScore for the lens.
 
 ## Potential Improvements
+
+Some ideas for potential improvements are listed below. These are not exhaustive and are open to discussion.
 
 ### For `calcInitialDiffScore`
 
