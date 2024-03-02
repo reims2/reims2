@@ -126,13 +126,13 @@ The function then returns the final PhilScore for the lens.
 
 ## Potential Improvements
 
-### For [`calcInitialDiffScore`](#calcinitialdiffscore)
+### For `calcInitialDiffScore`
 
 The weights for the additional delta and axis in the initial PhilScore could be adjusted so they actually have an impact. Currently, they are basically ignored.
 
 This would have the potential benefit that the filtering by axis could be less strict, as the axis would then have a larger impact on the score. This was a common cause for complaints of the matching process.
 
-### For [`calcSingleEyePhilscore`](#calcsingleeyephilscore)
+### For `calcSingleEyePhilscore`
 
 1. The conditions in `calcSingleEyePhilscore` could be evaluated independently, rather than skipping some if others apply.
 2. The rationale for improving the score more in condition 2 if the cylinder delta is larger is unclear.
