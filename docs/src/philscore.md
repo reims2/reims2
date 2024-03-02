@@ -4,6 +4,11 @@ This document provides an explanation of the glasses matching algorithm. The alg
 
 The corresponding [code can be found here](https://github.com/reims2/reims2-frontend/blob/main/src/lib/philscore.ts).
 
+> [!NOTE]
+> The algorithm is the same as in the old REIMS1 system. We have signficant testing in place to ensure that the REIMS2 implementation matches the REIMS1 implementation. Any differences are considered bugs and should be reported.
+>
+> In the future we will consider to improve the algorithm, but for now we are just replicating the old system.
+
 ## Glossary
 
 - `lens`: Refers to either OS or OD of an existing pair of glasses in the storage.
@@ -14,19 +19,24 @@ The corresponding [code can be found here](https://github.com/reims2/reims2-fron
 
 The glasses matching process is executed in the following sequence:
 
+First, we exclude glasses based on the following criteria:
+
 1. Filter glasses by type (single- or multifocal).
 2. Exclude glasses with incorrect axis using [`checkForAxisTolerance`](#checkforaxistolerance). This is performed once for OD and once for OS.
 3. Exclude glasses by tolerance of sphere + cylinder using [`checkForTolerances`](#checkfortolerances). This is performed once for OD and once for OS.
-4. If multifocal, exclude glasses where the lens' `additional` deviates from the desired `additional` by more than the set tolerance. This is performed once for OD and once for OS.
-5. Compute OD PhilScore using [`calcSingleEyePhilscore`](#calcsingleeyephilscore).
-6. Compute OS Philscore using [`calcSingleEyePhilscore`](#calcsingleeyephilscore).
-7. Add OD+OS philscore to get the final PhilScore.
-8. Arrange the glasses by PhilScore in ascending order.
+4. If multifocal, exclude glasses where the lens' `additional` deviates from the desired `additional` more than tolerated. This is performed once for OD and once for OS.
 
 > [!NOTE]
 > If the rx has BAL enabled for an eye, we bypass steps 2 and 4 for that eye and only filter the sphere and cylinder tolerance for that eye using the sphere and cylinder of the non-BAL eye. This is done using [`checkForTolerances`](#checkfortolerances) with an increased tolerance of 1.0.
 
-## Function Descriptions
+After filtering, we calculate the PhilScore.
+
+1. Calculate the initial PhilScore for OD and OS seperately using [`calcInitialDiffScore`](#calcinitialdiffscore).
+2. Adjust the initial PhilScore for OD and OS seperately based on the rules in [`calcSingleEyePhilscore`](#calcsingleeyephilscore).
+3. Add both OD+OS philscore to get the final PhilScore.
+4. Arrange the glasses by PhilScore in ascending order.
+
+## Filtering Function Descriptions
 
 ### checkForTolerances
 
@@ -56,9 +66,26 @@ Here's how it works with these inputs:
 3. However, an axis of -5 degrees doesn't exist. So, the function adjusts the allowed range to 175 to 180 degrees (for the negative part) and 0 to 25 degrees (for the positive part).
 4. The function then checks if the lens axis (178 degrees) falls within this allowed range. In this case, the lens is _allowed_ because 178 is between 175 and 180.
 
-### calcSingleEyePhilscore
+## Scoring Function Descriptions
 
-This function is invoked for every single lens (i.e., for each eye of every glass that hasn't been filtered before). It calculates the initial PhilScore based on the sum of the deltas of sphere, cylinder, axis (and additional). The deltas are weighted, i.e., the sphere and cylinder deltas count a lot more than the axis and additional deltas.
+### calcInitialDiffScore
+
+This function is invoked for every single lens (i.e., for each eye of every glass that hasn't been filtered before).
+
+It calculates the initial PhilScore based on the sum of the deltas of sphere, cylinder, axis (and additional). The deltas are weighted, i.e., the sphere and cylinder deltas count a lot more than the axis and additional deltas.
+
+The weights are as follows:
+
+- Sphere: 1
+- Cylinder: 1
+- Additional: 0.1
+- Axis: 1/3600 (i.e., 1 degree of axis difference is 1/3600 of the score)
+
+This means that the axis is basically irrelevant for the score, and the additional only has a small impact.
+
+The function then returns the initial PhilScore for the lens.
+
+### calcSingleEyePhilscore
 
 The score is then adjusted based on several conditions related to the sphere, cylinder, and additional values. The conditions are applied in the following order:
 
