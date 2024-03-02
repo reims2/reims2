@@ -21,7 +21,7 @@ Patient with bad sight visits the clinc in El Salvador and leaves with matching 
 
 ### Other things that happen on site
 
-Shortly after arrival, all newly added glasses are put into the inventory (see also below). During that process, they usually go through the whole inventory and check it. The following might happen: 
+Shortly after arrival, all newly added glasses are put into the inventory (see also below). During that process, they usually go through the whole inventory and check it. The following might happen:
 
 #### A retrieved SKU bag has been empty.
 
@@ -53,7 +53,7 @@ The decision is done by a manual analysis with excel. For the current state it w
 One or multiple persons in America refill the glasses inventory to the possible 10k glasses.
 
 1. The donated glasses from all over America are collected. Glasses are cleaned and measured. All glasses are stored in a plastic bag with the measured Rx written on them.
-   - Those glasses are not yet recorded inside the DB, as it'd be too tedious to enter them all. 
+   - Those glasses are not yet recorded inside the DB, as it'd be too tedious to enter them all.
 2. They pick new glasses for entering to inventory (after analysis, see previous section) and enter them into the program (mostly with a USB numpad only).
    - It should be possible to do this step and the next one with multiple people simultanously all over America.
 3. The program outputs the selected SKU and the person writes it also on the plastic bag.
@@ -61,4 +61,3 @@ One or multiple persons in America refill the glasses inventory to the possible 
 4. This process is repeated until all 10k glasses are refilled again.
 
 The new glasses are then stored separately and when the next campaign starts, people will just transport them in their flight luggage to El Salvador. So the process of integrating the new glasses into the physical inventory actually happens very shortly (usually just a day) before the actual campaign starts.
-
