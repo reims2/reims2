@@ -3,9 +3,24 @@
 ## Open Questions
 
 - Do we have a SKU 0? What's with SKU 5000 and 10000 then?
-- admin account
+- admin account for VPS
 - other orgs
 - philscore docs notes
+- Spherical equivs: Can they go negative like this?
+  ```json
+     {
+        cylinder: -1,
+        sphere: 0.25,
+     },
+     {
+        cylinder: -0.5,
+        sphere: 0.0,
+     },
+     {
+        cylinder: 0.0,
+        sphere: -0.25,
+     }
+  ```
 
 ## 9.9.22
 
