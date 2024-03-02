@@ -4,10 +4,11 @@ This document provides an explanation of the glasses matching algorithm. The alg
 
 The corresponding [code can be found here](https://github.com/reims2/reims2-frontend/blob/main/src/lib/philscore.ts).
 
-> [!NOTE]
-> The algorithm is a replica of the one used in the old REIMS1 system. We have extensive testing in place to ensure that the REIMS2 implementation matches the REIMS1 implementation. Any discrepancies are considered bugs and should be reported.
->
-> Future plans include improving the algorithm, but for now, we are focusing on replicating the old system.
+## Current status
+
+The algorithm is a replica of the one used in the old REIMS1 system. We have extensive testing in place to ensure that the REIMS2 implementation matches the REIMS1 implementation. Any discrepancies are considered bugs and are fixed accordingly.
+
+Still, we are open to changing the algorithm, see [Potential Improvements](#potential-improvements) for more information.
 
 ## Glossary
 
@@ -51,6 +52,7 @@ It also checks against every spherical equivalent of the prescription. If the le
 
 This function is invoked for every single `lens`. It calculates the absolute axis tolerance based on the `lens` cylinder. A higher lens cylinder allows for less axis tolerance. It calculates the allowed range, that is, rx axis plus or minus tolerance (and accounts for wraparound at 180 degrees). It checks whether the lens axis is inside the range.
 
+::: details
 This is the table that maps each cylinder value to an axis tolerance:
 
 | Cylinder       | Axis tolerance |
@@ -66,6 +68,8 @@ This is the table that maps each cylinder value to an axis tolerance:
 | -0.25          | 35             |
 | 0              | 90             |
 
+:::
+
 #### Example for `checkForAxisTolerance`
 
 Let's consider the following inputs:
@@ -76,7 +80,7 @@ Let's consider the following inputs:
 
 Here's how it works with these inputs:
 
-1. Using the above table, we know that a cylinder of -1.0 has an axis tolerance of ±15 degrees.
+1. Using the mapping table, we know that a cylinder of -1.0 has an axis tolerance of ±15 degrees.
 2. With a desired prescription axis of 10, the initially calculated allowed range is -5 to 25 degrees.
 3. However, an axis of -5 degrees doesn't exist. So, the function adjusts the allowed range to 175 to 180 degrees (for the negative part) and 0 to 25 degrees (for the positive part).
 4. The function then checks if the lens axis (178 degrees) falls within this allowed range. In this case, the lens is _allowed_ because 178 is between 175 and 180.
@@ -110,9 +114,11 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
 1. **Improve** the score (by 0.5) if the glasses matches after sphere+cylinder transformation (_spherical equivalent_)
    - _The score gets improved slightly more (by a total of 0.55) if the lens sphere is positive_
 2. Only if step 2 did not apply: **Improve** the score if lens sphere is larger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder larger).
+   ::: details
    - _The score gets improved more if sphere delta matches cylinder delta_
    - _The score also gets improved more if the cylinder delta is larger than 0.25_
    - This is the exact condition: `if (lensSphere > rxSphere AND rxCylinder > lensCylinder) OR (lensSphere < rxSphere AND rxCylinder < lensCylinder)`
+     :::
 3. Only if step 2 or 3 did not apply: **Improve** the score (by 0.12) if the spheres are equal and the cylinder delta is small (<= 0.75).
 4. **Improve** the score if the search is multifocal and the lens additional is larger than the desired additional.
    - Score gets improved more if the difference is larger.
