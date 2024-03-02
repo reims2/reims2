@@ -89,7 +89,3 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
         sphere: -0.25,
      }
   ```
-
-## Further reading
-
-- Here is an [analysis of the previous philscore algorithm](./analysis#philscore). We don't use the exact algorithm anymore because it was possible to simplify a lot of things nowadays due to more computing power available. The output should stay the same though.
