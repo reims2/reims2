@@ -1,3 +1,7 @@
+---
+search: false
+---
+
 # Meeting notes
 
 ## Open Questions
