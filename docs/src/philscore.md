@@ -101,7 +101,7 @@ It calculates the initial PhilScore based on the sum of the deltas of sphere, cy
 | Axis delta       | 1/3600 |
 
 > [!WARNING]
-> This has the consequence that the axis is basically irrelevant for the score, and the additional only has a small impact. See [Potential Improvements](#potential-improvements) for more information.
+> This has the consequence that a high difference of axes is basically irrelevant for the score, and a difference in additionals only has a small impact. See [Potential Improvements](#potential-improvements) for more information.
 
 The function then returns the initial PhilScore for the lens.
 
@@ -111,30 +111,43 @@ The score is then adjusted based on several conditions related to the sphere, cy
 
 _Improving the score means subtracting from it so it gets smaller. Worsening it means adding to it._
 
-1. **Improve** the score (by 0.5) if the glasses matches after sphere+cylinder transformation (_spherical equivalent_)
-   ::: details Additional details
-   - _The score gets improved slightly more (by a total of 0.55) if the lens sphere is positive_
-     :::
-2. Only if step 2 did not apply: **Improve** the score if lens sphere is larger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder larger).
-   ::: details Additional details
+1.  **Improve** the score (by 0.5) if the lens is a spherical equivalent of the prescription (_I'm actually not sure if this is what's happening, please fact check this using the code in the details section_).
+    ::: details Additional details
 
-   - This is the exact condition:
+    - This is the exact condition:
 
-   ```ts
-     if (lensSphere > rxSphere AND rxCylinder > lensCylinder)
-        OR
-        (lensSphere < rxSphere AND rxCylinder < lensCylinder)
-   ```
+    ```ts
+    if ((rxSphere - lensSphere)  === ((lensCylinder - rxCylinder) / 2) AND
+     rxSphere > lensSphere AND
+     cylinderDiff <= 1
+    ) // NOTE: cylinder is always negative
+    ```
 
-   - _The score gets improved more if sphere delta matches cylinder delta_
-   - _The score also gets improved more if the cylinder delta is larger than 0.25_
+    - _The score gets improved slightly more (by an additional of 0.05) if the lens sphere is bigger than 0_
+      :::
 
-   :::
+2.  Only if step 2 did not apply: **Improve** the score if lens sphere is larger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder larger).
+    ::: details Additional details
 
-3. Only if step 2 or 3 did not apply: **Improve** the score (by 0.12) if the spheres are equal and the cylinder delta is small (<= 0.75).
-4. **Improve** the score if the search is multifocal and the lens additional is larger than the desired additional.
-   - Score gets improved more if the difference is larger.
-5. **Worsen** the score (by 0.25) if the desired sphere is positive AND if it's larger than the lens sphere.
+    - This is the exact condition:
+
+    ```ts
+      if (lensSphere > rxSphere AND rxCylinder > lensCylinder)
+         OR
+         (lensSphere < rxSphere AND rxCylinder < lensCylinder)
+    ```
+
+    - _The score gets improved by 0.5 if the cylinder delta is larger than 0.25, otherwise by 0.25_
+    - _The score gets improved slightly more (by an additonal of 0.05) if sphere delta matches cylinder delta_
+      :::
+
+3.  Only if step 2 or 3 did not apply: **Improve** the score (by 0.12) if the spheres are equal and the cylinder delta is small (<= 0.75).
+4.  **Improve** the score by a really small amount if the search is multifocal and the lens additional is larger than the desired additional.
+    ::: details Additional details
+    - _Score gets improved more if the difference is larger._ Formula for how the score is improved: `-(lensAdd - rxAdd) / 100`
+    - This also has basically no impact, since the maximum delta with the normal tolerance would be 0.25, so the highest score improvement would be: `-0.25/100 = -0.0025`
+      :::
+5.  **Worsen** the score (by 0.25) if the desired sphere is positive AND if it's larger than the lens sphere.
 
 The function then returns the final PhilScore for the lens.
 
@@ -153,3 +166,9 @@ This would have the potential benefit that the filtering by axis could be less s
 1. The conditions in `calcSingleEyePhilscore` could be evaluated independently, rather than skipping some if others apply.
 2. The rationale for improving the score more in condition 2 if the cylinder delta is larger is unclear.
 3. The rationale for improving the score more in condition 4 if the difference is larger is unclear.
+
+### In General
+
+Converting the PhilScore to a percentage or a more intuitive scale could be beneficial. This would make it easier to understand the quality of the match without prior knowledge.
+
+For example: a PhilScore of 0 could be a 100% match, and a score of 4 could be 0 %, with linear interpolation in between (so a score of 2 would be 50%). We can also do a more complex mapping than just linear, but this could be a good start.
