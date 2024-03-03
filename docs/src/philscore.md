@@ -112,12 +112,12 @@ The function then returns the initial PhilScore for the lens.
 
 Given the following inputs:
 
-- **Desired Prescription (rx)**
+- Desired Prescription (rx)
   | Sphere | Cylinder | Additional | Axis |
   | ------ | -------- | ---------- | ---- |
   | +2.0 | -1.0 | +1.5 | 90 |
 
-- **Available Lens**
+- Available Lens
 
   | Sphere | Cylinder | Additional | Axis |
   | ------ | -------- | ---------- | ---- |
@@ -153,7 +153,7 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
     ) // NOTE: cylinder is always negative
     ```
 
-    - _The score gets improved slightly more (by an additional of 0.05) if the lens sphere is bigger than 0_
+    - _The score gets improved slightly more (by an additional amount of 0.05) if the lens sphere is bigger than 0_
       :::
 
 2.  Only if step 2 did not apply: **Improve** the score if lens sphere is larger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder larger).
@@ -168,7 +168,7 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
     ```
 
     - _The score gets improved by 0.5 if the cylinder delta is larger than 0.25, otherwise by 0.25_
-    - _The score gets improved slightly more (by an additonal of 0.05) if sphere delta matches cylinder delta_
+    - _The score gets improved slightly more (by an additional amount of 0.05) if sphere delta matches cylinder delta_
       :::
 
 3.  Only if step 2 or 3 did not apply: **Improve** the score (by 0.12) if the spheres are equal and the cylinder delta is small (<= 0.75).
