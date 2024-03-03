@@ -28,8 +28,8 @@ Initially, we exclude glasses based on the following criteria:
 3. Exclude glasses by tolerance of sphere + cylinder using [`checkForTolerances`](#checkfortolerances). This is performed once for OD and once for OS.
 4. If multifocal, exclude glasses where the lens' `additional` deviates from the desired `additional` more than tolerated. This is performed once for OD and once for OS.
 
-> [!NOTE]
-> If the rx has BAL enabled for an eye, we bypass steps 2 and 4 for that eye and only filter the sphere and cylinder tolerance for that eye using the sphere and cylinder of the non-BAL eye. This is done using [`checkForTolerances`](#checkfortolerances) with an increased tolerance of 1.0.
+> [!NOTE] Note on BAL
+> If the rx has BAL enabled for an eye, we bypass steps 2 and 4 for that eye. Step 3 for that eye is executed using the sphere and cylinder of the non-BAL eye with an increased tolerance of 1.0.
 
 After filtering, we calculate the PhilScore for the remaining glasses using the following steps:
 
@@ -37,6 +37,9 @@ After filtering, we calculate the PhilScore for the remaining glasses using the 
 2. Adjust the initial PhilScore for OD and OS separately based on the rules in [`calcSingleEyePhilscore`](#calcsingleeyephilscore).
 3. Sum the OD and OS philscore to get the final PhilScore.
 4. Arrange the glasses by PhilScore in ascending order.
+
+> [!NOTE] Note on BAL
+> If the rx has BAL enabled for an eye, we calculate the Philscore only for the non-BAL eye, and the resulting PhilScore for the BAL eye is always set to 0.
 
 ## Filtering Function Descriptions
 
@@ -100,7 +103,7 @@ It calculates the initial PhilScore based on the sum of the deltas of sphere, cy
 | Additional delta | 0.1    |
 | Axis delta       | 1/3600 |
 
-> [!WARNING]
+> [!WARNING] Notice
 > This has the consequence that a high difference of axes is basically irrelevant for the score, and a difference in additionals only has a small impact. See [Potential Improvements](#potential-improvements) for more information.
 
 The function then returns the initial PhilScore for the lens.
