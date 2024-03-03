@@ -15,7 +15,7 @@ We are open to refining the algorithm, see [Potential Improvements](#potential-i
 - `lens`: Refers to either OS or OD of an existing pair of glasses in the storage.
 - `rx`: The desired prescription.
 - `delta`: The absolute difference between a value of the desired prescription and the lens.
-- `PhilScore`: Name of the resulting score. The lower the PhilScore, the better the match. A PhilScore of 0 is a perfect match.
+- `PhilScore`: Name of the resulting score. The lower the PhilScore, the better the match. A PhilScore of 0 is a perfect match. The PhilScore is usually between 0 and 3 for most searches.
 
 ## Algorithm Overview
 
