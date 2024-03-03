@@ -108,7 +108,34 @@ It calculates the initial PhilScore based on the sum of the deltas of sphere, cy
 
 The function then returns the initial PhilScore for the lens.
 
-### calcSingleEyePhilscore
+##### Example for `calcInitialDiffScore`
+
+Given the following inputs:
+
+- **Desired Prescription (rx)**
+  | Sphere | Cylinder | Additional | Axis |
+  | ------ | -------- | ---------- | ---- |
+  | +2.0 | -1.0 | +1.5 | 90 |
+
+- **Available Lens**
+
+  | Sphere | Cylinder | Additional | Axis |
+  | ------ | -------- | ---------- | ---- |
+  | +2.5   | -0.75    | +1.25      | 85   |
+
+The function `calcInitialDiffScore` calculates the deltas, weights them, and sums them up:
+
+- Weighted sphere delta: |2.5 - 2.0| \* 1 = 0.5
+- Weighted cylinder delta: |-0.75 - (-1.0)| \* 1 = 0.25
+- Weighted additional delta: |1.25 - 1.5| \* 0.1 = 0.025
+- Weighted axis delta: |85 - 90|/3600 = 0.00139
+
+The initial PhilScore is the sum of these: 0.5 + 0.25 + 0.025 + 0.00139 = 0.77639.
+
+> [!NOTE]
+> Without the axis and additional deltas, the PhilScore would be 0.75. So it does have an impact, but it's close to negligible.
+
+## calcSingleEyePhilscore
 
 The score is then adjusted based on several conditions related to the sphere, cylinder, and additional values. The conditions are applied in the following order:
 
