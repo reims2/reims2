@@ -205,16 +205,16 @@ function contraryDiffsScore(
     (lensSphere > rxSphere && rxCylinder > lensCylinder) ||
     (lensSphere < rxSphere && rxCylinder < lensCylinder)
   ) {
-    // Subtract based on how big the difference is
-    if (cylinderDiff < 0.5) {
-      // should be the same as cylinderDiff === 0.25 (not 0 though!)
-      // Subtract a bit more when sphere and cylinder have exactly the same difference
-      return sphereDiff === cylinderDiff ? -0.3 : -0.25
-    } else {
-      // TODO For some reason, we subtract more when the cylinder difference is higher
-      // => maybe so we don't go below zero? in that case it would probably make more sense to make this dynamically in the future
-      return sphereDiff === cylinderDiff ? -0.55 : -0.5
+    // TODO For some reason, we subtract more when the cylinder difference is higher
+    // => maybe so we don't go below zero? in that case it would probably make more sense to make this dynamically in the future
+    // note: cylinder < 0.5 should be equal to cylinder == 0.25 here
+    let score = cylinderDiff < 0.5 ? -0.25 : -0.5
+
+    // Improve the score a tiny bit more when sphere and cylinder have exactly the same difference
+    if (sphereDiff === cylinderDiff) {
+      score -= 0.05
     }
+    return score
   }
   return 0
 }
