@@ -6,11 +6,16 @@ search: false
 
 [[toc]]
 
-## Unexpected Results with Zero Cylinder Search Input
+## No results with zero cylinder search input
+
+> [!NOTE]
+> This bug was referred to in the mails as `Ex1-SphBi` and also all the examples in the mail from Scott.
 
 ### Problem Description
 
-- **Scenario**: A prescription (RX) with a cylinder of 0.0, a sphere of +0.75, and an additional of +1.50 was used as input.
+I reproduced this with a search, that has the same parameters as the one from the mail. The search was done with the BAL feature disabled.
+
+- **Scenario**: A multifocal prescription with a cylinder of 0.0, a sphere of +0.75, and an additional of +1.50 was used as input for OD and OS (same RX for both eyes).
 - **Expected Result**: SKU 2752, a suitable match for the given RX, should appear in the top results.
 - **Actual Result**: SKU 2752 does not appear in the results unless the BAL feature for OS eye is enabled.
 
@@ -42,12 +47,55 @@ To determine if this is an issue specific to new REIMS2, we compared the results
 
   ![reims1_bal_search_matched_result_list](/bug_screens/reims1_bal_search_matched_result_list.png)
 
-### Findings and Conclusion
+### Findings
 
-The investigation revealed that this is not a bug in REIMS2. REIMS1 exhibits the same behavior.
+The investigation showed that this is not a new issue specific to REIMS2. The behavior is consistent with the old REIMS1.
 
-The explanation for the behaviour in REIMS1 and REIMS2 is as follows:
+Here's why the glasses are not found without BAL with our algorithm:
 
-- The philscore algorithm filters by axis based on the glasses' cylinder, not the search input cylinder.
-- Since the glasses' cylinder is -0.5, the expected tolerance is 25. The search input axis is implicitly 0. This means the axis tolerance ranges from 155 to 0, and from 0 to 25. However, SKU 2752 has an OS axis of 151, which falls outside the expected tolerance.
-- The BAL feature bypasses the axis tolerance check for the eye with BAL enabled. This explains why SKU 2752 is found when OS BAL is enabled.
+- The PhilScore algorithm filters by axis tolerance based on the glasses' cylinder, not the search input cylinder.
+- Given the glasses' OS cylinder of -0.5, the expected tolerance is 25. With the search input axis of 0 (implicitly since search cylinder is 0), the axis tolerance ranges from 155 to 0, and from 0 to 25. However, SKU 2752 has an OS axis of 151, which falls outside the expected tolerance.
+- The BAL feature bypasses the axis tolerance check for the eye with BAL enabled, which is why SKU 2752 is found when OS BAL is enabled.
+
+This is also confirmed by the fact that screenshots `Ex1-SphBi2` (OS BAL) and `Ex1-SphBi3` (OD BAL) from Shanti have different glasses as the results. This would only be a bug, if both would have same pair of glasses as the result.
+
+> [!NOTE]
+> Scott also said that "if a similar prescription is entered but it even has a little bit of Cyl, the search function seems to work".
+> I'm not sure why this is the case. According to the findings, this bug could also happen for prescriptions with a non-zero cylinder. I would need more concrete examples to investigate this further.
+
+### Implications and Next Steps
+
+The next steps involve deciding whether this behavior is intended or requires modification. Considerations include:
+
+- The behavior might be functioning as designed. If so, altering it may not be necessary. Reflect on whether this is the case.
+- If the behavior is not intended, several solutions are available:
+  - Implement a special case for a search input cylinder of 0.0, allowing all (or a wider) axis tolerance, independent of the glasses' cylinder.
+  - Modify the algorithm to use the search input cylinder for the axis tolerance calculation. (This may not be advisable.)
+  - Refer to the [Potential Improvements](/philscore.md#potential-improvements) section for ideas on how to adjust the algorithm so that axis influences the score more, allowing for less strict filtering by axis.
+
+## Better results when searching seperately for OD and OS
+
+This is really similar to the previous bug, but I'm investigating it separately, because it also occurs with a non zero cylinder.
+
+> [!NOTE]
+> This bug was referred to in the mails as `Ex2-SphBi`.
+
+### Problem Description
+
+- **Scenario**: OD: Sphere +0.00, Cylinder -1.00, Axis 005; OS: Sphere +0.00, Cylinder -1.00, Axis 175
+- **Expected Result**: There should be some results
+- **Actual Result**: No results are found, unless the BAL feature is enabled for the OS or OD eye. Then we can see different results for OD and OS.
+
+Below are the screenshots demonstrating this issue:
+
+- Without BAL enabled:
+
+  ![Ex2-SphBi1](/bug_screens/Ex2-SphBi1.png)
+
+- With OS BAL enabled:
+
+  ![Ex2-SphBi2](/bug_screens/Ex2-SphBi2.png)
+
+- With OD BAL enabled:
+
+  ![Ex2-SphBi3](/bug_screens/Ex2-SphBi3.png)
