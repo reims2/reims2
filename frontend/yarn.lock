@@ -1560,14 +1560,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:7.23.9, @babel/types@npm:^7.23.6":
-  version: 7.23.9
-  resolution: "@babel/types@npm:7.23.9"
+"@babel/types@npm:7.24.0":
+  version: 7.24.0
+  resolution: "@babel/types@npm:7.24.0"
   dependencies:
     "@babel/helper-string-parser": "npm:^7.23.4"
     "@babel/helper-validator-identifier": "npm:^7.22.20"
     to-fast-properties: "npm:^2.0.0"
-  checksum: 10/bed9634e5fd0f9dc63c84cfa83316c4cb617192db9fedfea464fca743affe93736d7bf2ebf418ee8358751a9d388e303af87a0c050cb5d87d5870c1b0154f6cb
+  checksum: 10/a0b4875ce2e132f9daff0d5b27c7f4c4fcc97f2b084bdc5834e92c9d32592778489029e65d99d00c406da612d87b72d7a236c0afccaa1435c028d0c94c9b6da4
   languageName: node
   linkType: hard
 
@@ -1590,6 +1590,17 @@ __metadata:
     "@babel/helper-validator-identifier": "npm:^7.22.20"
     to-fast-properties: "npm:^2.0.0"
   checksum: 10/a623a4e7f396f1903659099da25bfa059694a49f42820f6b5288347f1646f0b37fb7cc550ba45644e9067149368ef34ccb1bd4a4251ec59b83b3f7765088f363
+  languageName: node
+  linkType: hard
+
+"@babel/types@npm:^7.23.6":
+  version: 7.23.9
+  resolution: "@babel/types@npm:7.23.9"
+  dependencies:
+    "@babel/helper-string-parser": "npm:^7.23.4"
+    "@babel/helper-validator-identifier": "npm:^7.22.20"
+    to-fast-properties: "npm:^2.0.0"
+  checksum: 10/bed9634e5fd0f9dc63c84cfa83316c4cb617192db9fedfea464fca743affe93736d7bf2ebf418ee8358751a9d388e303af87a0c050cb5d87d5870c1b0154f6cb
   languageName: node
   linkType: hard
 
@@ -6898,7 +6909,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "reims2-frontend@workspace:."
   dependencies:
-    "@babel/types": "npm:7.23.9"
+    "@babel/types": "npm:7.24.0"
     "@fontsource-variable/roboto-flex": "npm:5.0.12"
     "@mdi/js": "npm:7.4.47"
     "@pinia/testing": "npm:0.1.3"
