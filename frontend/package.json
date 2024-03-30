@@ -50,7 +50,7 @@
     "happy-dom": "14.3.9",
     "prettier": "3.2.5",
     "sass": "1.72.0",
-    "typescript": "5.4.2",
+    "typescript": "5.4.3",
     "unplugin-auto-import": "0.17.5",
     "vite": "5.2.0",
     "vite-plugin-pwa": "0.19.7",
