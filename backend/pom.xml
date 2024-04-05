@@ -28,7 +28,7 @@
         <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <aggregate.report.dir>tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
-        <docker.jib-maven-plugin.version>3.4.1</docker.jib-maven-plugin.version>
+        <docker.jib-maven-plugin.version>3.4.2</docker.jib-maven-plugin.version>
         <docker.image.prefix>springcommunity</docker.image.prefix>
         <sonar.exclusions>
             **/dto/*.java, **/entity/*.java,
