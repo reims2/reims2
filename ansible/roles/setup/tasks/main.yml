@@ -41,7 +41,6 @@
     name:
       - htop
       - nano
-      - goaccess
       - libpam-systemd # ssh session closed after reboot
     state: present
 

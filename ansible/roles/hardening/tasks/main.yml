@@ -15,7 +15,7 @@
     os_auditd_enabled: false # lxd container
     os_auth_pam_passwdqc_enable: false # dont need strong PW policy
     os_ignore_home_folder_users: [dokku]
-    ufw_manage_defaults: false # we handle it manually below
+    ufw_manage_defaults: false # we handle it manually
   register: os_hardening
 
 - name: SSH hardening
