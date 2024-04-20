@@ -6,6 +6,7 @@
       MARIADB_DATABASE: '{{ reims2_db_name }}'
       MARIADB_USER: '{{ reims2_db_user }}'
       MARIADB_PASSWORD: '{{ reims2_db_password }}'
+      MARIADB_AUTO_UPGRADE: 'true'
     volumes:
       - "{{ backend_db_location }}:/var/lib/mysql"
       - "{{ mariadb_cnf_location }}:/etc/mysql/conf.d/custom.cnf"
