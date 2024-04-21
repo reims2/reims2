@@ -57,6 +57,7 @@ const vitePWAconf: Partial<VitePWAOptions> = {
   },
   workbox: {
     navigateFallbackDenylist: [/^\/docs.*/, /^\/api\/.*/],
+    globPatterns: ['**/*.{js,css,html,woff2}'],
     runtimeCaching: [
       {
         handler: 'NetworkOnly',
