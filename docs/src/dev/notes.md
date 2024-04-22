@@ -8,23 +8,6 @@ search: false
 
 - Do we have a SKU 0? What's with SKU 5000 and 10000 then?
 - admin account for VPS
-- other orgs
-- philscore docs notes
-- Spherical equivs: Can they go negative like this?
-  ```json
-     {
-        cylinder: -1,
-        sphere: 0.25,
-     },
-     {
-        cylinder: -0.5,
-        sphere: 0.0,
-     },
-     {
-        cylinder: 0.0,
-        sphere: -0.25,
-     }
-  ```
 
 ## 9.9.22
 
@@ -110,3 +93,13 @@ Grafana use case: Wants to repopulate DB by adding glasses only. Add a new dashb
 - second mail, ex1 probably a bug, theres 0 cyl but axis still filtering?? bi3 should show up in non BAL search
 
 - third mail, similiar to shanti
+
+## 22.4.24
+
+- The additional score impact is fine, it's really not that important
+- cutoff additional is also fine with 0.5, and they could always use the high tolerance option
+- though: maybe use high tolerance for axis as well, apply a percentage? why not.
+- spherical equivalents can change the sign (go negative)
+- diane doesn't really know other orgs using REIMS1 or how they work, i should reach out myself.
+- she'll look into the axis, especially on widening the tolerance.
+- the other person will look into the matching algo
