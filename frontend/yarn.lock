@@ -2598,41 +2598,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-core@npm:^7.0.27":
-  version: 7.0.27
-  resolution: "@vue/devtools-core@npm:7.0.27"
+"@vue/devtools-core@npm:^7.1.2":
+  version: 7.1.3
+  resolution: "@vue/devtools-core@npm:7.1.3"
   dependencies:
-    "@vue/devtools-kit": "npm:^7.0.27"
-    "@vue/devtools-shared": "npm:^7.0.27"
+    "@vue/devtools-kit": "npm:^7.1.3"
+    "@vue/devtools-shared": "npm:^7.1.3"
     mitt: "npm:^3.0.1"
     nanoid: "npm:^3.3.4"
     pathe: "npm:^1.1.2"
     vite-hot-client: "npm:^0.2.3"
-  checksum: 10/80b57801a4699a56c1de717fcdcaa03cdf8970712bf7c19aaa784a2705c01e41c9427cb74c0319434c18da0aa51235befbe02c3daa2ea860b32d881f62b93235
+  checksum: 10/3a9e996bb23c1da1c9754e34a87b855c2e7c54e613c55da99686740a1a31d026d215c5e3d702c74c0b000079811401c2481002de7da238efcbcbbe542cf5054e
   languageName: node
   linkType: hard
 
-"@vue/devtools-kit@npm:^7.0.27":
-  version: 7.0.27
-  resolution: "@vue/devtools-kit@npm:7.0.27"
+"@vue/devtools-kit@npm:^7.1.2, @vue/devtools-kit@npm:^7.1.3":
+  version: 7.1.3
+  resolution: "@vue/devtools-kit@npm:7.1.3"
   dependencies:
-    "@vue/devtools-shared": "npm:^7.0.27"
+    "@vue/devtools-shared": "npm:^7.1.3"
     hookable: "npm:^5.5.3"
     mitt: "npm:^3.0.1"
     perfect-debounce: "npm:^1.0.0"
     speakingurl: "npm:^14.0.1"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10/edef538a6a24a6a119e0bb1e2786541d1b7b564d23a9af272aa069130607424e1ec230e413631d1b9b8e5cbcfda2f94b92c802054971de0c35e5ab42962202e5
+  checksum: 10/6db5e584439cffb69c5372c7a568af3fb4dc8dca2747d7f36d101171851a4b0a754273411cf60055875002f9e2741a73000f115a20ce73b9a25232ed2c4cd379
   languageName: node
   linkType: hard
 
-"@vue/devtools-shared@npm:^7.0.27":
-  version: 7.0.27
-  resolution: "@vue/devtools-shared@npm:7.0.27"
+"@vue/devtools-shared@npm:^7.1.2, @vue/devtools-shared@npm:^7.1.3":
+  version: 7.1.3
+  resolution: "@vue/devtools-shared@npm:7.1.3"
   dependencies:
     rfdc: "npm:^1.3.1"
-  checksum: 10/e6ed03250a2ee876b716b242b4dcd84234f48e45c82a89e53415ce9fd1fe24b439afcd68832da28b1b3e81fb9b88341762c3a23b2f054411919f6168c82e6ca2
+  checksum: 10/3683fe2fda64aebef341d6c0cff80b86cd8e0651848aadd4ef5c6ef8c009ee24a23ace6ce602c46460322b9f503bfc286b3bcf19a047b5f8d5e0661b544f576a
   languageName: node
   linkType: hard
 
@@ -6639,7 +6639,7 @@ __metadata:
     unplugin-auto-import: "npm:0.17.5"
     vite: "npm:5.2.10"
     vite-plugin-pwa: "npm:0.19.8"
-    vite-plugin-vue-devtools: "npm:7.0.27"
+    vite-plugin-vue-devtools: "npm:7.1.2"
     vite-plugin-vuetify: "npm:2.0.3"
     vitest: "npm:1.5.0"
     vue: "npm:3.4.23"
@@ -7772,7 +7772,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-inspect@npm:^0.8.3":
+"vite-plugin-inspect@npm:^0.8.4":
   version: 0.8.4
   resolution: "vite-plugin-inspect@npm:0.8.4"
   dependencies:
@@ -7815,26 +7815,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-devtools@npm:7.0.27":
-  version: 7.0.27
-  resolution: "vite-plugin-vue-devtools@npm:7.0.27"
+"vite-plugin-vue-devtools@npm:7.1.2":
+  version: 7.1.2
+  resolution: "vite-plugin-vue-devtools@npm:7.1.2"
   dependencies:
-    "@vue/devtools-core": "npm:^7.0.27"
-    "@vue/devtools-kit": "npm:^7.0.27"
-    "@vue/devtools-shared": "npm:^7.0.27"
+    "@vue/devtools-core": "npm:^7.1.2"
+    "@vue/devtools-kit": "npm:^7.1.2"
+    "@vue/devtools-shared": "npm:^7.1.2"
     execa: "npm:^8.0.1"
     sirv: "npm:^2.0.4"
-    vite-plugin-inspect: "npm:^0.8.3"
-    vite-plugin-vue-inspector: "npm:^4.0.2"
+    vite-plugin-inspect: "npm:^0.8.4"
+    vite-plugin-vue-inspector: "npm:^5.0.1"
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0 || ^5.0.0-0
-  checksum: 10/91ac3b52fe88646ceca510a371a79d221e40e73937259a87d5d8dc6a4fdd94d42f202264f23d929ce6ad2249cc9eaeab65e53821b960cdf5391458cc4b9fb57e
+  checksum: 10/818ad99878a078563904f0b728bd35d8aa773742df72ed3ccaee10834de73ce1f6b3d22a316a74c33477f649c0db220d96ef65d853278088b15c5fe5dbee7360
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-inspector@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "vite-plugin-vue-inspector@npm:4.0.2"
+"vite-plugin-vue-inspector@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "vite-plugin-vue-inspector@npm:5.0.1"
   dependencies:
     "@babel/core": "npm:^7.23.0"
     "@babel/plugin-proposal-decorators": "npm:^7.23.0"
@@ -7847,7 +7847,7 @@ __metadata:
     magic-string: "npm:^0.30.4"
   peerDependencies:
     vite: ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0
-  checksum: 10/72f7e2049bdec7e2d28291f28728273bd0b4820963c739559828d697f29a6061cb2c7704c20b77e1864f12bf98b4771d9b344c32ac6f83b6931ed0ba22c87d78
+  checksum: 10/f86899e1e35bbb2ec66b821d1a8918328ee812d10dd1c8e69e15ee8f0ac576d524e10bdbcd9d29dfb8671d727e5198fc2ee8691982a4d291fb958750b45c4e41
   languageName: node
   linkType: hard
 
