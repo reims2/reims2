@@ -3,15 +3,15 @@
 {
   "name": "Java",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/java:1-21-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/java:1-21-bullseye@sha256:d75f6f9117ad44d94290bf7ff97b057e1b1bc79d427c531e5ee04bc0142216ec",
 
   "features": {
-    "ghcr.io/devcontainers/features/java:1": {
+    "ghcr.io/devcontainers/features/java:1@sha256:5f3ec36d8accba9f48f5b37f8df6555fe1d62f2561f10eeb3641c1aa808a91cd": {
       "version": "none",
       "installMaven": "true",
       "installGradle": "false"
     },
-    "ghcr.io/devcontainers-contrib/features/springboot-sdkman:2": {
+    "ghcr.io/devcontainers-contrib/features/springboot-sdkman:2@sha256:95048cc483f564c2776a3816285aebe22727e55ed1e0b5ef919caf72b8ba0a59": {
       "version": "latest",
       "jdkVersion": "latest",
       "jdkDistro": "open"
