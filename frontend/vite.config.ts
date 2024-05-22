@@ -155,7 +155,6 @@ export default ({ mode }) => {
         output: {
           manualChunks: {},
         },
-        external: ['workbox-window'],
       },
     },
   })

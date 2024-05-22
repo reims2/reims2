@@ -2,4 +2,3 @@
 /.yarn/plugins/** binary
 /.yarn/cache/** binary
 /.pnp.* binary
-/yarn.lock binary

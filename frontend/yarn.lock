@@ -6672,6 +6672,7 @@ __metadata:
     vue-tsc: "npm:2.0.19"
     vue3-enter-to-tab: "npm:3.1.4"
     vuetify: "npm:3.5.18"
+    workbox-window: "npm:7.1.0"
   languageName: unknown
   linkType: soft
 
