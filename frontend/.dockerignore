@@ -1,14 +1,6 @@
-.*
 node_modules
 npm-debug.log
 Dockerfile
 dist
 README*
 static
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-!.yarnrc.yml
-!.browserslistrc
