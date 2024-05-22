@@ -2229,7 +2229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^7.1.1":
+"@typescript-eslint/eslint-plugin@npm:7.10.0, @typescript-eslint/eslint-plugin@npm:^7.1.1":
   version: 7.10.0
   resolution: "@typescript-eslint/eslint-plugin@npm:7.10.0"
   dependencies:
@@ -2252,7 +2252,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^7.1.1":
+"@typescript-eslint/parser@npm:7.10.0, @typescript-eslint/parser@npm:^7.1.1":
   version: 7.10.0
   resolution: "@typescript-eslint/parser@npm:7.10.0"
   dependencies:
@@ -6637,6 +6637,8 @@ __metadata:
     "@testing-library/vue": "npm:8.0.3"
     "@types/jest": "npm:29.5.12"
     "@types/node": "npm:20.12.12"
+    "@typescript-eslint/eslint-plugin": "npm:7.10.0"
+    "@typescript-eslint/parser": "npm:7.10.0"
     "@vitejs/plugin-vue": "npm:5.0.4"
     "@vitest/coverage-v8": "npm:1.6.0"
     "@vitest/ui": "npm:1.6.0"

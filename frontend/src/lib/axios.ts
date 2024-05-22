@@ -75,7 +75,7 @@ export const useAxios = () => {
 
   watchEffect(() => {
     instance.interceptors.request.use((config) => {
-      if (token != null) config.headers.Authorization = `Bearer ${token.value}`
+      if (token.value != null) config.headers.Authorization = `Bearer ${token.value}`
       else delete config.headers.Authorization
       return config
     })
