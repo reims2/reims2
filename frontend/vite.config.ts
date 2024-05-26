@@ -120,8 +120,10 @@ export default ({ mode }) => {
     test: {
       globals: true,
       environment: 'happy-dom',
-      deps: {
-        inline: ['vuetify'],
+      server: {
+        deps: {
+          inline: ['vuetify'],
+        },
       },
       coverage: {
         provider: 'v8',
