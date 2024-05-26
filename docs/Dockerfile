@@ -3,11 +3,11 @@ FROM node:20.13.1@sha256:d6925dc84f8c0d1c1f8df4ea6a9a54e57d430241cb734b1b0c45ed6
 WORKDIR /usr/src/app
 COPY .yarn/ .yarn/
 COPY src/ src/
-COPY .yarnrc.yml package.json yarn.lock ./
+COPY .yarnrc.yml .pnp.* .yarnrc.yml package.json yarn.lock ./
 # For last modified time in vitepress
 COPY .git/ .git/
 
-RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn install --immutable
+RUN yarn install --immutable
 
 RUN yarn build
 

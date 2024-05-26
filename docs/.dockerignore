@@ -5,12 +5,16 @@ Dockerfile
 src/.vitepress/dist
 src/.vitepress/cache
 README.*
+.yarn/*
+!.pnp.*
+!.yarnrc.yml
+!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-!.yarnrc.yml
+
 !src/.vitepress/config.ts
 # for last updated time in the footer
 !.git/
