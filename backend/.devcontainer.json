@@ -3,7 +3,7 @@
 {
   "name": "Java",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/java:1-21-bullseye@sha256:d75f6f9117ad44d94290bf7ff97b057e1b1bc79d427c531e5ee04bc0142216ec",
+  "image": "mcr.microsoft.com/devcontainers/java:1-21-bullseye@sha256:59862ac26dd32f670b5899f27fa00d1dd2df6e747b22358d28fbb625fa5c637d",
 
   "features": {
     "ghcr.io/devcontainers/features/java:1@sha256:5f3ec36d8accba9f48f5b37f8df6555fe1d62f2561f10eeb3641c1aa808a91cd": {
