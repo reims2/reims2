@@ -560,19 +560,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shikijs/core@npm:1.6.0, @shikijs/core@npm:^1.5.2":
-  version: 1.6.0
-  resolution: "@shikijs/core@npm:1.6.0"
-  checksum: 10/ecbe3dc85461549f6275aa6c66b2cb8115cf12cafe3dda85e228c26cdd243564fe60cf6fb88c4b59cb09d8cf1b0f92676d038fcec360862e78dd1ea332827caf
+"@shikijs/core@npm:1.6.3, @shikijs/core@npm:^1.6.2":
+  version: 1.6.3
+  resolution: "@shikijs/core@npm:1.6.3"
+  checksum: 10/bcf4335a7cb1b40de02f3f304aa3226ee37ad7472730641ab105029ade71026eaff946dc92dc1e3ced265496fee20d11ce526bc0484ee09f86bc0b3f94008588
   languageName: node
   linkType: hard
 
-"@shikijs/transformers@npm:^1.5.2":
-  version: 1.6.0
-  resolution: "@shikijs/transformers@npm:1.6.0"
+"@shikijs/transformers@npm:^1.6.2":
+  version: 1.6.3
+  resolution: "@shikijs/transformers@npm:1.6.3"
   dependencies:
-    shiki: "npm:1.6.0"
-  checksum: 10/3a7cc3f4ae9cbc6e232d66b88428cc6b265dbbfc77f1b32a79c3760de2d3b792951b8bc3624367a449f0c4a3be2b6669f61b999000e948685c539f5dfa950cb0
+    shiki: "npm:1.6.3"
+  checksum: 10/d7e5863452e7f921f2a5c661920805b86a997ca2f7af6110fcbf6c80c49e28cb8165cb7bc8f55d6991bc53f6887cab28193296d4c49b6f6143ef0f4eaace5ecc
   languageName: node
   linkType: hard
 
@@ -621,13 +621,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:^5.0.4":
-  version: 5.0.4
-  resolution: "@vitejs/plugin-vue@npm:5.0.4"
+"@vitejs/plugin-vue@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "@vitejs/plugin-vue@npm:5.0.5"
   peerDependencies:
     vite: ^5.0.0
     vue: ^3.2.25
-  checksum: 10/50bb3bc709e0bb9f67f8cf5a23b69990d7b4d086e5623910e5e3e926f91f2bccb5984f37b0cba1a401f0b64352a5a352c524815550003a4a01144e81b31f336f
+  checksum: 10/b87d2cf62fa818f0f4313e9597c621d03ea35ff3df2c90bbd27a1cb949a3e8c1f0eb5b3cb9c9a21c6efa0b1572fce398b933726166c34ccfc632e5701746502f
   languageName: node
   linkType: hard
 
@@ -681,7 +681,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-api@npm:^7.2.0":
+"@vue/devtools-api@npm:^7.2.1":
   version: 7.2.1
   resolution: "@vue/devtools-api@npm:7.2.1"
   dependencies:
@@ -763,24 +763,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:10.9.0, @vueuse/core@npm:^10.9.0":
-  version: 10.9.0
-  resolution: "@vueuse/core@npm:10.9.0"
+"@vueuse/core@npm:10.10.0, @vueuse/core@npm:^10.10.0":
+  version: 10.10.0
+  resolution: "@vueuse/core@npm:10.10.0"
   dependencies:
     "@types/web-bluetooth": "npm:^0.0.20"
-    "@vueuse/metadata": "npm:10.9.0"
-    "@vueuse/shared": "npm:10.9.0"
+    "@vueuse/metadata": "npm:10.10.0"
+    "@vueuse/shared": "npm:10.10.0"
     vue-demi: "npm:>=0.14.7"
-  checksum: 10/8bfbe2de24dec59437495db8cae8ef7dd480bde59b838641e9770da4f5b18973a15d0292df806a81bbe714d9c339ba8967f6803da66866c903a4fb6601f1888a
+  checksum: 10/f604a2f007ea550e969b659449b30ccc3aff93950e28bbd5d53bf22c9d0a175188bae23d40e954951b7ba8e646d831e1283f659a73c10d034d7f624c1845894c
   languageName: node
   linkType: hard
 
-"@vueuse/integrations@npm:^10.9.0":
-  version: 10.9.0
-  resolution: "@vueuse/integrations@npm:10.9.0"
+"@vueuse/integrations@npm:^10.10.0":
+  version: 10.10.0
+  resolution: "@vueuse/integrations@npm:10.10.0"
   dependencies:
-    "@vueuse/core": "npm:10.9.0"
-    "@vueuse/shared": "npm:10.9.0"
+    "@vueuse/core": "npm:10.10.0"
+    "@vueuse/shared": "npm:10.10.0"
     vue-demi: "npm:>=0.14.7"
   peerDependencies:
     async-validator: "*"
@@ -820,23 +820,23 @@ __metadata:
       optional: true
     universal-cookie:
       optional: true
-  checksum: 10/b9a258b1df6dfa16a9755ec1c0b03e440b00e8ffc72f0d0ecec1c5fb198346ded682257456da629c3cadde9ff7c73eb5f9cb81c711c24d40adc532b9c6a8936d
+  checksum: 10/abfbd9e9e7a5a4ef62d0b6ec325f0b441b63fe3c6a7de1bea5c728d6cfdb34b823966eb9fcb0f9d0058b9e11d0e35b66baea9b4540b1dd8d4967ecac8abac5ad
   languageName: node
   linkType: hard
 
-"@vueuse/metadata@npm:10.9.0":
-  version: 10.9.0
-  resolution: "@vueuse/metadata@npm:10.9.0"
-  checksum: 10/f32c3a4c1a572a6873223fe973c24b6eaf8ed398be383ebb9bc95ab837a9ee1e23126afa966f3fdea68767883e6b12528fe997f0c393f9ce017d345c72fc715c
+"@vueuse/metadata@npm:10.10.0":
+  version: 10.10.0
+  resolution: "@vueuse/metadata@npm:10.10.0"
+  checksum: 10/b7cfda1f4e874f198cca8f8d9f6b82c59cdbb9e769073b5e4f49f795d895b86121d53cdb60c11b5949e8cd676b7988556aeff68098068129d032d4b3c6ea919c
   languageName: node
   linkType: hard
 
-"@vueuse/shared@npm:10.9.0":
-  version: 10.9.0
-  resolution: "@vueuse/shared@npm:10.9.0"
+"@vueuse/shared@npm:10.10.0":
+  version: 10.10.0
+  resolution: "@vueuse/shared@npm:10.10.0"
   dependencies:
     vue-demi: "npm:>=0.14.7"
-  checksum: 10/8e81358b695c471c0d5e2ac369dedfe29a4fe0188f7573aa71dc9e6a22ba0eb2e2fbca0f0a075a2ce626342ce5515a08ed7d9cb03d080326af32c8d116ae2381
+  checksum: 10/20d1c40a15ae0f9f474da9d748c53b43eb1c38be2ef2ebe22261e92914748f1d1b6b00359aab7b41d42f76f39ebb5fb8da7345d0bb034c4d36bebe020f3e5255
   languageName: node
   linkType: hard
 
@@ -1945,7 +1945,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    vitepress: "npm:1.2.2"
+    vitepress: "npm:1.2.3"
     vue: "npm:3.4.27"
   languageName: unknown
   linkType: soft
@@ -1998,12 +1998,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shiki@npm:1.6.0, shiki@npm:^1.5.2":
-  version: 1.6.0
-  resolution: "shiki@npm:1.6.0"
+"shiki@npm:1.6.3, shiki@npm:^1.6.2":
+  version: 1.6.3
+  resolution: "shiki@npm:1.6.3"
   dependencies:
-    "@shikijs/core": "npm:1.6.0"
-  checksum: 10/965ddc89d95c0a80b5d3b64113e71723a6c1fe9a2052a61b4b97587a1ebe5b561a02f35d5ee1d840f2ca11000268b8489851e5d82970942f6a71187c1efb5d18
+    "@shikijs/core": "npm:1.6.3"
+  checksum: 10/a0e83398beb5f4ee8a46949cc3b39b37a7fc6d49a5b8f0b592171c476f204183252b0edc522e30e4b540e4ec8233a380e032d4861b2ecd4923b8536514472a54
   languageName: node
   linkType: hard
 
@@ -2174,9 +2174,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.2.11":
-  version: 5.2.11
-  resolution: "vite@npm:5.2.11"
+"vite@npm:^5.2.12":
+  version: 5.2.13
+  resolution: "vite@npm:5.2.13"
   dependencies:
     esbuild: "npm:^0.20.1"
     fsevents: "npm:~2.3.3"
@@ -2210,29 +2210,29 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/ee0ad038f0831c9514796522deb1e2dcb84bc311abbccb77e4b12216d37fc9559137f4f1b8e75187d51007b954e845c6518e36ee3acac2e2a2789c1181ebb16c
+  checksum: 10/eee65eebff8c839935fdf1a6f2bbc90b923d53a447cc0949abea71577166e7ad7ceb41f3ea42c79a54997319eacfa45445509da371a8ba0699fce8f7de137882
   languageName: node
   linkType: hard
 
-"vitepress@npm:1.2.2":
-  version: 1.2.2
-  resolution: "vitepress@npm:1.2.2"
+"vitepress@npm:1.2.3":
+  version: 1.2.3
+  resolution: "vitepress@npm:1.2.3"
   dependencies:
     "@docsearch/css": "npm:^3.6.0"
     "@docsearch/js": "npm:^3.6.0"
-    "@shikijs/core": "npm:^1.5.2"
-    "@shikijs/transformers": "npm:^1.5.2"
+    "@shikijs/core": "npm:^1.6.2"
+    "@shikijs/transformers": "npm:^1.6.2"
     "@types/markdown-it": "npm:^14.1.1"
-    "@vitejs/plugin-vue": "npm:^5.0.4"
-    "@vue/devtools-api": "npm:^7.2.0"
+    "@vitejs/plugin-vue": "npm:^5.0.5"
+    "@vue/devtools-api": "npm:^7.2.1"
     "@vue/shared": "npm:^3.4.27"
-    "@vueuse/core": "npm:^10.9.0"
-    "@vueuse/integrations": "npm:^10.9.0"
+    "@vueuse/core": "npm:^10.10.0"
+    "@vueuse/integrations": "npm:^10.10.0"
     focus-trap: "npm:^7.5.4"
     mark.js: "npm:8.11.1"
     minisearch: "npm:^6.3.0"
-    shiki: "npm:^1.5.2"
-    vite: "npm:^5.2.11"
+    shiki: "npm:^1.6.2"
+    vite: "npm:^5.2.12"
     vue: "npm:^3.4.27"
   peerDependencies:
     markdown-it-mathjax3: ^4
@@ -2244,7 +2244,7 @@ __metadata:
       optional: true
   bin:
     vitepress: bin/vitepress.js
-  checksum: 10/63eac8d706dded667792f29421a52b7037910788fd11c74649f3defc3e18fdb30cba7bfcd956d17656785d67b3bd1ddce871a0f7f81aa790125ea4d02865cb2b
+  checksum: 10/55b07f5bf042960a845bc0f4773deae550bd69d8f41873750fc3fa987e546ec9763a05a7b019eaabf8cd69e2abf7beebe433358e33924940a3e4b293e5a1db09
   languageName: node
   linkType: hard
 
