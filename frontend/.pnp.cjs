@@ -27,7 +27,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
-          ["@babel/types", "npm:7.24.6"],\
+          ["@babel/types", "npm:7.24.7"],\
           ["@fontsource-variable/roboto-flex", "npm:5.0.15"],\
           ["@mdi/js", "npm:7.4.47"],\
           ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.1.3"],\
@@ -485,10 +485,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:7.24.6", {\
-        "packageLocation": "./.yarn/cache/@babel-helper-string-parser-npm-7.24.6-ab02401caf-a24631e138.zip/node_modules/@babel/helper-string-parser/",\
+      ["npm:7.24.7", {\
+        "packageLocation": "./.yarn/cache/@babel-helper-string-parser-npm-7.24.7-560b175e3f-603d8d962b.zip/node_modules/@babel/helper-string-parser/",\
         "packageDependencies": [\
-          ["@babel/helper-string-parser", "npm:7.24.6"]\
+          ["@babel/helper-string-parser", "npm:7.24.7"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -501,10 +501,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:7.24.6", {\
-        "packageLocation": "./.yarn/cache/@babel-helper-validator-identifier-npm-7.24.6-cf629561b7-7e725ef068.zip/node_modules/@babel/helper-validator-identifier/",\
+      ["npm:7.24.7", {\
+        "packageLocation": "./.yarn/cache/@babel-helper-validator-identifier-npm-7.24.7-748889c8d2-86875063f5.zip/node_modules/@babel/helper-validator-identifier/",\
         "packageDependencies": [\
-          ["@babel/helper-validator-identifier", "npm:7.24.6"]\
+          ["@babel/helper-validator-identifier", "npm:7.24.7"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2562,12 +2562,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:7.24.6", {\
-        "packageLocation": "./.yarn/cache/@babel-types-npm-7.24.6-5a7d5202c4-34552539cd.zip/node_modules/@babel/types/",\
+      ["npm:7.24.7", {\
+        "packageLocation": "./.yarn/cache/@babel-types-npm-7.24.7-43a9e43e29-ad3c8c0d6f.zip/node_modules/@babel/types/",\
         "packageDependencies": [\
-          ["@babel/types", "npm:7.24.6"],\
-          ["@babel/helper-string-parser", "npm:7.24.6"],\
-          ["@babel/helper-validator-identifier", "npm:7.24.6"],\
+          ["@babel/types", "npm:7.24.7"],\
+          ["@babel/helper-string-parser", "npm:7.24.7"],\
+          ["@babel/helper-validator-identifier", "npm:7.24.7"],\
           ["to-fast-properties", "npm:2.0.0"]\
         ],\
         "linkType": "HARD"\
@@ -9171,7 +9171,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["reims2-frontend", "workspace:."],\
-          ["@babel/types", "npm:7.24.6"],\
+          ["@babel/types", "npm:7.24.7"],\
           ["@fontsource-variable/roboto-flex", "npm:5.0.15"],\
           ["@mdi/js", "npm:7.4.47"],\
           ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.1.3"],\
