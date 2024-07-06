@@ -2771,7 +2771,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@volar/language-core@npm:2.4.0-alpha.15, @volar/language-core@npm:~2.4.0-alpha.2":
+"@volar/language-core@npm:2.4.0-alpha.15, @volar/language-core@npm:~2.4.0-alpha.15":
   version: 2.4.0-alpha.15
   resolution: "@volar/language-core@npm:2.4.0-alpha.15"
   dependencies:
@@ -2787,7 +2787,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@volar/typescript@npm:~2.4.0-alpha.2":
+"@volar/typescript@npm:~2.4.0-alpha.15":
   version: 2.4.0-alpha.15
   resolution: "@volar/typescript@npm:2.4.0-alpha.15"
   dependencies:
@@ -2959,11 +2959,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/language-core@npm:2.0.24":
-  version: 2.0.24
-  resolution: "@vue/language-core@npm:2.0.24"
+"@vue/language-core@npm:2.0.26":
+  version: 2.0.26
+  resolution: "@vue/language-core@npm:2.0.26"
   dependencies:
-    "@volar/language-core": "npm:~2.4.0-alpha.2"
+    "@volar/language-core": "npm:~2.4.0-alpha.15"
     "@vue/compiler-dom": "npm:^3.4.0"
     "@vue/shared": "npm:^3.4.0"
     computeds: "npm:^0.0.1"
@@ -2976,7 +2976,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/deb9fc8a7d5d0a1caed5efcd163cd4c04a2911beb882a585bdd5395cfcaedb57db1786fdfc767775c2af5c9d3023dbc80d667b09df0b41aada2c0ec9d921789c
+  checksum: 10/8ebeb7a68a1f9216da43f66e00ca40437b40e9769dbc3027dcf8a368efd2df177db749a0da56a6e7c5c0887ed7de20493cee1fad636d0ee5103bbab90a112c67
   languageName: node
   linkType: hard
 
@@ -7126,7 +7126,7 @@ __metadata:
     vue: "npm:3.4.27"
     vue-router: "npm:4.4.0"
     vue-toastification: "npm:2.0.0-rc.5"
-    vue-tsc: "npm:2.0.24"
+    vue-tsc: "npm:2.0.26"
     vue3-enter-to-tab: "npm:3.1.4"
     vuetify: "npm:3.6.11"
     workbox-window: "npm:7.1.0"
@@ -8571,18 +8571,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-tsc@npm:2.0.24":
-  version: 2.0.24
-  resolution: "vue-tsc@npm:2.0.24"
+"vue-tsc@npm:2.0.26":
+  version: 2.0.26
+  resolution: "vue-tsc@npm:2.0.26"
   dependencies:
-    "@volar/typescript": "npm:~2.4.0-alpha.2"
-    "@vue/language-core": "npm:2.0.24"
+    "@volar/typescript": "npm:~2.4.0-alpha.15"
+    "@vue/language-core": "npm:2.0.26"
     semver: "npm:^7.5.4"
   peerDependencies:
     typescript: ">=5.0.0"
   bin:
     vue-tsc: ./bin/vue-tsc.js
-  checksum: 10/bbc0bc187db09b14e6a7f705abe533e8d8177068c497aab24ae8bdf542bdb3ea26ab4dc8165fec7c7d88649c3bd1f5c44c322b0ad3a4b953bfb3c666f527b06c
+  checksum: 10/cfcd810c32dc831fd60c39b9008efb037396fe37d0c0560f6ac523a3d4fcb824b0b724f01e5c45f93ac4803afea3a54d15e2db8fd82dffa7eb5352eba924775e
   languageName: node
   linkType: hard
 
