@@ -59,7 +59,7 @@
     "vite-plugin-vue-devtools": "7.3.5",
     "vite-plugin-vuetify": "2.0.3",
     "vitest": "1.6.0",
-    "vue-tsc": "2.0.22",
+    "vue-tsc": "2.0.24",
     "workbox-window": "7.1.0"
   }
 }
