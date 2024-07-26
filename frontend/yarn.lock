@@ -2674,13 +2674,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:5.0.5":
-  version: 5.0.5
-  resolution: "@vitejs/plugin-vue@npm:5.0.5"
+"@vitejs/plugin-vue@npm:5.1.0":
+  version: 5.1.0
+  resolution: "@vitejs/plugin-vue@npm:5.1.0"
   peerDependencies:
     vite: ^5.0.0
     vue: ^3.2.25
-  checksum: 10/b87d2cf62fa818f0f4313e9597c621d03ea35ff3df2c90bbd27a1cb949a3e8c1f0eb5b3cb9c9a21c6efa0b1572fce398b933726166c34ccfc632e5701746502f
+  checksum: 10/854c0a41690100626997287b450cc2b0643d4ab481206a3bcb4ac664018323ef77afe895d401004357da257f2eab6565aeb2c4b59c79954d1274ae81f018e8e8
   languageName: node
   linkType: hard
 
@@ -7154,7 +7154,7 @@ __metadata:
     "@types/node": "npm:20.14.12"
     "@typescript-eslint/eslint-plugin": "npm:7.11.0"
     "@typescript-eslint/parser": "npm:7.11.0"
-    "@vitejs/plugin-vue": "npm:5.0.5"
+    "@vitejs/plugin-vue": "npm:5.1.0"
     "@vitest/coverage-v8": "npm:1.6.0"
     "@vitest/ui": "npm:1.6.0"
     "@vue/eslint-config-typescript": "npm:13.0.0"
