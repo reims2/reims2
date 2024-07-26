@@ -6313,15 +6313,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.0.1":
-  version: 10.0.1
-  resolution: "minimatch@npm:10.0.1"
-  dependencies:
-    brace-expansion: "npm:^2.0.1"
-  checksum: 10/082e7ccbc090d5f8c4e4e029255d5a1d1e3af37bda837da2b8b0085b1503a1210c91ac90d9ebfe741d8a5f286ece820a1abb4f61dc1f82ce602a055d461d93f3
-  languageName: node
-  linkType: hard
-
 "minimatch@npm:^3.0.4, minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
@@ -6346,6 +6337,15 @@ __metadata:
   dependencies:
     brace-expansion: "npm:^2.0.1"
   checksum: 10/4cdc18d112b164084513e890d6323370db14c22249d536ad1854539577a895e690a27513dc346392f61a4a50afbbd8abc88f3f25558bfbbbb862cd56508b20f5
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:^9.0.5":
+  version: 9.0.5
+  resolution: "minimatch@npm:9.0.5"
+  dependencies:
+    brace-expansion: "npm:^2.0.1"
+  checksum: 10/dd6a8927b063aca6d910b119e1f2df6d2ce7d36eab91de83167dd136bb85e1ebff97b0d3de1cb08bd1f7e018ca170b4962479fefab5b2a69e2ae12cb2edc8348
   languageName: node
   linkType: hard
 
@@ -7175,7 +7175,7 @@ __metadata:
     prettier: "npm:3.2.5"
     sass: "npm:1.77.8"
     typescript: "npm:5.5.4"
-    unplugin-auto-import: "npm:0.18.1"
+    unplugin-auto-import: "npm:0.18.2"
     vite: "npm:5.3.4"
     vite-plugin-pwa: "npm:0.20.0"
     vite-plugin-vue-devtools: "npm:7.3.7"
@@ -8199,16 +8199,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:0.18.1":
-  version: 0.18.1
-  resolution: "unplugin-auto-import@npm:0.18.1"
+"unplugin-auto-import@npm:0.18.2":
+  version: 0.18.2
+  resolution: "unplugin-auto-import@npm:0.18.2"
   dependencies:
     "@antfu/utils": "npm:^0.7.10"
     "@rollup/pluginutils": "npm:^5.1.0"
     fast-glob: "npm:^3.3.2"
     local-pkg: "npm:^0.5.0"
     magic-string: "npm:^0.30.10"
-    minimatch: "npm:^10.0.1"
+    minimatch: "npm:^9.0.5"
     unimport: "npm:^3.9.0"
     unplugin: "npm:^1.11.0"
   peerDependencies:
@@ -8219,7 +8219,7 @@ __metadata:
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: 10/9b396b7e3a2bf7326e5b19778ec0962d20859a111b07caee3a4441da72519590e4ae84f87494dc0dd1b840ac203c5305d296c47ac02229248f158e4738e1ad27
+  checksum: 10/cec3a3372bd677e651a5f8069952f5af5450fbb0ba2bce3954fa6c1f9534e7883477929b78ee0e0a3f7d8008e339aceb5e83debc61d07739b5470452b532a3c2
   languageName: node
   linkType: hard
 
