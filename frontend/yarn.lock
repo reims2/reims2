@@ -6303,6 +6303,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "minimatch@npm:10.0.1"
+  dependencies:
+    brace-expansion: "npm:^2.0.1"
+  checksum: 10/082e7ccbc090d5f8c4e4e029255d5a1d1e3af37bda837da2b8b0085b1503a1210c91ac90d9ebfe741d8a5f286ece820a1abb4f61dc1f82ce602a055d461d93f3
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^3.0.4, minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
@@ -7156,7 +7165,7 @@ __metadata:
     prettier: "npm:3.2.5"
     sass: "npm:1.77.8"
     typescript: "npm:5.5.4"
-    unplugin-auto-import: "npm:0.18.0"
+    unplugin-auto-import: "npm:0.18.1"
     vite: "npm:5.3.4"
     vite-plugin-pwa: "npm:0.20.0"
     vite-plugin-vue-devtools: "npm:7.3.7"
@@ -8125,7 +8134,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unimport@npm:^3.7.2":
+"unimport@npm:^3.9.0":
   version: 3.9.0
   resolution: "unimport@npm:3.9.0"
   dependencies:
@@ -8180,17 +8189,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:0.18.0":
-  version: 0.18.0
-  resolution: "unplugin-auto-import@npm:0.18.0"
+"unplugin-auto-import@npm:0.18.1":
+  version: 0.18.1
+  resolution: "unplugin-auto-import@npm:0.18.1"
   dependencies:
     "@antfu/utils": "npm:^0.7.10"
     "@rollup/pluginutils": "npm:^5.1.0"
     fast-glob: "npm:^3.3.2"
     local-pkg: "npm:^0.5.0"
     magic-string: "npm:^0.30.10"
-    minimatch: "npm:^9.0.4"
-    unimport: "npm:^3.7.2"
+    minimatch: "npm:^10.0.1"
+    unimport: "npm:^3.9.0"
     unplugin: "npm:^1.11.0"
   peerDependencies:
     "@nuxt/kit": ^3.2.2
@@ -8200,7 +8209,7 @@ __metadata:
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: 10/8618dce778b2cf9f225f7b3c5a21d312ed176399154b8e50247b245155342757311a79e81e871613e48368225be8351f69192735ecd89d79f22ec315fabd08c4
+  checksum: 10/9b396b7e3a2bf7326e5b19778ec0962d20859a111b07caee3a4441da72519590e4ae84f87494dc0dd1b840ac203c5305d296c47ac02229248f158e4738e1ad27
   languageName: node
   linkType: hard
 
