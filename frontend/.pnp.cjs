@@ -30,7 +30,7 @@ const RAW_RUNTIME_STATE =
           ["@babel/types", "npm:7.24.9"],\
           ["@fontsource-variable/roboto-flex", "npm:5.0.15"],\
           ["@mdi/js", "npm:7.4.47"],\
-          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.1.3"],\
+          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.1.4"],\
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.0.3"],\
           ["@types/jest", "npm:29.5.12"],\
           ["@types/node", "npm:20.14.12"],\
@@ -3258,20 +3258,20 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@pinia/testing", [\
-      ["npm:0.1.3", {\
-        "packageLocation": "./.yarn/cache/@pinia-testing-npm-0.1.3-f32534f6d0-3a70debc93.zip/node_modules/@pinia/testing/",\
+      ["npm:0.1.4", {\
+        "packageLocation": "./.yarn/cache/@pinia-testing-npm-0.1.4-1becea9e64-fc681c66b9.zip/node_modules/@pinia/testing/",\
         "packageDependencies": [\
-          ["@pinia/testing", "npm:0.1.3"]\
+          ["@pinia/testing", "npm:0.1.4"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.1.3", {\
-        "packageLocation": "./.yarn/__virtual__/@pinia-testing-virtual-1b8bcb1176/0/cache/@pinia-testing-npm-0.1.3-f32534f6d0-3a70debc93.zip/node_modules/@pinia/testing/",\
+      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.1.4", {\
+        "packageLocation": "./.yarn/__virtual__/@pinia-testing-virtual-d6fe3c0e19/0/cache/@pinia-testing-npm-0.1.4-1becea9e64-fc681c66b9.zip/node_modules/@pinia/testing/",\
         "packageDependencies": [\
-          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.1.3"],\
+          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.1.4"],\
           ["@types/pinia", null],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.1.7"],\
-          ["vue-demi", "virtual:43011759945774f6342ff78ca594157aca13423fd72f12ad887ff89128c1aa62a4f1a61a63e3e596db847da6c3a6de34d4fe90934a85b4602ed0b2adff2951ee#npm:0.14.7"]\
+          ["vue-demi", "virtual:d6fe3c0e193823f31459db6c756154f0adf795ceccf8899275eaf87c6ef810814234a71661807eeb9f35d115181462111ce8e8f6f0d044a8183fdd05c9579441#npm:0.14.10"]\
         ],\
         "packagePeers": [\
           "@types/pinia",\
@@ -9506,7 +9506,7 @@ const RAW_RUNTIME_STATE =
           ["@babel/types", "npm:7.24.9"],\
           ["@fontsource-variable/roboto-flex", "npm:5.0.15"],\
           ["@mdi/js", "npm:7.4.47"],\
-          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.1.3"],\
+          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.1.4"],\
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.0.3"],\
           ["@types/jest", "npm:29.5.12"],\
           ["@types/node", "npm:20.14.12"],\
@@ -11200,6 +11200,13 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["vue-demi", [\
+      ["npm:0.14.10", {\
+        "packageLocation": "./.yarn/unplugged/vue-demi-virtual-cc42a96e49/node_modules/vue-demi/",\
+        "packageDependencies": [\
+          ["vue-demi", "npm:0.14.10"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
       ["npm:0.14.7", {\
         "packageLocation": "./.yarn/unplugged/vue-demi-virtual-8a593d0420/node_modules/vue-demi/",\
         "packageDependencies": [\
@@ -11252,6 +11259,23 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/unplugged/vue-demi-virtual-db5fcdb917/node_modules/vue-demi/",\
         "packageDependencies": [\
           ["vue-demi", "virtual:8c3e329c96ce29133a846652196300f853155891c23086f28a59e4e54445257d59f9e3fdfa2a8926787503a60d4ed5f7cab6a0002cd4b41d3319e81f0478e2ad#npm:0.14.8"],\
+          ["@types/vue", null],\
+          ["@types/vue__composition-api", null],\
+          ["@vue/composition-api", null],\
+          ["vue", null]\
+        ],\
+        "packagePeers": [\
+          "@types/vue",\
+          "@types/vue__composition-api",\
+          "@vue/composition-api",\
+          "vue"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:d6fe3c0e193823f31459db6c756154f0adf795ceccf8899275eaf87c6ef810814234a71661807eeb9f35d115181462111ce8e8f6f0d044a8183fdd05c9579441#npm:0.14.10", {\
+        "packageLocation": "./.yarn/unplugged/vue-demi-virtual-cc42a96e49/node_modules/vue-demi/",\
+        "packageDependencies": [\
+          ["vue-demi", "virtual:d6fe3c0e193823f31459db6c756154f0adf795ceccf8899275eaf87c6ef810814234a71661807eeb9f35d115181462111ce8e8f6f0d044a8183fdd05c9579441#npm:0.14.10"],\
           ["@types/vue", null],\
           ["@types/vue__composition-api", null],\
           ["@vue/composition-api", null],\
