@@ -61,7 +61,7 @@ const RAW_RUNTIME_STATE =
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.3.5"],\
           ["vite-plugin-pwa", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.20.1"],\
           ["vite-plugin-vue-devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:7.3.7"],\
-          ["vite-plugin-vuetify", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.3"],\
+          ["vite-plugin-vuetify", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.4"],\
           ["vitest", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.4"],\
           ["vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.4.27"],\
           ["vue-router", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.4.0"],\
@@ -4816,10 +4816,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:71a15b2a10ea6a6a072a520569e729789689f410ce3adec6ad31c62a3df42c17cb3f97771707002ab671c7ef9631c56e6a229c288d30b7d1dc00884748eae286#npm:2.0.3", {\
-        "packageLocation": "./.yarn/__virtual__/@vuetify-loader-shared-virtual-c0258e7e37/0/cache/@vuetify-loader-shared-npm-2.0.3-b5d9930ac5-19b74b0408.zip/node_modules/@vuetify/loader-shared/",\
+      ["virtual:ad86f776bb0745fb38370961847551093d65fdbf8fa77922f08e55eb1426067c37074d46ae34c97ce4da5afc86d5231e607d69feadc7ce32ca79e131562ba3a1#npm:2.0.3", {\
+        "packageLocation": "./.yarn/__virtual__/@vuetify-loader-shared-virtual-d88b4aa3b8/0/cache/@vuetify-loader-shared-npm-2.0.3-b5d9930ac5-19b74b0408.zip/node_modules/@vuetify/loader-shared/",\
         "packageDependencies": [\
-          ["@vuetify/loader-shared", "virtual:71a15b2a10ea6a6a072a520569e729789689f410ce3adec6ad31c62a3df42c17cb3f97771707002ab671c7ef9631c56e6a229c288d30b7d1dc00884748eae286#npm:2.0.3"],\
+          ["@vuetify/loader-shared", "virtual:ad86f776bb0745fb38370961847551093d65fdbf8fa77922f08e55eb1426067c37074d46ae34c97ce4da5afc86d5231e607d69feadc7ce32ca79e131562ba3a1#npm:2.0.3"],\
           ["@types/vue", null],\
           ["@types/vuetify", null],\
           ["upath", "npm:2.0.1"],\
@@ -9573,7 +9573,7 @@ const RAW_RUNTIME_STATE =
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.3.5"],\
           ["vite-plugin-pwa", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.20.1"],\
           ["vite-plugin-vue-devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:7.3.7"],\
-          ["vite-plugin-vuetify", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.3"],\
+          ["vite-plugin-vuetify", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.4"],\
           ["vitest", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.4"],\
           ["vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.4.27"],\
           ["vue-router", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.4.0"],\
@@ -11092,21 +11092,21 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["vite-plugin-vuetify", [\
-      ["npm:2.0.3", {\
-        "packageLocation": "./.yarn/cache/vite-plugin-vuetify-npm-2.0.3-889b6c22d2-59ff2d8b47.zip/node_modules/vite-plugin-vuetify/",\
+      ["npm:2.0.4", {\
+        "packageLocation": "./.yarn/cache/vite-plugin-vuetify-npm-2.0.4-7f8a092f45-a7ae42d5df.zip/node_modules/vite-plugin-vuetify/",\
         "packageDependencies": [\
-          ["vite-plugin-vuetify", "npm:2.0.3"]\
+          ["vite-plugin-vuetify", "npm:2.0.4"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.3", {\
-        "packageLocation": "./.yarn/__virtual__/vite-plugin-vuetify-virtual-71a15b2a10/0/cache/vite-plugin-vuetify-npm-2.0.3-889b6c22d2-59ff2d8b47.zip/node_modules/vite-plugin-vuetify/",\
+      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.4", {\
+        "packageLocation": "./.yarn/__virtual__/vite-plugin-vuetify-virtual-ad86f776bb/0/cache/vite-plugin-vuetify-npm-2.0.4-7f8a092f45-a7ae42d5df.zip/node_modules/vite-plugin-vuetify/",\
         "packageDependencies": [\
-          ["vite-plugin-vuetify", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.3"],\
+          ["vite-plugin-vuetify", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.4"],\
           ["@types/vite", null],\
           ["@types/vue", null],\
           ["@types/vuetify", null],\
-          ["@vuetify/loader-shared", "virtual:71a15b2a10ea6a6a072a520569e729789689f410ce3adec6ad31c62a3df42c17cb3f97771707002ab671c7ef9631c56e6a229c288d30b7d1dc00884748eae286#npm:2.0.3"],\
+          ["@vuetify/loader-shared", "virtual:ad86f776bb0745fb38370961847551093d65fdbf8fa77922f08e55eb1426067c37074d46ae34c97ce4da5afc86d5231e607d69feadc7ce32ca79e131562ba3a1#npm:2.0.3"],\
           ["debug", "virtual:1ff4b5f90832ba0a9c93ba1223af226e44ba70c1126a3740d93562b97bc36544e896a5e95908196f7458713e6a6089a34bfc67362fc6df7fa093bd06c878be47#npm:4.3.4"],\
           ["upath", "npm:2.0.1"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.3.5"],\
@@ -11493,7 +11493,7 @@ const RAW_RUNTIME_STATE =
           ["@types/vue-i18n", null],\
           ["@types/webpack-plugin-vuetify", null],\
           ["typescript", "patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>::version=5.5.4&hash=379a07"],\
-          ["vite-plugin-vuetify", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.3"],\
+          ["vite-plugin-vuetify", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.4"],\
           ["vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.4.27"],\
           ["vue-i18n", null],\
           ["webpack-plugin-vuetify", null]\
