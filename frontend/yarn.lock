@@ -2940,13 +2940,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-api@npm:^6.5.1":
-  version: 6.6.1
-  resolution: "@vue/devtools-api@npm:6.6.1"
-  checksum: 10/040f7307904e23fd02a3f65b024ac7fe71b9e1f5f66244a5ba30d9f3d1b58a79dd5a3b46e8ed4c6a51a153688a356f776bb3260f801df39a7a3cf972c9c79505
-  languageName: node
-  linkType: hard
-
 "@vue/devtools-api@npm:^6.6.3":
   version: 6.6.3
   resolution: "@vue/devtools-api@npm:6.6.3"
@@ -7257,7 +7250,7 @@ __metadata:
     vite-plugin-vuetify: "npm:2.0.4"
     vitest: "npm:2.0.4"
     vue: "npm:3.4.27"
-    vue-router: "npm:4.4.0"
+    vue-router: "npm:4.4.3"
     vue-toastification: "npm:2.0.0-rc.5"
     vue-tsc: "npm:2.0.29"
     vue3-enter-to-tab: "npm:3.1.4"
@@ -8707,14 +8700,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:4.4.0":
-  version: 4.4.0
-  resolution: "vue-router@npm:4.4.0"
+"vue-router@npm:4.4.3":
+  version: 4.4.3
+  resolution: "vue-router@npm:4.4.3"
   dependencies:
-    "@vue/devtools-api": "npm:^6.5.1"
+    "@vue/devtools-api": "npm:^6.6.3"
   peerDependencies:
     vue: ^3.2.0
-  checksum: 10/cf3f31b21c30c4b8550c661abccd51aee39feef6021421640a6cf84f19101188f4167911a908f7d58261bd45dc5dca4c265d916e462d924445248a8ae61656a0
+  checksum: 10/7e313689a7df1595a69af2eb7ab334befe0e62fb52d64e23669a83668cf522b86609c05d607517019f727f1472b1a56e5367a21d2434a36a82362e935fd7e620
   languageName: node
   linkType: hard
 
