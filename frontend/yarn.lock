@@ -2684,9 +2684,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/coverage-v8@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@vitest/coverage-v8@npm:2.0.4"
+"@vitest/coverage-v8@npm:2.0.5":
+  version: 2.0.5
+  resolution: "@vitest/coverage-v8@npm:2.0.5"
   dependencies:
     "@ampproject/remapping": "npm:^2.3.0"
     "@bcoe/v8-coverage": "npm:^0.2.3"
@@ -2701,8 +2701,8 @@ __metadata:
     test-exclude: "npm:^7.0.1"
     tinyrainbow: "npm:^1.2.0"
   peerDependencies:
-    vitest: 2.0.4
-  checksum: 10/de23ca9c8e7cd704d889475af9a8282a1d29e4ca05909edc28df3f55b65a10cba344ab350ab255d0ad1b8a3dc6d98ebb12d5c2614bc8d92b03b645f15912ae61
+    vitest: 2.0.5
+  checksum: 10/bb774d1a52b85adf94dcf62dc9684c59bd6aba6f8d43ce4d4afa06e3ca85651ec217f74842c0c4a81ea0158f029e484055207869e5d741cfbc3119257399fb83
   languageName: node
   linkType: hard
 
@@ -2727,7 +2727,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/pretty-format@npm:^2.0.4":
+"@vitest/pretty-format@npm:2.0.5, @vitest/pretty-format@npm:^2.0.4":
   version: 2.0.5
   resolution: "@vitest/pretty-format@npm:2.0.5"
   dependencies:
@@ -2766,11 +2766,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/ui@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@vitest/ui@npm:2.0.4"
+"@vitest/ui@npm:2.0.5":
+  version: 2.0.5
+  resolution: "@vitest/ui@npm:2.0.5"
   dependencies:
-    "@vitest/utils": "npm:2.0.4"
+    "@vitest/utils": "npm:2.0.5"
     fast-glob: "npm:^3.3.2"
     fflate: "npm:^0.8.2"
     flatted: "npm:^3.3.1"
@@ -2778,8 +2778,8 @@ __metadata:
     sirv: "npm:^2.0.4"
     tinyrainbow: "npm:^1.2.0"
   peerDependencies:
-    vitest: 2.0.4
-  checksum: 10/88996d4650889ab9cd2a539fa5651dd45f4236cd087c887fae592f243ed2645506e3faaaeac752f35f581557593781db10cc144b61b313d84ca2f2d1e3c0401c
+    vitest: 2.0.5
+  checksum: 10/ef07017386d48a1da6871c6f164584a2786172243bdf61dda91b2773fc275743739fc1dd9098e56ec384e599f8e3059a5314cdcfb186380b73dfed11cff252d2
   languageName: node
   linkType: hard
 
@@ -2792,6 +2792,18 @@ __metadata:
     loupe: "npm:^3.1.1"
     tinyrainbow: "npm:^1.2.0"
   checksum: 10/a17497cd3c12b72b315bda6a6a4addcbc206367f6bcdedb83d5d708ac40cf52fcc48403539d10528e1893348b2f107416e9065b6b5c39329f2512eea8f104578
+  languageName: node
+  linkType: hard
+
+"@vitest/utils@npm:2.0.5":
+  version: 2.0.5
+  resolution: "@vitest/utils@npm:2.0.5"
+  dependencies:
+    "@vitest/pretty-format": "npm:2.0.5"
+    estree-walker: "npm:^3.0.3"
+    loupe: "npm:^3.1.1"
+    tinyrainbow: "npm:^1.2.0"
+  checksum: 10/d631d56d29c33bc8de631166b2b6691c470187a345469dfef7048befe6027e1c6ff9552f2ee11c8a247522c325c4a64bfcc73f8f0f0c525da39cb9f190f119f8
   languageName: node
   linkType: hard
 
@@ -7218,8 +7230,8 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:7.18.0"
     "@typescript-eslint/parser": "npm:7.18.0"
     "@vitejs/plugin-vue": "npm:5.1.2"
-    "@vitest/coverage-v8": "npm:2.0.4"
-    "@vitest/ui": "npm:2.0.4"
+    "@vitest/coverage-v8": "npm:2.0.5"
+    "@vitest/ui": "npm:2.0.5"
     "@vue/eslint-config-typescript": "npm:13.0.0"
     "@vueuse/core": "npm:10.11.0"
     axios: "npm:1.7.2"
