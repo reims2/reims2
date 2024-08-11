@@ -12,28 +12,20 @@
       "type": "node",
       "request": "launch",
       "name": "Vite Dev (remote API)",
-      "args": ["dev"],
+      "args": ["dev:remote"],
       "outputCapture": "std",
       "linux": {
         "program": "${workspaceFolder}/node_modules/.bin/vite"
-      },
-      "env": {
-        "VITE_API_URL": "https://dev.reims2.app/",
-        "VITE_PVH_DEBUG": "true"
       }
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Vite Dev (local API)",
-      "args": ["dev"],
+      "args": ["dev:local"],
       "outputCapture": "std",
       "linux": {
         "program": "${workspaceFolder}/node_modules/.bin/vite"
-      },
-      "env": {
-        "VITE_API_URL": "http://localhost:9966/",
-        "VITE_PVH_DEBUG": "true"
       }
     }
   ]
