@@ -1,9 +1,5 @@
 package org.pvh.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
 import org.pvh.error.NoSkusLeftException;
 import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Glasses;
@@ -22,6 +18,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MainServiceImpl implements MainService {
@@ -134,7 +134,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public List<Glasses> findByDispensedAndLocation(boolean dispensed, String location) throws DataAccessException {
-        return glassesRepository.findAll(Specification.where(GlassesSpecs.hasLocation(location)).and(GlassesSpecs.isDispensed(dispensed)));
+        return glassesRepository.findByDispensedAndLocation(dispensed, location);
     }
 
     @Override
