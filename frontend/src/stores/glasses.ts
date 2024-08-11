@@ -159,14 +159,13 @@ export const useGlassesStore = defineStore(
       isRefreshingGlasses.value = true
       let response
       try {
-        response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}`, {
-          params: { size: 100000 },
+        response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}/all`, {
           timeout: 60000,
         })
       } finally {
         isRefreshingGlasses.value = false
       }
-      allGlasses.value = response.data.glasses
+      allGlasses.value = response.data
       lastRefresh.value = new Date().toISOString()
       isOutdated.value = false
     }
