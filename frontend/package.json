@@ -6,6 +6,8 @@
   "packageManager": "yarn@4.4.0",
   "scripts": {
     "dev": "vite",
+    "dev:local": "VITE_API_URL=http://localhost:9966/ vite",
+    "dev:remote": "VITE_API_URL=https://dev.reims2.app/ vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore",
