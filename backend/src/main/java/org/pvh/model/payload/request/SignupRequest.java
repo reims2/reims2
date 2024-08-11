@@ -1,10 +1,10 @@
 package org.pvh.model.payload.request;
 
 
-import java.util.Set;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.Set;
 
 public class SignupRequest {
     @NotBlank

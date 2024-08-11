@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class ErrorResponse extends ErrorResponseDefault {
 
-    private String error;
-    private String path;
+    private final String error;
+    private final String path;
 
     public ErrorResponse(int status, String error, String message, String path, Date timestamp) {
         super(status, message, timestamp);

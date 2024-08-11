@@ -21,24 +21,23 @@ public class JwtUtils {
 
     @Value("${pvh.app.jwtSecret}")
     private String jwtSecret;
+    @Value("${pvh.app.jwtExpirationMs}")
+    private long jwtExpirationMs;
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(this.jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    @Value("${pvh.app.jwtExpirationMs}")
-    private long jwtExpirationMs;
-
     public String generateJwtToken(Authentication authentication) {
 
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS512).compact();
+            .setSubject((userPrincipal.getUsername()))
+            .setIssuedAt(new Date())
+            .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+            .signWith(getSigningKey(), SignatureAlgorithm.HS512).compact();
     }
 
     public String getUserNameFromJwtToken(String token) {

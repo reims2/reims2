@@ -17,7 +17,8 @@ public class UserMapperImpl implements UserMapper {
 
     private static UserMapperImpl mapper;
 
-    private UserMapperImpl() {}
+    private UserMapperImpl() {
+    }
 
     public static UserMapperImpl getInstance() {
         if (mapper == null) {

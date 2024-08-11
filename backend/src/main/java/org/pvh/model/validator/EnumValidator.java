@@ -1,11 +1,11 @@
 package org.pvh.model.validator;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 
 
 public class EnumValidator implements ConstraintValidator<IEnumValidator, CharSequence> {
@@ -14,8 +14,8 @@ public class EnumValidator implements ConstraintValidator<IEnumValidator, CharSe
     @Override
     public void initialize(IEnumValidator annotation) {
         acceptedValues = Stream.of(annotation.enumClass().getEnumConstants())
-                .map(Enum::name)
-                .collect(Collectors.toList());
+            .map(Enum::name)
+            .collect(Collectors.toList());
     }
 
     @Override

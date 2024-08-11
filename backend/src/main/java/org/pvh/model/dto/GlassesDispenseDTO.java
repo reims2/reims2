@@ -9,7 +9,8 @@ public class GlassesDispenseDTO implements Serializable {
 
     private Long id;
 
-    public GlassesDispenseDTO() {}
+    public GlassesDispenseDTO() {
+    }
 
     public GlassesDispenseDTO(Long id) {
 

@@ -25,7 +25,7 @@ public class GenericRsqlSpecBuilder<T> {
     public Specification<T> createSpecification(final LogicalNode logicalNode) {
 
         List<Specification<T>> specs = logicalNode.getChildren().stream().map(node -> createSpecification(node)).filter(Objects::nonNull)
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
 
         Specification<T> result = specs.get(0);
         if (logicalNode.getOperator() == LogicalOperator.AND) {
@@ -43,7 +43,7 @@ public class GenericRsqlSpecBuilder<T> {
 
     public Specification<T> createSpecification(final ComparisonNode comparisonNode) {
         return Specification.where(
-                new GenericRsqlSpecification<T>(comparisonNode.getSelector(), comparisonNode.getOperator(), comparisonNode.getArguments()));
+            new GenericRsqlSpecification<T>(comparisonNode.getSelector(), comparisonNode.getOperator(), comparisonNode.getArguments()));
     }
 
 }

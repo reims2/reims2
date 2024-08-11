@@ -1,16 +1,8 @@
 package org.pvh.repository.RSQL;
 
 import cz.jirutka.rsql.parser.ast.ComparisonOperator;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.From;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Path;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import jakarta.persistence.metamodel.*;
-
 import org.pvh.error.PVHException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -20,9 +12,9 @@ import java.util.stream.Collectors;
 
 public class GenericRsqlSpecification<T> implements Specification<T> {
 
-    private String property;
-    private ComparisonOperator operator;
-    private List<String> arguments;
+    private final String property;
+    private final ComparisonOperator operator;
+    private final List<String> arguments;
 
     public GenericRsqlSpecification(String property, ComparisonOperator operator, List<String> arguments) {
         this.property = property;
@@ -32,7 +24,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
-            CriteriaBuilder builder) {
+                                 CriteriaBuilder builder) {
         Path<String> propertyExpression = parseProperty(root);
         List<Object> args = castArguments(propertyExpression);
         Object argument = args.get(0);
@@ -40,7 +32,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
             case EQUAL:
                 if (argument instanceof String)
                     return builder.like(propertyExpression,
-                            argument.toString().replace('*', '%'));
+                        argument.toString().replace('*', '%'));
                 else if (argument == null)
                     return builder.isNull(propertyExpression);
                 else
@@ -49,7 +41,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
             case NOT_EQUAL:
                 if (argument instanceof String)
                     return builder.notLike(propertyExpression,
-                            argument.toString().replace('*', '%'));
+                        argument.toString().replace('*', '%'));
                 else if (argument == null)
                     return builder.isNotNull(propertyExpression);
                 else
@@ -57,19 +49,19 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
 
             case GREATER_THAN:
                 return builder.greaterThan(propertyExpression,
-                        argument.toString());
+                    argument.toString());
 
             case GREATER_THAN_OR_EQUAL:
                 return builder.greaterThanOrEqualTo(propertyExpression,
-                        argument.toString());
+                    argument.toString());
 
             case LESS_THAN:
                 return builder.lessThan(propertyExpression,
-                        argument.toString());
+                    argument.toString());
 
             case LESS_THAN_OR_EQUAL:
                 return builder.lessThanOrEqualTo(propertyExpression,
-                        argument.toString());
+                    argument.toString());
             case IN:
                 return propertyExpression.in(args);
             case NOT_IN:
@@ -92,16 +84,14 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
             try {
                 for (int i = 1; i <= pathSteps.length - 1; i++) {
 
-                    if (path instanceof PluralAttribute) {
-                        PluralAttribute attr = (PluralAttribute) path;
+                    if (path instanceof PluralAttribute attr) {
                         Join join = getJoin(attr, lastFrom);
                         if (join == null) {
                             throw new PVHException("Path parameters are not set correctly...", HttpStatus.INTERNAL_SERVER_ERROR);
                         }
                         path = join.get(pathSteps[i]);
                         lastFrom = join;
-                    } else if (path instanceof SingularAttribute) {
-                        SingularAttribute attr = (SingularAttribute) path;
+                    } else if (path instanceof SingularAttribute attr) {
                         if (attr.getPersistentAttributeType() != Attribute.PersistentAttributeType.BASIC) {
                             Join join = lastFrom.join(attr, JoinType.LEFT);
                             path = join.get(pathSteps[i]);
@@ -153,4 +143,3 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
     }
 
 }
-

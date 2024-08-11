@@ -48,12 +48,11 @@ public class GlassesRestController {
 
 
     private static final String ENTITY_NOT_FOUND = "Entity not found!";
+    private static final Lock lock = new ReentrantLock();
     @Autowired
     private MainService mainService;
     @Autowired
     private ChangeService changeService;
-
-
 
     private Sort.Direction getSortDirection(String direction) {
         if (direction.equals("asc")) {
@@ -69,9 +68,9 @@ public class GlassesRestController {
     @GetMapping(path = "/{location}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getAllGlassesPaginated(
-            @RequestParam(value = "search", required = false) String search,
-            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "sku,desc") String[] sort, @PathVariable("location") String location) {
+        @RequestParam(value = "search", required = false) String search,
+        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "sku,desc") String[] sort, @PathVariable("location") String location) {
 
         List<Order> orders = new ArrayList<>();
 
@@ -98,7 +97,7 @@ public class GlassesRestController {
         }
 
         glasses = pageGlasses.getContent().stream().map(a -> GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(a))
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
 
         Map<String, Object> response = new HashMap<>();
         response.put("glasses", glasses);
@@ -133,28 +132,27 @@ public class GlassesRestController {
         WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
     }
 
-
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping(path = "/dispensed/{location}")
     @ResponseBody
     public Collection<GlassesResponseDTO> getAllDispensedGlasses(@RequestParam Optional<Date> startDate,
-            @RequestParam Optional<Date> endDate,
-            @PathVariable("location") String location) {
+                                                                 @RequestParam Optional<Date> endDate,
+                                                                 @PathVariable("location") String location) {
         Collection<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
-                endDate.orElse(new Date()), location);
+            endDate.orElse(new Date()), location);
 
         return glasses.stream().map(a -> GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(a))
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping(path = "/dispensed/{location}.csv")
     public void getAllDispensedGlassesCsv(HttpServletResponse servletResponse,
-            @RequestParam Optional<Date> startDate,
-            @RequestParam Optional<Date> endDate,
-            @PathVariable("location") String location) {
+                                          @RequestParam Optional<Date> startDate,
+                                          @RequestParam Optional<Date> endDate,
+                                          @PathVariable("location") String location) {
         List<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
-                endDate.orElse(new Date()), location);
+            endDate.orElse(new Date()), location);
         if (glasses.isEmpty()) {
             servletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return;
@@ -175,7 +173,6 @@ public class GlassesRestController {
         return GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(glasses.get());
     }
 
-
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping(path = "/{location}/changes", produces = "application/json")
     public ChangeValueDTO getGlassesChange(@PathVariable("location") String location) {
@@ -185,9 +182,6 @@ public class GlassesRestController {
         return currentHashValueDTO;
 
     }
-
-
-    private static final Lock lock = new ReentrantLock();
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping(path = "", produces = "application/json")
@@ -219,7 +213,7 @@ public class GlassesRestController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping(path = "/{location}/{sku}", produces = "application/json")
     public ResponseEntity<GlassesResponseDTO> updateGlasses(@PathVariable("sku") int sku, @PathVariable("location") String location,
-            @RequestBody @Valid GlassesRequestDTO glasses) {
+                                                            @RequestBody @Valid GlassesRequestDTO glasses) {
         if (glasses == null) {
             throw new PVHException("Please provide a valid glasses DTO.", HttpStatus.BAD_REQUEST);
         }
@@ -232,14 +226,14 @@ public class GlassesRestController {
         logger.info("Edited glasses with SKU {} (in {})", sku, location);
         changeService.setNewHashValue(location);
         return new ResponseEntity<>(
-                GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(this.mainService.saveGlassesAfterEdit(glasses1)),
-                HttpStatus.OK);
+            GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(this.mainService.saveGlassesAfterEdit(glasses1)),
+            HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping(path = "/dispense/{location}/{sku}", produces = "application/json")
     public ResponseEntity<GlassesResponseDTO> updateDispensed(@PathVariable("sku") int sku, @PathVariable("location") String location,
-            @RequestParam Optional<DispenseReasonEnum> reason) {
+                                                              @RequestParam Optional<DispenseReasonEnum> reason) {
         Optional<Glasses> currentGlasses;
         currentGlasses = this.mainService.findAllBySkuAndLocation(sku, location);
 
@@ -267,7 +261,7 @@ public class GlassesRestController {
         }
         changeService.setNewHashValue(location);
         logger.info("Dispensed glasses with SKU {} (in {}) with reason {}", sku, location,
-                currentGlasses.get().getDispense().getDispenseReason());
+            currentGlasses.get().getDispense().getDispenseReason());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -288,7 +282,7 @@ public class GlassesRestController {
             throw new PVHException("entity already undispensed", HttpStatus.NO_CONTENT);
         }
         Optional<Glasses> testGlasses = this.mainService.findAllBySkuAndLocation(currentGlasses.get().getDispense().getPreviousSku(),
-                currentGlasses.get().getLocation());
+            currentGlasses.get().getLocation());
         if (testGlasses.isPresent())
             throw new PVHException("Previous SKU is already used", HttpStatus.BAD_REQUEST);
 
@@ -320,7 +314,7 @@ public class GlassesRestController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping(path = "/{location}/unsuccessfulSearch", produces = "application/json")
     public ResponseEntity<Void> addUnsuccessfulSearch(@PathVariable("location") String location,
-            @RequestBody @Valid UnsuccessfulSearchDTO unsuccessfulSearchDTO, UriComponentsBuilder ucBuilder) {
+                                                      @RequestBody @Valid UnsuccessfulSearchDTO unsuccessfulSearchDTO, UriComponentsBuilder ucBuilder) {
         UnsuccessfulSearch searchResponse;
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -328,7 +322,7 @@ public class GlassesRestController {
                 return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
             }
             UnsuccessfulSearch search =
-                    UnsuccessfulSearchMapperImpl.getInstance().unsuccessfulSearchDTOToUnsuccessfulSearch(unsuccessfulSearchDTO, location);
+                UnsuccessfulSearchMapperImpl.getInstance().unsuccessfulSearchDTOToUnsuccessfulSearch(unsuccessfulSearchDTO, location);
             searchResponse = this.mainService.saveUnsuccessfulSearch(search);
         } catch (RuntimeException e) {
             throw new PVHException("Something bad happened while adding unsuccessful search.", HttpStatus.INTERNAL_SERVER_ERROR);

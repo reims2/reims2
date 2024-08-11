@@ -16,7 +16,7 @@ public interface MainService {
 
     Optional<Glasses> findGlassesById(long glassesId);
 
-    Glasses saveGlasses(Glasses glasses) throws DataAccessException, org.pvh.error.NoSkusLeftException, NoSkusLeftException;
+    Glasses saveGlasses(Glasses glasses) throws DataAccessException, NoSkusLeftException;
 
     void deleteGlasses(Glasses glasses) throws DataAccessException;
 
@@ -32,7 +32,7 @@ public interface MainService {
 
 
     Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec)
-            throws DataAccessException;
+        throws DataAccessException;
 
     Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException;
 

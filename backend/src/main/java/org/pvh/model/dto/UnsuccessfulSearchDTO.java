@@ -1,10 +1,10 @@
 package org.pvh.model.dto;
 
-import java.util.Date;
-
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.model.validator.IEnumValidator;
+
+import java.util.Date;
 
 public class UnsuccessfulSearchDTO {
     @IEnumValidator(enumClass = GlassesTypeEnum.class)
@@ -17,10 +17,9 @@ public class UnsuccessfulSearchDTO {
     private EyeDTO od;
 
 
-
     public UnsuccessfulSearchDTO(@IEnumValidator(enumClass = GlassesTypeEnum.class) String glassesType,
-            @IEnumValidator(enumClass = BalLensEnum.class) String balLens,
-            Boolean increaseSearchTolerance, Date searchDate, EyeDTO os, EyeDTO od) {
+                                 @IEnumValidator(enumClass = BalLensEnum.class) String balLens,
+                                 Boolean increaseSearchTolerance, Date searchDate, EyeDTO os, EyeDTO od) {
         this.glassesType = glassesType;
         this.increaseSearchTolerance = increaseSearchTolerance;
         this.balLens = balLens;

@@ -1,22 +1,11 @@
 package org.pvh.model.entity;
 
-import java.util.Date;
-
-import org.pvh.model.enums.AppearanceEnum;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import org.pvh.model.enums.BalLensEnum;
-import org.pvh.model.enums.DispenseReasonEnum;
-import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.Pattern;
+import java.util.Date;
 
 
 @Entity
@@ -48,7 +37,6 @@ public class UnsuccessfulSearch extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "OD_ID")
     private Eye od;
-
 
 
     public BalLensEnum getBalLens() {
@@ -115,8 +103,8 @@ public class UnsuccessfulSearch extends BaseEntity {
     @Override
     public String toString() {
         return "UnsuccessfulSearch [glassesType=" + glassesType + ", location=" + location + ", searchDate="
-                + searchDate + ", balLens=" + balLens + ", increaseSearchTolerance=" + increaseSearchTolerance + ", os="
-                + os + ", od=" + od + "]";
+            + searchDate + ", balLens=" + balLens + ", increaseSearchTolerance=" + increaseSearchTolerance + ", os="
+            + os + ", od=" + od + "]";
     }
 
 

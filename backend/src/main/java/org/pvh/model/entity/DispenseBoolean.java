@@ -1,6 +1,8 @@
 package org.pvh.model.entity;
 
 public class DispenseBoolean {
+    private boolean dispensed;
+
     public boolean isDispensed() {
         return dispensed;
     }
@@ -8,8 +10,6 @@ public class DispenseBoolean {
     public void setDispensed(boolean dispensed) {
         this.dispensed = dispensed;
     }
-
-    private boolean dispensed;
 
     @Override
     public String toString() {

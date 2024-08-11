@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class ErrorResponseDefault {
 
-    private int status;
-    private String message;
-    private Date timestamp;
+    private final int status;
+    private final String message;
+    private final Date timestamp;
 
     public ErrorResponseDefault(int status, String message, Date timestamp) {
         this.status = status;

@@ -1,13 +1,11 @@
 package org.pvh.model.dto;
 
 
+import jakarta.validation.constraints.Pattern;
 import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
-// import org.pvh.model.validator.IEnumValidator;
 import org.pvh.model.validator.IEnumValidator;
-
-import jakarta.validation.constraints.Pattern;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -27,7 +25,8 @@ public class GlassesRequestDTO implements Serializable {
     private EyeDTO os;
     private EyeDTO od;
 
-    public GlassesRequestDTO() {}
+    public GlassesRequestDTO() {
+    }
 
     public GlassesRequestDTO(String glassesType, String glassesSize, String appearance, String location, EyeDTO os, EyeDTO od) {
         this.glassesType = glassesType;
@@ -71,11 +70,11 @@ public class GlassesRequestDTO implements Serializable {
             return false;
         GlassesRequestDTO entity = (GlassesRequestDTO) o;
         return Objects.equals(this.glassesType, entity.glassesType) &&
-                Objects.equals(this.glassesSize, entity.glassesSize) &&
-                Objects.equals(this.appearance, entity.appearance) &&
-                Objects.equals(this.location, entity.location) &&
-                Objects.equals(this.os, entity.os) &&
-                Objects.equals(this.od, entity.od);
+            Objects.equals(this.glassesSize, entity.glassesSize) &&
+            Objects.equals(this.appearance, entity.appearance) &&
+            Objects.equals(this.location, entity.location) &&
+            Objects.equals(this.os, entity.os) &&
+            Objects.equals(this.od, entity.od);
     }
 
     @Override
@@ -87,11 +86,11 @@ public class GlassesRequestDTO implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "glassesType = " + glassesType + ", " +
-                "glassesSize = " + glassesSize + ", " +
-                "appearance = " + appearance + ", " +
-                "location = " + location + ", " +
-                "os = " + os + ", " +
-                "od = " + od + ")";
+            "glassesType = " + glassesType + ", " +
+            "glassesSize = " + glassesSize + ", " +
+            "appearance = " + appearance + ", " +
+            "location = " + location + ", " +
+            "os = " + os + ", " +
+            "od = " + od + ")";
     }
 }

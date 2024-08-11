@@ -1,11 +1,10 @@
 package org.pvh.util;
 
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Glasses;
 import org.springframework.data.jpa.domain.Specification;
-
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Predicate;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -33,7 +32,7 @@ public class GlassesSpecs {
             c.setTime(endDate);
             c.add(Calendar.DATE, 1);
             Date endDatePlus1 = c.getTime();
-            return criteriaBuilder.between(groupJoin.<Date>get("modifyDate"), startDate, endDatePlus1);
+            return criteriaBuilder.between(groupJoin.get("modifyDate"), startDate, endDatePlus1);
         };
     }
 

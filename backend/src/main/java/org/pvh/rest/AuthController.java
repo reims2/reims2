@@ -1,5 +1,7 @@
 package org.pvh.rest;
 
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.pvh.error.PVHException;
 import org.pvh.model.payload.request.LoginRequest;
 import org.pvh.model.payload.response.JwtResponse;
@@ -27,9 +29,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 
 import java.security.Principal;
 import java.util.*;
@@ -61,7 +60,7 @@ public class AuthController {
         Authentication authentication;
         try {
             authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         } catch (BadCredentialsException e) {
             throw new PVHException("Invalid username or password.", HttpStatus.UNAUTHORIZED);
         }
@@ -103,17 +102,17 @@ public class AuthController {
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 if (role.getName() == ERole.ROLE_ADMIN) {
                     Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN.name())
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(adminRole);
                 } else {
                     Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(userRole);
                 }
             });

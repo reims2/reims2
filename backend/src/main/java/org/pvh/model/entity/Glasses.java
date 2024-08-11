@@ -1,22 +1,12 @@
 package org.pvh.model.entity;
 
-import java.util.Date;
-
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.Pattern;
+import java.util.Date;
 
 @Entity
 @Table(name = "glasses")
@@ -57,7 +47,8 @@ public class Glasses extends BaseEntity {
     @JoinColumn(name = "OD_ID")
     private Eye od;
 
-    public Glasses() {}
+    public Glasses() {
+    }
 
     public Glasses(String glassesType, String glassesSize, String appearance, String location, Dispense dispense, Eye os, Eye od) {
         this.glassesType = glassesType;
@@ -71,7 +62,7 @@ public class Glasses extends BaseEntity {
     }
 
     public Glasses(Integer sku, String glassesType, String glassesSize, String appearance, String location, boolean dispensed,
-            Date creationDate, Dispense dispense, Eye os, Eye od) {
+                   Date creationDate, Dispense dispense, Eye os, Eye od) {
         this.sku = sku;
         this.glassesType = glassesType;
         this.glassesSize = glassesSize;
@@ -167,8 +158,8 @@ public class Glasses extends BaseEntity {
     @Override
     public String toString() {
         return "Glasses [sku=" + sku + ", glassesType=" + glassesType + ", glassesSize=" + glassesSize + ", appearance="
-                + appearance + ", location=" + location + ", dispensed=" + dispensed + ", creationDate=" + creationDate.toString()
-                + ", dispense=" + dispense.toString() + ", os=" + os.toString() + ", od=" + od.toString() + "]";
+            + appearance + ", location=" + location + ", dispensed=" + dispensed + ", creationDate=" + creationDate.toString()
+            + ", dispense=" + dispense.toString() + ", os=" + os.toString() + ", od=" + od.toString() + "]";
     }
 
 }

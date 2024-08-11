@@ -1,15 +1,13 @@
 package org.pvh.repository.jpa;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
 import org.pvh.error.NoSkusLeftException;
 import org.pvh.model.entity.Glasses;
 import org.pvh.repository.CustomGlassesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
-
-import java.math.BigInteger;
 import java.util.Date;
 
 public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
@@ -32,8 +30,8 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
         if (minimumUsed) {
             // otherwise find the next free SKU in the database
             Query findNextSKUQuery = entityManager
-                    .createNativeQuery("SELECT g.SKU + 1 AS FirstAvailableId FROM glasses g LEFT JOIN glasses g1 ON g1.SKU = g.SKU + 1 "
-                            + "WHERE g1.SKU IS NULL AND g.SKU >= :min AND g.SKU < :max  ORDER BY g.SKU LIMIT 0, 1");
+                .createNativeQuery("SELECT g.SKU + 1 AS FirstAvailableId FROM glasses g LEFT JOIN glasses g1 ON g1.SKU = g.SKU + 1 "
+                    + "WHERE g1.SKU IS NULL AND g.SKU >= :min AND g.SKU < :max  ORDER BY g.SKU LIMIT 0, 1");
             findNextSKUQuery.setParameter("min", min);
             findNextSKUQuery.setParameter("max", max);
 

@@ -1,14 +1,11 @@
 package org.pvh.util;
 
 import com.opencsv.CSVWriter;
-
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -32,18 +29,18 @@ public class WriteCsvToResponse {
     }
 
     public static void writeGlasses(CSVWriter writer, Collection<Glasses> glasses) {
-        writer.writeNext(new String[] {"SKU",
-                "Location",
-                "Type",
-                "Appearance",
-                "Size",
-                "Added date (in CST)",
-                "Is dispensed?",
-                "SKU before dispension",
-                "dispension date (in CST)",
-                "dispense type",
-                "OD Sphere", "OD Cylinder", "OD Axis", "OD Add",
-                "OS Sphere", "OS Cylinder", "OS Axis", "OS Add"});
+        writer.writeNext(new String[]{"SKU",
+            "Location",
+            "Type",
+            "Appearance",
+            "Size",
+            "Added date (in CST)",
+            "Is dispensed?",
+            "SKU before dispension",
+            "dispension date (in CST)",
+            "dispense type",
+            "OD Sphere", "OD Cylinder", "OD Axis", "OD Add",
+            "OS Sphere", "OS Cylinder", "OS Axis", "OS Add"});
 
         for (Glasses glass : glasses) {
             writeSingleGlasses(writer, glass);
@@ -72,7 +69,7 @@ public class WriteCsvToResponse {
         else
             rowList.add("-");
 
-        for (Eye eye : new Eye[] {glass.getOd(), glass.getOs()}) {
+        for (Eye eye : new Eye[]{glass.getOd(), glass.getOs()}) {
             rowList.add(eye.getSphere().toString());
             rowList.add(eye.getCylinder().toString());
             rowList.add(Integer.toString(eye.getAxis()));

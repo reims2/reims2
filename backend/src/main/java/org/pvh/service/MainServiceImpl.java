@@ -26,14 +26,14 @@ import java.util.Optional;
 @Service
 public class MainServiceImpl implements MainService {
 
-    private GlassesRepository glassesRepository;
-    private EyeRepository eyeRepository;
-    private DispenseRepository dispenseRepository;
-    private UnsuccessfulSearchRepository unsuccessfulSearchRepository;
+    private final GlassesRepository glassesRepository;
+    private final EyeRepository eyeRepository;
+    private final DispenseRepository dispenseRepository;
+    private final UnsuccessfulSearchRepository unsuccessfulSearchRepository;
 
     @Autowired
     public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository,
-            UnsuccessfulSearchRepository unsuccessfulSearchRepository) {
+                           UnsuccessfulSearchRepository unsuccessfulSearchRepository) {
         this.glassesRepository = glassesRepository;
         this.eyeRepository = eyeRepository;
         this.dispenseRepository = dispenseRepository;
@@ -121,9 +121,9 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec)
-            throws DataAccessException {
+        throws DataAccessException {
         return glassesRepository.findAll(
-                Specification.where(spec).and(GlassesSpecs.hasLocation(location)).and(GlassesSpecs.isDispensed(dispensed)), pageable);
+            Specification.where(spec).and(GlassesSpecs.hasLocation(location)).and(GlassesSpecs.isDispensed(dispensed)), pageable);
 
     }
 
@@ -140,7 +140,7 @@ public class MainServiceImpl implements MainService {
     @Override
     public List<Glasses> findDispensedBetween(Date startDate, Date endDate, String location) {
         return glassesRepository.findAll(Specification.where(GlassesSpecs.hasLocation(location)).and(GlassesSpecs.isDispensed(true))
-                .and(GlassesSpecs.dispensedInRange(startDate, endDate)));
+            .and(GlassesSpecs.dispensedInRange(startDate, endDate)));
     }
 
     @Override

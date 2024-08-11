@@ -46,25 +46,25 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, AuthEntryPointJwt unauthorizedHandler) throws Exception {
 
         http
-                .cors(Customizer.withDefaults())
-                .exceptionHandling((exceptionHandling) -> exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
-                .csrf((csrf) -> csrf.disable())
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/test/**").permitAll()
-                        .requestMatchers("/api", "/").permitAll()
-                        .requestMatchers("/error").permitAll()
-                        // potentially dangerous (contains sensitive information), but we only expose /api of this application in prod
-                        .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/webjars/**")
-                        .permitAll()
-                        .anyRequest().authenticated())
-                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+            .cors(Customizer.withDefaults())
+            .exceptionHandling((exceptionHandling) -> exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
+            .csrf((csrf) -> csrf.disable())
+            .authorizeHttpRequests(request -> request
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/test/**").permitAll()
+                .requestMatchers("/api", "/").permitAll()
+                .requestMatchers("/error").permitAll()
+                // potentially dangerous (contains sensitive information), but we only expose /api of this application in prod
+                .requestMatchers("/actuator/**").permitAll()
+                .requestMatchers(
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/webjars/**")
+                .permitAll()
+                .anyRequest().authenticated())
+            .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

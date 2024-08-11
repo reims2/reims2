@@ -13,9 +13,9 @@ public class DisableSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors((cors) -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
-                .csrf((csrf) -> csrf.disable())
-                .authorizeHttpRequests(request -> request.anyRequest().permitAll());
+            .cors((cors) -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+            .csrf((csrf) -> csrf.disable())
+            .authorizeHttpRequests(request -> request.anyRequest().permitAll());
         return http.build();
     }
 

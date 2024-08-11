@@ -19,8 +19,7 @@ public class DisablePVHErrorController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = RuntimeException.class)
     protected ResponseEntity<ErrorResponse> handleConflict(RuntimeException ex, WebRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        if (ex instanceof PVHException) {
-            PVHException test = (PVHException) ex;
+        if (ex instanceof PVHException test) {
             if (test.getStatusCode() != null)
                 status = test.getStatusCode();
         } else {
@@ -29,13 +28,12 @@ public class DisablePVHErrorController extends ResponseEntityExceptionHandler {
 
 
         return new ResponseEntity<>(
-                new ErrorResponse(status.value(),
-                        ex.getClass().toString(),
-                        ex.getMessage(),
-                        ((ServletWebRequest) request).getRequest().getRequestURI(),
-                        new Date()),
-                status);
+            new ErrorResponse(status.value(),
+                ex.getClass().toString(),
+                ex.getMessage(),
+                ((ServletWebRequest) request).getRequest().getRequestURI(),
+                new Date()),
+            status);
 
     }
 }
-

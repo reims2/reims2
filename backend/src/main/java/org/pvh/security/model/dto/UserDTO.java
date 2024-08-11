@@ -1,9 +1,8 @@
 package org.pvh.security.model.dto;
 
-import org.pvh.security.model.entity.Role;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.pvh.security.model.entity.Role;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -21,7 +20,8 @@ public class UserDTO implements Serializable {
     private String password;
     private Set<RoleDTO> roles;
 
-    public UserDTO() {}
+    public UserDTO() {
+    }
 
     public UserDTO(String username, String password, Set<RoleDTO> roles) {
         this.username = username;
@@ -61,8 +61,8 @@ public class UserDTO implements Serializable {
             return false;
         UserDTO entity = (UserDTO) o;
         return Objects.equals(this.username, entity.username) &&
-                Objects.equals(this.password, entity.password) &&
-                Objects.equals(this.roles, entity.roles);
+            Objects.equals(this.password, entity.password) &&
+            Objects.equals(this.roles, entity.roles);
     }
 
     @Override
@@ -73,9 +73,9 @@ public class UserDTO implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "username = " + username + ", " +
-                "password = " + password + ", " +
-                "roles = " + roles + ")";
+            "username = " + username + ", " +
+            "password = " + password + ", " +
+            "roles = " + roles + ")";
     }
 
     /**
@@ -84,7 +84,8 @@ public class UserDTO implements Serializable {
     public static class RoleDTO implements Serializable {
         private String name;
 
-        public RoleDTO() {}
+        public RoleDTO() {
+        }
 
         public RoleDTO(String name) {
             this.name = name;
@@ -116,7 +117,7 @@ public class UserDTO implements Serializable {
         @Override
         public String toString() {
             return getClass().getSimpleName() + "(" +
-                    "name = " + name + ")";
+                "name = " + name + ")";
         }
     }
 }

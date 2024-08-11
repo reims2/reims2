@@ -11,7 +11,8 @@ public class UnsuccessfulSearchMapperImpl implements UnsuccessfulSearchMapper {
 
     private static UnsuccessfulSearchMapperImpl mapper;
 
-    private UnsuccessfulSearchMapperImpl() {}
+    private UnsuccessfulSearchMapperImpl() {
+    }
 
     public static UnsuccessfulSearchMapperImpl getInstance() {
         if (mapper == null) {
@@ -28,19 +29,19 @@ public class UnsuccessfulSearchMapperImpl implements UnsuccessfulSearchMapper {
         }
 
         UnsuccessfulSearchDTO unsuccessfulSearchDTO = new UnsuccessfulSearchDTO(
-                unsuccessfulSearch.getGlassesType().name(),
-                unsuccessfulSearch.getBalLens().name(),
-                unsuccessfulSearch.getIncreaseSearchTolerance(),
-                unsuccessfulSearch.getSearchDate(),
-                GlassesMapperImpl.getInstance().eyeToEyeDTO(unsuccessfulSearch.getOs()),
-                GlassesMapperImpl.getInstance().eyeToEyeDTO(unsuccessfulSearch.getOd()));
+            unsuccessfulSearch.getGlassesType().name(),
+            unsuccessfulSearch.getBalLens().name(),
+            unsuccessfulSearch.getIncreaseSearchTolerance(),
+            unsuccessfulSearch.getSearchDate(),
+            GlassesMapperImpl.getInstance().eyeToEyeDTO(unsuccessfulSearch.getOs()),
+            GlassesMapperImpl.getInstance().eyeToEyeDTO(unsuccessfulSearch.getOd()));
 
         return unsuccessfulSearchDTO;
     }
 
     @Override
     public UnsuccessfulSearch unsuccessfulSearchDTOToUnsuccessfulSearch(UnsuccessfulSearchDTO unsuccessfulSearchDTO,
-            String location) {
+                                                                        String location) {
         if (unsuccessfulSearchDTO == null) {
             return null;
         }

@@ -22,16 +22,15 @@ import java.util.Date;
 public class MapperTest {
 
 
-
     @Test
     public void testGlassesRequestDTOtoGlassesAndEyeDTOtoEye() {
         GlassesRequestDTO glassesRequestDTO = new GlassesRequestDTO(
-                "multifocal",
-                "medium",
-                "feminine",
-                "sa",
-                new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
-                new EyeDTO(BigDecimal.valueOf(3), BigDecimal.valueOf(-4), 4, BigDecimal.valueOf(3)));
+            "multifocal",
+            "medium",
+            "feminine",
+            "sa",
+            new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
+            new EyeDTO(BigDecimal.valueOf(3), BigDecimal.valueOf(-4), 4, BigDecimal.valueOf(3)));
 
         Glasses target = GlassesMapperImpl.getInstance().glassesRequestDTOToGlasses(glassesRequestDTO);
 
@@ -72,13 +71,13 @@ public class MapperTest {
         dispense.setModifyDate(new Date());
 
         Glasses glasses = new Glasses(
-                "multifocal",
-                "medium",
-                "feminine",
-                "sa",
-                dispense,
-                new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
-                new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
+            "multifocal",
+            "medium",
+            "feminine",
+            "sa",
+            dispense,
+            new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
+            new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
 
         // Glasses Attributes
         GlassesResponseDTO target = GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(glasses);
@@ -115,25 +114,25 @@ public class MapperTest {
     public void testUpdateGlassesFromGlassesDTO() {
 
         GlassesRequestDTO glassesRequestDTO = new GlassesRequestDTO(
-                "single",
-                "small",
-                "neutral",
-                "sa",
-                new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-4), 2, BigDecimal.valueOf(3)),
-                new EyeDTO(BigDecimal.valueOf(3), BigDecimal.valueOf(-6), 3, BigDecimal.valueOf(2)));
+            "single",
+            "small",
+            "neutral",
+            "sa",
+            new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-4), 2, BigDecimal.valueOf(3)),
+            new EyeDTO(BigDecimal.valueOf(3), BigDecimal.valueOf(-6), 3, BigDecimal.valueOf(2)));
 
         Dispense dispense = new Dispense();
         dispense.setPreviousSku(22);
         dispense.setModifyDate(new Date());
 
         Glasses glasses = new Glasses(
-                "multifocal",
-                "medium",
-                "feminine",
-                "sa",
-                dispense,
-                new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
-                new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
+            "multifocal",
+            "medium",
+            "feminine",
+            "sa",
+            dispense,
+            new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
+            new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
 
         // Glasses Attributes
         Glasses target = GlassesMapperImpl.getInstance().updateGlassesFromGlassesRequestDTO(glassesRequestDTO, glasses);

@@ -1,14 +1,10 @@
 package org.pvh.model.dto;
 
+import jakarta.validation.constraints.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
-
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NegativeOrZero;
-import jakarta.validation.constraints.PositiveOrZero;
 
 /**
  * A DTO for the {@link org.pvh.model.entity.Eye} entity
@@ -27,7 +23,8 @@ public class EyeDTO implements Serializable {
     @DecimalMax(value = "8.0")
     private BigDecimal add;
 
-    public EyeDTO() {}
+    public EyeDTO() {
+    }
 
     public EyeDTO(BigDecimal sphere, BigDecimal cylinder, int axis, BigDecimal add) {
         this.sphere = sphere;
@@ -61,9 +58,9 @@ public class EyeDTO implements Serializable {
             return false;
         EyeDTO entity = (EyeDTO) o;
         return Objects.equals(this.sphere, entity.sphere) &&
-                Objects.equals(this.cylinder, entity.cylinder) &&
-                Objects.equals(this.axis, entity.axis) &&
-                Objects.equals(this.add, entity.add);
+            Objects.equals(this.cylinder, entity.cylinder) &&
+            Objects.equals(this.axis, entity.axis) &&
+            Objects.equals(this.add, entity.add);
     }
 
     @Override
@@ -74,9 +71,9 @@ public class EyeDTO implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "sphere = " + sphere + ", " +
-                "cylinder = " + cylinder + ", " +
-                "axis = " + axis + ", " +
-                "add = " + add + ")";
+            "sphere = " + sphere + ", " +
+            "cylinder = " + cylinder + ", " +
+            "axis = " + axis + ", " +
+            "add = " + add + ")";
     }
 }

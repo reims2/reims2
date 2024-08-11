@@ -1,15 +1,11 @@
 package org.pvh.model.entity;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NegativeOrZero;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "eye")
@@ -35,7 +31,8 @@ public class Eye extends BaseEntity {
     @DecimalMax(value = "8.0")
     private BigDecimal add;
 
-    public Eye() {}
+    public Eye() {
+    }
 
     public Eye(BigDecimal sphere, BigDecimal cylinder, int axis, BigDecimal add) {
         this.sphere = sphere;

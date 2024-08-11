@@ -1,7 +1,6 @@
 package org.pvh.service;
 
-import java.nio.charset.StandardCharsets;
-
+import com.google.common.hash.Hashing;
 import org.pvh.model.entity.ChangeValue;
 import org.pvh.repository.ChangeValueRepository;
 import org.slf4j.Logger;
@@ -9,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.hash.Hashing;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class ChangeServiceImpl implements ChangeService {
@@ -34,7 +33,7 @@ public class ChangeServiceImpl implements ChangeService {
 
     public void setNewHashValue(String location) {
         ChangeValue changeValue = changeValueRepository.findByLocation(location).get().isEmpty() ? null
-                : changeValueRepository.findByLocation(location).get().get(0);
+            : changeValueRepository.findByLocation(location).get().get(0);
 
         if (changeValue != null) {
             changeValueRepository.delete(changeValue);

@@ -17,8 +17,7 @@ public class PVHErrorController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = RuntimeException.class)
     protected ResponseEntity<ErrorResponseDefault> handleConflict(RuntimeException ex) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        if (ex instanceof PVHException) {
-            PVHException test = (PVHException) ex;
+        if (ex instanceof PVHException test) {
             if (test.getStatusCode() != null)
                 status = test.getStatusCode();
         } else {
@@ -26,11 +25,11 @@ public class PVHErrorController extends ResponseEntityExceptionHandler {
         }
 
         return new ResponseEntity<>(
-                new ErrorResponseDefault(status.value(),
-                        // Show error message in production as well.
-                        ex.getMessage(),
-                        new Date()),
-                status);
+            new ErrorResponseDefault(status.value(),
+                // Show error message in production as well.
+                ex.getMessage(),
+                new Date()),
+            status);
 
     }
 }

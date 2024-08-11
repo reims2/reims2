@@ -12,19 +12,21 @@ import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 import org.springframework.stereotype.Component;
-import java.math.BigDecimal;
+
 import javax.annotation.processing.Generated;
+import java.math.BigDecimal;
 
 @Generated(
-        value = "org.mapstruct.ap.MappingProcessor",
-        date = "2022-10-02T12:00:59+0200",
-        comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.16 (Ubuntu)")
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2022-10-02T12:00:59+0200",
+    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.16 (Ubuntu)")
 @Component
 public class GlassesMapperImpl implements GlassesMapper {
 
     private static GlassesMapperImpl mapper;
 
-    private GlassesMapperImpl() {}
+    private GlassesMapperImpl() {
+    }
 
     public static GlassesMapperImpl getInstance() {
         if (mapper == null) {
@@ -66,12 +68,12 @@ public class GlassesMapperImpl implements GlassesMapper {
         }
 
         GlassesRequestDTO glassesRequestDTO = new GlassesRequestDTO(
-                glasses.getGlassesType().name(),
-                glasses.getGlassesSize().name(),
-                glasses.getAppearance().name(),
-                glasses.getLocation(),
-                eyeToEyeDTO(glasses.getOs()),
-                eyeToEyeDTO(glasses.getOd()));
+            glasses.getGlassesType().name(),
+            glasses.getGlassesSize().name(),
+            glasses.getAppearance().name(),
+            glasses.getLocation(),
+            eyeToEyeDTO(glasses.getOs()),
+            eyeToEyeDTO(glasses.getOd()));
 
         return glassesRequestDTO;
     }
@@ -136,7 +138,6 @@ public class GlassesMapperImpl implements GlassesMapper {
     }
 
 
-
     @Override
     public EyeDTO eyeToEyeDTO(Eye eye) {
         if (eye == null) {
@@ -174,8 +175,8 @@ public class GlassesMapperImpl implements GlassesMapper {
         dispense.setModifyDate(dispenseResponseDto.getModifyDate());
         dispense.setPreviousSku(dispenseResponseDto.getPreviousSku());
         DispenseReasonEnum enumValue = dispenseResponseDto.getDispenseReason() != null
-                ? Enum.valueOf(DispenseReasonEnum.class, dispenseResponseDto.getDispenseReason())
-                : null;
+            ? Enum.valueOf(DispenseReasonEnum.class, dispenseResponseDto.getDispenseReason())
+            : null;
         dispense.setDispenseReason(enumValue);
 
         return dispense;
@@ -207,8 +208,8 @@ public class GlassesMapperImpl implements GlassesMapper {
         }
         if (dispenseResponseDto.getDispenseReason() != null) {
             DispenseReasonEnum enumValue = dispenseResponseDto.getDispenseReason() != null
-                    ? Enum.valueOf(DispenseReasonEnum.class, dispenseResponseDto.getDispenseReason())
-                    : null;
+                ? Enum.valueOf(DispenseReasonEnum.class, dispenseResponseDto.getDispenseReason())
+                : null;
             mappingTarget.setDispenseReason(enumValue);
         }
     }
