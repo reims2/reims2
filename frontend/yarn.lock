@@ -8746,7 +8746,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:3.4.27, vue@npm:^3.4.23":
+"vue@npm:3.4.27":
   version: 3.4.27
   resolution: "vue@npm:3.4.27"
   dependencies:

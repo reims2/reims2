@@ -63,5 +63,8 @@
     "vitest": "2.0.4",
     "vue-tsc": "2.0.29",
     "workbox-window": "7.1.0"
+  },
+  "resolutions": {
+    "vue": "3.4.27"
   }
 }
