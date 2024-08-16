@@ -10,6 +10,7 @@
                 v-model="glassesTypeInput"
                 v-bind="glassesTypeData"
                 :persistent-hint="true"
+                :clearable="false"
               />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pr-md-5 py-md-0 py-1">

@@ -9,6 +9,7 @@
                 ref="firstInput"
                 v-model="glassesMeta[item]"
                 v-bind="glassesMetaUIData[item]"
+                :clearable="false"
               />
             </v-col>
             <v-col cols="12" md="6" class="px-1 pr-md-5 py-0">
