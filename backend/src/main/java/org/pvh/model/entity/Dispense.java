@@ -12,10 +12,8 @@ public class Dispense extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modify_date")
     private Date modifyDate;
-
     @Column(name = "previous_sku")
     private Integer previousSku;
-
     @Column(name = "dispense_reason")
     private String dispenseReason;
 
@@ -32,8 +30,8 @@ public class Dispense extends BaseEntity {
         return modifyDate;
     }
 
-    public void setModifyDate(Date modify_date) {
-        this.modifyDate = modify_date;
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
     }
 
     public Integer getPreviousSku() {

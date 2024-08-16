@@ -4,7 +4,6 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -15,7 +14,7 @@ public class EnumValidator implements ConstraintValidator<IEnumValidator, CharSe
     public void initialize(IEnumValidator annotation) {
         acceptedValues = Stream.of(annotation.enumClass().getEnumConstants())
             .map(Enum::name)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     @Override

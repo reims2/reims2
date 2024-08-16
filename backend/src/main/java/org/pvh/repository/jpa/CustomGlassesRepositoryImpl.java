@@ -20,12 +20,12 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
 
         Query query = entityManager.createQuery("SELECT sku FROM Glasses WHERE sku = :min");
         query.setParameter("min", min);
-        boolean minimumUsed = query.getResultList().size() > 0;
+        boolean minimumUsed = !query.getResultList().isEmpty();
 
 
         // If the smallest possible SKU is still free, just use it. This is important because otherwise this number will be left
         // out
-        Integer nextSKU = min;
+        int nextSKU = min;
 
         if (minimumUsed) {
             // otherwise find the next free SKU in the database

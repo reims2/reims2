@@ -39,11 +39,11 @@ public class Glasses extends BaseEntity {
     @JoinColumn(name = "dispense_id")
     private Dispense dispense;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "OS_ID")
     private Eye os;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "OD_ID")
     private Eye od;
 

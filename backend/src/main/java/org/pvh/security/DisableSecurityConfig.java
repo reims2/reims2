@@ -10,11 +10,12 @@ import org.springframework.web.cors.CorsConfiguration;
 @Configuration
 @ConditionalOnProperty(name = "pvh.security.enable", havingValue = "false")
 public class DisableSecurityConfig {
+    @SuppressWarnings("Convert2MethodRef")
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors((cors) -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
-            .csrf((csrf) -> csrf.disable())
+            .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(request -> request.anyRequest().permitAll());
         return http.build();
     }
