@@ -40,7 +40,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.5"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.5"],\
           ["@vue/eslint-config-typescript", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:13.0.0"],\
-          ["@vueuse/core", "npm:10.11.0"],\
+          ["@vueuse/core", "npm:10.11.1"],\
           ["axios", "npm:1.7.4"],\
           ["dayjs", "npm:1.11.12"],\
           ["eslint", "npm:8.57.0"],\
@@ -4902,14 +4902,14 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@vueuse/core", [\
-      ["npm:10.11.0", {\
-        "packageLocation": "./.yarn/cache/@vueuse-core-npm-10.11.0-fb26847db9-6f2bcba82f.zip/node_modules/@vueuse/core/",\
+      ["npm:10.11.1", {\
+        "packageLocation": "./.yarn/cache/@vueuse-core-npm-10.11.1-64166ea98a-bbebdcd1ef.zip/node_modules/@vueuse/core/",\
         "packageDependencies": [\
-          ["@vueuse/core", "npm:10.11.0"],\
+          ["@vueuse/core", "npm:10.11.1"],\
           ["@types/web-bluetooth", "npm:0.0.20"],\
-          ["@vueuse/metadata", "npm:10.11.0"],\
-          ["@vueuse/shared", "npm:10.11.0"],\
-          ["vue-demi", "virtual:8c3e329c96ce29133a846652196300f853155891c23086f28a59e4e54445257d59f9e3fdfa2a8926787503a60d4ed5f7cab6a0002cd4b41d3319e81f0478e2ad#npm:0.14.8"]\
+          ["@vueuse/metadata", "npm:10.11.1"],\
+          ["@vueuse/shared", "npm:10.11.1"],\
+          ["vue-demi", "virtual:a99422e874d208156dd9d6ebb211d238c2c2781bad5b97d698646bb56d7d911397accdf9aa3a680ce9b8d55360f7099b247d5b6cb7e147a60e80fe1509787400#npm:0.14.8"]\
         ],\
         "linkType": "HARD"\
       }],\
@@ -4926,10 +4926,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@vueuse/metadata", [\
-      ["npm:10.11.0", {\
-        "packageLocation": "./.yarn/cache/@vueuse-metadata-npm-10.11.0-140a19a778-52229c65fa.zip/node_modules/@vueuse/metadata/",\
+      ["npm:10.11.1", {\
+        "packageLocation": "./.yarn/cache/@vueuse-metadata-npm-10.11.1-b4decd9264-20336a05eb.zip/node_modules/@vueuse/metadata/",\
         "packageDependencies": [\
-          ["@vueuse/metadata", "npm:10.11.0"]\
+          ["@vueuse/metadata", "npm:10.11.1"]\
         ],\
         "linkType": "HARD"\
       }],\
@@ -4942,11 +4942,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@vueuse/shared", [\
-      ["npm:10.11.0", {\
-        "packageLocation": "./.yarn/cache/@vueuse-shared-npm-10.11.0-8c3e329c96-670d8b934b.zip/node_modules/@vueuse/shared/",\
+      ["npm:10.11.1", {\
+        "packageLocation": "./.yarn/cache/@vueuse-shared-npm-10.11.1-a99422e874-5d8c28ed44.zip/node_modules/@vueuse/shared/",\
         "packageDependencies": [\
-          ["@vueuse/shared", "npm:10.11.0"],\
-          ["vue-demi", "virtual:8c3e329c96ce29133a846652196300f853155891c23086f28a59e4e54445257d59f9e3fdfa2a8926787503a60d4ed5f7cab6a0002cd4b41d3319e81f0478e2ad#npm:0.14.8"]\
+          ["@vueuse/shared", "npm:10.11.1"],\
+          ["vue-demi", "virtual:a99422e874d208156dd9d6ebb211d238c2c2781bad5b97d698646bb56d7d911397accdf9aa3a680ce9b8d55360f7099b247d5b6cb7e147a60e80fe1509787400#npm:0.14.8"]\
         ],\
         "linkType": "HARD"\
       }],\
@@ -9628,7 +9628,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.5"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.5"],\
           ["@vue/eslint-config-typescript", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:13.0.0"],\
-          ["@vueuse/core", "npm:10.11.0"],\
+          ["@vueuse/core", "npm:10.11.1"],\
           ["axios", "npm:1.7.4"],\
           ["dayjs", "npm:1.11.12"],\
           ["eslint", "npm:8.57.0"],\
@@ -10791,7 +10791,7 @@ const RAW_RUNTIME_STATE =
           ["@rollup/pluginutils", "virtual:f3b58eaadc61ad5ed8faa51e90b45214f2b01ce9988a3884ba7b8d2c7533753ec2b9b8f91f07958aeb536381ca7a12a434490957fa562448a7ff7a7f7ffa8147#npm:5.1.0"],\
           ["@types/nuxt__kit", null],\
           ["@types/vueuse__core", null],\
-          ["@vueuse/core", "npm:10.11.0"],\
+          ["@vueuse/core", "npm:10.11.1"],\
           ["fast-glob", "npm:3.3.2"],\
           ["local-pkg", "npm:0.5.0"],\
           ["magic-string", "npm:0.30.10"],\
@@ -11338,7 +11338,7 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }],\
       ["npm:0.14.8", {\
-        "packageLocation": "./.yarn/unplugged/vue-demi-virtual-db5fcdb917/node_modules/vue-demi/",\
+        "packageLocation": "./.yarn/unplugged/vue-demi-virtual-2dbe3901f8/node_modules/vue-demi/",\
         "packageDependencies": [\
           ["vue-demi", "npm:0.14.8"]\
         ],\
@@ -11395,10 +11395,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["virtual:8c3e329c96ce29133a846652196300f853155891c23086f28a59e4e54445257d59f9e3fdfa2a8926787503a60d4ed5f7cab6a0002cd4b41d3319e81f0478e2ad#npm:0.14.8", {\
-        "packageLocation": "./.yarn/unplugged/vue-demi-virtual-db5fcdb917/node_modules/vue-demi/",\
+      ["virtual:a99422e874d208156dd9d6ebb211d238c2c2781bad5b97d698646bb56d7d911397accdf9aa3a680ce9b8d55360f7099b247d5b6cb7e147a60e80fe1509787400#npm:0.14.8", {\
+        "packageLocation": "./.yarn/unplugged/vue-demi-virtual-2dbe3901f8/node_modules/vue-demi/",\
         "packageDependencies": [\
-          ["vue-demi", "virtual:8c3e329c96ce29133a846652196300f853155891c23086f28a59e4e54445257d59f9e3fdfa2a8926787503a60d4ed5f7cab6a0002cd4b41d3319e81f0478e2ad#npm:0.14.8"],\
+          ["vue-demi", "virtual:a99422e874d208156dd9d6ebb211d238c2c2781bad5b97d698646bb56d7d911397accdf9aa3a680ce9b8d55360f7099b247d5b6cb7e147a60e80fe1509787400#npm:0.14.8"],\
           ["@types/vue", null],\
           ["@types/vue__composition-api", null],\
           ["@vue/composition-api", null],\
