@@ -58,7 +58,7 @@
     "unplugin-auto-import": "0.18.2",
     "vite": "5.3.5",
     "vite-plugin-pwa": "0.20.1",
-    "vite-plugin-vue-devtools": "7.3.7",
+    "vite-plugin-vue-devtools": "7.3.8",
     "vite-plugin-vuetify": "2.0.4",
     "vitest": "2.0.4",
     "vue-tsc": "2.0.29",
