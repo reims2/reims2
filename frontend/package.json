@@ -25,7 +25,7 @@
     "jwt-decode": "4.0.0",
     "pinia": "2.2.1",
     "pinia-plugin-persistedstate": "3.2.1",
-    "vue": "3.4.37",
+    "vue": "3.4.38",
     "vue-router": "4.4.3",
     "vue-toastification": "2.0.0-rc.5",
     "vue3-enter-to-tab": "3.1.4",
@@ -65,6 +65,6 @@
     "workbox-window": "7.1.0"
   },
   "resolutions": {
-    "vue": "3.4.37"
+    "vue": "3.4.38"
   }
 }
