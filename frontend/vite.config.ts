@@ -120,7 +120,7 @@ export default ({ mode }) => {
     test: {
       globals: true,
       environment: 'happy-dom',
-      exclude: ['e2e/**'],
+      include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
       server: {
         deps: {
           inline: ['vuetify'],
