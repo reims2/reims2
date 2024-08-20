@@ -120,6 +120,7 @@ export default ({ mode }) => {
     test: {
       globals: true,
       environment: 'happy-dom',
+      exclude: ['e2e/**'],
       server: {
         deps: {
           inline: ['vuetify'],
@@ -128,7 +129,7 @@ export default ({ mode }) => {
       coverage: {
         provider: 'v8',
         all: true,
-        exclude: ['.yarn/**', '**/test/**'],
+        exclude: ['.yarn/**', '**/test/**', 'e2e/**'],
         include: ['src/**'],
       },
     },
