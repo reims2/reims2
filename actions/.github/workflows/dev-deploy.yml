@@ -1,0 +1,36 @@
+name: dev-deploy
+
+on:
+  workflow_call:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: development
+      url: https://dev.reims2.app
+    steps:
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
+        with:
+          images: ${{ github.repository }}
+          tags: |
+            type=sha,priority=2000
+            type=semver,pattern={{version}},priority=2100
+        env:
+          DOCKER_METADATA_PR_HEAD_SHA: true
+
+      - name: Get image name (temporary workaround)
+        run: |
+          REPO=${{ github.event.repository.name }}
+          REPO=${REPO#reims2-}
+          echo "REPO=$REPO" >> $GITHUB_ENV
+      - name: deploy via ssh
+        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
+        with:
+          host: reims2.app
+          username: actions
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: /srv/update_script/update.sh dev-reims2 ${{ env.REPO }} ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
