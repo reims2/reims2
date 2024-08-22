@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Backend Spring HSQL",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "org.pvh.PVHApplication",
+      "projectName": "spring-pvh-rest",
+      "args": "",
+      "env": {
+        "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException",
+        "PVH_DEBUG": "true"
+      }
+    },
+    {
+      "type": "java",
+      "name": "Backend Spring MariaDB local",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "org.pvh.PVHApplication",
+      "projectName": "spring-pvh-rest",
+      "args": "--spring.profiles.active=local",
+      "env": {
+        "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException",
+        "PVH_DEBUG": "true"
+      }
+    }
+  ]
+}

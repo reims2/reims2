@@ -1,0 +1,6 @@
+.*
+!.mvn/
+Dockerfile
+target
+LICENSE
+README.md
