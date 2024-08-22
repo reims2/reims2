@@ -1,0 +1,38 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/java
+{
+  "name": "Java",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/java:1-21-bullseye@sha256:2b1452e4b21ed85ffe7fa54bdb8ff6c983da9399c6d1bd447dc74955a6c045f7",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1@sha256:5f3ec36d8accba9f48f5b37f8df6555fe1d62f2561f10eeb3641c1aa808a91cd": {
+      "version": "none",
+      "installMaven": "true",
+      "installGradle": "false"
+    },
+    "ghcr.io/devcontainers-contrib/features/springboot-sdkman:2@sha256:95048cc483f564c2776a3816285aebe22727e55ed1e0b5ef919caf72b8ba0a59": {
+      "version": "latest",
+      "jdkVersion": "latest",
+      "jdkDistro": "open"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vmware.vscode-boot-dev-pack"
+      ]
+    }
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [
+    9966
+  ],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "./mvnw dependency:go-offline"
+
+  // Configure tool-specific properties.
+  // "customizations": {},
+
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
+}
