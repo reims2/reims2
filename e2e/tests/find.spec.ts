@@ -18,13 +18,13 @@ test('test', async ({ page }) => {
   await expect(page.getByLabel('Additional').first()).toHaveValue('1.00')
   await expect(page.getByLabel('Additional').nth(1)).toHaveValue('1.00')
 
-  await page.locator('#input-30').fill('2.0')
+  await page.getByLabel('Sphere').nth(1).fill('2.0')
 
-  await page.locator('#input-32').fill('1.5')
+  await page.getByLabel('Cylinder').nth(1).fill('1.5')
 
-  await page.locator('#input-34').fill('002')
+  await page.getByLabel('Axis').nth(1).fill('002')
 
-  await page.locator('#input-36').press('Enter')
+  await page.getByRole('button', { name: 'S earch glasses' }).click()
 
   await expect(page.getByRole('main')).toContainText('SKU 0926')
 })
