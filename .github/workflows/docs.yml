@@ -43,7 +43,7 @@ jobs:
       - docker
     if: github.ref == 'refs/heads/main'
     uses: reims2/reims2/.github/workflows/deploy.yml@main
-    concurrency: deploy-${{ env.component }}
+    concurrency: deploy-docs
     secrets: inherit # pass all secrets
 
   dev-deploy:
@@ -51,5 +51,5 @@ jobs:
       - docker
     if: github.event_name == 'workflow_dispatch'
     uses: reims2/reims2/.github/workflows/dev-deploy.yml@main
-    concurrency: dev-deploy-${{ env.component }}
+    concurrency: dev-deploy-docs
     secrets: inherit # pass all secrets
