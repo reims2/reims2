@@ -77,12 +77,15 @@ jobs:
       - deploy
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ./e2e
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
         with:
-          node-version-file: ".nvmrc"
           cache: "yarn"
+          cache-dependency-path: "e2e/yarn.lock"
       - name: Install dependencies
         run: yarn
       - name: Install Playwright Browsers
