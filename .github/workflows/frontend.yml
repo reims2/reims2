@@ -14,9 +14,6 @@ on:
   merge_group:
   workflow_dispatch:
 
-env:
-  component: frontend
-
 defaults:
   run:
     working-directory: ./frontend
@@ -29,9 +26,9 @@ jobs:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
         with:
-          node-version-file: "${{ env.component }}/.nvmrc"
+          node-version-file: "frontend/.nvmrc"
           cache: "yarn"
-          cache-dependency-path: "${{ env.component }}/yarn.lock"
+          cache-dependency-path: "frontend/yarn.lock"
 
       - name: Install dependencies 📦
         run: yarn install --immutable
@@ -47,6 +44,8 @@ jobs:
     concurrency: docker-frontend-${{ github.ref }}
     if: ${{ github.event_name != 'merge_group' && github.event.action != 'labeled' }}
     secrets: inherit # pass all secrets
+    with:
+      component: frontend
 
   deploy:
     needs:
