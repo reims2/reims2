@@ -19,17 +19,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
         with:
-          images: ${{ github.repository }}
+          images: reims2/reims2-${{ env.component }}
           tags: |
             type=sha,priority=2000
         env:
           DOCKER_METADATA_PR_HEAD_SHA: true
-
-      - name: Get image name (temporary workaround)
-        run: |
-          REPO=${{ github.event.repository.name }}
-          REPO=${REPO#reims2-}
-          echo "REPO=$REPO" >> $GITHUB_ENV
 
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -43,6 +37,6 @@ jobs:
           requirements: requirements.yml
           options: |
             --inventory hosts
-            -e "${{ env.REPO }}_image=${{ steps.meta.outputs.tags }}"
+            -e "${{ env.component }}_image=${{ steps.meta.outputs.tags }}"
             -e "stack_name=reims2-${{ inputs.instance_name }}"
             -e "app_domain=${{ inputs.instance_name }}.reims2.app"

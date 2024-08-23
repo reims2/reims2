@@ -9,6 +9,9 @@ on:
   merge_group:
   workflow_dispatch:
 
+env:
+  component: docs
+
 defaults:
   run:
     working-directory: ./docs
@@ -20,9 +23,9 @@ jobs:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
         with:
-          node-version-file: "docs/.nvmrc"
+          node-version-file: "${{ env.component }}/.nvmrc"
           cache: "yarn"
-          cache-dependency-path: "docs/yarn.lock"
+          cache-dependency-path: "${{ env.component }}/yarn.lock"
 
       - name: Install dependencies 📦
         run: yarn install --immutable
@@ -40,7 +43,7 @@ jobs:
       - docker
     if: github.ref == 'refs/heads/main'
     uses: reims2/reims2/.github/workflows/deploy.yml@main
-    concurrency: deploy-${{ github.repository }}
+    concurrency: deploy-${{ env.component }}
     secrets: inherit # pass all secrets
 
   dev-deploy:
@@ -48,5 +51,5 @@ jobs:
       - docker
     if: github.event_name == 'workflow_dispatch'
     uses: reims2/reims2/.github/workflows/dev-deploy.yml@main
-    concurrency: dev-deploy-${{ github.repository }}
+    concurrency: dev-deploy-${{ env.component }}
     secrets: inherit # pass all secrets
