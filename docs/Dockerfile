@@ -5,7 +5,7 @@ COPY .yarn/ .yarn/
 COPY src/ src/
 COPY .yarnrc.yml .pnp.* .yarnrc.yml package.json yarn.lock ./
 # For last modified time in vitepress
-COPY .git/ .git/
+# COPY ..git/ .git/
 
 RUN yarn install --immutable
 
