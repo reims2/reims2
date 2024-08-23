@@ -21,12 +21,12 @@ jobs:
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
-      - name: Log into Docker registry
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
-        with:
-          username: reims2
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+      # - name: Log into Docker registry
+      #   uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+      #   with:
+      #     username: reims2
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      #
       - name: Login to GitHub Container Registry
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
         with:
@@ -41,8 +41,8 @@ jobs:
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
         with:
           images: |
-            ${{ github.repository }}
-            ghcr.io/${{ github.repository }}
+            reims2/reims2-${{ env.component }}
+            ghcr.io/reims2/reims2-${{ env.component }}
           tags: |
             type=semver,pattern={{version}}
             type=ref,event=branch
@@ -59,7 +59,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@16ebe778df0e7752d2cfcbd924afdbbd89c1a755 # v6
         with:
-          context: .
+          context: ./${{ env.component }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
