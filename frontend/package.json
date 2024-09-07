@@ -60,7 +60,7 @@
     "vite-plugin-pwa": "0.20.1",
     "vite-plugin-vue-devtools": "7.3.8",
     "vite-plugin-vuetify": "2.0.4",
-    "vitest": "2.0.4",
+    "vitest": "2.0.5",
     "vue-tsc": "2.0.29",
     "workbox-window": "7.1.0"
   },
