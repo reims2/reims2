@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
           repository: reims2/reims2-ansible-playbook
       - name: Run playbook
-        uses: dawidd6/action-ansible-playbook@5d970176ea4bfd99a3f5004d48e293fe0994eda1 # v2
+        uses: dawidd6/action-ansible-playbook@c97d71562fcba83cc1ea0602d5a77013427f7571 # v2
         with:
           playbook: deploy-single-stack.yml
           key: ${{secrets.ANSIBLE_PRIVATE_KEY}}
