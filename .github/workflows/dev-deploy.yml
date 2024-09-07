@@ -2,6 +2,11 @@ name: dev-deploy
 
 on:
   workflow_call:
+    inputs:
+      component:
+        description: "Name of the component"
+        required: true
+        type: string
 
 jobs:
   deploy:
@@ -14,7 +19,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
         with:
-          images: reims2/reims2-${{ env.component }}
+          images: reims2/reims2-${{ inputs.component }}
           tags: |
             type=sha,priority=2000
             type=semver,pattern={{version}},priority=2100
@@ -28,4 +33,4 @@ jobs:
           username: actions
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
-          script: /srv/update_script/update.sh dev-reims2 ${{ env.component }} ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          script: /srv/update_script/update.sh dev-reims2 ${{ inputs.component }} ${{ fromJSON(steps.meta.outputs.json).tags[0] }}

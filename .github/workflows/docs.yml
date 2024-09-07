@@ -44,6 +44,8 @@ jobs:
     uses: reims2/reims2/.github/workflows/deploy.yml@main
     concurrency: deploy-docs
     secrets: inherit # pass all secrets
+    with:
+      component: docs
 
   dev-deploy:
     needs:
@@ -52,3 +54,5 @@ jobs:
     uses: reims2/reims2/.github/workflows/dev-deploy.yml@main
     concurrency: dev-deploy-docs
     secrets: inherit # pass all secrets
+    with:
+      component: docs

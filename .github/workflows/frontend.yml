@@ -55,6 +55,8 @@ jobs:
     uses: reims2/reims2/.github/workflows/deploy.yml@main
     concurrency: deploy-frontend
     secrets: inherit # pass all secrets
+    with:
+      component: frontend
 
   dev-deploy:
     needs:
@@ -63,6 +65,8 @@ jobs:
     uses: reims2/reims2/.github/workflows/dev-deploy.yml@main
     concurrency: dev-deploy-frontend
     secrets: inherit # pass all secrets
+    with:
+      component: frontend
 
   pr-deploy:
     needs:

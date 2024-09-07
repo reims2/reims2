@@ -57,6 +57,8 @@ jobs:
     uses: reims2/reims2/.github/workflows/deploy.yml@main
     concurrency: deploy-backend
     secrets: inherit # pass all secrets
+    with:
+      component: backend
 
   dev-deploy:
     needs:
@@ -65,6 +67,8 @@ jobs:
     uses: reims2/reims2/.github/workflows/dev-deploy.yml@main
     concurrency: dev-deploy-backend
     secrets: inherit # pass all secrets
+    with:
+      component: backend
 
   pr-deploy:
     needs:
