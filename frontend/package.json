@@ -21,7 +21,7 @@
     "@fontsource-variable/roboto-flex": "5.0.16",
     "@vueuse/core": "11.0.3",
     "axios": "1.7.7",
-    "dayjs": "1.11.12",
+    "dayjs": "1.11.13",
     "jwt-decode": "4.0.0",
     "pinia": "2.2.2",
     "pinia-plugin-persistedstate": "3.2.1",
