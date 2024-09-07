@@ -42,7 +42,7 @@ const RAW_RUNTIME_STATE =
           ["@vue/eslint-config-typescript", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:13.0.0"],\
           ["@vueuse/core", "npm:11.0.3"],\
           ["axios", "npm:1.7.7"],\
-          ["dayjs", "npm:1.11.12"],\
+          ["dayjs", "npm:1.11.13"],\
           ["eslint", "npm:8.57.0"],\
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:9.1.0"],\
           ["eslint-config-standard", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:17.1.0"],\
@@ -5979,10 +5979,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["dayjs", [\
-      ["npm:1.11.12", {\
-        "packageLocation": "./.yarn/cache/dayjs-npm-1.11.12-ce23245b6e-8ee7c1e149.zip/node_modules/dayjs/",\
+      ["npm:1.11.13", {\
+        "packageLocation": "./.yarn/cache/dayjs-npm-1.11.13-d478bb9479-7374d63ab1.zip/node_modules/dayjs/",\
         "packageDependencies": [\
-          ["dayjs", "npm:1.11.12"]\
+          ["dayjs", "npm:1.11.13"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9759,7 +9759,7 @@ const RAW_RUNTIME_STATE =
           ["@vue/eslint-config-typescript", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:13.0.0"],\
           ["@vueuse/core", "npm:11.0.3"],\
           ["axios", "npm:1.7.7"],\
-          ["dayjs", "npm:1.11.12"],\
+          ["dayjs", "npm:1.11.13"],\
           ["eslint", "npm:8.57.0"],\
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:9.1.0"],\
           ["eslint-config-standard", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:17.1.0"],\
