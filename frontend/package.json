@@ -23,7 +23,7 @@
     "axios": "1.7.7",
     "dayjs": "1.11.12",
     "jwt-decode": "4.0.0",
-    "pinia": "2.2.1",
+    "pinia": "2.2.2",
     "pinia-plugin-persistedstate": "3.2.1",
     "vue": "3.4.38",
     "vue-router": "4.4.3",
