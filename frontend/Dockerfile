@@ -1,4 +1,4 @@
-FROM node:20.16.0@sha256:d3c8ababe9566f9f3495d0d365a5c4b393f607924647dd52e75bf4f8a54effd3 AS build
+FROM node:20.17.0@sha256:48db4f6ea21d134be744207225753a1730c4bc1b4cdf836d44511c36bf0e34d7 AS build
 
 WORKDIR /usr/src/app
 COPY .yarn/ .yarn/
