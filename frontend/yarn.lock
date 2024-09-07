@@ -7457,7 +7457,7 @@ __metadata:
     vue-router: "npm:4.4.3"
     vue-toastification: "npm:2.0.0-rc.5"
     vue-tsc: "npm:2.1.6"
-    vue3-enter-to-tab: "npm:3.1.4"
+    vue3-enter-to-tab: "npm:3.1.5"
     vuetify: "npm:3.7.1"
     workbox-window: "npm:7.1.0"
   languageName: unknown
@@ -8996,14 +8996,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue3-enter-to-tab@npm:3.1.4":
-  version: 3.1.4
-  resolution: "vue3-enter-to-tab@npm:3.1.4"
+"vue3-enter-to-tab@npm:3.1.5":
+  version: 3.1.5
+  resolution: "vue3-enter-to-tab@npm:3.1.5"
   dependencies:
     "@vueuse/core": "npm:^10.8.0"
     conventional-changelog-conventionalcommits: "npm:^7.0.2"
     vue: "npm:^3.4.23"
-  checksum: 10/e2d28bc392222748f8ae81feeeef317f131e8d50814d8a2b1485376ec45e023e0c5e8bb0c526facd06b84845b81371bf83f3325c24e14712b583fd62639a8ae3
+  checksum: 10/c810571370735e0a32d341bd30fa705bcf8c66ad5a4f1b56f36918587368a7081f79dd0959207521766d223d373179102b8ef7df0c5ad931d63c4a9c74386b40
   languageName: node
   linkType: hard
 
