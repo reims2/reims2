@@ -53,7 +53,7 @@ const RAW_RUNTIME_STATE =
           ["happy-dom", "npm:15.7.3"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.2.2"],\
-          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.1"],\
+          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.3"],\
           ["prettier", "npm:3.3.3"],\
           ["sass", "npm:1.78.0"],\
           ["typescript", "patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>::version=5.5.4&hash=379a07"],\
@@ -9423,17 +9423,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["pinia-plugin-persistedstate", [\
-      ["npm:3.2.1", {\
-        "packageLocation": "./.yarn/cache/pinia-plugin-persistedstate-npm-3.2.1-ce89f68c27-972c2d1cd6.zip/node_modules/pinia-plugin-persistedstate/",\
+      ["npm:3.2.3", {\
+        "packageLocation": "./.yarn/cache/pinia-plugin-persistedstate-npm-3.2.3-2f6499f1f2-3222d90cb5.zip/node_modules/pinia-plugin-persistedstate/",\
         "packageDependencies": [\
-          ["pinia-plugin-persistedstate", "npm:3.2.1"]\
+          ["pinia-plugin-persistedstate", "npm:3.2.3"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.1", {\
-        "packageLocation": "./.yarn/__virtual__/pinia-plugin-persistedstate-virtual-23ebcaca11/0/cache/pinia-plugin-persistedstate-npm-3.2.1-ce89f68c27-972c2d1cd6.zip/node_modules/pinia-plugin-persistedstate/",\
+      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.3", {\
+        "packageLocation": "./.yarn/__virtual__/pinia-plugin-persistedstate-virtual-57b7e9a83c/0/cache/pinia-plugin-persistedstate-npm-3.2.3-2f6499f1f2-3222d90cb5.zip/node_modules/pinia-plugin-persistedstate/",\
         "packageDependencies": [\
-          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.1"],\
+          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.3"],\
           ["@types/pinia", null],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.2.2"]\
         ],\
@@ -9770,7 +9770,7 @@ const RAW_RUNTIME_STATE =
           ["happy-dom", "npm:15.7.3"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.2.2"],\
-          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.1"],\
+          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.3"],\
           ["prettier", "npm:3.3.3"],\
           ["sass", "npm:1.78.0"],\
           ["typescript", "patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>::version=5.5.4&hash=379a07"],\
