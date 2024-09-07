@@ -61,7 +61,7 @@
     "vite-plugin-vue-devtools": "7.4.4",
     "vite-plugin-vuetify": "2.0.4",
     "vitest": "2.0.5",
-    "vue-tsc": "2.0.29",
+    "vue-tsc": "2.1.6",
     "workbox-window": "7.1.0"
   },
   "resolutions": {
