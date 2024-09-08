@@ -6,12 +6,20 @@ on:
       - "main"
       - "dev"
   pull_request:
+    paths:
+      - ".github/**"
+      - "backend/**"
+      - "e2e/**"
     types:
       - "opened"
       - "synchronize"
       - "reopened"
       - "labeled"
   merge_group:
+    paths:
+      - ".github/**"
+      - "backend/**"
+      - "e2e/**"
   workflow_dispatch:
 
 defaults:
