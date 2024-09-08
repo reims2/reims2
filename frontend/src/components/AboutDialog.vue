@@ -55,7 +55,7 @@ const dialog = useVModel(props, 'modelValue', emit)
 const glassesCount = computed(() => glassesStore.allGlasses.length)
 const commitUrl = computed(() => {
   return rootStore.version
-    ? 'https://github.com/reims2/reims2-frontend/commit/' + rootStore.version
+    ? 'https://github.com/reims2/reims2/commit/' + rootStore.version
     : undefined
 })
 const lastRefresh = computed(() => {
