@@ -84,7 +84,6 @@ jobs:
     needs:
       - test-deploy
     uses: reims2/reims2/.github/workflows/e2e.yml@main
-    concurrency: e2e-test
     secrets: inherit
 
   deploy:
