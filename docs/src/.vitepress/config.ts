@@ -75,7 +75,7 @@ export default defineConfig({
 
     socialLinks: [{ icon: 'github', link: 'https://github.com/reims2' }],
     editLink: {
-      pattern: 'https://github.com/reims2/reims2-docs/edit/main/src/:path',
+      pattern: 'https://github.com/reims2/reims2/edit/main/docs/src/:path',
     },
   },
 })
