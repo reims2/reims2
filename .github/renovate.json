@@ -14,7 +14,7 @@
     ":automergeTypes",
     ":automergeDigest",
     ":automergePr",
-    ":prConcurrentLimitNone",
+    ":prConcurrentLimit20",
     "group:test",
     "group:linters",
     "group:definitelyTyped",
