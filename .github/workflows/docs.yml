@@ -3,8 +3,8 @@ name: docs
 on:
   push:
     branches:
-      - "**"
-    tags: ["v*.*.*"]
+      - "main"
+      - "dev"
   pull_request:
   merge_group:
   workflow_dispatch:
