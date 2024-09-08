@@ -81,34 +81,11 @@ jobs:
 
   e2e:
     name: "Run E2E Tests"
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.46.1-jammy
     needs:
       - test-deploy
+    uses: reims2/reims2/.github/workflows/e2e.yml@main
     concurrency: e2e-test
-    defaults:
-      run:
-        working-directory: ./e2e
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
-        with:
-          cache: "yarn"
-          cache-dependency-path: "e2e/yarn.lock"
-      - name: Install dependencies
-        run: yarn
-      - name: Run Playwright tests
-        run: yarn playwright test
-        env:
-          HOME: /root
-          BASE_URL: "https://e2e.reims2.app"
-      - uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4
-        if: always()
-        with:
-          name: playwright-report
-          path: e2e/playwright-report/
-          retention-days: 30
+    secrets: inherit
 
   deploy:
     name: "Deploy production"
