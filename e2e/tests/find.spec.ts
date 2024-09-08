@@ -7,26 +7,24 @@ test('test', async ({ page }) => {
   await page.getByLabel('Category').fill('m')
   await page.getByLabel('Category').press('Enter')
 
-  await page.getByLabel('Sphere').first().fill('1.2')
+  await page.getByLabel('Sphere').first().fill('0.2')
   await page.getByLabel('Sphere').first().press('Enter')
-  await expect(page.getByLabel('Sphere').first()).toHaveValue('1.25')
+  await expect(page.getByLabel('Sphere').first()).toHaveValue('0.25')
 
-  await page.getByLabel('Cylinder').first().fill('1.7')
+  await page.getByLabel('Cylinder').first().fill('0')
 
-  await page.getByLabel('Axis').first().fill('001')
-
-  await page.getByLabel('Additional').first().fill('1')
+  await page.getByLabel('Additional').first().fill('3')
   await page.getByLabel('Additional').first().press('Enter')
-  await expect(page.getByLabel('Additional').first()).toHaveValue('1.00')
-  await expect(page.getByLabel('Additional').nth(1)).toHaveValue('1.00')
+  await expect(page.getByLabel('Additional').first()).toHaveValue('3.00')
+  await expect(page.getByLabel('Additional').nth(1)).toHaveValue('3.00')
 
   await page.getByLabel('Sphere').nth(1).fill('2.0')
 
-  await page.getByLabel('Cylinder').nth(1).fill('1.5')
+  await page.getByLabel('Cylinder').nth(1).fill('0.5')
 
-  await page.getByLabel('Axis').nth(1).fill('002')
+  await page.getByLabel('Axis').nth(1).fill('090')
 
   await page.getByRole('button', { name: 'S earch glasses' }).click()
 
-  await expect(page.getByRole('main')).toContainText('SKU 0926')
+  await expect(page.getByRole('main')).toContainText('SKU 0005')
 })
