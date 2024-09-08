@@ -28,6 +28,7 @@ defaults:
 
 jobs:
   ci:
+    name: "Lint, test, build"
     runs-on: ubuntu-latest
     if: ${{ github.event.action != 'labeled' }}
     steps:
@@ -48,6 +49,7 @@ jobs:
         run: yarn run build
 
   docker:
+    name: "Docker build"
     uses: reims2/reims2/.github/workflows/docker.yml@main
     concurrency: docker-frontend-${{ github.ref }}
     if: ${{ github.event_name != 'merge_group' && github.event.action != 'labeled' }}
@@ -56,6 +58,7 @@ jobs:
       component: frontend
 
   dev-deploy:
+    name: "Deploy dev instance"
     needs:
       - docker
     if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/dev'
@@ -66,6 +69,7 @@ jobs:
       component: frontend
 
   test-deploy:
+    name: "Deploy test instance"
     needs:
       - docker
     if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
@@ -76,7 +80,7 @@ jobs:
     secrets: inherit # pass all secrets
 
   e2e:
-    name: "Playwright Tests"
+    name: "Run E2E Tests"
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.46.1-jammy
@@ -107,6 +111,7 @@ jobs:
           retention-days: 30
 
   deploy:
+    name: "Deploy production"
     needs:
       - docker
       - ci
