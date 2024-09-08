@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test'
 
+const BASE_URL = process.env.BASE_URL as string
+
 test('test', async ({ page }) => {
-  await page.goto('https://reims2.app/find')
+  await page.goto(BASE_URL + '/find')
   await page.getByLabel('Category').fill('m')
   await page.getByLabel('Category').press('Enter')
 
