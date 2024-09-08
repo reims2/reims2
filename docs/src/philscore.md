@@ -2,7 +2,7 @@
 
 This document provides an explanation of the glasses matching algorithm. The algorithm's purpose is to filter and score glasses based on a given prescription.
 
-The corresponding [code can be found here](https://github.com/reims2/reims2-frontend/blob/main/src/lib/philscore.ts).
+The corresponding [code can be found here](https://github.com/reims2/reims2/blob/main/frontend/src/lib/philscore.ts).
 
 ## Current Status
 
