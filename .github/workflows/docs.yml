@@ -6,7 +6,13 @@ on:
       - "main"
       - "dev"
   pull_request:
+    paths:
+      - ".github/**"
+      - "docs/**"
   merge_group:
+    paths:
+      - ".github/**"
+      - "docs/**"
   workflow_dispatch:
 
 defaults:
