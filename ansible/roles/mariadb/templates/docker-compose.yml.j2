@@ -17,7 +17,7 @@
 {% if backend_debug %}
       - "--innodb-buffer-pool-size=67108864"
 {% else %}
-      - "--innodb-buffer-pool-size=268435456"
+      - "--innodb-buffer-pool-size=134217728"
 {% endif %}
     healthcheck:
         test: ["CMD", 'mariadb-admin', 'ping', '-h', 'localhost', '-uroot', '-p"{{ reims2_db_root_password }}"' ]
