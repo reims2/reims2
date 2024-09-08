@@ -76,10 +76,12 @@ jobs:
     secrets: inherit # pass all secrets
 
   e2e:
+    name: "Playwright Tests"
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.47.0-jammy
     needs:
       - test-deploy
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
     concurrency: e2e-test
     defaults:
       run:
@@ -92,11 +94,10 @@ jobs:
           cache-dependency-path: "e2e/yarn.lock"
       - name: Install dependencies
         run: yarn
-      - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
       - name: Run Playwright tests
         run: yarn playwright test
         env:
+          HOME: /root
           BASE_URL: "https://e2e.reims2.app"
       - uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4
         if: always()
