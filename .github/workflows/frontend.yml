@@ -79,7 +79,7 @@ jobs:
     name: "Playwright Tests"
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.47.0-jammy
+      image: mcr.microsoft.com/playwright:v1.46.1-jammy
     needs:
       - test-deploy
     concurrency: e2e-test
@@ -95,7 +95,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run Playwright tests
-        run: npx playwright test
+        run: yarn playwright test
         env:
           HOME: /root
           BASE_URL: "https://e2e.reims2.app"
