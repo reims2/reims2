@@ -77,7 +77,7 @@ jobs:
 
   e2e:
     needs:
-      - dev-deploy
+      - test-deploy
     runs-on: ubuntu-latest
     timeout-minutes: 20
     concurrency: e2e-test
