@@ -3,15 +3,23 @@ name: frontend
 on:
   push:
     branches:
-      - "**"
-    tags: ["v*.*.*"]
+      - "main"
+      - "dev"
   pull_request:
+    paths:
+      - ".github/**"
+      - "frontend/**"
+      - "e2e/**"
     types:
       - "opened"
       - "synchronize"
       - "reopened"
       - "labeled"
   merge_group:
+    paths:
+      - ".github/**"
+      - "frontend/**"
+      - "e2e/**"
   workflow_dispatch:
 
 defaults:
