@@ -3,13 +3,13 @@ name: E2E test
 on:
   workflow_call:
   schedule:
-    - cron: "0 0 * * 0"
+    - cron: "0 15 * * 6"
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.47.0-jammy@sha256:d2e15588e5cfa0e1b40b73f6d90ee7e95bb8d963913b324c60e68cf3909fce31
+      image: mcr.microsoft.com/playwright:v1.47.0@sha256:3d41153494e2b12a5a5fa6e26cf1e854c3997d13758754d46e7bf902b5ba09b1
     concurrency: e2e-test
     defaults:
       run:
