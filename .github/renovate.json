@@ -35,7 +35,7 @@
         "@playwright/test",
         "mcr.microsoft.com/playwright",
       ],
-      "matchDatasources": ["docker", "npm"]
+      "matchDatasources": ["docker", "npm"],
       "groupName": "playwright monorepo",
       "matchUpdateTypes": [
         "digest",
