@@ -27,7 +27,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
-          ["@playwright/test", "npm:1.46.1"],\
+          ["@playwright/test", "npm:1.47.0"],\
           ["@types/node", "npm:22.5.4"],\
           ["dotenv", "npm:16.4.5"],\
           ["prettier", "npm:3.3.3"]\
@@ -93,11 +93,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@playwright/test", [\
-      ["npm:1.46.1", {\
-        "packageLocation": "./.yarn/cache/@playwright-test-npm-1.46.1-3828e797fa-09e2c28574.zip/node_modules/@playwright/test/",\
+      ["npm:1.47.0", {\
+        "packageLocation": "./.yarn/cache/@playwright-test-npm-1.47.0-92e963a088-8c1e4386f1.zip/node_modules/@playwright/test/",\
         "packageDependencies": [\
-          ["@playwright/test", "npm:1.46.1"],\
-          ["playwright", "npm:1.46.1"]\
+          ["@playwright/test", "npm:1.47.0"],\
+          ["playwright", "npm:1.47.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -769,21 +769,21 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["playwright", [\
-      ["npm:1.46.1", {\
-        "packageLocation": "./.yarn/cache/playwright-npm-1.46.1-b809f5e477-17b0e7495a.zip/node_modules/playwright/",\
+      ["npm:1.47.0", {\
+        "packageLocation": "./.yarn/cache/playwright-npm-1.47.0-ee5cc4d59c-6051889d33.zip/node_modules/playwright/",\
         "packageDependencies": [\
-          ["playwright", "npm:1.46.1"],\
+          ["playwright", "npm:1.47.0"],\
           ["fsevents", "patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"],\
-          ["playwright-core", "npm:1.46.1"]\
+          ["playwright-core", "npm:1.47.0"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["playwright-core", [\
-      ["npm:1.46.1", {\
-        "packageLocation": "./.yarn/unplugged/playwright-core-npm-1.46.1-a6f314b87a/node_modules/playwright-core/",\
+      ["npm:1.47.0", {\
+        "packageLocation": "./.yarn/unplugged/playwright-core-npm-1.47.0-3d95495f62/node_modules/playwright-core/",\
         "packageDependencies": [\
-          ["playwright-core", "npm:1.46.1"]\
+          ["playwright-core", "npm:1.47.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -831,7 +831,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["root-workspace-0b6124", "workspace:."],\
-          ["@playwright/test", "npm:1.46.1"],\
+          ["@playwright/test", "npm:1.47.0"],\
           ["@types/node", "npm:22.5.4"],\
           ["dotenv", "npm:16.4.5"],\
           ["prettier", "npm:3.3.3"]\
