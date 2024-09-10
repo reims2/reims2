@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 import AutoImport from 'unplugin-auto-import/vite'
+import browserslistToEsbuild from 'browserslist-to-esbuild'
 
 // Utilities
 import { defineConfig } from 'vitest/config'
@@ -153,6 +154,7 @@ export default ({ mode }) => {
       strictPort: true,
     },
     build: {
+      target: browserslistToEsbuild(),
       rollupOptions: {
         // https://rollupjs.org/guide/en/#outputmanualchunks
         output: {
