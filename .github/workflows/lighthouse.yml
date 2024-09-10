@@ -6,6 +6,10 @@ on:
       - 'main'
   pull_request:
 
+defaults:
+  run:
+    working-directory: ./frontend
+
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
@@ -15,8 +19,9 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: "frontend/.nvmrc"
+          cache: "yarn"
+          cache-dependency-path: "frontend/yarn.lock"
 
       - name: Install dependencies 📦
         run: yarn install --immutable
