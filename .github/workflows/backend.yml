@@ -28,6 +28,7 @@ defaults:
 
 jobs:
   ci:
+    name: "Lint, test, build"
     runs-on: ubuntu-latest
     if: ${{ github.event.action != 'labeled' }}
     steps:
