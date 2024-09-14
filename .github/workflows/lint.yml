@@ -1,5 +1,17 @@
 name: ansible-lint
-on: [push, pull_request]
+
+on:
+  push:
+    branches:
+      - "main"
+      - "dev"
+  pull_request:
+    paths:
+      - ".github/**"
+      - "ansible/**"
+  merge_group:
+    paths:
+      - "ansible/**"
 
 jobs:
   build:
