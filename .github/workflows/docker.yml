@@ -47,6 +47,7 @@ jobs:
         with:
           images: |
             reims2/reims2-${{ inputs.component }}
+            ghcr.io/reims2/reims2-${{ inputs.component }}
           tags: |
             type=semver,pattern={{version}}
             type=ref,event=branch
