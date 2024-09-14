@@ -10,11 +10,6 @@ on:
       - ".github/**"
       - "backend/**"
       - "e2e/**"
-    types:
-      - "opened"
-      - "synchronize"
-      - "reopened"
-      - "labeled"
   merge_group:
     paths:
       - ".github/**"
