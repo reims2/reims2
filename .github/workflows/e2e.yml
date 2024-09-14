@@ -3,7 +3,7 @@ name: E2E test
 on:
   workflow_call:
   schedule:
-    - cron: "0 15 * * 6"
+    - cron: "0 15 * * 7"
 
 jobs:
   e2e:
