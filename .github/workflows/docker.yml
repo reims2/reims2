@@ -64,7 +64,7 @@ jobs:
         uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6
         with:
           context: ./${{ inputs.component }}
-          push: true
+          push: ${{ !startsWith(github.head_ref, 'renovate/') }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
