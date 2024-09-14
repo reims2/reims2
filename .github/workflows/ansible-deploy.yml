@@ -17,6 +17,6 @@ jobs:
           playbook: ansible/main.yml
           key: ${{secrets.SSH_PRIVATE_KEY}}
           vault_password: ${{secrets.VAULT_PASSWORD}}
-          requirements: requirements.yml
+          requirements: ansible/requirements.yml
           options: |
-            --inventory hosts
+            --inventory ansible/hosts
