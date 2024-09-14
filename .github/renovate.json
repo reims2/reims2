@@ -23,19 +23,12 @@
     "schedule:automergeWeekends"
   ],
   "configMigration": true,
-  "labels": [
-    "dependencies"
-  ],
+  "labels": ["dependencies"],
   "platformAutomerge": true,
   "packageRules": [
     {
-      "matchDepTypes": [
-        "devDependencies"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     },
@@ -45,24 +38,12 @@
         "@playwright/test",
         "mcr.microsoft.com/playwright"
       ],
-      "matchDatasources": [
-        "docker",
-        "npm"
-      ],
+      "matchDatasources": ["docker", "npm"],
       "groupName": "playwright monorepo",
-      "matchUpdateTypes": [
-        "digest",
-        "patch",
-        "minor",
-        "major"
-      ]
+      "matchUpdateTypes": ["digest", "patch", "minor", "major"]
     },
     {
-      "extends": [
-        "packages:test",
-        "packages:linters",
-        "schedule:monthly"
-      ]
+      "extends": ["packages:test", "packages:linters", "schedule:monthly"]
     }
   ],
   "customManagers": [
@@ -79,13 +60,9 @@
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
   ],
-  "schedule": [
-    "before 2pm on Saturday"
-  ],
+  "schedule": ["before 2pm on Saturday"],
   "timezone": "Europe/Berlin",
   "npm": {
-    "extends": [
-      ":pinAllExceptPeerDependencies"
-    ]
+    "extends": [":pinAllExceptPeerDependencies"]
   }
 }
