@@ -60,6 +60,17 @@
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
   ],
+  "ansible": {
+    "fileMatch": [
+      "(^|/)tasks/[^/]+\\.ya?ml$",
+      "docker-compose\\.ya?ml(\\.j2)?$"
+    ]
+  },
+  "ignoreDeps": [
+    "reims2/reims2-frontend",
+    "reims2/reims2-backend",
+    "reims2/reims2-docs"
+  ],
   "schedule": ["before 2pm on Saturday"],
   "timezone": "Europe/Berlin",
   "npm": {
