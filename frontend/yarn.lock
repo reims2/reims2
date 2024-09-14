@@ -1828,10 +1828,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource-variable/roboto-flex@npm:5.0.16":
-  version: 5.0.16
-  resolution: "@fontsource-variable/roboto-flex@npm:5.0.16"
-  checksum: 10/6f0460c87d105ea0e7d2d9bda7e3e43ac589d3354250d0db3ee6474f8e1be4526ae63af369c77eae542824132afa58007cd7a39618460ca34ec3bda9770e8929
+"@fontsource-variable/roboto-flex@npm:5.0.17":
+  version: 5.0.17
+  resolution: "@fontsource-variable/roboto-flex@npm:5.0.17"
+  checksum: 10/56aae25743373b99bba60b63ca22ac1b8f848eede8cbd1137d7961cde1b6342b3a83b8ae309fee3bc1daac168398bb1d0ece355973d4afb252284fe6aba27454
   languageName: node
   linkType: hard
 
@@ -7479,7 +7479,7 @@ __metadata:
   resolution: "reims2-frontend@workspace:."
   dependencies:
     "@babel/types": "npm:7.25.6"
-    "@fontsource-variable/roboto-flex": "npm:5.0.16"
+    "@fontsource-variable/roboto-flex": "npm:5.0.17"
     "@mdi/js": "npm:7.4.47"
     "@pinia/testing": "npm:0.1.5"
     "@testing-library/vue": "npm:8.0.3"
