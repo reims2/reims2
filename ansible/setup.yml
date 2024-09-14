@@ -1,0 +1,7 @@
+---
+- name: Initial server configuration and hardening
+  hosts: all
+  become: true
+  roles:
+    - setup
+    - hardening

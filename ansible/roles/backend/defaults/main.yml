@@ -1,0 +1,3 @@
+---
+backend_debug: false
+backend_image: "reims2/reims2-backend:latest"

@@ -1,0 +1,17 @@
+---
+- name: Load docker-compose template
+  ansible.builtin.set_fact:
+    template_partial: "{{ lookup('template', 'docker-compose.yml.j2') }}"
+
+- name: Add compose to stack
+  ansible.builtin.blockinfile:
+    dest: "{{ stack_file }}"
+    content: "{{ template_partial }}"
+    state: present
+    validate: docker-compose -f %s config -q
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for {{ role_name }}"
+    insertafter: "services:"
+  notify:
+    - reload stack
+    - wait for frontend
+    - wait for docs

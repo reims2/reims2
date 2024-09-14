@@ -1,0 +1,75 @@
+- name: Create install directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ grafana_install_location }}"
+    - "{{ prometheus_install_location }}"
+  become: true
+
+- name: Create data directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0777"
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ grafana_data_location }}"
+    - "{{ prometheus_data_location }}"
+    - "{{ grafana_provisioning_location }}/datasources"
+  become: true
+
+- name: Create networks
+  community.docker.docker_network:
+    name: "{{ item }}"
+    driver: "overlay"
+    driver_options:
+      com.docker.network.bridge.name: "{{ item }}"
+  become: true
+  loop:
+    - "{{ monitoring_network }}"
+
+- name: Create docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ grafana_install_location }}/docker-compose.yml"
+    mode: "0660"
+    owner: "root"
+    group: "docker"
+    validate: docker-compose -f %s config -q
+  become: true
+  notify:
+    - reload monitoring
+    - wait for grafana
+
+- name: Copy prometheus config
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: "{{ prometheus_config_location }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - reload monitoring
+    - wait for prometheus
+
+- name: Copy grafana datasources config
+  ansible.builtin.template:
+    src: grafana-datasources.yml.j2
+    dest: "{{ grafana_provisioning_location }}/datasources/custom.yaml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - reload monitoring
+    - wait for grafana
+# - name: Expose DB tasks
+#  ansible.builtin.include_tasks: expose_db.yml
+#  vars:
+#    port: "{{ db_port }}"
+#    db_name: "{{ reims2_db_name }}"
+#    db_password: "{{ reims2_db_root_password }}"

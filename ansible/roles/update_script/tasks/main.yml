@@ -1,0 +1,35 @@
+- name: Add the user 'actions'
+  ansible.builtin.user:
+    name: actions
+    comment: Github Actions
+    append: true
+    groups:
+      - actions
+      - docker
+
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: actions
+    state: present
+    key: "{{ lookup('file', 'creds/deploy_key.pub') }}"
+  ignore_errors: true
+
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: "actions"
+    group: "actions"
+  with_items:
+    - "{{ update_script_install_location }}"
+  become: true
+
+- name: Copy deploy script
+  ansible.builtin.template:
+    src: update.sh
+    dest: "{{ update_script_path }}"
+    mode: "0755"
+    owner: "actions"
+    group: "actions"
+  become: true

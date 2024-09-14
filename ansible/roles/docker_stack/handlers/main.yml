@@ -1,0 +1,18 @@
+- name: reload stack
+  community.docker.docker_stack:
+    state: present
+    name: "{{ stack_name }}"
+    compose:
+      - "{{ stack_file }}"
+    prune: true
+  become: true
+
+# Not the best location for the handlers, but this way they are always executed after reload stack
+- name: wait for mariadb
+  ansible.builtin.command: "docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock sudobmitch/docker-stack-wait -n mariadb {{ stack_name }}"
+- name: wait for docs
+  ansible.builtin.command: "docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock sudobmitch/docker-stack-wait -n docs {{ stack_name }}"
+- name: wait for frontend
+  ansible.builtin.command: "docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock sudobmitch/docker-stack-wait -n frontend {{ stack_name }}"
+- name: wait for backend
+  ansible.builtin.command: "docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock sudobmitch/docker-stack-wait -n backend {{ stack_name }}"

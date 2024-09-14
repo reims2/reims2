@@ -1,0 +1,95 @@
+{{ ansible_managed | comment }}
+
+version: '3'
+services:
+  traefik:
+    image: traefik:v2.11.8@sha256:ff991fd051b2652f3994f38ea0170cfdc4d48c533855f894244d8a716b97dd28
+    read_only: true
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+{% for entrypoint in traefik_additional_entrypoints %}
+      - "{{ entrypoint.port }}:{{ entrypoint.port }}"
+{% endfor %}
+
+    volumes:
+{% if traefik_dynamic_conf != omit %}
+      - "{{ traefik_config_location }}:/etc/traefik/dynamic_conf:ro"
+{% endif %}
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "{{ traefik_acme_location }}:/etc/traefik/acme"
+
+    command:
+      - "--entryPoints.http.address=:80"
+      - "--entryPoints.https.address=:443"
+{% for entrypoint in traefik_additional_entrypoints %}
+      - "--entryPoints.{{ entrypoint.name }}.address=:{{ entrypoint.port }}"
+{% endfor %}
+{% if traefik_https_redirect_all %}
+      - "--entrypoints.http.http.redirections.entryPoint.to=https"
+      - "--entrypoints.http.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.http.http.redirections.entrypoint.permanent=true"
+{% endif %}
+      - "--accesslog={{ traefik_access_log_enabled | bool | lower }}"
+{% if traefik_dynamic_conf != omit %}
+      - "--providers.file.directory=/etc/traefik/dynamic_conf"
+      - "--providers.file.watch=true"
+{% endif %}
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.swarmMode=true"
+{% if traefik_https_letsencrypt_enabled %}
+      - "--certificatesResolvers.{{ traefik_certresolver }}.acme.httpChallenge=true"
+      - "--certificatesResolvers.{{ traefik_certresolver }}.acme.email={{ traefik_letsencrypt_email }}"
+      - "--certificatesResolvers.{{ traefik_certresolver }}.acme.storage=/etc/traefik/acme/acme.json"
+      - "--certificatesResolvers.{{ traefik_certresolver }}.acme.httpChallenge.entrypoint=http"
+{% endif %}
+{% if traefik_debug %}
+      - "--log.level=DEBUG"
+      - "--api=true"
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+{% endif %}
+
+
+{% if traefik_options | length > 0 %}
+    environment:
+{% for key, value in traefik_options.items() %}
+      - "{{ key }}={{ value }}"
+{% endfor %}
+{% endif %}
+
+    deploy:
+{% if traefik_dashboard_auth is defined %}
+      labels:
+        - "traefik.http.routers.api.rule=Host(`{{ traefik_dashboard_domain }}`)"
+        - "traefik.http.routers.api.service=api@internal"
+        - "traefik.http.routers.api.middlewares=traefikauth"
+        - "traefik.http.middlewares.traefikauth.basicauth.users={{ traefik_dashboard_auth }}"
+{% endif %}
+      placement:
+        constraints:
+          - "node.role == manager"
+      resources:
+        limits:
+          cpus: "1"
+          memory: 256M
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    networks:
+      {{ proxy_network }}:
+
+networks:
+  {{ proxy_network }}:
+    external: true

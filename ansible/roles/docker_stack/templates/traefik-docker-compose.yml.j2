@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+
+services:
+  traefik:
+   networks:
+      {{ stack_network }}:
+
+networks:
+  {{ stack_network }}:
+    external: true

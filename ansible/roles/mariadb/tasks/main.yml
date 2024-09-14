@@ -1,0 +1,61 @@
+---
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0770"
+    owner: "root"
+    group: "docker"
+  with_items:
+    - "{{ backend_db_location }}"
+  become: true
+
+- name: Load docker-compose template
+  ansible.builtin.set_fact:
+    template_partial: "{{ lookup('template', 'docker-compose.yml.j2') }}"
+
+- name: Add compose to stack
+  ansible.builtin.blockinfile:
+    dest: "{{ stack_file }}"
+    content: "{{ template_partial }}"
+    state: present
+    validate: docker-compose -f %s config -q
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for {{ role_name }}"
+    insertafter: "services:"
+  notify:
+    - reload stack
+    - wait for mariadb
+
+- name: Copy mariadb config
+  ansible.builtin.template:
+    src: mariadb_custom.cnf.j2
+    dest: "{{ mariadb_cnf_location }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - reload stack
+    - wait for mariadb
+
+- name: SQL restore block
+  when: db_dump and db_dump | length > 0
+  block:
+    - name: Copy SQL dump file onto host
+      ansible.builtin.copy:
+        content: "{{ db_dump }}"
+        dest: "{{ dump_location }}"
+        mode: "0600"
+        owner: root
+        group: root
+        force: true
+      register: dump_file
+
+    - name: Flush handlers to make restoring dump possible
+      ansible.builtin.meta: flush_handlers
+
+    - name: Restore dump
+      args:
+        executable: /bin/bash
+      ansible.builtin.shell: |
+        set -o pipefail
+        cat {{ dump_location }} | docker exec -i $(docker ps -q -f name={{ stack_name }}_mariadb) /usr/bin/mariadb -p{{ reims2_db_root_password }} {{ reims2_db_name }}

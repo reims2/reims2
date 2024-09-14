@@ -1,0 +1,10 @@
+- name: Create read only DB user for monitoring
+  community.mysql.mysql_user:
+    name: monitoring
+    password: "{{ monitoring_db_password }}"
+    priv: "SELECT on *.*, PROCESS, REPLICATION CLIENT"
+    state: present
+    login_password: "{{ db_password }}"
+    login_port: "{{ port }}"
+    login_user: root
+    login_host: 127.0.0.1

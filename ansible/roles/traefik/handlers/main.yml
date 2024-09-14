@@ -1,0 +1,11 @@
+- name: reload proxy
+  ansible.builtin.shell: |
+    # This is a hacky way to pass all compose files in subdirectory to docker stack deploy
+    set -o pipefail
+    printf -- '--compose-file\0%s\0' {{ traefik_composed_location }}/*.yml | xargs -0 docker stack deploy --prune -c"{{ traefik_stack_file }}" proxy
+  become: true
+  args:
+    executable: /bin/bash
+
+- name: wait for traefik
+  ansible.builtin.command: "docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock sudobmitch/docker-stack-wait -n traefik proxy"
