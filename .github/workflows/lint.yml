@@ -5,6 +5,9 @@ on:
     branches:
       - "main"
       - "dev"
+    paths:
+      - ".github/**"
+      - "ansible/**"
   pull_request:
     paths:
       - ".github/**"
@@ -21,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
-          fetch-depth: 0 # needed for progressive mode to work
+          fetch-depth: 0
 
       - name: Run ansible-lint
         uses: ansible/ansible-lint@95382d398ea1744bf6bfa47b030f14c38b3f6957 # v24.7.0
