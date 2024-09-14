@@ -3,7 +3,11 @@ name: Lighthouse
 on:
   push:
     branches:
-      - 'main'
+      - "main"
+    paths:
+      - ".github/**"
+      - "frontend/**"
+      - "e2e/**"
   pull_request:
   workflow_dispatch:
 
@@ -30,7 +34,7 @@ jobs:
         run: yarn run build
         env:
           # That way we can test pages that are normally hidden behind /login
-          VITE_REDIRECT_UNAUTHENTICATED: 'false'
+          VITE_REDIRECT_UNAUTHENTICATED: "false"
       - name: Install global dependencies
         run: |
           # renovate datasource=npm depName=http-server
