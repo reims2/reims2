@@ -50,9 +50,9 @@ jobs:
         with:
           playbook: ansible/deploy-single-stack.yml
           key: ${{secrets.ANSIBLE_PRIVATE_KEY}}
-          requirements: requirements.yml
+          requirements: ansible/requirements.yml
           options: |
-            --inventory hosts
+            --inventory ansible/hosts
             -e "frontend_image=${{ steps.meta_frontend.outputs.tags }}"
             -e "backend_image=${{ steps.meta_backend.outputs.tags }}"
             -e "docs_image=${{ steps.meta_docs.outputs.tags }}"
