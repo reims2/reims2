@@ -27,7 +27,7 @@ export const useRootStore = defineStore(
   },
   {
     persist: {
-      paths: ['reimsSite', 'drawer'],
+      pick: ['reimsSite', 'drawer'],
     },
   },
 )

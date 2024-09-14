@@ -206,7 +206,7 @@ export const useGlassesStore = defineStore(
       deleteOfflineGlasses,
     }
   },
-  { persist: { paths: ['allGlasses', 'lastRefresh', 'allGlassesHash', 'isOutdated'] } },
+  { persist: { pick: ['allGlasses', 'lastRefresh', 'allGlassesHash', 'isOutdated'] } },
 )
 
 if (import.meta.hot) {
