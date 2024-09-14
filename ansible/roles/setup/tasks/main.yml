@@ -1,0 +1,64 @@
+- name: Set authorized SSH pubkeys from file
+  ansible.posix.authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ lookup('file', 'creds/pub_keys') }}"
+  ignore_errors: true
+
+- name: Enable auto upgrade
+  ansible.builtin.include_role:
+    name: hifis-net.unattended-upgrades
+  vars:
+    unattended_automatic_reboot: true
+    unattended_automatic_reboot_time: "08:00"
+    unattended_update_days: '{"Mon"}'
+    unattended_download_upgradeable: 7
+
+- name: Enable swap
+  ansible.builtin.include_role:
+    name: geerlingguy.swap
+  vars:
+    swap_file_size_mb: "2048" # some swap for more RAM during Dokku deploys
+
+- name: Clean up docker weekly
+  ansible.builtin.cron:
+    name: docker cleanup
+    minute: "0"
+    hour: "4"
+    weekday: "0"
+    user: root
+    job: "docker system prune -a -f --filter 'until=336h'"
+    cron_file: docker-cleanup
+
+- name: Apt upgrade
+  ansible.builtin.apt:
+    upgrade: true
+    update_cache: true
+    cache_valid_time: 86400 # One day
+
+- name: Install some packages (user-specified)
+  ansible.builtin.package:
+    name:
+      - htop
+      - nano
+      - libpam-systemd # ssh session closed after reboot
+    state: present
+
+- name: Allow ssh ufw
+  community.general.ufw:
+    rule: allow
+    name: OpenSSH
+- name: Allow http ufw
+  community.general.ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
+- name: Allow https ufw
+  community.general.ufw:
+    rule: allow
+    port: "443"
+    proto: tcp
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+    policy: deny

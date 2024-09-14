@@ -1,0 +1,51 @@
+---
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ traefik_install_location }}"
+    - "{{ traefik_config_location }}"
+    - "{{ traefik_acme_location }}"
+    - "{{ traefik_composed_location }}"
+  become: true
+
+- name: Create default proxy network
+  community.docker.docker_network:
+    name: "{{ item }}"
+    driver: "overlay"
+    driver_options:
+      com.docker.network.bridge.name: "{{ item }}"
+  become: true
+  loop:
+    - "{{ proxy_network }}"
+
+- name: Create docker-compose for traefik
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ traefik_stack_file }}"
+    mode: "0660"
+    owner: "root"
+    group: "docker"
+    validate: docker-compose -f %s config -q
+    force: true
+  notify:
+    - reload proxy
+    - wait for traefik
+
+- name: Deploy dynamic_conf.yml for traefik
+  ansible.builtin.template:
+    src: dynamic_conf.yml.j2
+    dest: "{{ traefik_config_location }}/dynamic_conf.yml"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  become: true
+  when:
+    - traefik_dynamic_conf != omit
+  notify:
+    - reload proxy
+    - wait for traefik

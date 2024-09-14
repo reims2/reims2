@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+version: '3'
+services:
+ 
+
+networks:
+  {{ stack_network }}:
+    external: true
+  {{ db_network }}:
+    external: true

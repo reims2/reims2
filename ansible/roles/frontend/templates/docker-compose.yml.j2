@@ -1,0 +1,63 @@
+  frontend:
+    image: {{ frontend_image }}
+    restart: always
+{% if frontend_debug %}
+    environment:
+      - "VITE_PVH_DEBUG=true"
+{% endif %}
+
+    networks:
+      {{ stack_network }}:
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.{{ stack_name }}_frontend.rule=Host(`{{ app_domain }}`)"
+        - "traefik.http.routers.{{ stack_name }}_frontend.entrypoints=https"
+        - "traefik.http.routers.{{ stack_name }}_frontend.middlewares=compress@file"
+        - "traefik.http.routers.{{ stack_name }}_frontend.tls.certresolver={{ traefik_certresolver }}"
+        - "traefik.http.services.{{ stack_name}}_frontend.loadbalancer.server.port=5000"
+        - "traefik.docker.network={{ stack_network }}"
+      update_config:
+        order: start-first
+        failure_action: rollback
+      rollback_config:
+        parallelism: 0
+        order: start-first
+      restart_policy:
+        condition: any
+        delay: 3s
+        max_attempts: 3
+        window: 120s
+
+
+  docs:
+    image: {{ docs_image }}
+    restart: always
+    networks:
+      {{ stack_network }}:
+{% if frontend_debug %}
+    environment:
+      - "PVH_DEBUG=true"
+{% endif %}
+
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.{{ stack_name }}_docs.rule=Host(`{{ app_domain }}`) && PathPrefix(`/docs`)"
+        - "traefik.http.routers.{{ stack_name }}_docs.entrypoints=https"
+        - "traefik.http.routers.{{ stack_name }}_docs.middlewares=compress@file"
+        - "traefik.http.routers.{{ stack_name }}_docs.tls.certresolver={{ traefik_certresolver }}"
+        - "traefik.http.services.{{ stack_name}}_docs.loadbalancer.server.port=5000"
+        - "traefik.docker.network={{ stack_network }}"
+      update_config:
+        order: start-first
+        failure_action: rollback
+      rollback_config:
+        parallelism: 0
+        order: start-first
+      restart_policy:
+        condition: any
+        delay: 3s
+        max_attempts: 3
+        window: 120s
+ 

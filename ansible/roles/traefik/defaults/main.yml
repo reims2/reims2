@@ -1,0 +1,51 @@
+---
+# Default variables for the traefik role
+
+# The install locations
+traefik_install_location: "/srv/traefik"
+traefik_acme_location: "{{ traefik_install_location }}/acme"
+traefik_config_location: "{{ traefik_install_location }}/dynamic_conf"
+traefik_certresolver: "leresolver"
+traefik_stack_file: "{{ traefik_install_location }}/docker-compose.yml"
+traefik_composed_location: "{{ traefik_install_location }}/compose.d"
+
+# The domain for the traefik debug dashboard (only shown if the dashboard auth variable is defined)
+traefik_dashboard_domain: "dashboard.{{ app_domain }}"
+
+# The email to use for letencrypt certificate requests
+traefik_letsencrypt_email: letsencrypt@kxlion.de
+
+# Should a general https redirect middleware be enabled for all hosts on the web endpoint?
+traefik_https_redirect_all: true
+
+# Should the letsencrypt certresolver be enabled/defined?
+# Useful eg. for local testing/LAN setups
+traefik_https_letsencrypt_enabled: true
+
+# Extra configuration (dynamic) via a config file
+# This has to be used, because setting default TLS configs etc. cannot be done via labels/commandline parameters
+traefik_dynamic_conf:
+  http:
+    middlewares:
+      compress:
+        compress: {}
+
+# This config allows to add new entrypoints to traefik which are also automatically exposed / the port is automatically allocated.
+# Can be used in cases where traefik needs to be used as a proxy because of the certificates it holds. Eg. gitlab registry on the
+# same domain, where we want to use the existing certificate for the registry too.
+#
+# Example entry:
+# - name: gitlabregistry
+#   port: 5050
+traefik_additional_entrypoints:
+  - name: traefik
+    port: 8080
+
+# Enables debug log level
+traefik_debug: true
+
+# Should traefik log access?
+traefik_access_log_enabled: false
+
+# Optional environment variables that should be added (key value pairs)
+traefik_options: {}

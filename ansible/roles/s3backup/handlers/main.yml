@@ -1,0 +1,3 @@
+- name: Run backup
+  ansible.builtin.command: "sh {{ s3backup_install_location }}/backup.sh"
+  become: true

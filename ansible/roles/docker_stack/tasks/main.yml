@@ -1,0 +1,60 @@
+---
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0770"
+    owner: "root"
+    group: "docker"
+  with_items:
+    - "{{ stack_install_location }}"
+    - "{{ log_location }}"
+  become: true
+
+- name: Configure logrotate for logs
+  ansible.builtin.template:
+    src: logrotate.conf.j2
+    dest: "/etc/logrotate.d/{{ stack_name }}"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Init a new swarm with default parameters
+  community.docker.docker_swarm:
+    state: present
+  become: true
+
+- name: Create networks
+  community.docker.docker_network:
+    name: "{{ item }}"
+    driver: "overlay"
+    driver_options:
+      com.docker.network.bridge.name: "{{ item }}"
+  become: true
+  loop:
+    - "{{ db_network }}"
+    - "{{ stack_network }}"
+
+- name: Add compose.d to traefik for network
+  ansible.builtin.template:
+    src: traefik-docker-compose.yml.j2
+    dest: "{{ traefik_composed_location }}/{{ stack_name }}.yml"
+    mode: "0660"
+    owner: "root"
+    group: "docker"
+    force: true
+  notify:
+    - reload proxy
+    - wait for traefik
+  become: true
+
+- name: Create base docker-compose.yml if not exists
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ stack_file }}"
+    mode: "0660"
+    owner: "root"
+    group: "docker"
+    force: "{{reset_docker_stack}}"
+  become: true
+  notify: reload stack

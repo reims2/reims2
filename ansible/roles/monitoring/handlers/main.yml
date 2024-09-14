@@ -1,0 +1,14 @@
+- name: reload monitoring
+  community.docker.docker_stack:
+    state: present
+    name: "monitoring"
+    compose:
+      - "{{ grafana_install_location }}/docker-compose.yml"
+    prune: true
+  become: true
+
+- name: wait for grafana
+  ansible.builtin.command: "docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock sudobmitch/docker-stack-wait -n grafana monitoring"
+
+- name: wait for prometheus
+  ansible.builtin.command: "docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock sudobmitch/docker-stack-wait -n grafana monitoring"

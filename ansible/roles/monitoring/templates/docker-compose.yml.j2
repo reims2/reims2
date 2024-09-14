@@ -1,0 +1,149 @@
+{{ ansible_managed | comment }}
+
+version: '3'
+services:
+  grafana:
+    image: grafana/grafana-oss:11.2.0@sha256:408afb9726de5122b00a2576763a8a57a3c86d5b0eff5305bc994ceb3eb96c3f
+    networks:
+      {{ proxy_network }}:
+      {{ db_network }}:
+      {{ monitoring_network }}:
+    volumes:
+     - "{{grafana_data_location}}:/var/lib/grafana"
+     - "{{grafana_provisioning_location}}:/etc/grafana/provisioning/"
+    environment:
+     - GF_SERVER_ROOT_URL=https://%(domain)s/
+     - GF_SERVER_ENFORCE_DOMAIN=true
+     - GF_SERVER_DOMAIN={{ monitoring_domain }}
+    restart: always
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.grafana.rule=Host(`{{ monitoring_domain }}`)"
+        - "traefik.http.routers.grafana.entrypoints=https"
+        - "traefik.http.routers.grafana.middlewares=compress@file"
+        - "traefik.http.routers.grafana.tls.certresolver={{ traefik_certresolver }}"
+        - "traefik.http.services.grafana.loadbalancer.server.port={{ grafana_port }}"
+        - "traefik.docker.network={{ proxy_network }}"
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: start-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  prometheus:
+    image: prom/prometheus:v2.54.1@sha256:f6639335d34a77d9d9db382b92eeb7fc00934be8eae81dbc03b31cfe90411a94
+    networks:
+      {{ monitoring_network }}:
+      {{ db_network }}:
+    volumes:
+     - "{{prometheus_data_location}}:/prometheus"
+     - "{{prometheus_config_location}}:/etc/prometheus/prometheus.yml"
+    restart: always
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: start-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  node_exporter:
+    image: prom/node-exporter:v1.8.2@sha256:4032c6d5bfd752342c3e631c2f1de93ba6b86c41db6b167b9a35372c139e7706
+    restart: always
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      {{ monitoring_network }}:
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: start-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  db_exporter:
+    image: prom/mysqld-exporter:v0.15.1@sha256:7211a617ec657701ca819aa0ba28e1d5750f5bf2c1391b755cc4a48cc360b0fa
+    restart: always
+    networks:
+      {{ monitoring_network }}:
+      {{ db_network }}:
+    volumes:
+      - "{{db_exporter_config_location}}:/etc/my.cnf"
+    command:
+      - "--mysqld.address=mariadb:{{ db_port }}"
+      - "--mysqld.username=monitoring"
+      - "--collect.auto_increment.columns"
+      - "--collect.binlog_size"
+      - "--collect.engine_innodb_status"
+      - "--collect.global_status"
+      - "--collect.global_variables"
+      - "--collect.heartbeat"
+      - "--collect.info_schema.clientstats"
+      - "--collect.info_schema.innodb_metrics"
+      - "--collect.info_schema.innodb_tablespaces"
+      - "--collect.info_schema.innodb_cmp"
+      - "--collect.info_schema.innodb_cmpmem"
+      - "--collect.info_schema.processlist"
+      - "--collect.info_schema.tables"
+      - "--collect.info_schema.tablestats"
+      - "--collect.info_schema.schemastats"
+      - "--collect.info_schema.userstats"
+      - "--collect.perf_schema.eventsstatements"
+      - "--collect.perf_schema.eventsstatementssum"
+      - "--collect.perf_schema.eventswaits"
+      - "--collect.perf_schema.file_events"
+      - "--collect.perf_schema.indexiowaits"
+      - "--collect.perf_schema.memory_events"
+      - "--collect.perf_schema.tableiowaits"
+      - "--collect.perf_schema.tablelocks"
+    environment:
+      MYSQLD_EXPORTER_PASSWORD: "{{ monitoring_db_password }}"
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: start-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+
+
+ 
+networks:
+  {{ proxy_network }}:
+    external: true
+  {{ db_network }}:
+    external: true
+  {{ monitoring_network }}:
+    external: true

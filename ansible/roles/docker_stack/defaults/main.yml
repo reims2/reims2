@@ -1,0 +1,11 @@
+---
+stack_install_location: /srv/{{ stack_name }}
+reset_docker_stack: false
+
+stack_file: "{{ stack_install_location }}/docker-compose.yml"
+
+log_location: "/var/log/{{ stack_name }}"
+
+stack_network: "{{ stack_name }}_network"
+
+db_network: "{{ stack_name }}_db_network"
