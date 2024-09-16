@@ -43,6 +43,15 @@
       "matchUpdateTypes": ["digest", "patch", "minor", "major"]
     },
     {
+      "matchPackageNames": [
+        "actions/*",
+        "advanced-security/*",
+        "docker/*"
+      ],
+      "matchDepTypes": ["action"],
+      "groupName": "github actions",
+    },
+    {
       "extends": ["packages:test", "packages:linters", "schedule:monthly"]
     }
   ],
@@ -69,7 +78,8 @@
   "ignoreDeps": [
     "reims2/reims2-frontend",
     "reims2/reims2-backend",
-    "reims2/reims2-docs"
+    "reims2/reims2-docs",
+    "reims2/reims2"
   ],
   "schedule": ["before 2pm on Saturday"],
   "timezone": "Europe/Berlin",
