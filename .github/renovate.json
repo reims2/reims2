@@ -51,7 +51,7 @@
       ],
       "matchDepTypes": ["action"],
       "groupName": "github actions",
-      "matchUpdateTypes": ["digest", "patch", "minor"]
+      "matchUpdateTypes": ["digest", "patch", "minor"],
       "automerge": true
     },
     {
