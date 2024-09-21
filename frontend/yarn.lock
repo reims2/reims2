@@ -2189,11 +2189,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:^3.13.0":
-  version: 3.13.1
-  resolution: "@nuxt/kit@npm:3.13.1"
+"@nuxt/kit@npm:^3.13.2":
+  version: 3.13.2
+  resolution: "@nuxt/kit@npm:3.13.2"
   dependencies:
-    "@nuxt/schema": "npm:3.13.1"
+    "@nuxt/schema": "npm:3.13.2"
     c12: "npm:^1.11.2"
     consola: "npm:^3.2.3"
     defu: "npm:^6.1.4"
@@ -2211,15 +2211,15 @@ __metadata:
     semver: "npm:^7.6.3"
     ufo: "npm:^1.5.4"
     unctx: "npm:^2.3.1"
-    unimport: "npm:^3.11.1"
+    unimport: "npm:^3.12.0"
     untyped: "npm:^1.4.2"
-  checksum: 10/a11ba4addcffce40a645723f3a18832a75f195a07ddb44585fb5e73811d66447e02c3f64a512bbd1b6de197fb92890e382ba75305175fee2fe71918ef9129824
+  checksum: 10/0c8a67cb1b42841e0f7a297eefc703398674e220565b5aa56056646b1aa29f08482ff8db2e778f85f2e4059d1c9a6fb97a204a70904dd8ce66aaa0a70d403c98
   languageName: node
   linkType: hard
 
-"@nuxt/schema@npm:3.13.1":
-  version: 3.13.1
-  resolution: "@nuxt/schema@npm:3.13.1"
+"@nuxt/schema@npm:3.13.2":
+  version: 3.13.2
+  resolution: "@nuxt/schema@npm:3.13.2"
   dependencies:
     compatx: "npm:^0.1.8"
     consola: "npm:^3.2.3"
@@ -2231,9 +2231,9 @@ __metadata:
     std-env: "npm:^3.7.0"
     ufo: "npm:^1.5.4"
     uncrypto: "npm:^0.1.3"
-    unimport: "npm:^3.11.1"
+    unimport: "npm:^3.12.0"
     untyped: "npm:^1.4.2"
-  checksum: 10/ae8d0c5ff7987263259abb643daaad5726f085cc027b49ef9f702d45b57358312b17a85387893edb859f0f2654e83b9c72d11ab976f4d868d2b38335f5186fc8
+  checksum: 10/698520eb9095f7ab40f9308a9f8153578f506cf6b27635493a04e0e363d7f9d43e2174f718adc8fc948205d5300e0b1d1097f044d0615515c9374455f192a3ab
   languageName: node
   linkType: hard
 
@@ -7601,11 +7601,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia-plugin-persistedstate@npm:4.0.1":
-  version: 4.0.1
-  resolution: "pinia-plugin-persistedstate@npm:4.0.1"
+"pinia-plugin-persistedstate@npm:4.0.2":
+  version: 4.0.2
+  resolution: "pinia-plugin-persistedstate@npm:4.0.2"
   dependencies:
-    "@nuxt/kit": "npm:^3.13.0"
+    "@nuxt/kit": "npm:^3.13.2"
     deep-pick-omit: "npm:^1.2.0"
     defu: "npm:^6.1.4"
     destr: "npm:^2.0.3"
@@ -7617,7 +7617,7 @@ __metadata:
       optional: true
     pinia:
       optional: true
-  checksum: 10/c59106c9842fe7a0f0415da62c5b0c495692d6ae5e1ca2335cfffddfbab296f3cd139aca0a0c91aab17f67ad0828f0267f04b59537be7536261c12f7ed192e39
+  checksum: 10/afc2c8014f5ca47a77047a1ced056df5fe36843c9af5ab8066e7b23786ee331305d98ad3133cdd803bfe6f645b3e8e9e85ed52ef8c38acfb9a551a97cedd3542
   languageName: node
   linkType: hard
 
@@ -7966,7 +7966,7 @@ __metadata:
     happy-dom: "npm:15.7.4"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:2.2.2"
-    pinia-plugin-persistedstate: "npm:4.0.1"
+    pinia-plugin-persistedstate: "npm:4.0.2"
     prettier: "npm:3.3.3"
     sass: "npm:1.79.1"
     typescript: "npm:5.6.2"
@@ -9068,7 +9068,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unimport@npm:^3.11.1":
+"unimport@npm:^3.12.0":
   version: 3.12.0
   resolution: "unimport@npm:3.12.0"
   dependencies:
