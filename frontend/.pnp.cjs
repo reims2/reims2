@@ -57,7 +57,7 @@ const RAW_RUNTIME_STATE =
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.2.2"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.1"],\
           ["prettier", "npm:3.3.3"],\
-          ["sass", "npm:1.78.0"],\
+          ["sass", "npm:1.79.1"],\
           ["typescript", "patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"],\
           ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.18.2"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.4.6"],\
@@ -6022,6 +6022,14 @@ const RAW_RUNTIME_STATE =
           ["readdirp", "npm:3.6.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:4.0.0", {\
+        "packageLocation": "./.yarn/cache/chokidar-npm-4.0.0-39d260a09b-e9a65db724.zip/node_modules/chokidar/",\
+        "packageDependencies": [\
+          ["chokidar", "npm:4.0.0"],\
+          ["readdirp", "npm:4.0.1"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["chownr", [\
@@ -10213,6 +10221,13 @@ const RAW_RUNTIME_STATE =
           ["picomatch", "npm:2.3.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:4.0.1", {\
+        "packageLocation": "./.yarn/cache/readdirp-npm-4.0.1-17b55c8032-f8a2d3308c.zip/node_modules/readdirp/",\
+        "packageDependencies": [\
+          ["readdirp", "npm:4.0.1"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["regenerate", [\
@@ -10326,7 +10341,7 @@ const RAW_RUNTIME_STATE =
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.2.2"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.1"],\
           ["prettier", "npm:3.3.3"],\
-          ["sass", "npm:1.78.0"],\
+          ["sass", "npm:1.79.1"],\
           ["typescript", "patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"],\
           ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.18.2"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.4.6"],\
@@ -10544,11 +10559,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["sass", [\
-      ["npm:1.78.0", {\
-        "packageLocation": "./.yarn/cache/sass-npm-1.78.0-4aa9d2730a-a180135add.zip/node_modules/sass/",\
+      ["npm:1.79.1", {\
+        "packageLocation": "./.yarn/cache/sass-npm-1.79.1-9387e978e7-e02d28401f.zip/node_modules/sass/",\
         "packageDependencies": [\
-          ["sass", "npm:1.78.0"],\
-          ["chokidar", "npm:3.6.0"],\
+          ["sass", "npm:1.79.1"],\
+          ["chokidar", "npm:4.0.0"],\
           ["immutable", "npm:4.3.6"],\
           ["source-map-js", "npm:1.2.0"]\
         ],\
@@ -11825,7 +11840,7 @@ const RAW_RUNTIME_STATE =
           ["lightningcss", null],\
           ["postcss", "npm:8.4.45"],\
           ["rollup", "npm:4.21.2"],\
-          ["sass", "npm:1.78.0"],\
+          ["sass", "npm:1.79.1"],\
           ["sass-embedded", null],\
           ["stylus", null],\
           ["sugarss", null],\
