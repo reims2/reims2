@@ -1,21 +1,7 @@
 name: frontend
 
 on:
-  push:
-    branches:
-      - "main"
-      - "dev"
-  pull_request:
-    paths:
-      - ".github/**"
-      - "frontend/**"
-      - "e2e/**"
-  merge_group:
-    paths:
-      - ".github/**"
-      - "frontend/**"
-      - "e2e/**"
-  workflow_dispatch:
+  workflow_call:
 
 defaults:
   run:
@@ -28,68 +14,28 @@ jobs:
     if: ${{ github.event.action != 'labeled' }}
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - ".github/**"
+              - "frontend/**"
+      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
         with:
           node-version-file: "frontend/.nvmrc"
           cache: "yarn"
           cache-dependency-path: "frontend/yarn.lock"
 
       - name: Install dependencies 📦
+        if: steps.filter.outputs.src == 'true'
         run: yarn install --immutable
       - name: Lint files
+        if: steps.filter.outputs.src == 'true'
         run: yarn run lint
       - name: Run tests
+        if: steps.filter.outputs.src == 'true'
         run: yarn test
       - name: Run build
+        if: steps.filter.outputs.src == 'true'
         run: yarn run build
-
-  docker:
-    name: "Docker build"
-    uses: reims2/reims2/.github/workflows/docker.yml@main
-    concurrency: docker-frontend-${{ github.ref }}
-    if: ${{ github.event_name != 'merge_group' && github.event.action != 'labeled' }}
-    secrets: inherit # pass all secrets
-    with:
-      component: frontend
-
-  dev-deploy:
-    name: "Deploy dev instance"
-    needs:
-      - docker
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/dev'
-    uses: reims2/reims2/.github/workflows/dev-deploy.yml@main
-    concurrency: dev-deploy-frontend
-    secrets: inherit # pass all secrets
-    with:
-      component: frontend
-
-  test-deploy:
-    name: "Deploy test instance"
-    needs:
-      - docker
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
-    uses: reims2/reims2/.github/workflows/deploy-instance.yml@main
-    concurrency: e2e-test
-    with:
-      instance_name: e2e
-    secrets: inherit # pass all secrets
-
-  e2e:
-    name: "Run E2E Tests"
-    needs:
-      - test-deploy
-    uses: reims2/reims2/.github/workflows/e2e.yml@main
-    secrets: inherit
-
-  deploy:
-    name: "Deploy production"
-    needs:
-      - docker
-      - ci
-      - e2e
-    if: github.ref == 'refs/heads/main'
-    uses: reims2/reims2/.github/workflows/deploy.yml@main
-    concurrency: deploy-frontend
-    secrets: inherit # pass all secrets
-    with:
-      component: frontend

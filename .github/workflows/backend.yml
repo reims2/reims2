@@ -1,26 +1,7 @@
 name: backend
 
 on:
-  push:
-    branches:
-      - "main"
-      - "dev"
-  pull_request:
-    paths:
-      - ".github/**"
-      - "backend/**"
-      - "e2e/**"
-    types:
-      - "opened"
-      - "synchronize"
-      - "reopened"
-      - "labeled"
-  merge_group:
-    paths:
-      - ".github/**"
-      - "backend/**"
-      - "e2e/**"
-  workflow_dispatch:
+  workflow_call:
 
 defaults:
   run:
@@ -32,59 +13,28 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.action != 'labeled' }}
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4\
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - ".github/**"
+              - "backend/**"
+      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
         with:
           cache: maven
           distribution: temurin
           java-version: 21
 
       - name: Build with Maven
+        if: steps.filter.outputs.src == 'true'
         run: mvn -B package --file pom.xml
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
-        if: github.ref == 'refs/heads/main'
+        if: steps.filter.outputs.src == 'true' && github.ref == 'refs/heads/main'
         continue-on-error: true
         uses: advanced-security/maven-dependency-submission-action@4f64ddab9d742a4806eeb588d238e4c311a8397d # v4
         with:
           directory: backend
-
-  docker:
-    uses: reims2/reims2/.github/workflows/docker.yml@main
-    concurrency: docker-backend-${{ github.ref }}
-    if: ${{ github.event_name != 'merge_group' && github.event.action != 'labeled' }}
-    secrets: inherit # pass all secrets
-    with:
-      component: backend
-
-  deploy:
-    needs:
-      - docker
-      - ci # since we don"t execute tests in docker build
-    if: github.ref == 'refs/heads/main'
-    uses: reims2/reims2/.github/workflows/deploy.yml@main
-    concurrency: deploy-backend
-    secrets: inherit # pass all secrets
-    with:
-      component: backend
-
-  dev-deploy:
-    needs:
-      - docker
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/dev'
-    uses: reims2/reims2/.github/workflows/dev-deploy.yml@main
-    concurrency: dev-deploy-backend
-    secrets: inherit # pass all secrets
-    with:
-      component: backend
-
-  pr-deploy:
-    needs:
-      - docker
-    if: ${{ (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'deploy')) }}
-    uses: reims2/reims2/.github/workflows/deploy-instance.yml@main
-    concurrency: pr-deploy-backend-${{ github.ref }}
-    with:
-      instance_name: backend-pr-${{ github.event.number || 'unknown' }}
-    secrets: inherit # pass all secrets
