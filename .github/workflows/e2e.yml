@@ -9,7 +9,7 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.47.0@sha256:3d41153494e2b12a5a5fa6e26cf1e854c3997d13758754d46e7bf902b5ba09b1
+      image: mcr.microsoft.com/playwright:v1.47.2@sha256:f640d04686ef8fcca228955dc73f36b86ccd2228eda488fb2b32f3f037639f09
     concurrency: e2e-test
     defaults:
       run:
