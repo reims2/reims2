@@ -1,0 +1,26 @@
+name: PR
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+jobs:
+  ci:
+    strategy:
+      matrix:
+        component: [frontend, backend, docs]
+    permissions:
+      pull-requests: read
+    name: "Lint, test, build"
+    uses: reims2/reims2/.github/workflows/${{ matrix.component }}.yml@main
+
+  docker:
+    name: "Docker build"
+    uses: reims2/reims2/.github/workflows/docker.yml@main
+    concurrency: docker-frontend-${{ matrix.component }}
+    secrets: inherit # pass all secrets
+    with:
+      component: ${{ matrix.component }}
