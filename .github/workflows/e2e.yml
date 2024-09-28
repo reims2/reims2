@@ -6,10 +6,21 @@ on:
     - cron: "0 15 * * 6"
 
 jobs:
+  e2e-deploy:
+    name: "Deploy E2E instance"
+    needs:
+      - docker
+    uses: reims2/reims2/.github/workflows/deploy-instance.yml@main
+    concurrency: e2e-test
+    with:
+      instance_name: e2e
+    secrets: inherit # pass all secrets
+
   e2e:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.47.2@sha256:f640d04686ef8fcca228955dc73f36b86ccd2228eda488fb2b32f3f037639f09
+    needs: e2e-deploy
     concurrency: e2e-test
     defaults:
       run:
