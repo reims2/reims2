@@ -1,4 +1,4 @@
-name: frontend
+name: Deploy
 
 on:
   push:
@@ -6,10 +6,6 @@ on:
       - "main"
       - "dev"
   merge_group:
-    paths:
-      - ".github/**"
-      - "frontend/**"
-      - "e2e/**"
   workflow_dispatch:
 
 jobs:
