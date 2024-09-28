@@ -13,14 +13,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci:
-    strategy:
-      matrix:
-        component: [frontend, backend, docs]
-    permissions:
-      pull-requests: read
+  frontend-ci:
     name: "Lint, test, build"
-    uses: reims2/reims2/.github/workflows/${{ matrix.component }}.yml@main
+    uses: reims2/reims2/.github/workflows/frontend.yml@main
+  backend-ci:
+    name: "Lint, test, build"
+    uses: reims2/reims2/.github/workflows/backend.yml@main
+  docs-ci:
+    name: "Lint, test, build"
+    uses: reims2/reims2/.github/workflows/docs.yml@main
 
   docker:
     name: "Docker build"
