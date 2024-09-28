@@ -5,16 +5,6 @@ on:
     branches:
       - "main"
       - "dev"
-  pull_request:
-    paths:
-      - ".github/**"
-      - "frontend/**"
-      - "e2e/**"
-    types:
-      - "opened"
-      - "synchronize"
-      - "reopened"
-      - "labeled"
   merge_group:
     paths:
       - ".github/**"
@@ -22,40 +12,23 @@ on:
       - "e2e/**"
   workflow_dispatch:
 
-defaults:
-  run:
-    working-directory: ./frontend
-
 jobs:
   ci:
+    strategy:
+      matrix:
+        component: [frontend, backend, docs]
+    permissions:
+      pull-requests: read
     name: "Lint, test, build"
-    runs-on: ubuntu-latest
-    if: ${{ github.event.action != 'labeled' }}
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
-        with:
-          node-version-file: "frontend/.nvmrc"
-          cache: "yarn"
-          cache-dependency-path: "frontend/yarn.lock"
-
-      - name: Install dependencies 📦
-        run: yarn install --immutable
-      - name: Lint files
-        run: yarn run lint
-      - name: Run tests
-        run: yarn test
-      - name: Run build
-        run: yarn run build
+    uses: reims2/reims2/.github/workflows/${{ matrix.component }}.yml@main
 
   docker:
     name: "Docker build"
     uses: reims2/reims2/.github/workflows/docker.yml@main
-    concurrency: docker-frontend-${{ github.ref }}
-    if: ${{ github.event_name != 'merge_group' && github.event.action != 'labeled' }}
+    concurrency: docker-frontend-${{ matrix.component }}
     secrets: inherit # pass all secrets
     with:
-      component: frontend
+      component: ${{ matrix.component }}
 
   dev-deploy:
     name: "Deploy dev instance"
@@ -63,10 +36,8 @@ jobs:
       - docker
     if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/dev'
     uses: reims2/reims2/.github/workflows/dev-deploy.yml@main
-    concurrency: dev-deploy-frontend
+    concurrency: dev-deploy
     secrets: inherit # pass all secrets
-    with:
-      component: frontend
 
   test-deploy:
     name: "Deploy test instance"
@@ -93,8 +64,6 @@ jobs:
       - ci
       - e2e
     if: github.ref == 'refs/heads/main'
-    uses: reims2/reims2/.github/workflows/deploy.yml@main
-    concurrency: deploy-frontend
+    uses: reims2/reims2/.github/workflows/prod-deploy.yml@main
+    concurrency: deploy
     secrets: inherit # pass all secrets
-    with:
-      component: frontend

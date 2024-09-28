@@ -2,14 +2,13 @@
 {{ ansible_managed | comment }}
 set -e
 
-if [ "$#" -ne 3 ]; then
-    echo "Illegal number of parameters"
-    exit 2
+if [ "$#" -ne 1 ]; then
+  echo "Illegal number of parameters"
+  exit 2
 fi
 
+new_tag=$1
 
-stack_name=$1
-service_name=$2
-new_tag=$3
-
-docker service update "$stack_name"_"$service_name" --image "$new_tag" --force 
+docker service update {{ stack_name }}_frontend --image "$new_tag" --force
+docker service update {{ stack_name }}_docs --image "$new_tag" --force
+docker service update {{ stack_name }}_backend --image "$new_tag" --force
