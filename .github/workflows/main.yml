@@ -10,12 +10,15 @@ on:
 
 jobs:
   frontend-ci:
+    if: github.event_name != 'workflow_dispatch'
     name: "Frontend"
     uses: reims2/reims2/.github/workflows/frontend.yml@main
   backend-ci:
+    if: github.event_name != 'workflow_dispatch'
     name: "Backend"
     uses: reims2/reims2/.github/workflows/backend.yml@main
   docs-ci:
+    if: github.event_name != 'workflow_dispatch'
     name: "Docs"
     uses: reims2/reims2/.github/workflows/docs.yml@main
 
@@ -64,7 +67,7 @@ jobs:
       - frontend-ci
       - backend-ci
       - docs-ci
-      # - e2e
+      - e2e
     if: github.ref == 'refs/heads/main'
     uses: reims2/reims2/.github/workflows/prod-deploy.yml@main
     concurrency: deploy
