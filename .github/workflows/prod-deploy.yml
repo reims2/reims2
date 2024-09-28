@@ -10,6 +10,9 @@ jobs:
       name: production
       url: https://reims2.app
     steps:
+      - name: Get Github short SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: deploy via ssh
         uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
         with:
@@ -17,4 +20,4 @@ jobs:
           username: actions
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
-          script: /srv/reims2/updater/update.sh ${GITHUB_SHA::7}
+          script: /srv/reims2/updater/update.sh ${{ steps.vars.outputs.sha_short }}

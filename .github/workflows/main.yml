@@ -10,13 +10,13 @@ on:
 
 jobs:
   frontend-ci:
-    name: "Lint, test, build"
+    name: "Frontend"
     uses: reims2/reims2/.github/workflows/frontend.yml@main
   backend-ci:
-    name: "Lint, test, build"
+    name: "Backend"
     uses: reims2/reims2/.github/workflows/backend.yml@main
   docs-ci:
-    name: "Lint, test, build"
+    name: "Docs"
     uses: reims2/reims2/.github/workflows/docs.yml@main
 
   docker:
@@ -25,7 +25,7 @@ jobs:
         component: [frontend, backend, docs]
     name: "Docker build"
     uses: reims2/reims2/.github/workflows/docker.yml@main
-    concurrency: docker-frontend-${{ matrix.component }}
+    concurrency: docker-${{ matrix.component }}-${{ github.ref }}
     secrets: inherit # pass all secrets
     with:
       component: ${{ matrix.component }}
