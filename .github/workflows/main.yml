@@ -62,7 +62,9 @@ jobs:
     name: "Deploy production"
     needs:
       - docker
-      - ci
+      - frontend-ci
+      - backend-ci
+      - docs-ci
       - e2e
     if: github.ref == 'refs/heads/main'
     uses: reims2/reims2/.github/workflows/prod-deploy.yml@main
