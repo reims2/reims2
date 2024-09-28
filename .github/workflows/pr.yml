@@ -18,10 +18,13 @@ jobs:
     name: "Docs"
     uses: reims2/reims2/.github/workflows/docs.yml@main
 
-  docker:
-    name: "Docker build"
-    uses: reims2/reims2/.github/workflows/docker.yml@main
-    concurrency: docker-${{ matrix.component }}-${{ github.ref }}
-    secrets: inherit # pass all secrets
-    with:
-      component: ${{ matrix.component }}
+  # docker:
+  #   name: "Docker build"
+  #   strategy:
+  #     matrix:
+  #       component: [frontend, backend, docs]
+  #   uses: reims2/reims2/.github/workflows/docker.yml@main
+  #   concurrency: docker-${{ matrix.component }}-${{ github.ref }}
+  #   secrets: inherit # pass all secrets
+  #   with:
+  #     component: ${{ matrix.component }}
