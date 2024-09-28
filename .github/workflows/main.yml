@@ -42,21 +42,11 @@ jobs:
     concurrency: dev-deploy
     secrets: inherit # pass all secrets
 
-  test-deploy:
-    name: "Deploy test instance"
-    needs:
-      - docker
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
-    uses: reims2/reims2/.github/workflows/deploy-instance.yml@main
-    concurrency: e2e-test
-    with:
-      instance_name: e2e
-    secrets: inherit # pass all secrets
-
   e2e:
     name: "Run E2E Tests"
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
     needs:
-      - test-deploy
+      - docker
     uses: reims2/reims2/.github/workflows/e2e.yml@main
     secrets: inherit
 
@@ -70,5 +60,5 @@ jobs:
       - e2e
     if: github.ref == 'refs/heads/main'
     uses: reims2/reims2/.github/workflows/prod-deploy.yml@main
-    concurrency: deploy
+    concurrency: prod-deploy
     secrets: inherit # pass all secrets
