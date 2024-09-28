@@ -9,6 +9,6 @@ fi
 
 new_tag=$1
 
-docker service update {{ stack_name }}_frontend --image "$new_tag" --force
-docker service update {{ stack_name }}_docs --image "$new_tag" --force
-docker service update {{ stack_name }}_backend --image "$new_tag" --force
+docker service update {{ stack_name }}_frontend --image reims2/reims2-frontend:sha-"$new_tag" --force
+docker service update {{ stack_name }}_docs --image reims2/reims2-docs:sha-"$new_tag" --force
+docker service update {{ stack_name }}_backend --image reims2/reims2-backend:sha-"$new_tag" --force

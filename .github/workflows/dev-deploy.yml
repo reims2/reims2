@@ -10,17 +10,6 @@ jobs:
       name: development
       url: https://dev.reims2.app
     steps:
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
-        with:
-          images: reims2/reims2-frontend
-          tags: |
-            type=sha,priority=2000
-            type=semver,pattern={{version}},priority=2100
-        env:
-          DOCKER_METADATA_PR_HEAD_SHA: true
-
       - name: deploy via ssh
         uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
         with:
@@ -28,4 +17,4 @@ jobs:
           username: actions
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
-          script: /srv/dev-reims2/update.sh ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          script: /srv/dev-reims2/updater/update.sh ${GITHUB_SHA::7}
