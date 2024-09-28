@@ -8,13 +8,11 @@ on:
 jobs:
   e2e-deploy:
     name: "Deploy E2E instance"
-    needs:
-      - docker
     uses: reims2/reims2/.github/workflows/deploy-instance.yml@main
     concurrency: e2e-test
+    secrets: inherit # pass all secrets
     with:
       instance_name: e2e
-    secrets: inherit # pass all secrets
 
   e2e:
     runs-on: ubuntu-latest
