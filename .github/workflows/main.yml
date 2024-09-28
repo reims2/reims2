@@ -24,6 +24,9 @@ jobs:
     uses: reims2/reims2/.github/workflows/docs.yml@main
 
   docker:
+    strategy:
+      matrix:
+        component: [frontend, backend, docs]
     name: "Docker build"
     uses: reims2/reims2/.github/workflows/docker.yml@main
     concurrency: docker-frontend-${{ matrix.component }}
