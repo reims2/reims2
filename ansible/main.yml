@@ -1,9 +1,4 @@
 ---
-- name: Install update_script
-  hosts: all
-  roles:
-    - update_script
-
 - name: Install reims prod
   hosts: all
   roles:
@@ -11,6 +6,7 @@
     - frontend
     - monitoring
     - s3backup
+    - update_script
   vars:
     stack_name: reims2
     # reset_docker_stack: true
@@ -64,6 +60,7 @@
   roles:
     - backend
     - frontend
+    - update_script
   vars:
     backend_debug: true
     frontend_debug: true
