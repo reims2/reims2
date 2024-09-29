@@ -44,7 +44,6 @@ jobs:
 
   e2e:
     name: "Run E2E Tests"
-    concurrency: e2e-test
     if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
     needs:
       - docker

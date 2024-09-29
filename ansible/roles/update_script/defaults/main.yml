@@ -1,3 +1,6 @@
 ---
 update_script_install_location: /srv/{{ stack_name }}/updater
 update_script_path: "{{ update_script_install_location }}/update.sh"
+
+rm_script_install_location: /srv/update/
+rm_script_path: "{{ rm_script_install_location }}/rm-deploy.sh"
