@@ -1,0 +1,27 @@
+name: PR E2E
+
+on:
+  pull_request:
+    paths:
+      - "e2e/**"
+      - "ansible/**"
+  workflow_dispatch:
+
+jobs:
+  docker:
+    strategy:
+      matrix:
+        component: [frontend, backend, docs]
+    name: "Docker build"
+    uses: reims2/reims2/.github/workflows/docker.yml@main
+    concurrency: docker-${{ matrix.component }}-${{ github.ref }}
+    secrets: inherit # pass all secrets
+    with:
+      component: ${{ matrix.component }}
+
+  e2e:
+    name: "Run E2E Tests"
+    needs:
+      - docker
+    uses: reims2/reims2/.github/workflows/e2e.yml@main
+    secrets: inherit
