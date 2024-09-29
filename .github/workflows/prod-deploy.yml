@@ -19,6 +19,6 @@ jobs:
         with:
           host: reims2.app
           username: actions
-          key: ${{ secrets.PRIVATE_KEY }}
+          key: ${{ secrets.DEPLOY_KEY }}
           port: 22
-          script: /srv/reims2/updater/update.sh ${{ steps.vars.outputs.sha_short }}
+          script: ${{ steps.vars.outputs.sha_short }}

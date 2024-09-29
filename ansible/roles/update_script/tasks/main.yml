@@ -11,7 +11,8 @@
   ansible.posix.authorized_key:
     user: actions
     state: present
-    key: "{{ lookup('file', 'creds/deploy_key.pub') }}"
+    key: "{{ lookup('file', 'creds/{{ stack_name }}-deploy.pub') }}"
+    key_options: 'command="{{ update_script_path }}"'
   ignore_errors: true
 
 - name: Create directories
