@@ -5,6 +5,8 @@ on:
   schedule:
     - cron: "0 15 * * 6"
 
+concurrency: e2e-test
+
 jobs:
   e2e-deploy:
     name: "Deploy E2E instance"
@@ -46,6 +48,6 @@ jobs:
         with:
           host: reims2.app
           username: actions
-          key: ${{ secrets.PRIVATE_KEY }}
+          key: ${{ secrets.RM_DEPLOY_KEY }}
           port: 22
-          script: docker stack rm reims2-e2e
+          script: reims2-e2e
