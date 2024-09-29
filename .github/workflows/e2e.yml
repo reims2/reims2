@@ -9,7 +9,6 @@ jobs:
   e2e-deploy:
     name: "Deploy E2E instance"
     uses: reims2/reims2/.github/workflows/deploy-instance.yml@main
-    concurrency: e2e-test
     secrets: inherit # pass all secrets
     with:
       instance_name: e2e
@@ -19,7 +18,6 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.47.2@sha256:f640d04686ef8fcca228955dc73f36b86ccd2228eda488fb2b32f3f037639f09
     needs: e2e-deploy
-    concurrency: e2e-test
     defaults:
       run:
         working-directory: ./e2e
@@ -42,3 +40,12 @@ jobs:
           name: playwright-report
           path: e2e/playwright-report/
           retention-days: 14
+      - name: Stop E2E instance
+        if: always()
+        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
+        with:
+          host: reims2.app
+          username: actions
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: docker stack rm reims2-e2e
