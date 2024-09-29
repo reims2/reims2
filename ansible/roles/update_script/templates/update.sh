@@ -2,12 +2,7 @@
 {{ ansible_managed | comment }}
 set -e
 
-if [ "$#" -ne 1 ]; then
-  echo "Illegal number of parameters"
-  exit 2
-fi
-
-new_tag=$1
+new_tag=$SSH_ORIGINAL_COMMAND
 
 docker service update {{ stack_name }}_frontend --image reims2/reims2-frontend:sha-"$new_tag" --force
 docker service update {{ stack_name }}_docs --image reims2/reims2-docs:sha-"$new_tag" --force
