@@ -3,7 +3,7 @@ name: E2E test
 on:
   workflow_call:
   schedule:
-    - cron: "0 15 * * 6"
+    - cron: "7 15 * * 6"
 
 concurrency: e2e-test
 
@@ -31,6 +31,12 @@ jobs:
           cache-dependency-path: "e2e/yarn.lock"
       - name: Install dependencies
         run: yarn
+      - name: Update playwright browsers
+        # only update browsers on scheduled runs, since the docker image is updated regularly anyways
+        if: github.event_name == 'schedule'
+        run: yarn playwright install
+        env:
+          HOME: /root
       - name: Run Playwright tests
         run: yarn playwright test
         env:
