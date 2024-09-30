@@ -15,33 +15,9 @@ jobs:
       url: https://${{ inputs.instance_name }}.reims2.app
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-        with:
-          fetch-depth: 0
-
-      - id: meta_frontend
-        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
-        with:
-          images: reims2/reims2-frontend
-          tags: |
-            type=sha,priority=2000
-        env:
-          DOCKER_METADATA_PR_HEAD_SHA: true
-      - id: meta_backend
-        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
-        with:
-          images: reims2/reims2-backend
-          tags: |
-            type=sha,priority=2000
-        env:
-          DOCKER_METADATA_PR_HEAD_SHA: true
-      - id: meta_docs
-        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
-        with:
-          images: reims2/reims2-docs
-          tags: |
-            type=sha,priority=2000
-        env:
-          DOCKER_METADATA_PR_HEAD_SHA: true
+      - name: Get Github short SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@c97d71562fcba83cc1ea0602d5a77013427f7571 # v2
@@ -51,8 +27,8 @@ jobs:
           requirements: ansible/requirements.yml
           options: |
             --inventory ansible/hosts
-            -e "frontend_image=${{ steps.meta_frontend.outputs.tags }}"
-            -e "backend_image=${{ steps.meta_backend.outputs.tags }}"
-            -e "docs_image=${{ steps.meta_docs.outputs.tags }}"
+            -e "frontend_image=reims2/reims2-frontend:sha-${{ steps.vars.outputs.sha_short }}"
+            -e "backend_image=reims2/reims2-backend:sha-${{ steps.vars.outputs.sha_short }}"
+            -e "docs_image=reims2/reims2-docs:sha-${{ steps.vars.outputs.sha_short }}"
             -e "stack_name=reims2-${{ inputs.instance_name }}"
             -e "app_domain=${{ inputs.instance_name }}.reims2.app"
