@@ -1,9 +1,12 @@
 on:
   workflow_call:
 
+concurrency: dev-deploy
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment:
       name: development
       url: https://dev.reims2.app
