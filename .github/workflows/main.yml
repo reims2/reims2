@@ -39,7 +39,6 @@ jobs:
       - docker
     if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/dev'
     uses: reims2/reims2/.github/workflows/dev-deploy.yml@main
-    concurrency: dev-deploy
     secrets: inherit # pass all secrets
 
   e2e:
@@ -60,5 +59,4 @@ jobs:
       - e2e
     if: github.ref == 'refs/heads/main'
     uses: reims2/reims2/.github/workflows/prod-deploy.yml@main
-    concurrency: prod-deploy
     secrets: inherit # pass all secrets

@@ -1,9 +1,12 @@
 on:
   workflow_call:
 
+concurrency: prod-deploy
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment:
       name: production
       url: https://reims2.app
