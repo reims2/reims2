@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await expect(page.locator('div').filter({ hasText: 'Setting up REIMS2' })).toHaveCount(0)
 })
 
-test('Dispense glasses with button and revert', async ({ page, glassesSku }) => {
+test('Dispense glasses with button and revert', { tag: '@fast' }, async ({ page, glassesSku }) => {
   await page.getByLabel('SKU').fill(glassesSku)
   await page.getByRole('button', { name: 'Dispense' }).click()
   await expect(

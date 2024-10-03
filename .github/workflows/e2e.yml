@@ -37,8 +37,15 @@ jobs:
         run: yarn playwright install
         env:
           HOME: /root
-      - name: Run Playwright tests
-        run: yarn playwright test
+      - name: Run fast test suite
+        if: github.event_name != 'schedule'
+        run: yarn playwright test --project chromium --grep @fast
+        env:
+          HOME: /root
+          BASE_URL: "https://e2e.reims2.app"
+      - name: Run all tests
+        if: github.event_name == 'schedule'
+        run: yarn playwright test --project chromium
         env:
           HOME: /root
           BASE_URL: "https://e2e.reims2.app"
