@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { EyeInput } from './eye-input.po'
 
-test('Add glasses', async ({ page }) => {
+test('Add glasses', { tag: '@fast' }, async ({ page }) => {
   const eyeInput = new EyeInput(page)
   await page.goto('/add')
 
