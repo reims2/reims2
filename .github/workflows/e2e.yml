@@ -4,7 +4,6 @@ on:
   workflow_call:
   schedule:
     - cron: "7 15 * * 6"
-  workflow_dispatch:
 
 concurrency: e2e-test
 
@@ -33,20 +32,20 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Update playwright browsers
-        # only update browsers on scheduled runs, since the docker image is updated regularly anyways
-        if: github.event_name != 'workflow_call'
+        # only update browsers on scheduled runs to save time
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: yarn playwright install
         env:
           HOME: /root
       - name: Run fast test suite
-        if: github.event_name == 'workflow_call'
+        if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
         run: yarn playwright test --project chromium --grep @fast
         env:
           HOME: /root
           BASE_URL: "https://e2e.reims2.app"
       - name: Run all tests
-        if: github.event_name != 'workflow_call'
-        run: yarn playwright test --project chromium
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: yarn playwright test
         env:
           HOME: /root
           BASE_URL: "https://e2e.reims2.app"
