@@ -1,21 +1,32 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './fixtures'
 
-test.skip('Edit page', async ({ page }) => {
-  await page.goto('/edit')
-
+test.beforeEach(async ({ page }) => {
+  page.goto('/edit')
   await expect(page.locator('div').filter({ hasText: 'Setting up REIMS2' })).toHaveCount(0)
+})
 
-  await page.getByLabel('SKU').fill('3')
-  await page.getByLabel('SKU').press('Enter')
-  await expect(page.getByText('Successfully dispensed glasses with SKU 3')).toBeVisible()
-
-  await page.getByRole('button', { name: 'Undo' }).click()
-  await expect(page.getByText('Reverted dispension/deletion of SKU 3 successfully')).toBeVisible()
-
-  await page.getByLabel('SKU').fill('3')
+test('Dispense glasses with button and revert', async ({ page, glassesSku }) => {
+  await page.getByLabel('SKU').fill(glassesSku)
   await page.getByRole('button', { name: 'Dispense' }).click()
-  await expect(page.getByText('Successfully dispensed glasses with SKU 3')).toBeVisible()
+  await expect(
+    page.getByText(`Successfully dispensed glasses with SKU ${glassesSku}`),
+  ).toBeVisible()
 
-  await page.getByRole('button', { name: 'Undo' }).click()
-  await expect(page.getByText('Reverted dispension/deletion of SKU 3 successfully')).toBeVisible()
+  // Disabled for now due to race conditions
+  // await page.getByTestId('result-0').getByRole('button', { name: 'Undo' }).click()
+  // const successUndo = page.getByText(
+  //   `Reverted dispension/deletion of SKU ${glassesSku} successfully`,
+  // )
+  // const failureUndoAlreadyUsed = page.getByText(`Previous SKU is already used`)
+  // await expect(successUndo.or(failureUndoAlreadyUsed)).toBeVisible()
+})
+
+test('Delete glasses', async ({ page, glassesSku }) => {
+  await page.getByLabel('SKU').fill(glassesSku)
+  await page.getByLabel('More options').click()
+  await page.getByRole('button', { name: 'Delete' }).click()
+  await page.getByRole('combobox').click()
+  await page.getByRole('option', { name: 'Not found in storage' }).click()
+  await page.getByRole('button', { name: 'Confirm deletion' }).click()
+  await expect(page.getByText(`Successfully deleted glasses with SKU ${glassesSku}`)).toBeVisible()
 })
