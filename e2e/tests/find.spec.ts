@@ -1,30 +1,31 @@
 import { test, expect } from '@playwright/test'
+import { EyeInput } from './eye-input.po'
 
-const BASE_URL = process.env.BASE_URL as string
+test('Find page', async ({ page }) => {
+  const eyeInput = new EyeInput(page)
 
-test('test', async ({ page }) => {
-  await page.goto(BASE_URL + '/find')
-  await page.getByLabel('Category').fill('m')
-  await page.getByLabel('Category').press('Enter')
+  await page.goto('/find')
 
-  await page.getByLabel('Sphere').first().fill('0.2')
-  await page.getByLabel('Sphere').first().press('Enter')
-  await expect(page.getByLabel('Sphere').first()).toHaveValue('0.25')
+  await eyeInput.category.fill('m')
 
-  await page.getByLabel('Cylinder').first().fill('0')
+  await eyeInput.odSphere.fill('0.2')
+  await eyeInput.odSphere.press('Enter')
+  await expect(eyeInput.odSphere).toHaveValue('0.25')
 
-  await page.getByLabel('Additional').first().fill('3')
-  await page.getByLabel('Additional').first().press('Enter')
-  await expect(page.getByLabel('Additional').first()).toHaveValue('3.00')
-  await expect(page.getByLabel('Additional').nth(1)).toHaveValue('3.00')
+  await eyeInput.odCylinder.fill('0')
 
-  await page.getByLabel('Sphere').nth(1).fill('2.0')
+  await eyeInput.odAdditional.fill('3')
+  await eyeInput.odAdditional.press('Enter')
+  await expect(eyeInput.odAdditional).toHaveValue('3.00')
+  await expect(eyeInput.osAdditional).toHaveValue('3.00')
 
-  await page.getByLabel('Cylinder').nth(1).fill('0.5')
+  await eyeInput.osSphere.fill('2.0')
 
-  await page.getByLabel('Axis').nth(1).fill('090')
+  await eyeInput.osCylinder.fill('0.5')
 
-  await page.getByRole('button', { name: 'S earch glasses' }).click()
+  await eyeInput.osAxis.fill('090')
 
-  await expect(page.getByRole('main')).toContainText('SKU 0005')
+  await page.getByRole('button', { name: 'earch glasses' }).click()
+
+  await expect(page.getByTestId('results')).toContainText('SKU 0005')
 })
