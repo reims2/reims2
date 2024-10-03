@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 const authFile = 'e2e/.auth/user.json'
 
-test('Anmelden', async ({ page }) => {
+test('Login', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('link', { name: 'Open REIMS2' }).click()
   await page.getByLabel('Username').fill('test')

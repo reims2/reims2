@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { EyeInput } from './eye-input.po'
 
-test('Find page', async ({ page }) => {
+test('Search multifocal', async ({ page }) => {
   const eyeInput = new EyeInput(page)
 
   await page.goto('/find')
