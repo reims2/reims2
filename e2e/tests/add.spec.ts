@@ -31,6 +31,4 @@ test('Add glasses', async ({ page }) => {
   await expect(resultCard.getByTestId('OS-card')).toContainText('CYL-0.25 D')
   await expect(resultCard.getByTestId('OS-card')).toContainText('Axis010')
   await expect(resultCard.getByTestId('OS-card')).toContainText('Add+2.00 D')
-
-  console.log(await resultCard.getByText('SKU').textContent())
 })
