@@ -16,7 +16,7 @@ corepack enable
 yarn install
 
 # Run dev server for local API
-yarn run dev:local 
+yarn run dev:local
 # or, using the remote dev API
 yarn run dev:remote
 ```

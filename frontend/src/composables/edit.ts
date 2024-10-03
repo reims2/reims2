@@ -8,6 +8,7 @@ import { MaybeRefOrGetter } from 'vue'
 import { DeletionReason } from '@/model/ReimsModel'
 import dayjs from 'dayjs'
 import { useIntervalFn } from '@vueuse/core'
+import { formatSku } from '@/util/format-glasses'
 
 type GlassesWithKey = Glasses & { key?: string }
 
@@ -133,7 +134,9 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
       isLoading.value = false
     }
 
-    toast.info(`Reverted dispension/deletion of SKU ${glasses.dispense?.previousSku} successfully`)
+    toast.info(
+      `Reverted dispension/deletion of SKU ${formatSku(glasses.dispense?.previousSku)} successfully`,
+    )
     onSuccessFn?.()
   }
   return {
@@ -162,14 +165,18 @@ export const useDeleteGlasses = (
     } catch (error) {
       if (error instanceof ReimsAxiosError) {
         if (error.statusCode === 404) {
-          toast.warning(`SKU ${sku} not found on server, was it already ${actionString}d?`)
+          toast.warning(
+            `SKU ${formatSku(sku)} not found on server, was it already ${actionString}d?`,
+          )
         } else if (error.isServerSide) {
           toast.error(
             `Could not ${actionString} glasses. Please report this to the REIMS2 developers (Error ${error.apiMessage})`,
           )
         } else if (error.isNetwork) {
           glassesStore.deleteOfflineGlasses(sku)
-          toast.warning(`Glasses with SKU ${sku} will be ${actionString}d when you're back online`)
+          toast.warning(
+            `Glasses with SKU ${formatSku(sku)} will be ${actionString}d when you're back online`,
+          )
           onSuccessFn?.()
           return
         }
@@ -181,7 +188,7 @@ export const useDeleteGlasses = (
       isLoading.value = false
     }
 
-    toast.info(`Successfully ${actionString}d glasses with SKU ${sku}`)
+    toast.info(`Successfully ${actionString}d glasses with SKU ${formatSku(sku)}`)
     onSuccessFn?.()
   }
   return {

@@ -1,5 +1,5 @@
 <template>
-  <div :data-testid="eyeName+'-input'">
+  <div :data-testid="eyeName + '-input'">
     <v-row dense>
       <v-col class="text-h5 pb-2">
         <div :class="isBAL ? 'text-medium-emphasis' : ''">

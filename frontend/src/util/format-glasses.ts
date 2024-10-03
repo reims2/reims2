@@ -29,7 +29,8 @@ export function getAndConvertSku(glasses: Glasses): string {
   } else return '????'
 }
 
-export function formatSku(value: number): string {
+export function formatSku(value?: number | null): string {
+  if (!value) return '????'
   return value.toString().padStart(4, '0')
 }
 

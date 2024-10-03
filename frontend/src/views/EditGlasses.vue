@@ -24,7 +24,7 @@
                     <div class="d-flex flex-grow-1 justify-end">
                       <v-menu offset-y left>
                         <template #activator="{ props }">
-                          <v-btn icon v-bind="props">
+                          <v-btn icon v-bind="props" aria-label="More options">
                             <v-icon>{{ mdiDotsVertical }}</v-icon>
                           </v-btn>
                         </template>
@@ -62,7 +62,13 @@
         <div v-else-if="lastDispensed.length == 0" class="text-medium-emphasis">
           No glasses were dispensed or deleted recently.
         </div>
-        <div v-for="glasses in lastDispensed" v-else :key="glasses.id" style="opacity: 80%">
+        <div
+          v-for="(glasses, idx) in lastDispensed"
+          v-else
+          :key="glasses.id"
+          style="opacity: 80%"
+          :data-testid="'result-' + idx"
+        >
           <glass-card :model-value="glasses">
             <template #actions>
               <v-btn variant="text" color="accent" class="mx-0" @click="undoDispension(glasses)">

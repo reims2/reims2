@@ -67,6 +67,7 @@
           v-for="(item, idx) in lastAdded.slice(0, 3)"
           :key="item.id"
           :style="'opacity: ' + (1 - idx * 0.2)"
+          :data-testid="'result-' + idx"
         >
           <glass-card :model-value="item" editable>
             <template #actions>

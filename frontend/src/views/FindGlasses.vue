@@ -65,7 +65,15 @@
           </v-row>
         </v-form>
       </v-col>
-      <v-col data-testid="results" ref="results" cols="12" md="6" lg="5" xl="3" class="pt-10 pt-md-1 px-0 pl-md-6">
+      <v-col
+        data-testid="results"
+        ref="results"
+        cols="12"
+        md="6"
+        lg="5"
+        xl="3"
+        class="pt-10 pt-md-1 px-0 pl-md-6"
+      >
         <v-alert v-if="matches == null" type="info" color="primary" density="comfortable">
           Start a new search to display results
         </v-alert>

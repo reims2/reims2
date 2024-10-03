@@ -50,7 +50,7 @@
     <v-card-text class="py-0">
       <v-container class="pa-0">
         <v-row dense>
-          <v-col v-for="eye in eyes" :key="eye.key" cols="6" :data-testid="eye.text +'-card'">
+          <v-col v-for="eye in eyes" :key="eye.key" cols="6" :data-testid="eye.text + '-card'">
             <div class="d-flex">
               <div class="text-subtitle-1">
                 {{ eye.text }}
