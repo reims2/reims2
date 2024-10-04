@@ -30,7 +30,8 @@ const RAW_RUNTIME_STATE =
           ["@playwright/test", "npm:1.47.2"],\
           ["@types/node", "npm:22.7.0"],\
           ["dotenv", "npm:16.4.5"],\
-          ["prettier", "npm:3.3.3"]\
+          ["prettier", "npm:3.3.3"],\
+          ["typescript", "patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -834,7 +835,8 @@ const RAW_RUNTIME_STATE =
           ["@playwright/test", "npm:1.47.2"],\
           ["@types/node", "npm:22.7.0"],\
           ["dotenv", "npm:16.4.5"],\
-          ["prettier", "npm:3.3.3"]\
+          ["prettier", "npm:3.3.3"],\
+          ["typescript", "patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -987,6 +989,15 @@ const RAW_RUNTIME_STATE =
           ["minizlib", "npm:2.1.2"],\
           ["mkdirp", "npm:1.0.4"],\
           ["yallist", "npm:4.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["typescript", [\
+      ["patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40", {\
+        "packageLocation": "./.yarn/cache/typescript-patch-9bf73ea0aa-8bfc7ca0d9.zip/node_modules/typescript/",\
+        "packageDependencies": [\
+          ["typescript", "patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"]\
         ],\
         "linkType": "HARD"\
       }]\
