@@ -162,5 +162,16 @@ export default ({ mode }) => {
         },
       },
     },
+    // fix: https://github.com/vitejs/vite/issues/18164#issuecomment-2365314292
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+        sass: {
+          api: 'modern-compiler',
+        },
+      },
+    },
   })
 }
