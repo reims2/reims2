@@ -28,7 +28,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@playwright/test", "npm:1.47.2"],\
-          ["@types/node", "npm:22.7.0"],\
+          ["@types/node", "npm:22.7.4"],\
           ["dotenv", "npm:16.4.5"],\
           ["prettier", "npm:3.3.3"],\
           ["typescript", "patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"]\
@@ -104,10 +104,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/node", [\
-      ["npm:22.7.0", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-22.7.0-ec7f359a48-6476d94a4c.zip/node_modules/@types/node/",\
+      ["npm:22.7.4", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-22.7.4-b09cdef7dd-19ddab80c4.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:22.7.0"],\
+          ["@types/node", "npm:22.7.4"],\
           ["undici-types", "npm:6.19.8"]\
         ],\
         "linkType": "HARD"\
@@ -833,7 +833,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["root-workspace-0b6124", "workspace:."],\
           ["@playwright/test", "npm:1.47.2"],\
-          ["@types/node", "npm:22.7.0"],\
+          ["@types/node", "npm:22.7.4"],\
           ["dotenv", "npm:16.4.5"],\
           ["prettier", "npm:3.3.3"],\
           ["typescript", "patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"]\
