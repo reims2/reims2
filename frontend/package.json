@@ -34,7 +34,7 @@
   "devDependencies": {
     "@babel/types": "7.25.6",
     "@mdi/js": "7.4.47",
-    "@pinia/testing": "0.1.5",
+    "@pinia/testing": "0.1.6",
     "@testing-library/vue": "8.0.3",
     "@types/jest": "29.5.13",
     "@types/node": "20.16.10",
