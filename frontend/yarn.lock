@@ -7544,9 +7544,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia@npm:2.2.2":
-  version: 2.2.2
-  resolution: "pinia@npm:2.2.2"
+"pinia@npm:2.2.4":
+  version: 2.2.4
+  resolution: "pinia@npm:2.2.4"
   dependencies:
     "@vue/devtools-api": "npm:^6.6.3"
     vue-demi: "npm:^0.14.10"
@@ -7559,7 +7559,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 10/3061ab7ddfdc507b92c9d755e27d43f8050ab36d6e8431e8ec260c9fd3ca95c3af59c6aa33016a3af568af10731dc97d1c796dd14b3bad66b4688b219a7b6e0f
+  checksum: 10/0496358bab0b66d31bbff788dbb1f45238d49ac3cfd12323f1092d32d2311a3ea75bad012aff45ba552544051afd91cc3c6573f7a290b6c605acc96d95f3b684
   languageName: node
   linkType: hard
 
@@ -7899,7 +7899,7 @@ __metadata:
     eslint-plugin-vue: "npm:9.28.0"
     happy-dom: "npm:15.7.4"
     jwt-decode: "npm:4.0.0"
-    pinia: "npm:2.2.2"
+    pinia: "npm:2.2.4"
     pinia-plugin-persistedstate: "npm:4.0.2"
     prettier: "npm:3.3.3"
     sass: "npm:1.79.4"
