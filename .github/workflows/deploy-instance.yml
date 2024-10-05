@@ -16,8 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Get Github short SHA
+        env:
+          SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo "sha_short=${SHA::7}" >> $GITHUB_OUTPUT
 
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@c97d71562fcba83cc1ea0602d5a77013427f7571 # v2
