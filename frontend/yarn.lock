@@ -2244,14 +2244,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pinia/testing@npm:0.1.5":
-  version: 0.1.5
-  resolution: "@pinia/testing@npm:0.1.5"
+"@pinia/testing@npm:0.1.6":
+  version: 0.1.6
+  resolution: "@pinia/testing@npm:0.1.6"
   dependencies:
     vue-demi: "npm:^0.14.10"
   peerDependencies:
-    pinia: ">=2.2.1"
-  checksum: 10/967eb25e903da0899b015c2ef12fdf66a6a36d8a6c01a48b0964f2831bc92c4245bdad2b5a34eb551324ae79c7b3ec5ef4fab1a7dc549d2ae452696755f41837
+    pinia: ">=2.2.3"
+  checksum: 10/82d3a0df44615f58c06fbcf2abbcab821fdd195677647799ba044a9bf5cae8119f8cf3aa56615e5ac122532b31bda9c610134917e35f93d620b4c53cfb76c642
   languageName: node
   linkType: hard
 
@@ -7875,7 +7875,7 @@ __metadata:
     "@babel/types": "npm:7.25.6"
     "@fontsource-variable/roboto-flex": "npm:5.1.0"
     "@mdi/js": "npm:7.4.47"
-    "@pinia/testing": "npm:0.1.5"
+    "@pinia/testing": "npm:0.1.6"
     "@testing-library/vue": "npm:8.0.3"
     "@types/jest": "npm:29.5.13"
     "@types/node": "npm:20.16.10"
