@@ -19,7 +19,7 @@ export const test = base.extend<{ glassesSku: string }>({
     await eyeInput.osCylinder.fill('0')
 
     await page.getByRole('button', { name: 'dd glasses' }).click()
-    const resultCard = await page.getByTestId('result-0', { timeout: 10000 })
+    const resultCard = page.getByTestId('result-0', { timeout: 10000 })
     const sku = (await resultCard.getByText('SKU').textContent()).replace('SKU', '').trim()
 
     await use(sku)
