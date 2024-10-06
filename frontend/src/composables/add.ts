@@ -3,12 +3,12 @@ import { sanitizeEyeValues, resetEyeInput } from '@/util/eye-utils'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
 
-import { DisplayedEye, Glasses, GlassesMeta, SanitizedGlassesInput } from '@/model/GlassesModel'
+import { Glasses, GlassesInput, SanitizedGlassesInput } from '@/model/GlassesModel'
 
 import { useToast } from 'vue-toastification'
 import { ReimsAxiosError } from '@/lib/axios'
 
-export const useAddGlasses = (onSuccessFn?: () => void) => {
+export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => void) => {
   const toast = useToast()
 
   const glassesStore = useGlassesStore()
@@ -16,9 +16,6 @@ export const useAddGlasses = (onSuccessFn?: () => void) => {
   const allGlasses = computed(() => glassesStore.allGlasses)
 
   const loading = ref(false)
-  const glassesMeta = ref<Partial<GlassesMeta>>({})
-  const odEye = ref<DisplayedEye>({ axis: '', cylinder: '', sphere: '', add: '' })
-  const osEye = ref<DisplayedEye>({ axis: '', cylinder: '', sphere: '', add: '' })
   const syncEyes = ref(true)
 
   const lastAdded = computed(() => {
@@ -27,19 +24,6 @@ export const useAddGlasses = (onSuccessFn?: () => void) => {
       .filter((itm) => itm != null) as Glasses[]
   })
   const freeSlots = computed(() => 5000 - allGlasses.value.length)
-  const isMultifocal = computed(() => glassesMeta.value.glassesType === 'multifocal')
-
-  watch(
-    () => odEye.value.add,
-    (newVal) => {
-      if (syncEyes.value) osEye.value.add = newVal
-    },
-  )
-
-  function updateOsEye(newValue: DisplayedEye) {
-    if (newValue.add !== osEye.value.add) syncEyes.value = false
-    osEye.value = newValue
-  }
 
   watch(allGlasses, () => {
     // Filter out deleted glasses
@@ -50,21 +34,17 @@ export const useAddGlasses = (onSuccessFn?: () => void) => {
 
   async function submit() {
     if (loading.value) return
-    if (
-      !glassesMeta.value.glassesType ||
-      !glassesMeta.value.appearance ||
-      !glassesMeta.value.glassesSize
-    ) {
+    if (!glasses.value.glassesType || !glasses.value.appearance || !glasses.value.glassesSize) {
       toast.error('Please fill in all required fields')
       return
     }
 
     const requestGlasses: SanitizedGlassesInput = {
-      glassesType: glassesMeta.value.glassesType,
-      glassesSize: glassesMeta.value.glassesSize,
-      appearance: glassesMeta.value.appearance,
-      od: sanitizeEyeValues(odEye.value),
-      os: sanitizeEyeValues(osEye.value),
+      glassesType: glasses.value.glassesType,
+      glassesSize: glasses.value.glassesSize,
+      appearance: glasses.value.appearance,
+      od: sanitizeEyeValues(glasses.value.od),
+      os: sanitizeEyeValues(glasses.value.os),
     }
     loading.value = true
     try {
@@ -84,21 +64,16 @@ export const useAddGlasses = (onSuccessFn?: () => void) => {
     onSuccessFn?.()
   }
   function reset() {
-    resetEyeInput(odEye.value)
-    resetEyeInput(osEye.value)
-    glassesMeta.value = {}
+    resetEyeInput(glasses.value.od)
+    resetEyeInput(glasses.value.os)
+    // TODO reset meta
     syncEyes.value = true
   }
 
   return {
     loading,
-    glassesMeta,
-    odEye,
-    osEye,
-    isMultifocal,
     lastAdded,
     freeSlots,
-    updateOsEye,
     submit,
     reset,
   }

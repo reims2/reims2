@@ -4,25 +4,7 @@
       <v-col cols="12" md="6" lg="4" class="pb-2 px-2 pt-4">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
-            <v-col v-for="item in generalGlassesDataKeys" :key="item" cols="12" class="pa-0 pb-5">
-              <auto-complete-field
-                ref="firstInput"
-                v-model="glassesMeta[item]"
-                v-bind="glassesMetaUIData[item]"
-                :clearable="false"
-              />
-            </v-col>
-            <v-col cols="12" md="6" class="px-1 pr-md-5 py-0">
-              <single-eye-input v-model="odEye" eye-name="OD" :add-enabled="isMultifocal" />
-            </v-col>
-            <v-col cols="12" md="6" class="px-1 pl-md-5 py-0">
-              <single-eye-input
-                eye-name="OS"
-                :add-enabled="isMultifocal"
-                :model-value="osEye"
-                @update:model-value="(val) => updateOsEye(val)"
-              />
-            </v-col>
+            <glass-input v-model="glasses"></glass-input>
             <v-col cols="12" class="px-0 pt-0">
               <div class="pb-3 text-body-2 text-medium-emphasis">
                 You are in {{ reimsSiteName }} ({{ freeSlots }} SKUs left)
@@ -85,14 +67,11 @@
 </template>
 
 <script setup lang="ts">
-import { glassesMetaUIData } from '@/util/glasses-utils'
-
+import GlassInput from '@/components/GlassInput.vue'
 import { useRootStore } from '@/stores/root'
 import { useEnterToTab } from 'vue3-enter-to-tab'
 
-import AutoCompleteField from '@/components/AutoCompleteField.vue'
-import SingleEyeInput from '@/components/SingleEyeInput.vue'
-import { Glasses, generalGlassesDataKeys } from '@/model/GlassesModel'
+import { Glasses, GlassesMeta, DisplayedEye } from '@/model/GlassesModel'
 
 import { useDisplay } from 'vuetify'
 import { useAddGlasses } from '@/composables/add'
@@ -111,18 +90,26 @@ const results = ref<ComponentPublicInstance | null>(null)
 const form = ref<HTMLFormElement | null>(null)
 const firstInput = ref<HTMLElement[] | null>(null)
 
+interface GlassesInput extends GlassesMeta {
+  od: DisplayedEye
+  os: DisplayedEye
+}
+
+const glasses: Ref<GlassesInput> = ref({
+  glassesType: 'single',
+  od: { sphere: '', cylinder: '', axis: '', add: '' },
+  os: { sphere: '', cylinder: '', axis: '', add: '' },
+  glassesSize: 'small',
+  appearance: 'masculine',
+})
+
 const {
   loading,
-  glassesMeta,
-  odEye,
-  osEye,
-  isMultifocal,
   lastAdded,
   freeSlots,
-  updateOsEye,
   submit: submitAdd,
   reset: resetAdd,
-} = useAddGlasses(onSuccess)
+} = useAddGlasses(glasses, onSuccess)
 
 const { vPreventEnterTab } = useEnterToTab(form)
 
