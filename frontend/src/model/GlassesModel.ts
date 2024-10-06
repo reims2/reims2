@@ -20,6 +20,7 @@ export interface DisplayedEye {
   axis: string
   cylinder: string
   sphere: string
+  isBAL?: boolean
 }
 
 export interface MultifocalEye extends Eye {

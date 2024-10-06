@@ -7,6 +7,7 @@
           :model-value="modelValue[item]"
           v-bind="glassesMetaUIData[item]"
           :clearable="false"
+          :persistent-hint="true"
           @update:model-value="(val) => updateMeta(item, val)"
         />
       </v-col>
@@ -16,6 +17,7 @@
           eye-name="OD"
           :model-value="modelValue.od"
           :add-enabled="isMultifocal"
+          :bal-enabled="balEnabled"
           @update:model-value="(val) => updateOdEye(val)"
         />
       </v-col>
@@ -24,6 +26,7 @@
           eye-name="OS"
           :model-value="modelValue.os"
           :add-enabled="isMultifocal"
+          :bal-enabled="balEnabled"
           @update:model-value="(val) => updateOsEye(val)"
         />
       </v-col>
@@ -34,23 +37,50 @@
 <script setup lang="ts">
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
-import { glassesMetaUIData } from '@/util/glasses-utils'
+import { glassesMetaUIData, GlassesMetaUIData } from '@/util/glasses-utils'
 import { GlassesInput, DisplayedEye, generalGlassesDataKeys } from '@/model/GlassesModel'
 const syncEyes = ref(true)
 
 interface Props {
   onlyCategory?: boolean
+  balEnabled?: boolean
 }
 
-const { onlyCategory } = withDefaults(defineProps<Props>(), { onlyCategory: false })
+export interface TestUiDate {
+  glassesType: GlassesMetaUIData
+  glasesSize?: GlassesMetaUIData
+  appearance?: GlassesMetaUIData
+}
+
+const actualMeta: Ref<TestUiDate> = ref(glassesMetaUIData)
+
+const { onlyCategory, balEnabled } = withDefaults(defineProps<Props>(), {
+  onlyCategory: false,
+  balEnabled: false,
+})
 const modelValue = defineModel<GlassesInput>({ required: true })
 
 const isMultifocal = computed(() => modelValue.value.glassesType === 'multifocal')
 
+if (onlyCategory) {
+  actualMeta.value = {
+    glassesType: glassesMetaUIData.glassesType,
+  }
+}
+
 function updateOdEye(newVal: DisplayedEye) {
   const newOs = modelValue.value.os
   if (syncEyes.value) newOs.add = newVal.add
+  if (balEnabled && modelValue.value.os.isBAL) {
+    newOs.sphere = newVal.sphere
+    newOs.cylinder = ''
+    newOs.axis = ''
+    newOs.add = ''
+    newOs.isBAL = false
+  }
 
+  // todo eventuell isBal immer setzen wenn balEnabled falls der SingleEyeInput das nicht gemacht
+  // hat
   modelValue.value.od = newVal
   modelValue.value.os = newOs
 }
@@ -61,6 +91,14 @@ function updateMeta(key: string, value: string) {
 
 function updateOsEye(newValue: DisplayedEye) {
   if (newValue.add !== modelValue.value.os.add) syncEyes.value = false
+  const newOd = modelValue.value.od
+  if (balEnabled && modelValue.value.od.isBAL) {
+    newOd.sphere = newValue.sphere
+    newOd.cylinder = ''
+    newOd.axis = ''
+    newOd.add = ''
+    newOd.isBAL = false
+  }
   modelValue.value.os = newValue
 }
 </script>
