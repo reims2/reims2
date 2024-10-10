@@ -60,7 +60,7 @@ export type GlassesMetaUIData = {
   desc: string
 }
 
-type AllGlassesMetaUiData = {
+export type AllGlassesMetaUiData = {
   // eslint-disable-next-line no-unused-vars
   [key in GeneralGlassesDataKey]: GlassesMetaUIData
 }

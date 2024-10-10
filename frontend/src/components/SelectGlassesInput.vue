@@ -43,7 +43,7 @@ const glassesStore = useGlassesStore()
 
 const hint = ref('')
 const selected = ref<Glasses | null>(null)
-const input = ref<HTMLElement | null>(null)
+const input = useTemplateRef('input')
 
 watch(
   () => props.sku,

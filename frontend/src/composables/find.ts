@@ -1,6 +1,6 @@
 import {
-  EyeSearch,
   Glasses,
+  GlassesInput,
   GlassesResult,
   GlassesSearch,
   GlassesType,
@@ -13,9 +13,7 @@ import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
 
 export const useFindGlasses = (
-  osEye: MaybeRefOrGetter<EyeSearch>,
-  odEye: MaybeRefOrGetter<EyeSearch>,
-  glassesTypeInput: MaybeRefOrGetter<string>,
+  glasses: Ref<GlassesInput>,
   highTolerance: MaybeRefOrGetter<boolean>,
   isValid: MaybeRefOrGetter<boolean>,
 ) => {
@@ -28,9 +26,9 @@ export const useFindGlasses = (
   function startSearch(isUserSubmitted = true) {
     if (!toValue(isValid)) return
     const eyeModel: GlassesSearch = {
-      glassesType: toValue(glassesTypeInput) as GlassesType,
-      os: sanitizeEyeValues(toValue(osEye)) as SanitizedEyeSearch,
-      od: sanitizeEyeValues(toValue(odEye)) as SanitizedEyeSearch,
+      glassesType: glasses.value.glassesType as GlassesType,
+      os: sanitizeEyeValues(glasses.value.os) as SanitizedEyeSearch,
+      od: sanitizeEyeValues(glasses.value.od) as SanitizedEyeSearch,
       highTolerance: toValue(highTolerance),
     }
     matches.value = philScore(eyeModel)
@@ -51,7 +49,7 @@ export const useFindGlasses = (
   )
 
   watch(
-    () => [osEye, odEye, glassesTypeInput, highTolerance, reimsSite],
+    () => [glasses, highTolerance, reimsSite],
     () => {
       reset()
     },

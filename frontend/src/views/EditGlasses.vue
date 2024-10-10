@@ -109,7 +109,7 @@ const inputSku = ref<number | null>(null)
 
 // Component refs
 const form = ref<VForm | null>(null)
-const firstInput = ref<HTMLElement | null>(null)
+const firstInput = useTemplateRef('firstInput')
 
 const { isLoading, lastDispensed, isLastDispensedLoading, submitDeletion, undoDispension } =
   useEditGlasses(selected, onDeleted)

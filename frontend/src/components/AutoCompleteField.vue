@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['update:modelValue'])
 const inputVal = useVModel(props, 'modelValue', emit)
 
-const input = ref<HTMLInputElement | null>(null)
+const input = useTemplateRef('input')
 
 onMounted(() => {
   if (!mobile.value) focus()
