@@ -5,10 +5,10 @@ import { vuetifyOptions } from '@/plugins/vuetify'
 
 import { Eye, Glasses, GlassesSearch, GlassesType } from '@/model/GlassesModel'
 
-export function renderWithVuetify(
+export function renderWithVuetify<C>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component: any,
-  options: RenderOptions,
+  component: C,
+  options: RenderOptions<C>,
   pinia?: TestingPinia | undefined,
 ) {
   const vuetify = createVuetify(vuetifyOptions)
