@@ -2554,6 +2554,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/browserslist@npm:4.15.0":
+  version: 4.15.0
+  resolution: "@types/browserslist@npm:4.15.0"
+  dependencies:
+    browserslist: "npm:*"
+  checksum: 10/c3ebbdc79ef01072e8b0a3cc8fc8f9d56e38f2fd7b1faa6d3265d34af29a19a3a515ddc9627e560f676c78b8cd04d2fe24aaf57529c4f06aa3f4bf0dd63fa33f
+  languageName: node
+  linkType: hard
+
+"@types/eslint@npm:9.6.1":
+  version: 9.6.1
+  resolution: "@types/eslint@npm:9.6.1"
+  dependencies:
+    "@types/estree": "npm:*"
+    "@types/json-schema": "npm:*"
+  checksum: 10/719fcd255760168a43d0e306ef87548e1e15bffe361d5f4022b0f266575637acc0ecb85604ac97879ee8ae83c6a6d0613b0ed31d0209ddf22a0fe6d608fc56fe
+  languageName: node
+  linkType: hard
+
+"@types/estree@npm:*":
+  version: 1.0.6
+  resolution: "@types/estree@npm:1.0.6"
+  checksum: 10/9d35d475095199c23e05b431bcdd1f6fec7380612aed068b14b2a08aa70494de8a9026765a5a91b1073f636fb0368f6d8973f518a31391d519e20c59388ed88d
+  languageName: node
+  linkType: hard
+
 "@types/estree@npm:0.0.39":
   version: 0.0.39
   resolution: "@types/estree@npm:0.0.39"
@@ -2603,6 +2629,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/json-schema@npm:*":
+  version: 7.0.15
+  resolution: "@types/json-schema@npm:7.0.15"
+  checksum: 10/1a3c3e06236e4c4aab89499c428d585527ce50c24fe8259e8b3926d3df4cfbbbcf306cfc73ddfb66cbafc973116efd15967020b0f738f63e09e64c7d260519e7
+  languageName: node
+  linkType: hard
+
 "@types/json5@npm:^0.0.29":
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
@@ -2646,6 +2679,15 @@ __metadata:
   version: 2.0.7
   resolution: "@types/trusted-types@npm:2.0.7"
   checksum: 10/8e4202766a65877efcf5d5a41b7dd458480b36195e580a3b1085ad21e948bc417d55d6f8af1fd2a7ad008015d4117d5fdfe432731157da3c68678487174e4ba3
+  languageName: node
+  linkType: hard
+
+"@types/typescript@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@types/typescript@npm:2.0.0"
+  dependencies:
+    typescript: "npm:*"
+  checksum: 10/657dd1cb516dd4e99998538dca3f9be3a04edd761c5fb1a579472c4e78ba81f702142506356f0d312f8f696c7432f066faad402dd571da652f4b27365452a8b5
   languageName: node
   linkType: hard
 
@@ -3867,7 +3909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:4.24.0":
+"browserslist@npm:*, browserslist@npm:4.24.0":
   version: 4.24.0
   resolution: "browserslist@npm:4.24.0"
   dependencies:
@@ -7921,8 +7963,11 @@ __metadata:
     "@mdi/js": "npm:7.4.47"
     "@pinia/testing": "npm:0.1.6"
     "@testing-library/vue": "npm:8.1.0"
+    "@types/browserslist": "npm:4.15.0"
+    "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:29.5.13"
     "@types/node": "npm:20.16.10"
+    "@types/typescript": "npm:2.0.0"
     "@typescript-eslint/eslint-plugin": "npm:7.18.0"
     "@typescript-eslint/parser": "npm:7.18.0"
     "@vitejs/plugin-vue": "npm:5.1.4"
@@ -9134,6 +9179,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:*":
+  version: 5.6.3
+  resolution: "typescript@npm:5.6.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/c328e418e124b500908781d9f7b9b93cf08b66bf5936d94332b463822eea2f4e62973bfb3b8a745fdc038785cb66cf59d1092bac3ec2ac6a3e5854687f7833f1
+  languageName: node
+  linkType: hard
+
 "typescript@npm:5.6.2":
   version: 5.6.2
   resolution: "typescript@npm:5.6.2"
@@ -9141,6 +9196,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/f95365d4898f357823e93d334ecda9fcade54f009b397c7d05b7621cd9e865981033cf89ccde0f3e3a7b73b1fdbae18e92bc77db237b43e912f053fef0f9a53b
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A*#optional!builtin<compat/typescript>":
+  version: 5.6.3
+  resolution: "typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/00504c01ee42d470c23495426af07512e25e6546bce7e24572e72a9ca2e6b2e9bea63de4286c3cfea644874da1467dcfca23f4f98f7caf20f8b03c0213bb6837
   languageName: node
   linkType: hard
 
