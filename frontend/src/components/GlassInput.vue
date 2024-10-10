@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-container class="pa-1">
     <v-row dense>
-      <v-col v-for="item in metadataToShow" :key="item" cols="12" class="pa-0 pb-5">
+      <v-col v-for="item in metadataToShow" :key="item" cols="12" class="pa-0 pb-4">
         <auto-complete-field
           ref="firstInput"
           :model-value="modelValue[item]"
@@ -12,7 +12,7 @@
         />
       </v-col>
 
-      <v-col cols="12" md="6" class="px-1 pr-md-5 py-0">
+      <v-col cols="12" md="6" class="px-0 pl-md-1 pr-md-5 py-md-0 py-1">
         <single-eye-input
           eye-name="OD"
           :model-value="modelValue.od"
@@ -21,7 +21,7 @@
           @update:model-value="(val) => updateOdEye(val)"
         />
       </v-col>
-      <v-col cols="12" md="6" class="px-1 pl-md-5 py-0">
+      <v-col cols="12" md="6" class="px-0 pl-md-5 py-0">
         <single-eye-input
           eye-name="OS"
           :model-value="modelValue.os"
