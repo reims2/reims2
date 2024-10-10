@@ -86,9 +86,9 @@ const rootStore = useRootStore()
 const reimsSiteName = computed(() => rootStore.reimsSiteName)
 
 const valid = ref(false)
-const results = ref<ComponentPublicInstance | null>(null)
-const form = ref<HTMLFormElement | null>(null)
-const inputComponent = ref<HTMLElement | null>(null)
+const results = useTemplateRef('results')
+const form = useTemplateRef('form')
+const inputComponent = useTemplateRef('inputComponent')
 
 const glasses: Ref<GlassesInputType> = ref({
   glassesType: '',

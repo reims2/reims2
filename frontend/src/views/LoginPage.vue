@@ -4,7 +4,6 @@
     <v-row>
       <v-col cols="12" class="d-flex justify-center mt-8">
         <v-form
-          ref="form"
           v-model="valid"
           style="max-width: 350px"
           class="flex-grow-1"

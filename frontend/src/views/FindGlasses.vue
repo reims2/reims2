@@ -108,9 +108,9 @@ const glasses: Ref<GlassesInputType> = ref({
 
 const glassesStore = useGlassesStore()
 
-const inputComponent = ref<HTMLElement | null>(null)
-const form = ref<HTMLFormElement | null>(null)
-const results = ref<ComponentPublicInstance | null>(null)
+const inputComponent = useTemplateRef('inputComponent')
+const form = useTemplateRef('form')
+const results = useTemplateRef('results')
 
 const valid = ref(false)
 const page = ref(1)
