@@ -61,7 +61,7 @@ const loadingInventoryReport = ref(false)
 const csvUri = ref('')
 const filename = ref('')
 const selectedDispenedYear = ref<number>(dayjs().year())
-const downloadLink = ref<HTMLAnchorElement | null>(null)
+const downloadLink = useTemplateRef('downloadLink')
 
 const lastYears = Array.from(new Array(30), (_, index) => dayjs().year() - index).filter(
   (year) => year >= 2022,

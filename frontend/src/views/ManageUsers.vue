@@ -145,7 +145,7 @@ const addLoading = ref(false)
 const deleteLoading = ref<number | boolean>(false)
 const dialog = ref(false)
 
-const form = ref<HTMLFormElement | null>(null)
+const form = useTemplateRef('form')
 startLoading()
 
 async function startLoading() {

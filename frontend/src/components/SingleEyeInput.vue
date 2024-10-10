@@ -1,40 +1,38 @@
 <template>
-  <div :data-testid="eyeName + '-input'">
-    <v-row dense>
-      <v-col class="text-h5 pb-2">
-        <div :class="isBAL ? 'text-medium-emphasis' : ''">
-          {{ eyeName }}
-        </div>
-      </v-col>
-      <v-col v-for="eyeKey in eyeKeys" :key="eyeKey" cols="12" class="py-0 pl-0">
-        <v-text-field
-          density="compact"
-          type="number"
-          :model-value="eyeData[eyeKey].value"
-          :label="eyeData[eyeKey].label"
-          :rules="!(eyeData[eyeKey].disabled || isBAL) ? eyeRules[eyeKey] : []"
-          :step="eyeData[eyeKey].step"
-          :disabled="eyeData[eyeKey].disabled || isBAL"
-          :prefix="eyeData[eyeKey].value != null ? eyeData[eyeKey].prefix : ''"
-          @update:model-value="(val) => emitUpdate(eyeKey, val)"
-          @blur="formatAndEmit(eyeKey)"
-          @focus="$event.target.select()"
-          @keydown.s.prevent
-          @keydown.a.prevent
-        />
-      </v-col>
-      <v-col cols="12" class="pa-0 pb-4">
-        <v-checkbox
-          v-if="balEnabled"
-          v-model="isBAL"
-          tabindex="-1"
-          class="py-0 my-0"
-          :label="`BAL lens (Disable ${eyeName})`"
-          hide-details
-        />
-      </v-col>
-    </v-row>
-  </div>
+  <v-row class="pb-4" dense :data-testid="eyeName + '-input'">
+    <v-col class="text-h5 pb-2">
+      <div :class="isBAL ? 'text-medium-emphasis' : ''">
+        {{ eyeName }}
+      </div>
+    </v-col>
+    <v-col v-for="eyeKey in eyeKeys" :key="eyeKey" cols="12" class="py-0 pl-0">
+      <v-text-field
+        density="compact"
+        type="number"
+        :model-value="eyeData[eyeKey].value"
+        :label="eyeData[eyeKey].label"
+        :rules="!(eyeData[eyeKey].disabled || isBAL) ? eyeRules[eyeKey] : []"
+        :step="eyeData[eyeKey].step"
+        :disabled="eyeData[eyeKey].disabled || isBAL"
+        :prefix="eyeData[eyeKey].value != null ? eyeData[eyeKey].prefix : ''"
+        @update:model-value="(val) => emitUpdate(eyeKey, val)"
+        @blur="formatAndEmit(eyeKey)"
+        @focus="$event.target.select()"
+        @keydown.s.prevent
+        @keydown.a.prevent
+      />
+    </v-col>
+    <v-col cols="12" class="pa-0">
+      <v-checkbox
+        v-if="balEnabled"
+        v-model="isBAL"
+        tabindex="-1"
+        class="py-0 my-0"
+        :label="`BAL lens (Disable ${eyeName})`"
+        hide-details
+      />
+    </v-col>
+  </v-row>
 </template>
 
 <script setup lang="ts">
