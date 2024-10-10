@@ -4,7 +4,12 @@
       <v-col cols="12" md="6" lg="5" class="px-3">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
-            <glass-input v-model="glasses" :bal-enabled="true" :only-category="true"></glass-input>
+            <glass-input
+              ref="inputComponent"
+              v-model="glasses"
+              :bal-enabled="true"
+              :only-category="true"
+            ></glass-input>
             <v-col cols="12" class="pa-0">
               <v-checkbox
                 v-model="highTolerance"
@@ -105,7 +110,7 @@ const glasses: Ref<GlassesInputType> = ref({
 
 const glassesStore = useGlassesStore()
 
-const firstInput = ref<HTMLElement | null>(null)
+const inputComponent = ref<HTMLElement | null>(null)
 const form = ref<HTMLFormElement | null>(null)
 const results = ref<ComponentPublicInstance | null>(null)
 
@@ -144,7 +149,7 @@ async function submitAndUpdate() {
   // syncEye.value = true // fixme good hgere?
   page.value = 1
   // on desktop, focus input again; on mobile, scroll to bottom
-  if (!mobile.value) firstInput.value?.focus()
+  if (!mobile.value) inputComponent.value?.focus()
   else results.value?.$el.scrollIntoView(true)
 }
 
@@ -153,6 +158,6 @@ function reset() {
   resetEyeInput(glasses.value.os)
   form.value?.reset()
   syncEye.value = true
-  if (!mobile.value) firstInput.value?.focus()
+  if (!mobile.value) inputComponent.value?.focus()
 }
 </script>

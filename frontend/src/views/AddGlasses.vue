@@ -4,7 +4,7 @@
       <v-col cols="12" md="6" lg="4" class="pb-2 px-2 pt-4">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-row dense>
-            <glass-input v-model="glasses"></glass-input>
+            <glass-input ref="inputComponent" v-model="glasses"></glass-input>
             <v-col cols="12" class="px-0 pt-0">
               <div class="pb-3 text-body-2 text-medium-emphasis">
                 You are in {{ reimsSiteName }} ({{ freeSlots }} SKUs left)
@@ -88,7 +88,7 @@ const reimsSiteName = computed(() => rootStore.reimsSiteName)
 const valid = ref(false)
 const results = ref<ComponentPublicInstance | null>(null)
 const form = ref<HTMLFormElement | null>(null)
-const firstInput = ref<HTMLElement[] | null>(null)
+const inputComponent = ref<HTMLElement | null>(null)
 
 const glasses: Ref<GlassesInputType> = ref({
   glassesType: '',
@@ -126,8 +126,6 @@ async function submitDeletion(glasses: Glasses) {
 function reset() {
   resetAdd()
   form.value?.reset()
-  if (!mobile.value && firstInput.value && firstInput.value.length) {
-    firstInput.value[0]?.focus()
-  }
+  if (!mobile.value) inputComponent.value?.focus()
 }
 </script>

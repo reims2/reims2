@@ -39,17 +39,16 @@ import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import { glassesMetaUIData } from '@/util/glasses-utils'
 import { GlassesInput, DisplayedEye, GeneralGlassesDataKey } from '@/model/GlassesModel'
-const syncEyes = ref(true)
 
-interface Props {
+const { onlyCategory = false, balEnabled = false } = defineProps<{
   onlyCategory?: boolean
   balEnabled?: boolean
-}
-
-const metadataToShow: Ref<GeneralGlassesDataKey[]> = ref([])
-
-const { onlyCategory = false, balEnabled = false } = defineProps<Props>()
+}>()
 const modelValue = defineModel<GlassesInput>({ required: true })
+
+const syncEyes = ref(true)
+const firstInput = ref<HTMLElement[] | null>(null)
+const metadataToShow: Ref<GeneralGlassesDataKey[]> = ref([])
 
 const isMultifocal = computed(() => modelValue.value.glassesType === 'multifocal')
 
@@ -98,4 +97,11 @@ function updateOsEye(newVal: DisplayedEye) {
   modelValue.value.os = newVal
   modelValue.value.od = newOd
 }
+
+function focus() {
+  if (firstInput.value && firstInput.value.length) {
+    firstInput.value[0]?.focus()
+  }
+}
+defineExpose({ focus })
 </script>
