@@ -8,7 +8,7 @@
               ref="inputComponent"
               v-model="glasses"
               :bal-enabled="true"
-              :only-category="true"
+              :glasses-type-only="true"
             ></glass-input>
             <v-col cols="12" class="pa-0">
               <v-checkbox
@@ -104,8 +104,6 @@ const glasses: Ref<GlassesInputType> = ref({
   glassesType: '',
   od: { sphere: '', cylinder: '', axis: '', add: '', isBAL: false },
   os: { sphere: '', cylinder: '', axis: '', add: '', isBAL: false },
-  glassesSize: '',
-  appearance: '',
 })
 
 const glassesStore = useGlassesStore()

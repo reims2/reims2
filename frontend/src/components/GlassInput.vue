@@ -40,8 +40,8 @@ import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import { glassesMetaUIData } from '@/util/glasses-utils'
 import { GlassesInput, DisplayedEye, GeneralGlassesDataKey } from '@/model/GlassesModel'
 
-const { onlyCategory = false, balEnabled = false } = defineProps<{
-  onlyCategory?: boolean
+const { glassesTypeOnly = false, balEnabled = false } = defineProps<{
+  glassesTypeOnly?: boolean
   balEnabled?: boolean
 }>()
 const modelValue = defineModel<GlassesInput>({ required: true })
@@ -53,7 +53,7 @@ const metadataToShow: Ref<GeneralGlassesDataKey[]> = ref([])
 const isMultifocal = computed(() => modelValue.value.glassesType === 'multifocal')
 
 watchEffect(() => {
-  metadataToShow.value = onlyCategory
+  metadataToShow.value = glassesTypeOnly
     ? ['glassesType']
     : ['glassesType', 'appearance', 'glassesSize']
 })
@@ -71,30 +71,30 @@ function resetBalEye(nonBalEye: DisplayedEye, balEye: DisplayedEye) {
   nonBalEye.isBAL = false
 }
 
-function updateOdEye(newVal: DisplayedEye) {
+function updateOdEye(newOd: DisplayedEye) {
   const newOs = modelValue.value.os
-  if (syncEyes.value) newOs.add = newVal.add
-  if (balEnabled && newVal.isBAL) {
-    resetBalEye(newOs, newVal)
+  if (syncEyes.value) newOs.add = newOd.add
+  if (balEnabled && newOd.isBAL) {
+    resetBalEye(newOs, newOd)
   }
   if (balEnabled && newOs.isBAL) {
-    resetBalEye(newVal, newOs)
+    resetBalEye(newOd, newOs)
   }
 
-  modelValue.value.od = newVal
+  modelValue.value.od = newOd
   modelValue.value.os = newOs
 }
 
-function updateOsEye(newVal: DisplayedEye) {
-  if (newVal.add !== modelValue.value.os.add) syncEyes.value = false
+function updateOsEye(newOs: DisplayedEye) {
+  if (newOs.add !== modelValue.value.os.add) syncEyes.value = false
   const newOd = modelValue.value.od
-  if (balEnabled && newVal.isBAL) {
-    resetBalEye(newOd, newVal)
+  if (balEnabled && newOs.isBAL) {
+    resetBalEye(newOd, newOs)
   }
   if (balEnabled && newOd.isBAL) {
-    resetBalEye(newVal, newOd)
+    resetBalEye(newOs, newOd)
   }
-  modelValue.value.os = newVal
+  modelValue.value.os = newOs
   modelValue.value.od = newOd
 }
 

@@ -57,8 +57,8 @@ export interface GlassesInput {
   od: DisplayedEye
   os: DisplayedEye
   glassesType: GlassesType | ''
-  appearance: GlassesAppearance | ''
-  glassesSize: GlassesSize | ''
+  appearance?: GlassesAppearance | ''
+  glassesSize?: GlassesSize | ''
 }
 
 export interface DisplayedGlasses extends GlassesInput {
