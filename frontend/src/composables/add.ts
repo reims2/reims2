@@ -66,7 +66,6 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
   function reset() {
     resetEyeInput(glasses.value.od)
     resetEyeInput(glasses.value.os)
-    // TODO reset meta
     syncEyes.value = true
   }
 

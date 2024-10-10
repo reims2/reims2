@@ -53,12 +53,18 @@ export type GlassesMeta = {
   glassesSize: GlassesSize
 }
 
-export interface GlassesInput extends GlassesMeta {
+export interface GlassesInput {
   od: DisplayedEye
   os: DisplayedEye
+  glassesType: GlassesType | ''
+  appearance: GlassesAppearance | ''
+  glassesSize: GlassesSize | ''
 }
 
 export interface DisplayedGlasses extends GlassesInput {
+  glassesType: GlassesType
+  appearance: GlassesAppearance
+  glassesSize: GlassesSize
   sku?: string
   creationDate?: string
 }

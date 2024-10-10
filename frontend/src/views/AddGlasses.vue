@@ -71,7 +71,7 @@ import GlassInput from '@/components/GlassInput.vue'
 import { useRootStore } from '@/stores/root'
 import { useEnterToTab } from 'vue3-enter-to-tab'
 
-import { Glasses, GlassesMeta, DisplayedEye } from '@/model/GlassesModel'
+import { Glasses, GlassesInput as GlassesInputType } from '@/model/GlassesModel'
 
 import { useDisplay } from 'vuetify'
 import { useAddGlasses } from '@/composables/add'
@@ -90,17 +90,12 @@ const results = ref<ComponentPublicInstance | null>(null)
 const form = ref<HTMLFormElement | null>(null)
 const firstInput = ref<HTMLElement[] | null>(null)
 
-interface GlassesInput extends GlassesMeta {
-  od: DisplayedEye
-  os: DisplayedEye
-}
-
-const glasses: Ref<GlassesInput> = ref({
-  glassesType: 'single',
+const glasses: Ref<GlassesInputType> = ref({
+  glassesType: '',
   od: { sphere: '', cylinder: '', axis: '', add: '' },
   os: { sphere: '', cylinder: '', axis: '', add: '' },
-  glassesSize: 'small',
-  appearance: 'masculine',
+  glassesSize: '',
+  appearance: '',
 })
 
 const {

@@ -84,7 +84,7 @@ import { useGlassesStore } from '@/stores/glasses'
 
 import GlassInput from '@/components/GlassInput.vue'
 
-import { DisplayedEye, GlassesMeta } from '@/model/GlassesModel'
+import { GlassesInput as GlassesInputType } from '@/model/GlassesModel'
 import { resetEyeInput } from '@/util/eye-utils'
 
 import { useEnterToTab } from 'vue3-enter-to-tab'
@@ -95,17 +95,12 @@ const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'
 
 const { mobile } = useDisplay()
 
-interface GlassesInput extends GlassesMeta {
-  od: DisplayedEye
-  os: DisplayedEye
-}
-
-const glasses: Ref<GlassesInput> = ref({
-  glassesType: 'single',
-  od: { sphere: '', cylinder: '', axis: '', add: '', isBal: false },
-  os: { sphere: '', cylinder: '', axis: '', add: '', isBal: false },
-  glassesSize: 'small',
-  appearance: 'masculine',
+const glasses: Ref<GlassesInputType> = ref({
+  glassesType: '',
+  od: { sphere: '', cylinder: '', axis: '', add: '', isBAL: false },
+  os: { sphere: '', cylinder: '', axis: '', add: '', isBAL: false },
+  glassesSize: '',
+  appearance: '',
 })
 
 const glassesStore = useGlassesStore()

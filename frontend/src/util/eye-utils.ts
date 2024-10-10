@@ -8,12 +8,14 @@ import {
 } from '@/model/GlassesModel'
 
 /** Eye is fixed by applying step rounding and the correct sign for cylinder */
-export function sanitizeEyeValues(singleEye: OptionalEye | DisplayedEye | EyeSearch): Eye {
+export function sanitizeEyeValues(
+  singleEye: OptionalEye | DisplayedEye | EyeSearch | undefined,
+): Eye {
   const rx: Eye = {
-    sphere: Number(singleEye.sphere),
-    cylinder: Number(singleEye.cylinder),
-    axis: Number(singleEye.axis),
-    add: Number(singleEye.add) || 0,
+    sphere: Number(singleEye?.sphere) || 0,
+    cylinder: Number(singleEye?.cylinder) || 0,
+    axis: Number(singleEye?.axis) || 0,
+    add: Number(singleEye?.add) || 0,
   }
   // easier for calculation
   if (rx.axis === 180) rx.axis = 0
@@ -32,7 +34,7 @@ export function sanitizeEyeValues(singleEye: OptionalEye | DisplayedEye | EyeSea
     newValue = Math.ceil(Math.abs(newValue) / 0.25) * 0.25
     rx[prop] = isNegative ? -newValue : newValue
   }
-  if ('isBAL' in singleEye) {
+  if (singleEye && 'isBAL' in singleEye) {
     return {
       ...rx,
       isBAL: Boolean(singleEye.isBAL),
@@ -42,7 +44,8 @@ export function sanitizeEyeValues(singleEye: OptionalEye | DisplayedEye | EyeSea
   }
 }
 
-export function resetEyeInput(eye: DisplayedEye | EyeSearch) {
+export function resetEyeInput(eye?: DisplayedEye | EyeSearch) {
+  if (!eye) eye = {} as DisplayedEye
   eye.sphere = ''
   eye.cylinder = ''
   eye.axis = ''

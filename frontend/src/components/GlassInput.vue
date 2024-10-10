@@ -46,47 +46,54 @@ interface Props {
   balEnabled?: boolean
 }
 
-const metadataToShow : Ref<GeneralGlassesDataKey[]> = ref([])
+const metadataToShow: Ref<GeneralGlassesDataKey[]> = ref([])
 
 const { onlyCategory = false, balEnabled = false } = defineProps<Props>()
 const modelValue = defineModel<GlassesInput>({ required: true })
 
 const isMultifocal = computed(() => modelValue.value.glassesType === 'multifocal')
 
-watchEffect(() =>{
-    metadataToShow.value = onlyCategory ? ['glassesType'] : ["glassesType", "appearance", "glassesSize"]
+watchEffect(() => {
+  metadataToShow.value = onlyCategory
+    ? ['glassesType']
+    : ['glassesType', 'appearance', 'glassesSize']
 })
-
-function updateOdEye(newVal: DisplayedEye) {
-  const newOs = modelValue.value.os
-  if (syncEyes.value) newOs.add = newVal.add
-  if (balEnabled && modelValue.value.os.isBAL) {
-    newOs.sphere = newVal.sphere
-    newOs.cylinder = ''
-    newOs.axis = ''
-    newOs.add = ''
-    newVal.isBAL = false
-  }
-
-  // todo eventuell isBal immer setzen wenn balEnabled falls der SingleEyeInput das nicht gemacht
-  // hat
-  modelValue.value.od = newVal
-  modelValue.value.os = newOs
-}
 
 function updateMeta(key: string, value: string) {
   modelValue.value[key] = value
 }
 
+function resetBalEye(nonBalEye: DisplayedEye, balEye: DisplayedEye) {
+  balEye.sphere = nonBalEye.sphere
+  balEye.cylinder = ''
+  balEye.axis = ''
+  balEye.add = ''
+  balEye.isBAL = true
+  nonBalEye.isBAL = false
+}
+
+function updateOdEye(newVal: DisplayedEye) {
+  const newOs = modelValue.value.os
+  if (syncEyes.value) newOs.add = newVal.add
+  if (balEnabled && newVal.isBAL) {
+    resetBalEye(newOs, newVal)
+  }
+  if (balEnabled && newOs.isBAL) {
+    resetBalEye(newVal, newOs)
+  }
+
+  modelValue.value.od = newVal
+  modelValue.value.os = newOs
+}
+
 function updateOsEye(newVal: DisplayedEye) {
   if (newVal.add !== modelValue.value.os.add) syncEyes.value = false
   const newOd = modelValue.value.od
-  if (balEnabled && modelValue.value.od.isBAL) {
-    newOd.sphere = newVal.sphere
-    newOd.cylinder = ''
-    newOd.axis = ''
-    newOd.add = ''
-    newVal.isBAL = false
+  if (balEnabled && newVal.isBAL) {
+    resetBalEye(newOd, newVal)
+  }
+  if (balEnabled && newOd.isBAL) {
+    resetBalEye(newVal, newOd)
   }
   modelValue.value.os = newVal
   modelValue.value.od = newOd
