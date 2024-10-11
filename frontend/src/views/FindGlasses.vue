@@ -58,7 +58,14 @@
           Start a new search to display results
         </v-alert>
         <v-alert v-else-if="matches.length === 0" type="warning" density="comfortable">
-          No suitable glasses found. Please try another search.
+          No suitable glasses found.
+          <p>
+            You can also try searching with
+            <span class="font-italic">Increase search tolerance</span>
+            or
+            <span class="font-italic">BAL lens</span>
+            enabled.
+          </p>
         </v-alert>
         <div v-else>
           <div v-for="item in paginatedMatches" :key="item.id">
