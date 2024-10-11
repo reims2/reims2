@@ -14,7 +14,7 @@ jobs:
       name: testing
       url: https://${{ inputs.instance_name }}.reims2.app
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
       - name: Get Github short SHA
         env:
           SHA: ${{ github.event.pull_request.head.sha || github.sha }}
