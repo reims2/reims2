@@ -1,52 +1,56 @@
 <template>
   <v-card style="min-width: 290px" class="mb-2" :loading="loading">
-    <v-card-title class="pb-0 pt-4">
-      <div class="d-flex align-center">
-        <v-chip
-          v-if="isGlassesResult(props.modelValue)"
-          class="mr-2 px-2"
-          size="small"
-          color="white"
-          label
-          :ripple="false"
-          :style="{ 'background-color': calcColorGradient(props.modelValue.score) }"
-        >
-          <v-tooltip activator="parent" location="bottom">
-            Result (Philscore) - lower values are better
-          </v-tooltip>
-          {{ props.modelValue.score.toFixed(2) }}
-        </v-chip>
-        <div class="text-h6">SKU {{ displayedGlass.sku }}</div>
-      </div>
-    </v-card-title>
-    <v-card-subtitle class="pb-2 d-flex align-center">
-      <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
-        <span class="no-child-padding" @click="edit = key">
-          <v-tooltip location="bottom" activator="parent" :disabled="editable && edit == key">
-            {{ glassesMetaUIData[key].desc }}
-          </v-tooltip>
-          <v-select
-            v-if="editable && edit == key"
-            :model-value="displayedGlass[key]"
-            :items="glassesMetaUIData[key].items"
-            auto-select-first
-            density="compact"
-            single-line
-            hide-details
-            style="max-width: 160px; min-width: 90px"
-            autofocus
-            @update:model-value="(value) => editMeta(key, value)"
-            @blur="edit = ''"
-          />
-          <span v-else>
-            <v-icon size="small">
-              {{ glassesMetaUIData[key].icon }}
-            </v-icon>
-            {{ displayedGlass[key] }}
+    <div class="d-flex align-center pt-4">
+      <div class="flex-grow-1 pt-2">
+        <v-card-title class="py-0">
+          <div class="text-h6">SKU {{ displayedGlass.sku }}</div>
+        </v-card-title>
+        <v-card-subtitle class="pb-2 d-flex align-center">
+          <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
+            <span class="no-child-padding" @click="edit = key">
+              <v-tooltip location="bottom" activator="parent" :disabled="editable && edit == key">
+                {{ glassesMetaUIData[key].desc }}
+              </v-tooltip>
+              <v-select
+                v-if="editable && edit == key"
+                :model-value="displayedGlass[key]"
+                :items="glassesMetaUIData[key].items"
+                auto-select-first
+                density="compact"
+                single-line
+                hide-details
+                style="max-width: 160px; min-width: 90px"
+                autofocus
+                @update:model-value="(value) => editMeta(key, value)"
+                @blur="edit = ''"
+              />
+              <span v-else>
+                <v-icon size="small">
+                  {{ glassesMetaUIData[key].icon }}
+                </v-icon>
+                {{ displayedGlass[key] }}
+              </span>
+            </span>
           </span>
-        </span>
-      </span>
-    </v-card-subtitle>
+        </v-card-subtitle>
+      </div>
+      <div v-if="isGlassesResult(props.modelValue)">
+        <v-progress-circular
+          class="mr-7"
+          :model-value="convertScoreToPercentage(props.modelValue)"
+          :rotate="360"
+          :size="53"
+          :width="7"
+          :color="calcColorGradient(props.modelValue.score)"
+          :style="{ fontSize: '13px' }"
+        >
+          <template #default>{{ convertScoreToPercentage(props.modelValue) }} %</template>
+        </v-progress-circular>
+        <v-tooltip activator="parent" location="bottom">
+          Match percentage (PhilScore: {{ props.modelValue.score.toFixed(2) }})
+        </v-tooltip>
+      </div>
+    </div>
     <v-card-text class="py-0">
       <v-container class="pa-0">
         <v-row dense>
@@ -224,6 +228,14 @@ async function startEdit(newGlasses: Glasses) {
 function isGlassesResult(value: GlassesResult | Glasses): value is GlassesResult {
   return (value as GlassesResult).score !== undefined
 }
+
+function convertScoreToPercentage(glasses: GlassesResult | Glasses): string {
+  const clampedScore = Math.max(Math.min((glasses as GlassesResult).score, 4), 0)
+  let percentage: number
+  if (clampedScore <= 2) percentage = 100 - clampedScore * 35
+  else percentage = 30 - (clampedScore - 2) * 15
+  return percentage.toFixed(0)
+}
 </script>
 
 <style scoped>
@@ -234,5 +246,15 @@ function isGlassesResult(value: GlassesResult | Glasses): value is GlassesResult
 
 .v-btn {
   min-width: 0px !important;
+}
+
+.dot {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  font-size: 14px;
+  color: white;
+  text-align: center;
 }
 </style>
