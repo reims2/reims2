@@ -129,7 +129,7 @@ function calcSingleEyePhilscore(rx: Eye, lens: Eye, isSinglefocal: boolean): num
 
   /* In the following that score gets improved (=smaller) or worse (=bigger) to account for some optometry special cases */
 
-  score += applyMutuallyExclusiveRules(score, rx, lens)
+  score += applyMutuallyExclusiveRules(rx, lens)
 
   if (!isSinglefocal) score += multiFocalAddScore(rx.add, lens.add)
 
@@ -150,7 +150,7 @@ function calcInitialDiffScore(rx: Eye, lens: Eye, isSinglefocal: boolean): numbe
   return sphereDiff + cylinderDiff + addDiff * 0.1 + axisDiff / 3600
 }
 
-function applyMutuallyExclusiveRules(score: number, rx: Eye, lens: Eye): number {
+function applyMutuallyExclusiveRules(rx: Eye, lens: Eye): number {
   // Those 3 rules are applied mutually exclusive in order (i.e. as soon as one applies, the others aren't applied). Why? No one knows.
   // But otherwise we could have scores below zero, so maybe bc of that?
   let diff = 0
