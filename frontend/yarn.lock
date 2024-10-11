@@ -4508,10 +4508,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deep-pick-omit@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "deep-pick-omit@npm:1.2.0"
-  checksum: 10/4e3b499e275ebb6b77df82f62bf2ec3dd9548496d1eba657dc3f49d6b436583e92090909f97ca3b1ae828adadb3ac3f6d3c332d455afa6c8ba5b18ba61feb3e8
+"deep-pick-omit@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "deep-pick-omit@npm:1.2.1"
+  checksum: 10/8d701fb0d1d4eef94338cf1103c9fe641bfd46344636d6f646f305648b3a16ed5b39df1609ebab383dac77337b8e0a2b51873a757b6063582f9abc853df7c03f
   languageName: node
   linkType: hard
 
@@ -7617,12 +7617,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia-plugin-persistedstate@npm:4.0.2":
-  version: 4.0.2
-  resolution: "pinia-plugin-persistedstate@npm:4.0.2"
+"pinia-plugin-persistedstate@npm:4.1.1":
+  version: 4.1.1
+  resolution: "pinia-plugin-persistedstate@npm:4.1.1"
   dependencies:
     "@nuxt/kit": "npm:^3.13.2"
-    deep-pick-omit: "npm:^1.2.0"
+    deep-pick-omit: "npm:^1.2.1"
     defu: "npm:^6.1.4"
     destr: "npm:^2.0.3"
   peerDependencies:
@@ -7633,7 +7633,7 @@ __metadata:
       optional: true
     pinia:
       optional: true
-  checksum: 10/afc2c8014f5ca47a77047a1ced056df5fe36843c9af5ab8066e7b23786ee331305d98ad3133cdd803bfe6f645b3e8e9e85ed52ef8c38acfb9a551a97cedd3542
+  checksum: 10/3fef07869b5ab09c18278603fc0e97bb9be782016c65b8d6dee8218de16270473ba6349fc59493dd816d59ee084711cf77bdf79cfdf9aa1afce8ace091ab9bde
   languageName: node
   linkType: hard
 
@@ -7994,7 +7994,7 @@ __metadata:
     happy-dom: "npm:15.7.4"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:2.2.4"
-    pinia-plugin-persistedstate: "npm:4.0.2"
+    pinia-plugin-persistedstate: "npm:4.1.1"
     prettier: "npm:3.3.3"
     sass: "npm:1.79.4"
     sass-embedded: "npm:1.79.4"
