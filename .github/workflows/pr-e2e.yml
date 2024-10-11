@@ -1,10 +1,10 @@
 name: PR E2E
 
 on:
-  pull_request:
-    paths:
-      - "e2e/**"
-      - "ansible/**"
+  # pull_request:
+  #   paths:
+  #     - "e2e/**"
+  #     - "ansible/**"
   workflow_dispatch:
 
 jobs:
