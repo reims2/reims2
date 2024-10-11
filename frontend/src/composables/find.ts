@@ -42,13 +42,6 @@ export const useFindGlasses = (
   }
 
   watch(
-    () => glassesStore.allGlassesHash,
-    () => {
-      if (matches.value != null) startSearch(false)
-    },
-  )
-
-  watch(
     () => [glasses, highTolerance, reimsSite],
     () => {
       reset()
