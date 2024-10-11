@@ -18,14 +18,13 @@ export default function calculateAllPhilscore(
   const rxOd = terms.od
   const rxOs = terms.os
   const isSinglefocal = terms.glassesType === 'single'
-  const tolerance =
-    terms.highTolerance !== null && terms.highTolerance ? HIGH_TOLERANCE : NORMAL_TOLERANCE
+  const isHighTolerance = terms.highTolerance ?? false
 
   return glasses
     .slice()
     .filter((glass) => terms.glassesType === glass.glassesType)
-    .filter((glass) => filterLens(rxOd, glass.od, tolerance, isSinglefocal, rxOs))
-    .filter((glass) => filterLens(rxOs, glass.os, tolerance, isSinglefocal, rxOd))
+    .filter((glass) => filterLens(rxOd, glass.od, isHighTolerance, isSinglefocal, rxOs))
+    .filter((glass) => filterLens(rxOs, glass.os, isHighTolerance, isSinglefocal, rxOd))
     .map((glass) => {
       const odScore = rxOd.isBAL ? 0 : calcSingleEyePhilscore(rxOd, glass.od, isSinglefocal)
       const osScore = rxOs.isBAL ? 0 : calcSingleEyePhilscore(rxOs, glass.os, isSinglefocal)
@@ -44,12 +43,14 @@ export default function calculateAllPhilscore(
 function filterLens(
   targetEyeRx: SanitizedEyeSearch,
   lens: Eye,
-  tolerance: number,
+  isHighTolerance: boolean,
   isSinglefocal: boolean,
   otherEyeRx: SanitizedEyeSearch,
 ): boolean {
   if (!targetEyeRx.isBAL) {
-    if (!checkForSingleAxisTolerance(targetEyeRx, lens)) return false
+    const tolerance = isHighTolerance ? HIGH_TOLERANCE : NORMAL_TOLERANCE
+
+    if (!checkForSingleAxisTolerance(targetEyeRx, lens, isHighTolerance)) return false
     if (!checkForTolerances(lens, targetEyeRx, tolerance)) return false
     if (!isSinglefocal && !checkForAdditionalTolerance(lens, targetEyeRx, tolerance)) return false
   } else {
@@ -59,8 +60,8 @@ function filterLens(
   return true
 }
 
-function calcAxisTolerance(cylinder: number): number {
-  // Some arbitrary numbers from REIMS1, in short: Smaller cylinders allow for a greater tolerance.
+function calcAxisTolerance(cylinder: number, isHighTolerance: boolean): number {
+  // Numbers taken from REIMS1, in short: Smaller cylinders allow for a greater tolerance.
   const toleranceYValues = [7, 8, 9, 10, 13, 15, 20, 25, 35, 90]
   const toleranceXValues = [-4, -3, -2, -1.75, -1.25, -1, -0.75, -0.5, -0.25, 0]
   // Implement simple "lookup table"
@@ -69,12 +70,13 @@ function calcAxisTolerance(cylinder: number): number {
     if (cylinder < toleranceXValues[i]) break
     result = toleranceYValues[i]
   }
+  if (isHighTolerance) result *= 2
   return result
 }
 
-function checkForSingleAxisTolerance(rx: Eye, lens: Eye): boolean {
+function checkForSingleAxisTolerance(rx: Eye, lens: Eye, isHighTolerance: boolean): boolean {
   /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
-  const allowedTolerance = calcAxisTolerance(lens.cylinder)
+  const allowedTolerance = calcAxisTolerance(lens.cylinder, isHighTolerance)
 
   // Now calculate the minima and maxima. We have two pairs of min and max because we have to account for "wraparound"
   // An axis of 0 with a tolerance of plus and minus 10, has to be between 170-180 and 0-10, because 180 wraps around to 0.
