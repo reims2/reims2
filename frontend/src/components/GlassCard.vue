@@ -41,9 +41,12 @@
           :size="53"
           :width="7"
           :color="calcColorGradient(props.modelValue.score)"
-          :style="{ fontSize: '13px' }"
+          :style="{ fontSize: '14px' }"
         >
-          <template #default>{{ convertScoreToPercentage(props.modelValue.score) }} %</template>
+          <template #default>
+            {{ convertScoreToPercentage(props.modelValue.score) }}
+            <span :style="{ marginLeft: '1px' }">%</span>
+          </template>
         </v-progress-circular>
         <v-tooltip activator="parent" location="bottom">
           Estimated match in percent (PhilScore of {{ props.modelValue.score.toFixed(2) }})
@@ -70,7 +73,7 @@
                       true,
                     )
                   }}
-                  %
+                  <span :style="{ marginLeft: '1px' }">%</span>
                 </v-chip>
               </div>
             </div>
