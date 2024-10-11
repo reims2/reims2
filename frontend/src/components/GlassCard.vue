@@ -37,17 +37,16 @@
       <div v-if="isGlassesResult(props.modelValue)">
         <v-progress-circular
           class="mr-7"
-          :model-value="convertScoreToPercentage(props.modelValue)"
-          :rotate="360"
+          :model-value="convertScoreToPercentage(props.modelValue.score)"
           :size="53"
           :width="7"
           :color="calcColorGradient(props.modelValue.score)"
           :style="{ fontSize: '13px' }"
         >
-          <template #default>{{ convertScoreToPercentage(props.modelValue) }} %</template>
+          <template #default>{{ convertScoreToPercentage(props.modelValue.score) }} %</template>
         </v-progress-circular>
         <v-tooltip activator="parent" location="bottom">
-          Match percentage (PhilScore: {{ props.modelValue.score.toFixed(2) }})
+          Estimated match in percent (PhilScore of {{ props.modelValue.score.toFixed(2) }})
         </v-tooltip>
       </div>
     </div>
@@ -59,16 +58,19 @@
               <div class="text-subtitle-1">
                 {{ eye.text }}
               </div>
+              <v-tooltip activator="parent" location="bottom">
+                Match percentage only for {{ eye.text }}
+              </v-tooltip>
+
               <div v-if="isGlassesResult(props.modelValue)" class="d-flex align-center">
                 <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
-                  <v-tooltip activator="parent" location="bottom">
-                    PhilScore only for {{ eye.text }}
-                  </v-tooltip>
                   {{
-                    (eye.key == 'od' ? props.modelValue.odScore : props.modelValue.osScore).toFixed(
-                      2,
+                    convertScoreToPercentage(
+                      eye.key == 'od' ? props.modelValue.odScore : props.modelValue.osScore,
+                      true,
                     )
                   }}
+                  %
                 </v-chip>
               </div>
             </div>
@@ -229,8 +231,9 @@ function isGlassesResult(value: GlassesResult | Glasses): value is GlassesResult
   return (value as GlassesResult).score !== undefined
 }
 
-function convertScoreToPercentage(glasses: GlassesResult | Glasses): string {
-  const clampedScore = Math.max(Math.min((glasses as GlassesResult).score, 4), 0)
+function convertScoreToPercentage(score: number, singleEye = false): string {
+  if (singleEye) score = score * 2
+  const clampedScore = Math.max(Math.min(score, 4), 0)
   let percentage: number
   if (clampedScore <= 2) percentage = 100 - clampedScore * 35
   else percentage = 30 - (clampedScore - 2) * 15
