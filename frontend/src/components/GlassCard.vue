@@ -3,47 +3,32 @@
     <v-card-title class="pb-0 pt-4">
       <div class="d-flex align-center">
         <v-chip
-          v-if="isGlassesResult(props.modelValue)"
+          v-if="isGlassesResult(modelValue)"
           class="mr-2 px-2"
           size="small"
           color="white"
           label
           :ripple="false"
-          :style="{ 'background-color': calcColorGradient(props.modelValue.score) }"
+          :style="{ 'background-color': calcColorGradient(modelValue.score) }"
         >
           <v-tooltip activator="parent" location="bottom">
             Result (Philscore) - lower values are better
           </v-tooltip>
-          {{ props.modelValue.score.toFixed(2) }}
+          {{ modelValue.score.toFixed(2) }}
         </v-chip>
         <div class="text-h6">SKU {{ displayedGlass.sku }}</div>
       </div>
     </v-card-title>
     <v-card-subtitle class="pb-2 d-flex align-center">
       <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
-        <span class="no-child-padding" @click="edit = key">
-          <v-tooltip location="bottom" activator="parent" :disabled="editable && edit == key">
+        <span class="no-child-padding">
+          <v-tooltip location="bottom" activator="parent">
             {{ glassesMetaUIData[key].desc }}
           </v-tooltip>
-          <v-select
-            v-if="editable && edit == key"
-            :model-value="displayedGlass[key]"
-            :items="glassesMetaUIData[key].items"
-            auto-select-first
-            density="compact"
-            single-line
-            hide-details
-            style="max-width: 160px; min-width: 90px"
-            autofocus
-            @update:model-value="(value) => editMeta(key, value)"
-            @blur="edit = ''"
-          />
-          <span v-else>
-            <v-icon size="small">
-              {{ glassesMetaUIData[key].icon }}
-            </v-icon>
-            {{ displayedGlass[key] }}
-          </span>
+          <v-icon size="small">
+            {{ glassesMetaUIData[key].icon }}
+          </v-icon>
+          {{ displayedGlass[key] }}
         </span>
       </span>
     </v-card-subtitle>
@@ -55,32 +40,21 @@
               <div class="text-subtitle-1">
                 {{ eye.text }}
               </div>
-              <div v-if="isGlassesResult(props.modelValue)" class="d-flex align-center">
+              <div v-if="isGlassesResult(modelValue)" class="d-flex align-center">
                 <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
                   <v-tooltip activator="parent" location="bottom">
                     PhilScore only for {{ eye.text }}
                   </v-tooltip>
-                  {{
-                    (eye.key == 'od' ? props.modelValue.odScore : props.modelValue.osScore).toFixed(
-                      2,
-                    )
-                  }}
+                  {{ (eye.key == 'od' ? modelValue.odScore : modelValue.osScore).toFixed(2) }}
                 </v-chip>
               </div>
             </div>
-            <tr v-for="dataKey in eyeDataKeys" :key="dataKey" @click="edit = eye.key + dataKey">
+            <tr v-for="dataKey in eyeDataKeys" :key="dataKey">
               <td class="text-medium-emphasis pr-2">
                 {{ eyeUIData[dataKey].label }}
               </td>
               <td>
-                <glass-card-input-span
-                  :model-value="displayedGlass[eye.key][dataKey]"
-                  :suffix="eyeUIData[dataKey].suffix"
-                  :rules="eyeRules[dataKey]"
-                  :is-editing="editable && edit == eye.key + dataKey"
-                  @update:model-value="(value) => editEye(eye.key, dataKey, value)"
-                  @blur="edit = ''"
-                />
+                <span>{{ displayedGlass[eye.key][dataKey] }} {{ eyeUIData[dataKey].suffix }}</span>
               </td>
             </tr>
           </v-col>
@@ -88,57 +62,34 @@
       </v-container>
     </v-card-text>
     <v-card-actions class="pt-0 mx-0" style="padding-left: 6px">
-      <v-tooltip location="bottom">
-        <template #activator="{ props: tooltipProps }">
-          <v-btn v-if="editable && edit == ''" v-bind="tooltipProps" variant="text" class="mx-0">
-            Edit
-          </v-btn>
-        </template>
-        Do you want to edit glasses? Simply
-        <span class="font-weight-bold">click</span>
-        on the value
-      </v-tooltip>
-
-      <v-btn v-if="editable && edit != ''" variant="text" class="mx-0" @click="edit = ''">
-        Cancel Edit
+      <v-btn v-if="editable" variant="text" class="mx-0" @click="editDialogState = true">
+        Edit
       </v-btn>
       <slot name="actions" />
     </v-card-actions>
   </v-card>
+
+  <edit-dialog v-model:open="editDialogState" :glasses="modelValue" />
 </template>
 
 <script setup lang="ts">
-import { deepCopyGlasses, eyeRules, glassesMetaUIData } from '@/util/glasses-utils'
-import { sanitizeEyeValues } from '@/util/eye-utils'
-import GlassCardInputSpan from '@/components/GlassCardInputSpan.vue'
-import { useGlassesStore } from '@/stores/glasses'
+import { glassesMetaUIData } from '@/util/glasses-utils'
 import {
   EyeKey,
-  GeneralGlassesDataKey,
   Glasses,
-  GlassesAppearance,
   GlassesEyeIndex,
   GlassesResult,
-  GlassesSize,
-  GlassesType,
   eyeKeys,
   generalGlassesDataKeys,
 } from '@/model/GlassesModel'
-import { useToast } from 'vue-toastification'
-import { ReimsAxiosError } from '@/lib/axios'
 import { calcColorGradient } from '@/lib/color'
 import { formatGlassesForDisplay } from '@/util/format-glasses'
+import EditDialog from '@/components/EditDialog.vue'
 
-const toast = useToast()
-
-const glassesStore = useGlassesStore()
-
-const props = withDefaults(
-  defineProps<{ modelValue: Glasses | GlassesResult; editable?: boolean }>(),
-  {
-    editable: false,
-  },
-)
+const { modelValue, editable = false } = defineProps<{
+  modelValue: Glasses | GlassesResult
+  editable?: boolean
+}>()
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -147,10 +98,10 @@ const eyes: { text: string; key: GlassesEyeIndex }[] = [
   { text: 'OS', key: 'os' },
 ]
 
-const edit = ref('')
+const editDialogState = ref(false)
 const loading = ref(false)
 const eyeDataKeys = computed(() => {
-  if (props.modelValue.glassesType === 'multifocal') return eyeKeys
+  if (modelValue.glassesType === 'multifocal') return eyeKeys
   else return eyeKeys.filter((k) => k !== 'add')
 })
 
@@ -182,45 +133,8 @@ const eyeUIData: EyeDataMap = {
   },
 }
 
-const displayedGlass = computed(() => formatGlassesForDisplay(props.modelValue))
+const displayedGlass = computed(() => formatGlassesForDisplay(modelValue))
 
-async function editMeta(dataKey: GeneralGlassesDataKey, value: string) {
-  if (!props.editable) return // just as a "safety" fallback
-  const newGlasses: Glasses = deepCopyGlasses(props.modelValue)
-  if (dataKey === 'glassesType') {
-    newGlasses[dataKey] = value as GlassesType
-  } else if (dataKey === 'appearance') {
-    newGlasses[dataKey] = value as GlassesAppearance
-  } else if (dataKey === 'glassesSize') {
-    newGlasses[dataKey] = value as GlassesSize
-  }
-  await startEdit(newGlasses)
-}
-async function editEye(eyeKey: GlassesEyeIndex, dataKey: EyeKey, value: string | number) {
-  const newGlasses: Glasses = deepCopyGlasses(props.modelValue)
-  newGlasses[eyeKey][dataKey] = Number(value)
-  newGlasses[eyeKey] = sanitizeEyeValues(newGlasses[eyeKey])
-  await startEdit(newGlasses)
-}
-async function startEdit(newGlasses: Glasses) {
-  if (!props.editable) return // just as a "safety" fallback
-  try {
-    loading.value = true
-    await glassesStore.editGlasses(newGlasses)
-  } catch (error) {
-    if (error instanceof ReimsAxiosError && (error.isServerSide || error.isNetwork)) {
-      toast.error(`Glasses will be automatically edited as soon as the connection is back.`)
-      // no return here, we act like it's successful
-    } else {
-      toast.error(`Glasses can't be edited (${error.message}). Please retry later`)
-      return
-    }
-  } finally {
-    loading.value = false
-  }
-  emit('update:modelValue', newGlasses)
-  edit.value = ''
-}
 function isGlassesResult(value: GlassesResult | Glasses): value is GlassesResult {
   return (value as GlassesResult).score !== undefined
 }
