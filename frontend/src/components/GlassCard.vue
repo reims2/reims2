@@ -3,18 +3,18 @@
     <v-card-title class="pb-0 pt-4">
       <div class="d-flex align-center">
         <v-chip
-          v-if="isGlassesResult(modelValue)"
+          v-if="isGlassesResult(glasses)"
           class="mr-2 px-2"
           size="small"
           color="white"
           label
           :ripple="false"
-          :style="{ 'background-color': calcColorGradient(modelValue.score) }"
+          :style="{ 'background-color': calcColorGradient(glasses.score) }"
         >
           <v-tooltip activator="parent" location="bottom">
             Result (Philscore) - lower values are better
           </v-tooltip>
-          {{ modelValue.score.toFixed(2) }}
+          {{ glasses.score.toFixed(2) }}
         </v-chip>
         <div class="text-h6">SKU {{ displayedGlass.sku }}</div>
       </div>
@@ -40,12 +40,12 @@
               <div class="text-subtitle-1">
                 {{ eye.text }}
               </div>
-              <div v-if="isGlassesResult(modelValue)" class="d-flex align-center">
+              <div v-if="isGlassesResult(glasses)" class="d-flex align-center">
                 <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
                   <v-tooltip activator="parent" location="bottom">
                     PhilScore only for {{ eye.text }}
                   </v-tooltip>
-                  {{ (eye.key == 'od' ? modelValue.odScore : modelValue.osScore).toFixed(2) }}
+                  {{ (eye.key == 'od' ? glasses.odScore : glasses.osScore).toFixed(2) }}
                 </v-chip>
               </div>
             </div>
@@ -69,7 +69,7 @@
     </v-card-actions>
   </v-card>
 
-  <edit-dialog v-model:open="editDialogState" :glasses="modelValue" />
+  <edit-dialog v-model:open="editDialogState" :glasses="glasses" />
 </template>
 
 <script setup lang="ts">
@@ -86,12 +86,9 @@ import { calcColorGradient } from '@/lib/color'
 import { formatGlassesForDisplay } from '@/util/format-glasses'
 import EditDialog from '@/components/EditDialog.vue'
 
-const { modelValue, editable = false } = defineProps<{
-  modelValue: Glasses | GlassesResult
-  editable?: boolean
-}>()
+const { editable = false } = defineProps<{ editable?: boolean }>()
 
-const emit = defineEmits(['update:modelValue'])
+const glasses = defineModel<Glasses | GlassesResult>('modelValue', { required: true })
 
 const eyes: { text: string; key: GlassesEyeIndex }[] = [
   { text: 'OD', key: 'od' },
@@ -101,7 +98,7 @@ const eyes: { text: string; key: GlassesEyeIndex }[] = [
 const editDialogState = ref(false)
 const loading = ref(false)
 const eyeDataKeys = computed(() => {
-  if (modelValue.glassesType === 'multifocal') return eyeKeys
+  if (glasses.value.glassesType === 'multifocal') return eyeKeys
   else return eyeKeys.filter((k) => k !== 'add')
 })
 
@@ -133,7 +130,7 @@ const eyeUIData: EyeDataMap = {
   },
 }
 
-const displayedGlass = computed(() => formatGlassesForDisplay(modelValue))
+const displayedGlass = computed(() => formatGlassesForDisplay(glasses.value))
 
 function isGlassesResult(value: GlassesResult | Glasses): value is GlassesResult {
   return (value as GlassesResult).score !== undefined

@@ -40,13 +40,19 @@ import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import { glassesMetaUIData } from '@/util/glasses-utils'
 import { GlassesInput, DisplayedEye, GeneralGlassesDataKey } from '@/model/GlassesModel'
 
-const { glassesTypeOnly = false, balEnabled = false } = defineProps<{
+const {
+  glassesTypeOnly = false,
+  balEnabled = false,
+  syncAdd = true,
+} = defineProps<{
   glassesTypeOnly?: boolean
   balEnabled?: boolean
+  syncAdd?: boolean
 }>()
 const modelValue = defineModel<GlassesInput>({ required: true })
 
-const syncEyes = ref(true)
+// FIXME sync eye is not resetted to true
+const syncEyes = ref(syncAdd)
 const firstInput = ref<HTMLElement[] | null>(null)
 const metadataToShow: Ref<GeneralGlassesDataKey[]> = ref([])
 
