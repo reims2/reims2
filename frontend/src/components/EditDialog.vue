@@ -1,55 +1,69 @@
 <template>
   <v-dialog v-model="dialogOpen" width="500">
     <v-card>
-      <v-toolbar
-        color="primary"
-        :title="`Edit Glasses SKU ${originalGlasses.sku?.toString().padStart(4, '0')}`"
-      ></v-toolbar>
+      <v-toolbar color="primary" :title="`Editing SKU ${glassesInput.sku}`"></v-toolbar>
       <v-card-text>
-        <glass-input v-model="glassesInput"></glass-input>
+        <glass-input v-model="glassesInput" :sync-add="false"></glass-input>
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn variant="text" @click="updateGlasses()">Save</v-btn>
         <v-btn variant="text" @click="dialogOpen = false">Close</v-btn>
+        <v-btn variant="text" color="primary" :loading="loading" @click="updateGlasses()">
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-import { DisplayedEye, Eye, Glasses, GlassesInput } from '@/model/GlassesModel'
+import { DisplayedGlasses, Glasses } from '@/model/GlassesModel'
 import GlassInput from '@/components/GlassInput.vue'
+import { useGlassesStore } from '@/stores/glasses'
+import { ReimsAxiosError } from '@/lib/axios'
+import { useToast } from 'vue-toastification'
+import { sanitizeEyeValues } from '@/util/eye-utils'
+import { formatGlassesForDisplay } from '@/util/format-glasses'
+
+const glassesStore = useGlassesStore()
+const toast = useToast()
+
 const dialogOpen = defineModel<boolean>('open', { required: true })
 const originalGlasses = defineModel<Glasses>('glasses', { required: true })
 
-const glassesInput: Ref<GlassesInput> = ref(convertGlassesToGlassesInput(originalGlasses.value))
+const glassesInput: Ref<DisplayedGlasses> = ref(
+  formatGlassesForDisplay(originalGlasses.value, false),
+)
+const loading = ref(false)
 
 watch(dialogOpen, (open) => {
-  if (open) {
-    glassesInput.value = convertGlassesToGlassesInput(originalGlasses.value)
-  }
+  if (open) glassesInput.value = formatGlassesForDisplay(originalGlasses.value, false)
 })
 
-function convertGlassesToGlassesInput(val: Glasses): GlassesInput {
-  return {
-    ...val,
-    od: eyeToStringEye(val.od),
-    os: eyeToStringEye(val.os),
+async function updateGlasses() {
+  const newGlasses = {
+    ...originalGlasses.value,
+    glassesType: glassesInput.value.glassesType,
+    glassesSize: glassesInput.value.glassesSize,
+    appearance: glassesInput.value.appearance,
+    od: sanitizeEyeValues(glassesInput.value.od),
+    os: sanitizeEyeValues(glassesInput.value.os),
   }
-}
-
-function eyeToStringEye(eye: Eye): DisplayedEye {
-  return {
-    sphere: eye.sphere.toFixed(2),
-    cylinder: eye.cylinder.toFixed(2),
-    axis: eye.axis.toString().padStart(3, '0'),
-    add: eye.add?.toFixed(2) ?? '',
+  try {
+    loading.value = true
+    const returnedGlasses = await glassesStore.editGlasses(newGlasses)
+    originalGlasses.value = returnedGlasses
+  } catch (error) {
+    if (error instanceof ReimsAxiosError && (error.isServerSide || error.isNetwork)) {
+      toast.error(`Glasses will be automatically edited as soon as the connection is back.`)
+      // no return here, we act like it's successful
+    } else {
+      toast.error(`Glasses can't be edited (${error.message}). Please retry later`)
+      return
+    }
+  } finally {
+    loading.value = false
   }
-}
-
-function updateGlasses() {
-  // todo
   dialogOpen.value = false
 }
 </script>
