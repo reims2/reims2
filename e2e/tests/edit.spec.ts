@@ -1,3 +1,5 @@
+import { EyeCard } from './eye-card.po'
+import { EyeInput } from './eye-input.po'
 import { test, expect } from './fixtures'
 
 test.beforeEach(async ({ page }) => {
@@ -29,4 +31,19 @@ test('Delete glasses', async ({ page, glassesSku }) => {
   await page.getByRole('option', { name: 'Not found in storage' }).click()
   await page.getByRole('button', { name: 'Confirm deletion' }).click()
   await expect(page.getByText(`Successfully deleted glasses with SKU ${glassesSku}`)).toBeVisible()
+})
+
+test('Edit glasses', async ({ page, glassesSku }) => {
+  await page.getByLabel('SKU').fill(glassesSku)
+
+  await page.getByRole('button', { name: 'Edit' }).click()
+
+  const eyeInput = new EyeInput(page)
+  await eyeInput.appearance.fill('f')
+  await eyeInput.odSphere.fill('7')
+  await page.getByRole('button', { name: 'Save' }).click()
+  await expect(page.getByText('Editing SKU')).toBeHidden()
+
+  // FIXME better test
+  await expect(page.getByText('SPH+7.00')).toBeVisible()
 })
