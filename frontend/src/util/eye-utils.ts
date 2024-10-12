@@ -10,7 +10,7 @@ import {
 /** Eye is fixed by applying step rounding and the correct sign for cylinder */
 export function sanitizeEyeValues(
   singleEye: OptionalEye | DisplayedEye | EyeSearch | undefined,
-): Eye {
+): Eye | SanitizedEyeSearch {
   const rx: Eye = {
     sphere: Number(singleEye?.sphere) || 0,
     cylinder: Number(singleEye?.cylinder) || 0,
@@ -34,7 +34,7 @@ export function sanitizeEyeValues(
     newValue = Math.ceil(Math.abs(newValue) / 0.25) * 0.25
     rx[prop] = isNegative ? -newValue : newValue
   }
-  if (singleEye && 'isBAL' in singleEye) {
+  if (isSanitizedEyeSearch(singleEye)) {
     return {
       ...rx,
       isBAL: Boolean(singleEye.isBAL),
@@ -42,6 +42,10 @@ export function sanitizeEyeValues(
   } else {
     return rx
   }
+}
+
+function isSanitizedEyeSearch(eye?: OptionalEye | DisplayedEye): eye is EyeSearch {
+  return eye !== undefined && 'isBAL' in eye
 }
 
 export function resetEyeInput(eye?: DisplayedEye | EyeSearch) {
