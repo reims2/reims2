@@ -2,20 +2,20 @@ import { DisplayedEye, DisplayedGlasses, Eye, Glasses } from '@/model/GlassesMod
 
 import dayjs from 'dayjs'
 
-export function formatEyeForDisplay(eye: Eye, withSign = true): DisplayedEye {
+export function formatEyeForDisplay(eye: Eye, withPlusSign = true): DisplayedEye {
   return {
-    sphere: formatDiopter(eye.sphere, withSign),
-    cylinder: formatDiopter(eye.cylinder, withSign),
+    sphere: formatDiopter(eye.sphere, withPlusSign),
+    cylinder: formatDiopter(eye.cylinder, withPlusSign),
     axis: formatAxis(eye.axis),
-    add: formatDiopter(eye.add, withSign),
+    add: formatDiopter(eye.add, withPlusSign),
   }
 }
 
-export function formatDiopter(val: number | undefined, withSign = true) {
+export function formatDiopter(val: number | undefined, withPlusSign = true) {
   if (val === undefined) return ''
-  const formatted = Math.abs(val).toFixed(2)
-  if (!withSign) return formatted
-  else return (val >= 0 ? '+' : '-') + formatted
+  const formatted = val.toFixed(2)
+  if (withPlusSign && val >= 0) return '+' + formatted
+  else return formatted
 }
 
 export function formatAxis(val: number | undefined) {
@@ -42,11 +42,11 @@ function formatDate(date: number) {
 
 export function formatGlassesForDisplay(
   glasses: Glasses,
-  withDiopterSign = true,
+  withPlusDiopterSign = true,
 ): DisplayedGlasses {
   return {
-    od: formatEyeForDisplay(glasses.od, withDiopterSign),
-    os: formatEyeForDisplay(glasses.os, withDiopterSign),
+    od: formatEyeForDisplay(glasses.od, withPlusDiopterSign),
+    os: formatEyeForDisplay(glasses.os, withPlusDiopterSign),
     glassesSize: glasses.glassesSize,
     glassesType: glasses.glassesType,
     appearance: glasses.appearance,
