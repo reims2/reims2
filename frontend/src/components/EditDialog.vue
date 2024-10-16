@@ -1,18 +1,26 @@
 <template>
   <v-dialog v-model="dialogOpen" width="500">
-    <v-card>
-      <v-toolbar color="primary" :title="`Editing SKU ${glassesInput.sku}`"></v-toolbar>
-      <v-card-text>
-        <glass-input v-model="glassesInput" :sync-add="false"></glass-input>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn variant="text" @click="dialogOpen = false">Close</v-btn>
-        <v-btn variant="text" color="primary" :loading="loading" @click="updateGlasses()">
-          Save
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+    <v-form ref="form" v-model="valid" @submit.prevent>
+      <v-card>
+        <v-toolbar color="primary" :title="`Editing SKU ${glassesInput.sku}`"></v-toolbar>
+        <v-card-text>
+          <glass-input v-model="glassesInput" :sync-add="false"></glass-input>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn variant="text" @click="dialogOpen = false">Cancel</v-btn>
+          <v-btn
+            variant="text"
+            color="primary"
+            :disabled="!valid"
+            :loading="loading"
+            @click="updateGlasses()"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-form>
   </v-dialog>
 </template>
 
@@ -34,6 +42,7 @@ const originalGlasses = defineModel<Glasses>('glasses', { required: true })
 const glassesInput: Ref<DisplayedGlasses> = ref(
   formatGlassesForDisplay(originalGlasses.value, false),
 )
+const valid = ref(true)
 const loading = ref(false)
 
 watch(dialogOpen, (open) => {
