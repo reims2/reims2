@@ -8,14 +8,15 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('Dispense glasses with button and revert', { tag: '@fast' }, async ({ page, glassesSku }) => {
-  await page.getByLabel('SKU').fill(glassesSku)
+  await page.getByLabel('SKU', { exact: true }).fill(glassesSku)
   await page.getByRole('button', { name: 'Dispense' }).click()
   await expect(
     page.getByText(`Successfully dispensed glasses with SKU ${glassesSku}`),
   ).toBeVisible()
 
   // Disabled for now due to race conditions
-  // await page.getByTestId('result-0').getByRole('button', { name: 'Undo' }).click()
+  // await page.getByLabel('Recently dispensed or deleted').getByTestId('result-0').getByRole('button', { name: 'Undo' }).click()
+  // await expect(page.getByLabel('Recently dispensed or deleted')).toContainText('SKU 0005')
   // const successUndo = page.getByText(
   //   `Reverted dispension/deletion of SKU ${glassesSku} successfully`,
   // )
@@ -24,7 +25,7 @@ test('Dispense glasses with button and revert', { tag: '@fast' }, async ({ page,
 })
 
 test('Delete glasses', async ({ page, glassesSku }) => {
-  await page.getByLabel('SKU').fill(glassesSku)
+  await page.getByLabel('SKU', { exact: true }).fill(glassesSku)
   await page.getByLabel('More options').click()
   await page.getByRole('button', { name: 'Delete' }).click()
   await page.getByRole('combobox').click()
@@ -34,8 +35,7 @@ test('Delete glasses', async ({ page, glassesSku }) => {
 })
 
 test('Edit glasses', async ({ page, glassesSku }) => {
-  await page.getByLabel('SKU').fill(glassesSku)
-
+  await page.getByLabel('SKU', { exact: true }).fill(glassesSku)
   await page.getByRole('button', { name: 'Edit' }).click()
 
   const eyeInput = new EyeInput(page)
@@ -44,6 +44,5 @@ test('Edit glasses', async ({ page, glassesSku }) => {
   await page.getByRole('button', { name: 'Save' }).click()
   await expect(page.getByText('Editing SKU')).toBeHidden()
 
-  // FIXME better test
-  await expect(page.getByText('SPH+7.00')).toBeVisible()
+  await expect(page.getByLabel('Glasses result')).toContainText('SPH+7.00')
 })

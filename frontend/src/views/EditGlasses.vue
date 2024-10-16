@@ -16,7 +16,7 @@
                 @change="(glasses) => (selected = glasses)"
               ></select-glasses-input>
             </v-col>
-            <v-col v-if="selected">
+            <v-col v-if="selected" aria-label="Glasses result">
               <div class="d-flex flex-shrink-1 justify-start">
                 <glass-card :key="selected.key" :model-value="selected" editable>
                   <template #actions>
@@ -46,9 +46,16 @@
         </v-form>
       </v-col>
 
-      <v-col cols="12" md="4" lg="3" class="pl-md-6 pt-3 pt-md-2">
-        <div class="text-h6 pb-4 d-flex align-center">
-          Recently dispensed or deleted
+      <v-col
+        cols="12"
+        md="4"
+        lg="3"
+        class="pl-md-6 pt-3 pt-md-2"
+        aria-role="region"
+        aria-labelledby="heading-recently-dispensed"
+      >
+        <div class="pb-4 d-flex align-center">
+          <span id="heading-recently-dispensed" class="text-h6">Recently dispensed or deleted</span>
           <v-progress-circular
             v-if="isLastDispensedLoading"
             indeterminate

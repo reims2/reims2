@@ -43,8 +43,10 @@
         md="4"
         lg="3"
         class="pl-md-6 pt-3 pt-md-2"
+        aria-role="region"
+        aria-labelledby="heading-recently-added"
       >
-        <div class="text-h6 pb-2">Recently added</div>
+        <div id="heading-recently-added" class="text-h6 pb-2">Recently added</div>
         <div
           v-for="(item, idx) in lastAdded.slice(0, 3)"
           :key="item.id"

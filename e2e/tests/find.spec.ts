@@ -27,5 +27,5 @@ test('Search multifocal', { tag: '@fast' }, async ({ page }) => {
 
   await page.getByRole('button', { name: 'earch glasses' }).click()
 
-  await expect(page.getByTestId('results')).toContainText('SKU 0005')
+  await expect(page.getByLabel('Results').getByLabel('SKU 0005')).toBeVisible()
 })

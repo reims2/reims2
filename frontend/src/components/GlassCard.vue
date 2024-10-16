@@ -1,5 +1,11 @@
 <template>
-  <v-card style="min-width: 290px" class="mb-2" :loading="loading">
+  <v-card
+    style="min-width: 290px"
+    class="mb-2"
+    :loading="loading"
+    aria-role="group"
+    :aria-labelledby="'heading-glass-' + displayedGlass.sku"
+  >
     <v-card-title class="pb-0 pt-4">
       <div class="d-flex align-center">
         <v-chip
@@ -16,7 +22,9 @@
           </v-tooltip>
           {{ glasses.score.toFixed(2) }}
         </v-chip>
-        <div class="text-h6">SKU {{ displayedGlass.sku }}</div>
+        <div :id="'heading-glass-' + displayedGlass.sku" class="text-h6">
+          SKU {{ displayedGlass.sku }}
+        </div>
       </div>
     </v-card-title>
     <v-card-subtitle class="pb-2 d-flex align-center">

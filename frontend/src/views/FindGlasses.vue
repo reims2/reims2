@@ -47,13 +47,15 @@
       </v-col>
       <v-col
         ref="results"
-        data-testid="results"
         cols="12"
         md="6"
         lg="5"
         xl="3"
-        class="pt-10 pt-md-1 px-0 pl-md-6"
+        class="pt-10 pt-md-0 px-0 pl-md-6"
+        aria-role="region"
+        aria-labelledby="heading-results"
       >
+        <div id="heading-results" class="text-h6 pb-2">Results</div>
         <v-alert v-if="matches == null" type="info" color="primary" density="comfortable">
           Start a new search to display results
         </v-alert>
