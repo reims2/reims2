@@ -5,8 +5,8 @@ export class EyeInput {
   readonly appearance = this.page.getByLabel('Frame appearance')
   readonly size = this.page.getByLabel('Frame size')
 
-  readonly odInput = this.page.getByTestId('OD-input')
-  readonly osInput = this.page.getByTestId('OS-input')
+  readonly odInput = this.page.getByLabel('OD', { exact: true })
+  readonly osInput = this.page.getByLabel('OS', { exact: true })
 
   readonly odSphere = this.odInput.getByLabel('Sphere')
   readonly odCylinder = this.odInput.getByLabel('Cylinder')

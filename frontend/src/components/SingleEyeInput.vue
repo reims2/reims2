@@ -1,7 +1,7 @@
 <template>
-  <v-row class="pb-4" dense :data-testid="eyeName + '-input'">
+  <v-row class="pb-4" dense role="group" :aria-labelledby="'eye-heading-' + eyeName">
     <v-col class="text-h5 pb-2">
-      <div :class="isBAL ? 'text-medium-emphasis' : ''">
+      <div :id="'eye-heading-' + eyeName" :class="isBAL ? 'text-medium-emphasis' : ''">
         {{ eyeName }}
       </div>
     </v-col>
