@@ -129,5 +129,6 @@ function reset() {
   resetAdd()
   form.value?.reset()
   if (!mobile.value) inputComponent.value?.focus()
+  inputComponent.value?.reset()
 }
 </script>

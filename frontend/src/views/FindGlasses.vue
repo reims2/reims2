@@ -125,7 +125,6 @@ const valid = ref(false)
 const page = ref(1)
 
 const highTolerance = ref(false)
-const syncEye = ref(true)
 
 const itemsPerPage = 3
 
@@ -153,7 +152,7 @@ const { vPreventEnterTab } = useEnterToTab(form)
 async function submitAndUpdate() {
   startSearch()
 
-  // syncEye.value = true // fixme good hgere?
+  // inputComponent.value?.reset() // fixme should this be enabeld to reset syncEye?
   page.value = 1
   // on desktop, focus input again; on mobile, scroll to bottom
   if (!mobile.value) inputComponent.value?.focus()
@@ -164,7 +163,7 @@ function reset() {
   resetEyeInput(glasses.value.od)
   resetEyeInput(glasses.value.os)
   form.value?.reset()
-  syncEye.value = true
   if (!mobile.value) inputComponent.value?.focus()
+  inputComponent.value?.reset()
 }
 </script>
