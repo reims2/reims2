@@ -32,26 +32,18 @@
             />
           </td>
           <td>
-            <min-max-input
-              @update:model-value="(value: any) => updateEyeFilter(value, 'od', 'sphere')"
-            />
+            <min-max-input v-model="eyeFilters.od.sphere" />
           </td>
           <td>
-            <min-max-input
-              @update:model-value="(value: any) => updateEyeFilter(value, 'od', 'cylinder')"
-            />
+            <min-max-input v-model="eyeFilters.od.cylinder" />
           </td>
           <td />
           <td />
           <td>
-            <min-max-input
-              @update:model-value="(value: any) => updateEyeFilter(value, 'os', 'sphere')"
-            />
+            <min-max-input v-model="eyeFilters.os.sphere" />
           </td>
           <td>
-            <min-max-input
-              @update:model-value="(value: any) => updateEyeFilter(value, 'os', 'cylinder')"
-            />
+            <min-max-input v-model="eyeFilters.os.cylinder" />
           </td>
         </tr>
       </template>
@@ -105,7 +97,7 @@ const sortBy = ref<TableSortBy[]>([{ key: 'sku', order: 'asc' }])
 
 const glassesTypeFilter = ref<string[]>([])
 
-const { filterString, resetFilters, updateEyeFilter } = useTableFilter(glassesTypeFilter)
+const { filterString, resetFilters, eyeFilters } = useTableFilter(glassesTypeFilter)
 
 const { formattedItems, totalItems, loading } = useTableData(
   page,
