@@ -27,7 +27,7 @@
 import { Glasses } from '@/model/GlassesModel'
 import { DeletionReason } from '@/model/ReimsModel'
 
-const { glass, fixedReason = null } = defineProps<{
+const { fixedReason = null } = defineProps<{
   glass: Glasses
   fixedReason?: DeletionReason | null
 }>()

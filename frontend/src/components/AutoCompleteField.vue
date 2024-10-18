@@ -32,7 +32,7 @@ interface Props {
   first?: boolean
   persistentHint?: boolean
 }
-const { label, rules, hint, items, first = false, persistentHint = false } = defineProps<Props>()
+const { items, first = false, persistentHint = false } = defineProps<Props>()
 
 const inputVal = defineModel<string>('modelValue')
 
