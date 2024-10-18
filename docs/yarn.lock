@@ -850,7 +850,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/shared@npm:3.5.12, @vue/shared@npm:^3.5.11":
+"@vue/shared@npm:3.5.12, @vue/shared@npm:^3.5.12":
   version: 3.5.12
   resolution: "@vue/shared@npm:3.5.12"
   checksum: 10/abe229a09a9513f484a03a8c0e63b90949d9fccf64203c1ad510628305e1fdc0e9d064174df88299409a9fbf0c142e4fbcc0a5449f10728fb12d7e10d825abc5
@@ -2244,7 +2244,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    vitepress: "npm:1.4.0"
+    vitepress: "npm:1.4.1"
     vue: "npm:3.5.12"
   languageName: unknown
   linkType: soft
@@ -2629,9 +2629,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitepress@npm:1.4.0":
-  version: 1.4.0
-  resolution: "vitepress@npm:1.4.0"
+"vitepress@npm:1.4.1":
+  version: 1.4.1
+  resolution: "vitepress@npm:1.4.1"
   dependencies:
     "@docsearch/css": "npm:^3.6.2"
     "@docsearch/js": "npm:^3.6.2"
@@ -2641,7 +2641,7 @@ __metadata:
     "@types/markdown-it": "npm:^14.1.2"
     "@vitejs/plugin-vue": "npm:^5.1.4"
     "@vue/devtools-api": "npm:^7.4.6"
-    "@vue/shared": "npm:^3.5.11"
+    "@vue/shared": "npm:^3.5.12"
     "@vueuse/core": "npm:^11.1.0"
     "@vueuse/integrations": "npm:^11.1.0"
     focus-trap: "npm:^7.6.0"
@@ -2649,7 +2649,7 @@ __metadata:
     minisearch: "npm:^7.1.0"
     shiki: "npm:^1.22.0"
     vite: "npm:^5.4.8"
-    vue: "npm:^3.5.11"
+    vue: "npm:^3.5.12"
   peerDependencies:
     markdown-it-mathjax3: ^4
     postcss: ^8
@@ -2660,7 +2660,7 @@ __metadata:
       optional: true
   bin:
     vitepress: bin/vitepress.js
-  checksum: 10/09c40893a7c599f9901316f1bc514f6a1747206e7f7595ae8fefbd448d3c7d7dd1dc10db96faa445226f1b9b6d15e205fb395393997ddc038d1183f3bfa156b2
+  checksum: 10/7461705b267caabe547aa2d0160a8fd4584e5bd1cdc4330c6a6f142769427466f8c6abf344ab210dc32fd268e0d4d27f4065befc410212ef9295cabba7ecf277
   languageName: node
   linkType: hard
 
@@ -2680,7 +2680,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:3.5.12, vue@npm:^3.5.11":
+"vue@npm:3.5.12, vue@npm:^3.5.12":
   version: 3.5.12
   resolution: "vue@npm:3.5.12"
   dependencies:
