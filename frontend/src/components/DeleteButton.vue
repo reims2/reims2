@@ -27,11 +27,14 @@
 import { Glasses } from '@/model/GlassesModel'
 import { DeletionReason } from '@/model/ReimsModel'
 
-const props = withDefaults(defineProps<{ glass: Glasses; fixedReason?: DeletionReason | null }>(), {
-  fixedReason: null,
-})
+const { glass, fixedReason = null } = defineProps<{
+  glass: Glasses
+  fixedReason?: DeletionReason | null
+}>()
 
-const emit = defineEmits(['delete'])
+const emit = defineEmits<{
+  delete: [string | null]
+}>()
 
 const deleteDialog = ref(false)
 const deleteReason = ref<DeletionReason>('TOO_HIGH_VALUES') // preselect most common reason for doing mass removals
@@ -46,6 +49,6 @@ const reasons: Ref<{ title: string; value: DeletionReason }[]> = ref([
 
 function startDelete() {
   deleteDialog.value = false
-  emit('delete', !props.fixedReason ? deleteReason.value : null)
+  emit('delete', !fixedReason ? deleteReason.value : null)
 }
 </script>

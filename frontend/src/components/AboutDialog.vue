@@ -39,7 +39,6 @@
 </template>
 
 <script setup lang="ts">
-import { useVModel } from '@vueuse/core'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 import dayjs from 'dayjs'
@@ -47,10 +46,7 @@ import dayjs from 'dayjs'
 const rootStore = useRootStore()
 const glassesStore = useGlassesStore()
 
-const props = defineProps<{ modelValue: boolean }>()
-
-const emit = defineEmits(['update:modelValue'])
-const dialog = useVModel(props, 'modelValue', emit)
+const dialog = defineModel<boolean>('modelValue', { required: true })
 
 const glassesCount = computed(() => glassesStore.allGlasses.length)
 const commitUrl = computed(() => {

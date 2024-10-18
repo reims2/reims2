@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :model-value="modelValue"
+    :model-value="isOpen"
     max-width="400px"
     persistent
     @update:model-value="(e) => updateDialogState(e)"
@@ -42,14 +42,7 @@ const toast = useToast()
 const rootStore = useRootStore()
 const glassesStore = useGlassesStore()
 
-defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true,
-  },
-})
-const emit = defineEmits(['update:modelValue'])
-
+const isOpen = defineModel<boolean>('modelValue', { required: true })
 const loading = ref(false)
 const newLocation = ref<ReimsSite | null>(null)
 
@@ -78,7 +71,7 @@ async function changeLocation() {
   }
 }
 function updateDialogState(value: boolean) {
-  emit('update:modelValue', value)
+  isOpen.value = value
   newLocation.value = rootStore.reimsSite
 }
 </script>
