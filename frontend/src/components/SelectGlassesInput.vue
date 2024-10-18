@@ -1,15 +1,15 @@
 <template>
   <v-text-field
     ref="input"
-    :model-value="props.sku"
+    :model-value="sku"
     :autofocus="!mobile"
     label="SKU"
     type="number"
     :hint="hint"
     persistent-hint
-    :loading="props.loading"
-    :error-messages="props.errorMesssage"
-    @update:model-value="(val) => emit('update:sku', parseInt(val))"
+    :loading="loading"
+    :error-messages="errorMesssage"
+    @update:model-value="(val) => (sku = parseInt(val))"
   />
 </template>
 
@@ -21,22 +21,15 @@ import { useDisplay } from 'vuetify'
 
 const emit = defineEmits<{
   change: [glasses: Glasses | null]
-  'update:sku': [sku: number | null]
-  'update:error-message': [message: string]
 }>()
 
-const props = withDefaults(
-  defineProps<{
-    loading: boolean
-    sku: number | null
-    errorMesssage?: string
-    hintForSelected?: string
-  }>(),
-  {
-    errorMesssage: '',
-    hintForSelected: '',
-  },
-)
+const { loading, hintForSelected = '' } = defineProps<{
+  loading: boolean
+  hintForSelected?: string
+}>()
+
+const sku = defineModel<number | null>('sku', { required: true })
+const errorMessage = defineModel<string>('errorMesssage')
 
 const { mobile } = useDisplay()
 const glassesStore = useGlassesStore()
@@ -46,16 +39,16 @@ const selected = ref<Glasses | null>(null)
 const input = useTemplateRef('input')
 
 watch(
-  () => props.sku,
-  async () => {
-    if (props.sku != null && !isNaN(props.sku)) {
-      emit('update:error-message', '')
-      selected.value = glassesStore.getGlassLocal(props.sku)
+  () => sku.value,
+  async (newSku) => {
+    if (newSku != null && !isNaN(newSku)) {
+      errorMessage.value = ''
+      selected.value = glassesStore.getGlassLocal(newSku)
       emit('change', selected.value)
       if (!selected.value) hint.value = ''
       // also fetch glasses in background to update database
       try {
-        selected.value = await glassesStore.fetchSingle(props.sku)
+        selected.value = await glassesStore.fetchSingle(newSku)
       } catch (error) {
         // do nothing, we fallback to local DB cache
       }
@@ -70,15 +63,15 @@ watch(
 watch(
   () => glassesStore.allGlasses,
   () => {
-    if (props.sku == null) selected.value = null
-    else selected.value = glassesStore.getGlassLocal(props.sku)
+    if (sku.value == null) selected.value = null
+    else selected.value = glassesStore.getGlassLocal(sku.value)
     emit('change', selected.value)
   },
 )
 
-watch(selected, () => {
+watchEffect(() => {
   if (selected.value) {
-    hint.value = props.hintForSelected
+    hint.value = hintForSelected
   }
 })
 
