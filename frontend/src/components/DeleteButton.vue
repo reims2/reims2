@@ -33,7 +33,7 @@ const { fixedReason = null } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  delete: [string | null]
+  delete: [DeletionReason | null]
 }>()
 
 const deleteDialog = ref(false)
