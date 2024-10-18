@@ -56,7 +56,7 @@ const syncEyes = ref(syncAdd)
 const firstInput = ref<HTMLElement[] | null>(null)
 const metadataToShow: Ref<GeneralGlassesDataKey[]> = ref([])
 
-const isMultifocal = computed(() => modelValue.value.glassesType === 'multifocal')
+const isMultifocal = computed(() => modelValue.value.glassesType !== 'single')
 
 watchEffect(() => {
   metadataToShow.value = glassesTypeOnly

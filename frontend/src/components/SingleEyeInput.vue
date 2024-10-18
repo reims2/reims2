@@ -40,19 +40,12 @@ import { eyeRules, isValidForRules } from '@/util/glasses-utils'
 import { DisplayedEye, Eye, EyeKey, EyeSearch, eyeKeys } from '@/model/GlassesModel'
 
 interface Props {
-  modelValue: DisplayedEye & { isBAL?: boolean }
   eyeName: string
-  addEnabled: boolean
+  addEnabled?: boolean
   balEnabled?: boolean
 }
-const props = withDefaults(defineProps<Props>(), {
-  addEnabled: true,
-  balEnabled: false,
-})
-
-const emit = defineEmits<{
-  'update:modelValue': [DisplayedEye & { isBAL?: boolean }]
-}>()
+const { eyeName, addEnabled = true, balEnabled = false } = defineProps<Props>()
+const modelEye = defineModel<DisplayedEye>('modelValue', { required: true })
 
 type EyeData = {
   label: string
@@ -69,45 +62,54 @@ const eyeData = computed<EyeDataMap>(() => {
     sphere: {
       label: 'Sphere',
       step: 0.25,
-      prefix: Number(props.modelValue.sphere) > 0 ? '+' : '',
-      value: props.modelValue.sphere,
+      prefix: Number(modelEye.value.sphere) > 0 ? '+' : '',
+      value: modelEye.value.sphere,
     },
     cylinder: {
       label: 'Cylinder (minus form)',
       step: 0.25,
-      value: props.modelValue.cylinder,
+      value: modelEye.value.cylinder,
     },
     axis: {
       label: 'Axis',
-      disabled: props.modelValue.cylinder === '' || Number(props.modelValue.cylinder) === 0,
-      value: props.modelValue.axis,
+      disabled: modelEye.value.cylinder === '' || Number(modelEye.value.cylinder) === 0,
+      value: modelEye.value.axis,
     },
     add: {
       label: 'Additional',
-      disabled: !props.addEnabled,
+      disabled: !addEnabled,
       step: 0.25,
       prefix: '+',
-      value: props.modelValue.add || '',
+      value: modelEye.value.add || '',
     },
   }
 })
 
 const isBAL = computed({
   get() {
-    return props.modelValue.isBAL ?? false
+    return modelEye.value.isBAL ?? false
   },
   set(val: boolean | undefined) {
-    const eye: EyeSearch = { ...props.modelValue, isBAL: val ?? false }
-    emit('update:modelValue', eye)
+    const eye: EyeSearch = { ...modelEye.value, isBAL: val ?? false }
+    modelEye.value = eye
   },
 })
 
 function emitUpdate(id: keyof Eye, value: string | null) {
-  const eye = { ...props.modelValue }
+  const eye = { ...modelEye.value }
   eye[id] = value ?? ''
-  if (props.modelValue[id] === value) return
-  emit('update:modelValue', eye)
+  if (modelEye.value[id] === value) return
+  modelEye.value = eye
 }
+
+watch(
+  () => addEnabled,
+  (enabled) => {
+    if (!enabled) {
+      emitUpdate('add', '')
+    }
+  },
+)
 
 function formatAndEmit(id: keyof Eye) {
   let newVal = Number(eyeData.value[id].value)
@@ -120,11 +122,11 @@ function formatAndEmit(id: keyof Eye) {
 
     if (newVal === 0) {
       // reset axis if cylinder is 0 and force update
-      emit('update:modelValue', {
-        ...props.modelValue,
+      modelEye.value = {
+        ...modelEye.value,
         cylinder: '0.00',
         axis: '',
-      })
+      }
       return
     }
   }
