@@ -7,8 +7,6 @@ export const test = base.extend<{ glassesSku: string }>({
     const eyeInput = new EyeInput(page)
 
     await page.goto('/add')
-    // await expect(page.getByRole('progressbar')).toBeVisible()
-    await expect(page.getByRole('progressbar')).toBeHidden()
 
     await eyeInput.category.fill('s')
     await eyeInput.appearance.fill('m')
@@ -20,6 +18,7 @@ export const test = base.extend<{ glassesSku: string }>({
     await eyeInput.osSphere.fill('1.0')
     await eyeInput.osCylinder.fill('0')
 
+    await expect(page.getByRole('progressbar')).toBeHidden()
     await page.getByRole('button', { name: 'dd glasses' }).click()
     const resultCard = page.getByTestId('result-0')
     await expect(resultCard).toBeVisible()
