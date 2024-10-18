@@ -4,8 +4,6 @@ import { EyeInput } from './eye-input.po'
 test('Add glasses', { tag: '@fast' }, async ({ page }) => {
   const eyeInput = new EyeInput(page)
   await page.goto('/add')
-  // await expect(page.getByRole('progressbar')).toBeVisible()
-  await expect(page.getByRole('progressbar')).toBeHidden()
 
   await eyeInput.category.fill('m')
   await eyeInput.appearance.fill('m')
@@ -20,6 +18,7 @@ test('Add glasses', { tag: '@fast' }, async ({ page }) => {
   await eyeInput.osAxis.fill('010')
   await eyeInput.osAdditional.fill('2')
 
+  await expect(page.getByRole('progressbar')).toBeHidden()
   await page.getByRole('button', { name: 'dd glasses' }).click()
 
   const resultCard = page.getByTestId('result-0')
