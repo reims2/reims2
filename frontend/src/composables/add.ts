@@ -16,7 +16,6 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
   const allGlasses = computed(() => glassesStore.allGlasses)
 
   const loading = ref(false)
-  const syncEyes = ref(true)
 
   const lastAdded = computed(() => {
     return rootStore.lastAddedSkus
@@ -66,7 +65,6 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
   function reset() {
     resetEyeInput(glasses.value.od)
     resetEyeInput(glasses.value.os)
-    syncEyes.value = true
   }
 
   return {

@@ -51,7 +51,6 @@ const {
 }>()
 const modelValue = defineModel<GlassesInput>({ required: true })
 
-// FIXME sync eye is not resetted to true
 const syncEyes = ref(syncAdd)
 const firstInput = ref<HTMLElement[] | null>(null)
 const metadataToShow: Ref<GeneralGlassesDataKey[]> = ref([])
@@ -109,5 +108,8 @@ function focus() {
     firstInput.value[0]?.focus()
   }
 }
-defineExpose({ focus })
+function reset() {
+  syncEyes.value = syncAdd
+}
+defineExpose({ focus, reset })
 </script>
