@@ -15,6 +15,7 @@ const arrayContainsSku = (data: Glasses[], sku: number | null) => {
   return data.some((e) => e.sku === sku)
 }
 let controllerFetchSingle = new AbortController()
+let controllerGetAll = new AbortController()
 
 export const useGlassesStore = defineStore(
   'glasses',
@@ -36,6 +37,8 @@ export const useGlassesStore = defineStore(
     }
 
     async function addGlasses(newGlasses: SanitizedGlassesInput): Promise<Glasses> {
+      // abort running fetch all request, since the fetch all will change after this request
+      controllerGetAll.abort()
       interface GlassesRequest extends SanitizedGlassesInput {
         location: ReimsSite
       }
@@ -82,6 +85,9 @@ export const useGlassesStore = defineStore(
       return fetchedGlasses
     }
     async function dispense(sku: number, reason: DeletionReason) {
+      // abort running fetch all request, since the fetch all will change after this request
+      controllerGetAll.abort()
+
       await axiosInstance.put(
         `/api/glasses/dispense/${rootStore.reimsSite}/${sku}?reason=${reason}`,
         {},
@@ -89,14 +95,23 @@ export const useGlassesStore = defineStore(
       deleteOfflineGlasses(sku)
     }
     async function undispense(glasses: Glasses) {
+      // abort running fetch all request, since the fetch all will change after this request
+      controllerGetAll.abort()
+
       await axiosInstance.put(`/api/glasses/undispense/${glasses.id}`, {})
       addOfflineGlasses(glasses)
     }
     async function deleteGlasses(sku: number) {
+      // abort running fetch all request, since the fetch all will change after this request
+      controllerGetAll.abort()
+
       await axiosInstance.delete(`/api/glasses/${rootStore.reimsSite}/${sku}`)
       deleteOfflineGlasses(sku)
     }
     async function editGlasses(newGlasses: Glasses): Promise<Glasses> {
+      // abort running fetch all request, since the fetch all will change after this request
+      controllerGetAll.abort()
+
       const response = await axiosInstance.put(
         `/api/glasses/${rootStore.reimsSite}/${newGlasses.sku}`,
         newGlasses,
@@ -155,11 +170,14 @@ export const useGlassesStore = defineStore(
       }
     }
     async function loadGlasses() {
+      controllerGetAll.abort() // not really necessary
+      controllerGetAll = new AbortController()
       isRefreshingGlasses.value = true
       let response
       try {
         response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}/all`, {
           timeout: 60000,
+          signal: controllerGetAll.signal,
         })
       } finally {
         isRefreshingGlasses.value = false

@@ -18,7 +18,6 @@ export const test = base.extend<{ glassesSku: string }>({
     await eyeInput.osSphere.fill('1.0')
     await eyeInput.osCylinder.fill('0')
 
-    await expect(page.getByRole('progressbar')).toBeHidden()
     await page.getByRole('button', { name: 'dd glasses' }).click()
     const resultCard = page.getByTestId('result-0')
     await expect(resultCard).toBeVisible()

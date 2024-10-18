@@ -18,7 +18,6 @@ test('Add glasses', { tag: '@fast' }, async ({ page }) => {
   await eyeInput.osAxis.fill('010')
   await eyeInput.osAdditional.fill('2')
 
-  await expect(page.getByRole('progressbar')).toBeHidden()
   await page.getByRole('button', { name: 'dd glasses' }).click()
 
   const resultCard = page.getByTestId('result-0')
