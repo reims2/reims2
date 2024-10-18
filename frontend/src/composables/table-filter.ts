@@ -54,10 +54,6 @@ export const useTableFilter = (glassesTypeFilter: MaybeRefOrGetter<string[]>) =>
     return filterString.slice(0, -1)
   }
 
-  function updateEyeFilter(value: MinMaxObject, eye: GlassesEyeIndex, child: EyeValueKey) {
-    eyeFilters[eye][child] = value
-  }
-
   function resetFilters() {
     eyeFilters.od.sphere = {}
     eyeFilters.od.cylinder = {}
@@ -68,6 +64,6 @@ export const useTableFilter = (glassesTypeFilter: MaybeRefOrGetter<string[]>) =>
     glassesTypeFilter,
     filterString,
     resetFilters,
-    updateEyeFilter,
+    eyeFilters,
   }
 }

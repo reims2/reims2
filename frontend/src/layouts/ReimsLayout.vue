@@ -20,14 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  mdiFileFind,
-  mdiPencil,
-  mdiDatabase,
-  mdiPlusCircle,
-  mdiChartBox,
-  mdiAccountEdit,
-} from '@mdi/js'
+import { mdiFileFind, mdiPencil, mdiDatabase, mdiPlusCircle, mdiChartBox } from '@mdi/js'
 import { useDisplay } from 'vuetify'
 import dayjs from 'dayjs'
 
@@ -64,14 +57,14 @@ const otherItems = computed(() => {
   const items = [
     { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: !isOnline.value },
   ]
-  if (authStore.user && authStore.roles && authStore.roles.includes('ROLE_ADMIN')) {
-    items.push({
-      title: 'Users',
-      icon: mdiAccountEdit,
-      to: '/manage/users',
-      disabled: !isOnline.value,
-    })
-  }
+  // if (authStore.user && authStore.roles && authStore.roles.includes('ROLE_ADMIN')) {
+  //   items.push({
+  //     title: 'Users',
+  //     icon: mdiAccountEdit,
+  //     to: '/manage/users',
+  //     disabled: !isOnline.value,
+  //   })
+  // }
   return items
 })
 

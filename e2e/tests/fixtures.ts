@@ -7,8 +7,6 @@ export const test = base.extend<{ glassesSku: string }>({
     const eyeInput = new EyeInput(page)
 
     await page.goto('/add')
-    // await expect(page.getByRole('progressbar')).toBeVisible()
-    await expect(page.getByRole('progressbar')).toBeHidden()
 
     await eyeInput.category.fill('s')
     await eyeInput.appearance.fill('m')

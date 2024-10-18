@@ -154,14 +154,14 @@ export const useDeleteGlasses = (
 
   const toast = useToast()
 
-  async function deleteGlasses(reason: DeletionReason): Promise<void> {
+  async function deleteGlasses(reason: DeletionReason | null): Promise<void> {
     const sku = toValue(skuInput)
     if (isLoading.value || !sku) return
     // show user the correct action string, even though it's the same in the backend
     const actionString = reason === 'DISPENSED' ? 'dispense' : 'delete'
     isLoading.value = true
     try {
-      await glassesStore.dispense(sku, reason)
+      await glassesStore.dispense(sku, reason ?? 'OTHER')
     } catch (error) {
       if (error instanceof ReimsAxiosError) {
         if (error.statusCode === 404) {

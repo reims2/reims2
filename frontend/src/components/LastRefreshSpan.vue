@@ -1,5 +1,5 @@
 <template>
-  <div v-if="props.showSpinner" class="d-flex align-center" @click="glassesStore.loadGlasses()">
+  <div v-if="showSpinner" class="d-flex align-center" @click="glassesStore.loadGlasses()">
     <v-progress-circular
       :style="{ visibility: glassesStore.isRefreshingGlasses ? 'visible' : 'hidden' }"
       indeterminate
@@ -23,9 +23,7 @@ const glassesStore = useGlassesStore()
 const lastRefresh = computed(() => glassesStore.lastRefresh)
 const lastRefreshString = ref<string | null>(null)
 
-const props = withDefaults(defineProps<{ showSpinner?: boolean }>(), {
-  showSpinner: true,
-})
+const { showSpinner = true } = defineProps<{ showSpinner?: boolean }>()
 
 watch(
   lastRefresh,
