@@ -6,7 +6,6 @@ import {
 } from '@/model/GlassesModel'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useRootStore } from './root'
-import axios from 'axios'
 import { ReimsAxiosError, useAxios } from '@/lib/axios'
 import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
 import { Dayjs } from 'dayjs'
@@ -15,7 +14,7 @@ const arrayContainsSku = (data: Glasses[], sku: number | null) => {
   if (sku === null) return false
   return data.some((e) => e.sku === sku)
 }
-let cancelTokenGet = axios.CancelToken.source()
+let controllerFetchSingle = new AbortController()
 
 export const useGlassesStore = defineStore(
   'glasses',
@@ -62,12 +61,12 @@ export const useGlassesStore = defineStore(
       await axiosInstance.post(`/api/glasses/${rootStore.reimsSite}/unsuccessfulSearch`, request)
     }
     async function fetchSingle(sku: number): Promise<Glasses> {
-      if (cancelTokenGet) cancelTokenGet.cancel()
-      cancelTokenGet = axios.CancelToken.source()
+      controllerFetchSingle.abort()
+      controllerFetchSingle = new AbortController()
       let response
       try {
         response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}/${sku}`, {
-          cancelToken: cancelTokenGet.token,
+          signal: controllerFetchSingle.signal,
         })
       } catch (e) {
         if (e instanceof ReimsAxiosError && e.statusCode === 404) {
