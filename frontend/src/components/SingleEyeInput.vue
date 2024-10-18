@@ -44,7 +44,7 @@ interface Props {
   addEnabled?: boolean
   balEnabled?: boolean
 }
-const { eyeName, addEnabled = true, balEnabled = false } = defineProps<Props>()
+const { addEnabled = true, balEnabled = false } = defineProps<Props>()
 const modelEye = defineModel<DisplayedEye>('modelValue', { required: true })
 
 type EyeData = {

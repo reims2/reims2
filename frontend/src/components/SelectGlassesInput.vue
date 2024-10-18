@@ -23,7 +23,7 @@ const emit = defineEmits<{
   change: [glasses: Glasses | null]
 }>()
 
-const { loading, hintForSelected = '' } = defineProps<{
+const { hintForSelected = '' } = defineProps<{
   loading: boolean
   hintForSelected?: string
 }>()
