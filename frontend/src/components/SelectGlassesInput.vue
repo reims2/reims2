@@ -29,7 +29,7 @@ const { hintForSelected = '' } = defineProps<{
 }>()
 
 const sku = defineModel<number | null>('sku', { required: true })
-const errorMessage = defineModel<string>('errorMesssage')
+const errorMessage = defineModel<string>('errorMesssage', { default: '' })
 
 const { mobile } = useDisplay()
 const glassesStore = useGlassesStore()

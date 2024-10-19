@@ -7,6 +7,7 @@
             <glass-input
               ref="inputComponent"
               v-model="glasses"
+              v-model:sync-eyes="syncEyeAdd"
               :bal-enabled="true"
               :glasses-type-only="true"
             ></glass-input>
@@ -123,6 +124,7 @@ const results = useTemplateRef('results')
 
 const valid = ref(false)
 const page = ref(1)
+const syncEyeAdd = ref(true)
 
 const highTolerance = ref(false)
 
@@ -164,6 +166,6 @@ function reset() {
   resetEyeInput(glasses.value.os)
   form.value?.reset()
   if (!mobile.value) inputComponent.value?.focus()
-  inputComponent.value?.reset()
+  syncEyeAdd.value = true
 }
 </script>
