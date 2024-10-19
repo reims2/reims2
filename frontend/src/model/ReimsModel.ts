@@ -33,8 +33,8 @@ export interface TableSortBy {
 }
 
 export interface MinMaxObject {
-  min?: number
-  max?: number
+  min?: string
+  max?: string
 }
 
 export type UserRole = 'ROLE_ADMIN' | 'ROLE_USER'

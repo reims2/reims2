@@ -33,14 +33,18 @@ export const useTableFilter = (glassesTypeFilter: MaybeRefOrGetter<string[]>) =>
   function createSingleFilter(value: MinMaxObject, filterName: string): string | null {
     if (value == null) return null
 
-    const min = value.min != null && !isNaN(value.min) ? `${filterName}>=${value.min}` : null
-    const max = value.max != null && !isNaN(value.max) ? `${filterName}<=${value.max}` : null
-    if (min != null && max != null) {
+    const min = value.min != null ? parseFloat(value.min) : NaN
+    const max = value.max != null ? parseFloat(value.max) : NaN
+
+    const minText = `${filterName}>=${min}`
+    const maxText = `${filterName}<=${max}`
+
+    if (!isNaN(min) && !isNaN(max)) {
       // swap min max automatically if entered wrongly
-      if (max < min) return max + ';' + min
-      else return min + ';' + max
-    } else if (min != null) return min
-    else if (max != null) return max
+      if (max < min) return `${filterName}>=${max};${filterName}<=${min}`
+      return minText + ';' + maxText
+    } else if (!isNaN(min)) return minText
+    else if (!isNaN(max)) return maxText
     else return null
   }
 

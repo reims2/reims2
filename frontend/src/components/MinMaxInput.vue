@@ -11,7 +11,6 @@
       class="mr-1"
       variant="underlined"
       single-line
-      @update:model-value="(val) => (modelValue.min = parseFloat(val))"
     />
     <v-text-field
       v-model="modelValue.max"
@@ -23,7 +22,6 @@
       label="To"
       variant="underlined"
       single-line
-      @update:model-value="(val) => (modelValue.max = parseFloat(val))"
     />
   </div>
 </template>
