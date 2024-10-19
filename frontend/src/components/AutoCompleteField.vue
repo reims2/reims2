@@ -34,7 +34,7 @@ interface Props {
 }
 const { items, first = false, persistentHint = false } = defineProps<Props>()
 
-const inputVal = defineModel<string>('modelValue')
+const inputVal = defineModel<string>('modelValue', { default: '' })
 
 const input = useTemplateRef('input')
 

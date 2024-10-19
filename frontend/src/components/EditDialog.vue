@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar color="primary" :title="`Editing SKU ${glassesInput.sku}`"></v-toolbar>
         <v-card-text>
-          <glass-input v-model="glassesInput" :sync-add="false"></glass-input>
+          <glass-input v-model="glassesInput"></glass-input>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
