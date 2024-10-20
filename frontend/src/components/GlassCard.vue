@@ -1,9 +1,17 @@
 <template>
-  <v-card style="min-width: 290px" class="mb-2" :loading="loading">
+  <v-card
+    style="min-width: 290px"
+    class="mb-2"
+    :loading="loading"
+    aria-role="group"
+    :aria-labelledby="'heading-glass-' + displayedGlass.sku"
+  >
     <div class="d-flex align-center pt-4">
       <div class="flex-grow-1 pt-2">
         <v-card-title class="py-0">
-          <div class="text-h6">SKU {{ displayedGlass.sku }}</div>
+          <div :id="'heading-glass-' + displayedGlass.sku" class="text-h6">
+            SKU {{ displayedGlass.sku }}
+          </div>
         </v-card-title>
         <v-card-subtitle class="pb-2 d-flex align-center">
           <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
@@ -46,11 +54,10 @@
               <div class="text-subtitle-1">
                 {{ eye.text }}
               </div>
-              <v-tooltip activator="parent" location="bottom">
-                Match percentage only for {{ eye.text }}
-              </v-tooltip>
-
               <div v-if="isGlassesResult(glasses)" class="d-flex align-center">
+                <v-tooltip activator="parent" location="bottom">
+                  Match percentage only for {{ eye.text }}
+                </v-tooltip>
                 <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
                   {{
                     convertScoreToPercentage(
