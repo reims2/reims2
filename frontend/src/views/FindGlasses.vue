@@ -7,6 +7,7 @@
             <glass-input
               ref="inputComponent"
               v-model="glasses"
+              v-model:sync-eyes="syncEyeAdd"
               :bal-enabled="true"
               :glasses-type-only="true"
             ></glass-input>
@@ -47,13 +48,15 @@
       </v-col>
       <v-col
         ref="results"
-        data-testid="results"
         cols="12"
         md="6"
         lg="5"
         xl="3"
-        class="pt-10 pt-md-1 px-0 pl-md-6"
+        class="pt-10 pt-md-0 px-0 pl-md-6"
+        aria-role="region"
+        aria-labelledby="heading-results"
       >
+        <div id="heading-results" class="text-h6 pb-2">Results</div>
         <v-alert v-if="matches == null" type="info" color="primary" density="comfortable">
           Start a new search to display results
         </v-alert>
@@ -121,9 +124,9 @@ const results = useTemplateRef('results')
 
 const valid = ref(false)
 const page = ref(1)
+const syncEyeAdd = ref(true)
 
 const highTolerance = ref(false)
-const syncEye = ref(true)
 
 const itemsPerPage = 3
 
@@ -151,7 +154,7 @@ const { vPreventEnterTab } = useEnterToTab(form)
 async function submitAndUpdate() {
   startSearch()
 
-  // syncEye.value = true // fixme good hgere?
+  // inputComponent.value?.reset() // fixme should this be enabeld to reset syncEye?
   page.value = 1
   // on desktop, focus input again; on mobile, scroll to bottom
   if (!mobile.value) inputComponent.value?.focus()
@@ -162,7 +165,7 @@ function reset() {
   resetEyeInput(glasses.value.od)
   resetEyeInput(glasses.value.os)
   form.value?.reset()
-  syncEye.value = true
   if (!mobile.value) inputComponent.value?.focus()
+  syncEyeAdd.value = true
 }
 </script>

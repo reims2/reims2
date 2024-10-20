@@ -20,13 +20,11 @@
 <script setup lang="ts">
 import { GeneralGlassesData } from '@/model/GlassesModel'
 import { ValidationRule } from '@/model/ReimsModel'
-import { useVModel } from '@vueuse/core'
 
 import { useDisplay } from 'vuetify'
 const { mobile } = useDisplay()
 
 interface Props {
-  modelValue?: string
   label: string
   rules: ValidationRule[]
   hint: string
@@ -34,13 +32,9 @@ interface Props {
   first?: boolean
   persistentHint?: boolean
 }
-const props = withDefaults(defineProps<Props>(), {
-  modelValue: '',
-  first: false,
-  persistentHint: false,
-})
-const emit = defineEmits(['update:modelValue'])
-const inputVal = useVModel(props, 'modelValue', emit)
+const { items, first = false, persistentHint = false } = defineProps<Props>()
+
+const inputVal = defineModel<string>('modelValue', { default: '' })
 
 const input = useTemplateRef('input')
 
@@ -58,11 +52,11 @@ defineExpose({ focus })
 function autoComplete() {
   /** autocomplete item data based on first characters. i.e. for id=glassesType return single for character s.
    * Otherwise emit no input i.e. no change */
-  const glassesString = inputVal.value
-  if (!glassesString || typeof glassesString !== 'string' || glassesString === '') return
+  const value = inputVal.value
+  if (!value || typeof value !== 'string' || value === '') return
 
-  for (const item of props.items) {
-    if (item.startsWith(glassesString.toLowerCase())) return emit('update:modelValue', item)
+  for (const item of items) {
+    if (item.startsWith(value.toLowerCase())) return (inputVal.value = item)
   }
 }
 </script>

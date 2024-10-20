@@ -22,7 +22,7 @@ jobs:
       run:
         working-directory: ./e2e
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
       - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4
         with:
           node-version-file: "e2e/.nvmrc"
@@ -46,7 +46,7 @@ jobs:
         run: yarn playwright test
         env:
           BASE_URL: "https://e2e.reims2.app"
-      - uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
         if: always()
         with:
           name: playwright-report
@@ -56,7 +56,7 @@ jobs:
           retention-days: 14
       - name: Stop E2E instance
         if: always()
-        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
+        uses: appleboy/ssh-action@25ce8cbbcb08177468c7ff7ec5cbfa236f9341e1 # v1.1.0
         with:
           host: reims2.app
           username: actions

@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test'
+import { test as base, expect } from '@playwright/test'
 import { EyeInput } from './eye-input.po'
 
 export const test = base.extend<{ glassesSku: string }>({
@@ -19,7 +19,8 @@ export const test = base.extend<{ glassesSku: string }>({
     await eyeInput.osCylinder.fill('0')
 
     await page.getByRole('button', { name: 'dd glasses' }).click()
-    const resultCard = page.getByTestId('result-0', { timeout: 10000 })
+    const resultCard = page.getByTestId('result-0')
+    await expect(resultCard).toBeVisible()
     const sku = (await resultCard.getByText('SKU').textContent()).replace('SKU', '').trim()
 
     await use(sku)

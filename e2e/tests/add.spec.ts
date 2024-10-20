@@ -21,6 +21,7 @@ test('Add glasses', { tag: '@fast' }, async ({ page }) => {
   await page.getByRole('button', { name: 'dd glasses' }).click()
 
   const resultCard = page.getByTestId('result-0')
+  await expect(resultCard).toBeVisible()
 
   await expect(resultCard.getByTestId('OD-card')).toContainText('SPH+0.75 D')
   await expect(resultCard.getByTestId('OD-card')).toContainText('CYL+0.00 D')

@@ -11,12 +11,12 @@ jobs:
       name: production
       url: https://reims2.app
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
       - name: Get Github short SHA
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: deploy via ssh
-        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
+        uses: appleboy/ssh-action@25ce8cbbcb08177468c7ff7ec5cbfa236f9341e1 # v1.1.0
         with:
           host: reims2.app
           username: actions
