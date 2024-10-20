@@ -175,14 +175,4 @@ function convertScoreToPercentage(score: number, singleEye = false): string {
 .v-btn {
   min-width: 0px !important;
 }
-
-.dot {
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
-  border-radius: 50%;
-  font-size: 14px;
-  color: white;
-  text-align: center;
-}
 </style>
