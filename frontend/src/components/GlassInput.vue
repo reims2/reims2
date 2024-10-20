@@ -17,6 +17,7 @@
           eye-name="OD"
           :model-value="modelValue.od"
           :add-enabled="isMultifocal"
+          :bal-enabled="balEnabled"
           @update:model-value="(val) => updateOdEye(val)"
         />
       </v-col>
@@ -25,6 +26,7 @@
           eye-name="OS"
           :model-value="modelValue.os"
           :add-enabled="isMultifocal"
+          :bal-enabled="balEnabled"
           @update:model-value="(val) => updateOsEye(val)"
         />
       </v-col>
@@ -36,15 +38,12 @@
 import AutoCompleteField from '@/components/AutoCompleteField.vue'
 import SingleEyeInput from '@/components/SingleEyeInput.vue'
 import { glassesMetaUIData } from '@/util/glasses-utils'
-import {
-  GlassesInput,
-  DisplayedEye,
-  GeneralGlassesDataKey,
-  EyeSearch,
-  isEyeSearch,
-} from '@/model/GlassesModel'
+import { GlassesInput, DisplayedEye, GeneralGlassesDataKey } from '@/model/GlassesModel'
 
-const { glassesTypeOnly = false } = defineProps<{ glassesTypeOnly?: boolean }>()
+const { glassesTypeOnly = false, balEnabled = false } = defineProps<{
+  glassesTypeOnly?: boolean
+  balEnabled?: boolean
+}>()
 const modelValue = defineModel<GlassesInput>({ required: true })
 const syncEyes = defineModel<boolean>('syncEyes', { default: false })
 
@@ -63,7 +62,7 @@ function updateMeta(key: string, value: string) {
   modelValue.value[key] = value
 }
 
-function resetBalEye(nonBalEye: EyeSearch, balEye: EyeSearch) {
+function resetBalEye(nonBalEye: DisplayedEye, balEye: DisplayedEye) {
   balEye.sphere = nonBalEye.sphere
   balEye.cylinder = ''
   balEye.axis = ''
@@ -75,27 +74,25 @@ function resetBalEye(nonBalEye: EyeSearch, balEye: EyeSearch) {
 function updateOdEye(newOd: DisplayedEye) {
   const newOs = modelValue.value.os
   if (syncEyes.value) newOs.add = newOd.add
-  if (isEyeSearch(newOd) && isEyeSearch(newOs)) {
-    if (newOd.isBAL) {
-      resetBalEye(newOs, newOd)
-    } else if (newOs.isBAL) {
-      resetBalEye(newOd, newOs)
-    }
+  if (balEnabled && newOd.isBAL) {
+    resetBalEye(newOs, newOd)
+  }
+  if (balEnabled && newOs.isBAL) {
+    resetBalEye(newOd, newOs)
   }
 
   modelValue.value.od = newOd
   modelValue.value.os = newOs
 }
 
-function updateOsEye(newOs: DisplayedEye | EyeSearch) {
+function updateOsEye(newOs: DisplayedEye) {
   if (newOs.add !== modelValue.value.os.add) syncEyes.value = false
   const newOd = modelValue.value.od
-  if (isEyeSearch(newOd) && isEyeSearch(newOs)) {
-    if (newOs.isBAL) {
-      resetBalEye(newOd, newOs)
-    } else if (newOd.isBAL) {
-      resetBalEye(newOs, newOd)
-    }
+  if (balEnabled && newOs.isBAL) {
+    resetBalEye(newOd, newOs)
+  }
+  if (balEnabled && newOd.isBAL) {
+    resetBalEye(newOs, newOd)
   }
   modelValue.value.os = newOs
   modelValue.value.od = newOd

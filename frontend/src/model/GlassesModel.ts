@@ -20,16 +20,7 @@ export interface DisplayedEye {
   axis: string
   cylinder: string
   sphere: string
-}
-
-/** Input to PhilScore function, correctly parsed Eye with isBAL */
-export interface EyeSearch extends DisplayedEye {
-  // is balance lens => ignore this eye and search for similar sphere only
-  isBAL: boolean
-}
-
-export function isEyeSearch(value: DisplayedEye | EyeSearch): value is EyeSearch {
-  return 'isBAL' in value
+  isBAL?: boolean
 }
 
 export interface MultifocalEye extends Eye {
@@ -63,8 +54,8 @@ export type GlassesMeta = {
 }
 
 export interface GlassesInput {
-  od: DisplayedEye | EyeSearch
-  os: DisplayedEye | EyeSearch
+  od: DisplayedEye
+  os: DisplayedEye
   glassesType: GlassesType | ''
   appearance?: GlassesAppearance | ''
   glassesSize?: GlassesSize | ''
@@ -99,6 +90,12 @@ export interface GlassesResult extends Glasses {
   score: number
   odScore: number
   osScore: number
+}
+
+/** Input to PhilScore function, correctly parsed Eye with isBAL */
+export interface EyeSearch extends DisplayedEye {
+  // is balance lens => ignore this eye and search for similar sphere only
+  isBAL: boolean
 }
 
 export interface SanitizedEyeSearch extends Eye {
