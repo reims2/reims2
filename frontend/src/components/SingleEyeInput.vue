@@ -93,13 +93,13 @@ const isBAL = computed({
   },
   set(val: boolean | undefined) {
     if (!isEyeSearch(modelEye.value)) return
-    modelEye.value.isBAL = val ?? false
+    modelEye.value = { ...modelEye.value, isBAL: val ?? false }
   },
 })
 
 function emitUpdate(id: keyof Eye, value: string | null) {
   if (modelEye.value[id] === value) return
-  modelEye.value[id] = value ?? ''
+  modelEye.value = { ...modelEye.value, [id]: value ?? '' }
 }
 
 watch(
