@@ -1,5 +1,5 @@
 {
-  "packageManager": "yarn@4.5.0",
+  "packageManager": "yarn@4.5.1",
   "scripts": {
     "lint": "eslint tests/** --fix --ignore-path .gitignore",
     "test": "playwright test",
