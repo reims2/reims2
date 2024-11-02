@@ -8208,7 +8208,7 @@ __metadata:
     pinia: "npm:2.2.4"
     pinia-plugin-persistedstate: "npm:4.1.1"
     prettier: "npm:3.3.3"
-    sass: "npm:1.80.3"
+    sass: "npm:1.80.5"
     sass-embedded: "npm:1.80.3"
     typescript: "npm:5.6.3"
     unplugin-auto-import: "npm:0.18.3"
@@ -8663,9 +8663,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:1.80.3":
-  version: 1.80.3
-  resolution: "sass@npm:1.80.3"
+"sass@npm:1.80.5":
+  version: 1.80.5
+  resolution: "sass@npm:1.80.5"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
@@ -8673,7 +8673,7 @@ __metadata:
     source-map-js: "npm:>=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 10/667e12b0b53b3c12caa3013f4e90a326af38504bb9f9644357cf3f77a49f1989cb396c158bc0f7ee67911980b215c99cb57baf9312bffa435e7196317cb96f07
+  checksum: 10/12e6089e8c571362f93b85fe213575af239f4fa32d335423e90374971814b6a5e13c761df4f8a527d7158b7e9a8293d0e3e01c60904831ff535782ac7d7bcf64
   languageName: node
   linkType: hard
 
