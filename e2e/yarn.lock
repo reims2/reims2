@@ -167,12 +167,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.7.9":
-  version: 22.7.9
-  resolution: "@types/node@npm:22.7.9"
+"@types/node@npm:22.8.4":
+  version: 22.8.4
+  resolution: "@types/node@npm:22.8.4"
   dependencies:
-    undici-types: "npm:~6.19.2"
-  checksum: 10/c68650a1ca3c65cc02e16166fa7daca9958ecea54bd52b0af31009011c44a33f8d559bf467c681b1f06935a10cafb932cc30e5454ecfc89351d361ab669bdba6
+    undici-types: "npm:~6.19.8"
+  checksum: 10/ee6b6b66c290a74bb37487f5ec533b7333c25e1b2f45016af4cd870408c4366f6fca75de5b8bb7a6e5836ab0536d2ef1910a89a2f797ae33a80344d0e81de03e
   languageName: node
   linkType: hard
 
@@ -2300,7 +2300,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@playwright/test": "npm:1.48.2"
-    "@types/node": "npm:22.7.9"
+    "@types/node": "npm:22.8.4"
     dotenv: "npm:16.4.5"
     eslint: "npm:8.57.1"
     eslint-config-prettier: "npm:9.1.0"
@@ -2713,7 +2713,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.19.2":
+"undici-types@npm:~6.19.8":
   version: 6.19.8
   resolution: "undici-types@npm:6.19.8"
   checksum: 10/cf0b48ed4fc99baf56584afa91aaffa5010c268b8842f62e02f752df209e3dea138b372a60a963b3b2576ed932f32329ce7ddb9cb5f27a6c83040d8cd74b7a70
