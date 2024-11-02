@@ -73,7 +73,7 @@ const RAW_RUNTIME_STATE =
           ["vue-tsc", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.1.10"],\
           ["vue3-enter-to-tab", "npm:3.1.5"],\
           ["vuetify", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.7.3"],\
-          ["workbox-window", "npm:7.1.0"]\
+          ["workbox-window", "npm:7.3.0"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -10613,7 +10613,7 @@ const RAW_RUNTIME_STATE =
           ["vue-tsc", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.1.10"],\
           ["vue3-enter-to-tab", "npm:3.1.5"],\
           ["vuetify", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.7.3"],\
-          ["workbox-window", "npm:7.1.0"]\
+          ["workbox-window", "npm:7.3.0"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -12470,7 +12470,7 @@ const RAW_RUNTIME_STATE =
           ["tinyglobby", "npm:0.2.0"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.4.10"],\
           ["workbox-build", "npm:7.1.0"],\
-          ["workbox-window", "npm:7.1.0"]\
+          ["workbox-window", "npm:7.3.0"]\
         ],\
         "packagePeers": [\
           "@types/vite-pwa__assets-generator",\
@@ -13148,6 +13148,13 @@ const RAW_RUNTIME_STATE =
           ["workbox-core", "npm:7.1.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:7.3.0", {\
+        "packageLocation": "./.yarn/cache/workbox-core-npm-7.3.0-359ba53731-228fb7018a.zip/node_modules/workbox-core/",\
+        "packageDependencies": [\
+          ["workbox-core", "npm:7.3.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["workbox-expiration", [\
@@ -13268,6 +13275,15 @@ const RAW_RUNTIME_STATE =
           ["workbox-window", "npm:7.1.0"],\
           ["@types/trusted-types", "npm:2.0.7"],\
           ["workbox-core", "npm:7.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.3.0", {\
+        "packageLocation": "./.yarn/cache/workbox-window-npm-7.3.0-a7da0f5b4f-29bbfd8a04.zip/node_modules/workbox-window/",\
+        "packageDependencies": [\
+          ["workbox-window", "npm:7.3.0"],\
+          ["@types/trusted-types", "npm:2.0.7"],\
+          ["workbox-core", "npm:7.3.0"]\
         ],\
         "linkType": "HARD"\
       }]\
