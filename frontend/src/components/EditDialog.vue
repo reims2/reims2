@@ -8,8 +8,11 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn variant="text" @click="dialogOpen = false">Cancel</v-btn>
+          <v-btn v-prevent-enter-tab variant="text" tabindex="-1" @click="dialogOpen = false">
+            Cancel
+          </v-btn>
           <v-btn
+            v-prevent-enter-tab
             variant="text"
             color="primary"
             :disabled="!valid"
@@ -32,6 +35,7 @@ import { ReimsAxiosError } from '@/lib/axios'
 import { useToast } from 'vue-toastification'
 import { sanitizeEyeValues } from '@/util/eye-utils'
 import { formatGlassesForDisplay } from '@/util/format-glasses'
+import { useEnterToTab } from 'vue3-enter-to-tab'
 
 const glassesStore = useGlassesStore()
 const toast = useToast()
@@ -44,6 +48,8 @@ const glassesInput: Ref<DisplayedGlasses> = ref(
 )
 const valid = ref(true)
 const loading = ref(false)
+const form = useTemplateRef('form')
+const { vPreventEnterTab } = useEnterToTab(form)
 
 watch(dialogOpen, (open) => {
   if (open) glassesInput.value = formatGlassesForDisplay(originalGlasses.value, false)

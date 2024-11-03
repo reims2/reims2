@@ -37,15 +37,16 @@
 
 <script setup lang="ts">
 import { eyeRules, isValidForRules } from '@/util/glasses-utils'
-import { DisplayedEye, Eye, EyeKey, EyeSearch, eyeKeys } from '@/model/GlassesModel'
+import { DisplayedEye, Eye, EyeKey, EyeSearch, eyeKeys, isEyeSearch } from '@/model/GlassesModel'
 
 interface Props {
   eyeName: string
   addEnabled?: boolean
-  balEnabled?: boolean
 }
-const { addEnabled = true, balEnabled = false } = defineProps<Props>()
-const modelEye = defineModel<DisplayedEye>('modelValue', { required: true })
+const { addEnabled = true } = defineProps<Props>()
+const modelEye = defineModel<DisplayedEye | EyeSearch>('modelValue', { required: true })
+
+const balEnabled = computed(() => isEyeSearch(modelEye.value))
 
 type EyeData = {
   label: string
@@ -87,27 +88,24 @@ const eyeData = computed<EyeDataMap>(() => {
 
 const isBAL = computed({
   get() {
-    return modelEye.value.isBAL ?? false
+    if (!isEyeSearch(modelEye.value)) return false
+    return modelEye.value.isBAL
   },
   set(val: boolean | undefined) {
-    const eye: EyeSearch = { ...modelEye.value, isBAL: val ?? false }
-    modelEye.value = eye
+    if (!isEyeSearch(modelEye.value)) return
+    modelEye.value = { ...modelEye.value, isBAL: val ?? false }
   },
 })
 
 function emitUpdate(id: keyof Eye, value: string | null) {
-  const eye = { ...modelEye.value }
-  eye[id] = value ?? ''
   if (modelEye.value[id] === value) return
-  modelEye.value = eye
+  modelEye.value = { ...modelEye.value, [id]: value ?? '' }
 }
 
 watch(
   () => addEnabled,
   (enabled) => {
-    if (!enabled) {
-      emitUpdate('add', '')
-    }
+    if (!enabled) modelEye.value.add = ''
   },
 )
 
