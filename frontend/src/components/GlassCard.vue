@@ -1,6 +1,6 @@
 <template>
   <v-card
-    style="min-width: 290px"
+    style="min-width: 330px"
     class="mb-2"
     :loading="loading"
     aria-role="group"
@@ -29,7 +29,7 @@
       </div>
       <div v-if="isGlassesResult(glasses)">
         <v-progress-circular
-          class="mr-7"
+          class="mr-7 font-weight-bold"
           :model-value="convertScoreToPercentage(glasses.score)"
           :size="53"
           :width="7"
@@ -37,12 +37,11 @@
           :style="{ fontSize: '14px' }"
         >
           <template #default>
-            {{ convertScoreToPercentage(glasses.score) }}
-            <span :style="{ marginLeft: '1px' }">%</span>
+            {{ glasses.score.toFixed(2) }}
           </template>
         </v-progress-circular>
         <v-tooltip activator="parent" location="bottom">
-          Estimated match in percent (PhilScore of {{ glasses.score.toFixed(2) }})
+          Result (Philscore) - lower values are better
         </v-tooltip>
       </div>
     </div>
@@ -56,16 +55,10 @@
               </div>
               <div v-if="isGlassesResult(glasses)" class="d-flex align-center">
                 <v-tooltip activator="parent" location="bottom">
-                  Match percentage only for {{ eye.text }}
+                  PhilScore only for {{ eye.text }}
                 </v-tooltip>
                 <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
-                  {{
-                    convertScoreToPercentage(
-                      eye.key == 'od' ? glasses.odScore : glasses.osScore,
-                      true,
-                    )
-                  }}
-                  <span :style="{ marginLeft: '1px' }">%</span>
+                  {{ (eye.key == 'od' ? glasses.odScore : glasses.osScore).toFixed(2) }}
                 </v-chip>
               </div>
             </div>
