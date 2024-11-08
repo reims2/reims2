@@ -87,7 +87,7 @@ services:
         max_attempts: 3
         window: 120s
   db_exporter:
-    image: prom/mysqld-exporter:v0.15.1@sha256:7211a617ec657701ca819aa0ba28e1d5750f5bf2c1391b755cc4a48cc360b0fa
+    image: prom/mysqld-exporter:v0.16.0@sha256:617b7244a31922c30eeddb0e3b39b4c125e890d46179be4a30561b20f111ca6c
     restart: always
     networks:
       {{ monitoring_network }}:
