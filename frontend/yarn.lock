@@ -7819,9 +7819,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia-plugin-persistedstate@npm:4.1.2":
-  version: 4.1.2
-  resolution: "pinia-plugin-persistedstate@npm:4.1.2"
+"pinia-plugin-persistedstate@npm:4.1.3":
+  version: 4.1.3
+  resolution: "pinia-plugin-persistedstate@npm:4.1.3"
   dependencies:
     "@nuxt/kit": "npm:^3.13.2"
     deep-pick-omit: "npm:^1.2.1"
@@ -7835,7 +7835,7 @@ __metadata:
       optional: true
     pinia:
       optional: true
-  checksum: 10/a73fd8e6f3dd9a480f02ffc62fd2058a76588f68d5231fa0e7d4a781918d8c5867e5c16eafd2811ce27df9e65997c595341a0b94669846296e9aaa48d7c8f0d3
+  checksum: 10/7128a89b45e9ef7d55eb49528a12ce3493f961369554c1ea1d7c3f0d5164bcfbca06a39a2b3eb274bd7b6dcaf474ced27c9240564ee8c7716d29be2814266ce7
   languageName: node
   linkType: hard
 
@@ -8196,7 +8196,7 @@ __metadata:
     happy-dom: "npm:15.10.8"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:2.2.6"
-    pinia-plugin-persistedstate: "npm:4.1.2"
+    pinia-plugin-persistedstate: "npm:4.1.3"
     prettier: "npm:3.3.3"
     sass: "npm:1.80.6"
     sass-embedded: "npm:1.80.6"
