@@ -34,7 +34,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/jest", "npm:29.5.14"],\
-          ["@types/node", "npm:22.9.4"],\
+          ["@types/node", "npm:22.10.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:7.18.0"],\
           ["@typescript-eslint/parser", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:7.18.0"],\
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.2.1"],\
@@ -4243,11 +4243,11 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:22.9.4", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-22.9.4-f15eaff576-1a30017634.zip/node_modules/@types/node/",\
+      ["npm:22.10.0", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-22.10.0-21eda01d20-e2561e15ea.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:22.9.4"],\
-          ["undici-types", "npm:6.19.8"]\
+          ["@types/node", "npm:22.10.0"],\
+          ["undici-types", "npm:6.20.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10655,7 +10655,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/jest", "npm:29.5.14"],\
-          ["@types/node", "npm:22.9.4"],\
+          ["@types/node", "npm:22.10.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:7.18.0"],\
           ["@typescript-eslint/parser", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:7.18.0"],\
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.2.1"],\
@@ -12031,10 +12031,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:6.19.8", {\
-        "packageLocation": "./.yarn/cache/undici-types-npm-6.19.8-9f12285b7a-cf0b48ed4f.zip/node_modules/undici-types/",\
+      ["npm:6.20.0", {\
+        "packageLocation": "./.yarn/cache/undici-types-npm-6.20.0-bd21e669af-583ac7bbf4.zip/node_modules/undici-types/",\
         "packageDependencies": [\
-          ["undici-types", "npm:6.19.8"]\
+          ["undici-types", "npm:6.20.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -12383,7 +12383,7 @@ const RAW_RUNTIME_STATE =
           ["vite", "virtual:2d08e6172336355d012469ef204874ef390b476c9297306f942bd368860d0ffc449cf3c1b2eba50951ae3cfde21e456ab3c600588a6caeb7c0394669b4149437#npm:5.2.11"],\
           ["@types/less", null],\
           ["@types/lightningcss", null],\
-          ["@types/node", "npm:22.9.4"],\
+          ["@types/node", "npm:22.10.0"],\
           ["@types/sass", null],\
           ["@types/stylus", null],\
           ["@types/sugarss", null],\
@@ -12422,7 +12422,7 @@ const RAW_RUNTIME_STATE =
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.4.11"],\
           ["@types/less", null],\
           ["@types/lightningcss", null],\
-          ["@types/node", "npm:22.9.4"],\
+          ["@types/node", "npm:22.10.0"],\
           ["@types/sass", null],\
           ["@types/sass-embedded", null],\
           ["@types/stylus", null],\
@@ -12714,7 +12714,7 @@ const RAW_RUNTIME_STATE =
           ["@types/edge-runtime__vm", null],\
           ["@types/happy-dom", null],\
           ["@types/jsdom", null],\
-          ["@types/node", "npm:22.9.4"],\
+          ["@types/node", "npm:22.10.0"],\
           ["@types/vitest__browser", null],\
           ["@types/vitest__ui", null],\
           ["@vitest/browser", null],\
@@ -16067,7 +16067,7 @@ class MountFS extends BasePortableFakeFS {
         if (this.notMount.has(filePath))
           continue;
         try {
-          if (this.typeCheck !== null && (this.baseFs.lstatSync(filePath).mode & fs.constants.S_IFMT) !== this.typeCheck) {
+          if (this.typeCheck !== null && (this.baseFs.statSync(filePath).mode & fs.constants.S_IFMT) !== this.typeCheck) {
             this.notMount.add(filePath);
             continue;
           }
