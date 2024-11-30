@@ -15,4 +15,4 @@ collections:
   - name: community.mysql
     version: 3.11.0
   - name: community.docker
-    version: 4.0.1
+    version: 4.1.0
