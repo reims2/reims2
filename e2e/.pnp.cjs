@@ -29,7 +29,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@playwright/test", "npm:1.49.0"],\
           ["@types/node", "npm:22.10.0"],\
-          ["dotenv", "npm:16.4.5"],\
+          ["dotenv", "npm:16.4.7"],\
           ["eslint", "npm:8.57.1"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.1.0"],\
           ["eslint-config-standard", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:17.1.0"],\
@@ -790,10 +790,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["dotenv", [\
-      ["npm:16.4.5", {\
-        "packageLocation": "./.yarn/cache/dotenv-npm-16.4.5-bcb20eb95d-55a3134601.zip/node_modules/dotenv/",\
+      ["npm:16.4.7", {\
+        "packageLocation": "./.yarn/cache/dotenv-npm-16.4.7-29680c94f8-f13bfe97db.zip/node_modules/dotenv/",\
         "packageDependencies": [\
-          ["dotenv", "npm:16.4.5"]\
+          ["dotenv", "npm:16.4.7"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2773,7 +2773,7 @@ const RAW_RUNTIME_STATE =
           ["root-workspace-0b6124", "workspace:."],\
           ["@playwright/test", "npm:1.49.0"],\
           ["@types/node", "npm:22.10.0"],\
-          ["dotenv", "npm:16.4.5"],\
+          ["dotenv", "npm:16.4.7"],\
           ["eslint", "npm:8.57.1"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.1.0"],\
           ["eslint-config-standard", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:17.1.0"],\
