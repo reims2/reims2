@@ -28,7 +28,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@playwright/test", "npm:1.49.0"],\
-          ["@types/node", "npm:22.10.0"],\
+          ["@types/node", "npm:22.10.1"],\
           ["dotenv", "npm:16.4.7"],\
           ["eslint", "npm:8.57.1"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.1.0"],\
@@ -249,10 +249,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/node", [\
-      ["npm:22.10.0", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-22.10.0-21eda01d20-e2561e15ea.zip/node_modules/@types/node/",\
+      ["npm:22.10.1", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-22.10.1-db989fc54b-c802a526da.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:22.10.0"],\
+          ["@types/node", "npm:22.10.1"],\
           ["undici-types", "npm:6.20.0"]\
         ],\
         "linkType": "HARD"\
@@ -2772,7 +2772,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["root-workspace-0b6124", "workspace:."],\
           ["@playwright/test", "npm:1.49.0"],\
-          ["@types/node", "npm:22.10.0"],\
+          ["@types/node", "npm:22.10.1"],\
           ["dotenv", "npm:16.4.7"],\
           ["eslint", "npm:8.57.1"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.1.0"],\
