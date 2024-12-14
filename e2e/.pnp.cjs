@@ -27,7 +27,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
-          ["@playwright/test", "npm:1.49.0"],\
+          ["@playwright/test", "npm:1.49.1"],\
           ["@types/node", "npm:22.10.1"],\
           ["dotenv", "npm:16.4.7"],\
           ["eslint", "npm:8.57.1"],\
@@ -221,11 +221,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@playwright/test", [\
-      ["npm:1.49.0", {\
-        "packageLocation": "./.yarn/cache/@playwright-test-npm-1.49.0-0d251ef816-e87485ab4c.zip/node_modules/@playwright/test/",\
+      ["npm:1.49.1", {\
+        "packageLocation": "./.yarn/cache/@playwright-test-npm-1.49.1-6026636721-bb0d5eda58.zip/node_modules/@playwright/test/",\
         "packageDependencies": [\
-          ["@playwright/test", "npm:1.49.0"],\
-          ["playwright", "npm:1.49.0"]\
+          ["@playwright/test", "npm:1.49.1"],\
+          ["playwright", "npm:1.49.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2611,21 +2611,21 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["playwright", [\
-      ["npm:1.49.0", {\
-        "packageLocation": "./.yarn/cache/playwright-npm-1.49.0-d57440d7c1-1fb198d09d.zip/node_modules/playwright/",\
+      ["npm:1.49.1", {\
+        "packageLocation": "./.yarn/cache/playwright-npm-1.49.1-0a8fed5892-49fb063f4a.zip/node_modules/playwright/",\
         "packageDependencies": [\
-          ["playwright", "npm:1.49.0"],\
+          ["playwright", "npm:1.49.1"],\
           ["fsevents", "patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"],\
-          ["playwright-core", "npm:1.49.0"]\
+          ["playwright-core", "npm:1.49.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["playwright-core", [\
-      ["npm:1.49.0", {\
-        "packageLocation": "./.yarn/unplugged/playwright-core-npm-1.49.0-4a6c09b0ee/node_modules/playwright-core/",\
+      ["npm:1.49.1", {\
+        "packageLocation": "./.yarn/unplugged/playwright-core-npm-1.49.1-a372dbc965/node_modules/playwright-core/",\
         "packageDependencies": [\
-          ["playwright-core", "npm:1.49.0"]\
+          ["playwright-core", "npm:1.49.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2771,7 +2771,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["root-workspace-0b6124", "workspace:."],\
-          ["@playwright/test", "npm:1.49.0"],\
+          ["@playwright/test", "npm:1.49.1"],\
           ["@types/node", "npm:22.10.1"],\
           ["dotenv", "npm:16.4.7"],\
           ["eslint", "npm:8.57.1"],\
