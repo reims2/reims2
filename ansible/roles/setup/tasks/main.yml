@@ -7,7 +7,7 @@
 
 - name: Enable auto upgrade
   ansible.builtin.include_role:
-    name: hifis-net.unattended-upgrades
+    name: hifis.toolkit.unattended_upgrades
   vars:
     unattended_automatic_reboot: true
     unattended_automatic_reboot_time: "08:00"
@@ -41,6 +41,8 @@
     name:
       - htop
       - nano
+      - kitty
+      - glances
       - libpam-systemd # ssh session closed after reboot
     state: present
 
