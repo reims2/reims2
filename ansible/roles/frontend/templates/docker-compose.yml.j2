@@ -16,7 +16,7 @@
         - "traefik.http.routers.{{ stack_name }}_frontend.middlewares=compress@file"
         - "traefik.http.routers.{{ stack_name }}_frontend.tls.certresolver={{ traefik_certresolver }}"
         - "traefik.http.services.{{ stack_name}}_frontend.loadbalancer.server.port=5000"
-        - "traefik.docker.network={{ stack_network }}"
+        - "traefik.swarm.network={{ stack_network }}"
       update_config:
         order: start-first
         failure_action: rollback
@@ -48,7 +48,7 @@
         - "traefik.http.routers.{{ stack_name }}_docs.middlewares=compress@file"
         - "traefik.http.routers.{{ stack_name }}_docs.tls.certresolver={{ traefik_certresolver }}"
         - "traefik.http.services.{{ stack_name}}_docs.loadbalancer.server.port=5000"
-        - "traefik.docker.network={{ stack_network }}"
+        - "traefik.swarm.network={{ stack_network }}"
       update_config:
         order: start-first
         failure_action: rollback

@@ -24,7 +24,7 @@ services:
         - "traefik.http.routers.grafana.middlewares=compress@file"
         - "traefik.http.routers.grafana.tls.certresolver={{ traefik_certresolver }}"
         - "traefik.http.services.grafana.loadbalancer.server.port={{ grafana_port }}"
-        - "traefik.docker.network={{ proxy_network }}"
+        - "traefik.swarm.network={{ proxy_network }}"
       update_config:
         order: start-first
         failure_action: rollback
