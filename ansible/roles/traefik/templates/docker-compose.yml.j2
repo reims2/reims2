@@ -21,6 +21,7 @@ services:
       - "{{ traefik_acme_location }}:/etc/traefik/acme"
 
     command:
+      - "--core.defaultRuleSyntax=v2"
       - "--entryPoints.http.address=:80"
       - "--entryPoints.https.address=:443"
 {% for entrypoint in traefik_additional_entrypoints %}
@@ -36,9 +37,9 @@ services:
       - "--providers.file.directory=/etc/traefik/dynamic_conf"
       - "--providers.file.watch=true"
 {% endif %}
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.swarmMode=true"
+      - "--providers.swarm=true"
+      - "--providers.swarm.exposedByDefault=false"
+      - "--providers.swarm.endpoint=unix:///var/run/docker.sock"
 {% if traefik_https_letsencrypt_enabled %}
       - "--certificatesResolvers.{{ traefik_certresolver }}.acme.httpChallenge=true"
       - "--certificatesResolvers.{{ traefik_certresolver }}.acme.email={{ traefik_letsencrypt_email }}"
