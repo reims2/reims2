@@ -29,6 +29,8 @@ traefik_dynamic_conf:
     middlewares:
       compress:
         compress: {}
+      autodetect:
+        contentType: {}
 
 # This config allows to add new entrypoints to traefik which are also automatically exposed / the port is automatically allocated.
 # Can be used in cases where traefik needs to be used as a proxy because of the certificates it holds. Eg. gitlab registry on the
