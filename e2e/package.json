@@ -7,7 +7,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.49.1",
-    "@types/node": "22.10.2",
+    "@types/node": "22.10.3",
     "dotenv": "16.4.7",
     "eslint": "8.57.1",
     "eslint-config-prettier": "9.1.0",
