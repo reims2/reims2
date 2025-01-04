@@ -18,7 +18,7 @@
     "node": "22.12.0"
   },
   "dependencies": {
-    "@fontsource-variable/roboto-flex": "5.1.0",
+    "@fontsource-variable/roboto-flex": "5.1.1",
     "@vueuse/core": "12.2.0",
     "axios": "1.7.9",
     "dayjs": "1.11.13",
