@@ -10,7 +10,7 @@ test('Download reports', async ({ page }) => {
   // TODO increase size in future, this is for an empty DB
   expect((await fs.promises.stat((await inventoryCsv.path()) as string)).size).toBeGreaterThan(200)
 
-  await page.getByRole('combobox').click()
+  // await page.getByRole('combobox').click()
   // TODO await page.getByRole('option', { name: '2024' }).click()
   const dispenseDownloadPromise = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Download' }).nth(1).click()
