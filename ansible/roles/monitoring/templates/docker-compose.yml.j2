@@ -21,8 +21,6 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.grafana.rule=Host(`{{ monitoring_domain }}`)"
         - "traefik.http.routers.grafana.entrypoints=https"
-        - "traefik.http.routers.grafana.middlewares=compress@file"
-        - "traefik.http.routers.grafana.middlewares=autodetect@file"
         - "traefik.http.routers.grafana.tls.certresolver={{ traefik_certresolver }}"
         - "traefik.http.services.grafana.loadbalancer.server.port={{ grafana_port }}"
         - "traefik.swarm.network={{ proxy_network }}"

@@ -32,6 +32,7 @@ services:
       - "--entrypoints.http.http.redirections.entryPoint.scheme=https"
       - "--entrypoints.http.http.redirections.entrypoint.permanent=true"
 {% endif %}
+      - "--entryPoints.https.http.middlewares=autodetect@file,compress@file"
       - "--accesslog={{ traefik_access_log_enabled | bool | lower }}"
 {% if traefik_dynamic_conf != omit %}
       - "--providers.file.directory=/etc/traefik/dynamic_conf"
