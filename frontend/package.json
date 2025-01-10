@@ -54,7 +54,7 @@
     "eslint-plugin-n": "16.6.2",
     "eslint-plugin-promise": "6.6.0",
     "eslint-plugin-vue": "9.32.0",
-    "happy-dom": "16.2.9",
+    "happy-dom": "16.4.0",
     "prettier": "3.4.2",
     "sass": "1.83.1",
     "sass-embedded": "1.83.0",
