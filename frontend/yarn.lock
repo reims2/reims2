@@ -2569,6 +2569,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/pluginutils@npm:^5.1.4":
+  version: 5.1.4
+  resolution: "@rollup/pluginutils@npm:5.1.4"
+  dependencies:
+    "@types/estree": "npm:^1.0.0"
+    estree-walker: "npm:^2.0.2"
+    picomatch: "npm:^4.0.2"
+  peerDependencies:
+    rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  checksum: 10/598f628988af25541a9a6c6ef154aaf350f8be3238884e500cc0e47138684071abe490563c953f9bda9e8b113ecb1f99c11abfb9dbaf4f72cdd62e257a673fa3
+  languageName: node
+  linkType: hard
+
 "@rollup/rollup-android-arm-eabi@npm:4.28.0":
   version: 4.28.0
   resolution: "@rollup/rollup-android-arm-eabi@npm:4.28.0"
@@ -7359,7 +7375,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.30.15":
+"magic-string@npm:^0.30.17":
   version: 0.30.17
   resolution: "magic-string@npm:0.30.17"
   dependencies:
@@ -8479,7 +8495,7 @@ __metadata:
     sass: "npm:1.83.1"
     sass-embedded: "npm:1.83.1"
     typescript: "npm:5.6.3"
-    unplugin-auto-import: "npm:0.19.0"
+    unplugin-auto-import: "npm:19.0.0"
     vite: "npm:6.0.7"
     vite-plugin-pwa: "npm:0.21.1"
     vite-plugin-vue-devtools: "npm:7.7.0"
@@ -9940,17 +9956,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:0.19.0":
-  version: 0.19.0
-  resolution: "unplugin-auto-import@npm:0.19.0"
+"unplugin-auto-import@npm:19.0.0":
+  version: 19.0.0
+  resolution: "unplugin-auto-import@npm:19.0.0"
   dependencies:
     "@antfu/utils": "npm:^0.7.10"
-    "@rollup/pluginutils": "npm:^5.1.3"
+    "@rollup/pluginutils": "npm:^5.1.4"
     local-pkg: "npm:^0.5.1"
-    magic-string: "npm:^0.30.15"
+    magic-string: "npm:^0.30.17"
     picomatch: "npm:^4.0.2"
     unimport: "npm:^3.14.5"
-    unplugin: "npm:^2.1.0"
+    unplugin: "npm:^2.1.2"
   peerDependencies:
     "@nuxt/kit": ^3.2.2
     "@vueuse/core": "*"
@@ -9959,7 +9975,7 @@ __metadata:
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: 10/66242f2f94b22f0fda60342dadc5602bd235c83520ce3782b201ef2256750a6bed6ffd81fcbece49afdde19024f9f9434505d030a6308be5cbf75f9862d61be6
+  checksum: 10/c61a00844a69f2291590dbdefaa9da2c2a58648651c2f8eef05cf9babb589b72e62215154eceffa51796133805f3067f875604214bbb8fe89094e3eccdbd8fe9
   languageName: node
   linkType: hard
 
@@ -9988,13 +10004,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "unplugin@npm:2.1.0"
+"unplugin@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "unplugin@npm:2.1.2"
   dependencies:
     acorn: "npm:^8.14.0"
     webpack-virtual-modules: "npm:^0.6.2"
-  checksum: 10/b01041839c25ff5b0997677e00ffe8d98aa532443833968d652c0165eab3159702c3c3d1237afa58db35af5ccf25dd0a05782d78b7c22000742797e382362bcd
+  checksum: 10/4f269e720a649a9327c6ae59c3813b114a6b956c69e3cfaeeb7829d9315c0b4933e9dd06b1ecec89539514224b2346794e017b42f13af67c6f12287e200849e3
   languageName: node
   linkType: hard
 
