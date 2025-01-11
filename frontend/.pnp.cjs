@@ -61,7 +61,7 @@ const RAW_RUNTIME_STATE =
           ["sass", "npm:1.83.1"],\
           ["sass-embedded", "npm:1.83.1"],\
           ["typescript", "patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"],\
-          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.19.0"],\
+          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.0.0"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.0.7"],\
           ["vite-plugin-pwa", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.21.1"],\
           ["vite-plugin-vue-devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:7.7.0"],\
@@ -3854,6 +3854,29 @@ const RAW_RUNTIME_STATE =
           ["@rollup/pluginutils", "npm:5.1.3"]\
         ],\
         "linkType": "SOFT"\
+      }],\
+      ["npm:5.1.4", {\
+        "packageLocation": "./.yarn/cache/@rollup-pluginutils-npm-5.1.4-83ce21024f-598f628988.zip/node_modules/@rollup/pluginutils/",\
+        "packageDependencies": [\
+          ["@rollup/pluginutils", "npm:5.1.4"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:0eece55ba889f154089562519cfa35d6414715a32a90a474b51031d2ebb93f5b3c1633dedb87e2dc1eb9c16502fea7f3186d08d3695f8b4a9deab5f81627501b#npm:5.1.4", {\
+        "packageLocation": "./.yarn/__virtual__/@rollup-pluginutils-virtual-755ccc9664/0/cache/@rollup-pluginutils-npm-5.1.4-83ce21024f-598f628988.zip/node_modules/@rollup/pluginutils/",\
+        "packageDependencies": [\
+          ["@rollup/pluginutils", "virtual:0eece55ba889f154089562519cfa35d6414715a32a90a474b51031d2ebb93f5b3c1633dedb87e2dc1eb9c16502fea7f3186d08d3695f8b4a9deab5f81627501b#npm:5.1.4"],\
+          ["@types/estree", "npm:1.0.5"],\
+          ["@types/rollup", null],\
+          ["estree-walker", "npm:2.0.2"],\
+          ["picomatch", "npm:4.0.2"],\
+          ["rollup", null]\
+        ],\
+        "packagePeers": [\
+          "@types/rollup",\
+          "rollup"\
+        ],\
+        "linkType": "HARD"\
       }],\
       ["virtual:66565d4fa2003eb58f84351d7665b76526375e34a9721a8f9bb1183f59a206ea2d10d401dee76f971d958b5d9d8966a5684ec1f4d39226b252a968cbab713fc7#npm:5.1.0", {\
         "packageLocation": "./.yarn/__virtual__/@rollup-pluginutils-virtual-8864bed935/0/cache/@rollup-pluginutils-npm-5.1.0-6939820ef8-abb15eaec5.zip/node_modules/@rollup/pluginutils/",\
@@ -10865,7 +10888,7 @@ const RAW_RUNTIME_STATE =
           ["sass", "npm:1.83.1"],\
           ["sass-embedded", "npm:1.83.1"],\
           ["typescript", "patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"],\
-          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.19.0"],\
+          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.0.0"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.0.7"],\
           ["vite-plugin-pwa", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.21.1"],\
           ["vite-plugin-vue-devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:7.7.0"],\
@@ -12382,10 +12405,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:2.1.0", {\
-        "packageLocation": "./.yarn/cache/unplugin-npm-2.1.0-d32c559cce-b01041839c.zip/node_modules/unplugin/",\
+      ["npm:2.1.2", {\
+        "packageLocation": "./.yarn/cache/unplugin-npm-2.1.2-e9c881b0c5-4f269e720a.zip/node_modules/unplugin/",\
         "packageDependencies": [\
-          ["unplugin", "npm:2.1.0"],\
+          ["unplugin", "npm:2.1.2"],\
           ["acorn", "npm:8.14.0"],\
           ["webpack-virtual-modules", "npm:0.6.2"]\
         ],\
@@ -12408,20 +12431,20 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["unplugin-auto-import", [\
-      ["npm:0.19.0", {\
-        "packageLocation": "./.yarn/cache/unplugin-auto-import-npm-0.19.0-79c6c6f170-66242f2f94.zip/node_modules/unplugin-auto-import/",\
+      ["npm:19.0.0", {\
+        "packageLocation": "./.yarn/cache/unplugin-auto-import-npm-19.0.0-cc2bc55c4f-c61a00844a.zip/node_modules/unplugin-auto-import/",\
         "packageDependencies": [\
-          ["unplugin-auto-import", "npm:0.19.0"]\
+          ["unplugin-auto-import", "npm:19.0.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.19.0", {\
-        "packageLocation": "./.yarn/__virtual__/unplugin-auto-import-virtual-b9c85b09b1/0/cache/unplugin-auto-import-npm-0.19.0-79c6c6f170-66242f2f94.zip/node_modules/unplugin-auto-import/",\
+      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/unplugin-auto-import-virtual-0eece55ba8/0/cache/unplugin-auto-import-npm-19.0.0-cc2bc55c4f-c61a00844a.zip/node_modules/unplugin-auto-import/",\
         "packageDependencies": [\
-          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.19.0"],\
+          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.0.0"],\
           ["@antfu/utils", "npm:0.7.10"],\
           ["@nuxt/kit", null],\
-          ["@rollup/pluginutils", "virtual:676d953221f5abee9a38d13068135940f2b6f86e984e21811297cf4cb2fd44794a6a73397ab0562df4a270973f265fc10a7d5c0f50e8b02b27a17062fbebbdde#npm:5.1.3"],\
+          ["@rollup/pluginutils", "virtual:0eece55ba889f154089562519cfa35d6414715a32a90a474b51031d2ebb93f5b3c1633dedb87e2dc1eb9c16502fea7f3186d08d3695f8b4a9deab5f81627501b#npm:5.1.4"],\
           ["@types/nuxt__kit", null],\
           ["@types/vueuse__core", null],\
           ["@vueuse/core", "npm:12.2.0"],\
@@ -12429,7 +12452,7 @@ const RAW_RUNTIME_STATE =
           ["magic-string", "npm:0.30.17"],\
           ["picomatch", "npm:4.0.2"],\
           ["unimport", "npm:3.14.5"],\
-          ["unplugin", "npm:2.1.0"]\
+          ["unplugin", "npm:2.1.2"]\
         ],\
         "packagePeers": [\
           "@nuxt/kit",\
