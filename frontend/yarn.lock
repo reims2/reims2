@@ -6297,13 +6297,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:16.5.3":
-  version: 16.5.3
-  resolution: "happy-dom@npm:16.5.3"
+"happy-dom@npm:16.7.3":
+  version: 16.7.3
+  resolution: "happy-dom@npm:16.7.3"
   dependencies:
     webidl-conversions: "npm:^7.0.0"
     whatwg-mimetype: "npm:^3.0.0"
-  checksum: 10/414e45e816c9f3efdc7f9cef3f017fbf8032fc5a5368bd6b98be8e9bb39999ed189f7d0b03a45c6464557f263f0791a041c40ac2cc78a5cea79e3ae68591aabf
+  checksum: 10/58df4bf58b6886f0dfcf505260f6621a392b11757ac7978cf897af439ddeebaa9a0ed95a6e1acd616a2ace8288abb8edff374dba11d4191381059d4781f9bdb3
   languageName: node
   linkType: hard
 
@@ -8518,7 +8518,7 @@ __metadata:
     eslint-plugin-n: "npm:16.6.2"
     eslint-plugin-promise: "npm:6.6.0"
     eslint-plugin-vue: "npm:9.32.0"
-    happy-dom: "npm:16.5.3"
+    happy-dom: "npm:16.7.3"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:2.3.1"
     pinia-plugin-persistedstate: "npm:4.2.0"
