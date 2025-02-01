@@ -53,7 +53,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-n", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:16.6.2"],\
           ["eslint-plugin-promise", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.6.0"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:9.32.0"],\
-          ["happy-dom", "npm:16.5.3"],\
+          ["happy-dom", "npm:16.7.3"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.3.0"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.2.0"],\
@@ -8426,10 +8426,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["happy-dom", [\
-      ["npm:16.5.3", {\
-        "packageLocation": "./.yarn/cache/happy-dom-npm-16.5.3-0da6e06889-414e45e816.zip/node_modules/happy-dom/",\
+      ["npm:16.7.3", {\
+        "packageLocation": "./.yarn/cache/happy-dom-npm-16.7.3-71b704c427-58df4bf58b.zip/node_modules/happy-dom/",\
         "packageDependencies": [\
-          ["happy-dom", "npm:16.5.3"],\
+          ["happy-dom", "npm:16.7.3"],\
           ["webidl-conversions", "npm:7.0.0"],\
           ["whatwg-mimetype", "npm:3.0.0"]\
         ],\
@@ -10900,7 +10900,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-n", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:16.6.2"],\
           ["eslint-plugin-promise", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.6.0"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:9.32.0"],\
-          ["happy-dom", "npm:16.5.3"],\
+          ["happy-dom", "npm:16.7.3"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.3.0"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.2.0"],\
@@ -12993,7 +12993,7 @@ const RAW_RUNTIME_STATE =
           ["chai", "npm:5.1.2"],\
           ["debug", "virtual:eef0e28f12d7e37574e49a18ef5627cb92bb6cca77e1752ba8dc3a526b58034e67703381c5e3820e3947b84b7a76db537832314590117916b1f7f0c4f9ed55fd#npm:4.3.7"],\
           ["expect-type", "npm:1.1.0"],\
-          ["happy-dom", "npm:16.5.3"],\
+          ["happy-dom", "npm:16.7.3"],\
           ["jsdom", null],\
           ["magic-string", "npm:0.30.12"],\
           ["pathe", "npm:1.1.2"],\
