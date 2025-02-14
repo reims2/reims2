@@ -147,12 +147,8 @@ public class GlassesRestController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping(path = "/dispensed/{location}.csv")
-    public void getAllDispensedGlassesCsv(HttpServletResponse servletResponse,
-                                          @RequestParam Optional<Date> startDate,
-                                          @RequestParam Optional<Date> endDate,
-                                          @PathVariable("location") String location) {
-        List<Glasses> glasses = mainService.findDispensedBetween(startDate.orElse(new Date(0)),
-            endDate.orElse(new Date()), location);
+    public void getAllDispensedGlassesCsv(HttpServletResponse servletResponse, @PathVariable("location") String location) {
+        List<Glasses> glasses = mainService.findByDispensedAndLocation(true, location);
         if (glasses.isEmpty()) {
             servletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return;
@@ -160,6 +156,19 @@ public class GlassesRestController {
 
         Collections.sort(glasses, (o1, o2) -> o1.getDispense().getModifyDate().compareTo(o2.getDispense().getModifyDate()));
         WriteCsvToResponse.writeGlassesToCsvHttpResponse(servletResponse, glasses);
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping(path = "/unsuccessful/{location}.csv")
+    public void getAllUnsuccessfulSearchesCsv(HttpServletResponse servletResponse, @PathVariable("location") String location) {
+        List<UnsuccessfulSearch> searches = mainService.findUnsuccessfulSearchByLocation(location);
+        if (searches.isEmpty()) {
+            servletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            return;
+        }
+
+        Collections.sort(searches, (o1, o2) -> o1.getSearchDate().compareTo(o2.getSearchDate()));
+        WriteCsvToResponse.writeSearchesToCsvHttpResponse(servletResponse, searches);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")

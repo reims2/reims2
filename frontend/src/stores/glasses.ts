@@ -121,18 +121,17 @@ export const useGlassesStore = defineStore(
       addOfflineGlasses(editedGlasses)
       return editedGlasses
     }
-
-    async function loadDispensedCsv(startDate: Dayjs, endDate: Dayjs): Promise<Blob> {
-      const params = {
-        startDate: startDate.format('MM/DD/YYYY'),
-        endDate: endDate.format('MM/DD/YYYY'),
-      }
+    async function loadSearchesCsv(): Promise<Blob> {
+      const response = await axiosInstance.get(
+        `/api/glasses/unsuccessful/${rootStore.reimsSite}.csv`,
+        { responseType: 'blob' },
+      )
+      return response.data
+    }
+    async function loadDispensedCsv(): Promise<Blob> {
       const response = await axiosInstance.get(
         `/api/glasses/dispensed/${rootStore.reimsSite}.csv`,
-        {
-          params,
-          responseType: 'blob',
-        },
+        { responseType: 'blob' },
       )
       return response.data
     }
@@ -214,6 +213,7 @@ export const useGlassesStore = defineStore(
       undispense,
       deleteGlasses,
       editGlasses,
+      loadSearchesCsv,
       loadDispensedCsv,
       loadInventoryCsv,
       getDispensedGlasses,

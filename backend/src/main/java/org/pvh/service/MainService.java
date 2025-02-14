@@ -42,6 +42,8 @@ public interface MainService {
 
     List<Glasses> findAllByLocationAndNotDispensed(String location);
 
+    List<UnsuccessfulSearch> findUnsuccessfulSearchByLocation(String location);
+
     List<Glasses> findAllAndNotDispensed();
 
     UnsuccessfulSearch saveUnsuccessfulSearch(UnsuccessfulSearch search);
