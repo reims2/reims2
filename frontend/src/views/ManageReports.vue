@@ -2,42 +2,43 @@
   <v-container>
     <v-row dense class="d-flex justify-center">
       <v-col cols="12" md="6" lg="4">
-        <div class="pb-2 text-h5">Live statistics</div>
-        <div class="pb-4 text-medium-emphasis">
-          Visit the monitoring dashboard to see live statistics.
-        </div>
+        <div class="pb-2 text-h5">Statistics dashboard</div>
+        <div class="pb-4 text-medium-emphasis">Visit the dashboard to see live statistics.</div>
         <v-btn color="accent" href="https://monitoring.reims2.app" target="_blank">
           Open dashboard
         </v-btn>
 
-        <v-divider class="my-9" />
+        <v-divider class="my-7" />
 
         <div class="pb-2 text-h5">Current inventory report</div>
         <div class="pb-4 text-medium-emphasis">
-          This report contains all active glasses in the storage of the current location.
+          This report contains all glasses in the storage of the current location.
         </div>
         <v-btn color="accent" :loading="loadingInventoryReport" @click="downloadInventoryReport">
           Download
         </v-btn>
 
-        <v-divider class="my-9" />
-
-        <div class="pb-2 text-h5">Unsucessful searches report</div>
-        <div class="pb-4 text-medium-emphasis">This TODO</div>
-        <v-btn color="accent" :loading="loadingSearchesReport" @click="downloadSearchesReport">
-          Download
-        </v-btn>
-
-        <v-divider class="my-9" />
+        <v-divider class="my-7" />
 
         <div class="pb-2 text-h5">Dispense & delete report</div>
         <div class="pb-2 text-medium-emphasis">
-          This report contains all glasses that were dispensed or deleted.
+          This report contains all glasses that were dispensed and deleted.
         </div>
 
         <v-btn color="accent" :loading="loadingDispensedReport" @click="downloadDispensedReport">
           Download
         </v-btn>
+
+        <v-divider class="my-7" />
+
+        <div class="pb-2 text-h5">Unsuccessful searches report</div>
+        <div class="pb-4 text-medium-emphasis">
+          This report contains all searches that returned no results.
+        </div>
+        <v-btn color="accent" :loading="loadingSearchesReport" @click="downloadSearchesReport">
+          Download
+        </v-btn>
+
         <a ref="downloadLink" :href="csvUri" target="_blank" :download="filename" class="d-none" />
       </v-col>
     </v-row>
@@ -79,7 +80,7 @@ async function downloadSearchesReport() {
     filename.value = `unsuccessful_searches_${rootStore.reimsSite}.csv`
     downloadCsv(csvFile)
   } catch (error) {
-    toast.error(`Could not load dispense report (${error.message})`)
+    toast.error(`Could not load unsuccessful searches report (${error.message})`)
   }
   loadingSearchesReport.value = false
 }
@@ -98,7 +99,7 @@ async function downloadInventoryReport() {
 
 async function downloadCsv(csvBlob: Blob) {
   if (!csvBlob || csvBlob.size === 0) {
-    toast.warning('Report is empty. Try selecting another year?')
+    toast.warning('Report contains no glasses.')
     return
   }
   const blob = new Blob([csvBlob], { type: 'application/csv' })
