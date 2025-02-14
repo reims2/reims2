@@ -67,19 +67,20 @@ public class WriteCsvToResponse {
         df.setTimeZone(TimeZone.getTimeZone("CST"));
 
         List<String> rowList = new ArrayList<>();
-        rowList.add("-");
+        rowList.add("");
         rowList.add(glass.getLocation());
         rowList.add(glass.getGlassesType().toString());
-        rowList.add("-");
-        rowList.add("-");
+        rowList.add("");
+        rowList.add("");
         rowList.add(df.format(glass.getSearchDate()));
-        rowList.add("-");
-        rowList.add("-");
-        rowList.add("-");
-        rowList.add("-");
+        rowList.add("");
+        rowList.add("");
+        rowList.add("");
+        rowList.add("");
         // search stuff
         rowList.add(glass.getBalLens().name());
-        rowList.add(glass.getIncreaseSearchTolerance() ? "true" : "false");
+        rowList.add(
+                glass.getIncreaseSearchTolerance() != null && glass.getIncreaseSearchTolerance() ? "true" : "false");
         for (Eye eye : new Eye[] { glass.getOd(), glass.getOs() }) {
             rowList.add(eye.getSphere().toString());
             rowList.add(eye.getCylinder().toString());
@@ -97,23 +98,24 @@ public class WriteCsvToResponse {
         df.setTimeZone(TimeZone.getTimeZone("CST"));
 
         List<String> rowList = new ArrayList<>();
-        rowList.add(glass.isDispensed() ? "-" : glass.getSku().toString());
+        rowList.add(glass.isDispensed() ? "" : glass.getSku().toString());
         rowList.add(glass.getLocation());
         rowList.add(glass.getGlassesType().toString());
         rowList.add(glass.getAppearance().toString());
         rowList.add(glass.getGlassesSize().toString());
         rowList.add(df.format(glass.getCreationDate()));
         rowList.add(glass.isDispensed() ? "true" : "false");
-        rowList.add(glass.isDispensed() ? glass.getDispense().getPreviousSku().toString() : "-");
-        rowList.add(glass.isDispensed() ? df.format(glass.getDispense().getModifyDate()) : "-");
+        rowList.add(glass.isDispensed() ? glass.getDispense().getPreviousSku().toString() : "");
+        rowList.add(glass.isDispensed() ? df.format(glass.getDispense().getModifyDate()) : "");
         if (glass.isDispensed() && glass.getDispense().getDispenseReason() != null)
             rowList.add(glass.getDispense().getDispenseReason().toString());
         else
-            rowList.add("-");
+            rowList.add("");
 
         // search stuff
-        rowList.add("-");
-        rowList.add("-");
+        rowList.add("");
+        rowList.add("");
+
         for (Eye eye : new Eye[] { glass.getOd(), glass.getOs() }) {
             rowList.add(eye.getSphere().toString());
             rowList.add(eye.getCylinder().toString());
