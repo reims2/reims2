@@ -34,8 +34,6 @@ public class WriteCsvToResponse {
             "OS Sphere", "OS Cylinder", "OS Axis", "OS Add" };
 
     public static void writeGlassesToCsvHttpResponse(HttpServletResponse servletResponse, Collection<Glasses> glasses) {
-        servletResponse.setContentType("text/csv");
-        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"glasses.csv\"");
         try (CSVWriter writer = new CSVWriter(servletResponse.getWriter())) {
             writer.writeNext(header);
 
@@ -45,13 +43,12 @@ public class WriteCsvToResponse {
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"glasses.csv\"");
+        servletResponse.setContentType("text/csv");
     }
 
     public static void writeSearchesToCsvHttpResponse(HttpServletResponse servletResponse,
             Collection<UnsuccessfulSearch> glasses) {
-        servletResponse.setContentType("text/csv");
-        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"unsuccessful_searches.csv\"");
         try (CSVWriter writer = new CSVWriter(servletResponse.getWriter())) {
             writer.writeNext(header);
             for (UnsuccessfulSearch glass : glasses) {
@@ -60,7 +57,8 @@ public class WriteCsvToResponse {
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"unsuccessful_searches.csv\"");
+        servletResponse.setContentType("text/csv");
     }
 
     private static void writeSingleSearch(CSVWriter writer, UnsuccessfulSearch glass) {
