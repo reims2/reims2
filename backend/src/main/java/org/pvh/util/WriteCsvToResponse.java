@@ -49,6 +49,8 @@ public class WriteCsvToResponse {
 
     public static void writeSearchesToCsvHttpResponse(HttpServletResponse servletResponse,
             Collection<UnsuccessfulSearch> glasses) {
+        // TODO here and above: we shouldn't use getWriter() before business logic is
+        // done, since it's impossible to send an error after writing has started
         try (CSVWriter writer = new CSVWriter(servletResponse.getWriter())) {
             writer.writeNext(header);
             for (UnsuccessfulSearch glass : glasses) {
