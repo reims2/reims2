@@ -153,6 +153,12 @@ public class MainServiceImpl implements MainService {
         return glassesRepository.findAll(Specification.where(GlassesSpecs.isDispensed(false)));
     }
 
+
+    @Override
+    public List<UnsuccessfulSearch> findUnsuccessfulSearchByLocation(String location) {
+        return unsuccessfulSearchRepository.findAllByLocation(location);
+    }
+
     @Override
     public UnsuccessfulSearch saveUnsuccessfulSearch(UnsuccessfulSearch search) {
         return unsuccessfulSearchRepository.save(search);

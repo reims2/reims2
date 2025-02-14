@@ -22,19 +22,18 @@
 
         <v-divider class="my-9" />
 
+        <div class="pb-2 text-h5">Unsucessful searches report</div>
+        <div class="pb-4 text-medium-emphasis">This TODO</div>
+        <v-btn color="accent" :loading="loadingSearchesReport" @click="downloadSearchesReport">
+          Download
+        </v-btn>
+
+        <v-divider class="my-9" />
+
         <div class="pb-2 text-h5">Dispense & delete report</div>
         <div class="pb-2 text-medium-emphasis">
-          This report contains all glasses that were dispensed or deleted in the selected year.
+          This report contains all glasses that were dispensed or deleted.
         </div>
-
-        <v-select
-          v-model="selectedDispenedYear"
-          :prepend-icon="mdiCalendar"
-          :items="lastYears"
-          class="pt-4"
-          density="comfortable"
-          style="max-width: 250px"
-        />
 
         <v-btn color="accent" :loading="loadingDispensedReport" @click="downloadDispensedReport">
           Download
@@ -46,41 +45,43 @@
 </template>
 
 <script setup lang="ts">
-import { mdiCalendar } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
-import dayjs from 'dayjs'
 
 import { useToast } from 'vue-toastification'
 const toast = useToast()
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()
+const loadingSearchesReport = ref(false)
 const loadingDispensedReport = ref(false)
 const loadingInventoryReport = ref(false)
 const csvUri = ref('')
 const filename = ref('')
-const selectedDispenedYear = ref<number>(dayjs().year())
 const downloadLink = useTemplateRef('downloadLink')
-
-const lastYears = Array.from(new Array(30), (_, index) => dayjs().year() - index).filter(
-  (year) => year >= 2022,
-)
 
 async function downloadDispensedReport() {
   loadingDispensedReport.value = true
-  const selectedYearStart = dayjs().startOf('year').year(selectedDispenedYear.value)
   try {
-    const csvFile = await glassesStore.loadDispensedCsv(
-      selectedYearStart,
-      selectedYearStart.add(1, 'year'),
-    )
-    filename.value = `dispense_report_${rootStore.reimsSite}_${selectedDispenedYear.value}.csv`
+    const csvFile = await glassesStore.loadDispensedCsv()
+    filename.value = `dispense_report_${rootStore.reimsSite}.csv`
     downloadCsv(csvFile)
   } catch (error) {
     toast.error(`Could not load dispense report (${error.message})`)
   }
   loadingDispensedReport.value = false
+}
+
+async function downloadSearchesReport() {
+  loadingSearchesReport.value = true
+  try {
+    const csvFile = await glassesStore.loadSearchesCsv()
+    filename.value = `unsuccessful_searches_${rootStore.reimsSite}.csv`
+    downloadCsv(csvFile)
+  } catch (error) {
+    toast.error(`Could not load dispense report (${error.message})`)
+  }
+  loadingSearchesReport.value = false
 }
 
 async function downloadInventoryReport() {

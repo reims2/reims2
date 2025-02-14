@@ -14,22 +14,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.TimeZone;
+import org.pvh.model.entity.UnsuccessfulSearch;
 
 public class WriteCsvToResponse {
 
-    public static void writeGlassesToCsvHttpResponse(HttpServletResponse servletResponse, Collection<Glasses> glasses) {
-        servletResponse.setContentType("text/csv");
-        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"glasses.csv\"");
-        try (CSVWriter csvPrinter = new CSVWriter(servletResponse.getWriter())) {
-            writeGlasses(csvPrinter, glasses);
-        } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-
-    }
-
-    public static void writeGlasses(CSVWriter writer, Collection<Glasses> glasses) {
-        writer.writeNext(new String[]{"SKU",
+    private static final String[] header = new String[] { "SKU",
             "Location",
             "Type",
             "Appearance",
@@ -39,19 +28,74 @@ public class WriteCsvToResponse {
             "SKU before dispension",
             "dispension date (in CST)",
             "dispense type",
+            "isBal",
+            "highTolerance",
             "OD Sphere", "OD Cylinder", "OD Axis", "OD Add",
-            "OS Sphere", "OS Cylinder", "OS Axis", "OS Add"});
+            "OS Sphere", "OS Cylinder", "OS Axis", "OS Add" };
 
-        for (Glasses glass : glasses) {
-            writeSingleGlasses(writer, glass);
+    public static void writeGlassesToCsvHttpResponse(HttpServletResponse servletResponse, Collection<Glasses> glasses) {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"glasses.csv\"");
+        try (CSVWriter writer = new CSVWriter(servletResponse.getWriter())) {
+            writer.writeNext(header);
+
+            for (Glasses glass : glasses) {
+                writeSingleGlasses(writer, glass);
+            }
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
 
     }
 
+    public static void writeSearchesToCsvHttpResponse(HttpServletResponse servletResponse,
+            Collection<UnsuccessfulSearch> glasses) {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"unsuccessful_searches.csv\"");
+        try (CSVWriter writer = new CSVWriter(servletResponse.getWriter())) {
+            writer.writeNext(header);
+            for (UnsuccessfulSearch glass : glasses) {
+                writeSingleSearch(writer, glass);
+            }
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+
+    }
+
+    private static void writeSingleSearch(CSVWriter writer, UnsuccessfulSearch glass) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // come up with an alternative to hardcoding EL Salvador's timezone
+        df.setTimeZone(TimeZone.getTimeZone("CST"));
+
+        List<String> rowList = new ArrayList<>();
+        rowList.add("-");
+        rowList.add(glass.getLocation());
+        rowList.add(glass.getGlassesType().toString());
+        rowList.add("-");
+        rowList.add("-");
+        rowList.add(df.format(glass.getSearchDate()));
+        rowList.add("-");
+        rowList.add("-");
+        rowList.add("-");
+        rowList.add("-");
+        // search stuff
+        rowList.add(glass.getBalLens().name());
+        rowList.add(glass.getIncreaseSearchTolerance() ? "true" : "false");
+        for (Eye eye : new Eye[] { glass.getOd(), glass.getOs() }) {
+            rowList.add(eye.getSphere().toString());
+            rowList.add(eye.getCylinder().toString());
+            rowList.add(Integer.toString(eye.getAxis()));
+            rowList.add(eye.getAdd().toString());
+        }
+
+        String[] row = rowList.toArray(String[]::new);
+        writer.writeNext(row);
+    }
+
     private static void writeSingleGlasses(CSVWriter writer, Glasses glass) {
-        String pattern = "yyyy-MM-dd HH:mm:ss";
-        DateFormat df = new SimpleDateFormat(pattern);
-        // TODO come up with an alternative to hardcoding EL Salvador's timezone
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // come up with an alternative to hardcoding EL Salvador's timezone
         df.setTimeZone(TimeZone.getTimeZone("CST"));
 
         List<String> rowList = new ArrayList<>();
@@ -69,7 +113,10 @@ public class WriteCsvToResponse {
         else
             rowList.add("-");
 
-        for (Eye eye : new Eye[]{glass.getOd(), glass.getOs()}) {
+        // search stuff
+        rowList.add("-");
+        rowList.add("-");
+        for (Eye eye : new Eye[] { glass.getOd(), glass.getOs() }) {
             rowList.add(eye.getSphere().toString());
             rowList.add(eye.getCylinder().toString());
             rowList.add(Integer.toString(eye.getAxis()));
