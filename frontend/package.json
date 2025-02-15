@@ -32,7 +32,7 @@
     "vuetify": "3.7.12"
   },
   "devDependencies": {
-    "@babel/types": "7.26.8",
+    "@babel/types": "7.26.9",
     "@mdi/js": "7.4.47",
     "@pinia/testing": "0.1.7",
     "@testing-library/vue": "8.1.0",
