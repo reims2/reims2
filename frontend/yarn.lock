@@ -2445,14 +2445,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pinia/testing@npm:0.1.7":
-  version: 0.1.7
-  resolution: "@pinia/testing@npm:0.1.7"
-  dependencies:
-    vue-demi: "npm:^0.14.10"
+"@pinia/testing@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@pinia/testing@npm:1.0.0"
   peerDependencies:
-    pinia: ">=2.2.6"
-  checksum: 10/ec864a46aa6df171ba3e23974006a56049bd933c289bc2c5563290f09f10a28a5a415b843eb42e06907063d092e24cd67a51dde525fbd1fe7c6d03199f8c21a3
+    pinia: ">=3.0.0"
+  checksum: 10/4d5fca3da97dd51b93b7a722cbf64eb68afcbc75dd3f064c0b14bee62303491a7f4baeb5b63d274e75061970547bee780653114fe72a2dcb29df0bc3ac8ac20a
   languageName: node
   linkType: hard
 
@@ -8567,7 +8565,7 @@ __metadata:
     "@babel/types": "npm:7.26.9"
     "@fontsource-variable/roboto-flex": "npm:5.1.1"
     "@mdi/js": "npm:7.4.47"
-    "@pinia/testing": "npm:0.1.7"
+    "@pinia/testing": "npm:1.0.0"
     "@testing-library/vue": "npm:8.1.0"
     "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:29.5.14"
@@ -10493,22 +10491,6 @@ __metadata:
     vue-demi-fix: bin/vue-demi-fix.js
     vue-demi-switch: bin/vue-demi-switch.js
   checksum: 10/04884677b8790320bcd3cbbf8dae1c4da9f4ab304659bf18d69b11255f7d16825d2135d2d0e565b1a1f1b7f601100eb26760254129c6bacec2c7e72ab0f61d52
-  languageName: node
-  linkType: hard
-
-"vue-demi@npm:^0.14.10":
-  version: 0.14.10
-  resolution: "vue-demi@npm:0.14.10"
-  peerDependencies:
-    "@vue/composition-api": ^1.0.0-rc.1
-    vue: ^3.0.0-0 || ^2.6.0
-  peerDependenciesMeta:
-    "@vue/composition-api":
-      optional: true
-  bin:
-    vue-demi-fix: bin/vue-demi-fix.js
-    vue-demi-switch: bin/vue-demi-switch.js
-  checksum: 10/3028239c0c25a84361a13ab936fcc9a199f54e0320c2ec1d2f4fdf7da8bae663382b7c1e5b1f5a1a43f6aebc73b955892cd4b6c7b3eaf2b766e18cc2a6f7ebea
   languageName: node
   linkType: hard
 
