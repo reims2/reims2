@@ -13,7 +13,7 @@ ENV VITE_GIT_VERSION=${GIT_VERSION}
 RUN yarn build
 
 # PROD IMAGE
-FROM caddy:2.9.1-alpine@sha256:c77f60a2bebb3916b17f73d892962a407271b198d1ac0f9c332ca7f59ed9f11b
+FROM caddy:2.9.1-alpine@sha256:89ea4dae338296f09e236f619460928e6431376a0bc4e1e4017f7ad057ef2b18
 
 COPY ./Caddyfile /etc/caddy/Caddyfile
 COPY --from=build /usr/src/app/dist /usr/share/caddy
