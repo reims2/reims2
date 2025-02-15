@@ -13,7 +13,7 @@ WORKDIR /usr/src/app/target
 RUN java -Djarmode=layertools -jar ./*.jar extract
 
 # PROD IMAGE
-FROM eclipse-temurin:21.0.6_7-jre-alpine@sha256:7fee222ab26fb3634ee95d722ee9e2e2e6b6447a2c68debeac9cc9039954d4af
+FROM eclipse-temurin:21.0.6_7-jre-alpine@sha256:4e9ab608d97796571b1d5bbcd1c9f430a89a5f03fe5aa6c093888ceb6756c502
 RUN apk add dumb-init
 
 ENV HOST=0.0.0.0
