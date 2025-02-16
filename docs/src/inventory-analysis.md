@@ -21,7 +21,7 @@ _more imprecise prediction due to smaller sample size_
 
 **we need**
 
-- more with a zero-ish axis 
+- more with a zero-ish axis, specifically:
   - a lot more with a sphere of -1.5 to +1.5, 
   - some with any negative sphere and 0 to -0.5 cylinder
   - also few with sphere of 0 (in at least one eye)
@@ -41,10 +41,8 @@ _more imprecise prediction due to smaller sample size_
 
 **we have**
 
-- more than enough of 90ish axis (like 70-110) (and therefore non null cylinders), 
-  - especially for spheres higher than +1.25
-
-
+- more than enough of 90ish axis (like 70-110) (and therefore non null cylinders)
+  - especially for spheres higher than +1.25 much more than enough
 
 
 ## sm multi
@@ -52,7 +50,7 @@ _more imprecise prediction due to smaller sample size_
 **we need**
 
 - muuuuch more with close to 0 axis and 0 to -0.75 cylinder, any positive spheres
-- some more of glasses with a smaller add value, i.e. -1 to -1.75 (and an axis that is roughly 0-ish)
+- some more of glasses with a smaller add value, i.e. -1 to -1.75 (and an axis that is roughly 0-ish) and any sphere
 
 **we have**
 
