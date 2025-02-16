@@ -2,9 +2,14 @@
 
 This is a very rough interpretation of the results. Raw graphs are also shown [here](https://github.com/reims2/data-analysis/blob/main/analysis.ipynb)
 
+This considers all dispensed glasses since the 2023 campaign and also unsuccessful searches made in (parts of) the 2024 campaign and all of the 2025 campaign.
+
+The analysis for singlefocal is much worse than for multifocal since we have much more dispensed multifocals and therefore more data.
+
+Check the [grafana dashboard](https://monitoring.reims2.app/d/ee00c8b8-fba7-42a4-9bf6-a2eaefdb5927/refill-stats) for the percentage of multi- vs. singlefocal per location.
+
 ## sa single
 
-_more imprecise prediction due to smaller sample size_
 
 **we need**
 
@@ -16,8 +21,6 @@ _more imprecise prediction due to smaller sample size_
 - enough with axis not zero-ish (so 50 to 120) (and at least one cylinder > 0).
 
 ### sm single
-
-_more imprecise prediction due to smaller sample size_
 
 **we need**
 
