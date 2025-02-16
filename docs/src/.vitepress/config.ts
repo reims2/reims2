@@ -31,6 +31,7 @@ export default defineConfig({
           text: 'Internals',
           items: [
             { link: '/philscore', text: 'Matching Algorithm' },
+            { link: '/inventory-analysis', text: 'Inventory analysis' },
             {
               link: '/2024_bugs_investigated',
               text: '2024 campaign investigation',
