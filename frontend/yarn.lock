@@ -3698,7 +3698,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-api@npm:^7.7.1":
+"@vue/devtools-api@npm:^7.7.2":
   version: 7.7.2
   resolution: "@vue/devtools-api@npm:7.7.2"
   dependencies:
@@ -8214,18 +8214,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia@npm:3.0.0":
-  version: 3.0.0
-  resolution: "pinia@npm:3.0.0"
+"pinia@npm:3.0.1":
+  version: 3.0.1
+  resolution: "pinia@npm:3.0.1"
   dependencies:
-    "@vue/devtools-api": "npm:^7.7.1"
+    "@vue/devtools-api": "npm:^7.7.2"
   peerDependencies:
     typescript: ">=4.4.4"
     vue: ^2.7.0 || ^3.5.11
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/c1ec7c0562bd63c3c5a6d9dfa0c0466d8401078fc362d3bf5fc5cdc6108eee23989ba069dffc28da48b898baf1b3230015a1511b547c86cc6c72c2e1383c188e
+  checksum: 10/de4fc63d128b2eac8729eac7f028a3e3e670ea3bb865c56d9264a52d92b9d9ff18b920116309452df18db74374ca241907850cfb87ea60f769025061c1473d99
   languageName: node
   linkType: hard
 
@@ -8566,7 +8566,7 @@ __metadata:
     eslint-plugin-vue: "npm:9.32.0"
     happy-dom: "npm:17.1.0"
     jwt-decode: "npm:4.0.0"
-    pinia: "npm:3.0.0"
+    pinia: "npm:3.0.1"
     pinia-plugin-persistedstate: "npm:4.2.0"
     prettier: "npm:3.4.2"
     sass: "npm:1.85.0"
