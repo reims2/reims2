@@ -3894,14 +3894,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.7.9":
-  version: 1.7.9
-  resolution: "axios@npm:1.7.9"
+"axios@npm:1.8.0":
+  version: 1.8.0
+  resolution: "axios@npm:1.8.0"
   dependencies:
     follow-redirects: "npm:^1.15.6"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 10/b7a5f660ea53ba9c2a745bf5ad77ad8bf4f1338e13ccc3f9f09f810267d6c638c03dac88b55dae8dc98b79c57d2d6835be651d58d2af97c174f43d289a9fd007
+  checksum: 10/4eab6c9eed00fdb07295f6991010a3d3a8affad7d0791f819a76de3f01ca0c5943e539e93a1eb72f2bfa182728401e19f5f5f6bb1ffde68b67f9934989bf9aa6
   languageName: node
   linkType: hard
 
@@ -8205,7 +8205,7 @@ __metadata:
     "@vitest/ui": "npm:3.0.7"
     "@vue/eslint-config-typescript": "npm:13.0.0"
     "@vueuse/core": "npm:12.7.0"
-    axios: "npm:1.7.9"
+    axios: "npm:1.8.0"
     browserslist: "npm:4.24.4"
     browserslist-to-esbuild: "npm:2.1.1"
     dayjs: "npm:1.11.13"
