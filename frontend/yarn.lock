@@ -8224,7 +8224,7 @@ __metadata:
     sass: "npm:1.85.1"
     sass-embedded: "npm:1.85.1"
     typescript: "npm:5.7.3"
-    unplugin-auto-import: "npm:19.1.0"
+    unplugin-auto-import: "npm:19.1.1"
     vite: "npm:6.2.0"
     vite-plugin-pwa: "npm:0.21.1"
     vite-plugin-vue-devtools: "npm:7.7.2"
@@ -9612,7 +9612,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unimport@npm:^4.1.1":
+"unimport@npm:^4.1.2":
   version: 4.1.2
   resolution: "unimport@npm:4.1.2"
   dependencies:
@@ -9668,14 +9668,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:19.1.0":
-  version: 19.1.0
-  resolution: "unplugin-auto-import@npm:19.1.0"
+"unplugin-auto-import@npm:19.1.1":
+  version: 19.1.1
+  resolution: "unplugin-auto-import@npm:19.1.1"
   dependencies:
     local-pkg: "npm:^1.0.0"
     magic-string: "npm:^0.30.17"
     picomatch: "npm:^4.0.2"
-    unimport: "npm:^4.1.1"
+    unimport: "npm:^4.1.2"
     unplugin: "npm:^2.2.0"
     unplugin-utils: "npm:^0.2.4"
   peerDependencies:
@@ -9686,7 +9686,7 @@ __metadata:
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: 10/1772a75f54dc5d7c18ad08418063bed2c53f3aff9ef783892a26e5ba8bca8fabc24e654a26900c63e12340aa4f88fe911880281b3799bef357f40e22e2bfd0a0
+  checksum: 10/edab73b0d1efaa6146341740a6900a697e8f43effa80cd3bfba9bbadbe0ba5b33be7fb090a281de2f8c77b3d303f4780a04c97ef2da2703e542a285073943040
   languageName: node
   linkType: hard
 

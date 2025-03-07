@@ -61,7 +61,7 @@ const RAW_RUNTIME_STATE =
           ["sass", "npm:1.85.1"],\
           ["sass-embedded", "npm:1.85.1"],\
           ["typescript", "patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"],\
-          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.0"],\
+          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.1"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.2.0"],\
           ["vite-plugin-pwa", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.21.1"],\
           ["vite-plugin-vue-devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:7.7.2"],\
@@ -10668,7 +10668,7 @@ const RAW_RUNTIME_STATE =
           ["sass", "npm:1.85.1"],\
           ["sass-embedded", "npm:1.85.1"],\
           ["typescript", "patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"],\
-          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.0"],\
+          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.1"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.2.0"],\
           ["vite-plugin-pwa", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.21.1"],\
           ["vite-plugin-vue-devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:7.7.2"],\
@@ -12232,17 +12232,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["unplugin-auto-import", [\
-      ["npm:19.1.0", {\
-        "packageLocation": "./.yarn/cache/unplugin-auto-import-npm-19.1.0-40de729e76-1772a75f54.zip/node_modules/unplugin-auto-import/",\
+      ["npm:19.1.1", {\
+        "packageLocation": "./.yarn/cache/unplugin-auto-import-npm-19.1.1-58d77af32d-edab73b0d1.zip/node_modules/unplugin-auto-import/",\
         "packageDependencies": [\
-          ["unplugin-auto-import", "npm:19.1.0"]\
+          ["unplugin-auto-import", "npm:19.1.1"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.0", {\
-        "packageLocation": "./.yarn/__virtual__/unplugin-auto-import-virtual-9cd2a15390/0/cache/unplugin-auto-import-npm-19.1.0-40de729e76-1772a75f54.zip/node_modules/unplugin-auto-import/",\
+      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.1", {\
+        "packageLocation": "./.yarn/__virtual__/unplugin-auto-import-virtual-914081b883/0/cache/unplugin-auto-import-npm-19.1.1-58d77af32d-edab73b0d1.zip/node_modules/unplugin-auto-import/",\
         "packageDependencies": [\
-          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.0"],\
+          ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.1"],\
           ["@nuxt/kit", null],\
           ["@types/nuxt__kit", null],\
           ["@types/vueuse__core", null],\
