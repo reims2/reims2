@@ -28,7 +28,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@babel/types", "npm:7.26.9"],\
-          ["@fontsource-variable/roboto-flex", "npm:5.1.1"],\
+          ["@fontsource-variable/roboto-flex", "npm:5.2.5"],\
           ["@mdi/js", "npm:7.4.47"],\
           ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:1.0.0"],\
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
@@ -3103,10 +3103,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@fontsource-variable/roboto-flex", [\
-      ["npm:5.1.1", {\
-        "packageLocation": "./.yarn/cache/@fontsource-variable-roboto-flex-npm-5.1.1-ae73ad7c3b-ca82f248c7.zip/node_modules/@fontsource-variable/roboto-flex/",\
+      ["npm:5.2.5", {\
+        "packageLocation": "./.yarn/cache/@fontsource-variable-roboto-flex-npm-5.2.5-66512980f2-cdf072f211.zip/node_modules/@fontsource-variable/roboto-flex/",\
         "packageDependencies": [\
-          ["@fontsource-variable/roboto-flex", "npm:5.1.1"]\
+          ["@fontsource-variable/roboto-flex", "npm:5.2.5"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10635,7 +10635,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["reims2-frontend", "workspace:."],\
           ["@babel/types", "npm:7.26.9"],\
-          ["@fontsource-variable/roboto-flex", "npm:5.1.1"],\
+          ["@fontsource-variable/roboto-flex", "npm:5.2.5"],\
           ["@mdi/js", "npm:7.4.47"],\
           ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:1.0.0"],\
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
