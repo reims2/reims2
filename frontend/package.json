@@ -29,7 +29,7 @@
     "vue-router": "4.5.0",
     "vue-toastification": "2.0.0-rc.5",
     "vue3-enter-to-tab": "3.1.5",
-    "vuetify": "3.7.15"
+    "vuetify": "3.7.16"
   },
   "devDependencies": {
     "@babel/types": "7.26.10",
