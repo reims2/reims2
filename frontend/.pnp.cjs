@@ -42,7 +42,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.7"],\
           ["@vue/eslint-config-typescript", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:13.0.0"],\
           ["@vueuse/core", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:13.0.0"],\
-          ["axios", "npm:1.8.2"],\
+          ["axios", "npm:1.8.3"],\
           ["browserslist", "npm:4.24.4"],\
           ["browserslist-to-esbuild", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.1.1"],\
           ["dayjs", "npm:1.11.13"],\
@@ -5734,11 +5734,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["axios", [\
-      ["npm:1.8.2", {\
-        "packageLocation": "./.yarn/cache/axios-npm-1.8.2-55671cda10-d432875812.zip/node_modules/axios/",\
+      ["npm:1.8.3", {\
+        "packageLocation": "./.yarn/cache/axios-npm-1.8.3-b472059d00-050f911cad.zip/node_modules/axios/",\
         "packageDependencies": [\
-          ["axios", "npm:1.8.2"],\
-          ["follow-redirects", "virtual:55671cda109d40748b7e5f5c4800486b4658ca82dacc9dd48dc401a3e431c6709551633a86acb3d432e80057bc06d36cdbc4aaa7b783386d2c6f6604618b5c22#npm:1.15.6"],\
+          ["axios", "npm:1.8.3"],\
+          ["follow-redirects", "virtual:b472059d000b1cfc7d47298c15d442572f2aadc0025a1121c3f4f6afa1fc6c0e18564cca70f644a3d709ce073667e46fe89df2b8467c6e2a5cd8f9673fc75312#npm:1.15.6"],\
           ["form-data", "npm:4.0.0"],\
           ["proxy-from-env", "npm:1.1.0"]\
         ],\
@@ -7786,10 +7786,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:55671cda109d40748b7e5f5c4800486b4658ca82dacc9dd48dc401a3e431c6709551633a86acb3d432e80057bc06d36cdbc4aaa7b783386d2c6f6604618b5c22#npm:1.15.6", {\
-        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-7ef640c58d/0/cache/follow-redirects-npm-1.15.6-50635fe51d-70c7612c4c.zip/node_modules/follow-redirects/",\
+      ["virtual:b472059d000b1cfc7d47298c15d442572f2aadc0025a1121c3f4f6afa1fc6c0e18564cca70f644a3d709ce073667e46fe89df2b8467c6e2a5cd8f9673fc75312#npm:1.15.6", {\
+        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-c2a8cc768f/0/cache/follow-redirects-npm-1.15.6-50635fe51d-70c7612c4c.zip/node_modules/follow-redirects/",\
         "packageDependencies": [\
-          ["follow-redirects", "virtual:55671cda109d40748b7e5f5c4800486b4658ca82dacc9dd48dc401a3e431c6709551633a86acb3d432e80057bc06d36cdbc4aaa7b783386d2c6f6604618b5c22#npm:1.15.6"],\
+          ["follow-redirects", "virtual:b472059d000b1cfc7d47298c15d442572f2aadc0025a1121c3f4f6afa1fc6c0e18564cca70f644a3d709ce073667e46fe89df2b8467c6e2a5cd8f9673fc75312#npm:1.15.6"],\
           ["@types/debug", null],\
           ["debug", null]\
         ],\
@@ -10680,7 +10680,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.7"],\
           ["@vue/eslint-config-typescript", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:13.0.0"],\
           ["@vueuse/core", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:13.0.0"],\
-          ["axios", "npm:1.8.2"],\
+          ["axios", "npm:1.8.3"],\
           ["browserslist", "npm:4.24.4"],\
           ["browserslist-to-esbuild", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.1.1"],\
           ["dayjs", "npm:1.11.13"],\
