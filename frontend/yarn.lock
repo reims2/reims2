@@ -3561,15 +3561,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:12.8.1":
-  version: 12.8.1
-  resolution: "@vueuse/core@npm:12.8.1"
+"@vueuse/core@npm:12.8.2":
+  version: 12.8.2
+  resolution: "@vueuse/core@npm:12.8.2"
   dependencies:
     "@types/web-bluetooth": "npm:^0.0.21"
-    "@vueuse/metadata": "npm:12.8.1"
-    "@vueuse/shared": "npm:12.8.1"
+    "@vueuse/metadata": "npm:12.8.2"
+    "@vueuse/shared": "npm:12.8.2"
     vue: "npm:^3.5.13"
-  checksum: 10/2ed679356d52d34354168befacb2dc73ce5fab878974fe7e80ea2d32122eef7078aa5f13ac4d87621ecb28c9849e472ecaafc2cecf8f775aa191e949135939ca
+  checksum: 10/66af78b3164294dc08b83d9a254602cc03a84c2dd99691001719426fd06badd4b565dabd77e4cb2654214b13b49f5dc08bd71f823f928d8bb7d353f148a6fd40
   languageName: node
   linkType: hard
 
@@ -3592,10 +3592,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/metadata@npm:12.8.1":
-  version: 12.8.1
-  resolution: "@vueuse/metadata@npm:12.8.1"
-  checksum: 10/e818edb8b07933a668d92ccb317f8399162f86d164f80e2a2da2a2b2cd1c1f97c1b1ce5a1b072eff293eea1f83d0875427fcf0959c1b9d609c1d193314f5335e
+"@vueuse/metadata@npm:12.8.2":
+  version: 12.8.2
+  resolution: "@vueuse/metadata@npm:12.8.2"
+  checksum: 10/ad7299346dbbf2f6256c631f70801cc86a2b58b53a83cc978f48f6a452a92b52e47966a631f5c35b667b3307a4a817eb6a8421f76b0b5ae4e9a2e12dc2c2b3ca
   languageName: node
   linkType: hard
 
@@ -3608,12 +3608,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/shared@npm:12.8.1":
-  version: 12.8.1
-  resolution: "@vueuse/shared@npm:12.8.1"
+"@vueuse/shared@npm:12.8.2":
+  version: 12.8.2
+  resolution: "@vueuse/shared@npm:12.8.2"
   dependencies:
     vue: "npm:^3.5.13"
-  checksum: 10/bcf84e051a4062ef3e7bab4edb158e511188319307227c0ebd901b1b2c071f563354e4fcfe4d5eb71ea0b25b9365e740a24ddf9dcc285adb740a081d5b48e8a4
+  checksum: 10/2cbb24706e43e0dd02074997d6833973a333ed4a1cc1df5fc0b6f7dcba14450aafb3bba7fbf4caf9294be4c1dfde54dbc68961e43a8f40b127e7b533f4698830
   languageName: node
   linkType: hard
 
@@ -8211,7 +8211,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:3.0.7"
     "@vitest/ui": "npm:3.0.7"
     "@vue/eslint-config-typescript": "npm:13.0.0"
-    "@vueuse/core": "npm:12.8.1"
+    "@vueuse/core": "npm:12.8.2"
     axios: "npm:1.8.2"
     browserslist: "npm:4.24.4"
     browserslist-to-esbuild: "npm:2.1.1"
