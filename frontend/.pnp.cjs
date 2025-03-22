@@ -58,7 +58,7 @@ const RAW_RUNTIME_STATE =
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.1"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.2.0"],\
           ["prettier", "npm:3.5.2"],\
-          ["sass", "npm:1.85.1"],\
+          ["sass", "npm:1.86.0"],\
           ["sass-embedded", "npm:1.85.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"],\
           ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.1"],\
@@ -10696,7 +10696,7 @@ const RAW_RUNTIME_STATE =
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.1"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.2.0"],\
           ["prettier", "npm:3.5.2"],\
-          ["sass", "npm:1.85.1"],\
+          ["sass", "npm:1.86.0"],\
           ["sass-embedded", "npm:1.85.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"],\
           ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.1"],\
@@ -10903,10 +10903,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["sass", [\
-      ["npm:1.85.1", {\
-        "packageLocation": "./.yarn/cache/sass-npm-1.85.1-330947ad29-2803b8d4d2.zip/node_modules/sass/",\
+      ["npm:1.86.0", {\
+        "packageLocation": "./.yarn/cache/sass-npm-1.86.0-56b821d79d-d943e11434.zip/node_modules/sass/",\
         "packageDependencies": [\
-          ["sass", "npm:1.85.1"],\
+          ["sass", "npm:1.86.0"],\
           ["@parcel/watcher", "npm:2.4.1"],\
           ["chokidar", "npm:4.0.1"],\
           ["immutable", "npm:5.0.2"],\
@@ -12574,7 +12574,7 @@ const RAW_RUNTIME_STATE =
           ["lightningcss", null],\
           ["postcss", "npm:8.5.3"],\
           ["rollup", "npm:4.34.6"],\
-          ["sass", "npm:1.85.1"],\
+          ["sass", "npm:1.86.0"],\
           ["sass-embedded", "npm:1.85.1"],\
           ["stylus", null],\
           ["sugarss", null],\
