@@ -3,7 +3,7 @@ roles:
   - name: geerlingguy.swap
     version: 1.2.0
   - name: geerlingguy.docker
-    version: 7.4.6
+    version: 7.4.7
 
 collections:
   - name: hifis.toolkit
