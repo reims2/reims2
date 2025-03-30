@@ -49,7 +49,7 @@ watch(
       // also fetch glasses in background to update database
       try {
         selected.value = await glassesStore.fetchSingle(newSku)
-      } catch (error) {
+      } catch {
         // do nothing, we fallback to local DB cache
       }
     } else {
