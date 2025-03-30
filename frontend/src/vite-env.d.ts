@@ -1,6 +1,6 @@
-/// <reference types="vite/client" />
-/// <reference types="vite-plugin-pwa/vue" />
-/* eslint-disable @typescript-eslint/ban-types */
+// / <reference types="vite/client" />
+// / <reference types="vite-plugin-pwa/vue" />
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 declare module '*.vue' {
