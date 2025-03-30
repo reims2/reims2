@@ -25,9 +25,9 @@
       "automerge": true
     },
     {
-      "groupName": "all dev dependencies",
+      "groupName": "all minor dev dependencies",
       "matchDepTypes": ["devDependencies", "action", "galaxy-collection"],
-      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "matchUpdateTypes": ["minor"],
       "automerge": true
     },
     {
