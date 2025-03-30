@@ -1,4 +1,3 @@
-import { EyeCard } from './eye-card.po'
 import { EyeInput } from './eye-input.po'
 import { test, expect } from './fixtures'
 
