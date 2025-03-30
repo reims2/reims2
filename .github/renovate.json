@@ -8,18 +8,14 @@
     ":separateMajorReleases",
     "helpers:pinGitHubActionDigests",
     "docker:pinDigests",
-    ":automergePatch",
     ":automergeLinters",
     ":automergeTesters",
     ":automergeTypes",
-    ":automergeDigest",
     ":automergePr",
-    ":prConcurrentLimit20",
+    ":prConcurrentLimit10",
     "group:test",
     "group:linters",
     "group:definitelyTyped",
-    "group:allDigest",
-    "group:vite",
     "schedule:automergeWeekends"
   ],
   "configMigration": true,
@@ -27,9 +23,15 @@
   "platformAutomerge": true,
   "packageRules": [
     {
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchCurrentVersion": "!/^0/",
+      "groupName": "all patch dependencies",
+      "matchPackageNames": ["!vuetify"],
+      "matchUpdateTypes": ["patch", "digest"],
+      "automerge": true
+    },
+    {
+      "groupName": "all dev dependencies",
+      "matchDepTypes": ["devDependencies", "action", "galaxy-collection"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
       "automerge": true
     },
     {
@@ -40,19 +42,7 @@
       ],
       "matchDatasources": ["docker", "npm"],
       "groupName": "playwright monorepo",
-      "matchUpdateTypes": ["digest", "patch", "minor", "major"]
-    },
-    {
-      "matchPackageNames": [
-        "actions/*",
-        "advanced-security/*",
-        "docker/*",
-        "github/*"
-      ],
-      "matchDepTypes": ["action"],
-      "groupName": "github actions",
-      "matchUpdateTypes": ["digest", "patch", "minor"],
-      "automerge": true
+      "matchUpdateTypes": ["minor", "major"]
     },
     {
       "extends": ["packages:test", "packages:linters", "schedule:monthly"]
