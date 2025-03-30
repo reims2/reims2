@@ -10,12 +10,8 @@
     "docker:pinDigests",
     ":automergeLinters",
     ":automergeTesters",
-    ":automergeTypes",
     ":automergePr",
     ":prConcurrentLimit10",
-    "group:test",
-    "group:linters",
-    "group:definitelyTyped",
     "schedule:automergeWeekends"
   ],
   "configMigration": true,
@@ -45,7 +41,12 @@
       "matchUpdateTypes": ["minor", "major"]
     },
     {
-      "extends": ["packages:test", "packages:linters", "schedule:monthly"]
+      "extends": ["packages:linters", "schedule:monthly"],
+      "groupName": "linters"
+    },
+    {
+      "extends": ["packages:test", "schedule:monthly"],
+      "groupName": "test packages"
     }
   ],
   "customManagers": [
