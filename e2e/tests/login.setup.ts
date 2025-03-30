@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-const authFile = 'e2e/.auth/user.json'
+const authFile = '.auth/user.json'
 
 test('Login', { tag: '@fast' }, async ({ page }) => {
   await page.goto('/')
