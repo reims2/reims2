@@ -35,7 +35,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/jest", "npm:29.5.14"],\
-          ["@types/node", "npm:22.13.13"],\
+          ["@types/node", "npm:22.13.17"],\
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.2.3"],\
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.7"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.7"],\
@@ -54,8 +54,8 @@ const RAW_RUNTIME_STATE =
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.2.0"],\
           ["prettier", "npm:3.5.2"],\
           ["reims2-frontend", "workspace:."],\
-          ["sass", "npm:1.86.0"],\
-          ["sass-embedded", "npm:1.86.0"],\
+          ["sass", "npm:1.86.1"],\
+          ["sass-embedded", "npm:1.86.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"],\
           ["typescript-eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.28.0"],\
           ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.2"],\
@@ -4194,10 +4194,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:22.13.13", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-22.13.13-b6310cb3a6-1750518a26.zip/node_modules/@types/node/",\
+      ["npm:22.13.17", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-22.13.17-888d18fda5-b2bb532c6c.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:22.13.13"],\
+          ["@types/node", "npm:22.13.17"],\
           ["undici-types", "npm:6.20.0"]\
         ],\
         "linkType": "HARD"\
@@ -10099,7 +10099,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/jest", "npm:29.5.14"],\
-          ["@types/node", "npm:22.13.13"],\
+          ["@types/node", "npm:22.13.17"],\
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.2.3"],\
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.7"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.7"],\
@@ -10118,8 +10118,8 @@ const RAW_RUNTIME_STATE =
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.2.0"],\
           ["prettier", "npm:3.5.2"],\
           ["reims2-frontend", "workspace:."],\
-          ["sass", "npm:1.86.0"],\
-          ["sass-embedded", "npm:1.86.0"],\
+          ["sass", "npm:1.86.1"],\
+          ["sass-embedded", "npm:1.86.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"],\
           ["typescript-eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.28.0"],\
           ["unplugin-auto-import", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:19.1.2"],\
@@ -10308,48 +10308,48 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["sass", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/cache/sass-npm-1.86.0-56b821d79d-d943e11434.zip/node_modules/sass/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/cache/sass-npm-1.86.1-53b0823a69-81f6815a3d.zip/node_modules/sass/",\
         "packageDependencies": [\
           ["@parcel/watcher", "npm:2.4.1"],\
           ["chokidar", "npm:4.0.1"],\
           ["immutable", "npm:5.0.2"],\
-          ["sass", "npm:1.86.0"],\
+          ["sass", "npm:1.86.1"],\
           ["source-map-js", "npm:1.2.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/cache/sass-embedded-npm-1.86.0-8fcc9792fa-f5ad59db9c.zip/node_modules/sass-embedded/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/cache/sass-embedded-npm-1.86.1-e681cc864a-5c805b79f8.zip/node_modules/sass-embedded/",\
         "packageDependencies": [\
           ["@bufbuild/protobuf", "npm:2.1.0"],\
           ["buffer-builder", "npm:0.2.0"],\
           ["colorjs.io", "npm:0.5.2"],\
           ["immutable", "npm:5.0.2"],\
           ["rxjs", "npm:7.8.1"],\
-          ["sass-embedded", "npm:1.86.0"],\
-          ["sass-embedded-android-arm", "npm:1.86.0"],\
-          ["sass-embedded-android-arm64", "npm:1.86.0"],\
-          ["sass-embedded-android-ia32", "npm:1.86.0"],\
-          ["sass-embedded-android-riscv64", "npm:1.86.0"],\
-          ["sass-embedded-android-x64", "npm:1.86.0"],\
-          ["sass-embedded-darwin-arm64", "npm:1.86.0"],\
-          ["sass-embedded-darwin-x64", "npm:1.86.0"],\
-          ["sass-embedded-linux-arm", "npm:1.86.0"],\
-          ["sass-embedded-linux-arm64", "npm:1.86.0"],\
-          ["sass-embedded-linux-ia32", "npm:1.86.0"],\
-          ["sass-embedded-linux-musl-arm", "npm:1.86.0"],\
-          ["sass-embedded-linux-musl-arm64", "npm:1.86.0"],\
-          ["sass-embedded-linux-musl-ia32", "npm:1.86.0"],\
-          ["sass-embedded-linux-musl-riscv64", "npm:1.86.0"],\
-          ["sass-embedded-linux-musl-x64", "npm:1.86.0"],\
-          ["sass-embedded-linux-riscv64", "npm:1.86.0"],\
-          ["sass-embedded-linux-x64", "npm:1.86.0"],\
-          ["sass-embedded-win32-arm64", "npm:1.86.0"],\
-          ["sass-embedded-win32-ia32", "npm:1.86.0"],\
-          ["sass-embedded-win32-x64", "npm:1.86.0"],\
+          ["sass-embedded", "npm:1.86.1"],\
+          ["sass-embedded-android-arm", "npm:1.86.1"],\
+          ["sass-embedded-android-arm64", "npm:1.86.1"],\
+          ["sass-embedded-android-ia32", "npm:1.86.1"],\
+          ["sass-embedded-android-riscv64", "npm:1.86.1"],\
+          ["sass-embedded-android-x64", "npm:1.86.1"],\
+          ["sass-embedded-darwin-arm64", "npm:1.86.1"],\
+          ["sass-embedded-darwin-x64", "npm:1.86.1"],\
+          ["sass-embedded-linux-arm", "npm:1.86.1"],\
+          ["sass-embedded-linux-arm64", "npm:1.86.1"],\
+          ["sass-embedded-linux-ia32", "npm:1.86.1"],\
+          ["sass-embedded-linux-musl-arm", "npm:1.86.1"],\
+          ["sass-embedded-linux-musl-arm64", "npm:1.86.1"],\
+          ["sass-embedded-linux-musl-ia32", "npm:1.86.1"],\
+          ["sass-embedded-linux-musl-riscv64", "npm:1.86.1"],\
+          ["sass-embedded-linux-musl-x64", "npm:1.86.1"],\
+          ["sass-embedded-linux-riscv64", "npm:1.86.1"],\
+          ["sass-embedded-linux-x64", "npm:1.86.1"],\
+          ["sass-embedded-win32-arm64", "npm:1.86.1"],\
+          ["sass-embedded-win32-ia32", "npm:1.86.1"],\
+          ["sass-embedded-win32-x64", "npm:1.86.1"],\
           ["supports-color", "npm:8.1.1"],\
           ["sync-child-process", "npm:1.0.2"],\
           ["varint", "npm:6.0.0"]\
@@ -10358,181 +10358,181 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["sass-embedded-android-arm", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-android-arm-npm-1.86.0-aca9b4c7d7/node_modules/sass-embedded-android-arm/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-android-arm-npm-1.86.1-a80f628b43/node_modules/sass-embedded-android-arm/",\
         "packageDependencies": [\
-          ["sass-embedded-android-arm", "npm:1.86.0"]\
+          ["sass-embedded-android-arm", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-android-arm64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-android-arm64-npm-1.86.0-9129ecd45c/node_modules/sass-embedded-android-arm64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-android-arm64-npm-1.86.1-e1f9d51612/node_modules/sass-embedded-android-arm64/",\
         "packageDependencies": [\
-          ["sass-embedded-android-arm64", "npm:1.86.0"]\
+          ["sass-embedded-android-arm64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-android-ia32", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-android-ia32-npm-1.86.0-50b534aa48/node_modules/sass-embedded-android-ia32/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-android-ia32-npm-1.86.1-1f70c6c8b9/node_modules/sass-embedded-android-ia32/",\
         "packageDependencies": [\
-          ["sass-embedded-android-ia32", "npm:1.86.0"]\
+          ["sass-embedded-android-ia32", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-android-riscv64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-android-riscv64-npm-1.86.0-387c9856d4/node_modules/sass-embedded-android-riscv64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-android-riscv64-npm-1.86.1-70acc4931c/node_modules/sass-embedded-android-riscv64/",\
         "packageDependencies": [\
-          ["sass-embedded-android-riscv64", "npm:1.86.0"]\
+          ["sass-embedded-android-riscv64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-android-x64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-android-x64-npm-1.86.0-71528aedcf/node_modules/sass-embedded-android-x64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-android-x64-npm-1.86.1-c74e0b2269/node_modules/sass-embedded-android-x64/",\
         "packageDependencies": [\
-          ["sass-embedded-android-x64", "npm:1.86.0"]\
+          ["sass-embedded-android-x64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-darwin-arm64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-darwin-arm64-npm-1.86.0-0a28ab8a3b/node_modules/sass-embedded-darwin-arm64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-darwin-arm64-npm-1.86.1-4f5861671f/node_modules/sass-embedded-darwin-arm64/",\
         "packageDependencies": [\
-          ["sass-embedded-darwin-arm64", "npm:1.86.0"]\
+          ["sass-embedded-darwin-arm64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-darwin-x64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-darwin-x64-npm-1.86.0-4de273e8f8/node_modules/sass-embedded-darwin-x64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-darwin-x64-npm-1.86.1-b9f2ce60d5/node_modules/sass-embedded-darwin-x64/",\
         "packageDependencies": [\
-          ["sass-embedded-darwin-x64", "npm:1.86.0"]\
+          ["sass-embedded-darwin-x64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-linux-arm", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-arm-npm-1.86.0-2989e0319e/node_modules/sass-embedded-linux-arm/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-arm-npm-1.86.1-fdbeb1c145/node_modules/sass-embedded-linux-arm/",\
         "packageDependencies": [\
-          ["sass-embedded-linux-arm", "npm:1.86.0"]\
+          ["sass-embedded-linux-arm", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-linux-arm64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-arm64-npm-1.86.0-c30c3ea526/node_modules/sass-embedded-linux-arm64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-arm64-npm-1.86.1-a871bebf88/node_modules/sass-embedded-linux-arm64/",\
         "packageDependencies": [\
-          ["sass-embedded-linux-arm64", "npm:1.86.0"]\
+          ["sass-embedded-linux-arm64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-linux-ia32", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-ia32-npm-1.86.0-6dbf106197/node_modules/sass-embedded-linux-ia32/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-ia32-npm-1.86.1-ecc38814c0/node_modules/sass-embedded-linux-ia32/",\
         "packageDependencies": [\
-          ["sass-embedded-linux-ia32", "npm:1.86.0"]\
+          ["sass-embedded-linux-ia32", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-linux-musl-arm", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-musl-arm-npm-1.86.0-d942fe2a9f/node_modules/sass-embedded-linux-musl-arm/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-musl-arm-npm-1.86.1-52385fc2b3/node_modules/sass-embedded-linux-musl-arm/",\
         "packageDependencies": [\
-          ["sass-embedded-linux-musl-arm", "npm:1.86.0"]\
+          ["sass-embedded-linux-musl-arm", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-linux-musl-arm64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-musl-arm64-npm-1.86.0-6375af0426/node_modules/sass-embedded-linux-musl-arm64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-musl-arm64-npm-1.86.1-fec29c64b5/node_modules/sass-embedded-linux-musl-arm64/",\
         "packageDependencies": [\
-          ["sass-embedded-linux-musl-arm64", "npm:1.86.0"]\
+          ["sass-embedded-linux-musl-arm64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-linux-musl-ia32", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-musl-ia32-npm-1.86.0-cc755c99b5/node_modules/sass-embedded-linux-musl-ia32/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-musl-ia32-npm-1.86.1-78eef6e90e/node_modules/sass-embedded-linux-musl-ia32/",\
         "packageDependencies": [\
-          ["sass-embedded-linux-musl-ia32", "npm:1.86.0"]\
+          ["sass-embedded-linux-musl-ia32", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-linux-musl-riscv64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-musl-riscv64-npm-1.86.0-60ce0f68dd/node_modules/sass-embedded-linux-musl-riscv64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-musl-riscv64-npm-1.86.1-d1d834adde/node_modules/sass-embedded-linux-musl-riscv64/",\
         "packageDependencies": [\
-          ["sass-embedded-linux-musl-riscv64", "npm:1.86.0"]\
+          ["sass-embedded-linux-musl-riscv64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-linux-musl-x64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-musl-x64-npm-1.86.0-092122efad/node_modules/sass-embedded-linux-musl-x64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-musl-x64-npm-1.86.1-1b9c0299b2/node_modules/sass-embedded-linux-musl-x64/",\
         "packageDependencies": [\
-          ["sass-embedded-linux-musl-x64", "npm:1.86.0"]\
+          ["sass-embedded-linux-musl-x64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-linux-riscv64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-riscv64-npm-1.86.0-ec9b577a68/node_modules/sass-embedded-linux-riscv64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-riscv64-npm-1.86.1-648711b2c5/node_modules/sass-embedded-linux-riscv64/",\
         "packageDependencies": [\
-          ["sass-embedded-linux-riscv64", "npm:1.86.0"]\
+          ["sass-embedded-linux-riscv64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-linux-x64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-x64-npm-1.86.0-d6f930b73e/node_modules/sass-embedded-linux-x64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-linux-x64-npm-1.86.1-1027756d01/node_modules/sass-embedded-linux-x64/",\
         "packageDependencies": [\
-          ["sass-embedded-linux-x64", "npm:1.86.0"]\
+          ["sass-embedded-linux-x64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-win32-arm64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-win32-arm64-npm-1.86.0-5de70fefd2/node_modules/sass-embedded-win32-arm64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-win32-arm64-npm-1.86.1-8823253929/node_modules/sass-embedded-win32-arm64/",\
         "packageDependencies": [\
-          ["sass-embedded-win32-arm64", "npm:1.86.0"]\
+          ["sass-embedded-win32-arm64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-win32-ia32", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-win32-ia32-npm-1.86.0-a145ef236c/node_modules/sass-embedded-win32-ia32/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-win32-ia32-npm-1.86.1-4ce4a19c83/node_modules/sass-embedded-win32-ia32/",\
         "packageDependencies": [\
-          ["sass-embedded-win32-ia32", "npm:1.86.0"]\
+          ["sass-embedded-win32-ia32", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["sass-embedded-win32-x64", [\
-      ["npm:1.86.0", {\
-        "packageLocation": "./.yarn/unplugged/sass-embedded-win32-x64-npm-1.86.0-f87260d08d/node_modules/sass-embedded-win32-x64/",\
+      ["npm:1.86.1", {\
+        "packageLocation": "./.yarn/unplugged/sass-embedded-win32-x64-npm-1.86.1-a38387fb9c/node_modules/sass-embedded-win32-x64/",\
         "packageDependencies": [\
-          ["sass-embedded-win32-x64", "npm:1.86.0"]\
+          ["sass-embedded-win32-x64", "npm:1.86.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -11895,7 +11895,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jiti", null],\
           ["@types/less", null],\
           ["@types/lightningcss", null],\
-          ["@types/node", "npm:22.13.13"],\
+          ["@types/node", "npm:22.13.17"],\
           ["@types/sass", null],\
           ["@types/sass-embedded", null],\
           ["@types/stylus", null],\
@@ -11950,7 +11950,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jiti", null],\
           ["@types/less", null],\
           ["@types/lightningcss", null],\
-          ["@types/node", "npm:22.13.13"],\
+          ["@types/node", "npm:22.13.17"],\
           ["@types/sass", null],\
           ["@types/sass-embedded", null],\
           ["@types/stylus", null],\
@@ -11965,8 +11965,8 @@ const RAW_RUNTIME_STATE =
           ["lightningcss", null],\
           ["postcss", "npm:8.5.3"],\
           ["rollup", "npm:4.34.6"],\
-          ["sass", "npm:1.86.0"],\
-          ["sass-embedded", "npm:1.86.0"],\
+          ["sass", "npm:1.86.1"],\
+          ["sass-embedded", "npm:1.86.1"],\
           ["stylus", null],\
           ["sugarss", null],\
           ["terser", null],\
@@ -12216,7 +12216,7 @@ const RAW_RUNTIME_STATE =
           ["@types/edge-runtime__vm", null],\
           ["@types/happy-dom", null],\
           ["@types/jsdom", null],\
-          ["@types/node", "npm:22.13.13"],\
+          ["@types/node", "npm:22.13.17"],\
           ["@types/vitest__browser", null],\
           ["@types/vitest__ui", null],\
           ["@vitest/browser", null],\
