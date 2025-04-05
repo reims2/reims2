@@ -2782,12 +2782,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.13.13":
-  version: 22.13.13
-  resolution: "@types/node@npm:22.13.13"
+"@types/node@npm:22.13.17":
+  version: 22.13.17
+  resolution: "@types/node@npm:22.13.17"
   dependencies:
     undici-types: "npm:~6.20.0"
-  checksum: 10/1750518a26fe070dcd4aacd9869d8c72c5b315e3b2fc643e3604fa02b3adac2817eae7808ae34c6bdd6ac96bb5d25acea59656c4ac155b1ee47469a65d32eba4
+  checksum: 10/b2bb532c6c7a8e8f87a49b3d2f7d5372a5c79f3b015522cfb116c974a89e438b40e03a1d46398871cba119085b5efd2e02e5acdbfc7596d6c60142f77ae9547c
   languageName: node
   linkType: hard
 
@@ -7860,7 +7860,7 @@ __metadata:
     "@testing-library/vue": "npm:8.1.0"
     "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:29.5.14"
-    "@types/node": "npm:22.13.13"
+    "@types/node": "npm:22.13.17"
     "@vitejs/plugin-vue": "npm:5.2.3"
     "@vitest/coverage-v8": "npm:3.0.7"
     "@vitest/ui": "npm:3.0.7"
@@ -7878,8 +7878,8 @@ __metadata:
     pinia: "npm:3.0.1"
     pinia-plugin-persistedstate: "npm:4.2.0"
     prettier: "npm:3.5.2"
-    sass: "npm:1.86.0"
-    sass-embedded: "npm:1.86.0"
+    sass: "npm:1.86.1"
+    sass-embedded: "npm:1.86.1"
     typescript: "npm:5.8.2"
     typescript-eslint: "npm:8.28.0"
     unplugin-auto-import: "npm:19.1.2"
@@ -8108,175 +8108,175 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass-embedded-android-arm64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-android-arm64@npm:1.86.0"
+"sass-embedded-android-arm64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-android-arm64@npm:1.86.1"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-android-arm@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-android-arm@npm:1.86.0"
+"sass-embedded-android-arm@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-android-arm@npm:1.86.1"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"sass-embedded-android-ia32@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-android-ia32@npm:1.86.0"
+"sass-embedded-android-ia32@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-android-ia32@npm:1.86.1"
   conditions: os=android & cpu=ia32
   languageName: node
   linkType: hard
 
-"sass-embedded-android-riscv64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-android-riscv64@npm:1.86.0"
+"sass-embedded-android-riscv64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-android-riscv64@npm:1.86.1"
   conditions: os=android & cpu=riscv64
   languageName: node
   linkType: hard
 
-"sass-embedded-android-x64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-android-x64@npm:1.86.0"
+"sass-embedded-android-x64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-android-x64@npm:1.86.1"
   conditions: os=android & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-darwin-arm64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-darwin-arm64@npm:1.86.0"
+"sass-embedded-darwin-arm64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-darwin-arm64@npm:1.86.1"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-darwin-x64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-darwin-x64@npm:1.86.0"
+"sass-embedded-darwin-x64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-darwin-x64@npm:1.86.1"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-arm64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-linux-arm64@npm:1.86.0"
+"sass-embedded-linux-arm64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-linux-arm64@npm:1.86.1"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-arm@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-linux-arm@npm:1.86.0"
+"sass-embedded-linux-arm@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-linux-arm@npm:1.86.1"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-ia32@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-linux-ia32@npm:1.86.0"
+"sass-embedded-linux-ia32@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-linux-ia32@npm:1.86.1"
   conditions: os=linux & cpu=ia32
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-arm64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-linux-musl-arm64@npm:1.86.0"
+"sass-embedded-linux-musl-arm64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-linux-musl-arm64@npm:1.86.1"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-arm@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-linux-musl-arm@npm:1.86.0"
+"sass-embedded-linux-musl-arm@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-linux-musl-arm@npm:1.86.1"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-ia32@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-linux-musl-ia32@npm:1.86.0"
+"sass-embedded-linux-musl-ia32@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-linux-musl-ia32@npm:1.86.1"
   conditions: os=linux & cpu=ia32
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-riscv64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-linux-musl-riscv64@npm:1.86.0"
+"sass-embedded-linux-musl-riscv64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-linux-musl-riscv64@npm:1.86.1"
   conditions: os=linux & cpu=riscv64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-x64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-linux-musl-x64@npm:1.86.0"
+"sass-embedded-linux-musl-x64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-linux-musl-x64@npm:1.86.1"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-riscv64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-linux-riscv64@npm:1.86.0"
+"sass-embedded-linux-riscv64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-linux-riscv64@npm:1.86.1"
   conditions: os=linux & cpu=riscv64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-x64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-linux-x64@npm:1.86.0"
+"sass-embedded-linux-x64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-linux-x64@npm:1.86.1"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-win32-arm64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-win32-arm64@npm:1.86.0"
+"sass-embedded-win32-arm64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-win32-arm64@npm:1.86.1"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-win32-ia32@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-win32-ia32@npm:1.86.0"
+"sass-embedded-win32-ia32@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-win32-ia32@npm:1.86.1"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"sass-embedded-win32-x64@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded-win32-x64@npm:1.86.0"
+"sass-embedded-win32-x64@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded-win32-x64@npm:1.86.1"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass-embedded@npm:1.86.0"
+"sass-embedded@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass-embedded@npm:1.86.1"
   dependencies:
     "@bufbuild/protobuf": "npm:^2.0.0"
     buffer-builder: "npm:^0.2.0"
     colorjs.io: "npm:^0.5.0"
     immutable: "npm:^5.0.2"
     rxjs: "npm:^7.4.0"
-    sass-embedded-android-arm: "npm:1.86.0"
-    sass-embedded-android-arm64: "npm:1.86.0"
-    sass-embedded-android-ia32: "npm:1.86.0"
-    sass-embedded-android-riscv64: "npm:1.86.0"
-    sass-embedded-android-x64: "npm:1.86.0"
-    sass-embedded-darwin-arm64: "npm:1.86.0"
-    sass-embedded-darwin-x64: "npm:1.86.0"
-    sass-embedded-linux-arm: "npm:1.86.0"
-    sass-embedded-linux-arm64: "npm:1.86.0"
-    sass-embedded-linux-ia32: "npm:1.86.0"
-    sass-embedded-linux-musl-arm: "npm:1.86.0"
-    sass-embedded-linux-musl-arm64: "npm:1.86.0"
-    sass-embedded-linux-musl-ia32: "npm:1.86.0"
-    sass-embedded-linux-musl-riscv64: "npm:1.86.0"
-    sass-embedded-linux-musl-x64: "npm:1.86.0"
-    sass-embedded-linux-riscv64: "npm:1.86.0"
-    sass-embedded-linux-x64: "npm:1.86.0"
-    sass-embedded-win32-arm64: "npm:1.86.0"
-    sass-embedded-win32-ia32: "npm:1.86.0"
-    sass-embedded-win32-x64: "npm:1.86.0"
+    sass-embedded-android-arm: "npm:1.86.1"
+    sass-embedded-android-arm64: "npm:1.86.1"
+    sass-embedded-android-ia32: "npm:1.86.1"
+    sass-embedded-android-riscv64: "npm:1.86.1"
+    sass-embedded-android-x64: "npm:1.86.1"
+    sass-embedded-darwin-arm64: "npm:1.86.1"
+    sass-embedded-darwin-x64: "npm:1.86.1"
+    sass-embedded-linux-arm: "npm:1.86.1"
+    sass-embedded-linux-arm64: "npm:1.86.1"
+    sass-embedded-linux-ia32: "npm:1.86.1"
+    sass-embedded-linux-musl-arm: "npm:1.86.1"
+    sass-embedded-linux-musl-arm64: "npm:1.86.1"
+    sass-embedded-linux-musl-ia32: "npm:1.86.1"
+    sass-embedded-linux-musl-riscv64: "npm:1.86.1"
+    sass-embedded-linux-musl-x64: "npm:1.86.1"
+    sass-embedded-linux-riscv64: "npm:1.86.1"
+    sass-embedded-linux-x64: "npm:1.86.1"
+    sass-embedded-win32-arm64: "npm:1.86.1"
+    sass-embedded-win32-ia32: "npm:1.86.1"
+    sass-embedded-win32-x64: "npm:1.86.1"
     supports-color: "npm:^8.1.1"
     sync-child-process: "npm:^1.0.2"
     varint: "npm:^6.0.0"
@@ -8323,13 +8323,13 @@ __metadata:
       optional: true
   bin:
     sass: dist/bin/sass.js
-  checksum: 10/f5ad59db9cf8b6de854c8b4d951742d1e08bd49da4e773d94c78f82621bde6fc1310200972413c26f702ee36d492c923fe8b965a67f48c658aaefacaf2a01a81
+  checksum: 10/5c805b79f858b3b5f1043e18c9ae94fa7c73e6a231aea21a293206a48a874b1d7dde138866d54c1d807e7708cf0750a98a8a8043066f722c967983df6e60aefa
   languageName: node
   linkType: hard
 
-"sass@npm:1.86.0":
-  version: 1.86.0
-  resolution: "sass@npm:1.86.0"
+"sass@npm:1.86.1":
+  version: 1.86.1
+  resolution: "sass@npm:1.86.1"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
@@ -8340,7 +8340,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: 10/d943e114340781d1d77bf8dc09c7daa8e1310bbdcdcf9cdd798e3d67c339132b19f6a88838800d11f48fc32e6726266fb87528d4aa087682a95abe690af1009c
+  checksum: 10/81f6815a3d7598655a5ade51605d712dc7608ff40e91c4a4f8e8ce9740e6c94de08b3375d0f2f610f9d0c08106bc3a1a6a16eb18510f47bd02d9868e0c0ee109
   languageName: node
   linkType: hard
 
