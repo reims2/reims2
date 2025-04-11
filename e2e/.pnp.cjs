@@ -29,7 +29,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@eslint/js", "npm:9.23.0"],\
           ["@playwright/test", "npm:1.51.1"],\
-          ["@types/node", "npm:22.13.17"],\
+          ["@types/node", "npm:22.14.0"],\
           ["dotenv", "npm:16.4.7"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.23.0"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.1"],\
@@ -315,11 +315,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/node", [\
-      ["npm:22.13.17", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-22.13.17-888d18fda5-b2bb532c6c.zip/node_modules/@types/node/",\
+      ["npm:22.14.0", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-22.14.0-a09e354ed5-d0669a8a37.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:22.13.17"],\
-          ["undici-types", "npm:6.20.0"]\
+          ["@types/node", "npm:22.14.0"],\
+          ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2003,7 +2003,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@eslint/js", "npm:9.23.0"],\
           ["@playwright/test", "npm:1.51.1"],\
-          ["@types/node", "npm:22.13.17"],\
+          ["@types/node", "npm:22.14.0"],\
           ["dotenv", "npm:16.4.7"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.23.0"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.1"],\
@@ -2295,10 +2295,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["undici-types", [\
-      ["npm:6.20.0", {\
-        "packageLocation": "./.yarn/cache/undici-types-npm-6.20.0-bd21e669af-583ac7bbf4.zip/node_modules/undici-types/",\
+      ["npm:6.21.0", {\
+        "packageLocation": "./.yarn/cache/undici-types-npm-6.21.0-eb2b0ed56a-ec8f41aa43.zip/node_modules/undici-types/",\
         "packageDependencies": [\
-          ["undici-types", "npm:6.20.0"]\
+          ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
       }]\
