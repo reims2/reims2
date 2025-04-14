@@ -94,7 +94,6 @@ import { mdiDotsVertical } from '@mdi/js'
 
 import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
 import { Glasses } from '@/model/GlassesModel'
-import { VForm } from 'vuetify/lib/components/index.mjs'
 import { useRoute } from 'vue-router'
 import { useEditGlasses } from '@/composables/edit'
 import { useOnline } from '@vueuse/core'
@@ -115,7 +114,7 @@ const selected = ref<GlassesWithKey | null>(null)
 const inputSku = ref<number | null>(null)
 
 // Component refs
-const form = ref<VForm | null>(null)
+const form = useTemplateRef('form')
 const firstInput = useTemplateRef('firstInput')
 
 const { isLoading, lastDispensed, isLastDispensedLoading, submitDeletion, undoDispension } =
