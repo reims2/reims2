@@ -17,6 +17,7 @@
   "configMigration": true,
   "labels": ["dependencies"],
   "platformAutomerge": true,
+  "postUpdateOptions": ["yarnDedupeHighest"],
   "packageRules": [
     {
       "groupName": "all patch dependencies",
