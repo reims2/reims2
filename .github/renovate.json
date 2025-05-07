@@ -15,20 +15,35 @@
     "schedule:automergeWeekends"
   ],
   "configMigration": true,
-  "labels": ["dependencies"],
+  "labels": [
+    "dependencies"
+  ],
   "platformAutomerge": true,
-  "postUpdateOptions": ["yarnDedupeHighest"],
+  "postUpdateOptions": [
+    "yarnDedupeHighest"
+  ],
   "packageRules": [
     {
       "groupName": "all patch dependencies",
-      "matchPackageNames": ["!vuetify"],
-      "matchUpdateTypes": ["patch", "digest"],
+      "matchPackageNames": [
+        "!vuetify"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "digest"
+      ],
       "automerge": true
     },
     {
       "groupName": "all minor dev dependencies",
-      "matchDepTypes": ["devDependencies", "action", "galaxy-collection"],
-      "matchUpdateTypes": ["minor"],
+      "matchDepTypes": [
+        "devDependencies",
+        "action",
+        "galaxy-collection"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
       "automerge": true
     },
     {
@@ -37,26 +52,38 @@
         "@playwright/test",
         "mcr.microsoft.com/playwright"
       ],
-      "matchDatasources": ["docker", "npm"],
+      "matchDatasources": [
+        "docker",
+        "npm"
+      ],
       "groupName": "playwright monorepo",
-      "matchUpdateTypes": ["minor", "major"]
+      "matchUpdateTypes": [
+        "minor",
+        "major"
+      ]
     },
     {
-      "extends": ["packages:linters", "schedule:monthly"],
+      "extends": [
+        "packages:linters",
+        "schedule:monthly"
+      ],
       "groupName": "linters"
     },
     {
-      "extends": ["packages:test", "schedule:monthly"],
+      "extends": [
+        "packages:test",
+        "schedule:monthly"
+      ],
       "groupName": "test packages"
     }
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "^Dockerfile$",
-        "^.github/.+/*\\.ya?ml$",
-        "defaults/main.ya?ml$"
+      "managerFilePatterns": [
+        "/^Dockerfile$/",
+        "/^.github/.+/*\\.ya?ml$/",
+        "/defaults/main.ya?ml$/"
       ],
       "matchStrings": [
         "renovate:? datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?_(?:VERSION|version)=(?<currentValue>.*)\\s"
@@ -65,9 +92,9 @@
     }
   ],
   "ansible": {
-    "fileMatch": [
-      "(^|/)tasks/[^/]+\\.ya?ml$",
-      "docker-compose\\.ya?ml(\\.j2)?$"
+    "managerFilePatterns": [
+      "/(^|/)tasks/[^/]+\\.ya?ml$/",
+      "/docker-compose\\.ya?ml(\\.j2)?$/"
     ]
   },
   "ignoreDeps": [
@@ -76,9 +103,13 @@
     "reims2/reims2-docs",
     "reims2/reims2"
   ],
-  "schedule": ["before 2pm on Saturday"],
+  "schedule": [
+    "before 2pm on Saturday"
+  ],
   "timezone": "Europe/Berlin",
   "npm": {
-    "extends": [":pinAllExceptPeerDependencies"]
+    "extends": [
+      ":pinAllExceptPeerDependencies"
+    ]
   }
 }
