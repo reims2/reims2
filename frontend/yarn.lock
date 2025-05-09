@@ -5977,7 +5977,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"local-pkg@npm:^1.0.0, local-pkg@npm:^1.1.1":
+"local-pkg@npm:^1.1.1":
   version: 1.1.1
   resolution: "local-pkg@npm:1.1.1"
   dependencies:
@@ -6748,7 +6748,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-types@npm:^1.2.0, pkg-types@npm:^1.2.1, pkg-types@npm:^1.3.0, pkg-types@npm:^1.3.1":
+"pkg-types@npm:^1.2.0, pkg-types@npm:^1.2.1, pkg-types@npm:^1.3.0":
   version: 1.3.1
   resolution: "pkg-types@npm:1.3.1"
   dependencies:
@@ -6759,7 +6759,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-types@npm:^2.0.1":
+"pkg-types@npm:^2.0.1, pkg-types@npm:^2.1.0":
   version: 2.1.0
   resolution: "pkg-types@npm:2.1.0"
   dependencies:
@@ -7061,7 +7061,7 @@ __metadata:
     sass-embedded: "npm:1.87.0"
     typescript: "npm:5.8.3"
     typescript-eslint: "npm:8.31.0"
-    unplugin-auto-import: "npm:19.1.2"
+    unplugin-auto-import: "npm:19.2.0"
     vite: "npm:6.3.5"
     vite-plugin-pwa: "npm:1.0.0"
     vite-plugin-vue-devtools: "npm:7.7.6"
@@ -8063,7 +8063,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinyglobby@npm:^0.2.10, tinyglobby@npm:^0.2.11, tinyglobby@npm:^0.2.13":
+"tinyglobby@npm:^0.2.10, tinyglobby@npm:^0.2.12, tinyglobby@npm:^0.2.13":
   version: 0.2.13
   resolution: "tinyglobby@npm:0.2.13"
   dependencies:
@@ -8349,25 +8349,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unimport@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "unimport@npm:4.1.2"
+"unimport@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "unimport@npm:4.2.0"
   dependencies:
-    acorn: "npm:^8.14.0"
+    acorn: "npm:^8.14.1"
     escape-string-regexp: "npm:^5.0.0"
     estree-walker: "npm:^3.0.3"
-    local-pkg: "npm:^1.0.0"
+    local-pkg: "npm:^1.1.1"
     magic-string: "npm:^0.30.17"
     mlly: "npm:^1.7.4"
     pathe: "npm:^2.0.3"
     picomatch: "npm:^4.0.2"
-    pkg-types: "npm:^1.3.1"
+    pkg-types: "npm:^2.1.0"
     scule: "npm:^1.3.0"
     strip-literal: "npm:^3.0.0"
-    tinyglobby: "npm:^0.2.11"
-    unplugin: "npm:^2.2.0"
+    tinyglobby: "npm:^0.2.12"
+    unplugin: "npm:^2.2.2"
     unplugin-utils: "npm:^0.2.4"
-  checksum: 10/5b88b2e278802b1d9fc80c73644be7e7c89961e2cf9f8015ff436c8322b76d281cdcca50e642adcc0829684b9a40fc8d4115002608d412c103f0ead329e4225b
+  checksum: 10/3538372084e67488dac855d15d098869add49a2920a47a32aeb3d69dffd4789e89da7bb54798991021caf1ff42f5279f5c4a0b9cd9700193a0a6ed107155be0d
   languageName: node
   linkType: hard
 
@@ -8405,15 +8405,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:19.1.2":
-  version: 19.1.2
-  resolution: "unplugin-auto-import@npm:19.1.2"
+"unplugin-auto-import@npm:19.2.0":
+  version: 19.2.0
+  resolution: "unplugin-auto-import@npm:19.2.0"
   dependencies:
     local-pkg: "npm:^1.1.1"
     magic-string: "npm:^0.30.17"
     picomatch: "npm:^4.0.2"
-    unimport: "npm:^4.1.2"
-    unplugin: "npm:^2.2.2"
+    unimport: "npm:^4.2.0"
+    unplugin: "npm:^2.3.2"
     unplugin-utils: "npm:^0.2.4"
   peerDependencies:
     "@nuxt/kit": ^3.2.2
@@ -8423,7 +8423,7 @@ __metadata:
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: 10/81fe867197295f8ae9e8d94eabc498b47f27a7602a669263080d0e08244df9f1340c1e5e125c1d8a6d70f9f795f2d7db129a08a78793838401b983134c96c9d9
+  checksum: 10/03b0172bc360d1c8010845e2f4d4c3ef2b153c381a41a856085a10abaacfa556aa252dd55c49bbe9c5c1082b5fcead32d59fc4f2fc964a5d225b6c4e61b96a91
   languageName: node
   linkType: hard
 
@@ -8447,13 +8447,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin@npm:^2.2.0, unplugin@npm:^2.2.2":
-  version: 2.2.2
-  resolution: "unplugin@npm:2.2.2"
+"unplugin@npm:^2.2.2, unplugin@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "unplugin@npm:2.3.2"
   dependencies:
     acorn: "npm:^8.14.1"
+    picomatch: "npm:^4.0.2"
     webpack-virtual-modules: "npm:^0.6.2"
-  checksum: 10/e9a107f75a1e38f31f2a02993712f8bd6f618b0844faa4c355189d130e17b056b45eead99a1ecd632d96a465da0eda81cea43e546735443503573cad2d9742c9
+  checksum: 10/4dafcb07405d53522db25f5d53126bd3d059a2ad877218a94fe5f22f8cb37b419933661c5f93b75ec1ce302b9228433d733cfc0cec191073742cb67218a62b52
   languageName: node
   linkType: hard
 
