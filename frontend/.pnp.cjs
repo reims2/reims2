@@ -48,7 +48,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:9.25.1"],\
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.2"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.0.0"],\
-          ["globals", "npm:16.0.0"],\
+          ["globals", "npm:16.1.0"],\
           ["happy-dom", "npm:17.4.6"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.2"],\
@@ -6997,10 +6997,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:16.0.0", {\
-        "packageLocation": "./.yarn/cache/globals-npm-16.0.0-7f7c56ae12-aa05d569af.zip/node_modules/globals/",\
+      ["npm:16.1.0", {\
+        "packageLocation": "./.yarn/cache/globals-npm-16.1.0-c706e7707f-b24fa86c9d.zip/node_modules/globals/",\
         "packageDependencies": [\
-          ["globals", "npm:16.0.0"]\
+          ["globals", "npm:16.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9331,7 +9331,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:9.25.1"],\
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.2"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.0.0"],\
-          ["globals", "npm:16.0.0"],\
+          ["globals", "npm:16.1.0"],\
           ["happy-dom", "npm:17.4.6"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.2"],\
