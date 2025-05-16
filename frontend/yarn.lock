@@ -2487,12 +2487,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:22.15.14":
-  version: 22.15.14
-  resolution: "@types/node@npm:22.15.14"
+"@types/node@npm:*, @types/node@npm:22.15.17":
+  version: 22.15.17
+  resolution: "@types/node@npm:22.15.17"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/94d24bb024a770d5ca7c4462f5c6186dee3d3429513d28f0ee7af1cf0f9adc938b0410183bb638c2ee99609384618e53e4c0fa2089915c8b31f514553a02d242
+  checksum: 10/3f5870ec1ac16b1dd8e5817de81164df9b69e4cf19cce692cb7c9b1af1deaecfd98b591b56155fcc4aa582f7189a4fc0c8d7d3226fa0387403db615a12dd8cb6
   languageName: node
   linkType: hard
 
@@ -2659,13 +2659,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:5.2.3":
-  version: 5.2.3
-  resolution: "@vitejs/plugin-vue@npm:5.2.3"
+"@vitejs/plugin-vue@npm:5.2.4":
+  version: 5.2.4
+  resolution: "@vitejs/plugin-vue@npm:5.2.4"
   peerDependencies:
     vite: ^5.0.0 || ^6.0.0
     vue: ^3.2.25
-  checksum: 10/69a6c6dcd9d6a6c024a8d087f6b277510fd7dbd8d6c87926ed82da33ff710cfa6bfbdb773d8879b43c5f785799924a3e735a7096d0e286d8a75a4c52da7b7e96
+  checksum: 10/da39ddb9cc053edeac8c5eae81bcee5762e100a979775b34c181802b421eca183d2b24dbf6f08e167ab0086e482e50208a47517da7004a840fec6d856a39353a
   languageName: node
   linkType: hard
 
@@ -5048,13 +5048,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:17.4.6":
-  version: 17.4.6
-  resolution: "happy-dom@npm:17.4.6"
+"happy-dom@npm:17.4.7":
+  version: 17.4.7
+  resolution: "happy-dom@npm:17.4.7"
   dependencies:
     webidl-conversions: "npm:^7.0.0"
     whatwg-mimetype: "npm:^3.0.0"
-  checksum: 10/e447bb2a470fcc54e73ea230496db2d99f732266798176490bb1b52de4372deca67f578a2abbfaf34917f5a44ffdadc188801d0ce4f446a3731f41a6e0d356cf
+  checksum: 10/8f6af6b3cfea459805fc2db7329ecdf9c7760d29cae20dde85983896de02f7bfcf265533850848a501c9813d94211c0737534c54d28b6c5b2c1bb13daa344211
   languageName: node
   linkType: hard
 
@@ -7039,8 +7039,8 @@ __metadata:
     "@testing-library/vue": "npm:8.1.0"
     "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:29.5.14"
-    "@types/node": "npm:22.15.14"
-    "@vitejs/plugin-vue": "npm:5.2.3"
+    "@types/node": "npm:22.15.17"
+    "@vitejs/plugin-vue": "npm:5.2.4"
     "@vitest/coverage-v8": "npm:3.1.2"
     "@vitest/ui": "npm:3.1.2"
     "@vueuse/core": "npm:13.1.0"
@@ -7052,7 +7052,7 @@ __metadata:
     eslint-config-prettier: "npm:10.1.2"
     eslint-plugin-vue: "npm:10.0.0"
     globals: "npm:16.1.0"
-    happy-dom: "npm:17.4.6"
+    happy-dom: "npm:17.4.7"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:3.0.2"
     pinia-plugin-persistedstate: "npm:4.2.0"
