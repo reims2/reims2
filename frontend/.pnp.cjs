@@ -36,7 +36,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/jest", "npm:29.5.14"],\
-          ["@types/node", "npm:22.15.17"],\
+          ["@types/node", "npm:22.15.18"],\
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.2.4"],\
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.1.2"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.1.2"],\
@@ -3026,7 +3026,7 @@ const RAW_RUNTIME_STATE =
           ["@jest/types", "npm:29.6.3"],\
           ["@types/istanbul-lib-coverage", "npm:2.0.6"],\
           ["@types/istanbul-reports", "npm:3.0.4"],\
-          ["@types/node", "npm:22.15.17"],\
+          ["@types/node", "npm:22.15.18"],\
           ["@types/yargs", "npm:17.0.32"],\
           ["chalk", "npm:4.1.2"]\
         ],\
@@ -3920,10 +3920,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/node", [\
-      ["npm:22.15.17", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-22.15.17-432db2f2c8-3f5870ec1a.zip/node_modules/@types/node/",\
+      ["npm:22.15.18", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-22.15.18-4e14c3d4f1-89c8c638be.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:22.15.17"],\
+          ["@types/node", "npm:22.15.18"],\
           ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
@@ -7873,7 +7873,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/jest-util-npm-29.7.0-ff1d59714b-30d58af696.zip/node_modules/jest-util/",\
         "packageDependencies": [\
           ["@jest/types", "npm:29.6.3"],\
-          ["@types/node", "npm:22.15.17"],\
+          ["@types/node", "npm:22.15.18"],\
           ["chalk", "npm:4.1.2"],\
           ["ci-info", "npm:3.9.0"],\
           ["graceful-fs", "npm:4.2.11"],\
@@ -9319,7 +9319,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/jest", "npm:29.5.14"],\
-          ["@types/node", "npm:22.15.17"],\
+          ["@types/node", "npm:22.15.18"],\
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.2.4"],\
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.1.2"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.1.2"],\
@@ -10923,7 +10923,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jiti", null],\
           ["@types/less", null],\
           ["@types/lightningcss", null],\
-          ["@types/node", "npm:22.15.17"],\
+          ["@types/node", "npm:22.15.18"],\
           ["@types/sass", null],\
           ["@types/sass-embedded", null],\
           ["@types/stylus", null],\
@@ -11039,7 +11039,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jiti", null],\
           ["@types/less", null],\
           ["@types/lightningcss", null],\
-          ["@types/node", "npm:22.15.17"],\
+          ["@types/node", "npm:22.15.18"],\
           ["@types/sass", null],\
           ["@types/sass-embedded", null],\
           ["@types/stylus", null],\
@@ -11308,7 +11308,7 @@ const RAW_RUNTIME_STATE =
           ["@types/edge-runtime__vm", null],\
           ["@types/happy-dom", null],\
           ["@types/jsdom", null],\
-          ["@types/node", "npm:22.15.17"],\
+          ["@types/node", "npm:22.15.18"],\
           ["@types/vitest__browser", null],\
           ["@types/vitest__ui", null],\
           ["@vitest/browser", null],\
