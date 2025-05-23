@@ -11,8 +11,8 @@ collections:
   - name: devsec.hardening
     version: 10.3.0
   - name: community.general
-    version: 10.6.0
+    version: 10.7.0
   - name: community.mysql
-    version: 3.13.0
+    version: 3.14.0
   - name: community.docker
     version: 4.6.0
