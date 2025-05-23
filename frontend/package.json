@@ -25,7 +25,7 @@
     "jwt-decode": "4.0.0",
     "pinia": "3.0.2",
     "pinia-plugin-persistedstate": "4.3.0",
-    "vue": "3.5.13",
+    "vue": "3.5.14",
     "vue-router": "4.5.1",
     "vue-toastification": "2.0.0-rc.5",
     "vue3-enter-to-tab": "3.1.5",
@@ -39,7 +39,7 @@
     "@testing-library/vue": "8.1.0",
     "@types/eslint": "9.6.1",
     "@types/jest": "29.5.14",
-    "@types/node": "22.15.18",
+    "@types/node": "22.15.21",
     "@vitejs/plugin-vue": "5.2.4",
     "@vitest/coverage-v8": "3.1.2",
     "@vitest/ui": "3.1.2",
@@ -66,6 +66,6 @@
     "workbox-window": "7.3.0"
   },
   "resolutions": {
-    "vue": "3.5.13"
+    "vue": "3.5.14"
   }
 }
