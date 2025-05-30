@@ -4921,10 +4921,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:16.1.0":
-  version: 16.1.0
-  resolution: "globals@npm:16.1.0"
-  checksum: 10/b24fa86c9d9e7f452572977105cefa66529ac166faf1d81abe6618e0ccce98cdd32f8cbc25d37ed6c2dbe7936b00d442696fd0c96da4c90567490488ecefb8fa
+"globals@npm:16.2.0":
+  version: 16.2.0
+  resolution: "globals@npm:16.2.0"
+  checksum: 10/37fc33502973ebbee5a44b58939aa8574abc00ca1fc4c1d4ec0571a2c6620843ae647eff8bd082adf6bb5975ad221a887522b9a7961125764f0cb6dfab0b7483
   languageName: node
   linkType: hard
 
@@ -4975,13 +4975,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:17.4.7":
-  version: 17.4.7
-  resolution: "happy-dom@npm:17.4.7"
+"happy-dom@npm:17.5.4":
+  version: 17.5.4
+  resolution: "happy-dom@npm:17.5.4"
   dependencies:
     webidl-conversions: "npm:^7.0.0"
     whatwg-mimetype: "npm:^3.0.0"
-  checksum: 10/8f6af6b3cfea459805fc2db7329ecdf9c7760d29cae20dde85983896de02f7bfcf265533850848a501c9813d94211c0737534c54d28b6c5b2c1bb13daa344211
+  checksum: 10/46af071757fb8787f074064d632e9fcf6fda1eab09abf0753ccf11280b011f26be80c8fa4fe0a92d878adbb803da00742814c9624fc1c6511b14d8f3436184af
   languageName: node
   linkType: hard
 
@@ -6900,8 +6900,8 @@ __metadata:
     eslint: "npm:9.25.1"
     eslint-config-prettier: "npm:10.1.2"
     eslint-plugin-vue: "npm:10.0.0"
-    globals: "npm:16.1.0"
-    happy-dom: "npm:17.4.7"
+    globals: "npm:16.2.0"
+    happy-dom: "npm:17.5.4"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:3.0.2"
     pinia-plugin-persistedstate: "npm:4.3.0"
@@ -6910,7 +6910,7 @@ __metadata:
     sass-embedded: "npm:1.89.0"
     typescript: "npm:5.8.3"
     typescript-eslint: "npm:8.31.0"
-    unplugin-auto-import: "npm:19.2.0"
+    unplugin-auto-import: "npm:19.3.0"
     vite: "npm:6.3.5"
     vite-plugin-pwa: "npm:1.0.0"
     vite-plugin-vue-devtools: "npm:7.7.6"
@@ -8217,15 +8217,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:19.2.0":
-  version: 19.2.0
-  resolution: "unplugin-auto-import@npm:19.2.0"
+"unplugin-auto-import@npm:19.3.0":
+  version: 19.3.0
+  resolution: "unplugin-auto-import@npm:19.3.0"
   dependencies:
     local-pkg: "npm:^1.1.1"
     magic-string: "npm:^0.30.17"
     picomatch: "npm:^4.0.2"
     unimport: "npm:^4.2.0"
-    unplugin: "npm:^2.3.2"
+    unplugin: "npm:^2.3.4"
     unplugin-utils: "npm:^0.2.4"
   peerDependencies:
     "@nuxt/kit": ^3.2.2
@@ -8235,7 +8235,7 @@ __metadata:
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: 10/03b0172bc360d1c8010845e2f4d4c3ef2b153c381a41a856085a10abaacfa556aa252dd55c49bbe9c5c1082b5fcead32d59fc4f2fc964a5d225b6c4e61b96a91
+  checksum: 10/4db5303ab5083e9933d173ef67980ac1a3a872eb583a3a850c90f60c7dcd9cbb6b34898309df00dcfad479c7ee56fdca08a77c7224da84887be853f8cad06073
   languageName: node
   linkType: hard
 
@@ -8249,14 +8249,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin@npm:^2.1.0, unplugin@npm:^2.2.2, unplugin@npm:^2.3.2":
-  version: 2.3.4
-  resolution: "unplugin@npm:2.3.4"
+"unplugin@npm:^2.1.0, unplugin@npm:^2.2.2, unplugin@npm:^2.3.2, unplugin@npm:^2.3.4":
+  version: 2.3.5
+  resolution: "unplugin@npm:2.3.5"
   dependencies:
     acorn: "npm:^8.14.1"
     picomatch: "npm:^4.0.2"
     webpack-virtual-modules: "npm:^0.6.2"
-  checksum: 10/07a4bdec1adc4065f68c871be7611a2d67c28295a4524c8ec457d9894efdbcd7b9ce83fda9f3cf1d6ea6ef1dc3d06238a0a275bbd17a42ac64b5918941023dde
+  checksum: 10/93956b472c66ba452599d64343ef3c2440f8279bdc449f399f9c884307934f9b383fa09c646f998f0cf1488204e993316f9a2e483d6cf01f45fd618f401942dd
   languageName: node
   linkType: hard
 
