@@ -3042,16 +3042,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:13.2.0":
-  version: 13.2.0
-  resolution: "@vueuse/core@npm:13.2.0"
+"@vueuse/core@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@vueuse/core@npm:13.3.0"
   dependencies:
     "@types/web-bluetooth": "npm:^0.0.21"
-    "@vueuse/metadata": "npm:13.2.0"
-    "@vueuse/shared": "npm:13.2.0"
+    "@vueuse/metadata": "npm:13.3.0"
+    "@vueuse/shared": "npm:13.3.0"
   peerDependencies:
     vue: ^3.5.0
-  checksum: 10/28355289318130d2259394f002f473570cbd8f195e1276abf2b8bd5388e302cd49b8f7cc6940fe58074c903ebdc4eaad0d7593a3d73d44295c2f6143f29eb72d
+  checksum: 10/f8d0533edf9b081bedcc2665455972b61ba151e7a637175ab71d6fb2c06b0b901d3b3767dbe3351a50e3430dd9b9a7ed0a7073bf8149177344d591d6f16c70aa
   languageName: node
   linkType: hard
 
@@ -3074,10 +3074,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/metadata@npm:13.2.0":
-  version: 13.2.0
-  resolution: "@vueuse/metadata@npm:13.2.0"
-  checksum: 10/08a42672db1d2dcb3c326b57cd09e178365ae002f9b3bbae3afddad95d9c6f231c54590aa0a87be363b28cf178fd7eedbd5e56693adac7e80b343651851cccfc
+"@vueuse/metadata@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@vueuse/metadata@npm:13.3.0"
+  checksum: 10/16c57f03d61887bde9293f814233bfcfaaaf44d0f9010d2d3e1d6ff1c329e68e9e16d24ab3c2478643eaa4bc77c6c3b79274a13cb1ac7174667f8bd8f7b5ebc1
   languageName: node
   linkType: hard
 
@@ -3090,12 +3090,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/shared@npm:13.2.0":
-  version: 13.2.0
-  resolution: "@vueuse/shared@npm:13.2.0"
+"@vueuse/shared@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@vueuse/shared@npm:13.3.0"
   peerDependencies:
     vue: ^3.5.0
-  checksum: 10/73411e47af79b42311e8b978d3669d6e11b38b470e181b7d4ffd80cc31f37bbe8abb072552f3986b1cf0e97f4ce0bdedee71b6217c955fdeff96af23d2e7a307
+  checksum: 10/147d84560a5c3c38b63b31749d5891d7ef46c9d27bfff29ff728217d71dc795a4cf14b3e1b0d3d230540e61570812aac666fa0404867d7f5c5645dfc8b151d4a
   languageName: node
   linkType: hard
 
@@ -6892,7 +6892,7 @@ __metadata:
     "@vitejs/plugin-vue": "npm:5.2.4"
     "@vitest/coverage-v8": "npm:3.1.2"
     "@vitest/ui": "npm:3.1.2"
-    "@vueuse/core": "npm:13.2.0"
+    "@vueuse/core": "npm:13.3.0"
     axios: "npm:1.9.0"
     browserslist: "npm:4.24.5"
     browserslist-to-esbuild: "npm:2.1.1"
