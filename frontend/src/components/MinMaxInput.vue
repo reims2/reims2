@@ -28,5 +28,5 @@
 
 <script setup lang="ts">
 import { MinMaxObject } from '@/model/ReimsModel'
-defineModel<MinMaxObject>('modelValue', { required: true })
+const modelValue = defineModel<MinMaxObject>('modelValue', { required: true })
 </script>
