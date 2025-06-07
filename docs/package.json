@@ -5,11 +5,11 @@
     "build": "vitepress build src",
     "preview": "vitepress preview src"
   },
-  "packageManager": "yarn@4.9.1",
+  "packageManager": "yarn@4.9.2",
   "license": "AGPL-3.0-only",
   "dependencies": {
     "vitepress": "1.6.3",
-    "vue": "3.5.15"
+    "vue": "3.5.16"
   },
   "engines": {
     "node": "22.16.0"
