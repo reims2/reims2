@@ -224,12 +224,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.15.23":
-  version: 22.15.23
-  resolution: "@types/node@npm:22.15.23"
+"@types/node@npm:22.15.31":
+  version: 22.15.31
+  resolution: "@types/node@npm:22.15.31"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/1e121e0232cb61fdf34a86589aa4d43248dafd293be4858ab37acc2fa62cfbb7462bc0c3c8104515ec25ae4d6bf8b7e4a5217f05574ac53fd41e2a19bdca09f6
+  checksum: 10/999da153fae4687c416421850ebd3c94be75e0dae27ccad192d9a073c7e74baade987d68fc9f082a825c4672bd8a26867636663baad0b9e851baf7b36fb9fdd9
   languageName: node
   linkType: hard
 
@@ -1631,7 +1631,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:9.28.0"
     "@playwright/test": "npm:1.53.0"
-    "@types/node": "npm:22.15.23"
+    "@types/node": "npm:22.15.31"
     dotenv: "npm:16.5.0"
     eslint: "npm:9.28.0"
     eslint-config-prettier: "npm:10.1.5"
