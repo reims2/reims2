@@ -49,7 +49,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.5"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.0"],\
           ["globals", "npm:16.2.0"],\
-          ["happy-dom", "npm:17.6.3"],\
+          ["happy-dom", "npm:18.0.1"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.3"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.3.0"],\
@@ -3884,6 +3884,14 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/node", [\
+      ["npm:20.19.0", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-20.19.0-5d340a9006-76cc44487f.zip/node_modules/@types/node/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:20.19.0"],\
+          ["undici-types", "npm:6.21.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:22.15.31", {\
         "packageLocation": "./.yarn/cache/@types-node-npm-22.15.31-94a0223701-999da153fa.zip/node_modules/@types/node/",\
         "packageDependencies": [\
@@ -3932,6 +3940,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-web-bluetooth-npm-0.0.21-5cda70c7da-f8796dc9f6.zip/node_modules/@types/web-bluetooth/",\
         "packageDependencies": [\
           ["@types/web-bluetooth", "npm:0.0.21"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/whatwg-mimetype", [\
+      ["npm:3.0.2", {\
+        "packageLocation": "./.yarn/cache/@types-whatwg-mimetype-npm-3.0.2-cf2bd6921c-609607beea.zip/node_modules/@types/whatwg-mimetype/",\
+        "packageDependencies": [\
+          ["@types/whatwg-mimetype", "npm:3.0.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -7033,11 +7050,12 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["happy-dom", [\
-      ["npm:17.6.3", {\
-        "packageLocation": "./.yarn/cache/happy-dom-npm-17.6.3-8f8e29f4f1-0f82fe84a0.zip/node_modules/happy-dom/",\
+      ["npm:18.0.1", {\
+        "packageLocation": "./.yarn/cache/happy-dom-npm-18.0.1-6db5a729f8-27f6638d7b.zip/node_modules/happy-dom/",\
         "packageDependencies": [\
-          ["happy-dom", "npm:17.6.3"],\
-          ["webidl-conversions", "npm:7.0.0"],\
+          ["@types/node", "npm:20.19.0"],\
+          ["@types/whatwg-mimetype", "npm:3.0.2"],\
+          ["happy-dom", "npm:18.0.1"],\
           ["whatwg-mimetype", "npm:3.0.0"]\
         ],\
         "linkType": "HARD"\
@@ -9220,7 +9238,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.5"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.0"],\
           ["globals", "npm:16.2.0"],\
-          ["happy-dom", "npm:17.6.3"],\
+          ["happy-dom", "npm:18.0.1"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.3"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.3.0"],\
@@ -11121,7 +11139,7 @@ const RAW_RUNTIME_STATE =
           ["chai", "npm:5.2.0"],\
           ["debug", "virtual:c9e1a4b59e37cb479517edede3bf2093b28c0ca1a9d0e517f3c345075bd1e468980b94b4957e389116607ee7155441dfd7d09e19a4229d5d09bcf06244401590#npm:4.4.0"],\
           ["expect-type", "npm:1.2.1"],\
-          ["happy-dom", "npm:17.6.3"],\
+          ["happy-dom", "npm:18.0.1"],\
           ["jsdom", null],\
           ["magic-string", "npm:0.30.17"],\
           ["pathe", "npm:2.0.3"],\
@@ -11391,13 +11409,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/webidl-conversions-npm-4.0.2-1d159e6409-594187c36f.zip/node_modules/webidl-conversions/",\
         "packageDependencies": [\
           ["webidl-conversions", "npm:4.0.2"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:7.0.0", {\
-        "packageLocation": "./.yarn/cache/webidl-conversions-npm-7.0.0-e8c8e30c68-4c4f65472c.zip/node_modules/webidl-conversions/",\
-        "packageDependencies": [\
-          ["webidl-conversions", "npm:7.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
