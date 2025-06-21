@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.0</version>
+        <version>3.5.3</version>
         <relativePath/> <!-- lookup parent from Maven repository -->
     </parent>
 
@@ -29,7 +29,7 @@
         </sonar.coverage.jacoco.xmlReportPaths>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <aggregate.report.dir>tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
-        <docker.jib-maven-plugin.version>3.4.5</docker.jib-maven-plugin.version>
+        <docker.jib-maven-plugin.version>3.4.6</docker.jib-maven-plugin.version>
         <docker.image.prefix>springcommunity</docker.image.prefix>
         <sonar.exclusions>
             **/dto/*.java, **/entity/*.java,
