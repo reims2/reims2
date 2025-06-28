@@ -44,7 +44,7 @@
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>5.11.1</version>
+            <version>5.11.2</version>
         </dependency>
 
         <dependency>
@@ -297,7 +297,7 @@
                         <annotationProcessorPath>
                             <groupId>org.hibernate</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
-                            <version>7.0.2.Final</version>
+                            <version>7.0.3.Final</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>
