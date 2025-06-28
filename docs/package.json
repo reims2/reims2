@@ -9,7 +9,7 @@
   "license": "AGPL-3.0-only",
   "dependencies": {
     "vitepress": "1.6.3",
-    "vue": "3.5.16"
+    "vue": "3.5.17"
   },
   "engines": {
     "node": "22.16.0"
