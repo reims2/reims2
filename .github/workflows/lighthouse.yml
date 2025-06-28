@@ -38,7 +38,7 @@ jobs:
           HTTP_SERVER_VERSION=14.1.1
           npm install -g http-server@$HTTP_SERVER_VERSION
           # renovate datasource=npm depName=@lhci/cli
-          LHCI_CLI_VERSION=0.15.0
+          LHCI_CLI_VERSION=0.15.1
           npm install -g @lhci/cli@$LHCI_CLI_VERSION
       - name: Run Lighthouse tests
         run: |
