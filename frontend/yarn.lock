@@ -2477,12 +2477,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:22.15.33":
-  version: 22.15.33
-  resolution: "@types/node@npm:22.15.33"
+"@types/node@npm:*, @types/node@npm:22.16.0":
+  version: 22.16.0
+  resolution: "@types/node@npm:22.16.0"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/5734cbca7fc363f3d6ad191e1be645cc9885d642e9f90688892459f10629cf663d2206e7ed7b255dd476baaa86fb011aa09647e77520958b5993b391f793856f
+  checksum: 10/26ebbbd24749caa4a692664290c53cdca63ec717ca250cd2babf3d3da796e9d3d0b6b9814d160693261b5e881796bf0f3c1887fef355b19e9a78fe27cd5e2ce2
   languageName: node
   linkType: hard
 
@@ -4998,10 +4998,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:16.2.0":
-  version: 16.2.0
-  resolution: "globals@npm:16.2.0"
-  checksum: 10/37fc33502973ebbee5a44b58939aa8574abc00ca1fc4c1d4ec0571a2c6620843ae647eff8bd082adf6bb5975ad221a887522b9a7961125764f0cb6dfab0b7483
+"globals@npm:16.3.0":
+  version: 16.3.0
+  resolution: "globals@npm:16.3.0"
+  checksum: 10/accb0939d993a1c461df8d961ce9911a9a96120929e0a61057ae8e75b7df0a8bf8089da0f4e3a476db0211156416fbd26e222a56f74b389a140b34481c0a72b0
   languageName: node
   linkType: hard
 
@@ -5992,7 +5992,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.20, lodash@npm:^4.17.21":
+"lodash@npm:^4.17.20":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 10/c08619c038846ea6ac754abd6dd29d2568aa705feb69339e836dfa8d8b09abbb2f859371e86863eda41848221f9af43714491467b5b0299122431e202bb0c532
@@ -6966,7 +6966,7 @@ __metadata:
     "@testing-library/vue": "npm:8.1.0"
     "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:29.5.14"
-    "@types/node": "npm:22.15.33"
+    "@types/node": "npm:22.16.0"
     "@vitejs/plugin-vue": "npm:6.0.0"
     "@vitest/coverage-v8": "npm:3.2.4"
     "@vitest/ui": "npm:3.2.4"
@@ -6978,7 +6978,7 @@ __metadata:
     eslint: "npm:9.28.0"
     eslint-config-prettier: "npm:10.1.5"
     eslint-plugin-vue: "npm:10.1.0"
-    globals: "npm:16.2.0"
+    globals: "npm:16.3.0"
     happy-dom: "npm:18.0.1"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:3.0.3"
@@ -6995,7 +6995,7 @@ __metadata:
     vite-plugin-vuetify: "npm:2.1.1"
     vitest: "npm:3.2.4"
     vue: "npm:3.5.17"
-    vue-eslint-parser: "npm:10.1.4"
+    vue-eslint-parser: "npm:10.2.0"
     vue-router: "npm:4.5.1"
     vue-toastification: "npm:2.0.0-rc.5"
     vue-tsc: "npm:2.2.10"
@@ -8623,20 +8623,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-eslint-parser@npm:10.1.4":
-  version: 10.1.4
-  resolution: "vue-eslint-parser@npm:10.1.4"
+"vue-eslint-parser@npm:10.2.0":
+  version: 10.2.0
+  resolution: "vue-eslint-parser@npm:10.2.0"
   dependencies:
     debug: "npm:^4.4.0"
     eslint-scope: "npm:^8.2.0"
     eslint-visitor-keys: "npm:^4.2.0"
     espree: "npm:^10.3.0"
     esquery: "npm:^1.6.0"
-    lodash: "npm:^4.17.21"
     semver: "npm:^7.6.3"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
-  checksum: 10/e9f2b422b16393af27ade550d27d133a8e989e92c5e00e47ef18a57bd7d6f87840c1cb1b3a8456da3fe8a20d1615b8da3e8187a25b7fd8a2d38bbc67907823ea
+  checksum: 10/53673fd5df42e79e834809ce552f53972f2e03bae08ef7cc66e679e88e9ad3b939ac12f9332ed33e14c953649616ca17698169719670b6a752d219685015aa87
   languageName: node
   linkType: hard
 

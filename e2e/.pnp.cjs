@@ -30,12 +30,12 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@eslint/js", "npm:9.28.0"],\
           ["@playwright/test", "npm:1.53.2"],\
-          ["@types/node", "npm:22.15.33"],\
-          ["dotenv", "npm:16.5.0"],\
+          ["@types/node", "npm:22.16.0"],\
+          ["dotenv", "npm:16.6.1"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.28.0"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.5"],\
           ["eslint-plugin-playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.2.0"],\
-          ["globals", "npm:16.2.0"],\
+          ["globals", "npm:16.3.0"],\
           ["prettier", "npm:3.5.3"],\
           ["root-workspace-0b6124", "workspace:."],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
@@ -316,10 +316,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/node", [\
-      ["npm:22.15.33", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-22.15.33-69dfd7fe67-5734cbca7f.zip/node_modules/@types/node/",\
+      ["npm:22.16.0", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-22.16.0-af90ae1d1f-26ebbbd247.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:22.15.33"],\
+          ["@types/node", "npm:22.16.0"],\
           ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
@@ -851,10 +851,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["dotenv", [\
-      ["npm:16.5.0", {\
-        "packageLocation": "./.yarn/cache/dotenv-npm-16.5.0-67343a179e-e68a16834f.zip/node_modules/dotenv/",\
+      ["npm:16.6.1", {\
+        "packageLocation": "./.yarn/cache/dotenv-npm-16.6.1-01334288ea-1d18971443.zip/node_modules/dotenv/",\
         "packageDependencies": [\
-          ["dotenv", "npm:16.5.0"]\
+          ["dotenv", "npm:16.6.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -1299,10 +1299,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:16.2.0", {\
-        "packageLocation": "./.yarn/cache/globals-npm-16.2.0-b5218dda62-37fc335029.zip/node_modules/globals/",\
+      ["npm:16.3.0", {\
+        "packageLocation": "./.yarn/cache/globals-npm-16.3.0-d099b11ba2-accb0939d9.zip/node_modules/globals/",\
         "packageDependencies": [\
-          ["globals", "npm:16.2.0"]\
+          ["globals", "npm:16.3.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2022,12 +2022,12 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@eslint/js", "npm:9.28.0"],\
           ["@playwright/test", "npm:1.53.2"],\
-          ["@types/node", "npm:22.15.33"],\
-          ["dotenv", "npm:16.5.0"],\
+          ["@types/node", "npm:22.16.0"],\
+          ["dotenv", "npm:16.6.1"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.28.0"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.5"],\
           ["eslint-plugin-playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.2.0"],\
-          ["globals", "npm:16.2.0"],\
+          ["globals", "npm:16.3.0"],\
           ["prettier", "npm:3.5.3"],\
           ["root-workspace-0b6124", "workspace:."],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
