@@ -32,7 +32,7 @@
     "vuetify": "3.8.8"
   },
   "devDependencies": {
-    "@babel/types": "7.27.7",
+    "@babel/types": "7.28.0",
     "@eslint/js": "9.28.0",
     "@mdi/js": "7.4.47",
     "@pinia/testing": "1.0.2",
