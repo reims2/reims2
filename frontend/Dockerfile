@@ -1,4 +1,4 @@
-FROM node:22.17.0@sha256:2fa6c977460b56d4d8278947ab56faeb312bc4cc6c4cf78920c6de27812f51c5 AS build
+FROM node:22.17.1@sha256:9e6918e8e32a47a58ed5fb9bd235bbc1d18a8c272e37f15d502b9db9e36821ee AS build
 
 WORKDIR /usr/src/app
 COPY .yarn/ .yarn/
@@ -13,7 +13,7 @@ ENV VITE_GIT_VERSION=${GIT_VERSION}
 RUN yarn build
 
 # PROD IMAGE
-FROM caddy:2.10.0-alpine@sha256:e2e3a089760c453bc51c4e718342bd7032d6714f15b437db7121bfc2de2654a6
+FROM caddy:2.10.0-alpine@sha256:ae4458638da8e1a91aafffb231c5f8778e964bca650c8a8cb23a7e8ac557aa3c
 
 COPY ./Caddyfile /etc/caddy/Caddyfile
 COPY --from=build /usr/src/app/dist /usr/share/caddy

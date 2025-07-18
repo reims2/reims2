@@ -30,7 +30,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@eslint/js", "npm:9.28.0"],\
           ["@playwright/test", "npm:1.54.1"],\
-          ["@types/node", "npm:22.16.2"],\
+          ["@types/node", "npm:22.16.4"],\
           ["dotenv", "npm:17.2.0"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.28.0"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.5"],\
@@ -316,10 +316,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/node", [\
-      ["npm:22.16.2", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-22.16.2-a6e7d9be41-ff15825a69.zip/node_modules/@types/node/",\
+      ["npm:22.16.4", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-22.16.4-b523097f5b-6d2c133bf1.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:22.16.2"],\
+          ["@types/node", "npm:22.16.4"],\
           ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
@@ -2022,7 +2022,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@eslint/js", "npm:9.28.0"],\
           ["@playwright/test", "npm:1.54.1"],\
-          ["@types/node", "npm:22.16.2"],\
+          ["@types/node", "npm:22.16.4"],\
           ["dotenv", "npm:17.2.0"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.28.0"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.5"],\
