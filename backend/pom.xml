@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.4</version>
         <relativePath/> <!-- lookup parent from Maven repository -->
     </parent>
 
@@ -297,7 +297,7 @@
                         <annotationProcessorPath>
                             <groupId>org.hibernate</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
-                            <version>7.0.7.Final</version>
+                            <version>7.0.8.Final</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>
