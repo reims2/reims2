@@ -1,4 +1,4 @@
-# REIMS2 backend
+# REIMS2 Backend
 
 REIMS2 Java Backend with Spring Boot
 
@@ -6,9 +6,16 @@ REIMS2 Java Backend with Spring Boot
 
 To run the backend, you'll have to type in the following command:
 
+Spin up a local MariaDB instance with Docker first:
+
+```bash
+docker run --detach --rm --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSWORD=reims --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 mariadb:latest
 ```
-export PVH_JWT_SECRET=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException
-./mvnw spring-boot:run
+
+Then start the backend with the following command:
+
+```bash
+spring_profiles_active=local ./mvnw spring-boot:run
 ```
 
 Then you can the API Endpoints via:
