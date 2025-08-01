@@ -94,9 +94,10 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>runtime</scope>
+            <version>2.3.232</version>
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
@@ -194,20 +195,13 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>11.10.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-hsqldb</artifactId>
-            <version>11.10.4</version>
-            <scope>runtime</scope>
+            <version>11.10.5</version>
         </dependency>
 
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
-            <version>11.10.4</version>
+            <version>11.10.5</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>

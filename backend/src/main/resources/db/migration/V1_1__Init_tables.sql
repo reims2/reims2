@@ -5,7 +5,7 @@ CREATE TABLE changevalue (
 
 CREATE TABLE dispense (
   previous_sku int DEFAULT NULL,
-  id serial PRIMARY KEY,
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
   modify_date datetime(6) DEFAULT NULL,
   dispense_reason varchar(255) DEFAULT NULL
 );
@@ -15,13 +15,13 @@ CREATE TABLE eye (
   axis int,
   cylinder decimal(38,2) DEFAULT NULL,
   sphere decimal(38,2) DEFAULT NULL,
-  id serial PRIMARY KEY
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY
 );
 
 
 CREATE TABLE unsuccessful_search (
   increase_search_tolerance bit(1) DEFAULT NULL,
-  id serial PRIMARY KEY,
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
   od_id bigint UNSIGNED DEFAULT NULL,
   os_id bigint UNSIGNED DEFAULT NULL,
   search_date datetime(6) DEFAULT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE glasses (
   sku int DEFAULT NULL,
   creation_date datetime(6) DEFAULT NULL,
   dispense_id bigint UNSIGNED DEFAULT NULL,
-  id serial PRIMARY KEY,
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
   od_id bigint UNSIGNED DEFAULT NULL,
   os_id bigint UNSIGNED DEFAULT NULL,
   appearance varchar(255) DEFAULT NULL,
@@ -56,12 +56,12 @@ CREATE TABLE glasses (
 );
 
 CREATE TABLE roles (
-  id serial PRIMARY KEY,
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
   name varchar(20) DEFAULT NULL
 );
 
 CREATE TABLE users (
-  id serial PRIMARY KEY,
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
   username varchar(20) DEFAULT NULL,
   password varchar(120) DEFAULT NULL,
   UNIQUE KEY (username)
