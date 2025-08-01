@@ -289,6 +289,13 @@ public class GlassesRestControllerIntegrationTest {
                         BigDecimal.ONE),
                     new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2,
                         BigDecimal.ONE)));
+            // Save two glasses for this test
+            mainService.saveGlasses(
+                new Glasses("multifocal", "medium", "neutral", "sa", new Dispense(),
+                    new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2,
+                        BigDecimal.ONE),
+                    new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2,
+                        BigDecimal.ONE)));
 
             this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa.getSku()))
                 .andExpect(status().isOk())
@@ -373,7 +380,7 @@ public class GlassesRestControllerIntegrationTest {
                 .collect(Collectors.toList()).size();
 
             this.mockMvc.perform(get(
-                    "/api/glasses/sa?size=2&page=2&sort=sku,desc&search=glassesType==multifocal"))
+                    "/api/glasses/sa?size=1&page=2&sort=sku,desc&search=glassesType==multifocal"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content()
                     .contentType(MediaType.APPLICATION_JSON))
