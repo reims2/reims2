@@ -6,5 +6,4 @@ reims2_db_user: reims2
 db_port: 3306
 
 db_dump: false
-dump_location: "{{ stack_install_location }}/dump.sql"
 mariadb_cnf_location: "{{ stack_install_location }}/mariadb_custom.cnf"
