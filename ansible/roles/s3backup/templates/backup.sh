@@ -5,7 +5,7 @@ set -e
 rm -rf {{ s3backup_data_location }} || true
 mkdir -m 700 -p {{ s3backup_data_location }}
 
-docker exec "$(docker ps -q -f name=^{{ stack_name }}_mariadb)" sh -c 'exec mariadb-dump {{ reims2_db_name }} -uroot -p"{{ reims2_db_root_password }}"' > {{ s3backup_data_location }}/dump.sql
+docker exec "$(docker ps -q -f name=^{{ stack_name }}_mariadb)" sh -c 'exec mariadb-dump {{ reims2_db_name }} --ignore-table={{ reims2_db_name }}.roles --complete-insert --no-create-info -uroot -p"{{ reims2_db_root_password }}"' > {{ s3backup_data_location }}/dump.sql
 
 docker run -i \
       -e AWS_ACCESS_KEY_ID={{ aws_key_id }}\
