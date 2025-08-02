@@ -14,3 +14,26 @@
   notify:
     - reload stack
     - wait for backend
+
+- name: SQL restore block
+  when: db_dump and db_dump | length > 0
+  block:
+    - name: Copy SQL dump file onto host
+      ansible.builtin.copy:
+        content: "{{ db_dump }}"
+        dest: "{{ dump_location }}"
+        mode: "0600"
+        owner: root
+        group: root
+        force: true
+      register: dump_file
+
+    - name: Flush handlers to make restoring dump possible
+      ansible.builtin.meta: flush_handlers
+
+    - name: Restore dump
+      args:
+        executable: /bin/bash
+      ansible.builtin.shell: |
+        set -o pipefail
+        cat {{ dump_location }} | docker exec -i $(docker ps -q -f name=^{{ stack_name }}_mariadb) /usr/bin/mariadb -p"{{ reims2_db_root_password }}" {{ reims2_db_name }}
