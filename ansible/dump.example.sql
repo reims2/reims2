@@ -1,6 +1,6 @@
 
-INSERT INTO users VALUES (1,'test','$2a$10$vpFqQIbEm0Zd0eco2hLxgOTiujxoziOGvKgbX6KE1ud8hwdHJXsE2');
-INSERT INTO user_roles VALUES
+INSERT INTO users (id, username, password) VALUES (1,'test','$2a$10$vpFqQIbEm0Zd0eco2hLxgOTiujxoziOGvKgbX6KE1ud8hwdHJXsE2');
+INSERT INTO user_roles (user_id, role_id) VALUES
 (1,1),
 (1,2);
 
