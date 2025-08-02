@@ -36,7 +36,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/jest", "npm:30.0.0"],\
-          ["@types/node", "npm:22.16.5"],\
+          ["@types/node", "npm:22.17.0"],\
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.0.0"],\
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.4"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.4"],\
@@ -3041,7 +3041,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@jest-pattern-npm-30.0.1-2ce04a6497-afd03b4d3e.zip/node_modules/@jest/pattern/",\
         "packageDependencies": [\
           ["@jest/pattern", "npm:30.0.1"],\
-          ["@types/node", "npm:22.16.5"],\
+          ["@types/node", "npm:22.17.0"],\
           ["jest-regex-util", "npm:30.0.1"]\
         ],\
         "linkType": "HARD"\
@@ -3066,7 +3066,7 @@ const RAW_RUNTIME_STATE =
           ["@jest/types", "npm:30.0.5"],\
           ["@types/istanbul-lib-coverage", "npm:2.0.6"],\
           ["@types/istanbul-reports", "npm:3.0.4"],\
-          ["@types/node", "npm:22.16.5"],\
+          ["@types/node", "npm:22.17.0"],\
           ["@types/yargs", "npm:17.0.33"],\
           ["chalk", "npm:4.1.2"]\
         ],\
@@ -3938,10 +3938,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:22.16.5", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-22.16.5-2161c89a42-ba45b5c911.zip/node_modules/@types/node/",\
+      ["npm:22.17.0", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-22.17.0-d1a2089b53-f77b0e1c3c.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:22.16.5"],\
+          ["@types/node", "npm:22.17.0"],\
           ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
@@ -7845,7 +7845,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/jest-mock-npm-30.0.5-0573f7a688-a20386a9e4.zip/node_modules/jest-mock/",\
         "packageDependencies": [\
           ["@jest/types", "npm:30.0.5"],\
-          ["@types/node", "npm:22.16.5"],\
+          ["@types/node", "npm:22.17.0"],\
           ["jest-mock", "npm:30.0.5"],\
           ["jest-util", "npm:30.0.5"]\
         ],\
@@ -7866,7 +7866,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/jest-util-npm-30.0.5-8940b46e20-44207c4b8c.zip/node_modules/jest-util/",\
         "packageDependencies": [\
           ["@jest/types", "npm:30.0.5"],\
-          ["@types/node", "npm:22.16.5"],\
+          ["@types/node", "npm:22.17.0"],\
           ["chalk", "npm:4.1.2"],\
           ["ci-info", "npm:4.3.0"],\
           ["graceful-fs", "npm:4.2.11"],\
@@ -9200,7 +9200,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/jest", "npm:30.0.0"],\
-          ["@types/node", "npm:22.16.5"],\
+          ["@types/node", "npm:22.17.0"],\
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.0.0"],\
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.4"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.2.4"],\
@@ -10725,7 +10725,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jiti", null],\
           ["@types/less", null],\
           ["@types/lightningcss", null],\
-          ["@types/node", "npm:22.16.5"],\
+          ["@types/node", "npm:22.17.0"],\
           ["@types/sass", null],\
           ["@types/sass-embedded", null],\
           ["@types/stylus", null],\
@@ -10783,7 +10783,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jiti", null],\
           ["@types/less", null],\
           ["@types/lightningcss", null],\
-          ["@types/node", "npm:22.16.5"],\
+          ["@types/node", "npm:22.17.0"],\
           ["@types/sass", null],\
           ["@types/sass-embedded", null],\
           ["@types/stylus", null],\
@@ -11053,7 +11053,7 @@ const RAW_RUNTIME_STATE =
           ["@types/edge-runtime__vm", null],\
           ["@types/happy-dom", null],\
           ["@types/jsdom", null],\
-          ["@types/node", "npm:22.16.5"],\
+          ["@types/node", "npm:22.17.0"],\
           ["@types/vitest__browser", null],\
           ["@types/vitest__ui", null],\
           ["@vitest/browser", null],\
