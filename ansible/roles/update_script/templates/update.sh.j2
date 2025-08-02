@@ -1,0 +1,57 @@
+#!/bin/sh
+{{ ansible_managed | comment }}
+set -e
+
+new_tag=$SSH_ORIGINAL_COMMAND
+updated_services=()
+
+# Function to check update status
+check_update_status() {
+    service=$1
+    status=$(docker service inspect ${service} --format "{{{{.UpdateStatus.State}}}}")
+    echo "Service ${service} update status: ${status}"
+    
+    # Only "completed" status is considered successful
+    if [ "$status" = "completed" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Function to roll back services
+rollback_services() {
+    echo "Rolling back services due to failed update..."
+    
+    # Roll back all services that were successfully updated
+    for service in "${updated_services[@]}"; do
+        echo "Rolling back service: $service"
+        docker service rollback "$service" || echo "Warning: Failed to rollback $service"
+    done
+    
+    exit 1
+}
+
+# Update frontend service
+docker service update {{ stack_name }}_frontend --image reims2/reims2-frontend:sha-"$new_tag" --force
+if ! check_update_status {{ stack_name }}_frontend; then
+    # No need to rollback as this is the first service and Docker auto-rollbacks failed updates
+    exit 1
+fi
+updated_services+=("{{ stack_name }}_frontend")
+
+# Update docs service
+docker service update {{ stack_name }}_docs --image reims2/reims2-docs:sha-"$new_tag" --force
+if ! check_update_status {{ stack_name }}_docs; then
+    rollback_services
+fi
+updated_services+=("{{ stack_name }}_docs")
+
+# Update backend service
+docker service update {{ stack_name }}_backend --image reims2/reims2-backend:sha-"$new_tag" --force
+if ! check_update_status {{ stack_name }}_backend; then
+    rollback_services
+fi
+
+echo "All services successfully updated to tag: $new_tag"
+exit 0
