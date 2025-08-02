@@ -26,5 +26,8 @@
       "path": "./tsconfig.node.json"
     }
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "vueCompilerOptions": {
+    "globalTypesPath": "./vue-global-types.d.ts"
+  }
 }
