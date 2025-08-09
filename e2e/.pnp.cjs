@@ -29,7 +29,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@eslint/js", "npm:9.32.0"],\
-          ["@playwright/test", "npm:1.54.1"],\
+          ["@playwright/test", "npm:1.54.2"],\
           ["@types/node", "npm:22.17.0"],\
           ["dotenv", "npm:17.2.1"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.32.0"],\
@@ -288,11 +288,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@playwright/test", [\
-      ["npm:1.54.1", {\
-        "packageLocation": "./.yarn/cache/@playwright-test-npm-1.54.1-815d52dd2b-75ea34818f.zip/node_modules/@playwright/test/",\
+      ["npm:1.54.2", {\
+        "packageLocation": "./.yarn/cache/@playwright-test-npm-1.54.2-0db0c491a4-33d6c0780e.zip/node_modules/@playwright/test/",\
         "packageDependencies": [\
-          ["@playwright/test", "npm:1.54.1"],\
-          ["playwright", "npm:1.54.1"]\
+          ["@playwright/test", "npm:1.54.2"],\
+          ["playwright", "npm:1.54.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -1915,21 +1915,21 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["playwright", [\
-      ["npm:1.54.1", {\
-        "packageLocation": "./.yarn/cache/playwright-npm-1.54.1-cd5ffd6e6a-ebad2924b5.zip/node_modules/playwright/",\
+      ["npm:1.54.2", {\
+        "packageLocation": "./.yarn/cache/playwright-npm-1.54.2-4e3f0033a3-3f4fedc1e2.zip/node_modules/playwright/",\
         "packageDependencies": [\
           ["fsevents", "patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"],\
-          ["playwright", "npm:1.54.1"],\
-          ["playwright-core", "npm:1.54.1"]\
+          ["playwright", "npm:1.54.2"],\
+          ["playwright-core", "npm:1.54.2"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["playwright-core", [\
-      ["npm:1.54.1", {\
-        "packageLocation": "./.yarn/cache/playwright-core-npm-1.54.1-ce2d30a085-c0acfb7ecb.zip/node_modules/playwright-core/",\
+      ["npm:1.54.2", {\
+        "packageLocation": "./.yarn/cache/playwright-core-npm-1.54.2-3ec57f4a99-8eb8b37d7b.zip/node_modules/playwright-core/",\
         "packageDependencies": [\
-          ["playwright-core", "npm:1.54.1"]\
+          ["playwright-core", "npm:1.54.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2022,7 +2022,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@eslint/js", "npm:9.32.0"],\
-          ["@playwright/test", "npm:1.54.1"],\
+          ["@playwright/test", "npm:1.54.2"],\
           ["@types/node", "npm:22.17.0"],\
           ["dotenv", "npm:17.2.1"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.32.0"],\
