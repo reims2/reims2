@@ -3757,7 +3757,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"confbox@npm:^0.2.1":
+"confbox@npm:^0.2.2":
   version: 0.2.2
   resolution: "confbox@npm:0.2.2"
   checksum: 10/988c7216f9b5aee5d8a8f32153a9164e1b58d92d8335c5daa323fd3fdee91f742ffc25f6c28b059474b6319204085eca985ab14c5a246988dc7ef1fe29414108
@@ -4606,10 +4606,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"exsolve@npm:^1.0.1":
-  version: 1.0.5
-  resolution: "exsolve@npm:1.0.5"
-  checksum: 10/5bcdad5685f3435e3f1f0326cfccf727418752cb5945d7c030d48c0aaff9dd5ebd8b082ab498e576f34c391aaba7b32d35632f2f708c1ca1cdfe714aa66902bc
+"exsolve@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "exsolve@npm:1.0.7"
+  checksum: 10/0c9fc0964da0154f38b55e612ed29bf5040f753d5d2db3a63559762237d0a86290e2f18997973343bb9900c07ab1e48596321de9d9d338e373b1f3f1a015e4c9
   languageName: node
   linkType: hard
 
@@ -6634,14 +6634,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-types@npm:^2.0.1, pkg-types@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "pkg-types@npm:2.1.0"
+"pkg-types@npm:^2.0.1, pkg-types@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "pkg-types@npm:2.2.0"
   dependencies:
-    confbox: "npm:^0.2.1"
-    exsolve: "npm:^1.0.1"
+    confbox: "npm:^0.2.2"
+    exsolve: "npm:^1.0.7"
     pathe: "npm:^2.0.3"
-  checksum: 10/10c9038113d2ada3cfc1fde19b6f367d50d80990f27337e78d86583c96ff2b2ce13fd19cca6bf57a59aa5230ed23e384ec92a4da4c1995c80ea75abe9a8e5dbd
+  checksum: 10/54ffa530f443f0c55b7fad1475f619f4f70738b97dc8c65c783b54891b36663165cde02160c273c08ddb17efd29fb0fbcd929bed49bd06a96cec27a6ca4ed2f8
   languageName: node
   linkType: hard
 
@@ -6926,7 +6926,7 @@ __metadata:
     sass-embedded: "npm:1.90.0"
     typescript: "npm:5.9.2"
     typescript-eslint: "npm:8.38.0"
-    unplugin-auto-import: "npm:19.3.0"
+    unplugin-auto-import: "npm:20.0.0"
     vite: "npm:7.0.6"
     vite-plugin-pwa: "npm:1.0.2"
     vite-plugin-vue-devtools: "npm:8.0.0"
@@ -7889,7 +7889,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinyglobby@npm:^0.2.10, tinyglobby@npm:^0.2.12, tinyglobby@npm:^0.2.14":
+"tinyglobby@npm:^0.2.10, tinyglobby@npm:^0.2.14":
   version: 0.2.14
   resolution: "tinyglobby@npm:0.2.14"
   dependencies:
@@ -8128,25 +8128,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unimport@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "unimport@npm:4.2.0"
+"unimport@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "unimport@npm:5.2.0"
   dependencies:
-    acorn: "npm:^8.14.1"
+    acorn: "npm:^8.15.0"
     escape-string-regexp: "npm:^5.0.0"
     estree-walker: "npm:^3.0.3"
     local-pkg: "npm:^1.1.1"
     magic-string: "npm:^0.30.17"
     mlly: "npm:^1.7.4"
     pathe: "npm:^2.0.3"
-    picomatch: "npm:^4.0.2"
-    pkg-types: "npm:^2.1.0"
+    picomatch: "npm:^4.0.3"
+    pkg-types: "npm:^2.2.0"
     scule: "npm:^1.3.0"
     strip-literal: "npm:^3.0.0"
-    tinyglobby: "npm:^0.2.12"
-    unplugin: "npm:^2.2.2"
+    tinyglobby: "npm:^0.2.14"
+    unplugin: "npm:^2.3.5"
     unplugin-utils: "npm:^0.2.4"
-  checksum: 10/3538372084e67488dac855d15d098869add49a2920a47a32aeb3d69dffd4789e89da7bb54798991021caf1ff42f5279f5c4a0b9cd9700193a0a6ed107155be0d
+  checksum: 10/09d5208dc1d67884399b4ca72b850717983cde0ab92cd3e824d9b6b454a01044a158fdb018deacd8f61b559a19fc4647063e2afc381d03a548c7b22c4813df50
   languageName: node
   linkType: hard
 
@@ -8184,25 +8184,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:19.3.0":
-  version: 19.3.0
-  resolution: "unplugin-auto-import@npm:19.3.0"
+"unplugin-auto-import@npm:20.0.0":
+  version: 20.0.0
+  resolution: "unplugin-auto-import@npm:20.0.0"
   dependencies:
     local-pkg: "npm:^1.1.1"
     magic-string: "npm:^0.30.17"
-    picomatch: "npm:^4.0.2"
-    unimport: "npm:^4.2.0"
-    unplugin: "npm:^2.3.4"
+    picomatch: "npm:^4.0.3"
+    unimport: "npm:^5.2.0"
+    unplugin: "npm:^2.3.5"
     unplugin-utils: "npm:^0.2.4"
   peerDependencies:
-    "@nuxt/kit": ^3.2.2
+    "@nuxt/kit": ^4.0.0
     "@vueuse/core": "*"
   peerDependenciesMeta:
     "@nuxt/kit":
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: 10/4db5303ab5083e9933d173ef67980ac1a3a872eb583a3a850c90f60c7dcd9cbb6b34898309df00dcfad479c7ee56fdca08a77c7224da84887be853f8cad06073
+  checksum: 10/38bd2eee52fc2ac7fae3cccf9b8a81f2fae489f2f37f0ffc6e07c43d8a6d7cdb45cb9261b3d34988ffbdac18a509240f10b59086024468bfbf922485bcc95a52
   languageName: node
   linkType: hard
 
@@ -8216,7 +8216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin@npm:^2.2.2, unplugin@npm:^2.3.4":
+"unplugin@npm:^2.3.5":
   version: 2.3.5
   resolution: "unplugin@npm:2.3.5"
   dependencies:
