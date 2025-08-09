@@ -15,7 +15,7 @@
     "test:watch": "vitest --ui --coverage"
   },
   "engines": {
-    "node": "22.17.1"
+    "node": "22.18.0"
   },
   "dependencies": {
     "@fontsource-variable/roboto-flex": "5.2.6",
