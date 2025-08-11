@@ -1,3 +1,7 @@
+DELETE FROM users;
+ALTER TABLE users AUTO_INCREMENT = 1;
+DELETE FROM user_roles;
+ALTER TABLE user_roles AUTO_INCREMENT = 1;
 
 INSERT INTO users (id, username, password) VALUES (1,'test','$2a$10$vpFqQIbEm0Zd0eco2hLxgOTiujxoziOGvKgbX6KE1ud8hwdHJXsE2');
 INSERT INTO user_roles (user_id, role_id) VALUES
@@ -13,83 +17,83 @@ ALTER TABLE dispense AUTO_INCREMENT = 1;
 DELETE FROM eye;
 ALTER TABLE eye AUTO_INCREMENT = 1;
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(1, 1.75,  -0.25, 26, 2.5);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(2, 1.75,  -2.25, 46, 2.5);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(1, 1.75, -0.25, 26, 2.5);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(2, 1.75, -2.25, 46, 2.5);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (1, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (2, 'multifocal',  'medium', 'neutral', 1,  'sa', 0, '2017-05-12 00:00:00', 2, 1);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (2, 'multifocal', 'medium', 'neutral', 1,  'sa', 0, '2017-05-12 00:00:00', 2, 1);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(3, 1.75,  -0.5, 95, 3.25);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(4, 2.5,  -0.75, 99, 3.25);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(3, 1.75, -0.5, 95, 3.25);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(4, 2.5, -0.75, 99, 3.25);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (2, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (3, 'multifocal',  'medium', 'neutral', 2,  'sa', 0, '2017-05-12 00:00:00', 4, 3);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (3, 'multifocal', 'medium', 'neutral', 2,  'sa', 0, '2017-05-12 00:00:00', 4, 3);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(5, 1.75,  -0.5, 59, 3.0);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(6, 1.25,  -0.5, 148, 3.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(5, 1.75, -0.5, 59, 3.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(6, 1.25, -0.5, 148, 3.0);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (3, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (4, 'multifocal',  'small', 'neutral', 3,  'sa', 0, '2017-05-12 00:00:00', 6, 5);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (4, 'multifocal', 'small', 'neutral', 3,  'sa', 0, '2017-05-12 00:00:00', 6, 5);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(7, 0.5,  0.0, 0, 2.75);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(8, 1.5,  -0.5, 95, 2.75);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(7, 0.5, 0.0, 0, 2.75);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(8, 1.5, -0.5, 95, 2.75);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (4, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (5, 'multifocal',  'medium', 'neutral', 4,  'sa', 0, '2013-04-15 00:00:00', 8, 7);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (5, 'multifocal', 'medium', 'neutral', 4,  'sa', 0, '2013-04-15 00:00:00', 8, 7);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(9, 2.0,  -0.25, 5, 2.0);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(10, 2.25,  -1.0, 142, 2.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(9, 2.0, -0.25, 5, 2.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(10, 2.25, -1.0, 142, 2.0);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (5, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (7, 'multifocal',  'medium', 'feminine', 5,  'sa', 0, '2009-11-13 00:00:00', 10, 9);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (7, 'multifocal', 'medium', 'feminine', 5,  'sa', 0, '2009-11-13 00:00:00', 10, 9);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(11, 2.5,  -0.75, 104, 2.5);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(12, 2.25,  -1.25, 54, 2.5);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(11, 2.5, -0.75, 104, 2.5);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(12, 2.25, -1.25, 54, 2.5);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (6, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (8, 'multifocal',  'medium', 'neutral', 6,  'sa', 0, '2009-06-07 00:00:00', 12, 11);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (8, 'multifocal', 'medium', 'neutral', 6,  'sa', 0, '2009-06-07 00:00:00', 12, 11);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(13, 0.0,  0.0, 0, 2.0);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(14, 2.0,  -1.25, 76, 2.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(13, 0.0, 0.0, 0, 2.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(14, 2.0, -1.25, 76, 2.0);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (7, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9, 'multifocal',  'medium', 'neutral', 7,  'sa', 0, '2013-04-15 00:00:00', 14, 13);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9, 'multifocal', 'medium', 'neutral', 7,  'sa', 0, '2013-04-15 00:00:00', 14, 13);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(15, 1.5,  -0.5, 101, 2.0);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(16, 2.0,  -0.5, 98, 2.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(15, 1.5, -0.5, 101, 2.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(16, 2.0, -0.5, 98, 2.0);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (8, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (10, 'multifocal',  'medium', 'neutral', 8,  'sa', 0, '2018-04-20 00:00:00', 16, 15);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (10, 'multifocal', 'medium', 'neutral', 8,  'sa', 0, '2018-04-20 00:00:00', 16, 15);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(17, 11.0,  -0.5, 82, 2.0);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(18, 11.0,  -0.25, 13, 2.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(17, 11.0, -0.5, 82, 2.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(18, 11.0, -0.25, 13, 2.0);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (9, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (11, 'multifocal',  'small', 'neutral', 9,  'sa', 0, '2010-05-12 00:00:00', 18, 17);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (11, 'multifocal', 'small', 'neutral', 9,  'sa', 0, '2010-05-12 00:00:00', 18, 17);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19, -2.0,  -1.0, 3, 0.0);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(20, -1.0,  -2.0, 171, 0.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19, -2.0, -1.0, 3, 0.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(20, -1.0, -2.0, 171, 0.0);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (10, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (12, 'single',  'small', 'neutral', 10,  'sa', 0, '2016-04-01 00:00:00', 20, 19);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (12, 'single', 'small', 'neutral', 10,  'sa', 0, '2016-04-01 00:00:00', 20, 19);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19949, 1.25,  -1.0, 95, 2.5);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19950, 1.0,  -1.25, 74, 2.5);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19949, 1.25, -1.0, 95, 2.5);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19950, 1.0, -1.25, 74, 2.5);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (9975, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9954, 'multifocal',  'medium', 'feminine', 9975,  'sm', 0, '2021-09-21 00:00:00', 19950, 19949);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9954, 'multifocal', 'medium', 'feminine', 9975,  'sm', 0, '2021-09-21 00:00:00', 19950, 19949);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19951, 3.25,  -0.5, 38, 2.75);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19952, 2.75,  -0.75, 150, 2.75);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19951, 3.25, -0.5, 38, 2.75);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19952, 2.75, -0.75, 150, 2.75);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (9976, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9961, 'multifocal',  'medium', 'neutral', 9976,  'sm', 0, '2021-09-21 00:00:00', 19952, 19951);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9961, 'multifocal', 'medium', 'neutral', 9976,  'sm', 0, '2021-09-21 00:00:00', 19952, 19951);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19953, 2.5,  -0.5, 100, 2.5);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19954, 2.25,  -0.5, 90, 2.5);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19953, 2.5, -0.5, 100, 2.5);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19954, 2.25, -0.5, 90, 2.5);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (9977, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9973, 'multifocal',  'small', 'neutral', 9977,  'sm', 0, '2021-09-21 00:00:00', 19954, 19953);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9973, 'multifocal', 'small', 'neutral', 9977,  'sm', 0, '2021-09-21 00:00:00', 19954, 19953);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19955, 2.0,  0.0, 0, 2.5);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19956, 2.0,  0.0, 0, 2.5);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19955, 2.0, 0.0, 0, 2.5);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19956, 2.0, 0.0, 0, 2.5);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (9978, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9977, 'multifocal',  'medium', 'feminine', 9978,  'sm', 0, '2021-09-21 00:00:00', 19956, 19955);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9977, 'multifocal', 'medium', 'feminine', 9978,  'sm', 0, '2021-09-21 00:00:00', 19956, 19955);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19957, 3.5,  -0.5, 90, 3.0);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19958, 2.5,  -0.5, 90, 3.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19957, 3.5, -0.5, 90, 3.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19958, 2.5, -0.5, 90, 3.0);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (9979, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9980, 'multifocal',  'large', 'feminine', 9979,  'sm', 0, '2021-09-21 00:00:00', 19958, 19957);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9980, 'multifocal', 'large', 'feminine', 9979,  'sm', 0, '2021-09-21 00:00:00', 19958, 19957);
 
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19959, 3.25,  -0.5, 98, 3.0);
-INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19960, 4.0,  -1.25, 169, 3.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19959, 3.25, -0.5, 98, 3.0);
+INSERT INTO eye (id, sphere, cylinder, axis, additional) VALUES(19960, 4.0, -1.25, 169, 3.0);
 INSERT INTO dispense (id, modify_date, previous_sku) VALUES (9980, null, null);
-INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9991, 'multifocal',  'medium', 'neutral', 9980,  'sm', 0, '2021-09-21 00:00:00', 19960, 19959);
+INSERT INTO glasses (sku, glasses_type, glasses_size, appearance, dispense_id, location, dispensed, creation_date, os_id, od_id) VALUES (9991, 'multifocal', 'medium', 'neutral', 9980,  'sm', 0, '2021-09-21 00:00:00', 19960, 19959);
 
