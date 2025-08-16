@@ -6586,9 +6586,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia-plugin-persistedstate@npm:4.4.1":
-  version: 4.4.1
-  resolution: "pinia-plugin-persistedstate@npm:4.4.1"
+"pinia-plugin-persistedstate@npm:4.5.0":
+  version: 4.5.0
+  resolution: "pinia-plugin-persistedstate@npm:4.5.0"
   dependencies:
     deep-pick-omit: "npm:^1.2.1"
     defu: "npm:^6.1.4"
@@ -6604,7 +6604,7 @@ __metadata:
       optional: true
     pinia:
       optional: true
-  checksum: 10/39059e1171cced4ce9e113039d87765cb23f1bdd013a4827ac103fe81ad62aa4f54a9b3f58ac5341d05875a9f03e6cdf814270a820c5a8371a18311a448fd9eb
+  checksum: 10/c6932c45362c199063c06c28c416b17b63d119fcd59bc0077a82082048dcc46012feff3ee4995881ac6663de6af9240ffa8ea55f7411845b9b4f8c3a82ce53ae
   languageName: node
   linkType: hard
 
@@ -6920,7 +6920,7 @@ __metadata:
     happy-dom: "npm:18.0.1"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:3.0.3"
-    pinia-plugin-persistedstate: "npm:4.4.1"
+    pinia-plugin-persistedstate: "npm:4.5.0"
     prettier: "npm:3.6.2"
     sass: "npm:1.90.0"
     sass-embedded: "npm:1.90.0"
