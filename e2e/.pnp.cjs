@@ -31,7 +31,7 @@ const RAW_RUNTIME_STATE =
           ["@eslint/js", "npm:9.34.0"],\
           ["@playwright/test", "npm:1.54.2"],\
           ["@types/node", "npm:22.17.2"],\
-          ["dotenv", "npm:17.2.1"],\
+          ["dotenv", "npm:17.2.2"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.34.0"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.8"],\
           ["eslint-plugin-playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.2.2"],\
@@ -852,10 +852,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["dotenv", [\
-      ["npm:17.2.1", {\
-        "packageLocation": "./.yarn/cache/dotenv-npm-17.2.1-33fbb0afbc-8fde672d1c.zip/node_modules/dotenv/",\
+      ["npm:17.2.2", {\
+        "packageLocation": "./.yarn/cache/dotenv-npm-17.2.2-f2cdf74d0a-258210c403.zip/node_modules/dotenv/",\
         "packageDependencies": [\
-          ["dotenv", "npm:17.2.1"]\
+          ["dotenv", "npm:17.2.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2024,7 +2024,7 @@ const RAW_RUNTIME_STATE =
           ["@eslint/js", "npm:9.34.0"],\
           ["@playwright/test", "npm:1.54.2"],\
           ["@types/node", "npm:22.17.2"],\
-          ["dotenv", "npm:17.2.1"],\
+          ["dotenv", "npm:17.2.2"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.34.0"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.8"],\
           ["eslint-plugin-playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.2.2"],\
