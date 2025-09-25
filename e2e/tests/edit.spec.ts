@@ -27,7 +27,7 @@ test('Delete glasses', async ({ page, glassesSku }) => {
   await page.getByLabel('SKU', { exact: true }).fill(glassesSku)
   await page.getByLabel('More options').click()
   await page.getByRole('button', { name: 'Delete' }).click()
-  await page.getByRole('combobox').click()
+  await page.getByRole('combobox').first().click()
   await page.getByRole('option', { name: 'Not found in storage' }).click()
   await page.getByRole('button', { name: 'Confirm deletion' }).click()
   await expect(page.getByText(`Successfully deleted glasses with SKU ${glassesSku}`)).toBeVisible()
