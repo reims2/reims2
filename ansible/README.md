@@ -27,13 +27,18 @@ Now deploy REIMS2 with:
 ansible-playbook -i hosts main.yml --vault-id <plaintext-file-with-vault-password>
 ```
 
-**That's it, REIMS should be up and running!**
+**That's it, REIMS2 should be up and running!**
 
 ## Initial setup
 
 If you use the example `dump.sql`, the initial username is `test` and password `testtest`. It's recommended to create a new admin user, login as that and delete this initial user.
 
-A grafana monitoring solution will be available at `monitoring.<yourdomain>`. Don't forget to configure it with a password. You must create a user in the database with name `monitoring` and password like the variable `monitoring_db_password`. It should have the privileges `SELECT on *.*, PROCESS, REPLICATION CLIENT`.
+A grafana monitoring solution will be available at `monitoring.<yourdomain>`. Don't forget to configure that with a password. You must also **manually** create a user in the database with name `monitoring` and password which must also be provided through the variable `monitoring_db_password`. Use this:
+
+```sql
+CREATE USER monitoring@'%' IDENTIFIED BY 'yourpassword';
+GRANT SELECT, PROCESS, REPLICATION CLIENT ON *.* TO 'monitoring'@'%';
+```
 
 ## Important role variables
 
