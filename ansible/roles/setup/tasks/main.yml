@@ -18,7 +18,7 @@
   ansible.builtin.include_role:
     name: geerlingguy.swap
   vars:
-    swap_file_size_mb: "2048" # some swap for more RAM during Dokku deploys
+    swap_file_size_mb: "2048" # some swap for more RAM
 
 - name: Clean up docker weekly
   ansible.builtin.cron:
@@ -44,7 +44,6 @@
       - kitty
       - glances
       - libpam-systemd # ssh session closed after reboot
-      - python-pymysql
     state: present
 
 - name: Allow ssh ufw
