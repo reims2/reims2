@@ -69,8 +69,8 @@
     - wait for grafana
 # Not yet implemented completely since it's hard to reach the DB host inside the stack
 # - name: Expose DB tasks
-#  ansible.builtin.include_tasks: expose_db.yml
-#  vars:
-#    port: "{{ db_port }}"
-#    db_name: "{{ reims2_db_name }}"
-#    db_password: "{{ reims2_db_root_password }}"
+#   ansible.builtin.include_tasks: expose_db.yml
+#   vars:
+#     port: "{{ db_port }}"
+#     db_name: "{{ reims2_db_name }}"
+#     db_password: "{{ reims2_db_root_password }}"

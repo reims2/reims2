@@ -2,6 +2,7 @@
   ansible.builtin.package:
     name:
       - python3-mysqldb
+      - python3-pymysql
       - python3-docker
       - python3-pip
       - python3-jsondiff
