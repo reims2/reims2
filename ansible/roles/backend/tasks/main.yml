@@ -16,7 +16,7 @@
     - wait for backend
 
 - name: SQL restore block
-  when: db_dump and db_dump | length > 0
+  when: (db_dump | default('', true) | length) > 0
   block:
     - name: Copy SQL dump file onto host
       ansible.builtin.copy:
