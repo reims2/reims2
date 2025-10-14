@@ -44,6 +44,7 @@
       - kitty
       - glances
       - libpam-systemd # ssh session closed after reboot
+      - python-pymysql
     state: present
 
 - name: Allow ssh ufw

@@ -67,6 +67,7 @@
   notify:
     - reload monitoring
     - wait for grafana
+# Not yet implemented completely since it's hard to reach the DB host inside the stack
 # - name: Expose DB tasks
 #  ansible.builtin.include_tasks: expose_db.yml
 #  vars:
