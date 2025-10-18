@@ -12,7 +12,7 @@ RUN yarn install --immutable
 RUN yarn build
 
 # PROD IMAGE
-FROM caddy:2.10.2-alpine@sha256:7d75b1294f73048155757377c38f05621a65c8df4f261077aa3091c9168ea53a
+FROM caddy:2.10.2-alpine@sha256:953131cfea8e12bfe1c631a36308e9660e4389f0c3dfb3be957044d3ac92d446
 
 COPY LICENSE LICENSE
 COPY ./Caddyfile /etc/caddy/Caddyfile
