@@ -6947,7 +6947,7 @@ __metadata:
     typescript-eslint: "npm:8.44.1"
     unplugin-auto-import: "npm:20.2.0"
     vite: "npm:7.1.10"
-    vite-plugin-pwa: "npm:1.0.3"
+    vite-plugin-pwa: "npm:1.1.0"
     vite-plugin-vue-devtools: "npm:8.0.2"
     vite-plugin-vuetify: "npm:2.1.2"
     vitest: "npm:3.2.4"
@@ -8356,9 +8356,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-pwa@npm:1.0.3":
-  version: 1.0.3
-  resolution: "vite-plugin-pwa@npm:1.0.3"
+"vite-plugin-pwa@npm:1.1.0":
+  version: 1.1.0
+  resolution: "vite-plugin-pwa@npm:1.1.0"
   dependencies:
     debug: "npm:^4.3.6"
     pretty-bytes: "npm:^6.1.1"
@@ -8373,7 +8373,7 @@ __metadata:
   peerDependenciesMeta:
     "@vite-pwa/assets-generator":
       optional: true
-  checksum: 10/92b02050332b6748a00f0df7c2324a8463848ab76286fc28769eba639ae40ae770d622dfecf8efb1fe9ea5b1b15574d82be2857f8f0208ba68a095f3cf276813
+  checksum: 10/062c356a40d968e49637854b2b9cfa4ef8b7e58b6e6d4bee58e116b536548e886e71ee9bbdd253d1d9321b19e11ec2ea48c6462569916f3941b38bbcc368e199
   languageName: node
   linkType: hard
 
