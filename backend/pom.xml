@@ -21,7 +21,7 @@
     <properties>
         <spring-data-jdbc.version>1.2.1.RELEASE</spring-data-jdbc.version>
         <springfox-swagger.version>3.0.0</springfox-swagger.version>
-        <jacoco.version>0.8.13</jacoco.version>
+        <jacoco.version>0.8.14</jacoco.version>
         <sonar.junit.reportPaths>target/surefire-reports</sonar.junit.reportPaths>
         <sonar.sources>src/main</sonar.sources>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -195,13 +195,13 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>11.14.0</version>
+            <version>11.14.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
-            <version>11.14.0</version>
+            <version>11.14.1</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>
@@ -311,7 +311,7 @@
                         <annotationProcessorPath>
                             <groupId>org.hibernate</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
-                            <version>7.1.3.Final</version>
+                            <version>7.1.4.Final</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>
