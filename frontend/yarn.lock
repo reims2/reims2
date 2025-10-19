@@ -6953,7 +6953,7 @@ __metadata:
     vitest: "npm:3.2.4"
     vue: "npm:3.5.22"
     vue-eslint-parser: "npm:10.2.0"
-    vue-router: "npm:4.5.1"
+    vue-router: "npm:4.6.3"
     vue-toastification: "npm:2.0.0-rc.5"
     vue-tsc: "npm:3.1.1"
     vue3-enter-to-tab: "npm:3.1.5"
@@ -8585,14 +8585,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:4.5.1":
-  version: 4.5.1
-  resolution: "vue-router@npm:4.5.1"
+"vue-router@npm:4.6.3":
+  version: 4.6.3
+  resolution: "vue-router@npm:4.6.3"
   dependencies:
     "@vue/devtools-api": "npm:^6.6.4"
   peerDependencies:
-    vue: ^3.2.0
-  checksum: 10/98a17fd0dd44c47e7010fca554bc9f63ddee5c1659409878ef624981570c4c3ea35a7e2f4d9a5084150ef671ca546219a9165de71878c8777f6b12ea2af94109
+    vue: ^3.5.0
+  checksum: 10/b4e69b5047dc86640cdcceabd9859cc1ba000ef7b364b0725f1a3b307410daadba840b0637a511ca32b68e58cb6d4a275a165407ba76cf7ad012ed57cf254e66
   languageName: node
   linkType: hard
 
