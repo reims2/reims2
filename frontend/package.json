@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@fontsource-variable/roboto-flex": "5.2.8",
-    "@vueuse/core": "13.9.0",
+    "@vueuse/core": "14.0.0",
     "axios": "1.12.2",
     "dayjs": "1.11.18",
     "jwt-decode": "4.0.0",
