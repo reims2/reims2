@@ -37,7 +37,7 @@ services:
         max_attempts: 3
         window: 120s
   prometheus:
-    image: prom/prometheus:v3.7.2@sha256:23031bfe0e74a13004252caaa74eccd0d62b6c6e7a04711d5b8bf5b7e113adc7
+    image: prom/prometheus:v3.7.3@sha256:49214755b6153f90a597adcbff0252cc61069f8ab69ce8411285cd4a560e8038
     networks:
       {{ monitoring_network }}:
       {{ db_network }}:
@@ -59,7 +59,7 @@ services:
         max_attempts: 3
         window: 120s
   node_exporter:
-    image: prom/node-exporter:v1.10.0@sha256:dbb30baa213b9a8c9aff7fe00c124ec371752c92215f014ec6f26159e9c55ff3
+    image: prom/node-exporter:v1.10.2@sha256:3ac34ce007accad95afed72149e0d2b927b7e42fd1c866149b945b84737c62c3
     restart: always
     volumes:
       - /proc:/host/proc:ro

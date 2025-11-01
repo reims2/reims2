@@ -2461,12 +2461,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:22.18.12":
-  version: 22.18.12
-  resolution: "@types/node@npm:22.18.12"
+"@types/node@npm:*, @types/node@npm:22.18.13":
+  version: 22.18.13
+  resolution: "@types/node@npm:22.18.13"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/41b8853302deac6895aa978193fcab53bf8d1f6f5df5fad38e2a33c2c853c3689e905c9dde373e45bb87273b2690e5ac2d6f40809fe72f45264952ba3ae3b196
+  checksum: 10/a0e8632a3eeeed3986f3b0b170187f67c0f0bb0d4fbbf9627af5c9bf81e2836bb64aa6f3bdab1c00658cb7911d8c231d7d6db853ae643edcd41f383c86f349e6
   languageName: node
   linkType: hard
 
@@ -3032,9 +3032,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/language-core@npm:3.1.1":
-  version: 3.1.1
-  resolution: "@vue/language-core@npm:3.1.1"
+"@vue/language-core@npm:3.1.2":
+  version: 3.1.2
+  resolution: "@vue/language-core@npm:3.1.2"
   dependencies:
     "@volar/language-core": "npm:2.4.23"
     "@vue/compiler-dom": "npm:^3.5.0"
@@ -3048,7 +3048,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/f52f9b4438f38e76be5fdb8e2302669c39b23c9bb3e504002036500c3f14a07a5c24c7fe180916260fe5ec3f2e1c946b097cd99c530b828874c3416da47bccd6
+  checksum: 10/714cc670bb8e4af6fea996b27b751369bd458763041924e90bb039a82e2d8bc40e1a67383ea68e50a7090de94a460073e2ca3fab26192cf4deac784735eadaa9
   languageName: node
   linkType: hard
 
@@ -4993,14 +4993,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:20.0.8":
-  version: 20.0.8
-  resolution: "happy-dom@npm:20.0.8"
+"happy-dom@npm:20.0.10":
+  version: 20.0.10
+  resolution: "happy-dom@npm:20.0.10"
   dependencies:
     "@types/node": "npm:^20.0.0"
     "@types/whatwg-mimetype": "npm:^3.0.2"
     whatwg-mimetype: "npm:^3.0.0"
-  checksum: 10/d16e9c2a04155ac666b892e382aba4bf48783937f6e877e8d7ede90b8e2148d76c5a6965757f928d35a2ebe51698fa3debd0ec110339c8eb395dc81d67dc5406
+  checksum: 10/a39e11faa47b58ed722a32471277da90538101190c90569ed1c1525897193b9138f93945cb2b7cecf8ad3b8b87c44b9a36fb7c88a7ce49de4f7ad5b2ec3e4cca
   languageName: node
   linkType: hard
 
@@ -6809,7 +6809,7 @@ __metadata:
     "@testing-library/vue": "npm:8.1.0"
     "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:30.0.0"
-    "@types/node": "npm:22.18.12"
+    "@types/node": "npm:22.18.13"
     "@vitejs/plugin-vue": "npm:6.0.1"
     "@vitest/coverage-v8": "npm:3.2.4"
     "@vitest/ui": "npm:3.2.4"
@@ -6822,7 +6822,7 @@ __metadata:
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-vue: "npm:10.5.0"
     globals: "npm:16.4.0"
-    happy-dom: "npm:20.0.8"
+    happy-dom: "npm:20.0.10"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:3.0.3"
     pinia-plugin-persistedstate: "npm:4.5.0"
@@ -6841,7 +6841,7 @@ __metadata:
     vue-eslint-parser: "npm:10.2.0"
     vue-router: "npm:4.6.3"
     vue-toastification: "npm:2.0.0-rc.5"
-    vue-tsc: "npm:3.1.1"
+    vue-tsc: "npm:3.1.2"
     vue3-enter-to-tab: "npm:3.1.5"
     vuetify: "npm:3.10.6"
     workbox-window: "npm:7.3.0"
@@ -8476,17 +8476,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-tsc@npm:3.1.1":
-  version: 3.1.1
-  resolution: "vue-tsc@npm:3.1.1"
+"vue-tsc@npm:3.1.2":
+  version: 3.1.2
+  resolution: "vue-tsc@npm:3.1.2"
   dependencies:
     "@volar/typescript": "npm:2.4.23"
-    "@vue/language-core": "npm:3.1.1"
+    "@vue/language-core": "npm:3.1.2"
   peerDependencies:
     typescript: ">=5.0.0"
   bin:
     vue-tsc: ./bin/vue-tsc.js
-  checksum: 10/c588ec6825b180463c86e9fe77ba85f99381d9ccc4025c465c54a9caa7ba4e653912c61a5fec952c51600cf5602a07c47ac2c8ac4b471ba039c4ebaebd62e181
+  checksum: 10/3dd8aa378bbfd9b88d24e5292377e4b7ceb940d08b1cbf8b6176f0e66eb95b540704bffc2c633483d02b2c175575cb1ac3410ad171c5001c520ef6ebf542a3b6
   languageName: node
   linkType: hard
 
