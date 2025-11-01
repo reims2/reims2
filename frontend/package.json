@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@babel/types": "7.28.5",
-    "@eslint/js": "9.38.0",
+    "@eslint/js": "9.39.0",
     "@mdi/js": "7.4.47",
     "@pinia/testing": "1.0.2",
     "@testing-library/vue": "8.1.0",
@@ -45,7 +45,7 @@
     "@vitest/ui": "3.2.4",
     "browserslist": "4.27.0",
     "browserslist-to-esbuild": "2.1.1",
-    "eslint": "9.38.0",
+    "eslint": "9.39.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-vue": "10.5.1",
     "globals": "16.4.0",
