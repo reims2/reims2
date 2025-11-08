@@ -52,7 +52,7 @@ const RAW_RUNTIME_STATE =
           ["happy-dom", "npm:20.0.10"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.3"],\
-          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.5.0"],\
+          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
           ["prettier", "npm:3.6.2"],\
           ["reims2-frontend", "workspace:."],\
           ["sass", "npm:1.93.3"],\
@@ -5832,15 +5832,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["deep-pick-omit", [\
-      ["npm:1.2.1", {\
-        "packageLocation": "./.yarn/cache/deep-pick-omit-npm-1.2.1-dea9550a62-8d701fb0d1.zip/node_modules/deep-pick-omit/",\
-        "packageDependencies": [\
-          ["deep-pick-omit", "npm:1.2.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["deepmerge", [\
       ["npm:4.3.1", {\
         "packageLocation": "./.yarn/cache/deepmerge-npm-4.3.1-4f751a0844-058d9e1b0f.zip/node_modules/deepmerge/",\
@@ -5917,15 +5908,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/delayed-stream-npm-1.0.0-c5a4c4cc02-46fe6e83e2.zip/node_modules/delayed-stream/",\
         "packageDependencies": [\
           ["delayed-stream", "npm:1.0.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["destr", [\
-      ["npm:2.0.5", {\
-        "packageLocation": "./.yarn/cache/destr-npm-2.0.5-743a0bad4e-0e4fba62a5.zip/node_modules/destr/",\
-        "packageDependencies": [\
-          ["destr", "npm:2.0.5"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8712,26 +8694,24 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["pinia-plugin-persistedstate", [\
-      ["npm:4.5.0", {\
-        "packageLocation": "./.yarn/cache/pinia-plugin-persistedstate-npm-4.5.0-c189b8f9ef-c6932c4536.zip/node_modules/pinia-plugin-persistedstate/",\
+      ["npm:4.7.1", {\
+        "packageLocation": "./.yarn/cache/pinia-plugin-persistedstate-npm-4.7.1-95f1d5ffa4-f8935418f1.zip/node_modules/pinia-plugin-persistedstate/",\
         "packageDependencies": [\
-          ["pinia-plugin-persistedstate", "npm:4.5.0"]\
+          ["pinia-plugin-persistedstate", "npm:4.7.1"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.5.0", {\
-        "packageLocation": "./.yarn/__virtual__/pinia-plugin-persistedstate-virtual-ef9e3511ff/0/cache/pinia-plugin-persistedstate-npm-4.5.0-c189b8f9ef-c6932c4536.zip/node_modules/pinia-plugin-persistedstate/",\
+      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1", {\
+        "packageLocation": "./.yarn/__virtual__/pinia-plugin-persistedstate-virtual-57853d7a0e/0/cache/pinia-plugin-persistedstate-npm-4.7.1-95f1d5ffa4-f8935418f1.zip/node_modules/pinia-plugin-persistedstate/",\
         "packageDependencies": [\
           ["@nuxt/kit", null],\
           ["@pinia/nuxt", null],\
           ["@types/nuxt__kit", null],\
           ["@types/pinia", null],\
           ["@types/pinia__nuxt", null],\
-          ["deep-pick-omit", "npm:1.2.1"],\
           ["defu", "npm:6.1.4"],\
-          ["destr", "npm:2.0.5"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.3"],\
-          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.5.0"]\
+          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"]\
         ],\
         "packagePeers": [\
           "@nuxt/kit",\
@@ -9065,7 +9045,7 @@ const RAW_RUNTIME_STATE =
           ["happy-dom", "npm:20.0.10"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.3"],\
-          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.5.0"],\
+          ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
           ["prettier", "npm:3.6.2"],\
           ["reims2-frontend", "workspace:."],\
           ["sass", "npm:1.93.3"],\
