@@ -56,7 +56,7 @@ jobs:
           retention-days: 14
       - name: Stop E2E instance
         if: always()
-        uses: appleboy/ssh-action@2ead5e36573f08b82fbfce1504f1a4b05a647c6f # v1.2.2
+        uses: appleboy/ssh-action@91f3272fc5907f4699dcf59761eb622a07342f5a # v1.2.3
         with:
           host: reims2.app
           username: actions
