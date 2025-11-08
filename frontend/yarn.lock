@@ -3931,13 +3931,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deep-pick-omit@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "deep-pick-omit@npm:1.2.1"
-  checksum: 10/8d701fb0d1d4eef94338cf1103c9fe641bfd46344636d6f646f305648b3a16ed5b39df1609ebab383dac77337b8e0a2b51873a757b6063582f9abc853df7c03f
-  languageName: node
-  linkType: hard
-
 "deepmerge@npm:^4.2.2":
   version: 4.3.1
   resolution: "deepmerge@npm:4.3.1"
@@ -4002,13 +3995,6 @@ __metadata:
   version: 1.0.0
   resolution: "delayed-stream@npm:1.0.0"
   checksum: 10/46fe6e83e2cb1d85ba50bd52803c68be9bd953282fa7096f51fc29edd5d67ff84ff753c51966061e5ba7cb5e47ef6d36a91924eddb7f3f3483b1c560f77a0020
-  languageName: node
-  linkType: hard
-
-"destr@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "destr@npm:2.0.5"
-  checksum: 10/0e4fba62a55a4188c7ab13eed5ebeeda037ead1ab21cf6be40ca39828b258475ad9eb1e7de50a5ea8041705d454a4d090caf9f92b89f03b04d2e229716f7da0a
   languageName: node
   linkType: hard
 
@@ -6485,13 +6471,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia-plugin-persistedstate@npm:4.5.0":
-  version: 4.5.0
-  resolution: "pinia-plugin-persistedstate@npm:4.5.0"
+"pinia-plugin-persistedstate@npm:4.7.1":
+  version: 4.7.1
+  resolution: "pinia-plugin-persistedstate@npm:4.7.1"
   dependencies:
-    deep-pick-omit: "npm:^1.2.1"
     defu: "npm:^6.1.4"
-    destr: "npm:^2.0.5"
   peerDependencies:
     "@nuxt/kit": ">=3.0.0"
     "@pinia/nuxt": ">=0.10.0"
@@ -6503,7 +6487,7 @@ __metadata:
       optional: true
     pinia:
       optional: true
-  checksum: 10/c6932c45362c199063c06c28c416b17b63d119fcd59bc0077a82082048dcc46012feff3ee4995881ac6663de6af9240ffa8ea55f7411845b9b4f8c3a82ce53ae
+  checksum: 10/f8935418f1c7ef2921c3935ca66bc2be8f53e993d2756fb30a4ba9ba9b9cd5c416e412c17dd7cb7dceaf7249eb590676fc70f9ac6b35d12577a353d80b72ed28
   languageName: node
   linkType: hard
 
@@ -6810,7 +6794,7 @@ __metadata:
     happy-dom: "npm:20.0.10"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:3.0.3"
-    pinia-plugin-persistedstate: "npm:4.5.0"
+    pinia-plugin-persistedstate: "npm:4.7.1"
     prettier: "npm:3.6.2"
     sass: "npm:1.93.3"
     sass-embedded: "npm:1.93.3"
