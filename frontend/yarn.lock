@@ -3437,12 +3437,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"baseline-browser-mapping@npm:^2.8.19":
-  version: 2.8.22
-  resolution: "baseline-browser-mapping@npm:2.8.22"
+"baseline-browser-mapping@npm:^2.8.25":
+  version: 2.8.28
+  resolution: "baseline-browser-mapping@npm:2.8.28"
   bin:
     baseline-browser-mapping: dist/cli.js
-  checksum: 10/5e6f27739b135b99121a79a7f9eecf6343a64e3e1b78ba2ad27fc02385de96d6d4e875a6f314606a3643df1838e888ff26ac2b0adbb9296c708c838836931465
+  checksum: 10/f54abab4d61b2105c628581ae89220924ed83bcf43dbc621672e4c2498af527a054aa38f9e14dd73a11550290e6bcef6f60eaccd1f1de4f557b941b43162a5e4
   languageName: node
   linkType: hard
 
@@ -3501,18 +3501,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:4.27.0, browserslist@npm:^4.23.0, browserslist@npm:^4.24.0":
-  version: 4.27.0
-  resolution: "browserslist@npm:4.27.0"
+"browserslist@npm:4.28.0, browserslist@npm:^4.23.0, browserslist@npm:^4.24.0":
+  version: 4.28.0
+  resolution: "browserslist@npm:4.28.0"
   dependencies:
-    baseline-browser-mapping: "npm:^2.8.19"
-    caniuse-lite: "npm:^1.0.30001751"
-    electron-to-chromium: "npm:^1.5.238"
-    node-releases: "npm:^2.0.26"
+    baseline-browser-mapping: "npm:^2.8.25"
+    caniuse-lite: "npm:^1.0.30001754"
+    electron-to-chromium: "npm:^1.5.249"
+    node-releases: "npm:^2.0.27"
     update-browserslist-db: "npm:^1.1.4"
   bin:
     browserslist: cli.js
-  checksum: 10/56db4cdb98b5c93797a47e5a60decb144f73a2ae41c60a16c41b75516fabcb0db0116b8cfcf3a26c960cc6c9ab1c4f4801d8d3a743ec72f27acfe5380153ba2f
+  checksum: 10/59dc88f8d950e44a064361cb874f486e532a8ba932e0cf549aee8b36dd2b791da2bc11f36c1cf820ebb9c1f3250b100f8c56364dd6e86dbc90495af424100e19
   languageName: node
   linkType: hard
 
@@ -3610,10 +3610,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001751":
-  version: 1.0.30001752
-  resolution: "caniuse-lite@npm:1.0.30001752"
-  checksum: 10/2efe0ad22fdb1b8a810238b6dc589aa1ecfb3d2f404ec7079040c94d83963402afd76c0fc514a54719d6f613c847d237ed0f8f48260d7bcda0e9014b874ad08a
+"caniuse-lite@npm:^1.0.30001754":
+  version: 1.0.30001754
+  resolution: "caniuse-lite@npm:1.0.30001754"
+  checksum: 10/6061032b8e799913f6db01ad190bc6885369c0be7853fbe542a36f0d114f193fac6e812d73657526b4d5a6b7add8c56bb629913237f9097b6e6438dcac703965
   languageName: node
   linkType: hard
 
@@ -4066,10 +4066,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.238":
-  version: 1.5.244
-  resolution: "electron-to-chromium@npm:1.5.244"
-  checksum: 10/5a29ee295259c9161b62fe4d221cffa988e69a53021a19e460778cccc529716d4f0c9f5f42f1436260913b1dcd2e923cec3f8d6ae15a9af07ccde7df9ebb93b9
+"electron-to-chromium@npm:^1.5.249":
+  version: 1.5.252
+  resolution: "electron-to-chromium@npm:1.5.252"
+  checksum: 10/86727dc45512b062cdf017ce9bba4dabd90f23fbd4e5db0d5d5e62ad00d7f526a90256acfc2288ed9c29c57963858c1aeb420c93e1fbbfa3aad3ed8799196c46
   languageName: node
   linkType: hard
 
@@ -6229,7 +6229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-releases@npm:^2.0.26":
+"node-releases@npm:^2.0.27":
   version: 2.0.27
   resolution: "node-releases@npm:2.0.27"
   checksum: 10/f6c78ddb392ae500719644afcbe68a9ea533242c02312eb6a34e8478506eb7482a3fb709c70235b01c32fe65625b68dfa9665113f816d87f163bc3819b62b106
@@ -6784,7 +6784,7 @@ __metadata:
     "@vitest/ui": "npm:3.2.4"
     "@vueuse/core": "npm:14.0.0"
     axios: "npm:1.13.2"
-    browserslist: "npm:4.27.0"
+    browserslist: "npm:4.28.0"
     browserslist-to-esbuild: "npm:2.1.1"
     dayjs: "npm:1.11.19"
     eslint: "npm:9.39.0"
@@ -6796,7 +6796,7 @@ __metadata:
     pinia: "npm:3.0.3"
     pinia-plugin-persistedstate: "npm:4.7.1"
     prettier: "npm:3.6.2"
-    sass: "npm:1.93.3"
+    sass: "npm:1.94.0"
     sass-embedded: "npm:1.93.3"
     typescript: "npm:5.9.3"
     typescript-eslint: "npm:8.46.2"
@@ -7246,6 +7246,23 @@ __metadata:
   bin:
     sass: sass.js
   checksum: 10/41f23b10bb203ee46b82b880e566edc3264cd00b0424bb7293c6aedb66fd4d6b9b7a217e91f98fb4653eee6538150bbe1a663abde03ad69cd5172beebf108ae0
+  languageName: node
+  linkType: hard
+
+"sass@npm:1.94.0":
+  version: 1.94.0
+  resolution: "sass@npm:1.94.0"
+  dependencies:
+    "@parcel/watcher": "npm:^2.4.1"
+    chokidar: "npm:^4.0.0"
+    immutable: "npm:^5.0.2"
+    source-map-js: "npm:>=0.6.2 <2.0.0"
+  dependenciesMeta:
+    "@parcel/watcher":
+      optional: true
+  bin:
+    sass: sass.js
+  checksum: 10/625b4d56758544f30a7f955fbc6590366ffb285042a68c09512b2890f23720c2c28d86cf9773a000d8bde2191d9decc8873f3529e7d91d8ba5f0ef204fd243db
   languageName: node
   linkType: hard
 
