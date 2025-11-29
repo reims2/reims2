@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.7</version>
+        <version>3.5.8</version>
         <relativePath/> <!-- lookup parent from Maven repository -->
     </parent>
 
@@ -29,7 +29,7 @@
         </sonar.coverage.jacoco.xmlReportPaths>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <aggregate.report.dir>tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
-        <docker.jib-maven-plugin.version>3.5.0</docker.jib-maven-plugin.version>
+        <docker.jib-maven-plugin.version>3.5.1</docker.jib-maven-plugin.version>
         <docker.image.prefix>springcommunity</docker.image.prefix>
         <sonar.exclusions>
             **/dto/*.java, **/entity/*.java,
@@ -311,7 +311,7 @@
                         <annotationProcessorPath>
                             <groupId>org.hibernate</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
-                            <version>7.1.9.Final</version>
+                            <version>7.1.10.Final</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>
