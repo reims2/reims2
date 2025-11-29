@@ -6813,7 +6813,7 @@ __metadata:
     vue-tsc: "npm:3.1.5"
     vue3-enter-to-tab: "npm:3.1.5"
     vuetify: "npm:3.10.8"
-    workbox-window: "npm:7.3.0"
+    workbox-window: "npm:7.4.0"
   languageName: unknown
   linkType: soft
 
@@ -8722,6 +8722,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"workbox-core@npm:7.4.0":
+  version: 7.4.0
+  resolution: "workbox-core@npm:7.4.0"
+  checksum: 10/160bfbd8957fa59e72b7202caa111e7a099fb405719f7ba2fb489c7dbac0bddfc99fab10122a7b6053821dd89974dc9f9ddb19af574606634d392f89b1d8735f
+  languageName: node
+  linkType: hard
+
 "workbox-expiration@npm:7.3.0":
   version: 7.3.0
   resolution: "workbox-expiration@npm:7.3.0"
@@ -8822,13 +8829,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workbox-window@npm:7.3.0, workbox-window@npm:^7.3.0":
+"workbox-window@npm:7.3.0":
   version: 7.3.0
   resolution: "workbox-window@npm:7.3.0"
   dependencies:
     "@types/trusted-types": "npm:^2.0.2"
     workbox-core: "npm:7.3.0"
   checksum: 10/29bbfd8a04f692e759cb60c9a8b2e308e48e9cc6cf2bc66314486c354cba31d4833e410325c0ddac6b05317786a37acb805a88844532778b2121d3f913e77091
+  languageName: node
+  linkType: hard
+
+"workbox-window@npm:7.4.0, workbox-window@npm:^7.3.0":
+  version: 7.4.0
+  resolution: "workbox-window@npm:7.4.0"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.2"
+    workbox-core: "npm:7.4.0"
+  checksum: 10/6be3fd08cad364e7be6dc65a29874536ba647e5e7a4096b12c4b3db6c320e8505f1dfd558b16a6fff6bb822b559d5e06eb438052ecbc1e91d58645b5f735c38a
   languageName: node
   linkType: hard
 
