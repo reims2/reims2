@@ -7,7 +7,7 @@ roles:
 
 collections:
   - name: hifis.toolkit
-    version: 6.3.1
+    version: 6.3.2
   - name: devsec.hardening
     version: 10.4.0
   - name: community.general
@@ -15,4 +15,4 @@ collections:
   - name: community.mysql
     version: 4.0.1
   - name: community.docker
-    version: 5.0.2
+    version: 5.0.3
