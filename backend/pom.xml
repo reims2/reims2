@@ -311,7 +311,7 @@
                         <annotationProcessorPath>
                             <groupId>org.hibernate</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
-                            <version>7.1.11.Final</version>
+                            <version>7.2.0.Final</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>
