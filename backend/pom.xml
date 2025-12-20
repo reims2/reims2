@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.8</version>
+        <version>3.5.9</version>
         <relativePath/> <!-- lookup parent from Maven repository -->
     </parent>
 
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <version>3.5.6</version>
+            <version>3.5.7</version>
         </dependency>
         <dependency>
             <groupId>cz.jirutka.rsql</groupId>
@@ -195,13 +195,13 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>11.19.0</version>
+            <version>11.19.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
-            <version>11.19.0</version>
+            <version>11.19.1</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>
