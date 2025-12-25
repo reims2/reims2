@@ -61,7 +61,6 @@ export type GlassesMetaUIData = {
 }
 
 export type AllGlassesMetaUiData = {
-   
   [key in GeneralGlassesDataKey]: GlassesMetaUIData
 }
 

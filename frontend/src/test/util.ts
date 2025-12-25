@@ -6,10 +6,9 @@ import { vuetifyOptions } from '@/plugins/vuetify'
 import { Eye, Glasses, GlassesSearch, GlassesType } from '@/model/GlassesModel'
 
 export function renderWithVuetify<C>(
-   
   component: C,
   options: RenderOptions<C>,
-  pinia?: TestingPinia  ,
+  pinia?: TestingPinia,
 ) {
   const vuetify = createVuetify(vuetifyOptions)
   return render(component, {

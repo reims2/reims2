@@ -65,7 +65,6 @@ search: false
   - which range to filter? => +- 1 is fine
   - sphere only or also sphereical equivalents? => also spherical equivalents
 - monitoring dashboard
-
   - sphere combination. calc avg of glasses or like currently? => diane will think about it, use OD only for now
   - smaller resolution? it's possible to do smaller histogram res => grouping into 1.0 bins is fine
 
