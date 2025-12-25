@@ -2,3 +2,4 @@
 dist
 .yarnrc.yml
 **/auto-imports.d.ts
+.pnp.*
