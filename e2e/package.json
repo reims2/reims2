@@ -1,6 +1,8 @@
 {
   "packageManager": "yarn@4.12.0",
   "scripts": {
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
     "lint": "eslint tests/** --fix",
     "test": "playwright test",
     "test:ui": "playwright test --ui"
