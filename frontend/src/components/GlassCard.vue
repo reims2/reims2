@@ -116,7 +116,6 @@ type EyeData = {
   step?: number
 }
 type EyeDataMap = {
-   
   [key in EyeKey]: EyeData
 }
 const eyeUIData: EyeDataMap = {

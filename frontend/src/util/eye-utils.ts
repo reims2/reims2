@@ -28,7 +28,7 @@ export function sanitizeEyeValues(
   const eyeKeys: EyeKey[] = ['sphere', 'cylinder', 'add']
   for (const prop of eyeKeys) {
     // if variable is undefined or NaN, set to 0 (used only for cylinder as of now)
-    let newValue = rx[prop] == null || isNaN(rx[prop]) ? 0 : (rx[prop])
+    let newValue = rx[prop] == null || isNaN(rx[prop]) ? 0 : rx[prop]
     // user input could have been 1.2 instead of 1.25, so do rounding
     const isNegative = newValue < 0
     newValue = Math.ceil(Math.abs(newValue) / 0.25) * 0.25

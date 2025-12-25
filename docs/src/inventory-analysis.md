@@ -10,10 +10,9 @@ Check the [grafana dashboard](https://monitoring.reims2.app/d/ee00c8b8-fba7-42a4
 
 ## sa single
 
-
 **we need**
 
-- much more of zero-ish axis (from 160 to 0 to 20) with any sphere 
+- much more of zero-ish axis (from 160 to 0 to 20) with any sphere
 - also few more where at least one eye sphere is 0 specifically (and any other params)
 
 **we have**
@@ -25,7 +24,7 @@ Check the [grafana dashboard](https://monitoring.reims2.app/d/ee00c8b8-fba7-42a4
 **we need**
 
 - more with a zero-ish axis, specifically:
-  - a lot more with a sphere of -1.5 to +1.5, 
+  - a lot more with a sphere of -1.5 to +1.5,
   - some with any negative sphere and 0 to -0.5 cylinder
   - also few with sphere of 0 (in at least one eye)
 - MAYBE? tiny amount more of glasses with high cylinders (-1 to -4) and 160 to 0 to 20 axis
@@ -34,19 +33,17 @@ Check the [grafana dashboard](https://monitoring.reims2.app/d/ee00c8b8-fba7-42a4
 
 - more than enough of axis around 90-ish (i.e. not close to 0 axis)
 
-
 ### sa multi
 
 **we need**
 
-- more with with any positive spheres and 0-ish axis / zero cylinder. 
+- more with with any positive spheres and 0-ish axis / zero cylinder.
   - rather with higher add (i.e. bigger than 2.5) than lower (less than 2), but also some of the latter
 
 **we have**
 
 - more than enough of 90ish axis (like 70-110) (and therefore non null cylinders)
   - especially for spheres higher than +1.25 much more than enough
-
 
 ## sm multi
 
@@ -60,9 +57,6 @@ Check the [grafana dashboard](https://monitoring.reims2.app/d/ee00c8b8-fba7-42a4
 - much more than enough of spheres bigger than +1.5 and non-zero cylinders
 - enough of spheres bigger than 0 and non-zero cylinders
 
-
-
-
 ## Appendix
 
 Ignore this for now
@@ -75,6 +69,7 @@ Ignore this for now
 ![SA single Cluster 4](/plots/features_sa_False_4.png)
 
 ### Santa Ana multifocal
+
 ![SA multi Cluster 1](/plots/features_sa_True_1.png)
 ![SA multi Cluster 2](/plots/features_sa_True_2.png)
 ![SA multi Cluster 3](/plots/features_sa_True_3.png)
