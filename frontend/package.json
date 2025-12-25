@@ -9,6 +9,8 @@
     "dev:local": "VITE_API_URL=http://localhost:9966/ vite",
     "dev:remote": "VITE_API_URL=https://dev.reims2.app/ vite",
     "build": "vue-tsc --noEmit && vite build",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "test": "vitest run --coverage",

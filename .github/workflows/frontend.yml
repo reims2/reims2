@@ -32,6 +32,9 @@ jobs:
       - name: Lint files
         if: steps.filter.outputs.src == 'true'
         run: yarn run lint
+      - name: Check format
+        if: steps.filter.outputs.src == 'true'
+        run: yarn run format:check
       - name: Run tests
         if: steps.filter.outputs.src == 'true'
         run: yarn test

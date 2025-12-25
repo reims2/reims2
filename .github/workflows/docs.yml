@@ -31,3 +31,6 @@ jobs:
       - name: Run build
         if: steps.filter.outputs.src == 'true'
         run: yarn run build
+      - name: Check format
+        if: steps.filter.outputs.src == 'true'
+        run: yarn run format:check

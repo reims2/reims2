@@ -1,4 +1,6 @@
 .yarn
 dist
 .yarnrc.yml
-**/auto-imports.d.ts
+auto-imports.d.ts
+.eslintrc-auto-import.json
+.pnp.*
