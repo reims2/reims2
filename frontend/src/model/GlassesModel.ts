@@ -1,4 +1,3 @@
- 
 import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
 
 export interface OptionalEye {

@@ -143,7 +143,6 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
 
 1.  **Improve** the score (by 0.5) if the lens is a spherical equivalent of the prescription (_I'm actually not sure if this is what's happening, please fact check this using the code in the details section_).
     ::: details Additional details
-
     - This is the exact condition:
 
     ```ts
@@ -158,7 +157,6 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
 
 2.  Only if step 2 did not apply: **Improve** the score if lens sphere is larger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder larger).
     ::: details Additional details
-
     - This is the exact condition:
 
     ```ts

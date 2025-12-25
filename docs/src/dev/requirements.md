@@ -17,7 +17,6 @@ This was basically just a note-taking document for the first few months. It's no
 
 - Support for different locations: There is one site in San Miguel and one in Santa Ana (and that should be extendable in the future). The sites are independet of each other, so they should have different tables / different API endpoints. Optional: currently it's possible to filter by location because one location has all SKUs less than 5000 and the other greater than 5000.
 - Some endpoints need to be authenticated, especially the write endpoints
-
   - Read is not that important, since there is no personal data
   - Login via Google Account or other 3rd parties would be okay if it's easier
   - Neccessary new endpoints: One endpoint for login, one for logout and one for user info (to get the capabilities of the current user, e.g. if is admin, which physicallocation is allowed). Frontend will use [this library](https://auth.nuxtjs.org/schemes/local#options)
