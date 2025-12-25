@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.pvh</groupId>
-    <artifactId>spring-pvh-rest</artifactId>
+    <artifactId>reims2-backend</artifactId>
     <version>2.7.0</version>
 
-    <description>REST Backend of PVH</description>
-    <url>https://reims2.app/</url>
+    <description>Backend for the REIMS2 app</description>
+    <url>https://reims2.app/api/</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
