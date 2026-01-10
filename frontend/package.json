@@ -53,8 +53,8 @@
     "globals": "16.5.0",
     "happy-dom": "20.0.11",
     "prettier": "3.7.1",
-    "sass": "1.97.1",
-    "sass-embedded": "1.97.1",
+    "sass": "1.97.2",
+    "sass-embedded": "1.97.2",
     "typescript": "5.9.3",
     "typescript-eslint": "8.48.0",
     "unplugin-auto-import": "20.3.0",
@@ -64,7 +64,7 @@
     "vite-plugin-vuetify": "2.1.2",
     "vitest": "4.0.16",
     "vue-eslint-parser": "10.2.0",
-    "vue-tsc": "3.2.1",
+    "vue-tsc": "3.2.2",
     "workbox-window": "7.4.0"
   },
   "resolutions": {

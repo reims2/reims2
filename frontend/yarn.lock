@@ -3008,9 +3008,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/language-core@npm:3.2.1":
-  version: 3.2.1
-  resolution: "@vue/language-core@npm:3.2.1"
+"@vue/language-core@npm:3.2.2":
+  version: 3.2.2
+  resolution: "@vue/language-core@npm:3.2.2"
   dependencies:
     "@volar/language-core": "npm:2.4.27"
     "@vue/compiler-dom": "npm:^3.5.0"
@@ -3019,7 +3019,7 @@ __metadata:
     muggle-string: "npm:^0.4.1"
     path-browserify: "npm:^1.0.1"
     picomatch: "npm:^4.0.2"
-  checksum: 10/942607c5577766bd9c0651fe1002d67adb628d47313afe12b7c6789e1788ad457443e6e258eecbb78e3953264469d2d05e0a402afa6b6e99b97e1d0c74db9cfd
+  checksum: 10/562521030ef4cfc596ba32b584a2034f943a6232407a7dce5ffd18ed670fbfa14a57e31dcbda5e6e957238f581d04ccb480165412f1d495ca1f9f8d1a43a6275
   languageName: node
   linkType: hard
 
@@ -6695,8 +6695,8 @@ __metadata:
     pinia: "npm:3.0.4"
     pinia-plugin-persistedstate: "npm:4.7.1"
     prettier: "npm:3.7.1"
-    sass: "npm:1.97.1"
-    sass-embedded: "npm:1.97.1"
+    sass: "npm:1.97.2"
+    sass-embedded: "npm:1.97.2"
     typescript: "npm:5.9.3"
     typescript-eslint: "npm:8.48.0"
     unplugin-auto-import: "npm:20.3.0"
@@ -6709,7 +6709,7 @@ __metadata:
     vue-eslint-parser: "npm:10.2.0"
     vue-router: "npm:4.6.4"
     vue-toastification: "npm:2.0.0-rc.5"
-    vue-tsc: "npm:3.2.1"
+    vue-tsc: "npm:3.2.2"
     vue3-enter-to-tab: "npm:3.1.5"
     vuetify: "npm:3.11.6"
     workbox-window: "npm:7.4.0"
@@ -6912,163 +6912,163 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass-embedded-all-unknown@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-all-unknown@npm:1.97.1"
+"sass-embedded-all-unknown@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-all-unknown@npm:1.97.2"
   dependencies:
-    sass: "npm:1.97.1"
+    sass: "npm:1.97.2"
   conditions: (!cpu=arm | !cpu=arm64 | !cpu=riscv64 | !cpu=x64)
   languageName: node
   linkType: hard
 
-"sass-embedded-android-arm64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-android-arm64@npm:1.97.1"
+"sass-embedded-android-arm64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-android-arm64@npm:1.97.2"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-android-arm@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-android-arm@npm:1.97.1"
+"sass-embedded-android-arm@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-android-arm@npm:1.97.2"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"sass-embedded-android-riscv64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-android-riscv64@npm:1.97.1"
+"sass-embedded-android-riscv64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-android-riscv64@npm:1.97.2"
   conditions: os=android & cpu=riscv64
   languageName: node
   linkType: hard
 
-"sass-embedded-android-x64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-android-x64@npm:1.97.1"
+"sass-embedded-android-x64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-android-x64@npm:1.97.2"
   conditions: os=android & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-darwin-arm64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-darwin-arm64@npm:1.97.1"
+"sass-embedded-darwin-arm64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-darwin-arm64@npm:1.97.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-darwin-x64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-darwin-x64@npm:1.97.1"
+"sass-embedded-darwin-x64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-darwin-x64@npm:1.97.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-arm64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-linux-arm64@npm:1.97.1"
+"sass-embedded-linux-arm64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-linux-arm64@npm:1.97.2"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-arm@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-linux-arm@npm:1.97.1"
+"sass-embedded-linux-arm@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-linux-arm@npm:1.97.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-arm64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-linux-musl-arm64@npm:1.97.1"
+"sass-embedded-linux-musl-arm64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-linux-musl-arm64@npm:1.97.2"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-arm@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-linux-musl-arm@npm:1.97.1"
+"sass-embedded-linux-musl-arm@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-linux-musl-arm@npm:1.97.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-riscv64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-linux-musl-riscv64@npm:1.97.1"
+"sass-embedded-linux-musl-riscv64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-linux-musl-riscv64@npm:1.97.2"
   conditions: os=linux & cpu=riscv64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-x64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-linux-musl-x64@npm:1.97.1"
+"sass-embedded-linux-musl-x64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-linux-musl-x64@npm:1.97.2"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-riscv64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-linux-riscv64@npm:1.97.1"
+"sass-embedded-linux-riscv64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-linux-riscv64@npm:1.97.2"
   conditions: os=linux & cpu=riscv64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-x64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-linux-x64@npm:1.97.1"
+"sass-embedded-linux-x64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-linux-x64@npm:1.97.2"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-unknown-all@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-unknown-all@npm:1.97.1"
+"sass-embedded-unknown-all@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-unknown-all@npm:1.97.2"
   dependencies:
-    sass: "npm:1.97.1"
+    sass: "npm:1.97.2"
   conditions: (!os=android | !os=darwin | !os=linux | !os=win32)
   languageName: node
   linkType: hard
 
-"sass-embedded-win32-arm64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-win32-arm64@npm:1.97.1"
+"sass-embedded-win32-arm64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-win32-arm64@npm:1.97.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-win32-x64@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded-win32-x64@npm:1.97.1"
+"sass-embedded-win32-x64@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded-win32-x64@npm:1.97.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass-embedded@npm:1.97.1"
+"sass-embedded@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass-embedded@npm:1.97.2"
   dependencies:
     "@bufbuild/protobuf": "npm:^2.5.0"
     buffer-builder: "npm:^0.2.0"
     colorjs.io: "npm:^0.5.0"
     immutable: "npm:^5.0.2"
     rxjs: "npm:^7.4.0"
-    sass-embedded-all-unknown: "npm:1.97.1"
-    sass-embedded-android-arm: "npm:1.97.1"
-    sass-embedded-android-arm64: "npm:1.97.1"
-    sass-embedded-android-riscv64: "npm:1.97.1"
-    sass-embedded-android-x64: "npm:1.97.1"
-    sass-embedded-darwin-arm64: "npm:1.97.1"
-    sass-embedded-darwin-x64: "npm:1.97.1"
-    sass-embedded-linux-arm: "npm:1.97.1"
-    sass-embedded-linux-arm64: "npm:1.97.1"
-    sass-embedded-linux-musl-arm: "npm:1.97.1"
-    sass-embedded-linux-musl-arm64: "npm:1.97.1"
-    sass-embedded-linux-musl-riscv64: "npm:1.97.1"
-    sass-embedded-linux-musl-x64: "npm:1.97.1"
-    sass-embedded-linux-riscv64: "npm:1.97.1"
-    sass-embedded-linux-x64: "npm:1.97.1"
-    sass-embedded-unknown-all: "npm:1.97.1"
-    sass-embedded-win32-arm64: "npm:1.97.1"
-    sass-embedded-win32-x64: "npm:1.97.1"
+    sass-embedded-all-unknown: "npm:1.97.2"
+    sass-embedded-android-arm: "npm:1.97.2"
+    sass-embedded-android-arm64: "npm:1.97.2"
+    sass-embedded-android-riscv64: "npm:1.97.2"
+    sass-embedded-android-x64: "npm:1.97.2"
+    sass-embedded-darwin-arm64: "npm:1.97.2"
+    sass-embedded-darwin-x64: "npm:1.97.2"
+    sass-embedded-linux-arm: "npm:1.97.2"
+    sass-embedded-linux-arm64: "npm:1.97.2"
+    sass-embedded-linux-musl-arm: "npm:1.97.2"
+    sass-embedded-linux-musl-arm64: "npm:1.97.2"
+    sass-embedded-linux-musl-riscv64: "npm:1.97.2"
+    sass-embedded-linux-musl-x64: "npm:1.97.2"
+    sass-embedded-linux-riscv64: "npm:1.97.2"
+    sass-embedded-linux-x64: "npm:1.97.2"
+    sass-embedded-unknown-all: "npm:1.97.2"
+    sass-embedded-win32-arm64: "npm:1.97.2"
+    sass-embedded-win32-x64: "npm:1.97.2"
     supports-color: "npm:^8.1.1"
     sync-child-process: "npm:^1.0.2"
     varint: "npm:^6.0.0"
@@ -7111,13 +7111,13 @@ __metadata:
       optional: true
   bin:
     sass: dist/bin/sass.js
-  checksum: 10/8abafa0e5d85cc5f1a92d07c8dd2c12636ed1d1c755747a29282300b668afc3529e3bb95e01d764059242c72e3f88203395eed63285de850d207a7b620ab4c97
+  checksum: 10/3809d536c1a30fda41ebe75284dead96e131403b000fd3d734f6f615a220902a7efee9f7a3cb414f2a6c9452612143b3f8899503804c2ec7275609bfe41bb20b
   languageName: node
   linkType: hard
 
-"sass@npm:1.97.1":
-  version: 1.97.1
-  resolution: "sass@npm:1.97.1"
+"sass@npm:1.97.2":
+  version: 1.97.2
+  resolution: "sass@npm:1.97.2"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
@@ -7128,7 +7128,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: 10/c493d08f63ecd82b6db94bed16c1fffc0cccf94fc30f73f0f09fa6023a811cafb3862697d8a24264b511541474d2be5fac7ddba00ed56738d13f1837c93721b5
+  checksum: 10/a6b27e6a75bc8eedf0ce941a86e996f4a477640dfd214ecdcee5e8d7dca054bb03070974690b7f988a99ea729983cd8ddcdbb887bd068c73fde2d0010d835064
   languageName: node
   linkType: hard
 
@@ -8298,17 +8298,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-tsc@npm:3.2.1":
-  version: 3.2.1
-  resolution: "vue-tsc@npm:3.2.1"
+"vue-tsc@npm:3.2.2":
+  version: 3.2.2
+  resolution: "vue-tsc@npm:3.2.2"
   dependencies:
     "@volar/typescript": "npm:2.4.27"
-    "@vue/language-core": "npm:3.2.1"
+    "@vue/language-core": "npm:3.2.2"
   peerDependencies:
     typescript: ">=5.0.0"
   bin:
     vue-tsc: bin/vue-tsc.js
-  checksum: 10/702484ac22fd8f9c4a0ef4bbb4d0647d59cd0440da442375e71a3fffee59aeebb167d0196cff9336cc3a2635f0fc986a7fa21b04bda494d8dc0848d404eaf15b
+  checksum: 10/f470653d0fd67f346acf2de24045ebb93adbca3d9d9bb9a798d0ae406774c4fe9e5d96c0399054f31dcd5573e6fd386c184d2a65ab5d66ae2fa151cbb485d7bb
   languageName: node
   linkType: hard
 
