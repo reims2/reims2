@@ -35,7 +35,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.39.1"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.8"],\
           ["eslint-plugin-playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.3.0"],\
-          ["globals", "npm:16.5.0"],\
+          ["globals", "npm:17.0.0"],\
           ["prettier", "npm:3.7.1"],\
           ["root-workspace-0b6124", "workspace:."],\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
@@ -1236,6 +1236,13 @@ const RAW_RUNTIME_STATE =
           ["globals", "npm:16.5.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:17.0.0", {\
+        "packageLocation": "./.yarn/cache/globals-npm-17.0.0-cd88395af3-af6213db9b.zip/node_modules/globals/",\
+        "packageDependencies": [\
+          ["globals", "npm:17.0.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["graceful-fs", [\
@@ -1911,7 +1918,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.39.1"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.8"],\
           ["eslint-plugin-playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.3.0"],\
-          ["globals", "npm:16.5.0"],\
+          ["globals", "npm:17.0.0"],\
           ["prettier", "npm:3.7.1"],\
           ["root-workspace-0b6124", "workspace:."],\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
