@@ -1,4 +1,4 @@
-FROM node:24.12.0@sha256:b52a8d1206132b36d60e51e413d9a81336e8a0206d3b648cabd6d5a49c4c0f54 AS build
+FROM node:24.12.0@sha256:929c026d5a4e4a59685b3c1dbc1a8c3eb090aa95373d3a4fd668daa2493c8331 AS build
 
 WORKDIR /usr/src/app
 COPY .yarn/ .yarn/
@@ -12,7 +12,7 @@ RUN yarn install --immutable
 RUN yarn build
 
 # PROD IMAGE
-FROM caddy:2.10.2-alpine@sha256:953131cfea8e12bfe1c631a36308e9660e4389f0c3dfb3be957044d3ac92d446
+FROM caddy:2.10.2-alpine@sha256:11aadc735925d782bdc5d83344408a9d630ba00cf45e68108e671011bc7386bc
 
 COPY LICENSE LICENSE
 COPY ./Caddyfile /etc/caddy/Caddyfile
