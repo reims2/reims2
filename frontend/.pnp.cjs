@@ -49,7 +49,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.6.2"],\
           ["globals", "npm:17.0.0"],\
-          ["happy-dom", "npm:20.0.11"],\
+          ["happy-dom", "npm:20.1.0"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.4"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
@@ -3946,6 +3946,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/ws", [\
+      ["npm:8.18.1", {\
+        "packageLocation": "./.yarn/cache/@types-ws-npm-8.18.1-61dc106ff0-1ce05e3174.zip/node_modules/@types/ws/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:24.10.4"],\
+          ["@types/ws", "npm:8.18.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/yargs", [\
       ["npm:17.0.33", {\
         "packageLocation": "./.yarn/cache/@types-yargs-npm-17.0.33-1d6cca6a2e-16f6681bf4.zip/node_modules/@types/yargs/",\
@@ -6864,13 +6874,15 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["happy-dom", [\
-      ["npm:20.0.11", {\
-        "packageLocation": "./.yarn/cache/happy-dom-npm-20.0.11-c257ea73f5-0f2cd2a2c3.zip/node_modules/happy-dom/",\
+      ["npm:20.1.0", {\
+        "packageLocation": "./.yarn/cache/happy-dom-npm-20.1.0-fe673ce534-6f24d9d39b.zip/node_modules/happy-dom/",\
         "packageDependencies": [\
           ["@types/node", "npm:20.19.0"],\
           ["@types/whatwg-mimetype", "npm:3.0.2"],\
-          ["happy-dom", "npm:20.0.11"],\
-          ["whatwg-mimetype", "npm:3.0.0"]\
+          ["@types/ws", "npm:8.18.1"],\
+          ["happy-dom", "npm:20.1.0"],\
+          ["whatwg-mimetype", "npm:3.0.0"],\
+          ["ws", "virtual:fe673ce534573be0fbadfedc8e22dba258fc5ebc97fd6bc1da509770c6e058b6cbff1e78a48c7437be44872d12dd100bdad4ed410a857b0ae50d00ae43afc50f#npm:8.19.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8906,7 +8918,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.6.2"],\
           ["globals", "npm:17.0.0"],\
-          ["happy-dom", "npm:20.0.11"],\
+          ["happy-dom", "npm:20.1.0"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.4"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
@@ -10691,7 +10703,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/utils", "npm:4.0.16"],\
           ["es-module-lexer", "npm:1.7.0"],\
           ["expect-type", "npm:1.3.0"],\
-          ["happy-dom", "npm:20.0.11"],\
+          ["happy-dom", "npm:20.1.0"],\
           ["jsdom", null],\
           ["magic-string", "npm:0.30.21"],\
           ["obug", "npm:2.1.1"],\
@@ -11304,6 +11316,32 @@ const RAW_RUNTIME_STATE =
           ["string-width", "npm:5.1.2"],\
           ["strip-ansi", "npm:7.1.0"],\
           ["wrap-ansi", "npm:8.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["ws", [\
+      ["npm:8.19.0", {\
+        "packageLocation": "./.yarn/cache/ws-npm-8.19.0-c967c046a5-26e4901e93.zip/node_modules/ws/",\
+        "packageDependencies": [\
+          ["ws", "npm:8.19.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:fe673ce534573be0fbadfedc8e22dba258fc5ebc97fd6bc1da509770c6e058b6cbff1e78a48c7437be44872d12dd100bdad4ed410a857b0ae50d00ae43afc50f#npm:8.19.0", {\
+        "packageLocation": "./.yarn/__virtual__/ws-virtual-9028f75006/0/cache/ws-npm-8.19.0-c967c046a5-26e4901e93.zip/node_modules/ws/",\
+        "packageDependencies": [\
+          ["@types/bufferutil", null],\
+          ["@types/utf-8-validate", null],\
+          ["bufferutil", null],\
+          ["utf-8-validate", null],\
+          ["ws", "virtual:fe673ce534573be0fbadfedc8e22dba258fc5ebc97fd6bc1da509770c6e058b6cbff1e78a48c7437be44872d12dd100bdad4ed410a857b0ae50d00ae43afc50f#npm:8.19.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/bufferutil",\
+          "@types/utf-8-validate",\
+          "bufferutil",\
+          "utf-8-validate"\
         ],\
         "linkType": "HARD"\
       }]\
