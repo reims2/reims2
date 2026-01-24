@@ -2459,21 +2459,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:24.10.9":
+"@types/node@npm:*, @types/node@npm:>=20.0.0":
+  version: 25.0.10
+  resolution: "@types/node@npm:25.0.10"
+  dependencies:
+    undici-types: "npm:~7.16.0"
+  checksum: 10/e5fc1fe0e585957f91ff3ad8ee01b051ce0c9da9658c5ba68d11d557522450783ab61ac2778355e8f566b83bc3bd18e78576569162e9729ed52af36999f81c9a
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:24.10.9":
   version: 24.10.9
   resolution: "@types/node@npm:24.10.9"
   dependencies:
     undici-types: "npm:~7.16.0"
   checksum: 10/c831395567689bdd59d0f3826332ff15c3f3f8e6acf160d7f75ce45e5476427c10ac484031c5c8d3480ae8d1729d95f3354ef4cc359364107e22da5a22e3797c
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^20.0.0":
-  version: 20.19.0
-  resolution: "@types/node@npm:20.19.0"
-  dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10/76cc44487faa0bf5302c84e5317de4b9727ea4e4b86d59d18d25435f4ccd7e6c584614dea061256f24a097c25a1d82dac1cd134357b42ae28006ba113c97f490
   languageName: node
   linkType: hard
 
@@ -4021,6 +4021,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"entities@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "entities@npm:4.5.0"
+  checksum: 10/ede2a35c9bce1aeccd055a1b445d41c75a14a2bb1cd22e242f20cf04d236cdcd7f9c859eb83f76885327bfae0c25bf03303665ee1ce3d47c5927b98b0e3e3d48
+  languageName: node
+  linkType: hard
+
 "entities@npm:^7.0.0":
   version: 7.0.0
   resolution: "entities@npm:7.0.0"
@@ -4856,16 +4863,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:20.1.0":
-  version: 20.1.0
-  resolution: "happy-dom@npm:20.1.0"
+"happy-dom@npm:20.3.4":
+  version: 20.3.4
+  resolution: "happy-dom@npm:20.3.4"
   dependencies:
-    "@types/node": "npm:^20.0.0"
+    "@types/node": "npm:>=20.0.0"
     "@types/whatwg-mimetype": "npm:^3.0.2"
     "@types/ws": "npm:^8.18.1"
+    entities: "npm:^4.5.0"
     whatwg-mimetype: "npm:^3.0.0"
     ws: "npm:^8.18.3"
-  checksum: 10/6f24d9d39b6dd387fe567adc621fba5e5a7fef83d5baa8cbc49cf75ecd09a91e460a242c6ac8d4ea3d2c01b134ec7f552d8c66d13ac109350ad2650450fe61de
+  checksum: 10/6dba6b4dfdaedf5def805685bbc23da7d2cdaea09d37bbc8423db0acbcdfddf04c003c8f8f43176ab53a8176ef3a3fd8811648aef977d19f465598ac1e08d563
   languageName: node
   linkType: hard
 
@@ -6666,7 +6674,7 @@ __metadata:
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-vue: "npm:10.6.2"
     globals: "npm:17.0.0"
-    happy-dom: "npm:20.1.0"
+    happy-dom: "npm:20.3.4"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:3.0.4"
     pinia-plugin-persistedstate: "npm:4.7.1"
@@ -7781,13 +7789,6 @@ __metadata:
     has-symbols: "npm:^1.0.3"
     which-boxed-primitive: "npm:^1.0.2"
   checksum: 10/06e1ee41c1095e37281cb71a975cb3350f7cb470a0665d2576f02cc9564f623bd90cfc0183693b8a7fdf2d242963dcc3010b509fa3ac683f540c765c0f3e7e43
-  languageName: node
-  linkType: hard
-
-"undici-types@npm:~6.21.0":
-  version: 6.21.0
-  resolution: "undici-types@npm:6.21.0"
-  checksum: 10/ec8f41aa4359d50f9b59fa61fe3efce3477cc681908c8f84354d8567bb3701fafdddf36ef6bff307024d3feb42c837cf6f670314ba37fc8145e219560e473d14
   languageName: node
   linkType: hard
 
