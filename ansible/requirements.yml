@@ -9,7 +9,7 @@ collections:
   - name: hifis.toolkit
     version: 6.3.2
   - name: devsec.hardening
-    version: 10.4.0
+    version: 10.5.0
   - name: community.general
     version: 12.2.0
   - name: community.mysql
