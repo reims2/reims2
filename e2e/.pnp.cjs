@@ -30,8 +30,8 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@eslint/js", "npm:9.39.2"],\
           ["@playwright/test", "npm:1.58.2"],\
-          ["@types/node", "npm:24.10.9"],\
-          ["dotenv", "npm:17.2.3"],\
+          ["@types/node", "npm:24.10.13"],\
+          ["dotenv", "npm:17.2.4"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.39.2"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.8"],\
           ["eslint-plugin-playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.5.1"],\
@@ -286,10 +286,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/node", [\
-      ["npm:24.10.9", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-24.10.9-334f1bf8b5-c831395567.zip/node_modules/@types/node/",\
+      ["npm:24.10.13", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-24.10.13-7c6cae80f8-c779d14cf1.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:24.10.9"],\
+          ["@types/node", "npm:24.10.13"],\
           ["undici-types", "npm:7.16.0"]\
         ],\
         "linkType": "HARD"\
@@ -810,10 +810,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["dotenv", [\
-      ["npm:17.2.3", {\
-        "packageLocation": "./.yarn/cache/dotenv-npm-17.2.3-2f9ab93ea1-f8b78626eb.zip/node_modules/dotenv/",\
+      ["npm:17.2.4", {\
+        "packageLocation": "./.yarn/cache/dotenv-npm-17.2.4-b57c2ff111-3b0fdfb40a.zip/node_modules/dotenv/",\
         "packageDependencies": [\
-          ["dotenv", "npm:17.2.3"]\
+          ["dotenv", "npm:17.2.4"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -1903,8 +1903,8 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@eslint/js", "npm:9.39.2"],\
           ["@playwright/test", "npm:1.58.2"],\
-          ["@types/node", "npm:24.10.9"],\
-          ["dotenv", "npm:17.2.3"],\
+          ["@types/node", "npm:24.10.13"],\
+          ["dotenv", "npm:17.2.4"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:9.39.2"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.8"],\
           ["eslint-plugin-playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.5.1"],\
