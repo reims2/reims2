@@ -11,10 +11,10 @@
   "license": "AGPL-3.0-only",
   "dependencies": {
     "vitepress": "1.6.4",
-    "vue": "3.5.27"
+    "vue": "3.5.28"
   },
   "engines": {
-    "node": "24.13.0"
+    "node": "24.13.1"
   },
   "devDependencies": {
     "prettier": "3.8.1"
