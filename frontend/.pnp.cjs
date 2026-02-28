@@ -49,7 +49,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.7.0"],\
           ["globals", "npm:17.3.0"],\
-          ["happy-dom", "npm:20.6.2"],\
+          ["happy-dom", "npm:20.7.0"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.4"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
@@ -6956,16 +6956,16 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["happy-dom", [\
-      ["npm:20.6.2", {\
-        "packageLocation": "../../../../../../../runner/cache/others/berry/cache/happy-dom-npm-20.6.2-688b0430db-10.zip/node_modules/happy-dom/",\
+      ["npm:20.7.0", {\
+        "packageLocation": "../../../../../../../runner/cache/others/berry/cache/happy-dom-npm-20.7.0-133661b33d-10.zip/node_modules/happy-dom/",\
         "packageDependencies": [\
           ["@types/node", "npm:25.0.10"],\
           ["@types/whatwg-mimetype", "npm:3.0.2"],\
           ["@types/ws", "npm:8.18.1"],\
           ["entities", "npm:7.0.1"],\
-          ["happy-dom", "npm:20.6.2"],\
+          ["happy-dom", "npm:20.7.0"],\
           ["whatwg-mimetype", "npm:3.0.0"],\
-          ["ws", "virtual:688b0430db37653197513581523f633a3fa65cd216c3a7584070f0f31f880907922ba96802f03649e9661abea6b071cf7d4b69f3d9489353d26e8ff67c682d45#npm:8.19.0"]\
+          ["ws", "virtual:133661b33d127ceb9c5d8c1e8aa60c952b51538b5154bdb5707f7c258192ba2584bd611550feb76f452cacd3fa69b6a042709ee5a4f3d1a8e8fc78e2a4a04bc3#npm:8.19.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9013,7 +9013,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.7.0"],\
           ["globals", "npm:17.3.0"],\
-          ["happy-dom", "npm:20.6.2"],\
+          ["happy-dom", "npm:20.7.0"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.4"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
@@ -10800,7 +10800,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/utils", "npm:4.0.18"],\
           ["es-module-lexer", "npm:1.7.0"],\
           ["expect-type", "npm:1.3.0"],\
-          ["happy-dom", "npm:20.6.2"],\
+          ["happy-dom", "npm:20.7.0"],\
           ["jsdom", null],\
           ["magic-string", "npm:0.30.21"],\
           ["obug", "npm:2.1.1"],\
@@ -11427,14 +11427,14 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:688b0430db37653197513581523f633a3fa65cd216c3a7584070f0f31f880907922ba96802f03649e9661abea6b071cf7d4b69f3d9489353d26e8ff67c682d45#npm:8.19.0", {\
-        "packageLocation": "./.yarn/__virtual__/ws-virtual-af2c86c3d4/8/runner/cache/others/berry/cache/ws-npm-8.19.0-c967c046a5-10.zip/node_modules/ws/",\
+      ["virtual:133661b33d127ceb9c5d8c1e8aa60c952b51538b5154bdb5707f7c258192ba2584bd611550feb76f452cacd3fa69b6a042709ee5a4f3d1a8e8fc78e2a4a04bc3#npm:8.19.0", {\
+        "packageLocation": "./.yarn/__virtual__/ws-virtual-2e8940557c/8/runner/cache/others/berry/cache/ws-npm-8.19.0-c967c046a5-10.zip/node_modules/ws/",\
         "packageDependencies": [\
           ["@types/bufferutil", null],\
           ["@types/utf-8-validate", null],\
           ["bufferutil", null],\
           ["utf-8-validate", null],\
-          ["ws", "virtual:688b0430db37653197513581523f633a3fa65cd216c3a7584070f0f31f880907922ba96802f03649e9661abea6b071cf7d4b69f3d9489353d26e8ff67c682d45#npm:8.19.0"]\
+          ["ws", "virtual:133661b33d127ceb9c5d8c1e8aa60c952b51538b5154bdb5707f7c258192ba2584bd611550feb76f452cacd3fa69b6a042709ee5a4f3d1a8e8fc78e2a4a04bc3#npm:8.19.0"]\
         ],\
         "packagePeers": [\
           "@types/bufferutil",\
