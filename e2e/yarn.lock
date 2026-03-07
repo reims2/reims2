@@ -199,12 +199,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:24.10.13":
-  version: 24.10.13
-  resolution: "@types/node@npm:24.10.13"
+"@types/node@npm:24.11.0":
+  version: 24.11.0
+  resolution: "@types/node@npm:24.11.0"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10/c779d14cf17758a9d603e0c0978c8045bd070e259617ec16f4ddac419ec11aac0e0cf2bb013dab008fdbd2f46c39f82397884662bbdfabeb19bef0079679ea48
+  checksum: 10/d2f4f898c6a0f14980e55c697904fb58681729fc46b4e264d5f64dc391b23da73c9b422cfffbca28c045e6e8eca72dab5f28ed633faa95398ef1528af5398382
   languageName: node
   linkType: hard
 
@@ -933,10 +933,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:17.3.0, globals@npm:^17.3.0":
-  version: 17.3.0
-  resolution: "globals@npm:17.3.0"
-  checksum: 10/44ba2b7db93eb6a2531dfba09219845e21f2e724a4f400eb59518b180b7d5bcf7f65580530e3d3023d7dc2bdbacf5d265fd87c393f567deb9a2b0472b51c9d5e
+"globals@npm:17.4.0, globals@npm:^17.3.0":
+  version: 17.4.0
+  resolution: "globals@npm:17.4.0"
+  checksum: 10/ffad244617e94efcb3da72b7beefc941167c21316148ce378f322db7af72db06468f370e23224b3c7b17b5173a7c75b134e5e7b0949f2828519054a76892508d
   languageName: node
   linkType: hard
 
@@ -1547,12 +1547,12 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:9.39.3"
     "@playwright/test": "npm:1.58.2"
-    "@types/node": "npm:24.10.13"
+    "@types/node": "npm:24.11.0"
     dotenv: "npm:17.3.1"
     eslint: "npm:9.39.3"
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-playwright: "npm:2.7.1"
-    globals: "npm:17.3.0"
+    globals: "npm:17.4.0"
     prettier: "npm:3.8.1"
     typescript: "npm:5.9.3"
     typescript-eslint: "npm:8.56.1"
