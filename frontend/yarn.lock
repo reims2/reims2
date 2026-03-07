@@ -2451,12 +2451,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:24.10.13":
-  version: 24.10.13
-  resolution: "@types/node@npm:24.10.13"
+"@types/node@npm:24.11.0":
+  version: 24.11.0
+  resolution: "@types/node@npm:24.11.0"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10/c779d14cf17758a9d603e0c0978c8045bd070e259617ec16f4ddac419ec11aac0e0cf2bb013dab008fdbd2f46c39f82397884662bbdfabeb19bef0079679ea48
+  checksum: 10/d2f4f898c6a0f14980e55c697904fb58681729fc46b4e264d5f64dc391b23da73c9b422cfffbca28c045e6e8eca72dab5f28ed633faa95398ef1528af5398382
   languageName: node
   linkType: hard
 
@@ -4893,10 +4893,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:17.3.0":
-  version: 17.3.0
-  resolution: "globals@npm:17.3.0"
-  checksum: 10/44ba2b7db93eb6a2531dfba09219845e21f2e724a4f400eb59518b180b7d5bcf7f65580530e3d3023d7dc2bdbacf5d265fd87c393f567deb9a2b0472b51c9d5e
+"globals@npm:17.4.0":
+  version: 17.4.0
+  resolution: "globals@npm:17.4.0"
+  checksum: 10/ffad244617e94efcb3da72b7beefc941167c21316148ce378f322db7af72db06468f370e23224b3c7b17b5173a7c75b134e5e7b0949f2828519054a76892508d
   languageName: node
   linkType: hard
 
@@ -4938,9 +4938,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:20.7.0":
-  version: 20.7.0
-  resolution: "happy-dom@npm:20.7.0"
+"happy-dom@npm:20.8.3":
+  version: 20.8.3
+  resolution: "happy-dom@npm:20.8.3"
   dependencies:
     "@types/node": "npm:>=20.0.0"
     "@types/whatwg-mimetype": "npm:^3.0.2"
@@ -4948,7 +4948,7 @@ __metadata:
     entities: "npm:^7.0.1"
     whatwg-mimetype: "npm:^3.0.0"
     ws: "npm:^8.18.3"
-  checksum: 10/78b4faff61c1c812fb37d3438c91668b07dac164980a9f71f9addcc66fc4f099de0657d8daa871395fe61312ee7222d3d750ba573ffea03eccc312ce4d59f271
+  checksum: 10/57b2fd3186637728f7f8707b538ffcea7eaa651b14441abc15b289fd2b8632d573080a253ccebf3de20b9a61ba7201837ef5d4e4860ff37267c5c9b3fb21371c
   languageName: node
   linkType: hard
 
@@ -6739,7 +6739,7 @@ __metadata:
     "@testing-library/vue": "npm:8.1.0"
     "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:30.0.0"
-    "@types/node": "npm:24.10.13"
+    "@types/node": "npm:24.11.0"
     "@vitejs/plugin-vue": "npm:6.0.4"
     "@vitest/coverage-v8": "npm:4.0.18"
     "@vitest/ui": "npm:4.0.18"
@@ -6751,8 +6751,8 @@ __metadata:
     eslint: "npm:9.39.3"
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-vue: "npm:10.8.0"
-    globals: "npm:17.3.0"
-    happy-dom: "npm:20.7.0"
+    globals: "npm:17.4.0"
+    happy-dom: "npm:20.8.3"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:3.0.4"
     pinia-plugin-persistedstate: "npm:4.7.1"
