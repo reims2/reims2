@@ -22,7 +22,7 @@ jobs:
         run: echo "sha_short=${SHA::7}" >> $GITHUB_OUTPUT
 
       - name: Run playbook
-        uses: dawidd6/action-ansible-playbook@6c0a4f86519cc4a09ba95e5077ecfa2141deba9e # v7
+        uses: dawidd6/action-ansible-playbook@126642a1c6ce512da255ef2b41e8ee90f0077474 # v9
         with:
           playbook: ansible/deploy-single-stack.yml
           key: ${{secrets.ANSIBLE_PRIVATE_KEY}}
