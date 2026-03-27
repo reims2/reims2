@@ -153,7 +153,7 @@ function calcInitialDiffScore(rx: Eye, lens: Eye, isSinglefocal: boolean): numbe
 function applyMutuallyExclusiveRules(rx: Eye, lens: Eye): number {
   // Those 3 rules are applied mutually exclusive in order (i.e. as soon as one applies, the others aren't applied). Why? No one knows.
   // But otherwise we could have scores below zero, so maybe bc of that?
-  let diff = 0
+  let diff: number
 
   diff = sphericalEquivalentScore(rx.sphere, lens.sphere, rx.cylinder, lens.cylinder)
   if (diff !== 0) return diff
