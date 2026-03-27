@@ -3666,20 +3666,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist-to-esbuild@npm:2.1.1":
-  version: 2.1.1
-  resolution: "browserslist-to-esbuild@npm:2.1.1"
-  dependencies:
-    meow: "npm:^13.0.0"
-  peerDependencies:
-    browserslist: "*"
-  bin:
-    browserslist-to-esbuild: cli/index.js
-  checksum: 10/5e91b23ba5ac47412b7456bbb74ee11b35d1083163e9e8e001e48f3a975c65758a4559ab532812d8518877a1d8f68c5b649b88a08722b9543b38e633e6943f7d
-  languageName: node
-  linkType: hard
-
-"browserslist@npm:4.28.1, browserslist@npm:^4.23.0, browserslist@npm:^4.24.0":
+"browserslist@npm:^4.23.0, browserslist@npm:^4.24.0":
   version: 4.28.1
   resolution: "browserslist@npm:4.28.1"
   dependencies:
@@ -6229,13 +6216,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"meow@npm:^13.0.0":
-  version: 13.2.0
-  resolution: "meow@npm:13.2.0"
-  checksum: 10/4eff5bc921fed0b8a471ad79069d741a0210036d717547d0c7f36fdaf84ef7a3036225f38b6a53830d84dc9cbf8b944b097fde62381b8b5b215119e735ce1063
-  languageName: node
-  linkType: hard
-
 "micromatch@npm:^4.0.5, micromatch@npm:^4.0.8":
   version: 4.0.8
   resolution: "micromatch@npm:4.0.8"
@@ -7041,8 +7021,6 @@ __metadata:
     "@vitest/ui": "npm:4.0.18"
     "@vueuse/core": "npm:14.2.1"
     axios: "npm:1.13.6"
-    browserslist: "npm:4.28.1"
-    browserslist-to-esbuild: "npm:2.1.1"
     dayjs: "npm:1.11.20"
     eslint: "npm:9.39.3"
     eslint-config-prettier: "npm:10.1.8"

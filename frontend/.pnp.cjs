@@ -42,8 +42,6 @@ const RAW_RUNTIME_STATE =
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.18"],\
           ["@vueuse/core", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:14.2.1"],\
           ["axios", "npm:1.13.6"],\
-          ["browserslist", "npm:4.28.1"],\
-          ["browserslist-to-esbuild", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.1.1"],\
           ["dayjs", "npm:1.11.20"],\
           ["eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:9.39.3"],\
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
@@ -5555,29 +5553,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["browserslist-to-esbuild", [\
-      ["npm:2.1.1", {\
-        "packageLocation": "./.yarn/cache/browserslist-to-esbuild-npm-2.1.1-bad2681152-5e91b23ba5.zip/node_modules/browserslist-to-esbuild/",\
-        "packageDependencies": [\
-          ["browserslist-to-esbuild", "npm:2.1.1"]\
-        ],\
-        "linkType": "SOFT"\
-      }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.1.1", {\
-        "packageLocation": "./.yarn/__virtual__/browserslist-to-esbuild-virtual-0c7587026c/0/cache/browserslist-to-esbuild-npm-2.1.1-bad2681152-5e91b23ba5.zip/node_modules/browserslist-to-esbuild/",\
-        "packageDependencies": [\
-          ["@types/browserslist", null],\
-          ["browserslist", "npm:4.28.1"],\
-          ["browserslist-to-esbuild", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.1.1"],\
-          ["meow", "npm:13.2.0"]\
-        ],\
-        "packagePeers": [\
-          "@types/browserslist",\
-          "browserslist"\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["buffer-from", [\
       ["npm:1.1.2", {\
         "packageLocation": "./.yarn/cache/buffer-from-npm-1.1.2-03d2f20d7e-0448524a56.zip/node_modules/buffer-from/",\
@@ -8397,15 +8372,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["meow", [\
-      ["npm:13.2.0", {\
-        "packageLocation": "./.yarn/cache/meow-npm-13.2.0-9907f89171-4eff5bc921.zip/node_modules/meow/",\
-        "packageDependencies": [\
-          ["meow", "npm:13.2.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["micromatch", [\
       ["npm:4.0.8", {\
         "packageLocation": "./.yarn/cache/micromatch-npm-4.0.8-c9570e4aca-6bf2a01672.zip/node_modules/micromatch/",\
@@ -9319,8 +9285,6 @@ const RAW_RUNTIME_STATE =
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.18"],\
           ["@vueuse/core", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:14.2.1"],\
           ["axios", "npm:1.13.6"],\
-          ["browserslist", "npm:4.28.1"],\
-          ["browserslist-to-esbuild", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.1.1"],\
           ["dayjs", "npm:1.11.20"],\
           ["eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:9.39.3"],\
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
