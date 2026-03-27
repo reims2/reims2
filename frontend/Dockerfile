@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY .yarn/ .yarn/
 COPY public/ public/
 COPY src/ src/
-COPY .yarnrc.yml .pnp.* index.html package.json yarn.lock tsconfig.json tsconfig.node.json vite.config.ts .browserslistrc ./
+COPY .yarnrc.yml .pnp.* index.html package.json yarn.lock tsconfig.json tsconfig.node.json vite.config.ts ./
 
 RUN yarn install --immutable
 
