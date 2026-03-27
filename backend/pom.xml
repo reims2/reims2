@@ -309,8 +309,8 @@
                     <target>21</target>
                     <annotationProcessorPaths>
                         <annotationProcessorPath>
-                            <groupId>org.hibernate</groupId>
-                            <artifactId>hibernate-jpamodelgen</artifactId>
+                            <groupId>org.hibernate.orm</groupId>
+                            <artifactId>hibernate-processor</artifactId>
                             <version>7.3.0.Final</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
