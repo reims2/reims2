@@ -5,7 +5,23 @@ import pluginVue from 'eslint-plugin-vue'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
 
 export default tseslint.config(
-  { ignores: ['*.d.ts', '**/coverage', '**/dist'] },
+  {
+    ignores: [
+      '*.d.ts',
+
+      // build output
+      '**/coverage/**',
+      '**/dist/**',
+
+      // yarn/pnp internals
+      '.yarn/**',
+      '.pnp.cjs',
+      '.pnp.loader.mjs',
+
+      // vite generates these sometimes; never lint them
+      '**/vite.config.*.timestamp-*.mjs',
+    ],
+  },
   {
     extends: [
       eslint.configs.recommended,
