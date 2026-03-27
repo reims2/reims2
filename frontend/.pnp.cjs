@@ -49,7 +49,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.8.0"],\
           ["globals", "npm:17.4.0"],\
-          ["happy-dom", "npm:20.8.4"],\
+          ["happy-dom", "npm:20.8.8"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.4"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
@@ -6944,16 +6944,16 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["happy-dom", [\
-      ["npm:20.8.4", {\
-        "packageLocation": "./.yarn/cache/happy-dom-npm-20.8.4-638bf14b69-fcad6a5843.zip/node_modules/happy-dom/",\
+      ["npm:20.8.8", {\
+        "packageLocation": "./.yarn/cache/happy-dom-npm-20.8.8-4ab37c06a0-aa07ee59a6.zip/node_modules/happy-dom/",\
         "packageDependencies": [\
           ["@types/node", "npm:25.0.10"],\
           ["@types/whatwg-mimetype", "npm:3.0.2"],\
           ["@types/ws", "npm:8.18.1"],\
           ["entities", "npm:7.0.1"],\
-          ["happy-dom", "npm:20.8.4"],\
+          ["happy-dom", "npm:20.8.8"],\
           ["whatwg-mimetype", "npm:3.0.0"],\
-          ["ws", "virtual:638bf14b69e3d345f06eb3212e0a531f1e5e5cb6f728cd43b7e12d70774b935a1c23693f1c7e3f55414a136b529cb2b33cdef61e3c3c22d5bb50faf53be0ba25#npm:8.19.0"]\
+          ["ws", "virtual:4ab37c06a05870119f862c9755c2aa65e328b1f1ac53a1e348ad5eec54fd1bec63326d0e8953e3eb06656db1dcbf2b9592b9f2edf4a5e6ec761e42a209d5d347#npm:8.19.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8994,7 +8994,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.8.0"],\
           ["globals", "npm:17.4.0"],\
-          ["happy-dom", "npm:20.8.4"],\
+          ["happy-dom", "npm:20.8.8"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.4"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
@@ -10768,7 +10768,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/utils", "npm:4.0.18"],\
           ["es-module-lexer", "npm:1.7.0"],\
           ["expect-type", "npm:1.3.0"],\
-          ["happy-dom", "npm:20.8.4"],\
+          ["happy-dom", "npm:20.8.8"],\
           ["jsdom", null],\
           ["magic-string", "npm:0.30.21"],\
           ["obug", "npm:2.1.1"],\
@@ -11395,14 +11395,14 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:638bf14b69e3d345f06eb3212e0a531f1e5e5cb6f728cd43b7e12d70774b935a1c23693f1c7e3f55414a136b529cb2b33cdef61e3c3c22d5bb50faf53be0ba25#npm:8.19.0", {\
-        "packageLocation": "./.yarn/__virtual__/ws-virtual-f1ef467022/0/cache/ws-npm-8.19.0-c967c046a5-26e4901e93.zip/node_modules/ws/",\
+      ["virtual:4ab37c06a05870119f862c9755c2aa65e328b1f1ac53a1e348ad5eec54fd1bec63326d0e8953e3eb06656db1dcbf2b9592b9f2edf4a5e6ec761e42a209d5d347#npm:8.19.0", {\
+        "packageLocation": "./.yarn/__virtual__/ws-virtual-4d7fe341c2/0/cache/ws-npm-8.19.0-c967c046a5-26e4901e93.zip/node_modules/ws/",\
         "packageDependencies": [\
           ["@types/bufferutil", null],\
           ["@types/utf-8-validate", null],\
           ["bufferutil", null],\
           ["utf-8-validate", null],\
-          ["ws", "virtual:638bf14b69e3d345f06eb3212e0a531f1e5e5cb6f728cd43b7e12d70774b935a1c23693f1c7e3f55414a136b529cb2b33cdef61e3c3c22d5bb50faf53be0ba25#npm:8.19.0"]\
+          ["ws", "virtual:4ab37c06a05870119f862c9755c2aa65e328b1f1ac53a1e348ad5eec54fd1bec63326d0e8953e3eb06656db1dcbf2b9592b9f2edf4a5e6ec761e42a209d5d347#npm:8.19.0"]\
         ],\
         "packagePeers": [\
           "@types/bufferutil",\
