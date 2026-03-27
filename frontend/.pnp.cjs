@@ -41,8 +41,6 @@ const RAW_RUNTIME_STATE =
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.0.5"],\
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.2"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.2"],\
-          ["@vue/compiler-dom", "npm:3.5.31"],\
-          ["@vue/server-renderer", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.5.31"],\
           ["@vueuse/core", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:14.2.1"],\
           ["axios", "npm:1.13.6"],\
           ["dayjs", "npm:1.11.20"],\
@@ -4742,14 +4740,14 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.5.31", {\
-        "packageLocation": "./.yarn/__virtual__/@vue-server-renderer-virtual-44f1e57ecb/0/cache/@vue-server-renderer-npm-3.5.31-1c1785bfeb-ba52d9ca34.zip/node_modules/@vue/server-renderer/",\
+      ["virtual:ec350e632119c2fa6aa4185d5fb2e6904d7c1f9cefb2603c234bc720b5a0490a22229e2320a7b46e1376c2f73972079ba6fa907f4b7e80df555b8cfccd6e5aa2#npm:3.5.31", {\
+        "packageLocation": "./.yarn/__virtual__/@vue-server-renderer-virtual-9c6e46c0f4/0/cache/@vue-server-renderer-npm-3.5.31-1c1785bfeb-ba52d9ca34.zip/node_modules/@vue/server-renderer/",\
         "packageDependencies": [\
           ["@types/vue", null],\
           ["@vue/compiler-ssr", "npm:3.5.31"],\
-          ["@vue/server-renderer", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.5.31"],\
+          ["@vue/server-renderer", "virtual:ec350e632119c2fa6aa4185d5fb2e6904d7c1f9cefb2603c234bc720b5a0490a22229e2320a7b46e1376c2f73972079ba6fa907f4b7e80df555b8cfccd6e5aa2#npm:3.5.31"],\
           ["@vue/shared", "npm:3.5.31"],\
-          ["vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.5.30"]\
+          ["vue", null]\
         ],\
         "packagePeers": [\
           "@types/vue",\
@@ -4778,6 +4776,8 @@ const RAW_RUNTIME_STATE =
       ["npm:2.4.6", {\
         "packageLocation": "./.yarn/cache/@vue-test-utils-npm-2.4.6-ec350e6321-a3b445f1da.zip/node_modules/@vue/test-utils/",\
         "packageDependencies": [\
+          ["@vue/compiler-dom", "npm:3.5.31"],\
+          ["@vue/server-renderer", "virtual:ec350e632119c2fa6aa4185d5fb2e6904d7c1f9cefb2603c234bc720b5a0490a22229e2320a7b46e1376c2f73972079ba6fa907f4b7e80df555b8cfccd6e5aa2#npm:3.5.31"],\
           ["@vue/test-utils", "npm:2.4.6"],\
           ["js-beautify", "npm:1.15.1"],\
           ["vue-component-type-helpers", "npm:2.0.19"]\
@@ -9419,8 +9419,6 @@ const RAW_RUNTIME_STATE =
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.0.5"],\
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.2"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.2"],\
-          ["@vue/compiler-dom", "npm:3.5.31"],\
-          ["@vue/server-renderer", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.5.31"],\
           ["@vueuse/core", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:14.2.1"],\
           ["axios", "npm:1.13.6"],\
           ["dayjs", "npm:1.11.20"],\
