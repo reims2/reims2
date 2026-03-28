@@ -17,7 +17,7 @@
     "test:watch": "vitest --ui --coverage"
   },
   "engines": {
-    "node": "24.14.0"
+    "node": "24.14.1"
   },
   "dependencies": {
     "@fontsource-variable/roboto-flex": "5.2.8",
@@ -28,7 +28,7 @@
     "pinia": "3.0.4",
     "pinia-plugin-persistedstate": "4.7.1",
     "vue": "3.5.30",
-    "vue-router": "5.0.3",
+    "vue-router": "5.0.4",
     "vue-toastification": "2.0.0-rc.5",
     "vue3-enter-to-tab": "3.1.6",
     "vuetify": "3.12.3"
