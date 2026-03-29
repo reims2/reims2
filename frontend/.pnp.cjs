@@ -48,7 +48,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.8.0"],\
           ["globals", "npm:17.4.0"],\
-          ["happy-dom", "npm:20.8.8"],\
+          ["happy-dom", "npm:20.8.9"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.4"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
@@ -4097,7 +4097,7 @@ const RAW_RUNTIME_STATE =
           ["tinyexec", "npm:1.0.4"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.0.2"],\
           ["vue", "virtual:fd34a7ff3c228464aa0122a09f11d97beb52d6deacfe748bfc8b5e0962f67d230380daf200f903cc22173fc6ca3f8c3cc52476d87d0e32cad72e0222bf37ca10#npm:3.5.30"],\
-          ["ws", "virtual:4ab37c06a05870119f862c9755c2aa65e328b1f1ac53a1e348ad5eec54fd1bec63326d0e8953e3eb06656db1dcbf2b9592b9f2edf4a5e6ec761e42a209d5d347#npm:8.20.0"]\
+          ["ws", "virtual:4a46bef4dc735d3636c7ae185f010ed5351f820c884a1a9dfc2ed869a6242e453d1909864b0c4fa192d6a1799fb4664fcd5efea1f370bfb38ff0170f9c0b5e77#npm:8.20.0"]\
         ],\
         "packagePeers": [\
           "@types/vite",\
@@ -4177,7 +4177,7 @@ const RAW_RUNTIME_STATE =
           ["unconfig", "npm:7.5.0"],\
           ["unstorage", "virtual:e8a3265d0c65049f2e0945b4707fff939421a49bb75c7132167d0eef05967d47f697c60445da8a3ba33083e4522631e75fb8d7b3233f51e9d616f6f3b2715866#npm:1.17.5"],\
           ["vue-virtual-scroller", "virtual:e8a3265d0c65049f2e0945b4707fff939421a49bb75c7132167d0eef05967d47f697c60445da8a3ba33083e4522631e75fb8d7b3233f51e9d616f6f3b2715866#npm:2.0.0-beta.10"],\
-          ["ws", "virtual:4ab37c06a05870119f862c9755c2aa65e328b1f1ac53a1e348ad5eec54fd1bec63326d0e8953e3eb06656db1dcbf2b9592b9f2edf4a5e6ec761e42a209d5d347#npm:8.20.0"]\
+          ["ws", "virtual:4a46bef4dc735d3636c7ae185f010ed5351f820c884a1a9dfc2ed869a6242e453d1909864b0c4fa192d6a1799fb4664fcd5efea1f370bfb38ff0170f9c0b5e77#npm:8.20.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -4218,7 +4218,7 @@ const RAW_RUNTIME_STATE =
           ["p-limit", "npm:7.3.0"],\
           ["structured-clone-es", "npm:2.0.0"],\
           ["valibot", "virtual:7ed35b5eb248c5abe0f2859382fc18b40bbd04e0c3d46767756362131262222b414781e2813592f19a21df5cd93f6be417b8c09246b05d28eee0428211a73811#npm:1.3.1"],\
-          ["ws", "virtual:4ab37c06a05870119f862c9755c2aa65e328b1f1ac53a1e348ad5eec54fd1bec63326d0e8953e3eb06656db1dcbf2b9592b9f2edf4a5e6ec761e42a209d5d347#npm:8.20.0"]\
+          ["ws", "virtual:4a46bef4dc735d3636c7ae185f010ed5351f820c884a1a9dfc2ed869a6242e453d1909864b0c4fa192d6a1799fb4664fcd5efea1f370bfb38ff0170f9c0b5e77#npm:8.20.0"]\
         ],\
         "packagePeers": [\
           "@types/ws",\
@@ -6942,16 +6942,16 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["happy-dom", [\
-      ["npm:20.8.8", {\
-        "packageLocation": "./.yarn/cache/happy-dom-npm-20.8.8-4ab37c06a0-aa07ee59a6.zip/node_modules/happy-dom/",\
+      ["npm:20.8.9", {\
+        "packageLocation": "./.yarn/cache/happy-dom-npm-20.8.9-4a46bef4dc-81fabd8c63.zip/node_modules/happy-dom/",\
         "packageDependencies": [\
           ["@types/node", "npm:25.0.10"],\
           ["@types/whatwg-mimetype", "npm:3.0.2"],\
           ["@types/ws", "npm:8.18.1"],\
           ["entities", "npm:7.0.1"],\
-          ["happy-dom", "npm:20.8.8"],\
+          ["happy-dom", "npm:20.8.9"],\
           ["whatwg-mimetype", "npm:3.0.0"],\
-          ["ws", "virtual:4ab37c06a05870119f862c9755c2aa65e328b1f1ac53a1e348ad5eec54fd1bec63326d0e8953e3eb06656db1dcbf2b9592b9f2edf4a5e6ec761e42a209d5d347#npm:8.20.0"]\
+          ["ws", "virtual:4a46bef4dc735d3636c7ae185f010ed5351f820c884a1a9dfc2ed869a6242e453d1909864b0c4fa192d6a1799fb4664fcd5efea1f370bfb38ff0170f9c0b5e77#npm:8.20.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9273,7 +9273,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
           ["eslint-plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.8.0"],\
           ["globals", "npm:17.4.0"],\
-          ["happy-dom", "npm:20.8.8"],\
+          ["happy-dom", "npm:20.8.9"],\
           ["jwt-decode", "npm:4.0.0"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.4"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
@@ -11035,7 +11035,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/utils", "npm:4.1.2"],\
           ["es-module-lexer", "npm:2.0.0"],\
           ["expect-type", "npm:1.3.0"],\
-          ["happy-dom", "npm:20.8.8"],\
+          ["happy-dom", "npm:20.8.9"],\
           ["jsdom", null],\
           ["magic-string", "npm:0.30.21"],\
           ["obug", "npm:2.1.1"],\
@@ -11709,14 +11709,14 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:4ab37c06a05870119f862c9755c2aa65e328b1f1ac53a1e348ad5eec54fd1bec63326d0e8953e3eb06656db1dcbf2b9592b9f2edf4a5e6ec761e42a209d5d347#npm:8.20.0", {\
-        "packageLocation": "./.yarn/__virtual__/ws-virtual-bd9d1a9af3/0/cache/ws-npm-8.20.0-b8684d1fe3-b7ab934b21.zip/node_modules/ws/",\
+      ["virtual:4a46bef4dc735d3636c7ae185f010ed5351f820c884a1a9dfc2ed869a6242e453d1909864b0c4fa192d6a1799fb4664fcd5efea1f370bfb38ff0170f9c0b5e77#npm:8.20.0", {\
+        "packageLocation": "./.yarn/__virtual__/ws-virtual-cfa1f29754/0/cache/ws-npm-8.20.0-b8684d1fe3-b7ab934b21.zip/node_modules/ws/",\
         "packageDependencies": [\
           ["@types/bufferutil", null],\
           ["@types/utf-8-validate", null],\
           ["bufferutil", null],\
           ["utf-8-validate", null],\
-          ["ws", "virtual:4ab37c06a05870119f862c9755c2aa65e328b1f1ac53a1e348ad5eec54fd1bec63326d0e8953e3eb06656db1dcbf2b9592b9f2edf4a5e6ec761e42a209d5d347#npm:8.20.0"]\
+          ["ws", "virtual:4a46bef4dc735d3636c7ae185f010ed5351f820c884a1a9dfc2ed869a6242e453d1909864b0c4fa192d6a1799fb4664fcd5efea1f370bfb38ff0170f9c0b5e77#npm:8.20.0"]\
         ],\
         "packagePeers": [\
           "@types/bufferutil",\
@@ -11996,16 +11996,16 @@ function convertToBigIntStats(stats) {
     if (Object.hasOwn(stats, key)) {
       const element = stats[key];
       if (typeof element === `number`) {
-        bigintStats[key] = BigInt(element);
+        bigintStats[key] = BigInt(Math.floor(element));
       } else if (nodeUtils__namespace.types.isDate(element)) {
         bigintStats[key] = new Date(element);
       }
     }
   }
-  bigintStats.atimeNs = bigintStats.atimeMs * BigInt(1e6);
-  bigintStats.mtimeNs = bigintStats.mtimeMs * BigInt(1e6);
-  bigintStats.ctimeNs = bigintStats.ctimeMs * BigInt(1e6);
-  bigintStats.birthtimeNs = bigintStats.birthtimeMs * BigInt(1e6);
+  bigintStats.atimeNs = bigintStats.atimeMs * BigInt(1e6) + BigInt(Math.floor(stats.atimeMs % 1 * 1e3)) * BigInt(1e3);
+  bigintStats.mtimeNs = bigintStats.mtimeMs * BigInt(1e6) + BigInt(Math.floor(stats.mtimeMs % 1 * 1e3)) * BigInt(1e3);
+  bigintStats.ctimeNs = bigintStats.ctimeMs * BigInt(1e6) + BigInt(Math.floor(stats.ctimeMs % 1 * 1e3)) * BigInt(1e3);
+  bigintStats.birthtimeNs = bigintStats.birthtimeMs * BigInt(1e6) + BigInt(Math.floor(stats.birthtimeMs % 1 * 1e3)) * BigInt(1e3);
   return bigintStats;
 }
 function areStatsEqual(a, b) {
