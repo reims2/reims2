@@ -1,4 +1,4 @@
-FROM eclipse-temurin:25.0.2_10-jdk-jammy@sha256:bff436312cf8a43386299913444739cc0c406dd080ecf3169c76e46313f71b89 AS build
+FROM eclipse-temurin:25.0.2_10-jdk-jammy@sha256:66d861051c68d11df129f04ff7a2c6aac3974ae0da7cff9b4b438c8765a0e536 AS build
 
 ENV PORT=5000
 WORKDIR /usr/src/app
@@ -13,7 +13,7 @@ WORKDIR /usr/src/app/target
 RUN java -Djarmode=layertools -jar ./*.jar extract
 
 # PROD IMAGE
-FROM eclipse-temurin:25.0.2_10-jre-alpine@sha256:f10d6259d0798c1e12179b6bf3b63cea0d6843f7b09c9f9c9c422c50e44379ec
+FROM eclipse-temurin:25.0.2_10-jre-alpine@sha256:5fcc27581b238efbfda93da3a103f59e0b5691fe522a7ac03fe8057b0819c888
 RUN apk add dumb-init
 
 ENV HOST=0.0.0.0
