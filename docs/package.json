@@ -17,6 +17,6 @@
     "node": "24.14.1"
   },
   "devDependencies": {
-    "prettier": "3.8.1"
+    "prettier": "3.8.3"
   }
 }
