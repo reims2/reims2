@@ -42,7 +42,7 @@
     "@types/eslint": "9.6.1",
     "@types/jest": "30.0.0",
     "@types/node": "24.12.2",
-    "@vitejs/devtools": "0.1.14",
+    "@vitejs/devtools": "0.1.15",
     "@vitejs/plugin-vue": "6.0.6",
     "@vitest/coverage-v8": "4.1.2",
     "@vitest/ui": "4.1.2",
