@@ -2245,7 +2245,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/debug@npm:^1.0.0-rc.15":
+"@rolldown/debug@npm:^1.0.0-rc.16":
   version: 1.0.0-rc.17
   resolution: "@rolldown/debug@npm:1.0.0-rc.17"
   checksum: 10/cda63d3860b0692bb69ab7d72064b9f542c2a4870c4aefe12aa60454998b131fa95cf05816b7bb7c7cc6352c95db273edd1f807d2e59b263c6c334098e4d74e2
@@ -2736,28 +2736,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/devtools-kit@npm:0.1.14":
-  version: 0.1.14
-  resolution: "@vitejs/devtools-kit@npm:0.1.14"
+"@vitejs/devtools-kit@npm:0.1.15":
+  version: 0.1.15
+  resolution: "@vitejs/devtools-kit@npm:0.1.15"
   dependencies:
-    "@vitejs/devtools-rpc": "npm:0.1.14"
+    "@vitejs/devtools-rpc": "npm:0.1.15"
     birpc: "npm:^4.0.0"
     ohash: "npm:^2.0.11"
   peerDependencies:
     vite: "*"
-  checksum: 10/76dea50be13d8c8ca222a4d6cbfe07c9d0c2bc928617964f656d8c72cc96e124a18c7f35117281c460b3715d4e4ef3bff42645a9bcdcdc41bd0c64b93bc3d02e
+  checksum: 10/89186ff78041b0fad20c1c343e2551365da44bd03d61ee0e638726d440a0362fd6841dcf7895f853765752bda15c99e83a1c47de586f379761555cfc57e2da91
   languageName: node
   linkType: hard
 
-"@vitejs/devtools-rolldown@npm:0.1.14":
-  version: 0.1.14
-  resolution: "@vitejs/devtools-rolldown@npm:0.1.14"
+"@vitejs/devtools-rolldown@npm:0.1.15":
+  version: 0.1.15
+  resolution: "@vitejs/devtools-rolldown@npm:0.1.15"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.6"
     "@pnpm/read-project-manifest": "npm:^1001.2.6"
-    "@rolldown/debug": "npm:^1.0.0-rc.15"
-    "@vitejs/devtools-kit": "npm:0.1.14"
-    "@vitejs/devtools-rpc": "npm:0.1.14"
+    "@rolldown/debug": "npm:^1.0.0-rc.16"
+    "@vitejs/devtools-kit": "npm:0.1.15"
+    "@vitejs/devtools-rpc": "npm:0.1.15"
     ansis: "npm:^4.2.0"
     birpc: "npm:^4.0.0"
     cac: "npm:^7.0.0"
@@ -2780,13 +2780,13 @@ __metadata:
     unstorage: "npm:^1.17.5"
     vue-virtual-scroller: "npm:^2.0.1"
     ws: "npm:^8.20.0"
-  checksum: 10/fde25e5db6c71c08e7e6c81de17f435c121d6867e127aca2a754ea76ad2852c9dd02533127db1e48d5bae658f25e9f8708e69625ac153ee638aa90eca4dda3b0
+  checksum: 10/ebafb996510cb1585f1e72ad5dec4b9d874e93f044cec17e62b1b7ff289828ed9d5a54e4a7adda683e1c2dd7e49f90c71507b8c1ae002d6d8b6e92f62a26e194
   languageName: node
   linkType: hard
 
-"@vitejs/devtools-rpc@npm:0.1.14":
-  version: 0.1.14
-  resolution: "@vitejs/devtools-rpc@npm:0.1.14"
+"@vitejs/devtools-rpc@npm:0.1.15":
+  version: 0.1.15
+  resolution: "@vitejs/devtools-rpc@npm:0.1.15"
   dependencies:
     birpc: "npm:^4.0.0"
     logs-sdk: "npm:^0.0.6"
@@ -2795,17 +2795,17 @@ __metadata:
     structured-clone-es: "npm:^2.0.0"
     valibot: "npm:^1.3.1"
     ws: "npm:^8.20.0"
-  checksum: 10/14af60932745ccc31f8cf03170f101644a24b2a48362e5f3834e82a14c00f3a62280f072537e6e36b42f8f00fb420927c30668ff93ac0b0e2f493d31a1c9727f
+  checksum: 10/566fbc131d81066b0176d6a9de785c539f6ba3c65187bff923a09a7581ffdbb6a0273afbdae5427461248265edde14f47e9a9b891d021586db0107aed78faf63
   languageName: node
   linkType: hard
 
-"@vitejs/devtools@npm:0.1.14":
-  version: 0.1.14
-  resolution: "@vitejs/devtools@npm:0.1.14"
+"@vitejs/devtools@npm:0.1.15":
+  version: 0.1.15
+  resolution: "@vitejs/devtools@npm:0.1.15"
   dependencies:
-    "@vitejs/devtools-kit": "npm:0.1.14"
-    "@vitejs/devtools-rolldown": "npm:0.1.14"
-    "@vitejs/devtools-rpc": "npm:0.1.14"
+    "@vitejs/devtools-kit": "npm:0.1.15"
+    "@vitejs/devtools-rolldown": "npm:0.1.15"
+    "@vitejs/devtools-rpc": "npm:0.1.15"
     birpc: "npm:^4.0.0"
     cac: "npm:^7.0.0"
     h3: "npm:^1.15.11"
@@ -2825,7 +2825,7 @@ __metadata:
     vite: "*"
   bin:
     vite-devtools: bin.js
-  checksum: 10/243b4f107cd82197189b80e473523d22aa739c1c76f1bfc6965182691d3dac426db0c6e826e340398bd226566ed9682fbe20aa47953bc0c059864fd45a6785bc
+  checksum: 10/29934477180a4d2899318d105940863775c3fc38d213d2ddc630f439b86016ff815f839dff22a9fcd7e752194bf379227a0699f4106713e0aab610b9e8fdf715
   languageName: node
   linkType: hard
 
@@ -7149,7 +7149,7 @@ __metadata:
     "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:30.0.0"
     "@types/node": "npm:24.12.2"
-    "@vitejs/devtools": "npm:0.1.14"
+    "@vitejs/devtools": "npm:0.1.15"
     "@vitejs/plugin-vue": "npm:6.0.6"
     "@vitest/coverage-v8": "npm:4.1.2"
     "@vitest/ui": "npm:4.1.2"
