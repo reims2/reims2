@@ -14,7 +14,7 @@
     "vue": "3.5.35"
   },
   "engines": {
-    "node": "24.14.1"
+    "node": "24.16.0"
   },
   "devDependencies": {
     "prettier": "3.8.3"
