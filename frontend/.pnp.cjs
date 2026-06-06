@@ -42,7 +42,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.8"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.8"],\
           ["@vueuse/core", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:14.3.0"],\
-          ["axios", "npm:1.16.1"],\
+          ["axios", "npm:1.17.0"],\
           ["dayjs", "npm:1.11.21"],\
           ["eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.4.1"],\
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
@@ -5438,11 +5438,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["axios", [\
-      ["npm:1.16.1", {\
-        "packageLocation": "./.yarn/cache/axios-npm-1.16.1-c946e2f9bd-9b6218cf96.zip/node_modules/axios/",\
+      ["npm:1.17.0", {\
+        "packageLocation": "./.yarn/cache/axios-npm-1.17.0-a83ee0b582-bc6995122f.zip/node_modules/axios/",\
         "packageDependencies": [\
-          ["axios", "npm:1.16.1"],\
-          ["follow-redirects", "virtual:c946e2f9bd84d4a5b64d292492d645adda1b366acb53b9515731a2143f7bb8966747ccd47d4acf6f43b8bd014ccf849bbaf9566c37e813d458bf0b646917b18c#npm:1.16.0"],\
+          ["axios", "npm:1.17.0"],\
+          ["follow-redirects", "virtual:a83ee0b5820d1517da9dd75f36a82748f793155742ce8080b024fa8e2c03824d0116edd13ee0a0e032c0fc9b8d1a16bd4fd2f2395a3e3b1e90fcd6f97390e0c9#npm:1.16.0"],\
           ["form-data", "npm:4.0.5"],\
           ["https-proxy-agent", "npm:5.0.1"],\
           ["proxy-from-env", "npm:2.1.0"]\
@@ -6897,12 +6897,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:c946e2f9bd84d4a5b64d292492d645adda1b366acb53b9515731a2143f7bb8966747ccd47d4acf6f43b8bd014ccf849bbaf9566c37e813d458bf0b646917b18c#npm:1.16.0", {\
-        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-5635fcf123/0/cache/follow-redirects-npm-1.16.0-816e4f62d9-3fbe3d80b3.zip/node_modules/follow-redirects/",\
+      ["virtual:a83ee0b5820d1517da9dd75f36a82748f793155742ce8080b024fa8e2c03824d0116edd13ee0a0e032c0fc9b8d1a16bd4fd2f2395a3e3b1e90fcd6f97390e0c9#npm:1.16.0", {\
+        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-637aab8191/0/cache/follow-redirects-npm-1.16.0-816e4f62d9-3fbe3d80b3.zip/node_modules/follow-redirects/",\
         "packageDependencies": [\
           ["@types/debug", null],\
           ["debug", null],\
-          ["follow-redirects", "virtual:c946e2f9bd84d4a5b64d292492d645adda1b366acb53b9515731a2143f7bb8966747ccd47d4acf6f43b8bd014ccf849bbaf9566c37e813d458bf0b646917b18c#npm:1.16.0"]\
+          ["follow-redirects", "virtual:a83ee0b5820d1517da9dd75f36a82748f793155742ce8080b024fa8e2c03824d0116edd13ee0a0e032c0fc9b8d1a16bd4fd2f2395a3e3b1e90fcd6f97390e0c9#npm:1.16.0"]\
         ],\
         "packagePeers": [\
           "@types/debug",\
@@ -9471,7 +9471,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.8"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.8"],\
           ["@vueuse/core", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:14.3.0"],\
-          ["axios", "npm:1.16.1"],\
+          ["axios", "npm:1.17.0"],\
           ["dayjs", "npm:1.11.21"],\
           ["eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.4.1"],\
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
