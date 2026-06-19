@@ -54,7 +54,7 @@ const RAW_RUNTIME_STATE =
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
           ["prettier", "npm:3.8.3"],\
           ["reims2-frontend", "workspace:."],\
-          ["sass", "npm:1.100.0"],\
+          ["sass", "npm:1.101.0"],\
           ["sass-embedded", "npm:1.100.0"],\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
           ["typescript-eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.60.1"],\
@@ -9504,7 +9504,7 @@ const RAW_RUNTIME_STATE =
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
           ["prettier", "npm:3.8.3"],\
           ["reims2-frontend", "workspace:."],\
-          ["sass", "npm:1.100.0"],\
+          ["sass", "npm:1.101.0"],\
           ["sass-embedded", "npm:1.100.0"],\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
           ["typescript-eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.60.1"],\
@@ -9709,6 +9709,17 @@ const RAW_RUNTIME_STATE =
           ["chokidar", "npm:5.0.0"],\
           ["immutable", "npm:5.1.5"],\
           ["sass", "npm:1.100.0"],\
+          ["source-map-js", "npm:1.2.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.101.0", {\
+        "packageLocation": "../../../../../../../runner/cache/others/berry/cache/sass-npm-1.101.0-ce15824a44-10.zip/node_modules/sass/",\
+        "packageDependencies": [\
+          ["@parcel/watcher", "npm:2.4.1"],\
+          ["chokidar", "npm:5.0.0"],\
+          ["immutable", "npm:5.1.5"],\
+          ["sass", "npm:1.101.0"],\
           ["source-map-js", "npm:1.2.1"]\
         ],\
         "linkType": "HARD"\
@@ -11165,7 +11176,7 @@ const RAW_RUNTIME_STATE =
           ["picomatch", "npm:4.0.4"],\
           ["postcss", "npm:8.5.15"],\
           ["rolldown", "npm:1.0.3"],\
-          ["sass", "npm:1.100.0"],\
+          ["sass", "npm:1.101.0"],\
           ["sass-embedded", "npm:1.100.0"],\
           ["stylus", null],\
           ["sugarss", null],\
