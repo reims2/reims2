@@ -28,7 +28,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
-          ["@babel/types", "npm:7.29.7"],\
+          ["@babel/types", "npm:8.0.0"],\
           ["@eslint/js", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.0.1"],\
           ["@fontsource-variable/roboto-flex", "npm:5.2.8"],\
           ["@mdi/js", "npm:7.4.47"],\
@@ -174,7 +174,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@babel/generator", "npm:8.0.0-rc.5"],\
           ["@babel/parser", "npm:8.0.0-rc.5"],\
-          ["@babel/types", "npm:8.0.0-rc.5"],\
+          ["@babel/types", "npm:8.0.0"],\
           ["@jridgewell/gen-mapping", "npm:0.3.13"],\
           ["@jridgewell/trace-mapping", "npm:0.3.31"],\
           ["@types/jsesc", "npm:2.5.1"],\
@@ -492,10 +492,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:8.0.0-rc.5", {\
-        "packageLocation": "./.yarn/cache/@babel-helper-string-parser-npm-8.0.0-rc.5-834e4827dc-9fc2211a53.zip/node_modules/@babel/helper-string-parser/",\
+      ["npm:8.0.0", {\
+        "packageLocation": "./.yarn/cache/@babel-helper-string-parser-npm-8.0.0-d8177894ff-3c38887284.zip/node_modules/@babel/helper-string-parser/",\
         "packageDependencies": [\
-          ["@babel/helper-string-parser", "npm:8.0.0-rc.5"]\
+          ["@babel/helper-string-parser", "npm:8.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -508,10 +508,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:8.0.0-rc.5", {\
-        "packageLocation": "./.yarn/cache/@babel-helper-validator-identifier-npm-8.0.0-rc.5-5dd7b7785d-ed047388f5.zip/node_modules/@babel/helper-validator-identifier/",\
+      ["npm:8.0.2", {\
+        "packageLocation": "./.yarn/cache/@babel-helper-validator-identifier-npm-8.0.2-672b4a14a4-175f09f4c3.zip/node_modules/@babel/helper-validator-identifier/",\
         "packageDependencies": [\
-          ["@babel/helper-validator-identifier", "npm:8.0.0-rc.5"]\
+          ["@babel/helper-validator-identifier", "npm:8.0.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -561,7 +561,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@babel-parser-npm-8.0.0-rc.5-2a9ec65efe-c11c039d4b.zip/node_modules/@babel/parser/",\
         "packageDependencies": [\
           ["@babel/parser", "npm:8.0.0-rc.5"],\
-          ["@babel/types", "npm:8.0.0-rc.5"]\
+          ["@babel/types", "npm:8.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2439,12 +2439,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:8.0.0-rc.5", {\
-        "packageLocation": "./.yarn/cache/@babel-types-npm-8.0.0-rc.5-2ac6e73908-9c4d432f1c.zip/node_modules/@babel/types/",\
+      ["npm:8.0.0", {\
+        "packageLocation": "./.yarn/cache/@babel-types-npm-8.0.0-3b31368f15-9bc81523b9.zip/node_modules/@babel/types/",\
         "packageDependencies": [\
-          ["@babel/helper-string-parser", "npm:8.0.0-rc.5"],\
-          ["@babel/helper-validator-identifier", "npm:8.0.0-rc.5"],\
-          ["@babel/types", "npm:8.0.0-rc.5"]\
+          ["@babel/helper-string-parser", "npm:8.0.0"],\
+          ["@babel/helper-validator-identifier", "npm:8.0.2"],\
+          ["@babel/types", "npm:8.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9521,7 +9521,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:.", {\
         "packageLocation": "./",\
         "packageDependencies": [\
-          ["@babel/types", "npm:7.29.7"],\
+          ["@babel/types", "npm:8.0.0"],\
           ["@eslint/js", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.0.1"],\
           ["@fontsource-variable/roboto-flex", "npm:5.2.8"],\
           ["@mdi/js", "npm:7.4.47"],\
