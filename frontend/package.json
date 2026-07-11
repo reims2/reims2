@@ -41,7 +41,7 @@
     "@testing-library/vue": "8.1.0",
     "@types/eslint": "9.6.1",
     "@types/jest": "30.0.0",
-    "@types/node": "24.13.2",
+    "@types/node": "24.13.3",
     "@vitejs/devtools": "0.3.4",
     "@vitejs/plugin-vue": "6.0.7",
     "@vitest/coverage-v8": "4.1.9",
