@@ -3256,18 +3256,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/language-core@npm:3.3.6":
-  version: 3.3.6
-  resolution: "@vue/language-core@npm:3.3.6"
+"@vue/language-core@npm:3.3.7":
+  version: 3.3.7
+  resolution: "@vue/language-core@npm:3.3.7"
   dependencies:
     "@volar/language-core": "npm:2.4.28"
     "@vue/compiler-dom": "npm:^3.5.0"
     "@vue/shared": "npm:^3.5.0"
-    alien-signals: "npm:^3.2.0"
+    alien-signals: "npm:^3.2.1"
     muggle-string: "npm:^0.4.1"
     path-browserify: "npm:^1.0.1"
     picomatch: "npm:^4.0.4"
-  checksum: 10/66bc6885b5df081a0bede3a967e28dbef5de7847472465fca085091d3f8928668ae26a51d0781f8b342ed0f2070be9c86d361c1da22cc01815b5e2591e4cef6f
+  checksum: 10/7774b8d0b71947aa190f891c2861cfedae01c181a4dac83de4ca20537fcb92acad59ec09996764ee13d5d953820809b5170c77ef80af5678dc3cb830c0e2de90
   languageName: node
   linkType: hard
 
@@ -3478,7 +3478,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alien-signals@npm:^3.2.0":
+"alien-signals@npm:^3.2.1":
   version: 3.2.1
   resolution: "alien-signals@npm:3.2.1"
   checksum: 10/9c8b14c460e748f40d85bbe4e607f81a4177d8ca1c056eab86f9792297003ef10717690019e23cacf19bb68babba97d1cb0bb03c35ca495d736cb6809efb7291
@@ -7249,7 +7249,7 @@ __metadata:
     vue-eslint-parser: "npm:10.4.1"
     vue-router: "npm:5.1.0"
     vue-toastification: "npm:2.0.0-rc.5"
-    vue-tsc: "npm:3.3.6"
+    vue-tsc: "npm:3.3.7"
     vue3-enter-to-tab: "npm:3.1.6"
     vuetify: "npm:3.12.8"
     workbox-window: "npm:7.4.1"
@@ -9033,17 +9033,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-tsc@npm:3.3.6":
-  version: 3.3.6
-  resolution: "vue-tsc@npm:3.3.6"
+"vue-tsc@npm:3.3.7":
+  version: 3.3.7
+  resolution: "vue-tsc@npm:3.3.7"
   dependencies:
     "@volar/typescript": "npm:2.4.28"
-    "@vue/language-core": "npm:3.3.6"
+    "@vue/language-core": "npm:3.3.7"
   peerDependencies:
     typescript: ">=5.0.0"
   bin:
     vue-tsc: bin/vue-tsc.js
-  checksum: 10/f9270722e900c82c1c7a87c46178004451da2ce559da35ba7dca8a9cb9b7a9c0c165b9b7fec14cbc31b14eb0050ff12e57e3753c6a093d461133a2eba6afb7cc
+  checksum: 10/14cc1d03b848c88816805fe9f4e1cc1056f19bde0eb82510a1718dfbaf3b021ef8c2214a0141644221632302bd7d6ad44fd72c473c5d7210993fe9f02ca0af6b
   languageName: node
   linkType: hard
 
