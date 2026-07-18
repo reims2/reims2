@@ -32,7 +32,7 @@ const RAW_RUNTIME_STATE =
           ["@eslint/js", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.0.1"],\
           ["@fontsource-variable/roboto-flex", "npm:5.2.8"],\
           ["@mdi/js", "npm:7.4.47"],\
-          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:1.0.3"],\
+          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.1"],\
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/jest", "npm:30.0.0"],\
@@ -3186,18 +3186,19 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@pinia/testing", [\
-      ["npm:1.0.3", {\
-        "packageLocation": "./.yarn/cache/@pinia-testing-npm-1.0.3-a26ce75d5c-78032d1230.zip/node_modules/@pinia/testing/",\
+      ["npm:2.0.1", {\
+        "packageLocation": "./.yarn/cache/@pinia-testing-npm-2.0.1-41c58d2a9a-505033e49f.zip/node_modules/@pinia/testing/",\
         "packageDependencies": [\
-          ["@pinia/testing", "npm:1.0.3"]\
+          ["@pinia/testing", "npm:2.0.1"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:1.0.3", {\
-        "packageLocation": "./.yarn/__virtual__/@pinia-testing-virtual-2880925e2f/0/cache/@pinia-testing-npm-1.0.3-a26ce75d5c-78032d1230.zip/node_modules/@pinia/testing/",\
+      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.1", {\
+        "packageLocation": "./.yarn/__virtual__/@pinia-testing-virtual-c00fc85d4e/0/cache/@pinia-testing-npm-2.0.1-41c58d2a9a-505033e49f.zip/node_modules/@pinia/testing/",\
         "packageDependencies": [\
-          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:1.0.3"],\
+          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.1"],\
           ["@types/pinia", null],\
+          ["nostics", "npm:1.1.4"],\
           ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.0.4"]\
         ],\
         "packagePeers": [\
@@ -9205,7 +9206,7 @@ const RAW_RUNTIME_STATE =
           ["@eslint/js", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.0.1"],\
           ["@fontsource-variable/roboto-flex", "npm:5.2.8"],\
           ["@mdi/js", "npm:7.4.47"],\
-          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:1.0.3"],\
+          ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.1"],\
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/jest", "npm:30.0.0"],\
