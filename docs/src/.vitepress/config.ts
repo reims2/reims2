@@ -30,6 +30,7 @@ export default defineConfig({
         {
           text: 'Internals',
           items: [
+            { link: '/optometry-basics', text: 'Optometry basics' },
             { link: '/philscore', text: 'Matching Algorithm' },
             { link: '/inventory-analysis', text: 'Inventory analysis' },
             {
@@ -60,6 +61,16 @@ export default defineConfig({
           items: [
             { link: '/dev/notes', text: 'Meetings' },
             { link: '/dev/ideas', text: 'Ideas' },
+          ],
+        },
+        {
+          text: 'AI Notes',
+          items: [
+            { link: '/dev/ai-notes/', text: 'Overview' },
+            {
+              link: '/dev/ai-notes/inventory-refill-analysis',
+              text: 'Inventory refill analysis',
+            },
           ],
         },
       ],

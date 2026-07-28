@@ -2,11 +2,11 @@
 
 This document provides an explanation of the glasses matching algorithm. The algorithm's purpose is to filter and score glasses based on a given prescription.
 
-The corresponding [code can be found here](https://github.com/reims2/reims2/blob/main/frontend/src/lib/philscore.ts).
+The corresponding [code can be found here](https://github.com/reims2/reims2/blob/main/frontend/src/lib/philscore.ts). If sphere/cylinder/axis/add or "spherical equivalent" are unfamiliar, read [Optometry basics](/optometry-basics) first.
 
 ## Current Status
 
-The algorithm is a replica of the one used in the previous REIMS1 system. We have comprehensive testing in place to ensure that the REIMS2 implementation aligns with the REIMS1 implementation. Any discrepancies are treated as bugs and are fixed accordingly.
+The algorithm is a replica of the one used in the previous REIMS1 system. We have comprehensive testing in place to ensure that the REIMS2 implementation aligns with the REIMS1 implementation. Any discrepancies are treated as bugs and are fixed accordingly. Several tests in `philscore_score.test.ts` are prefixed `REIMS1:` because their expected score was taken directly from the legacy system: treat those as a parity contract, not a spec to simplify.
 
 We are open to refining the algorithm, see [Potential Improvements](#potential-improvements) for more information.
 
@@ -19,6 +19,8 @@ We are open to refining the algorithm, see [Potential Improvements](#potential-i
 
 ## Algorithm Overview
 
+Search input is sanitized before any of this runs: `sanitizeEyeValues` (`frontend/src/util/eye-utils.ts`) rounds every value to a 0.25 step, rounding away from zero, forces cylinder to be zero or negative, and zeroes axis whenever cylinder is zero. Everything below assumes those invariants already hold.
+
 The glasses matching process is executed in the following sequence:
 
 Initially, we exclude glasses based on the following criteria:
@@ -29,7 +31,7 @@ Initially, we exclude glasses based on the following criteria:
 4. If multifocal, exclude glasses where the lens' `additional` deviates from the desired `additional` more than tolerated. This is performed once for OD and once for OS.
 
 > [!NOTE] Note on BAL
-> If the rx has BAL enabled for an eye, we bypass steps 2 and 4 for that eye. Step 3 for that eye is executed using the sphere and cylinder of the non-BAL eye with an increased tolerance of 1.0.
+> If the rx has BAL enabled for an eye, we bypass steps 2 and 4 for that eye. Step 3 for that eye instead compares the lens against the non-BAL eye's prescription. That check always uses a tolerance of `1.0`, regardless of whether "high tolerance" is turned on for this search.
 
 After filtering, we calculate the PhilScore for the remaining glasses using the following steps:
 
@@ -47,7 +49,7 @@ After filtering, we calculate the PhilScore for the remaining glasses using the 
 
 This function verifies if the sphere and cylinder of a lens are within the desired tolerance of the prescription. It compares each glass to the desired prescription sphere and cylinder, taking into account the tolerance.
 
-It also checks against every spherical equivalent of the prescription. If the lens is within the tolerance of any spherical equivalent, it is also considered.
+It also checks the prescription's spherical equivalents. `calcSphericalEquivalents` computes up to three transformed versions, each trading 0.5 D of cylinder for 0.25 D of sphere, adding a candidate only while the resulting cylinder stays zero or negative. A lens matching any of these counts too; see [Optometry basics](/optometry-basics#sphere-and-cylinder-trade-off) for why the trade-off is valid.
 
 > [!NOTE]
 > The default tolerance is 0.5. If the user specified "high tolerance" in the UI, the tolerance is increased to 1.0.
@@ -87,6 +89,8 @@ Here's how it works with these inputs:
 2. With a desired prescription axis of 10, the initially calculated allowed range is -5 to 25 degrees.
 3. However, an axis of -5 degrees doesn't exist. So, the function adjusts the allowed range to 175 to 180 degrees (for the negative part) and 0 to 25 degrees (for the positive part).
 4. The function then checks if the lens axis (178 degrees) falls within this allowed range. In this case, the lens is _allowed_ because 178 is between 175 and 180.
+
+A real BAL search hitting this exact check is worked through in the [2024 campaign investigation](/2024_bugs_investigated).
 
 ## Scoring Function Descriptions
 
@@ -137,13 +141,11 @@ The initial PhilScore is the sum of these: 0.5 + 0.25 + 0.025 + 0.00139 = 0.7763
 
 ## calcSingleEyePhilscore
 
-The score is then adjusted based on several conditions related to the sphere, cylinder, and additional values. The conditions are applied in the following order:
+The score is then adjusted based on several conditions related to the sphere, cylinder, and additional values. Conditions 1 to 3 are mutually exclusive: they're checked in order, and as soon as one applies, the rest are skipped. Nobody is sure why (the code's own comment: "Why? No one knows. But otherwise we could have scores below zero, so maybe bc of that?"), so treat the ordering as a fact to preserve.
 
 _Improving the score means subtracting from it so it gets smaller. Worsening it means adding to it._
 
-1.  **Improve** the score (by 0.5) if the lens is a spherical equivalent of the prescription (_I'm actually not sure if this is what's happening, please fact check this using the code in the details section_).
-    ::: details Additional details
-    - This is the exact condition:
+1.  **Improve** the score (by 0.5) if the lens is a spherical equivalent of the prescription. This is the exact condition:
 
     ```ts
     if ((rxSphere - lensSphere)  === ((lensCylinder - rxCylinder) / 2) AND
@@ -152,10 +154,9 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
     ) // NOTE: cylinder is always negative
     ```
 
-    - _The score gets improved slightly more (by an additional amount of 0.05) if the lens sphere is bigger than 0_
-      :::
+    The score gets improved slightly more (by an additional amount of 0.05) if the lens sphere is bigger than 0.
 
-2.  Only if step 2 did not apply: **Improve** the score if lens sphere is larger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder larger).
+2.  Only if rule 1 did not apply: **Improve** the score if lens sphere is larger than desired sphere AND lens cylinder is smaller than the desired cylinder. OR the other way round (sphere smaller AND cylinder larger).
     ::: details Additional details
     - This is the exact condition:
 
@@ -165,19 +166,19 @@ _Improving the score means subtracting from it so it gets smaller. Worsening it 
          (lensSphere < rxSphere AND rxCylinder < lensCylinder)
     ```
 
-    - _The score gets improved by 0.5 if the cylinder delta is larger than 0.25, otherwise by 0.25_
+    - _The score gets improved by 0.5 if the cylinder delta is 0.5 or more, otherwise by 0.25_
     - _The score gets improved slightly more (by an additional amount of 0.05) if sphere delta matches cylinder delta_
       :::
 
-3.  Only if step 2 or 3 did not apply: **Improve** the score (by 0.12) if the spheres are equal and the cylinder delta is small (<= 0.75).
+3.  Only if rules 1 and 2 did not apply: **Improve** the score (by 0.12) if the spheres are equal and the cylinder delta is small but not zero (`<= 0.75`). An exact cylinder match doesn't get this bonus; it's already the best possible outcome via `calcInitialDiffScore`'s own cylinder term.
 4.  **Improve** the score by a really small amount if the search is multifocal and the lens additional is larger than the desired additional.
     ::: details Additional details
     - _Score gets improved more if the difference is larger._ Formula for how the score is improved: `-(lensAdd - rxAdd) / 100`
     - This also has basically no impact, since the maximum delta with the normal tolerance would be 0.25, so the highest score improvement would be: `-0.25/100 = -0.0025`
       :::
-5.  **Worsen** the score (by 0.25) if the desired sphere is positive AND if it's larger than the lens sphere.
+5.  **Worsen** the score (by 0.25) if the desired sphere is positive AND if it's larger than the lens sphere. See [Optometry basics](/optometry-basics#one-more-asymmetry) for why this asymmetry is intentional.
 
-The function then returns the final PhilScore for the lens.
+Unlike 1 to 3, rules 4 and 5 aren't mutually exclusive with anything: both are always checked, on top of whichever of 1 to 3 applied. The function then returns the final PhilScore for the lens.
 
 ## Potential Improvements
 

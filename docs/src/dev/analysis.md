@@ -52,10 +52,10 @@ on cdx files: https://stackoverflow.com/q/3618633/4026792
 
 ### Helpful stuff to know:
 
-- Cylinder and axis are coupled together, axis gives rotation. If the cylinder matches but the axis is totally different, that doesn't make sense.
-- You always want to match both eyes, never a single one
-- The "ignore cyl and axis" function is no longer required
-- A prescription can be transformed to another one. That's possible because cylinder abd sphere are coupled together.
+- The "ignore cyl and axis" function is no longer required.
+
+See [Optometry basics](/optometry-basics) for how cylinder, axis, sphere and add relate to each
+other and to the matching algorithm.
 
 ### The general process
 
@@ -101,6 +101,13 @@ Calculcates: An array of other possible Rx's (consisting of sphere+cylinder). Fi
 
 Returns: It filters all glasses if they match to one of the newly calculcates Rx's. _It's unclear how the axis is used here? I assume it again calls the AtoLTF function here_
 
+> [!NOTE] Resolved in REIMS2
+> In the current TypeScript port (`calcSphericalEquivalents` in `philscore.ts`), axis is **not** used
+> in this calculation at all. Only sphere and cylinder are transformed; the axis check
+> (`AtoLTF`/`checkForAxisTolerance`) runs separately, against the lens's own cylinder. See
+> [Matching Algorithm → checkForTolerances](/philscore#checkfortolerances) for the exact table this
+> produces today.
+
 ### PhilScore RANK()
 
 **The actual PhilScore/Rank function which calculcates the score**
@@ -110,6 +117,13 @@ Input: desired sphere, cyl and add for OS and OD, measured sphere, cyl and add f
 Returns an index based on a lot of conditions
 
 For RANK() see also [this source code from 5 years ago](https://github.com/reims2/reims-web/blob/58a412ef6185b83e2b5dde96f5bd800d2fb63ecb/app/records/eyeglassRecords.ts#L151-L172)
+
+> [!NOTE] Resolved in REIMS2
+> The current port does include axis in the base score (`calcInitialDiffScore`), but at a weight of
+> `1/3600` against `1` for sphere/cylinder: mathematically present but practically negligible. That's
+> consistent with "no axis??" above. Whether or not the FoxPro RANK used it, it can't have
+> meaningfully affected ranking. See
+> [Matching Algorithm → calcInitialDiffScore](/philscore#calcinitialdiffscore).
 
 ## Helpful stuff
 
