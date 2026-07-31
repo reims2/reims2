@@ -30,7 +30,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@babel/types", "npm:8.0.4"],\
           ["@eslint/js", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.0.1"],\
-          ["@fontsource-variable/roboto-flex", "npm:5.2.8"],\
+          ["@fontsource-variable/roboto-flex", "npm:5.3.0"],\
           ["@mdi/js", "npm:7.4.47"],\
           ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.1"],\
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
@@ -2789,10 +2789,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@fontsource-variable/roboto-flex", [\
-      ["npm:5.2.8", {\
-        "packageLocation": "./.yarn/cache/@fontsource-variable-roboto-flex-npm-5.2.8-037dda8b06-9040dcf723.zip/node_modules/@fontsource-variable/roboto-flex/",\
+      ["npm:5.3.0", {\
+        "packageLocation": "./.yarn/cache/@fontsource-variable-roboto-flex-npm-5.3.0-336ccb8c49-7e8806ce8c.zip/node_modules/@fontsource-variable/roboto-flex/",\
         "packageDependencies": [\
-          ["@fontsource-variable/roboto-flex", "npm:5.2.8"]\
+          ["@fontsource-variable/roboto-flex", "npm:5.3.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9192,7 +9192,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@babel/types", "npm:8.0.4"],\
           ["@eslint/js", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.0.1"],\
-          ["@fontsource-variable/roboto-flex", "npm:5.2.8"],\
+          ["@fontsource-variable/roboto-flex", "npm:5.3.0"],\
           ["@mdi/js", "npm:7.4.47"],\
           ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.1"],\
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
