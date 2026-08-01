@@ -5,7 +5,7 @@
     @update:model-value="(val) => (rootStore.drawer = val)"
   >
     <template #prepend>
-      <div class="mt-5 mx-3 text-h6 font-weight-medium">
+      <div class="mt-5 mx-3 text-title-large font-weight-medium">
         <router-link
           :style="isMiniDrawer ? 'visibility:hidden;' : ''"
           class="no-decoration no-color"
@@ -136,7 +136,11 @@ const isMiniDrawer = computed(() => {
   color: inherit !important;
 }
 
-.bigger-text .v-list-item-title {
-  font-size: 1.2rem !important;
+/* vuetify wraps its own styles in the "vuetify" layer; !important overrides of vuetify
+   classes must be in a layer ordered after it (see assets/sass/vuetify.scss) to still win */
+@layer overrides {
+  .bigger-text .v-list-item-title {
+    font-size: 1.2rem !important;
+  }
 }
 </style>

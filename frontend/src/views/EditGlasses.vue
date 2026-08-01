@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row dense class="justify-center">
+    <v-row density="compact" class="justify-center">
       <v-col cols="12" md="6" lg="5">
         <div class="pb-2">Start by entering a SKU to dispense or edit glasses.</div>
         <v-form ref="form" v-model="valid" class="pt-3" @submit.prevent="startDispension">
@@ -55,7 +55,9 @@
         aria-labelledby="heading-recently-dispensed"
       >
         <div class="pb-4 d-flex align-center">
-          <span id="heading-recently-dispensed" class="text-h6">Recently dispensed or deleted</span>
+          <span id="heading-recently-dispensed" class="text-title-large font-weight-medium">
+            Recently dispensed or deleted
+          </span>
           <v-progress-circular
             v-if="isLastDispensedLoading"
             indeterminate

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row dense class="d-flex justify-center">
+    <v-row density="compact" class="d-flex justify-center">
       <v-col cols="12" md="6" lg="5">
         <v-table>
           <thead>
@@ -67,7 +67,7 @@
                     Users with the admin role can add and delete users, so be careful to apply that
                     role only when necessary.
                   </v-alert>
-                  <v-row dense>
+                  <v-row density="compact">
                     <v-col cols="12">
                       <v-text-field
                         v-model="newName"
