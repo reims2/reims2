@@ -15,12 +15,12 @@ public class RootRestController {
     @Value("#{servletContext.contextPath}")
     private String servletContextPath;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     public void redirectToSwagger(HttpServletResponse response) throws IOException {
         response.sendRedirect(this.servletContextPath + "/api");
     }
 
-    @RequestMapping(value = "/api", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = "/api", produces = MediaType.TEXT_PLAIN_VALUE)
     public @ResponseBody String status(HttpServletResponse response) {
         return "OK";
     }

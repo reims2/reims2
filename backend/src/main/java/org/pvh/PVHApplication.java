@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.support.DatabaseStartupValidator;
@@ -30,6 +31,7 @@ public class PVHApplication extends SpringBootServletInitializer {
     }
 
     @Bean
+    @DependsOnDatabaseInitialization
     DatabaseStartupValidator databaseStartupValidator(DataSource dataSource) {
         // Wait for the database to be ready
         var dsv = new DatabaseStartupValidator();

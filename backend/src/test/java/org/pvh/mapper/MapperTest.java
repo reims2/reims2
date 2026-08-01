@@ -1,8 +1,7 @@
 package org.pvh.mapper;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.pvh.model.dto.EyeDTO;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
@@ -12,12 +11,10 @@ import org.pvh.model.entity.Glasses;
 import org.pvh.model.mapper.GlassesMapper;
 import org.pvh.model.mapper.GlassesMapperImpl;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {GlassesMapper.class, GlassesMapperImpl.class})
 public class MapperTest {
 
