@@ -1401,9 +1401,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devframes/hub@npm:^0.7.14":
-  version: 0.7.15
-  resolution: "@devframes/hub@npm:0.7.15"
+"@devframes/hub@npm:^0.7.15":
+  version: 0.7.16
+  resolution: "@devframes/hub@npm:0.7.16"
   dependencies:
     birpc: "npm:^4.0.0"
     destr: "npm:^2.0.5"
@@ -1413,69 +1413,69 @@ __metadata:
     tinyexec: "npm:^1.2.4"
     zigpty: "npm:^0.2.1"
   peerDependencies:
-    devframe: 0.7.15
-  checksum: 10/1f38cd4b1c6589ae94f6be9b05e62297707b72f24a0630da95a8d897aa5c53cf06be2b6d8426f0feb98fa6540d864632c86e54065d0c86ae3854db24dabd3259
+    devframe: 0.7.16
+  checksum: 10/c4274604aaa50e1e43a34ca84538066b081611ee35911b52aa685409e71541b8e34dd6b3d1595c7034a32a0cf1a3b2dea31d09af93235e1072170fa08521d641
   languageName: node
   linkType: hard
 
-"@devframes/json-render@npm:^0.7.14":
-  version: 0.7.15
-  resolution: "@devframes/json-render@npm:0.7.15"
+"@devframes/json-render@npm:^0.7.15":
+  version: 0.7.16
+  resolution: "@devframes/json-render@npm:0.7.16"
   dependencies:
     "@json-render/core": "npm:^0.19.0"
     nostics: "npm:^1.2.0"
     zod: "npm:^4.4.3"
   peerDependencies:
-    "@devframes/hub": 0.7.15
-    devframe: 0.7.15
+    "@devframes/hub": 0.7.16
+    devframe: 0.7.16
   peerDependenciesMeta:
     "@devframes/hub":
       optional: true
-  checksum: 10/349a98ed0b5942bf82490a93086bc243b691d4390bf2ae07a8a6caaf50aec9eb6d39a62ee5cc748170630adc65049df7eb63d511512cfebed3cb0d5d152a62e8
+  checksum: 10/4e813ecf128f250298584f6c99b2c5dd29837dc6a65ef173a6c55d3d997d2efbc60fb029ce99909e140851e82c130622371be59c717c3d5441d7f0105785e191
   languageName: node
   linkType: hard
 
-"@devframes/plugin-inspect@npm:^0.7.14":
-  version: 0.7.15
-  resolution: "@devframes/plugin-inspect@npm:0.7.15"
+"@devframes/plugin-inspect@npm:^0.7.15":
+  version: 0.7.16
+  resolution: "@devframes/plugin-inspect@npm:0.7.16"
   dependencies:
     "@valibot/to-json-schema": "npm:^1.7.1"
     cac: "npm:^7.0.0"
     nostics: "npm:^1.2.0"
   peerDependencies:
-    devframe: 0.7.15
+    devframe: 0.7.16
     vite: ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     vite:
       optional: true
   bin:
     devframe-inspect: ./bin.mjs
-  checksum: 10/a72229c78445c59514db6895d74a82c63d2cd2a455d6e73bff7dc288488e456986bc16d10d21ca5a16a3ac39457e2ee2269d65b6d0e8d84d87d7e83003277af4
+  checksum: 10/685269481160df4f63c18ce452009e376f296c1c18fada023aaa7688bde55de0ce45e6a9682a471bac52e09424613590cfd6d632aaa70149ddf5aa9c2ac8620c
   languageName: node
   linkType: hard
 
-"@devframes/plugin-messages@npm:^0.7.14":
-  version: 0.7.15
-  resolution: "@devframes/plugin-messages@npm:0.7.15"
+"@devframes/plugin-messages@npm:^0.7.15":
+  version: 0.7.16
+  resolution: "@devframes/plugin-messages@npm:0.7.16"
   dependencies:
     cac: "npm:^7.0.0"
     nostics: "npm:^1.2.0"
   peerDependencies:
-    "@devframes/hub": 0.7.15
-    devframe: 0.7.15
+    "@devframes/hub": 0.7.16
+    devframe: 0.7.16
     vite: ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     vite:
       optional: true
   bin:
     devframe-messages: ./bin.mjs
-  checksum: 10/05070758929f33f3754d11b840b399857c85d5627c30c9d9e55a386194ae145060454592edc472514b76ef7fbd76f2a42f18cbc3e72152f93bdf34a79fdd171c
+  checksum: 10/7129e4c7df105a2e7b3e68ed44ea511212086999fe89e679983281e38181e06d3baf4b75a63426da7adb4f74874b659824c34152fbc2b31fc9f531289747d8da
   languageName: node
   linkType: hard
 
-"@devframes/plugin-terminals@npm:^0.7.14":
-  version: 0.7.15
-  resolution: "@devframes/plugin-terminals@npm:0.7.15"
+"@devframes/plugin-terminals@npm:^0.7.15":
+  version: 0.7.16
+  resolution: "@devframes/plugin-terminals@npm:0.7.16"
   dependencies:
     cac: "npm:^7.0.0"
     nostics: "npm:^1.2.0"
@@ -1483,14 +1483,14 @@ __metadata:
     valibot: "npm:^1.4.2"
     zigpty: "npm:^0.2.1"
   peerDependencies:
-    devframe: 0.7.15
+    devframe: 0.7.16
     vite: ^8.0.0
   peerDependenciesMeta:
     vite:
       optional: true
   bin:
     devframe-terminals: ./bin.mjs
-  checksum: 10/4f0be5cc2333548bde471de461eab702a4a92c72983220d0cb181e9e7ebba1672af27a9f9c44f06566fd21b41f62e1555a60b935aa15877572eef3a2f336934b
+  checksum: 10/cbcf07e8ed3d6654c0d4ff51a6f939c20786796da64acfc12d974f6a27ab52a0f0f1a756a0c62a7395f9d6da576ba7dd5a8753c99c6feedde5608740d9b8e7d3
   languageName: node
   linkType: hard
 
@@ -2754,35 +2754,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/devtools-kit@npm:0.4.9":
-  version: 0.4.9
-  resolution: "@vitejs/devtools-kit@npm:0.4.9"
+"@vitejs/devtools-kit@npm:0.4.10":
+  version: 0.4.10
+  resolution: "@vitejs/devtools-kit@npm:0.4.10"
   dependencies:
-    "@devframes/hub": "npm:^0.7.14"
-    "@devframes/json-render": "npm:^0.7.14"
-    devframe: "npm:^0.7.14"
+    "@devframes/hub": "npm:^0.7.15"
+    "@devframes/json-render": "npm:^0.7.15"
+    devframe: "npm:^0.7.15"
     local-pkg: "npm:^1.2.1"
     mlly: "npm:^1.8.2"
     nostics: "npm:^1.2.0"
-    nypm: "npm:^0.6.8"
+    nypm: "npm:^0.6.9"
   peerDependencies:
     vite: "*"
-  checksum: 10/9b237922fdf38eca8cc418424fb03d049d467f41b4bfdf360f8d598b54899ec70fb35788456a63fa514e7afb56955e093b25d21fafa87d0e143623aaf5d67ab3
+  checksum: 10/6cae07e041e2e1f59aca65016c79a7e81b0e11a67ecca67b8dba5c17a43ef5442ec6aa57ecd16e2225697042640ca4922e53b9243abbda6dba3c165d8a00c935
   languageName: node
   linkType: hard
 
-"@vitejs/devtools@npm:0.4.9":
-  version: 0.4.9
-  resolution: "@vitejs/devtools@npm:0.4.9"
+"@vitejs/devtools@npm:0.4.10":
+  version: 0.4.10
+  resolution: "@vitejs/devtools@npm:0.4.10"
   dependencies:
-    "@devframes/hub": "npm:^0.7.14"
-    "@devframes/plugin-inspect": "npm:^0.7.14"
-    "@devframes/plugin-messages": "npm:^0.7.14"
-    "@devframes/plugin-terminals": "npm:^0.7.14"
-    "@vitejs/devtools-kit": "npm:0.4.9"
+    "@devframes/hub": "npm:^0.7.15"
+    "@devframes/plugin-inspect": "npm:^0.7.15"
+    "@devframes/plugin-messages": "npm:^0.7.15"
+    "@devframes/plugin-terminals": "npm:^0.7.15"
+    "@vitejs/devtools-kit": "npm:0.4.10"
     birpc: "npm:^4.0.0"
     cac: "npm:^7.0.0"
-    devframe: "npm:^0.7.14"
+    devframe: "npm:^0.7.15"
     h3: "npm:2.0.1-rc.22"
     local-pkg: "npm:^1.2.1"
     mlly: "npm:^1.8.2"
@@ -2791,10 +2791,10 @@ __metadata:
     pathe: "npm:^2.0.3"
     vue: "npm:^3.5.40"
   peerDependencies:
-    "@vitejs/devtools-oxc": ^0.4.9
-    "@vitejs/devtools-rolldown": ^0.4.9
-    "@vitejs/devtools-vite": ^0.4.9
-    "@vitejs/devtools-vitest": ^0.4.9
+    "@vitejs/devtools-oxc": ^0.4.10
+    "@vitejs/devtools-rolldown": ^0.4.10
+    "@vitejs/devtools-vite": ^0.4.10
+    "@vitejs/devtools-vitest": ^0.4.10
     vite: "*"
   peerDependenciesMeta:
     "@vitejs/devtools-oxc":
@@ -2807,7 +2807,7 @@ __metadata:
       optional: true
   bin:
     vite-devtools: ./bin.js
-  checksum: 10/3d2bbd0aaf69c117261075712c650d6f4e8a6515821fc1445131d892f1c664597626a2473fcd45adce9501fe023279d1b14bc76636fd6f18248a10a120087e74
+  checksum: 10/806f955a78b9f3fb8794970d96c4b033fc60f95baf37f4455b6d705df209a80a623216cb81d62398449ef546c97327f00a7ee86ae7f9bf90c9a0421dc6137e77
   languageName: node
   linkType: hard
 
@@ -4089,9 +4089,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devframe@npm:^0.7.14":
-  version: 0.7.15
-  resolution: "devframe@npm:0.7.15"
+"devframe@npm:^0.7.15":
+  version: 0.7.16
+  resolution: "devframe@npm:0.7.16"
   dependencies:
     "@valibot/to-json-schema": "npm:^1.7.1"
     birpc: "npm:^4.0.0"
@@ -4111,7 +4111,7 @@ __metadata:
       optional: true
     cac:
       optional: true
-  checksum: 10/f6f949f54bfb164f3d5a0a2e8984f0b8bb7fa091e5a8c5a305648b2573ae121ee3f0b7600e4b99d110d08e29afa3819e8aaa8c1e1e3f99de76a6d51567a02ea9
+  checksum: 10/5717e550e72a75a223641c7fbb8c11f8b3a451c78ecb3207729fb2e3ec63ee4095c142e678dfcb15917578d63218c86a51bad75cf77bf34b1a6bf6cff26ecd27
   languageName: node
   linkType: hard
 
@@ -6348,7 +6348,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nypm@npm:^0.6.8":
+"nypm@npm:^0.6.9":
   version: 0.6.9
   resolution: "nypm@npm:0.6.9"
   dependencies:
@@ -6865,7 +6865,7 @@ __metadata:
     "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:30.0.0"
     "@types/node": "npm:24.13.3"
-    "@vitejs/devtools": "npm:0.4.9"
+    "@vitejs/devtools": "npm:0.4.10"
     "@vitejs/plugin-vue": "npm:6.0.8"
     "@vitest/coverage-v8": "npm:4.1.10"
     "@vitest/ui": "npm:4.1.10"
