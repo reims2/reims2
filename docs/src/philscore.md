@@ -117,9 +117,10 @@ The function then returns the initial PhilScore for the lens.
 Given the following inputs:
 
 - Desired Prescription (rx)
+
   | Sphere | Cylinder | Additional | Axis |
   | ------ | -------- | ---------- | ---- |
-  | +2.0 | -1.0 | +1.5 | 90 |
+  | +2.0   | -1.0     | +1.5       | 90   |
 
 - Available Lens
 
