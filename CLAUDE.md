@@ -25,7 +25,7 @@ Five independent projects live here, each with its own README, dependencies, and
 
 ```bash
 # one-off local DB
-docker run --detach --rm --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSWORD=reims \
+docker run --detach --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSWORD=reims \
   --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 mariadb:latest
 
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev    # http://localhost:9966, swagger-ui at /swagger-ui/index.html
