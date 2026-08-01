@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class ChangeServiceImpl implements ChangeService {
@@ -45,7 +46,7 @@ public class ChangeServiceImpl implements ChangeService {
     }
 
     private String calcHash() {
-        return Hashing.sha256().hashString("" + Math.random(), StandardCharsets.UTF_8).toString();
+        return Hashing.sha256().hashString("" + ThreadLocalRandom.current().nextDouble(), StandardCharsets.UTF_8).toString();
     }
 
 }

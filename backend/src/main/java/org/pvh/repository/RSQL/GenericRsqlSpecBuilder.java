@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 public class GenericRsqlSpecBuilder<T> {
 
     public Specification<T> createSpecification(final Node node) {
-        if (node instanceof LogicalNode) {
-            return createSpecification((LogicalNode) node);
+        if (node instanceof LogicalNode logicalNode) {
+            return createSpecification(logicalNode);
         }
-        if (node instanceof ComparisonNode) {
-            return createSpecification((ComparisonNode) node);
+        if (node instanceof ComparisonNode comparisonNode) {
+            return createSpecification(comparisonNode);
         }
         return null;
     }

@@ -9,7 +9,6 @@ import org.pvh.repository.EyeRepository;
 import org.pvh.repository.GlassesRepository;
 import org.pvh.repository.UnsuccessfulSearchRepository;
 import org.pvh.util.GlassesSpecs;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -31,7 +30,6 @@ public class MainServiceImpl implements MainService {
     private final DispenseRepository dispenseRepository;
     private final UnsuccessfulSearchRepository unsuccessfulSearchRepository;
 
-    @Autowired
     public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository,
                            UnsuccessfulSearchRepository unsuccessfulSearchRepository) {
         this.glassesRepository = glassesRepository;
