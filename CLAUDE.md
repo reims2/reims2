@@ -59,6 +59,7 @@ Expects REIMS running at `http://localhost:3000` (override with `BASE_URL`), log
 yarn install
 yarn test:ui                             # Playwright UI, pick the project top-left before running
 yarn playwright test tests/find.spec.ts  # single spec, headless
+yarn playwright test --project chromium --grep @fast # same subset CI runs on every PR
 ```
 
 CI only runs specs tagged `@fast` on pushes/PRs. The full suite runs weekly against a throwaway `e2e`

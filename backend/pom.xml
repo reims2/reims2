@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.7</version>
+        <version>4.1.0</version>
         <relativePath/> <!-- lookup parent from Maven repository -->
     </parent>
 
@@ -188,7 +188,6 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
-            <version>13.1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -298,7 +297,6 @@
                         <annotationProcessorPath>
                             <groupId>org.hibernate.orm</groupId>
                             <artifactId>hibernate-processor</artifactId>
-                            <version>7.4.5.Final</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>
