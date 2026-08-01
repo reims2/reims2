@@ -74,7 +74,7 @@ public class AuthController {
     }
 
     @PreAuthorize("permitAll")
-    @RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/user", produces = "application/json")
     public User getCurrentUserInfo(Principal userPrincipal) {
         Optional<User> user = userRepository.findByUsername(userPrincipal.getName());
         if (user.isEmpty())
@@ -124,7 +124,7 @@ public class AuthController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public Collection<User> getAllUsersPage() {
         Collection<User> users = userRepository.findAll();
 
@@ -135,7 +135,7 @@ public class AuthController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    @DeleteMapping(value = "/{id}", produces = "application/json")
     @Transactional
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
         Optional<User> user = userRepository.findById(id);
