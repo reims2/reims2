@@ -1,45 +1,50 @@
 <template>
   <v-card
-    style="min-width: 290px"
+    style="min-width: 330px"
     class="mb-2"
     :loading="loading"
     aria-role="group"
     :aria-labelledby="'heading-glass-' + displayedGlass.sku"
   >
-    <v-card-title class="pb-0 pt-4">
-      <div class="d-flex align-center">
-        <v-chip
-          v-if="isGlassesResult(glasses)"
-          class="mr-2 px-2"
-          size="small"
-          color="white"
-          label
-          :ripple="false"
-          :style="{ 'background-color': calcColorGradient(glasses.score) }"
-        >
-          <v-tooltip activator="parent" location="bottom">
-            Result (Philscore) - lower values are better
-          </v-tooltip>
-          {{ glasses.score.toFixed(2) }}
-        </v-chip>
-        <div :id="'heading-glass-' + displayedGlass.sku" class="text-h6">
-          SKU {{ displayedGlass.sku }}
-        </div>
+    <div class="d-flex align-center pt-4">
+      <div class="flex-grow-1 pt-2">
+        <v-card-title class="py-0">
+          <div :id="'heading-glass-' + displayedGlass.sku" class="text-h6">
+            SKU {{ displayedGlass.sku }}
+          </div>
+        </v-card-title>
+        <v-card-subtitle class="pb-2 d-flex align-center">
+          <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
+            <span class="no-child-padding">
+              <v-tooltip location="bottom" activator="parent">
+                {{ glassesMetaUIData[key].desc }}
+              </v-tooltip>
+              <v-icon size="small">
+                {{ glassesMetaUIData[key].icon }}
+              </v-icon>
+              {{ displayedGlass[key] }}
+            </span>
+          </span>
+        </v-card-subtitle>
       </div>
-    </v-card-title>
-    <v-card-subtitle class="pb-2 d-flex align-center">
-      <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
-        <span class="no-child-padding">
-          <v-tooltip location="bottom" activator="parent">
-            {{ glassesMetaUIData[key].desc }}
-          </v-tooltip>
-          <v-icon size="small">
-            {{ glassesMetaUIData[key].icon }}
-          </v-icon>
-          {{ displayedGlass[key] }}
-        </span>
-      </span>
-    </v-card-subtitle>
+      <div v-if="isGlassesResult(glasses)">
+        <v-progress-circular
+          class="mr-7 font-weight-bold"
+          :model-value="convertScoreToPercentage(glasses.score)"
+          :size="53"
+          :width="7"
+          :color="calcColorGradient(glasses.score)"
+          :style="{ fontSize: '14px' }"
+        >
+          <template #default>
+            {{ glasses.score.toFixed(2) }}
+          </template>
+        </v-progress-circular>
+        <v-tooltip activator="parent" location="bottom">
+          Result (Philscore) - lower values are better
+        </v-tooltip>
+      </div>
+    </div>
     <v-card-text class="py-0">
       <v-container class="pa-0">
         <v-row dense>
@@ -49,10 +54,10 @@
                 {{ eye.text }}
               </div>
               <div v-if="isGlassesResult(glasses)" class="d-flex align-center">
+                <v-tooltip activator="parent" location="bottom">
+                  PhilScore only for {{ eye.text }}
+                </v-tooltip>
                 <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
-                  <v-tooltip activator="parent" location="bottom">
-                    PhilScore only for {{ eye.text }}
-                  </v-tooltip>
                   {{ (eye.key == 'od' ? glasses.odScore : glasses.osScore).toFixed(2) }}
                 </v-chip>
               </div>
@@ -141,6 +146,15 @@ const displayedGlass = computed(() => formatGlassesForDisplay(glasses.value))
 
 function isGlassesResult(value: GlassesResult | Glasses): value is GlassesResult {
   return (value as GlassesResult).score !== undefined
+}
+
+function convertScoreToPercentage(score: number, singleEye = false): string {
+  if (singleEye) score = score * 2
+  const clampedScore = Math.max(Math.min(score, 4), 0)
+  let percentage: number
+  if (clampedScore <= 2) percentage = 100 - clampedScore * 35
+  else percentage = 30 - (clampedScore - 2) * 15
+  return percentage.toFixed(0)
 }
 </script>
 
