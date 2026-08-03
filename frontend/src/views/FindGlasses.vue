@@ -1,9 +1,9 @@
 <template>
   <v-container @keyup.s="submitAndUpdate">
-    <v-row dense class="justify-center">
+    <v-row density="compact" class="justify-center">
       <v-col cols="12" md="6" lg="5" class="px-3">
         <v-form ref="form" v-model="valid" @submit.prevent>
-          <v-row dense>
+          <v-row density="compact">
             <glass-input
               ref="inputComponent"
               v-model="glasses"
@@ -56,7 +56,7 @@
         aria-role="region"
         aria-labelledby="heading-results"
       >
-        <div id="heading-results" class="text-h6 pb-2">Results</div>
+        <div id="heading-results" class="text-title-large font-weight-medium pb-2">Results</div>
         <v-alert v-if="matches == null" type="info" color="primary" density="comfortable">
           Start a new search to display results
         </v-alert>

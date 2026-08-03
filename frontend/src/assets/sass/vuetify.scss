@@ -1,6 +1,30 @@
+// v4 shrank the default grid breakpoints and derived container max-widths (e.g. lg
+// 1280px->1145px, its container max-width 1200px->1000px). Restore v3.13's values so
+// page content doesn't shrink into a narrower column with much larger side margins.
 @use 'vuetify/settings' with (
-  $body-font-family: 'Roboto Flex Variable'
+  $body-font-family: 'Roboto Flex Variable',
+  $grid-breakpoints: (
+    'xs': 0,
+    'sm': 600px,
+    'md': 960px,
+    'lg': 1280px,
+    'xl': 1920px,
+    'xxl': 2560px,
+  ),
+  $container-max-widths: (
+    'xs': null,
+    'sm': null,
+    'md': 900px,
+    'lg': 1200px,
+    'xl': 1800px,
+    'xxl': 2400px,
+  )
 );
+
+// Vuetify 4 always wraps its own styles in the "vuetify" layer. Cascade layers invert
+// !important, so any !important override of a vuetify style must live in a layer that's
+// ordered after "vuetify" here, or it silently stops winning.
+@layer base, vuetify, overrides;
 
 /* roboto-flex-latin-wght-normal */
 @font-face {
@@ -18,9 +42,11 @@
 
 // Overwrite global vuetify styles here
 
-.v-theme--light.v-bottom-navigation .v-btn:not(.v-btn--active) {
-  // Bottom navigation buttons should be grey when not active
-  color: rgba(0, 0, 0, 0.6) !important;
+@layer overrides {
+  .v-theme--light.v-bottom-navigation .v-btn:not(.v-btn--active) {
+    // Bottom navigation buttons should be grey when not active
+    color: rgba(0, 0, 0, 0.6) !important;
+  }
 }
 
 .v-text-field--prefixed.v-text-field .v-field__input {

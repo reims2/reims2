@@ -2,12 +2,12 @@
   <div class="pa-0 ma-0 hero-bg opaque" style="height: 100%; width: 100%">
     <div style="height: 100%" class="opaque d-flex justify-center align-center">
       <v-container>
-        <v-row class="px-3">
+        <v-row class="px-3" no-gutters>
           <v-col class="pb-3 text-center text-white" cols="12">
-            <h1 class="text-h2 font-weight-normal">REIMS2</h1>
+            <h1 class="text-display-large">REIMS2</h1>
           </v-col>
           <v-col class="pb-6 text-center d-flex justify-center text-white" cols="12">
-            <p class="text-subtitle-1 text-md-h6" style="max-width: 600px">
+            <p class="text-body-large text-md-title-large" style="max-width: 600px">
               REIMS2 is the next version of the Richmond Eyeglass Inventory Matching System. It
               supports the annual visual health campaigns run by non-profit
               <a href="https://partnersforvisualhealth.org/" target="”_blank”" class="text-white">
