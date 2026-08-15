@@ -15,7 +15,7 @@
     "eslint": "10.8.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-playwright": "2.11.0",
-    "globals": "17.9.0",
+    "globals": "17.10.0",
     "prettier": "3.9.6",
     "typescript": "5.9.3",
     "typescript-eslint": "8.65.0"
