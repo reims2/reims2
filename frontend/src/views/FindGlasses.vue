@@ -1,9 +1,9 @@
 <template>
   <v-container @keyup.s="submitAndUpdate">
-    <v-row density="compact" class="justify-center">
+    <v-row no-gutters class="justify-center">
       <v-col cols="12" md="6" lg="5" class="px-3">
         <v-form ref="form" v-model="valid" @submit.prevent>
-          <v-row density="compact">
+          <v-row no-gutters>
             <glass-input
               ref="inputComponent"
               v-model="glasses"

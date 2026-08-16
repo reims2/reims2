@@ -1,6 +1,4 @@
-// v4 shrank the default grid breakpoints and derived container max-widths (e.g. lg
-// 1280px->1145px, its container max-width 1200px->1000px). Restore v3.13's values so
-// page content doesn't shrink into a narrower column with much larger side margins.
+// v4 shrank the default grid breakpoints and container max-widths; restore v3's values.
 @use 'vuetify/settings' with (
   $body-font-family: 'Roboto Flex Variable',
   $grid-breakpoints: (
@@ -21,11 +19,6 @@
   )
 );
 
-// Vuetify 4 always wraps its own styles in the "vuetify" layer. Cascade layers invert
-// !important, so any !important override of a vuetify style must live in a layer that's
-// ordered after "vuetify" here, or it silently stops winning.
-@layer base, vuetify, overrides;
-
 /* roboto-flex-latin-wght-normal */
 @font-face {
   font-family: 'Roboto Flex Variable';
@@ -40,13 +33,10 @@
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-// Overwrite global vuetify styles here
+// Overwrite global vuetify styles here. Vuetify's CSS is layered, so unlayered rules win without !important.
 
-@layer overrides {
-  .v-theme--light.v-bottom-navigation .v-btn:not(.v-btn--active) {
-    // Bottom navigation buttons should be grey when not active
-    color: rgba(0, 0, 0, 0.6) !important;
-  }
+.v-theme--light.v-bottom-navigation .v-btn:not(.v-btn--active) {
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .v-text-field--prefixed.v-text-field .v-field__input {

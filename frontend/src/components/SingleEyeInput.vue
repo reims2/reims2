@@ -1,5 +1,5 @@
 <template>
-  <v-row class="pb-4" density="compact" role="group" :aria-labelledby="'eye-heading-' + eyeName">
+  <v-row class="pb-4" no-gutters role="group" :aria-labelledby="'eye-heading-' + eyeName">
     <v-col class="text-headline-small pb-2">
       <div :id="'eye-heading-' + eyeName" :class="isBAL ? 'text-medium-emphasis' : ''">
         {{ eyeName }}

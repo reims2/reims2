@@ -136,11 +136,7 @@ const isMiniDrawer = computed(() => {
   color: inherit !important;
 }
 
-/* vuetify wraps its own styles in the "vuetify" layer; !important overrides of vuetify
-   classes must be in a layer ordered after it (see assets/sass/vuetify.scss) to still win */
-@layer overrides {
-  .bigger-text .v-list-item-title {
-    font-size: 1.2rem !important;
-  }
+.bigger-text .v-list-item-title {
+  font-size: 1.2rem;
 }
 </style>

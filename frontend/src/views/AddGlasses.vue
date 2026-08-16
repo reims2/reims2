@@ -3,7 +3,7 @@
     <v-row class="justify-center" density="compact">
       <v-col cols="12" md="6" lg="4" class="pb-2 px-2 pt-4">
         <v-form ref="form" v-model="valid" @submit.prevent>
-          <v-row density="compact">
+          <v-row no-gutters>
             <glass-input
               ref="inputComponent"
               v-model="glasses"

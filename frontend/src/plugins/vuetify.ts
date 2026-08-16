@@ -22,10 +22,7 @@ export const vuetifyOptions: VuetifyOptions = {
   },
   display: {
     mobileBreakpoint: 'sm',
-    // v4 shrank the default JS-side breakpoint thresholds too (e.g. lg 1280->1145). Restore
-    // v3.13's values so `mobile`/`useDisplay()` and responsive v-col props (md=/lg=) keep
-    // switching at the same viewport widths as before, matching the SASS grid-breakpoints
-    // override in assets/sass/vuetify.scss.
+    // v4 shrank the default breakpoints; restore v3's, matching assets/sass/vuetify.scss.
     thresholds: {
       xs: 0,
       sm: 600,
