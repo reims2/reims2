@@ -22,7 +22,10 @@
           </v-tooltip>
           {{ glasses.score.toFixed(2) }}
         </v-chip>
-        <div :id="'heading-glass-' + displayedGlass.sku" class="text-h6">
+        <div
+          :id="'heading-glass-' + displayedGlass.sku"
+          class="text-title-large font-weight-medium"
+        >
           SKU {{ displayedGlass.sku }}
         </div>
       </div>
@@ -42,10 +45,10 @@
     </v-card-subtitle>
     <v-card-text class="py-0">
       <v-container class="pa-0">
-        <v-row dense>
+        <v-row density="compact">
           <v-col v-for="eye in eyes" :key="eye.key" cols="6" :data-testid="eye.text + '-card'">
             <div class="d-flex">
-              <div class="text-subtitle-1">
+              <div class="text-body-large">
                 {{ eye.text }}
               </div>
               <div v-if="isGlassesResult(glasses)" class="d-flex align-center">
@@ -151,6 +154,6 @@ function isGlassesResult(value: GlassesResult | Glasses): value is GlassesResult
 }
 
 .v-btn {
-  min-width: 0px !important;
+  min-width: 0px;
 }
 </style>

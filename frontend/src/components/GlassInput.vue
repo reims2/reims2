@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-1">
-    <v-row dense>
+    <v-row no-gutters>
       <v-col v-for="item in metadataToShow" :key="item" cols="12" class="pa-0 pb-4">
         <auto-complete-field
           ref="firstInput"

@@ -1,16 +1,16 @@
 <template>
   <v-container @keyup.a="submit">
-    <v-row class="justify-center" dense>
+    <v-row class="justify-center" density="compact">
       <v-col cols="12" md="6" lg="4" class="pb-2 px-2 pt-4">
         <v-form ref="form" v-model="valid" @submit.prevent>
-          <v-row dense>
+          <v-row no-gutters>
             <glass-input
               ref="inputComponent"
               v-model="glasses"
               v-model:sync-eyes="syncEyeAdd"
             ></glass-input>
             <v-col cols="12" class="px-0 pt-0">
-              <div class="pb-3 text-body-2 text-medium-emphasis">
+              <div class="pb-3 text-body-medium text-medium-emphasis">
                 You are in {{ reimsSiteName }} ({{ freeSlots }} SKUs left)
               </div>
               <div class="d-flex">
@@ -50,7 +50,9 @@
         aria-role="region"
         aria-labelledby="heading-recently-added"
       >
-        <div id="heading-recently-added" class="text-h6 pb-2">Recently added</div>
+        <div id="heading-recently-added" class="text-title-large font-weight-medium pb-2">
+          Recently added
+        </div>
         <div
           v-for="(item, idx) in lastAdded.slice(0, 3)"
           :key="item.id"

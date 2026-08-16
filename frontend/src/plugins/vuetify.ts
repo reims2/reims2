@@ -22,6 +22,15 @@ export const vuetifyOptions: VuetifyOptions = {
   },
   display: {
     mobileBreakpoint: 'sm',
+    // v4 shrank the default breakpoints; restore v3's, matching assets/sass/vuetify.scss.
+    thresholds: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+      xxl: 2560,
+    },
   },
   theme: {
     defaultTheme: 'light',
