@@ -1,5 +1,22 @@
+// v4 shrank the default grid breakpoints and container max-widths; restore v3's values.
 @use 'vuetify/settings' with (
-  $body-font-family: 'Roboto Flex Variable'
+  $body-font-family: 'Roboto Flex Variable',
+  $grid-breakpoints: (
+    'xs': 0,
+    'sm': 600px,
+    'md': 960px,
+    'lg': 1280px,
+    'xl': 1920px,
+    'xxl': 2560px,
+  ),
+  $container-max-widths: (
+    'xs': null,
+    'sm': null,
+    'md': 900px,
+    'lg': 1200px,
+    'xl': 1800px,
+    'xxl': 2400px,
+  )
 );
 
 /* roboto-flex-latin-wght-normal */
@@ -16,11 +33,10 @@
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-// Overwrite global vuetify styles here
+// Overwrite global vuetify styles here. Vuetify's CSS is layered, so unlayered rules win without !important.
 
 .v-theme--light.v-bottom-navigation .v-btn:not(.v-btn--active) {
-  // Bottom navigation buttons should be grey when not active
-  color: rgba(0, 0, 0, 0.6) !important;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .v-text-field--prefixed.v-text-field .v-field__input {

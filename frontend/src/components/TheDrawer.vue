@@ -5,7 +5,7 @@
     @update:model-value="(val) => (rootStore.drawer = val)"
   >
     <template #prepend>
-      <div class="mt-5 mx-3 text-h6 font-weight-medium">
+      <div class="mt-5 mx-3 text-title-large font-weight-medium">
         <router-link
           :style="isMiniDrawer ? 'visibility:hidden;' : ''"
           class="no-decoration no-color"
@@ -137,6 +137,6 @@ const isMiniDrawer = computed(() => {
 }
 
 .bigger-text .v-list-item-title {
-  font-size: 1.2rem !important;
+  font-size: 1.2rem;
 }
 </style>

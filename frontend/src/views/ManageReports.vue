@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-row dense class="d-flex justify-center">
+    <v-row density="compact" class="d-flex justify-center">
       <v-col cols="12" md="6" lg="4">
-        <div class="pb-2 text-h5">Statistics dashboard</div>
+        <div class="pb-2 text-headline-small">Statistics dashboard</div>
         <div class="pb-4 text-medium-emphasis">Visit the dashboard to see live statistics.</div>
         <v-btn color="accent" href="https://monitoring.reims2.app" target="_blank">
           Open dashboard
@@ -10,7 +10,7 @@
 
         <v-divider class="my-7" />
 
-        <div class="pb-2 text-h5">Current inventory report</div>
+        <div class="pb-2 text-headline-small">Current inventory report</div>
         <div class="pb-4 text-medium-emphasis">
           This report contains all glasses in the storage of the current location.
         </div>
@@ -20,7 +20,7 @@
 
         <v-divider class="my-7" />
 
-        <div class="pb-2 text-h5">Dispense & delete report</div>
+        <div class="pb-2 text-headline-small">Dispense & delete report</div>
         <div class="pb-2 text-medium-emphasis">
           This report contains all glasses that were dispensed and deleted.
         </div>
@@ -31,7 +31,7 @@
 
         <v-divider class="my-7" />
 
-        <div class="pb-2 text-h5">Unsuccessful searches report</div>
+        <div class="pb-2 text-headline-small">Unsuccessful searches report</div>
         <div class="pb-4 text-medium-emphasis">
           This report contains all searches that returned no results.
         </div>
