@@ -1382,94 +1382,162 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devframes/hub@npm:^0.8.0":
-  version: 0.8.2
-  resolution: "@devframes/hub@npm:0.8.2"
+"@devframes/hub-ui@npm:^0.9.2":
+  version: 0.9.4
+  resolution: "@devframes/hub-ui@npm:0.9.4"
+  peerDependencies:
+    "@devframes/hub": 0.9.4
+    "@devframes/json-render": 0.9.4
+    devframe: 0.9.4
+  peerDependenciesMeta:
+    "@devframes/json-render":
+      optional: true
+  checksum: 10/18fbe3d82da6e214daf48f3f3408612416d7a116eb9ff15dc3abf5e53f3254ad00b8e9c7388a05d44a609e74889a117c2d9e1e16c27f46bf0d4a04498813e09a
+  languageName: node
+  linkType: hard
+
+"@devframes/hub@npm:^0.9.2":
+  version: 0.9.4
+  resolution: "@devframes/hub@npm:0.9.4"
   dependencies:
     "@standard-schema/spec": "npm:^1.1.0"
     destr: "npm:^2.0.5"
-    nostics: "npm:^1.2.0"
+    h3: "npm:^2.0.1-rc.26"
     pathe: "npm:^2.0.3"
     perfect-debounce: "npm:^2.1.0"
     tinyexec: "npm:^1.3.0"
+    ufo: "npm:^1.6.4"
     zigpty: "npm:^0.2.1"
   peerDependencies:
-    devframe: 0.8.2
-  checksum: 10/8e9f37348710fee85c8e1d71a1de6db21e8628120e8f592a23efadc2c759972fe29f0b5d91ef00714f83fc7b9d04e77e0ed27ea5366009a0866b27a8675f1ee7
+    devframe: 0.9.4
+  checksum: 10/af3790c8dda4928c11b117b4f22f499591cb6dd22e9b72a697284d3a2ffe657d1adbf0eadec2c36bc554c15e4653c1af5a538dc074e2fd190e8957b50a6872e1
   languageName: node
   linkType: hard
 
-"@devframes/json-render@npm:^0.8.0":
-  version: 0.8.2
-  resolution: "@devframes/json-render@npm:0.8.2"
-  dependencies:
-    "@json-render/core": "npm:^0.19.0"
-    nostics: "npm:^1.2.0"
-    zod: "npm:^4.4.3"
+"@devframes/json-render-ui@npm:^0.9.2":
+  version: 0.9.4
+  resolution: "@devframes/json-render-ui@npm:0.9.4"
   peerDependencies:
-    "@devframes/hub": 0.8.2
-    devframe: 0.8.2
+    "@devframes/hub": 0.9.4
+    devframe: 0.9.4
   peerDependenciesMeta:
     "@devframes/hub":
       optional: true
-  checksum: 10/608ea7b88f99a900485e26ff7ee9ed4685bccabeeacd565c692e721912283ae0e9fc1e36d4ad50029a64394e3d8ae0b3b1ef0fc65b400cb0322f7c775cf6b803
+    devframe:
+      optional: true
+  checksum: 10/b6a913cf4918b407b8c8cdfc66beef21d6a30c760f9ead15edcda6162a1e912597f539c60a9e76d710bb8fc029f4f26a886ae4bf5d115f757f38a0d4d46afa13
   languageName: node
   linkType: hard
 
-"@devframes/plugin-inspect@npm:^0.8.0":
-  version: 0.8.2
-  resolution: "@devframes/plugin-inspect@npm:0.8.2"
+"@devframes/json-render@npm:^0.9.2":
+  version: 0.9.4
+  resolution: "@devframes/json-render@npm:0.9.4"
   dependencies:
-    "@valibot/to-json-schema": "npm:^1.7.1"
-    cac: "npm:^7.0.0"
-    nostics: "npm:^1.2.0"
+    "@json-render/core": "npm:^0.19.0"
+    zod: "npm:^4.4.3"
   peerDependencies:
-    devframe: 0.8.2
+    "@devframes/hub": 0.9.4
+    devframe: 0.9.4
+  peerDependenciesMeta:
+    "@devframes/hub":
+      optional: true
+  checksum: 10/eb1af933012ae210740d37f69cf85c74a3acabc59b7973a23b0bccc389aa44fda694d83565ae3cc34fc93251a046985f72245c86cf3b9772d260486c2e74790a
+  languageName: node
+  linkType: hard
+
+"@devframes/plugin-inspect@npm:^0.9.2":
+  version: 0.9.4
+  resolution: "@devframes/plugin-inspect@npm:0.9.4"
+  dependencies:
+    cac: "npm:^7.0.0"
+  peerDependencies:
+    "@devframes/plugin-inspect--assets": 0.9.4
+    devframe: 0.9.4
     vite: ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
+    "@devframes/plugin-inspect--assets":
+      optional: true
     vite:
       optional: true
   bin:
     devframe-inspect: ./bin.mjs
-  checksum: 10/82bda4d6c56eaea6bf31075b5b66809e310a6820882a431e80813bc0c710014438a091e4cbd8a6315e6958e88970f33ba4005ea1c6c597e6b28bc5d3816bc873
+  checksum: 10/b1ef4b235d65e45d78c41d9cdb8be5f8608f3c9445ebbd0cb526a69e4489a0dad374d1677398f9170cbe96b9c42897b98dbd5dc19edda5fc1fe057531d607d82
   languageName: node
   linkType: hard
 
-"@devframes/plugin-messages@npm:^0.8.0":
-  version: 0.8.2
-  resolution: "@devframes/plugin-messages@npm:0.8.2"
+"@devframes/plugin-messages@npm:^0.9.2":
+  version: 0.9.4
+  resolution: "@devframes/plugin-messages@npm:0.9.4"
   dependencies:
+    "@devframes/service-open": "npm:0.9.4"
     cac: "npm:^7.0.0"
-    nostics: "npm:^1.2.0"
   peerDependencies:
-    "@devframes/hub": 0.8.2
-    devframe: 0.8.2
+    "@devframes/hub": 0.9.4
+    "@devframes/plugin-messages--assets": 0.9.4
+    devframe: 0.9.4
     vite: ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
+    "@devframes/plugin-messages--assets":
+      optional: true
     vite:
       optional: true
   bin:
     devframe-messages: ./bin.mjs
-  checksum: 10/1a0c4b3279cfd0d98cdfd24158a2ea7869cbe08be1330f5730b3387b68a0923002666ca3f6cb972c353724fd503d8b51fcf5547d175a924a47500411f0ec95c0
+  checksum: 10/91c82ab50102bac9a144c7398092742b7a83f72c1993e6755167d877c6e4ccc137241771c1b08b0c944e612f958d7f35597ddd9bb1af0ed43a50ae9086034c14
   languageName: node
   linkType: hard
 
-"@devframes/plugin-terminals@npm:^0.8.0":
-  version: 0.8.2
-  resolution: "@devframes/plugin-terminals@npm:0.8.2"
+"@devframes/plugin-terminals@npm:^0.9.2":
+  version: 0.9.4
+  resolution: "@devframes/plugin-terminals@npm:0.9.4"
   dependencies:
+    "@devframes/vite": "npm:0.9.4"
     cac: "npm:^7.0.0"
-    nostics: "npm:^1.2.0"
     zigpty: "npm:^0.2.1"
   peerDependencies:
-    devframe: 0.8.2
+    "@devframes/plugin-terminals--assets": 0.9.4
+    devframe: 0.9.4
     vite: ^8.0.0
   peerDependenciesMeta:
+    "@devframes/plugin-terminals--assets":
+      optional: true
     vite:
       optional: true
   bin:
     devframe-terminals: ./bin.mjs
-  checksum: 10/8a2497a215c64a72972b7f50c01af5368305af012f608fb2e74482917c7e3927c26fe6ad750c5d56ca074330fcabab79314abc9b363de09084c068bf5bf14c9d
+  checksum: 10/f4886075cc605a13ad07d4fd32c7c1b8c146e90491c9f9be8d7dd41c45fd43c53e069394f1dc516cd0ef2218e9a68c168629654b9aede9e6b0d49cba134532ea
+  languageName: node
+  linkType: hard
+
+"@devframes/service-open@npm:0.9.4":
+  version: 0.9.4
+  resolution: "@devframes/service-open@npm:0.9.4"
+  dependencies:
+    pathe: "npm:^2.0.3"
+  peerDependencies:
+    devframe: 0.9.4
+  checksum: 10/9aaa023221457e9db86ae813edf11c3132d6188a016e792bbc8c98e304483161d25c350067d97d80505d0460eae371ad1d4b1ff4655076f4318b763d04bcb63d
+  languageName: node
+  linkType: hard
+
+"@devframes/vite@npm:0.9.4":
+  version: 0.9.4
+  resolution: "@devframes/vite@npm:0.9.4"
+  dependencies:
+    pathe: "npm:^2.0.3"
+  peerDependencies:
+    "@devframes/hub": 0.9.4
+    "@devframes/hub-ui": 0.9.4
+    devframe: 0.9.4
+    vite: ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    "@devframes/hub":
+      optional: true
+    "@devframes/hub-ui":
+      optional: true
+    vite:
+      optional: true
+  checksum: 10/f12377ccb39b42db1879152a615403a3037fc466cb8da37ba4b32084f0464e0712399f3060659660f08ee0354382f5e05bfd26ca4366b38c1a1cca4e06449ae8
   languageName: node
   linkType: hard
 
@@ -2651,56 +2719,46 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@valibot/to-json-schema@npm:^1.7.1":
-  version: 1.7.1
-  resolution: "@valibot/to-json-schema@npm:1.7.1"
-  peerDependencies:
-    valibot: ^1.4.0
-  checksum: 10/7bf8d7773d1c2ce9e086dcf2f6509f4da161a360c663a4a3ed14ddb9f7bb8d1e83a95469af41a9773e65281cb4ee314a513e874487b9b12eaa9ecb2034c14f04
-  languageName: node
-  linkType: hard
-
-"@vitejs/devtools-kit@npm:0.4.12":
-  version: 0.4.12
-  resolution: "@vitejs/devtools-kit@npm:0.4.12"
+"@vitejs/devtools-kit@npm:0.5.0":
+  version: 0.5.0
+  resolution: "@vitejs/devtools-kit@npm:0.5.0"
   dependencies:
-    "@devframes/hub": "npm:^0.8.0"
-    "@devframes/json-render": "npm:^0.8.0"
-    devframe: "npm:^0.8.0"
+    "@devframes/hub": "npm:^0.9.2"
+    "@devframes/json-render": "npm:^0.9.2"
+    devframe: "npm:^0.9.2"
     local-pkg: "npm:^1.2.1"
     mlly: "npm:^1.8.2"
     nostics: "npm:^1.2.0"
     nypm: "npm:^0.6.9"
   peerDependencies:
     vite: "*"
-  checksum: 10/942195d2c772a78ff074059ef58396978ae05d96c3a681e19a4ddffef5d590e477df114782f24235ecbc297db9d7dd28e06d6aa6c47ab1fdbaf01f694dec17c8
+  checksum: 10/342e3d8820d13245903b15a54d75bbb598d82130a89247c8032763b54c181f1706425fad1b571fdea5a5f42ae7ed6e0e45fe9c47e7aea439e2233ddfd0dcd05b
   languageName: node
   linkType: hard
 
-"@vitejs/devtools@npm:0.4.12":
-  version: 0.4.12
-  resolution: "@vitejs/devtools@npm:0.4.12"
+"@vitejs/devtools@npm:0.5.0":
+  version: 0.5.0
+  resolution: "@vitejs/devtools@npm:0.5.0"
   dependencies:
-    "@devframes/hub": "npm:^0.8.0"
-    "@devframes/plugin-inspect": "npm:^0.8.0"
-    "@devframes/plugin-messages": "npm:^0.8.0"
-    "@devframes/plugin-terminals": "npm:^0.8.0"
-    "@vitejs/devtools-kit": "npm:0.4.12"
-    birpc: "npm:^4.0.0"
+    "@devframes/hub": "npm:^0.9.2"
+    "@devframes/hub-ui": "npm:^0.9.2"
+    "@devframes/json-render-ui": "npm:^0.9.2"
+    "@devframes/plugin-inspect": "npm:^0.9.2"
+    "@devframes/plugin-messages": "npm:^0.9.2"
+    "@devframes/plugin-terminals": "npm:^0.9.2"
+    "@vitejs/devtools-kit": "npm:0.5.0"
     cac: "npm:^7.0.0"
-    devframe: "npm:^0.8.0"
-    h3: "npm:2.0.1-rc.22"
+    devframe: "npm:^0.9.2"
+    h3: "npm:^2.0.1-rc.26"
     local-pkg: "npm:^1.2.1"
-    mlly: "npm:^1.8.2"
     nostics: "npm:^1.2.0"
     obug: "npm:^2.1.4"
     pathe: "npm:^2.0.3"
-    vue: "npm:^3.5.40"
   peerDependencies:
-    "@vitejs/devtools-oxc": ^0.4.12
-    "@vitejs/devtools-rolldown": ^0.4.12
-    "@vitejs/devtools-vite": ^0.4.12
-    "@vitejs/devtools-vitest": ^0.4.12
+    "@vitejs/devtools-oxc": ^0.5.0
+    "@vitejs/devtools-rolldown": ^0.5.0
+    "@vitejs/devtools-vite": ^0.5.0
+    "@vitejs/devtools-vitest": ^0.5.0
     vite: "*"
   peerDependenciesMeta:
     "@vitejs/devtools-oxc":
@@ -2713,7 +2771,7 @@ __metadata:
       optional: true
   bin:
     vite-devtools: ./bin.js
-  checksum: 10/f2e00e9d655a98b949ce3f8a612549dedecf5c35959b8f5bd3c9934372e07b2a5f07b951a0ed6bcadc53b2248bc95817bf04c57e39b035915521008d5063dfeb
+  checksum: 10/2ee87d5aebfd2da538dd65456ec8a65ea2ab12b7fa28ed8ab91f5e2be5fbe5ffdd5b9ec926fdd5f77f679391113ec56ccf02ed7357c5423396390fa0c8eeeec8
   languageName: node
   linkType: hard
 
@@ -3423,10 +3481,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"birpc@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "birpc@npm:4.0.0"
-  checksum: 10/f4418e2a0451f41eb6f20b3c9a4d6c007b335bbc0fe1d6eddf44bc2fd2d44f26594a3b0a24fc43107b0288a2a56959507b37478faed20e3da0d2587ed0fa1557
+"birpc@npm:^4.1.0":
+  version: 4.2.0
+  resolution: "birpc@npm:4.2.0"
+  checksum: 10/ce6ecbb054a1dc89dd073fc6387f0c6e78c51fbbeb3f377ccec14ccba29907f25d1edbe54fb33e28b66600d9ae6000c81699b46023bf3e1c7f1b9e80b7b76554
   languageName: node
   linkType: hard
 
@@ -3905,14 +3963,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devframe@npm:^0.8.0":
-  version: 0.8.2
-  resolution: "devframe@npm:0.8.2"
+"devframe@npm:^0.9.2":
+  version: 0.9.4
+  resolution: "devframe@npm:0.9.4"
   dependencies:
     "@standard-schema/spec": "npm:^1.1.0"
-    birpc: "npm:^4.0.0"
+    birpc: "npm:^4.1.0"
     crossws: "npm:^0.4.10"
-    destr: "npm:^2.0.5"
     h3: "npm:^2.0.1-rc.26"
     mrmime: "npm:^2.0.1"
     nostics: "npm:^1.2.0"
@@ -3931,7 +3988,7 @@ __metadata:
       optional: true
   bin:
     devframe: ./bin/devframe.mjs
-  checksum: 10/dc77c6e2f200c52576954b0d0dee7517676bac2ec70a03460fab14e014870dd02a8ae1524a285c7d3c4282ef4c5dc864f5883121e904406626731b177c9c3b46
+  checksum: 10/8db8275bbbd5e5fc6653730c82c174c2cb54b3b289dcffdae1030cfe9351d3ece59225d78161a303cc3676e7e12c58669e48afe8619f97aba3ecc3cc16679dce
   languageName: node
   linkType: hard
 
@@ -4730,23 +4787,6 @@ __metadata:
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
   checksum: 10/bf152d0ed1dc159239db1ba1f74fdbc40cb02f626770dcd5815c427ce0688c2635a06ed69af364396da4636d0408fcf7d4afdf7881724c3307e46aff30ca49e2
-  languageName: node
-  linkType: hard
-
-"h3@npm:2.0.1-rc.22":
-  version: 2.0.1-rc.22
-  resolution: "h3@npm:2.0.1-rc.22"
-  dependencies:
-    rou3: "npm:^0.8.1"
-    srvx: "npm:^0.11.15"
-  peerDependencies:
-    crossws: ^0.4.1
-  peerDependenciesMeta:
-    crossws:
-      optional: true
-  bin:
-    h3: bin/h3.mjs
-  checksum: 10/e039c26afd0a153dd2b19d3296e5f13cc1fcbc4c1bc931d6a9e5dc37da1e2ba2e75a1f1193be5f60feebfd4614378679f6e8fbe8ea4179b509f6b0e3c3faef7d
   languageName: node
   linkType: hard
 
@@ -6440,7 +6480,7 @@ __metadata:
     "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:30.0.0"
     "@types/node": "npm:24.13.3"
-    "@vitejs/devtools": "npm:0.4.12"
+    "@vitejs/devtools": "npm:0.5.0"
     "@vitejs/plugin-vue": "npm:6.0.8"
     "@vitest/coverage-v8": "npm:4.1.10"
     "@vitest/ui": "npm:4.1.10"
@@ -6652,13 +6692,6 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: 10/fc53f6853545b23ebd00f5a5d3eb7c6662ac8b777467075e1ac877df5d8ba2b25e8362adee997f48e0b2e21610331bd8cc62dc03a2598fa90a2d2a76ad8d87ef
-  languageName: node
-  linkType: hard
-
-"rou3@npm:^0.8.1":
-  version: 0.8.1
-  resolution: "rou3@npm:0.8.1"
-  checksum: 10/dc4ba6b153358658ade50cd901f25b0237185c4877fec7d594c520fce718cfb8d7dc932153994d860daedff68c57fe15b298357aae5068f6751f5021dfaf2be1
   languageName: node
   linkType: hard
 
@@ -7133,15 +7166,6 @@ __metadata:
   dependencies:
     whatwg-url: "npm:^7.0.0"
   checksum: 10/c02e22ab9f8b8e38655ba1e9abae9fe1f8ba216cbbea922718d5e2ea45821606a74f10edec1db9055e7f7cfd1e6a62e5eade67ec30c017a02f4c8e990accbc1c
-  languageName: node
-  linkType: hard
-
-"srvx@npm:^0.11.15":
-  version: 0.11.16
-  resolution: "srvx@npm:0.11.16"
-  bin:
-    srvx: bin/srvx.mjs
-  checksum: 10/5ec582e92d618220e24bbe9efe4900215081b1949327ee165f3cf4b01e766c458a8aaba50347e8fa1b536ac8b854e0e6d8cd970c62c64278487867699243124d
   languageName: node
   linkType: hard
 
