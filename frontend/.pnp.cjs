@@ -43,7 +43,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.10"],\
           ["@vue/devtools-api", "npm:8.2.1"],\
           ["@vueuse/core", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:14.4.0"],\
-          ["axios", "npm:1.19.0"],\
+          ["axios", "npm:1.20.0"],\
           ["dayjs", "npm:1.11.23"],\
           ["eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.8.0"],\
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
@@ -5234,11 +5234,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["axios", [\
-      ["npm:1.19.0", {\
-        "packageLocation": "./.yarn/cache/axios-npm-1.19.0-bb2b8cfff7-d27e263b00.zip/node_modules/axios/",\
+      ["npm:1.20.0", {\
+        "packageLocation": "./.yarn/cache/axios-npm-1.20.0-0de8ee0ccf-0376b6178b.zip/node_modules/axios/",\
         "packageDependencies": [\
-          ["axios", "npm:1.19.0"],\
-          ["follow-redirects", "virtual:bb2b8cfff757de785acfe8a8d30618d35bb6807b952ecbea19fd6f3a43c72de16dc373616fa5285634736de9038cbffa3992253977e7c4b0cf12ac76bffd3324#npm:1.16.0"],\
+          ["axios", "npm:1.20.0"],\
+          ["follow-redirects", "virtual:0de8ee0ccf1cc6d6d0ba568f07319c0f67fa0587ed0ac4847469c623cd8d5cd1beffd54aecdb94df90e216359637d89e7519a1d553a93edace44300538549c89#npm:1.16.0"],\
           ["form-data", "npm:4.0.6"],\
           ["https-proxy-agent", "npm:5.0.1"],\
           ["proxy-from-env", "npm:2.1.0"]\
@@ -6657,12 +6657,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:bb2b8cfff757de785acfe8a8d30618d35bb6807b952ecbea19fd6f3a43c72de16dc373616fa5285634736de9038cbffa3992253977e7c4b0cf12ac76bffd3324#npm:1.16.0", {\
-        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-34c511c8b4/0/cache/follow-redirects-npm-1.16.0-816e4f62d9-3fbe3d80b3.zip/node_modules/follow-redirects/",\
+      ["virtual:0de8ee0ccf1cc6d6d0ba568f07319c0f67fa0587ed0ac4847469c623cd8d5cd1beffd54aecdb94df90e216359637d89e7519a1d553a93edace44300538549c89#npm:1.16.0", {\
+        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-a0803d1185/0/cache/follow-redirects-npm-1.16.0-816e4f62d9-3fbe3d80b3.zip/node_modules/follow-redirects/",\
         "packageDependencies": [\
           ["@types/debug", null],\
           ["debug", null],\
-          ["follow-redirects", "virtual:bb2b8cfff757de785acfe8a8d30618d35bb6807b952ecbea19fd6f3a43c72de16dc373616fa5285634736de9038cbffa3992253977e7c4b0cf12ac76bffd3324#npm:1.16.0"]\
+          ["follow-redirects", "virtual:0de8ee0ccf1cc6d6d0ba568f07319c0f67fa0587ed0ac4847469c623cd8d5cd1beffd54aecdb94df90e216359637d89e7519a1d553a93edace44300538549c89#npm:1.16.0"]\
         ],\
         "packagePeers": [\
           "@types/debug",\
@@ -8847,7 +8847,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.10"],\
           ["@vue/devtools-api", "npm:8.2.1"],\
           ["@vueuse/core", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:14.4.0"],\
-          ["axios", "npm:1.19.0"],\
+          ["axios", "npm:1.20.0"],\
           ["dayjs", "npm:1.11.23"],\
           ["eslint", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.8.0"],\
           ["eslint-config-prettier", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:10.1.8"],\
