@@ -4777,10 +4777,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:17.11.0":
-  version: 17.11.0
-  resolution: "globals@npm:17.11.0"
-  checksum: 10/9cff5b8099b585862ab0d31e8b93dc1c3e7b59239dc58b59447a38709715751df8794ee0d28f434f8e421b01aee3cc10051e2455b5c967d960e79f882e68aa0f
+"globals@npm:17.12.0":
+  version: 17.12.0
+  resolution: "globals@npm:17.12.0"
+  checksum: 10/833291560517dbb510c6d12359ba87eb8b8f282e9775b0474c6e19e0bea043b61f6b52732d4b1bb275888d1813564e40653e0d5faccef3083dc603cfbf0a3271
   languageName: node
   linkType: hard
 
@@ -4835,9 +4835,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:20.11.6":
-  version: 20.11.6
-  resolution: "happy-dom@npm:20.11.6"
+"happy-dom@npm:20.12.2":
+  version: 20.12.2
+  resolution: "happy-dom@npm:20.12.2"
   dependencies:
     "@types/node": "npm:>=20.0.0"
     "@types/whatwg-mimetype": "npm:^3.0.2"
@@ -4846,7 +4846,7 @@ __metadata:
     entities: "npm:^7.0.1"
     whatwg-mimetype: "npm:^3.0.0"
     ws: "npm:^8.21.0"
-  checksum: 10/7aeb3cd36d63ec13080863aee2446106d6ea1cfbf74f27c62d6f1c7f8d019eb0f288d86935c97e9051a2ba90375ee10987aa4fb004ffe6751c00b5e5040e49cf
+  checksum: 10/9178d1eb7550251a4c015f4c6ecc39082d5a8452328f5850a3de06540bada0c951ced9c120c490cd382653f121032dc9b7229ec5fa64d940fac0a0dbdc208fa7
   languageName: node
   linkType: hard
 
@@ -6519,8 +6519,8 @@ __metadata:
     eslint: "npm:10.9.1"
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-vue: "npm:10.10.0"
-    globals: "npm:17.11.0"
-    happy-dom: "npm:20.11.6"
+    globals: "npm:17.12.0"
+    happy-dom: "npm:20.12.2"
     jwt-decode: "npm:4.0.0"
     pinia: "npm:4.0.3"
     pinia-plugin-persistedstate: "npm:4.7.1"
