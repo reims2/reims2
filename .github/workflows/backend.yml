@@ -24,7 +24,7 @@ jobs:
         with:
           cache: maven
           distribution: temurin
-          java-version: 21
+          java-version: 25
 
       - name: Build with Maven
         if: steps.filter.outputs.src == 'true'
