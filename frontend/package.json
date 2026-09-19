@@ -43,7 +43,7 @@
     "@types/eslint": "9.6.1",
     "@types/jest": "30.0.0",
     "@types/node": "24.13.5",
-    "@vitejs/devtools": "0.7.4",
+    "@vitejs/devtools": "0.7.5",
     "@vitejs/plugin-vue": "6.0.9",
     "@vitest/coverage-v8": "4.1.11",
     "@vitest/ui": "4.1.11",
