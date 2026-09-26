@@ -31,7 +31,7 @@ const RAW_RUNTIME_STATE =
           ["@eslint/js", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.0.1"],\
           ["@playwright/test", "npm:1.63.0"],\
           ["@types/node", "npm:24.13.6"],\
-          ["dotenv", "npm:17.4.2"],\
+          ["dotenv", "npm:18.0.3"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.9.1"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.8"],\
           ["eslint-plugin-playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.11.0"],\
@@ -589,10 +589,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["dotenv", [\
-      ["npm:17.4.2", {\
-        "packageLocation": "./.yarn/cache/dotenv-npm-17.4.2-46ee0c966e-ca1b6f54d5.zip/node_modules/dotenv/",\
+      ["npm:18.0.3", {\
+        "packageLocation": "./.yarn/cache/dotenv-npm-18.0.3-225d5d5551-20743855e5.zip/node_modules/dotenv/",\
         "packageDependencies": [\
-          ["dotenv", "npm:17.4.2"]\
+          ["dotenv", "npm:18.0.3"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -1145,7 +1145,7 @@ const RAW_RUNTIME_STATE =
           ["@eslint/js", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.0.1"],\
           ["@playwright/test", "npm:1.63.0"],\
           ["@types/node", "npm:24.13.6"],\
-          ["dotenv", "npm:17.4.2"],\
+          ["dotenv", "npm:18.0.3"],\
           ["eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.9.1"],\
           ["eslint-config-prettier", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.1.8"],\
           ["eslint-plugin-playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:2.11.0"],\
