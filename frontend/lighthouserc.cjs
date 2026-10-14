@@ -1,5 +1,8 @@
 module.exports = {
   ci: {
+    assert: {
+      preset: 'lighthouse:recommended',
+    },
     collect: {
       startServerCommand:
         'http-server --brotli --gzip -p 3000 -P http://localhost:3000? dist',
