@@ -299,6 +299,7 @@ public class GlassesRestController {
         currentGlasses.get().getDispense().setModifyDate(new Date());
         currentGlasses.get().setSku(currentGlasses.get().getDispense().getPreviousSku());
         currentGlasses.get().getDispense().setPreviousSku(null);
+        currentGlasses.get().getDispense().setDispenseReason(null);
 
         this.mainService.saveGlassesAfterDispense(currentGlasses.get());
         changeService.setNewHashValue(currentGlasses.get().getLocation());

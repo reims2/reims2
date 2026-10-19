@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -166,6 +167,8 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(status().isOk())
             .andDo(print());
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sa"));
+        // undispense must not leave the old reason behind
+        assertNull(mainService.findGlassesById(saveEntitySa2.getId()).orElseThrow().getDispense().getDispenseReason());
 
         // undispense secondly created glass second time
         cv = callChangeValueAndReturnHash("sa");
