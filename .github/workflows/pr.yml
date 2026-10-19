@@ -10,20 +10,23 @@ on:
 jobs:
   frontend-ci:
     name: "Frontend"
-    uses: reims2/reims2/.github/workflows/frontend.yml@main
+    uses: ./.github/workflows/frontend.yml
   backend-ci:
     name: "Backend"
-    uses: reims2/reims2/.github/workflows/backend.yml@main
+    uses: ./.github/workflows/backend.yml
   docs-ci:
     name: "Docs"
-    uses: reims2/reims2/.github/workflows/docs.yml@main
+    uses: ./.github/workflows/docs.yml
+  e2e:
+    name: "E2E"
+    uses: ./.github/workflows/e2e.yml
 
   # docker:
   #   name: "Docker build"
   #   strategy:
   #     matrix:
   #       component: [frontend, backend, docs]
-  #   uses: reims2/reims2/.github/workflows/docker.yml@main
+  #   uses: ./.github/workflows/docker.yml
   #   concurrency: docker-${{ matrix.component }}-${{ github.ref }}
   #   secrets: inherit # pass all secrets
   #   with:

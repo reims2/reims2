@@ -15,7 +15,7 @@ Five independent projects live here, each with its own README, dependencies, and
 
 - `backend/`: Java 21 / Spring Boot 3 REST API (Maven)
 - `frontend/`: Vue 3 / Vuetify 3 / TypeScript SPA (Vite), installable as an offline-capable PWA
-- `e2e/`: Playwright tests that run against a deployed instance of the frontend and backend
+- `e2e/`: Playwright tests that run against the full stack from the root `compose.yaml`
 - `docs/`: VitePress site published at `/docs`, for both end users and developers
 - `ansible/`: playbooks that deploy the whole stack to a VPS via Docker Swarm
 
@@ -54,16 +54,20 @@ yarn build         # vue-tsc --noEmit && vite build, what CI runs
 ### E2E (`e2e/`)
 
 Expects REIMS running at `http://localhost:3000` (override with `BASE_URL`), login `test`/`testtest`.
+`e2e/stack.sh` provides exactly that: the root `compose.yaml` stack plus a Traefik that routes like prod,
+seeded from `ansible/dump.example.sql` (port via `E2E_PORT`).
 
 ```bash
+./stack.sh build     # or `pull` to test published images (set TAG, e.g. sha-abc1234)
+./stack.sh up        # start, or reseed a running stack; `down` deletes it
 yarn install
 yarn test:ui                             # Playwright UI, pick the project top-left before running
 yarn playwright test tests/find.spec.ts  # single spec, headless
 yarn playwright test --project chromium --grep @fast # same subset CI runs on every PR
 ```
 
-CI only runs specs tagged `@fast` on pushes/PRs. The full suite runs weekly against a throwaway `e2e`
-instance that's deployed and torn down for the run.
+CI runs the same stack inside the GitHub runner, never on the server: specs tagged `@fast` on PRs (images
+built from source) and on `main` (the images just pushed), the full suite weekly.
 
 ### Docs (`docs/`)
 
@@ -130,8 +134,8 @@ resolves to `src/`.
 
 ### CI/CD
 
-GitHub Actions in `.github/workflows/`: `pr.yml` runs lint+test+build for frontend/backend/docs on PRs
-into `main`/`dev`. `main.yml` additionally builds and pushes per-component Docker images (`docker.yml`),
+GitHub Actions in `.github/workflows/`: `pr.yml` runs lint+test+build for frontend/backend/docs and the
+`@fast` e2e specs on PRs into `main`/`dev`. `main.yml` additionally builds and pushes per-component Docker images (`docker.yml`),
 deploys to `dev.reims2.app` on pushes to `dev`, and on `main` runs the full pipeline plus `e2e.yml` before
 `prod-deploy.yml` promotes to production. Deploys go through the `ansible/` playbooks against the Docker
 Swarm stack.

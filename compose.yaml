@@ -1,0 +1,85 @@
+# The REIMS2 app stack. e2e/stack.sh runs it for the e2e tests, see e2e/README.md.
+# Traefik labels only set host and path rules, TLS is configured on Traefik's websecure entrypoint.
+
+services:
+  mariadb:
+    image: mariadb:13.0.2@sha256:0e4bb0f339feba125d1154fbacd36c16ec8518f52e44e1f82ecec7d6771caf39
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DATABASE_NAME:-reims2-db}
+      MARIADB_USER: ${DATABASE_USER:-reims2}
+      MARIADB_PASSWORD: ${DATABASE_PASSWORD}
+      MARIADB_AUTO_UPGRADE: "true"
+    command:
+      - --userstat=1
+      - --innodb-buffer-pool-size=${INNODB_BUFFER_POOL_SIZE:-128M}
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  backend:
+    image: ghcr.io/reims2/reims2-backend:${TAG:-latest}
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      PVH_JWT_SECRET: ${JWT_SECRET}
+      PVH_DEBUG: ${DEBUG:-false}
+      DATABASE_HOST: mariadb
+      DATABASE_PORT: "3306"
+      DATABASE_NAME: ${DATABASE_NAME:-reims2-db}
+      DATABASE_USER: ${DATABASE_USER:-reims2}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    networks:
+      - default
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${PROXY_NETWORK:-proxy}
+      - traefik.http.routers.${STACK:-reims2}-backend.rule=Host(`${APP_DOMAIN:-localhost}`) && PathPrefix(`/api`)
+      - traefik.http.routers.${STACK:-reims2}-backend.entrypoints=websecure
+      - traefik.http.services.${STACK:-reims2}-backend.loadbalancer.server.port=5000
+
+  frontend:
+    image: ghcr.io/reims2/reims2-frontend:${TAG:-latest}
+    build:
+      context: ./frontend
+      args:
+        GIT_VERSION: ${GIT_VERSION:-unknown}
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${PROXY_NETWORK:-proxy}
+      - traefik.http.routers.${STACK:-reims2}-frontend.rule=Host(`${APP_DOMAIN:-localhost}`)
+      - traefik.http.routers.${STACK:-reims2}-frontend.entrypoints=websecure
+      - traefik.http.services.${STACK:-reims2}-frontend.loadbalancer.server.port=5000
+
+  docs:
+    image: ghcr.io/reims2/reims2-docs:${TAG:-latest}
+    build: ./docs
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${PROXY_NETWORK:-proxy}
+      - traefik.http.routers.${STACK:-reims2}-docs.rule=Host(`${APP_DOMAIN:-localhost}`) && PathPrefix(`/docs`)
+      - traefik.http.routers.${STACK:-reims2}-docs.entrypoints=websecure
+      - traefik.http.services.${STACK:-reims2}-docs.loadbalancer.server.port=5000
+
+networks:
+  proxy:
+    name: ${PROXY_NETWORK:-proxy}
+
+volumes:
+  db:
