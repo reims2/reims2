@@ -1,0 +1,3409 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": false,
+        "hide": false,
+        "iconColor": "light-blue",
+        "name": "Highlight campaign dates",
+        "target": {
+          "limit": 50,
+          "matchAny": false,
+          "tags": [
+            "reims"
+          ],
+          "type": "tags"
+        }
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 181,
+      "panels": [],
+      "title": "Main",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 5,
+        "w": 9,
+        "x": 0,
+        "y": 1
+      },
+      "id": 127,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "## REIMS2 statistics & monitoring\n\nIncludes the following categories:\n1. Lens Bank Stats: Shows statistics on dispensed glasses within the selected time range\n2. Current inventory\n3. Additions/Deletions: Statistics on glasses that have been added, as well as deleted or dispensed in the selected time range",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.3.1",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 10,
+        "y": 1
+      },
+      "id": 128,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "      \n   \nTips:\n- Select a time range at the top right\n- Select the location at the top left",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.3.1",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 17,
+        "y": 1
+      },
+      "id": 144,
+      "options": {
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 10,
+        "query": "",
+        "showFolderNames": true,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "refill"
+        ]
+      },
+      "pluginVersion": "12.3.1",
+      "title": "Link to refill stats:",
+      "type": "dashlist"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 15,
+      "panels": [],
+      "title": "Lens Bank Stats",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${Database}"
+      },
+      "description": "independent of selected time",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 7
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "dataset": "dev_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${Database}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) FROM stats_glasses\nWHERE status = 'in_stock'\nAND location LIKE $location",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "id",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "dispense"
+        }
+      ],
+      "title": "Current glasses in Inventory",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${Database}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "# of dispensed",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "barAlignment": 1,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 23,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 19,
+        "x": 5,
+        "y": 7
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "timezone": [
+          "utc"
+        ],
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${Database}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroup(dispense_date, '1d') as time,\n  COUNT(*) as count\nFROM stats_glasses\nWHERE status = 'dispensed'\n  AND $__timeFilter(dispense_date)\n  AND location LIKE $location\nGROUP BY time\nORDER BY time",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Dispensed glasses per day",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${Database}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 11
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "dataset": "dev_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${Database}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) FROM stats_glasses\nWHERE status = 'dispensed'\nAND location LIKE $location\nAND $__timeFilter(dispense_date)",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "id",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "dispense"
+        }
+      ],
+      "title": "Glasses dispensed during time range",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${Database}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "suffix:years"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 15
+      },
+      "id": 101,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "dataset": "dev_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${Database}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT AVG(TIMESTAMPDIFF(YEAR, creation_date, dispense_date)) as year\nFROM stats_glasses\nWHERE status = 'dispensed'\nAND $__timeFilter(dispense_date)\nAND location LIKE $location",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "id",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "dispense"
+        }
+      ],
+      "title": "Average age of dispensed glasses",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${Database}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "# of dispensed",
+            "axisPlacement": "auto",
+            "barAlignment": 1,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 23,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 19,
+        "x": 5,
+        "y": 15
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "timezone": [
+          "utc"
+        ],
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${Database}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroup(dispense_date, '1h') as time,\n  COUNT(*) as count\nFROM stats_glasses\nWHERE status = 'dispensed'\n  AND $__timeFilter(dispense_date)\n  AND location LIKE $location\nGROUP BY time\nORDER BY time",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Dispensed glasses per hour",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${Database}"
+      },
+      "description": "independent of selected time",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "suffix:years"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 19
+      },
+      "id": 89,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "dataset": "dev_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${Database}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT AVG(TIMESTAMPDIFF(YEAR, creation_date, CURDATE())) as year\nFROM stats_glasses\nWHERE status = 'in_stock'\nAND location LIKE $location",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "id",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "dispense"
+        }
+      ],
+      "title": "Avg inventory age in years",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "percentage"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 37,
+      "maxPerRow": 6,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "repeat": "glasses_attrs",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT ${glasses_attrs:csv}, COUNT(*) as Count\nFROM stats_glasses\nWHERE status = 'dispensed'\nAND $__timeFilter(dispense_date)\nAND location LIKE $location\nGROUP BY ${glasses_attrs:csv}",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Dispensed - $glasses_attrs",
+      "type": "piechart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "id": 17,
+      "panels": [],
+      "title": "Current inventory stats",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "independent of selected time, MINUS/PLUS based on OD",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 0,
+        "y": 32
+      },
+      "id": 156,
+      "maxPerRow": 6,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT glasses_type, COUNT(*) as Count, (CASE WHEN od_sphere < 0 THEN 'Minus' ELSE 'Plus' END) as positive\nFROM stats_glasses\nWHERE status = 'in_stock'\nAND location LIKE $location\nGROUP BY glasses_type, positive",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Category with MINUS/PLUS",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "time range does not apply here",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 78,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "percentage"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 18,
+        "x": 6,
+        "y": 32
+      },
+      "id": 115,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.95,
+        "fullHighlight": false,
+        "groupWidth": 1,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT od_add as Additional, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as percentage, COUNT(*) as Count\nFROM stats_glasses\nWHERE status = 'in_stock'\nAND location LIKE $location\nAND glasses_type LIKE 'multifocal'\nGROUP BY od_add\nORDER BY od_add",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Multifocal ADD distribution for current inventory (OD only)",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "string",
+                "targetField": "Additional"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "percentage": false
+            },
+            "indexByName": {
+              "Additional": 0,
+              "Count": 2,
+              "percentage": 1
+            },
+            "renameByName": {
+              "Additional": "",
+              "Count": "",
+              "Sphere": "Sphere starting with",
+              "percentage": "Percentage"
+            }
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "independent of selected time",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "id": 29,
+      "maxPerRow": 6,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "repeat": "glasses_attrs",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT ${glasses_attrs:csv}, COUNT(*) as Count\nFROM stats_glasses\nWHERE status = 'in_stock'\nAND location LIKE $location\nGROUP BY ${glasses_attrs:csv}",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "$glasses_attrs",
+      "type": "piechart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 49
+      },
+      "id": 10,
+      "panels": [],
+      "title": "Additions and deletions",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${Database}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "# of added",
+            "axisPlacement": "auto",
+            "barAlignment": 1,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 23,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 0,
+        "y": 50
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "timezone": [
+          "utc"
+        ],
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "asc"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${Database}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroup(creation_date, '1d') as time,\n  COUNT(*) as count\nFROM stats_glasses\nWHERE $__timeFilter(creation_date)\nAND location LIKE $location\nGROUP BY time\nORDER BY time",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Added glasses per day",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${Database}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "# of deleted",
+            "axisPlacement": "auto",
+            "barAlignment": 1,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 23,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 10,
+        "y": 50
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "timezone": [
+          "utc"
+        ],
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${Database}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroup(dispense_date, '1d') as time,\n  COUNT(*) as count,\n  dispense_reason as reason\nFROM stats_glasses\nWHERE status = 'removed'\nAND $__timeFilter(dispense_date)\nAND location LIKE $location\nGROUP BY time, reason\nORDER BY time, reason",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Deleted glasses per day",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "wide"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${Database}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 19,
+        "y": 50
+      },
+      "id": 168,
+      "options": {
+        "displayLabels": [
+          "name"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "dataset": "mysql",
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  dispense_reason as reason,\n  COUNT(*) as count\nFROM stats_glasses\nWHERE status = 'removed'\nAND $__timeFilter(dispense_date)\nAND location LIKE $location\nGROUP BY reason",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Reason for deletions",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "percentage"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 58
+      },
+      "id": 50,
+      "maxPerRow": 6,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "repeat": "glasses_attrs",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT ${glasses_attrs:csv}, COUNT(*) as Count\nFROM stats_glasses\nWHERE $__timeFilter(creation_date)\nAND location LIKE $location\nGROUP BY ${glasses_attrs:csv}",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Added $glasses_attrs",
+      "type": "piechart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 66
+      },
+      "id": 193,
+      "panels": [],
+      "title": "Unsuccessful searches stats",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${Database}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 67
+      },
+      "id": 205,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "dataset": "dev_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${Database}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) as Count\nFROM stats_unsuccessful_search\nWHERE location LIKE $location\n  AND $__timeFilter(search_date)",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "id",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "dispense"
+        }
+      ],
+      "title": "Unsuccessful search count",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 78,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "percentage"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 13,
+        "x": 11,
+        "y": 67
+      },
+      "id": 206,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.95,
+        "fullHighlight": false,
+        "groupWidth": 1,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT od_add as Additional, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as percentage, COUNT(*) as Count\nFROM stats_unsuccessful_search\nWHERE location LIKE $location\n  AND glasses_type LIKE 'multifocal'\n  AND $__timeFilter(search_date)\nGROUP BY od_add\nORDER BY od_add",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Multifocal ADD distribution of unsuccessful searches",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "string",
+                "targetField": "Additional"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "percentage": false
+            },
+            "indexByName": {
+              "Additional": 0,
+              "Count": 2,
+              "percentage": 1
+            },
+            "renameByName": {
+              "Additional": "",
+              "Count": "",
+              "Sphere": "Sphere starting with",
+              "percentage": "Percentage"
+            }
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "independent of selected time, MINUS/PLUS based on OD",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 71
+      },
+      "id": 180,
+      "maxPerRow": 6,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT glasses_type, COUNT(*) as Count, (CASE WHEN od_sphere < 0 THEN 'Minus' ELSE 'Plus' END) as positive\nFROM stats_unsuccessful_search\nWHERE location LIKE $location\n  AND $__timeFilter(search_date)\nGROUP BY glasses_type, positive",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Unsuccessful searches category",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 78,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "percentage"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 11,
+        "x": 4,
+        "y": 76
+      },
+      "id": 207,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.95,
+        "fullHighlight": false,
+        "groupWidth": 1,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT FLOOR(od_sphere) as Sphere, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as percentage, COUNT(*) as Count\nFROM stats_unsuccessful_search\nWHERE location LIKE $location\nAND glasses_type LIKE $glasses_type\nAND $__timeFilter(search_date)\nGROUP BY Sphere\nORDER BY Sphere",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT -8 as Sphere UNION SELECT -7 as Sphere UNION\nSELECT -6 as Sphere UNION SELECT -5 as Sphere UNION\nSELECT -4 as Sphere UNION SELECT -3 as Sphere UNION\nSELECT -2 as Sphere UNION SELECT -1 as Sphere UNION\nSELECT 0 as Sphere UNION\nSELECT 1 as Sphere UNION SELECT 2 as Sphere UNION\nSELECT 3 as Sphere UNION SELECT 4 as Sphere UNION\nSELECT 5 as Sphere UNION SELECT 6 as Sphere UNION\nSELECT 7 as Sphere UNION SELECT 8 as Sphere",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Sphere distribution of unsuccessful searches (OD only)",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Sphere",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "between",
+                  "options": {
+                    "from": -9,
+                    "to": 9
+                  }
+                },
+                "fieldName": "Sphere"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "string",
+                "targetField": "Sphere"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "percentage": false
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Count": "",
+              "Sphere": "Sphere starting with"
+            }
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 83
+      },
+      "id": 77,
+      "panels": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "description": "time range does not apply here",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 78,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "none",
+              "unitScale": true
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Count"
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": true,
+                      "viz": true
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "percentage"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 1
+                  },
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": true,
+                      "tooltip": false,
+                      "viz": false
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 85
+          },
+          "id": 18,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.95,
+            "fullHighlight": false,
+            "groupWidth": 1,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "orientation": "auto",
+            "showValue": "always",
+            "stacking": "normal",
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "mysql",
+                "uid": "mariadb_reims"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "hide": false,
+              "rawQuery": true,
+              "rawSql": "SELECT FLOOR(od_sphere) as Sphere, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as percentage, COUNT(*) as Count\nFROM stats_glasses\nWHERE status = 'in_stock'\nAND location LIKE $location\nAND glasses_type LIKE $glasses_type\nGROUP BY Sphere\nORDER BY Sphere",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            },
+            {
+              "datasource": {
+                "type": "mysql",
+                "uid": "mariadb_reims"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "hide": false,
+              "rawQuery": true,
+              "rawSql": "SELECT -8 as Sphere UNION SELECT -7 as Sphere UNION\nSELECT -6 as Sphere UNION SELECT -5 as Sphere UNION\nSELECT -4 as Sphere UNION SELECT -3 as Sphere UNION\nSELECT -2 as Sphere UNION SELECT -1 as Sphere UNION\nSELECT 0 as Sphere UNION\nSELECT 1 as Sphere UNION SELECT 2 as Sphere UNION\nSELECT 3 as Sphere UNION SELECT 4 as Sphere UNION\nSELECT 5 as Sphere UNION SELECT 6 as Sphere UNION\nSELECT 7 as Sphere UNION SELECT 8 as Sphere",
+              "refId": "B",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "$glasses_type: Sphere distribution of current inventory (OD only)",
+          "transformations": [
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "Sphere",
+                "mode": "outer"
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "between",
+                      "options": {
+                        "from": -9,
+                        "to": 9
+                      }
+                    },
+                    "fieldName": "Sphere"
+                  }
+                ],
+                "match": "all",
+                "type": "include"
+              }
+            },
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [
+                  {
+                    "destinationType": "string",
+                    "targetField": "Sphere"
+                  }
+                ],
+                "fields": {}
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "percentage": false
+                },
+                "indexByName": {},
+                "renameByName": {
+                  "Count": "",
+                  "Sphere": "Sphere starting with"
+                }
+              }
+            }
+          ],
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "description": "Always uses current inventory, time range is only considered for dispensed",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 78,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "none",
+              "unitScale": true
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "percentage"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 85
+          },
+          "id": 23,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.98,
+            "fullHighlight": false,
+            "groupWidth": 0.82,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "orientation": "auto",
+            "showValue": "always",
+            "stacking": "none",
+            "tooltip": {
+              "mode": "multi",
+              "sort": "desc"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "targets": [
+            {
+              "dataset": "reims2_db",
+              "datasource": {
+                "type": "mysql",
+                "uid": "mariadb_reims"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "hide": false,
+              "rawQuery": true,
+              "rawSql": "SELECT FLOOR(od_sphere) as Sphere, COUNT(*) as Count\nFROM stats_glasses\nWHERE status = 'dispensed'\nAND $__timeFilter(dispense_date)\nAND location LIKE $location\nAND glasses_type LIKE $glasses_type\nAND creation_date <= $__timeTo()\nGROUP BY Sphere\nORDER BY Sphere",
+              "refId": "Dispensed",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            },
+            {
+              "datasource": {
+                "type": "mysql",
+                "uid": "mariadb_reims"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "hide": false,
+              "rawQuery": true,
+              "rawSql": "SELECT FLOOR(od_sphere) as Sphere, COUNT(*) as Count\nFROM stats_glasses\nWHERE status = 'in_stock'\nAND location LIKE $location\nAND glasses_type LIKE $glasses_type\nGROUP BY Sphere\nORDER BY Sphere",
+              "refId": "Inventory",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            },
+            {
+              "datasource": {
+                "type": "mysql",
+                "uid": "mariadb_reims"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "hide": false,
+              "rawQuery": true,
+              "rawSql": "SELECT -8 as Sphere UNION SELECT -7 as Sphere UNION\nSELECT -6 as Sphere UNION SELECT -5 as Sphere UNION\nSELECT -4 as Sphere UNION SELECT -3 as Sphere UNION\nSELECT -2 as Sphere UNION SELECT -1 as Sphere UNION\nSELECT 0 as Sphere UNION\nSELECT 1 as Sphere UNION SELECT 2 as Sphere UNION\nSELECT 3 as Sphere UNION SELECT 4 as Sphere UNION\nSELECT 5 as Sphere UNION SELECT 6 as Sphere UNION\nSELECT 7 as Sphere UNION SELECT 8 as Sphere",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "$glasses_type: Comparing # of spheres of of dispensed glasses and current inventory (OD only)",
+          "transformations": [
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "Sphere",
+                "mode": "outer"
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "between",
+                      "options": {
+                        "from": -9,
+                        "to": 9
+                      }
+                    },
+                    "fieldName": "Sphere"
+                  }
+                ],
+                "match": "any",
+                "type": "include"
+              }
+            },
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [
+                  {
+                    "destinationType": "string",
+                    "targetField": "Sphere"
+                  }
+                ],
+                "fields": {}
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Count 1": 1,
+                  "Count 2": 2,
+                  "Sphere": 0
+                },
+                "renameByName": {
+                  "Count 1": "# of which dispensed",
+                  "Count 2": "# in inventory",
+                  "Sphere": "For Sphere starting with"
+                }
+              }
+            }
+          ],
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 0,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none",
+              "unitScale": true
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Percentage"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cnt"
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": true,
+                      "viz": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 93
+          },
+          "id": 13,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.88,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "orientation": "auto",
+            "showValue": "always",
+            "stacking": "normal",
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "mysql",
+                "uid": "mariadb_reims"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT FLOOR(od_sphere) as Sphere, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as percentage, COUNT(*) as cnt\nFROM stats_glasses\nWHERE status = 'dispensed'\nAND $__timeFilter(dispense_date)\nAND location LIKE $location\nAND glasses_type LIKE $glasses_type\nGROUP BY Sphere\nORDER BY Sphere",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            },
+            {
+              "datasource": {
+                "type": "mysql",
+                "uid": "mariadb_reims"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "hide": false,
+              "rawQuery": true,
+              "rawSql": "SELECT -8 as Sphere UNION SELECT -7 as Sphere UNION\nSELECT -6 as Sphere UNION SELECT -5 as Sphere UNION\nSELECT -4 as Sphere UNION SELECT -3 as Sphere UNION\nSELECT -2 as Sphere UNION SELECT -1 as Sphere UNION\nSELECT 0 as Sphere UNION\nSELECT 1 as Sphere UNION SELECT 2 as Sphere UNION\nSELECT 3 as Sphere UNION SELECT 4 as Sphere UNION\nSELECT 5 as Sphere UNION SELECT 6 as Sphere UNION\nSELECT 7 as Sphere UNION SELECT 8 as Sphere",
+              "refId": "B",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "$glasses_type: Sphere distribution of dispensed glasses (OD only)",
+          "transformations": [
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "Sphere",
+                "mode": "outer"
+              }
+            },
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [
+                  {
+                    "destinationType": "string",
+                    "targetField": "Sphere"
+                  }
+                ],
+                "fields": {}
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Sphere": "Sphere starting with",
+                  "cnt": "Count",
+                  "percentage": "Percentage"
+                }
+              }
+            }
+          ],
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "description": "Positive => Put more of those in;\nNegative => Remove those;\n0% => Perfect;\nThis stat will be automatically updated when you add/remove glasses.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 78,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "none",
+              "unitScale": true
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byType",
+                  "options": "number"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 93
+          },
+          "id": 60,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.91,
+            "fullHighlight": false,
+            "groupWidth": 0.76,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "orientation": "auto",
+            "showValue": "always",
+            "stacking": "none",
+            "tooltip": {
+              "mode": "multi",
+              "sort": "desc"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "targets": [
+            {
+              "dataset": "reims2_db",
+              "datasource": {
+                "type": "mysql",
+                "uid": "mariadb_reims"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "hide": false,
+              "rawQuery": true,
+              "rawSql": "SELECT FLOOR(od_sphere) as Sphere, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as percentage\nFROM stats_glasses\nWHERE status = 'dispensed'\nAND $__timeFilter(dispense_date)\nAND location LIKE $location\nAND glasses_type LIKE $glasses_type\nGROUP BY Sphere\nORDER BY Sphere",
+              "refId": "Dispensed",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            },
+            {
+              "datasource": {
+                "type": "mysql",
+                "uid": "mariadb_reims"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "hide": false,
+              "rawQuery": true,
+              "rawSql": "SELECT FLOOR(od_sphere) as Sphere, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as percentage\nFROM stats_glasses\nWHERE status = 'in_stock'\nAND location LIKE $location\nAND glasses_type LIKE $glasses_type\nGROUP BY Sphere\nHAVING COUNT(*) >= 5\nORDER BY Sphere",
+              "refId": "Inventory",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            },
+            {
+              "datasource": {
+                "type": "mysql",
+                "uid": "mariadb_reims"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "hide": false,
+              "rawQuery": true,
+              "rawSql": "SELECT -8 as Sphere UNION SELECT -7 as Sphere UNION\nSELECT -6 as Sphere UNION SELECT -5 as Sphere UNION\nSELECT -4 as Sphere UNION SELECT -3 as Sphere UNION\nSELECT -2 as Sphere UNION SELECT -1 as Sphere UNION\nSELECT 0 as Sphere UNION\nSELECT 1 as Sphere UNION SELECT 2 as Sphere UNION\nSELECT 3 as Sphere UNION SELECT 4 as Sphere UNION\nSELECT 5 as Sphere UNION SELECT 6 as Sphere UNION\nSELECT 7 as Sphere UNION SELECT 8 as Sphere",
+              "refId": "Limits",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "$glasses_type: What to refill (OD only), check info icon ->",
+          "transformations": [
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "Sphere",
+                "mode": "outer"
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "between",
+                      "options": {
+                        "from": -9,
+                        "to": 9
+                      }
+                    },
+                    "fieldName": "Sphere"
+                  }
+                ],
+                "match": "all",
+                "type": "include"
+              }
+            },
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [
+                  {
+                    "destinationType": "string",
+                    "targetField": "Sphere"
+                  },
+                  {
+                    "destinationType": "number",
+                    "targetField": "percentage 1"
+                  },
+                  {
+                    "destinationType": "number",
+                    "targetField": "percentage 2"
+                  }
+                ],
+                "fields": {}
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "percentage 2": false
+                },
+                "indexByName": {
+                  "Sphere": 0,
+                  "percentage 1": 2,
+                  "percentage 2": 1
+                },
+                "renameByName": {
+                  "Count 1": "# of which dispensed",
+                  "Count 2": "# in inventory",
+                  "Sphere": "For Sphere starting with",
+                  "percentage 1": "Dispensed Percentage",
+                  "percentage 2": "Inventory Percentage"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Difference",
+                "binary": {
+                  "left": "Dispensed Percentage",
+                  "operator": "-",
+                  "reducer": "sum",
+                  "right": "Inventory Percentage"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "include": [
+                    "Dispensed Percentage",
+                    "Inventory Percentage"
+                  ],
+                  "reducer": "diff"
+                },
+                "replaceFields": false
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "# in inventory": true,
+                  "# of which dispensed": true,
+                  "Difference": false,
+                  "Dispensed Percentage": true,
+                  "Inventory Percentage": true
+                },
+                "indexByName": {},
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "barchart"
+        }
+      ],
+      "repeat": "glasses_type",
+      "title": "Useful stats for refilling - $glasses_type glasses",
+      "type": "row"
+    }
+  ],
+  "preload": false,
+  "refresh": "5m",
+  "schemaVersion": 42,
+  "tags": [
+    "main"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": "'%'",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "description": "",
+        "includeAll": true,
+        "label": "Location",
+        "name": "location",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Santa Ana",
+            "value": "sa"
+          },
+          {
+            "selected": false,
+            "text": "San Miguel",
+            "value": "sm"
+          }
+        ],
+        "query": "Santa Ana : sa, San Miguel : sm",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "REIMS production DB",
+          "value": "mariadb_reims"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Database (dev or production)",
+        "name": "Database",
+        "options": [],
+        "query": "mysql",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "allValue": "'%'",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "description": "for dashboard internal stuff",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Glasses Type",
+        "name": "glasses_type",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Single",
+            "value": "single"
+          },
+          {
+            "selected": false,
+            "text": "Multifocal",
+            "value": "multifocal"
+          }
+        ],
+        "query": "Single : single, Multifocal : multifocal",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "description": "for dashboard internal stuff",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Glasses Attributes",
+        "name": "glasses_attrs",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Category",
+            "value": "glasses_type"
+          },
+          {
+            "selected": false,
+            "text": "Frame Size",
+            "value": "glasses_size"
+          },
+          {
+            "selected": false,
+            "text": "Frame Appearance",
+            "value": "appearance"
+          }
+        ],
+        "query": "Category : glasses_type, Frame Size : glasses_size, Frame Appearance : appearance",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "8",
+          "value": "8"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Limit min + max for sphere",
+        "name": "sphere_limit",
+        "options": [
+          {
+            "selected": true,
+            "text": "8",
+            "value": "8"
+          }
+        ],
+        "query": "8",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "2026-01-29T00:00:00.000Z",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "America/El_Salvador",
+  "title": "REIMS2 dashboard",
+  "uid": "b5j2JIBVk",
+  "version": 179,
+  "weekStart": ""
+}
