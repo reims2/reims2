@@ -13,3 +13,7 @@ db_exporter_config_location: "{{ prometheus_install_location }}/db_exporter.cnf"
 
 grafana_port: "3000"
 prometheus_port: "9090"
+
+# node_exporter runs on the host network, reachable from swarm containers via the docker_gwbridge gateway
+node_exporter_host: "{{ ansible_facts['docker_gwbridge']['ipv4']['address'] | default('172.18.0.1') }}"
+node_exporter_port: "9100"

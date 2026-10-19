@@ -33,6 +33,15 @@
   loop:
     - "{{ monitoring_network }}"
 
+- name: Allow prometheus to scrape node_exporter on the host
+  community.general.ufw:
+    rule: allow
+    direction: in
+    interface: docker_gwbridge
+    port: "{{ node_exporter_port }}"
+    proto: tcp
+  become: true
+
 - name: Create docker-compose.yml
   ansible.builtin.template:
     src: docker-compose.yml.j2
