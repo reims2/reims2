@@ -21,6 +21,8 @@
     - "{{ grafana_data_location }}"
     - "{{ prometheus_data_location }}"
     - "{{ grafana_provisioning_location }}/datasources"
+    - "{{ grafana_provisioning_location }}/dashboards"
+    - "{{ grafana_provisioning_location }}/dashboards/json"
   become: true
 
 - name: Create networks
@@ -76,6 +78,26 @@
   notify:
     - reload monitoring
     - wait for grafana
+
+- name: Copy grafana dashboard provider config
+  ansible.builtin.template:
+    src: grafana-dashboards.yml.j2
+    dest: "{{ grafana_provisioning_location }}/dashboards/reims2.yaml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - restart grafana
+    - wait for grafana
+
+# grafana polls this directory, dashboard changes need no restart
+- name: Copy grafana dashboards
+  ansible.builtin.copy:
+    src: dashboards/
+    dest: "{{ grafana_provisioning_location }}/dashboards/json/"
+    owner: root
+    group: root
+    mode: "0644"
 # Not yet implemented completely since it's hard to reach the DB host inside the stack
 # - name: Expose DB tasks
 #   ansible.builtin.include_tasks: expose_db.yml

@@ -33,7 +33,7 @@ ansible-playbook -i hosts main.yml --vault-id <plaintext-file-with-vault-passwor
 
 If you use the example `dump.sql`, the initial username is `test` and password `testtest`. It's recommended to create a new admin user, login as that and delete this initial user.
 
-A grafana monitoring solution will be available at `monitoring.<yourdomain>`. Don't forget to configure that with a password. Its dashboards live in `grafana.db`, which the 6-hourly S3 backup includes next to the database dump. You must also **manually** create a user in the database with name `monitoring` and password which must also be provided through the variable `monitoring_db_password`. Use this:
+A grafana monitoring solution will be available at `monitoring.<yourdomain>`. Don't forget to configure that with a password. The REIMS2 and Refill stats dashboards are provisioned from `roles/monitoring/files/dashboards/` and read the `stats_*` views from the backend's Flyway migrations. Edit and save them in Grafana as usual, then copy the JSON from the save dialog over the file and commit. UI edits and Grafana users live in `grafana.db`, which the 6-hourly S3 backup includes next to the database dump. You must also **manually** create a user in the database with name `monitoring` and password which must also be provided through the variable `monitoring_db_password`. Use this:
 
 ```sql
 CREATE USER monitoring@'%' IDENTIFIED BY 'yourpassword';
