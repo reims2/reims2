@@ -24,6 +24,10 @@ services:
         - "traefik.http.routers.grafana.tls.certresolver={{ traefik_certresolver }}"
         - "traefik.http.services.grafana.loadbalancer.server.port={{ grafana_port }}"
         - "traefik.swarm.network={{ proxy_network }}"
+      # grafana grew to 4GB on 2026-09-17 and took the whole host down
+      resources:
+        limits:
+          memory: 512M
       update_config:
         order: start-first
         failure_action: rollback
@@ -46,13 +50,14 @@ services:
      - "{{prometheus_config_location}}:/etc/prometheus/prometheus.yml"
     restart: always
     deploy:
+      # TSDB lock allows only one instance, start-first makes every update fail
       update_config:
-        order: start-first
+        order: stop-first
         failure_action: rollback
         delay: 10s
       rollback_config:
         parallelism: 0
-        order: start-first
+        order: stop-first
       restart_policy:
         condition: any
         delay: 5s
@@ -70,8 +75,12 @@ services:
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--collector.netdev.device-exclude=^veth'
+      - '--collector.netclass.ignored-devices=^veth'
+      - '--web.listen-address={{ node_exporter_host }}:{{ node_exporter_port }}'
+    # host network so netdev sees the real interfaces instead of the container's
     networks:
-      {{ monitoring_network }}:
+      host_network:
     deploy:
       update_config:
         order: start-first
@@ -145,4 +154,7 @@ networks:
   {{ db_network }}:
     external: true
   {{ monitoring_network }}:
+    external: true
+  host_network:
+    name: host
     external: true

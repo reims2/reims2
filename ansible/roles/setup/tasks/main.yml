@@ -20,6 +20,19 @@
   vars:
     swap_file_size_mb: "2048" # some swap for more RAM
 
+# on 2026-09-17 networkd gave up renewing under memory pressure and the lease ran out
+- name: Keep the DHCP address if networkd stops renewing it
+  ansible.builtin.copy:
+    dest: /etc/netplan/90-keep-dhcp.yaml
+    mode: "0600"
+    content: |
+      network:
+        version: 2
+        ethernets:
+          {{ ansible_facts['default_ipv4']['interface'] }}:
+            critical: true
+  notify: Apply netplan
+
 - name: Clean up docker weekly
   ansible.builtin.cron:
     name: docker cleanup
