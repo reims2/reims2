@@ -1,3 +1,11 @@
+- name: Install backup tools
+  ansible.builtin.package:
+    name:
+      - sqlite3 # consistent grafana.db copy
+      - curl # healthchecks.io ping
+    state: present
+  become: true
+
 - name: Create install dirs
   ansible.builtin.file:
     path: "{{ item }}"

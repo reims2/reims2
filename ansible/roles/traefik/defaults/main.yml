@@ -39,12 +39,10 @@ traefik_dynamic_conf:
 # Example entry:
 # - name: gitlabregistry
 #   port: 5050
-traefik_additional_entrypoints:
-  - name: traefik
-    port: 8080
+traefik_additional_entrypoints: []
 
-# Enables debug log level
-traefik_debug: true
+# Enables debug log level and the unauthenticated API/dashboard on the "traefik" entrypoint (needs one on :8080)
+traefik_debug: false
 
 # Should traefik log access?
 traefik_access_log_enabled: false

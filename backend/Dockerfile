@@ -27,7 +27,7 @@ COPY --from=build /usr/src/app/target/extracted/spring-boot-loader/ ./
 COPY --from=build /usr/src/app/target/extracted/snapshot-dependencies/ ./
 COPY --from=build /usr/src/app/target/extracted/application/ ./
 
-HEALTHCHECK --interval=5s --timeout=10s --retries=8 --start-period=20s CMD wget -nv -t1 --spider http://localhost:$PORT/api || exit 1   
+HEALTHCHECK --interval=5s --timeout=10s --retries=8 --start-period=120s CMD wget -nv -t1 --spider http://localhost:$PORT/api || exit 1
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["java", "-jar", "application.jar", "--spring.profiles.active=prod" ]

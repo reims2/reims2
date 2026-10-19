@@ -33,7 +33,7 @@ ansible-playbook -i hosts main.yml --vault-id <plaintext-file-with-vault-passwor
 
 If you use the example `dump.sql`, the initial username is `test` and password `testtest`. It's recommended to create a new admin user, login as that and delete this initial user.
 
-A grafana monitoring solution will be available at `monitoring.<yourdomain>`. Don't forget to configure that with a password. You must also **manually** create a user in the database with name `monitoring` and password which must also be provided through the variable `monitoring_db_password`. Use this:
+A grafana monitoring solution will be available at `monitoring.<yourdomain>`. Don't forget to configure that with a password. Its dashboards live in `grafana.db`, which the 6-hourly S3 backup includes next to the database dump. You must also **manually** create a user in the database with name `monitoring` and password which must also be provided through the variable `monitoring_db_password`. Use this:
 
 ```sql
 CREATE USER monitoring@'%' IDENTIFIED BY 'yourpassword';
@@ -51,6 +51,7 @@ These are the most important variables to set in `main.yml`:
 | `reims2_db_root_password` | Password for REIMS2 database root user                                                               | REQUIRED     |
 | `aws_key_id`              | AWS key ID for S3 backups                                                                            | REQUIRED     |
 | `aws_secret_key`          | AWS secret key for S3 backups                                                                        | REQUIRED     |
+| `s3backup_healthcheck_url` | healthchecks.io ping URL, pinged after each backup (`/fail` on errors). Empty disables it.          | `""`         |
 | `stack_name`              | Internal name for the REIMS stack. Must be unique and can't contain special characters               | REQUIRED     |
 | `app_domain`              | Domain name for REIMS2                                                                               | `reims2.app` |
 | `reset_docker_stack`      | Docker stack configuration will be fully reset to fix any hickups. Usually not recommended for prod. | `false`      |
