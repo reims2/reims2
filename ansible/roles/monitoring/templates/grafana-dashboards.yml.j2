@@ -1,0 +1,16 @@
+{{ ansible_managed | comment }}
+
+apiVersion: 1
+
+providers:
+  - name: reims2
+    type: file
+    folder: ""
+    # UI saves stay allowed, copy the JSON back into the repo when done
+    allowUiUpdates: true
+    # keep the dashboard in grafana.db if its file ever goes missing
+    disableDeletion: true
+    # poll instead of inotify, which can miss events on bind mounts
+    updateIntervalSeconds: 60
+    options:
+      path: /etc/grafana/provisioning/dashboards/json
