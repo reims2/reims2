@@ -1,2 +1,5 @@
 # Claude Code harness artifacts (worktrees, local settings) - never repo content
 .claude/
+
+# brainstorming/design specs are throwaway working docs
+docs/superpowers/

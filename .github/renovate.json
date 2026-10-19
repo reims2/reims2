@@ -2,7 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "security:minimumReleaseAgeNpm",
     ":dependencyDashboard",
     ":prHourlyLimitNone",
     ":separateMajorReleases",
@@ -15,6 +14,8 @@
     "schedule:automergeWeekends"
   ],
   "configMigration": true,
+  "minimumReleaseAge": "7 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
   "labels": [
     "dependencies"
   ],
