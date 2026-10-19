@@ -6,7 +6,7 @@ REIMS2 is composed of:
 - A MariaDB database
 - A frontend constructed with Vue 3 and Vuetify 3 written in Typescript
 - These docs generated with Vitepress
-- A Grafana instance for system monitoring, using Prometheus for data collection
+- A Grafana instance for system monitoring, using Prometheus for data collection and the backend's `stats_*` SQL views for inventory stats
 - A script for regular backups to AWS S3
 - A Traefik proxy server for connecting the different components
 
