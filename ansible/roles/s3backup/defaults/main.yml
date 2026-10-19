@@ -8,3 +8,9 @@ s3backup_data_location: "{{ s3backup_install_location }}/data"
 s3backup_version: 0.14.0
 
 aws_bucket_name: reims2-backup
+
+# Grafana keeps its dashboards in this SQLite file, skipped if it doesn't exist
+s3backup_grafana_db: /srv/grafana/data/grafana.db
+
+# healthchecks.io ping URL, empty disables the ping
+s3backup_healthcheck_url: ""

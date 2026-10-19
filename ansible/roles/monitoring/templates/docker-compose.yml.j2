@@ -50,6 +50,9 @@ services:
      - "{{prometheus_config_location}}:/etc/prometheus/prometheus.yml"
     restart: always
     deploy:
+      resources:
+        limits:
+          memory: 512M
       # TSDB lock allows only one instance, start-first makes every update fail
       update_config:
         order: stop-first

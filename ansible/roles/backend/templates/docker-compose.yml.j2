@@ -25,6 +25,11 @@
         - "traefik.http.routers.{{ stack_name }}_backend.tls.certresolver={{ traefik_certresolver }}"
         - "traefik.http.services.{{ stack_name}}_backend.loadbalancer.server.port=5000"
         - "traefik.swarm.network={{ stack_network }}"
+{% if backend_cpu_limit %}
+      resources:
+        limits:
+          cpus: "{{ backend_cpu_limit }}"
+{% endif %}
       update_config:
         order: start-first
         failure_action: rollback
