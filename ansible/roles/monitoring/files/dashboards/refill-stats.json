@@ -1,0 +1,956 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.3",
+      "targets": [
+        {
+          "dataset": "dev_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "${Database}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) as count\nFROM stats_glasses\nWHERE status = 'in_stock'\n  AND location LIKE '$location'\n  AND creation_date <= $__timeTo()",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "id",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "dispense"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Free slots",
+            "binary": {
+              "left": "5000",
+              "operator": "-",
+              "reducer": "sum",
+              "right": "count"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 1,
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 3,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT glasses_type, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as dispensed_percentage\nFROM stats_glasses\nWHERE status = 'dispensed'\n  AND location LIKE '$location'\nGROUP BY glasses_type",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Glasses type of dispensed glasses",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 1,
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "diff"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sphere"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 7,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.0.1",
+      "targets": [
+        {
+          "dataset": "reims2_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT glasses_type, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as inventory_percentage\nFROM stats_glasses\nWHERE status = 'in_stock'\n  AND location LIKE '$location'\nGROUP BY glasses_type",
+          "refId": "V",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Glasses type in inventory",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "diff": "Percentage to refill",
+              "sphere": "Sphere starting with"
+            }
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 14,
+        "y": 0
+      },
+      "id": 15,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "## Info\n\nThe visualizations below are all for OD only.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "11.1.3",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 19,
+      "options": {
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 10,
+        "query": "",
+        "showFolderNames": true,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "main"
+        ]
+      },
+      "pluginVersion": "11.1.3",
+      "title": "Link to main dashboard:",
+      "type": "dashlist"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 3,
+      "panels": [],
+      "repeat": "glasses_type",
+      "repeatDirection": "h",
+      "title": "$glasses_type glasses",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "diff"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sphere"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 0,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.1.3",
+      "targets": [
+        {
+          "dataset": "reims2_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\n  dispensed.sphere as sphere,\n  ((dispensed_percentage - inventory_percentage) / SUM(dispensed_percentage - inventory_percentage) OVER ()) * 100 as diff\nFROM\n  (\n    SELECT FLOOR(od_sphere) as sphere, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as inventory_percentage\n    FROM stats_glasses\n    WHERE status = 'in_stock'\n      AND location LIKE '$location'\n      AND glasses_type LIKE $glasses_type\n    GROUP BY FLOOR(od_sphere)\n  ) as inventory\n  LEFT JOIN (\n    SELECT FLOOR(od_sphere) as sphere, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as dispensed_percentage\n    FROM stats_glasses\n    WHERE status = 'dispensed'\n      AND location LIKE '$location'\n      AND glasses_type LIKE $glasses_type\n    GROUP BY FLOOR(od_sphere)\n  ) as dispensed ON inventory.sphere = dispensed.sphere\nWHERE\n  abs(dispensed.sphere) <= 4\n  AND (dispensed_percentage - inventory_percentage) > 0.5\nORDER BY\n  dispensed.sphere",
+          "refId": "V",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "$glasses_type: What to refill",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "diff": "Percentage to refill",
+              "sphere": "Sphere starting with"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "mariadb_reims"
+      },
+      "description": "Positive => Put more of those in;\nNegative => Remove those;\n0% => Perfect;\nThis stat will be automatically updated when you add/remove glasses.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 78,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 19,
+        "x": 5,
+        "y": 8
+      },
+      "id": 2,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.91,
+        "fullHighlight": false,
+        "groupWidth": 0.76,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "dataset": "reims2_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT FLOOR(od_sphere) as Sphere, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as percentage\nFROM stats_glasses\nWHERE status = 'dispensed'\n  AND location LIKE '$location'\n  AND glasses_type LIKE $glasses_type\nGROUP BY Sphere\nORDER BY Sphere",
+          "refId": "Dispensed",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT FLOOR(od_sphere) as Sphere, (COUNT(*) / CAST(SUM(COUNT(*)) OVER () as float) * 100) as percentage\nFROM stats_glasses\nWHERE status = 'in_stock'\n  AND location LIKE '$location'\n  AND glasses_type LIKE $glasses_type\nGROUP BY Sphere\nHAVING COUNT(*) >= 5\nORDER BY Sphere",
+          "refId": "Inventory",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "mariadb_reims"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT -8 as Sphere UNION SELECT -7 as Sphere UNION\nSELECT -6 as Sphere UNION SELECT -5 as Sphere UNION\nSELECT -4 as Sphere UNION SELECT -3 as Sphere UNION\nSELECT -2 as Sphere UNION SELECT -1 as Sphere UNION\nSELECT 0 as Sphere UNION\nSELECT 1 as Sphere UNION SELECT 2 as Sphere UNION\nSELECT 3 as Sphere UNION SELECT 4 as Sphere UNION\nSELECT 5 as Sphere UNION SELECT 6 as Sphere UNION\nSELECT 7 as Sphere UNION SELECT 8 as Sphere",
+          "refId": "Limits",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "$glasses_type: How to change the inventory. Check info icon ->",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Sphere",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "between",
+                  "options": {
+                    "from": -9,
+                    "to": 9
+                  }
+                },
+                "fieldName": "Sphere"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "string",
+                "targetField": "Sphere"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "percentage 1"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "percentage 2"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "percentage 2": false
+            },
+            "indexByName": {
+              "Sphere": 0,
+              "percentage 1": 2,
+              "percentage 2": 1
+            },
+            "renameByName": {
+              "Count 1": "# of which dispensed",
+              "Count 2": "# in inventory",
+              "Sphere": "For Sphere starting with",
+              "percentage 1": "Dispensed Percentage",
+              "percentage 2": "Inventory Percentage"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Difference",
+            "binary": {
+              "left": "Dispensed Percentage",
+              "operator": "-",
+              "reducer": "sum",
+              "right": "Inventory Percentage"
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "Dispensed Percentage",
+                "Inventory Percentage"
+              ],
+              "reducer": "diff"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "# in inventory": true,
+              "# of which dispensed": true,
+              "Difference": false,
+              "Dispensed Percentage": true,
+              "Inventory Percentage": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "barchart"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": [
+    "refill"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": "'%'",
+        "current": {
+          "selected": false,
+          "text": "Santa Ana",
+          "value": "sa"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Location",
+        "multi": false,
+        "name": "location",
+        "options": [
+          {
+            "selected": true,
+            "text": "Santa Ana",
+            "value": "sa"
+          },
+          {
+            "selected": false,
+            "text": "San Miguel",
+            "value": "sm"
+          }
+        ],
+        "query": "Santa Ana : sa, San Miguel : sm",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": "'%'",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "description": "for dashboard internal stuff",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Glasses Type",
+        "multi": false,
+        "name": "glasses_type",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Single",
+            "value": "single"
+          },
+          {
+            "selected": false,
+            "text": "Multifocal",
+            "value": "multifocal"
+          }
+        ],
+        "query": "Single : single, Multifocal : multifocal",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Category",
+          "value": "glasses_type"
+        },
+        "description": "for dashboard internal stuff",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Glasses Attributes",
+        "multi": false,
+        "name": "glasses_attrs",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": true,
+            "text": "Category",
+            "value": "glasses_type"
+          },
+          {
+            "selected": false,
+            "text": "Frame Size",
+            "value": "glasses_size"
+          },
+          {
+            "selected": false,
+            "text": "Frame Appearance",
+            "value": "appearance"
+          }
+        ],
+        "query": "Category : glasses_type, Frame Size : glasses_size, Frame Appearance : appearance",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30y",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true
+  },
+  "timezone": "America/El_Salvador",
+  "title": "Refill stats",
+  "uid": "ee00c8b8-fba7-42a4-9bf6-a2eaefdb5927",
+  "version": 62,
+  "weekStart": ""
+}
