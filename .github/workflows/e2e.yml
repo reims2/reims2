@@ -2,50 +2,77 @@ name: E2E test
 
 on:
   workflow_call:
+    inputs:
+      pushed-images:
+        description: "Test the sha-<commit> images docker.yml pushed instead of building from source"
+        type: boolean
+        default: false
   schedule:
     - cron: "7 15 * * 6"
-
-concurrency: e2e-test
+  workflow_dispatch:
 
 jobs:
-  e2e-deploy:
-    name: "Deploy E2E instance"
-    uses: reims2/reims2/.github/workflows/deploy-instance.yml@main
-    secrets: inherit # pass all secrets
-    with:
-      instance_name: e2e
-
   e2e:
     runs-on: ubuntu-latest
-    needs: e2e-deploy
-    defaults:
-      run:
-        working-directory: ./e2e
+    timeout-minutes: 30
+    env:
+      # schedule and manual runs get the full suite on all browsers, everything else @fast on chromium
+      FULL: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Use pushed images
+        if: inputs.pushed-images
+        run: |
+          echo "TAG=sha-${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+          e2e/stack.sh pull --quiet
+      - name: Setup Docker buildx
+        if: ${{ !inputs.pushed-images }}
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - name: Build images
+        if: ${{ !inputs.pushed-images }}
+        uses: docker/bake-action@59cb1203cd42bcefd40a1b6d73b589e48c86040e # v7.5.0
+        with:
+          source: .
+          files: compose.yaml
+          load: true
+          # same cache scopes as docker.yml, so PRs reuse main's layers
+          set: |
+            backend.cache-from=type=gha,scope=backend
+            frontend.cache-from=type=gha,scope=frontend
+            docs.cache-from=type=gha,scope=docs
+
+      - name: Start stack
+        run: e2e/stack.sh up
+
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: "e2e/.nvmrc"
           cache: "yarn"
           cache-dependency-path: "e2e/yarn.lock"
       - name: Install dependencies
+        working-directory: ./e2e
         run: yarn install --immutable
-      - name: Install Playwright Browsers (chromium only)
-        if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
-        run: yarn playwright install --with-deps chromium
-      - name: Install Playwright Browsers (all)
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        run: yarn playwright install --with-deps
-      - name: Run fast test suite
-        if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
-        run: yarn playwright test --project chromium --grep @fast
-        env:
-          BASE_URL: "https://e2e.reims2.app"
-      - name: Run all tests
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        run: yarn playwright test
-        env:
-          BASE_URL: "https://e2e.reims2.app"
+      - name: Install Playwright browsers
+        working-directory: ./e2e
+        run: |
+          if [ "$FULL" = true ]; then
+            yarn playwright install --with-deps
+          else
+            yarn playwright install --with-deps chromium
+          fi
+      - name: Run tests
+        working-directory: ./e2e
+        run: |
+          if [ "$FULL" = true ]; then
+            yarn playwright test
+          else
+            yarn playwright test --project chromium --grep @fast
+          fi
+
+      - name: Stack logs
+        if: failure()
+        run: e2e/stack.sh logs --no-color --tail 200
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
@@ -54,12 +81,3 @@ jobs:
             e2e/playwright-report/
             e2e/test-results/
           retention-days: 14
-      - name: Stop E2E instance
-        if: always()
-        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
-        with:
-          host: reims2.app
-          username: actions
-          key: ${{ secrets.RM_DEPLOY_KEY }}
-          port: 22
-          script: reims2-e2e

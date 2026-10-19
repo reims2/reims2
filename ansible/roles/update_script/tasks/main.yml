@@ -15,12 +15,12 @@
     key_options: 'command="{{ update_script_path }}"'
   ignore_errors: true
 
-- name: Set rm-deploy authorized_key with forced command
+# e2e runs in GitHub's runner now, so the key that tore down e2e stacks goes
+- name: Remove rm-deploy authorized_key
   ansible.posix.authorized_key:
     user: actions
-    state: present
+    state: absent
     key: "{{ lookup('file', 'creds/rm-deploy.pub') }}"
-    key_options: 'command="{{ rm_script_path }}"'
   ignore_errors: true
 
 - name: Create directories
@@ -32,22 +32,18 @@
     group: "actions"
   with_items:
     - "{{ update_script_install_location }}"
-    - "{{ rm_script_install_location }}"
+  become: true
+
+- name: Remove rm-deploy script
+  ansible.builtin.file:
+    path: "{{ rm_script_install_location }}"
+    state: absent
   become: true
 
 - name: Copy deploy script
   ansible.builtin.template:
     src: update.sh
     dest: "{{ update_script_path }}"
-    mode: "0755"
-    owner: "actions"
-    group: "actions"
-  become: true
-
-- name: Copy remove deploy script
-  ansible.builtin.template:
-    src: rm-deploy.sh
-    dest: "{{ rm_script_path }}"
     mode: "0755"
     owner: "actions"
     group: "actions"
