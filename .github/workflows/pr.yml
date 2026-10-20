@@ -23,13 +23,3 @@ jobs:
     name: "E2E"
     uses: ./.github/workflows/e2e.yml
 
-  # docker:
-  #   name: "Docker build"
-  #   strategy:
-  #     matrix:
-  #       component: [frontend, backend, docs]
-  #   uses: ./.github/workflows/docker.yml
-  #   concurrency: docker-${{ matrix.component }}-${{ github.ref }}
-  #   secrets: inherit # pass all secrets
-  #   with:
-  #     component: ${{ matrix.component }}

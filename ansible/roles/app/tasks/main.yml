@@ -14,11 +14,6 @@
     owner: root
     group: root
 
-- name: Create the shared networks
-  community.docker.docker_network:
-    name: "{{ item }}"
-  loop: "{{ [proxy_network] + ([monitoring_network] if stack == 'prod' else []) }}"
-
 - name: Read the deployed tag
   ansible.builtin.slurp:
     src: "{{ app_install_location }}/deployed-tag"

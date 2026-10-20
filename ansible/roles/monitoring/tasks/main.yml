@@ -26,11 +26,6 @@
     - "{{ grafana_provisioning_location }}/dashboards/json"
   become: true
 
-- name: Create the monitoring network
-  community.docker.docker_network:
-    name: "{{ monitoring_network }}"
-  become: true
-
 - name: Allow containers to reach node_exporter on the host
   community.general.ufw:
     rule: allow

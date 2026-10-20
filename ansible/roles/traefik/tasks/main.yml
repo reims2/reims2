@@ -11,10 +11,6 @@
     - "{{ traefik_acme_location }}"
     - "{{ traefik_config_location }}"
 
-- name: Create the proxy network
-  community.docker.docker_network:
-    name: "{{ proxy_network }}"
-
 - name: Write the compose file
   ansible.builtin.template:
     src: docker-compose.yml.j2

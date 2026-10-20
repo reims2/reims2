@@ -2,11 +2,11 @@
 monitoring_domain: monitoring.{{ app_domain }}
 monitoring_install_location: /srv/monitoring
 
-grafana_install_location: "/srv/grafana"
+grafana_install_location: "{{ monitoring_install_location }}/grafana"
 grafana_data_location: "{{ grafana_install_location }}/data"
 grafana_provisioning_location: "{{ grafana_install_location }}/provisioning"
 
-prometheus_install_location: "/srv/prometheus"
+prometheus_install_location: "{{ monitoring_install_location }}/prometheus"
 prometheus_data_location: "{{ prometheus_install_location }}/data"
 prometheus_config_location: "{{ prometheus_install_location }}/prometheus.yml"
 

@@ -1,4 +1,3 @@
 *.sql
 vault_password
 creds/
-!dump.example.sql
