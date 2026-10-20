@@ -1,0 +1,15 @@
+# Prod joins the monitoring network so Prometheus and Grafana reach backend and mariadb
+services:
+  mariadb:
+    networks:
+      - default
+      - monitoring
+  backend:
+    networks:
+      - default
+      - proxy
+      - monitoring
+
+networks:
+  monitoring:
+    external: true

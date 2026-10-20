@@ -10,9 +10,9 @@ REIMS2 is composed of:
 - A script for regular backups to AWS S3
 - A Traefik proxy server for connecting the different components
 
-Each component is deployed as a Docker container.
+Each component runs as a Docker container in a Docker Compose project on a single server.
 
-Deployment is orchestrated using Docker Stack and Swarm, configured for automatic deployment upon pushes to the `main` branch using GitHub Actions.
+GitHub Actions deploys every push to the `main` branch with the Ansible playbooks, first to dev.reims2.app and then to production.
 
 For setting up a new instance, refer to the provided Ansible scripts. These scripts also provide a detailed overview of the REIMS2 system.
 [Ansible scripts](https://github.com/reims2/reims2/tree/main/ansible)

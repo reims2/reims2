@@ -1,15 +1,14 @@
 on:
   workflow_call:
 
-defaults:
-  run:
-    working-directory: ./ansible
-
 jobs:
   lint:
+    name: "Lint"
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Run ansible-lint
         uses: ansible/ansible-lint@9bce2bfb8f4a984e6b13767bc0d6bf0a49492164 # v26.10.1
+        with:
+          working_directory: ansible
+          requirements_file: requirements.yml

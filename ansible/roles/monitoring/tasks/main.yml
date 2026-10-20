@@ -6,6 +6,7 @@
     owner: "root"
     group: "root"
   with_items:
+    - "{{ monitoring_install_location }}"
     - "{{ grafana_install_location }}"
     - "{{ prometheus_install_location }}"
   become: true
@@ -25,21 +26,15 @@
     - "{{ grafana_provisioning_location }}/dashboards/json"
   become: true
 
-- name: Create networks
+- name: Create the monitoring network
   community.docker.docker_network:
-    name: "{{ item }}"
-    driver: "overlay"
-    driver_options:
-      com.docker.network.bridge.name: "{{ item }}"
+    name: "{{ monitoring_network }}"
   become: true
-  loop:
-    - "{{ monitoring_network }}"
 
-- name: Allow prometheus to scrape node_exporter on the host
+- name: Allow containers to reach node_exporter on the host
   community.general.ufw:
     rule: allow
-    direction: in
-    interface: docker_gwbridge
+    from_ip: 172.16.0.0/12
     port: "{{ node_exporter_port }}"
     proto: tcp
   become: true
@@ -47,15 +42,11 @@
 - name: Create docker-compose.yml
   ansible.builtin.template:
     src: docker-compose.yml.j2
-    dest: "{{ grafana_install_location }}/docker-compose.yml"
-    mode: "0660"
+    dest: "{{ monitoring_install_location }}/docker-compose.yml"
+    mode: "0600"
     owner: "root"
-    group: "docker"
-    validate: docker-compose -f %s config -q
+    group: "root"
   become: true
-  notify:
-    - reload monitoring
-    - wait for grafana
 
 - name: Copy prometheus config
   ansible.builtin.template:
@@ -64,9 +55,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify:
-    - reload monitoring
-    - wait for prometheus
+  notify: restart prometheus
 
 - name: Copy grafana datasources config
   ansible.builtin.template:
@@ -75,9 +64,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify:
-    - reload monitoring
-    - wait for grafana
+  notify: restart grafana
 
 - name: Copy grafana dashboard provider config
   ansible.builtin.template:
@@ -86,9 +73,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify:
-    - restart grafana
-    - wait for grafana
+  notify: restart grafana
 
 # grafana polls this directory, dashboard changes need no restart
 - name: Copy grafana dashboards
@@ -98,10 +83,12 @@
     owner: root
     group: root
     mode: "0644"
-# Not yet implemented completely since it's hard to reach the DB host inside the stack
-# - name: Expose DB tasks
-#   ansible.builtin.include_tasks: expose_db.yml
-#   vars:
-#     port: "{{ db_port }}"
-#     db_name: "{{ reims2_db_name }}"
-#     db_password: "{{ reims2_db_root_password }}"
+
+- name: Start monitoring
+  community.docker.docker_compose_v2:
+    project_src: "{{ monitoring_install_location }}"
+    project_name: monitoring
+    pull: missing
+    wait: true
+    remove_orphans: true
+  become: true

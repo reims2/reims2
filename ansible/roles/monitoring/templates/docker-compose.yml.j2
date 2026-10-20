@@ -1,13 +1,12 @@
 {{ ansible_managed | comment }}
 
-version: '3'
 services:
   grafana:
     image: grafana/grafana-oss:13.0.2@sha256:5dad0df181cb644a14e13617b913b261a54f7d4fd4510721dba420929f35bea2
+    restart: unless-stopped
     networks:
-      {{ proxy_network }}:
-      {{ db_network }}:
-      {{ monitoring_network }}:
+      - proxy
+      - monitoring
     volumes:
      - "{{grafana_data_location}}:/var/lib/grafana"
      - "{{grafana_provisioning_location}}:/etc/grafana/provisioning/"
@@ -15,60 +14,38 @@ services:
      - GF_SERVER_ROOT_URL=https://%(domain)s/
      - GF_SERVER_ENFORCE_DOMAIN=true
      - GF_SERVER_DOMAIN={{ monitoring_domain }}
-    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network={{ proxy_network }}"
+      - "traefik.http.routers.grafana.rule=Host(`{{ monitoring_domain }}`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.services.grafana.loadbalancer.server.port={{ grafana_port }}"
+    # grafana grew to 4GB on 2026-09-17 and took the whole host down
     deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.grafana.rule=Host(`{{ monitoring_domain }}`)"
-        - "traefik.http.routers.grafana.entrypoints=https"
-        - "traefik.http.routers.grafana.tls.certresolver={{ traefik_certresolver }}"
-        - "traefik.http.services.grafana.loadbalancer.server.port={{ grafana_port }}"
-        - "traefik.swarm.network={{ proxy_network }}"
-      # grafana grew to 4GB on 2026-09-17 and took the whole host down
       resources:
         limits:
           memory: 512M
-      update_config:
-        order: start-first
-        failure_action: rollback
-        delay: 10s
-      rollback_config:
-        parallelism: 0
-        order: start-first
-      restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+
   prometheus:
     image: prom/prometheus:v3.15.0@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
+    restart: unless-stopped
     networks:
-      {{ monitoring_network }}:
-      {{ db_network }}:
+      - monitoring
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
      - "{{prometheus_data_location}}:/prometheus"
      - "{{prometheus_config_location}}:/etc/prometheus/prometheus.yml"
-    restart: always
     deploy:
       resources:
         limits:
           memory: 512M
-      # TSDB lock allows only one instance, start-first makes every update fail
-      update_config:
-        order: stop-first
-        failure_action: rollback
-        delay: 10s
-      rollback_config:
-        parallelism: 0
-        order: stop-first
-      restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+
   node_exporter:
     image: prom/node-exporter:v1.12.1@sha256:1b4e4438faca4dd7e001dd445d161a4a2091b0fededa84093b3a8dfeae1f1be0
-    restart: always
+    restart: unless-stopped
+    # host network so netdev sees the real interfaces instead of the container's
+    network_mode: host
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -81,30 +58,12 @@ services:
       - '--collector.netdev.device-exclude=^veth'
       - '--collector.netclass.ignored-devices=^veth'
       - '--web.listen-address={{ node_exporter_host }}:{{ node_exporter_port }}'
-    # host network so netdev sees the real interfaces instead of the container's
-    networks:
-      host_network:
-    deploy:
-      update_config:
-        order: start-first
-        failure_action: rollback
-        delay: 10s
-      rollback_config:
-        parallelism: 0
-        order: start-first
-      restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+
   db_exporter:
     image: prom/mysqld-exporter:v0.20.0@sha256:abed8dac117b4ae5b70757f988e44795935b9a72c3b58d720c67ba688f8cb79e
-    restart: always
+    restart: unless-stopped
     networks:
-      {{ monitoring_network }}:
-      {{ db_network }}:
-    volumes:
-      - "{{db_exporter_config_location}}:/etc/my.cnf"
+      - monitoring
     command:
       - "--mysqld.address=mariadb:{{ db_port }}"
       - "--mysqld.username=monitoring"
@@ -134,30 +93,21 @@ services:
       - "--collect.perf_schema.tablelocks"
     environment:
       MYSQLD_EXPORTER_PASSWORD: "{{ monitoring_db_password }}"
-    deploy:
-      update_config:
-        order: start-first
-        failure_action: rollback
-        delay: 10s
-      rollback_config:
-        parallelism: 0
-        order: start-first
-      restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 120s
 
+  # compose only restarts containers that exit, this restarts unhealthy ones on the whole host
+  autoheal:
+    image: willfarrell/autoheal:latest@sha256:708c424faa160b2075f816bd013bc9bb2f165acb340743518702b1586437ce69
+    restart: unless-stopped
+    network_mode: none
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
-
- 
 networks:
-  {{ proxy_network }}:
+  proxy:
+    name: "{{ proxy_network }}"
     external: true
-  {{ db_network }}:
-    external: true
-  {{ monitoring_network }}:
-    external: true
-  host_network:
-    name: host
+  monitoring:
+    name: "{{ monitoring_network }}"
     external: true

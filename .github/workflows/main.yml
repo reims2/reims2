@@ -4,23 +4,22 @@ on:
   push:
     branches:
       - "main"
-      - "dev"
   merge_group:
   workflow_dispatch:
 
 jobs:
   frontend-ci:
-    if: github.event_name != 'workflow_dispatch'
     name: "Frontend"
     uses: ./.github/workflows/frontend.yml
   backend-ci:
-    if: github.event_name != 'workflow_dispatch'
     name: "Backend"
     uses: ./.github/workflows/backend.yml
   docs-ci:
-    if: github.event_name != 'workflow_dispatch'
     name: "Docs"
     uses: ./.github/workflows/docs.yml
+  ansible-lint:
+    name: "Ansible"
+    uses: ./.github/workflows/ansible-lint.yml
 
   docker:
     # the queue only gates on lint/test/build, the push to main right after builds the same commit
@@ -35,14 +34,6 @@ jobs:
     with:
       component: ${{ matrix.component }}
 
-  dev-deploy:
-    name: "Deploy dev instance"
-    needs:
-      - docker
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/dev'
-    uses: ./.github/workflows/dev-deploy.yml
-    secrets: inherit # pass all secrets
-
   e2e:
     name: "Run E2E Tests"
     if: github.ref == 'refs/heads/main'
@@ -52,14 +43,28 @@ jobs:
     with:
       pushed-images: true
 
-  deploy:
-    name: "Deploy production"
+  deploy-staging:
+    name: "Deploy staging"
+    # set the DEPLOY_FREEZE repo variable to true during campaigns
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_FREEZE != 'true'
     needs:
-      - docker
+      - e2e
+    uses: ./.github/workflows/ansible.yml
+    secrets: inherit
+    with:
+      stack: staging
+
+  deploy-prod:
+    name: "Deploy production"
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_FREEZE != 'true'
+    needs:
       - frontend-ci
       - backend-ci
       - docs-ci
+      - ansible-lint
       - e2e
-    if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/prod-deploy.yml
-    secrets: inherit # pass all secrets
+      - deploy-staging
+    uses: ./.github/workflows/ansible.yml
+    secrets: inherit
+    with:
+      stack: prod

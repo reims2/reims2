@@ -5,6 +5,24 @@
     key: "{{ lookup('file', 'creds/pub_keys') }}"
   ignore_errors: true
 
+- name: Install Docker
+  ansible.builtin.include_role:
+    name: geerlingguy.docker
+  vars:
+    docker_daemon_options:
+      live-restore: true
+      log-driver: json-file
+      log-opts:
+        max-size: 10m
+        max-file: "3"
+
+- name: Install Python packages for the Docker modules
+  ansible.builtin.package:
+    name:
+      - python3-docker
+      - python3-requests
+    state: present
+
 - name: Enable auto upgrade
   ansible.builtin.include_role:
     name: hifis.toolkit.unattended_upgrades
