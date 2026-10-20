@@ -1,7 +1,0 @@
----
-backend_debug: false
-backend_image: "reims2/reims2-backend:latest"
-# CPU cap, empty for none. Keeps dev from starving prod when both JVMs start at once.
-backend_cpu_limit: ""
-
-dump_location: "{{ stack_install_location }}/dump.sql"

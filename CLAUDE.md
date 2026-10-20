@@ -17,7 +17,7 @@ Five independent projects live here, each with its own README, dependencies, and
 - `frontend/`: Vue 3 / Vuetify 3 / TypeScript SPA (Vite), installable as an offline-capable PWA
 - `e2e/`: Playwright tests that run against the full stack from the root `compose.yaml`
 - `docs/`: VitePress site published at `/docs`, for both end users and developers
-- `ansible/`: playbooks that deploy the whole stack to a VPS via Docker Swarm
+- `ansible/`: playbooks that set up the VPS and deploy the stack as Docker Compose projects
 
 ## Commands
 
@@ -79,8 +79,14 @@ yarn build  # vitepress build src
 
 ### Ansible (`ansible/`)
 
-Deploys backend, frontend, docs, MariaDB, Traefik, Grafana/Prometheus and S3 backups as a Docker Swarm
-stack: `ansible-playbook -i hosts main.yml`. See `ansible/README.md` for required variables.
+Runs backend, frontend, docs, MariaDB, Traefik, Grafana/Prometheus and S3 backups as Docker Compose
+projects. CI runs these, see `ansible/README.md` for a new box, restore and variables.
+
+```bash
+ansible-playbook -i hosts setup.yml                                   # Docker, firewall, hardening
+ansible-playbook -i hosts deploy.yml -e stack=prod --vault-password-file creds/vault_password
+ansible-playbook -i hosts deploy.yml -e stack=staging                 # dev.reims2.app
+```
 
 ## Architecture
 
@@ -134,11 +140,12 @@ resolves to `src/`.
 
 ### CI/CD
 
-GitHub Actions in `.github/workflows/`: `pr.yml` runs lint+test+build for frontend/backend/docs and the
-`@fast` e2e specs on PRs into `main`/`dev`. `main.yml` additionally builds and pushes per-component Docker images (`docker.yml`),
-deploys to `dev.reims2.app` on pushes to `dev`, and on `main` runs the full pipeline plus `e2e.yml` before
-`prod-deploy.yml` promotes to production. Deploys go through the `ansible/` playbooks against the Docker
-Swarm stack.
+GitHub Actions in `.github/workflows/`: `pr.yml` runs lint+test+build for frontend/backend/docs,
+ansible-lint and the `@fast` e2e specs on PRs. `main.yml` additionally builds and pushes per-component
+images to GHCR (`docker.yml`), runs `e2e.yml` against them, then deploys staging (dev.reims2.app) and
+production through `ansible.yml`, which runs the `ansible/` playbooks. The repo variable `DEPLOY_FREEZE`
+skips the production step. `staging.yml` deploys any branch to staging by hand, `server-setup.yml` runs
+`setup.yml`.
 
 ## Documentation
 

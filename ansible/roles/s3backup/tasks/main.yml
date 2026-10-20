@@ -17,22 +17,40 @@
     - "{{ s3backup_install_location }}"
   become: true
 
-- name: Deploy backup script
-  ansible.builtin.template:
-    src: backup.sh
-    dest: "{{ s3backup_install_location }}/backup.sh"
+- name: Create the log directory
+  ansible.builtin.file:
+    path: "{{ s3backup_log_location }}"
+    state: directory
     mode: "0755"
+  become: true
+
+- name: Rotate the backup log
+  ansible.builtin.template:
+    src: logrotate.conf.j2
+    dest: /etc/logrotate.d/reims2
+    mode: "0644"
+  become: true
+
+# no run on deploy: on a fresh box that would upload an empty backup, see restore.sh
+- name: Deploy backup and restore scripts
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ s3backup_install_location }}/{{ item }}"
+    mode: "0700"
     owner: "root"
     group: "root"
-    # validate: shellcheck %s
+  loop:
+    - backup.sh
+    - restore.sh
   become: true
-  notify: Run backup
 
-- name: Creates backup schedule
+- name: Schedule the backup
   ansible.builtin.cron:
-    name: s3backup {{ stack_name }}
+    name: s3backup reims2
     minute: "0"
     hour: "*/6"
     user: root
-    job: "bash {{ s3backup_install_location }}/backup.sh >> {{ log_location }}/backup.log 2>&1"
-    cron_file: s3backup-{{ stack_name }}
+    job: "bash {{ s3backup_install_location }}/backup.sh >> {{ s3backup_log_location }}/backup.log 2>&1"
+    cron_file: s3backup-reims2
+    state: "{{ 'present' if s3backup_enabled else 'absent' }}"
+  become: true

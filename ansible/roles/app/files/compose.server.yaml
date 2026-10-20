@@ -1,0 +1,4 @@
+# Server-only additions to the root compose.yaml, copied by ansible/roles/app
+networks:
+  proxy:
+    external: true

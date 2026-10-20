@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-      - dev
   workflow_dispatch:
 
 jobs:
@@ -17,6 +16,9 @@ jobs:
   docs-ci:
     name: "Docs"
     uses: ./.github/workflows/docs.yml
+  ansible-lint:
+    name: "Ansible"
+    uses: ./.github/workflows/ansible-lint.yml
   e2e:
     name: "E2E"
     uses: ./.github/workflows/e2e.yml

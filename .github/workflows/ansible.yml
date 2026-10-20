@@ -1,0 +1,53 @@
+name: Ansible
+
+# Runs a playbook against reims2.app with the CI deploy key
+on:
+  workflow_call:
+    inputs:
+      playbook:
+        type: string
+        default: deploy.yml
+      stack:
+        description: "prod or staging"
+        type: string
+        required: true
+
+jobs:
+  ansible:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # queue instead of replacing a pending run, so a manual staging run can't cancel main's deploy
+    concurrency:
+      group: server-${{ inputs.stack }}
+      queue: max
+    environment:
+      name: ${{ inputs.stack == 'prod' && 'production' || 'staging' }}
+      url: ${{ inputs.stack == 'prod' && 'https://reims2.app' || 'https://dev.reims2.app' }}
+    defaults:
+      run:
+        working-directory: ./ansible
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ vars.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: Install dependencies
+        run: ansible-galaxy install -r requirements.yml
+      - name: Run ${{ inputs.playbook }}
+        env:
+          VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
+          PLAYBOOK: ${{ inputs.playbook }}
+          STACK: ${{ inputs.stack }}
+        run: |
+          args=(-i hosts "$PLAYBOOK" -e "stack=$STACK" -e "app_tag=sha-${GITHUB_SHA::7}")
+          if [ -n "$VAULT_PASSWORD" ]; then
+            printf '%s' "$VAULT_PASSWORD" > "$RUNNER_TEMP/vault_password"
+            args+=(--vault-password-file "$RUNNER_TEMP/vault_password")
+          fi
+          ansible-playbook "${args[@]}"

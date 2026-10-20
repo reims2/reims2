@@ -1,0 +1,22 @@
+name: Server setup
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "ansible/setup.yml"
+      - "ansible/requirements.yml"
+      - "ansible/roles/setup/**"
+      - "ansible/roles/hardening/**"
+  workflow_dispatch:
+
+jobs:
+  setup:
+    # hardening can reboot the server, so automatic runs respect the campaign freeze
+    if: github.event_name == 'workflow_dispatch' || vars.DEPLOY_FREEZE != 'true'
+    uses: ./.github/workflows/ansible.yml
+    secrets: inherit
+    with:
+      playbook: setup.yml
+      stack: prod

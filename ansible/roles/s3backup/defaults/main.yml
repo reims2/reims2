@@ -1,16 +1,18 @@
 ---
-# The install locations
-s3backup_install_location: "{{ stack_install_location }}/s3backup"
+s3backup_install_location: "/srv/{{ stack }}/s3backup"
 s3backup_data_location: "{{ s3backup_install_location }}/data"
+s3backup_log_location: /var/log/reims2
 
-# The traefik/dockersocketproxy version to be used
 # renovate: datasource=docker depName=docker.io/dokku/s3backup
 s3backup_version: 0.14.0
 
 aws_bucket_name: reims2-backup
 
-# Grafana keeps its dashboards in this SQLite file, skipped if it doesn't exist
+# Grafana keeps its users and UI edits in this SQLite file, skipped if it doesn't exist
 s3backup_grafana_db: /srv/grafana/data/grafana.db
 
 # healthchecks.io ping URL, empty disables the ping
 s3backup_healthcheck_url: ""
+
+# false deploys the scripts without the cron job, for test boxes that must never upload
+s3backup_enabled: true
