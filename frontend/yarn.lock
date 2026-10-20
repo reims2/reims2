@@ -331,7 +331,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.28.5, @babel/parser@npm:^7.29.0, @babel/parser@npm:^7.29.2, @babel/parser@npm:^7.29.7, @babel/parser@npm:^7.29.8, @babel/parser@npm:^7.29.9":
+"@babel/parser@npm:^7.28.5, @babel/parser@npm:^7.29.0, @babel/parser@npm:^7.29.7, @babel/parser@npm:^7.29.8, @babel/parser@npm:^7.29.9":
   version: 7.29.9
   resolution: "@babel/parser@npm:7.29.9"
   dependencies:
@@ -339,6 +339,17 @@ __metadata:
   bin:
     parser: ./bin/babel-parser.js
   checksum: 10/b8d6acda3fc7405c497b839b0b6d46cbd309d81bdb310c349e5760ecd689c3641925e1184574106161ce2c78cf5c09d22544a0b3e4d5f002e3b78c263c6f11e6
+  languageName: node
+  linkType: hard
+
+"@babel/parser@npm:^8.0.0":
+  version: 8.0.7
+  resolution: "@babel/parser@npm:8.0.7"
+  dependencies:
+    "@babel/types": "npm:^8.0.6"
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: 10/73a7ac2ee4f98c41fd2c70f495d22cc210b199fcde6120b34cc24a0a177c1e8c12e411a6a15d73c1e18f74a8731c0be370f845df96d4f4a43011730795656801
   languageName: node
   linkType: hard
 
@@ -1323,7 +1334,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:8.0.6":
+"@babel/types@npm:8.0.6, @babel/types@npm:^8.0.0, @babel/types@npm:^8.0.6":
   version: 8.0.6
   resolution: "@babel/types@npm:8.0.6"
   dependencies:
@@ -1769,10 +1780,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/sourcemap-codec@npm:^1.4.14, @jridgewell/sourcemap-codec@npm:^1.5.0, @jridgewell/sourcemap-codec@npm:^1.5.5":
-  version: 1.5.5
-  resolution: "@jridgewell/sourcemap-codec@npm:1.5.5"
-  checksum: 10/5d9d207b462c11e322d71911e55e21a4e2772f71ffe8d6f1221b8eb5ae6774458c1d242f897fb0814e8714ca9a6b498abfa74dfe4f434493342902b1a48b33a5
+"@jridgewell/sourcemap-codec@npm:^1.4.14, @jridgewell/sourcemap-codec@npm:^1.5.0, @jridgewell/sourcemap-codec@npm:^1.5.5, @jridgewell/sourcemap-codec@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@jridgewell/sourcemap-codec@npm:1.6.0"
+  checksum: 10/eb53fbf7eb4051302a599d6b91425f381168b2856f321336fb00852cea1e0c1904af2610c157b1535e94a61caa98f0bd068d1d0394dd46adf9e9c45c4e11af91
   languageName: node
   linkType: hard
 
@@ -3388,13 +3399,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ast-kit@npm:^2.1.2, ast-kit@npm:^2.2.0":
+"ast-kit@npm:^2.1.2":
   version: 2.2.0
   resolution: "ast-kit@npm:2.2.0"
   dependencies:
     "@babel/parser": "npm:^7.28.5"
     pathe: "npm:^2.0.3"
   checksum: 10/82cf2a8c2d5eadce177a62c1461b7374be5269e6d771e67d83f99d89ad5f75a4c3ba1d3bd71c931a2ecca061769240ed7968ddcee581697e7304375135ab2106
+  languageName: node
+  linkType: hard
+
+"ast-kit@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "ast-kit@npm:3.0.0"
+  dependencies:
+    "@babel/parser": "npm:^8.0.0"
+    estree-walker: "npm:^3.0.3"
+    pathe: "npm:^2.0.3"
+  checksum: 10/57c47901b27532df7d2cf8216fa050b2cae631fece71cedc495422bdf236bd39c81290e5387493aaed2ca11d5e74269722cd08d9b083fb094205d458b5a08060
   languageName: node
   linkType: hard
 
@@ -3409,14 +3431,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ast-walker-scope@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "ast-walker-scope@npm:0.9.0"
+"ast-walker-scope@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "ast-walker-scope@npm:0.10.0"
   dependencies:
-    "@babel/parser": "npm:^7.29.2"
-    "@babel/types": "npm:^7.29.0"
-    ast-kit: "npm:^2.2.0"
-  checksum: 10/9a699f06f48af4bbb051b2af8a83ffcdd295cadd76ea855118e0ba511fe27ac5ad326d7166294a41c5222c91bd008529d7f04725da9d0350749e586281f3896a
+    "@babel/parser": "npm:^8.0.0"
+    "@babel/types": "npm:^8.0.0"
+    ast-kit: "npm:^3.0.0"
+  checksum: 10/f36404b7dd4085f63e5241d3ad00350a2d552b6bb5498ba7f3cab35e8f0809cde143c8eab961da691ee09466d22c86417456147802766fab4433bdd9b62e3946
   languageName: node
   linkType: hard
 
@@ -3784,6 +3806,13 @@ __metadata:
   version: 0.2.4
   resolution: "confbox@npm:0.2.4"
   checksum: 10/10243036f2eca8f02c85f1c8c99f492d2b690e41b5fb9c6bf91afbaca8972eb760bf9fafb7b669433c1ea0c98f12e910d4d1e73b017cd06b72150d080a2c78b6
+  languageName: node
+  linkType: hard
+
+"confbox@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "confbox@npm:0.3.1"
+  checksum: 10/42c0580cc7bd20009df6c8264247db4fda37a63abcc2d94d7503a41eb00a915ec3328e62d495b8e00de7022e941fee6045545f9351d5e644e77d31ae4a543d0d
   languageName: node
   linkType: hard
 
@@ -5822,12 +5851,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^1.1.0":
-  version: 1.2.0
-  resolution: "magic-string@npm:1.2.0"
+"magic-string@npm:^1.1.0, magic-string@npm:^1.4.3":
+  version: 1.4.3
+  resolution: "magic-string@npm:1.4.3"
   dependencies:
-    "@jridgewell/sourcemap-codec": "npm:^1.5.5"
-  checksum: 10/02158f92f806accd4cc1c7981e1ab54f959f6e56124a6288d55b249b6613ff9d978847ee47a588b933400296c7c51dab7715f79412ba044a1f2b4b2a6e3408bc
+    "@jridgewell/sourcemap-codec": "npm:^1.6.0"
+  checksum: 10/8942d4afec7855661d697e48f6f48f0113770878f29e25cdc558ecfd2493ebe5620e18ebee5770e8e5b0afdf72f60330166d1bb59e70eecced712fcf29860ea4
   languageName: node
   linkType: hard
 
@@ -6582,7 +6611,7 @@ __metadata:
     vitest: "npm:4.1.11"
     vue: "npm:3.5.44"
     vue-eslint-parser: "npm:10.4.1"
-    vue-router: "npm:5.3.1"
+    vue-router: "npm:5.4.0"
     vue-toastification: "npm:2.0.0-rc.5"
     vue-tsc: "npm:3.3.13"
     vue3-enter-to-tab: "npm:3.1.6"
@@ -7826,15 +7855,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "unplugin@npm:3.3.0"
+"unplugin@npm:^3.3.0, unplugin@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "unplugin@npm:3.4.0"
   dependencies:
     "@jridgewell/remapping": "npm:^2.3.5"
-    picomatch: "npm:^4.0.4"
+    picomatch: "npm:^4.0.7"
     webpack-virtual-modules: "npm:^0.6.2"
   peerDependencies:
     "@farmfe/core": "*"
+    "@rsbuild/core": "*"
     "@rspack/core": "*"
     bun-types-no-globals: "*"
     esbuild: "*"
@@ -7845,6 +7875,8 @@ __metadata:
     webpack: "*"
   peerDependenciesMeta:
     "@farmfe/core":
+      optional: true
+    "@rsbuild/core":
       optional: true
     "@rspack/core":
       optional: true
@@ -7862,7 +7894,7 @@ __metadata:
       optional: true
     webpack:
       optional: true
-  checksum: 10/162aa991dcc464c124bee401c30e35fb579cccdba0a7a6c0b5f8c615532e08059a256d9d33450373f4b804508a4c01bfc8bd07a2e2143e31ff51b911dbf57952
+  checksum: 10/311e527f69df37be4ee254ae8d718a8b759bcb60bd0feeda5253767d154c03f7323310ab20d381ff52a63f724f9e98f73bd4e0beb5c7df101a433c5f9e667273
   languageName: node
   linkType: hard
 
@@ -8108,25 +8140,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:5.3.1":
-  version: 5.3.1
-  resolution: "vue-router@npm:5.3.1"
+"vue-router@npm:5.4.0":
+  version: 5.4.0
+  resolution: "vue-router@npm:5.4.0"
   dependencies:
     "@vue-macros/common": "npm:^3.1.3"
     "@vue/devtools-api": "npm:^8.1.5"
-    ast-walker-scope: "npm:^0.9.0"
+    ast-walker-scope: "npm:^0.10.0"
     chokidar: "npm:^5.0.0"
-    confbox: "npm:^0.2.4"
+    confbox: "npm:^0.3.1"
     local-pkg: "npm:^1.2.1"
-    magic-string: "npm:^0.30.21"
+    magic-string: "npm:^1.4.3"
     mlly: "npm:^1.8.2"
     muggle-string: "npm:^0.4.1"
-    nostics: "npm:^1.1.4"
+    nostics: "npm:^1.3.0"
     pathe: "npm:^2.0.3"
-    picomatch: "npm:^4.0.5"
+    picomatch: "npm:^4.0.7"
     scule: "npm:^1.3.0"
     tinyglobby: "npm:^0.2.17"
-    unplugin: "npm:^3.3.0"
+    unplugin: "npm:^3.4.0"
     unplugin-utils: "npm:^0.3.2"
   peerDependencies:
     "@pinia/colada": ">=0.21.2"
@@ -8143,7 +8175,7 @@ __metadata:
       optional: true
     vite:
       optional: true
-  checksum: 10/88c3dc8e52f0e6c48e52efde471cb676867b1277cf68fc7150d55c71d046d1bec6e8b556b482a6183af248dd922bda3f1cecd9101b273c5114e80b2a12570df4
+  checksum: 10/2803a733305991431caafecc8ffb0dc5212445dc2f924f8c2ddd82eb563e65345ca79673d767a1433360583e871931c7b4735a1fe54853cc805f1040cd51c7ec
   languageName: node
   linkType: hard
 
