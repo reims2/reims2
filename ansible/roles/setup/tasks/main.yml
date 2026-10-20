@@ -36,7 +36,7 @@
   ansible.builtin.include_role:
     name: geerlingguy.swap
   vars:
-    swap_file_size_mb: "2048" # plus the 2 GB swap partition of the IONOS image, 4 GB total
+    swap_file_size_mb: "4096"
 
 # on 2026-09-17 networkd gave up renewing under memory pressure and the lease ran out
 - name: Keep the DHCP address if networkd stops renewing it
@@ -83,7 +83,6 @@
       - nano
       - kitty
       - glances
-      - libpam-systemd # ssh session closed after reboot
     state: present
 
 - name: Allow ssh ufw

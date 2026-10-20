@@ -16,10 +16,10 @@ services come from the root `compose.yaml`, which the `app` role copies next to 
 
 - A push to `main` builds images, runs e2e, deploys staging and then prod. Set the repo variable
   `DEPLOY_FREEZE` to `true` during campaigns to keep these deploys and automatic server setup off the box.
+  For a hotfix mid-campaign, delete the variable before merging and set it again once the fix is deployed.
 - The Staging workflow deploys the branch picked in "Use workflow from" to dev.reims2.app.
   The next push to `main` puts main back.
 - Server setup runs on changes to `setup.yml`, the setup or hardening roles, or `requirements.yml`.
-  Hardening can reboot the box.
 - On the server, every stack directory works with plain compose: `cd /srv/prod && docker compose logs
 backend`. The other projects are `/srv/staging`, `/srv/traefik` and `/srv/monitoring`.
 - A failed deploy rolls back to the previously deployed image tag and fails the job.
@@ -28,11 +28,16 @@ backend`. The other projects are `/srv/staging`, `/srv/traefik` and `/srv/monito
 
 ## A new box
 
-CI logs in as root with the `DEPLOY_SSH_KEY` secret of the `production` and `staging` environments,
-opens the vault with `VAULT_PASSWORD` in `production` and checks the host key against the repo variable
-`DEPLOY_KNOWN_HOSTS`. Refresh that after a reinstall: `ssh-keyscan reims2.app | gh variable set
-DEPLOY_KNOWN_HOSTS`. Set up the box from a local checkout with `creds/pub_keys` (your SSH public keys plus
-the CI deploy key) and `creds/vault_password`:
+Start from an Ubuntu LTS box with root SSH access. Point `reims2.app`, `dev.reims2.app` and
+`monitoring.reims2.app` at it first, so Traefik gets Let's Encrypt certificates. `creds/` is not in git.
+`creds/vault_password` opens the vault in `vars/prod.yml`, so keep a copy outside the repo.
+`creds/pub_keys` lists every SSH key that gets root, since hardening turns off password logins. That
+includes the CI key: `ssh-keygen -t ed25519 -N '' -f creds/deploy`, then add `creds/deploy.pub`.
+
+CI logs in as root with that key, stored as the `DEPLOY_SSH_KEY` secret of the `production` and
+`staging` environments. It opens the vault with `VAULT_PASSWORD` in `production` and checks the host key
+against the repo variable `DEPLOY_KNOWN_HOSTS`. Refresh that after a reinstall: `ssh-keyscan reims2.app |
+gh variable set DEPLOY_KNOWN_HOSTS`. Then set up the box from a local checkout:
 
 ```bash
 ansible-galaxy install -r requirements.yml
@@ -42,6 +47,11 @@ ansible-playbook -i hosts deploy.yml -e stack=staging -e app_tag=sha-<commit>
 ssh root@reims2.app /srv/prod/s3backup/restore.sh
 scripts/copy-prod-to-staging.sh
 ```
+
+Without a backup the database starts with no users. Insert a first admin the way
+`scripts/copy-prod-to-staging.sh` inserts `test` (bcrypt hash, all roles), then add everyone else in the
+app. Outside this repo live the AWS S3 bucket `reims2-backup` (credentials in the vault), the
+healthchecks.io check that `backup.sh` pings, and UptimeRobot checks of reims2.app.
 
 ## Backups and restore
 

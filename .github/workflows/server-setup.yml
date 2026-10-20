@@ -13,7 +13,7 @@ on:
 
 jobs:
   setup:
-    # hardening can reboot the server, so automatic runs respect the campaign freeze
+    # setup upgrades packages and restarts sshd, so automatic runs respect the campaign freeze
     if: github.event_name == 'workflow_dispatch' || vars.DEPLOY_FREEZE != 'true'
     uses: ./.github/workflows/ansible.yml
     secrets: inherit

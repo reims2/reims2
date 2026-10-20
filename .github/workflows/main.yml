@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - "main"
-  merge_group:
   workflow_dispatch:
 
 jobs:
@@ -22,8 +21,6 @@ jobs:
     uses: ./.github/workflows/ansible-lint.yml
 
   docker:
-    # the queue only gates on lint/test/build, the push to main right after builds the same commit
-    if: github.event_name != 'merge_group'
     strategy:
       matrix:
         component: [frontend, backend, docs]
