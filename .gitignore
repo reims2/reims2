@@ -3,3 +3,6 @@
 
 # brainstorming/design specs are throwaway working docs
 docs/superpowers/
+
+# ansible-lint installs requirements.yml roles and collections here
+.ansible/
