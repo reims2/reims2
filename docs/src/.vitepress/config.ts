@@ -68,6 +68,10 @@ export default defineConfig({
           items: [
             { link: '/dev/ai-notes/', text: 'Overview' },
             {
+              link: '/dev/ai-notes/philscore-deep-dive',
+              text: 'PhilScore deep dive',
+            },
+            {
               link: '/dev/ai-notes/inventory-refill-analysis',
               text: 'Inventory refill analysis',
             },

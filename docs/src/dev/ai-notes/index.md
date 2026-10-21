@@ -4,6 +4,8 @@ Longer technical write-ups produced by AI coding assistants during development (
 deep-dives, investigation reports, migration handovers) that are too long-form for `CLAUDE.md` but
 still worth keeping around.
 
+- [PhilScore deep dive](/dev/ai-notes/philscore-deep-dive): why each rule and constant of the matching
+  algorithm exists, and where REIMS2 differs from REIMS1.
 - [Inventory refill analysis](/dev/ai-notes/inventory-refill-analysis): methodology handover from an
   analysis of what to restock each site with after a campaign.
 
