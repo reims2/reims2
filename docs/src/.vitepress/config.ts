@@ -75,10 +75,6 @@ export default defineConfig({
               link: '/dev/ai-notes/inventory-refill-analysis',
               text: 'Inventory refill analysis',
             },
-            {
-              link: '/dev/ai-notes/backup-options',
-              text: 'Backup tool options',
-            },
           ],
         },
       ],

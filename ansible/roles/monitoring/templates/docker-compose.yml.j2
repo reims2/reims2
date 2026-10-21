@@ -20,6 +20,8 @@ services:
       - "traefik.http.routers.grafana.rule=Host(`{{ monitoring_domain }}`)"
       - "traefik.http.routers.grafana.entrypoints=websecure"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      # offen stops grafana while it archives grafana.db, see roles/s3backup
+      - "docker-volume-backup.stop-during-backup=true"
     # grafana grew to 4GB on 2026-09-17 and took the whole host down
     deploy:
       resources:
