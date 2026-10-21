@@ -16,9 +16,6 @@ jobs:
   backend-ci:
     name: "Backend"
     uses: ./.github/workflows/backend.yml
-    # backend.yml submits the maven dependency graph on main
-    permissions:
-      contents: write
   docs-ci:
     name: "Docs"
     uses: ./.github/workflows/docs.yml
