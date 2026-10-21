@@ -2,6 +2,7 @@ import { GlassesSearch } from '@/model/GlassesModel'
 import calculateAllPhilscore from '../lib/philscore'
 import { createGlasses, createGlassesEqualOdOs, createSearchEqualLens } from './util'
 
+// REIMS2 only: REIMS1 stored a missing add as 0, so it would match an rx add of 0
 test('Multifocals with no Additional should be ignored', () => {
   const glasses = createGlassesEqualOdOs('multifocal', {
     sphere: 0.25,
@@ -83,6 +84,7 @@ test('isBal on OD should ignore values of OD search terms', () => {
   expect(result).toHaveLength(1)
 })
 
+// REIMS2 only: REIMS1 has no BAL, its one-eye search leaves the other eye unfiltered
 test('isBal should filter glasses with disabled lens sphere out of range', () => {
   const glasses = createGlasses(
     'single',
@@ -170,12 +172,13 @@ test('Filter bigger cyl', () => {
 test('Filter smaller cyl', () => {
   const glasses = createGlassesEqualOdOs('single', {
     sphere: 1,
-    cylinder: 0.25,
+    cylinder: -0.25,
     axis: 0,
   })
+  // rx cylinder -1 would still match through a spherical equivalent, like in REIMS1
   const search = createSearchEqualLens('single', {
     sphere: 1,
-    cylinder: 1,
+    cylinder: -2,
     axis: 0,
   })
   const result = calculateAllPhilscore(search, glasses)
