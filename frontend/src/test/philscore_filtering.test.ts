@@ -261,6 +261,72 @@ test('Dont filter bigger axis diff if (lens) cylinder is small, even with wrapar
   expect(result).toHaveLength(1)
 })
 
+test('Filter lens with axis 0 if rx axis is far from it', () => {
+  // 180 is stored as 0, so this lens is 90 degrees off
+  const glasses = createGlassesEqualOdOs('single', {
+    sphere: 0,
+    cylinder: -1.5,
+    axis: 0,
+  })
+  const search = createSearchEqualLens('single', {
+    sphere: 0,
+    cylinder: -1.5,
+    axis: 90,
+  })
+  const result = calculateAllPhilscore(search, glasses)
+  expect(result).toHaveLength(0)
+})
+
+test('Dont filter lens with axis 0 if rx axis is close to it across wraparound', () => {
+  const glasses = createGlassesEqualOdOs('single', {
+    sphere: 0,
+    cylinder: -1.5,
+    axis: 0,
+  })
+  const search = createSearchEqualLens('single', {
+    sphere: 0,
+    cylinder: -1.5,
+    axis: 175,
+  })
+  const result = calculateAllPhilscore(search, glasses)
+  expect(result).toHaveLength(1)
+})
+
+// [lens cylinder, axis tolerance in degrees], from REIMS1 ATOL.prg
+test.each([
+  [-0.25, 35],
+  [-0.5, 25],
+  [-0.75, 20],
+  [-1, 15],
+  [-1.25, 13],
+  [-1.5, 10],
+  [-1.75, 10],
+  [-2, 9],
+  [-2.25, 9],
+  [-2.5, 8],
+  [-2.75, 8],
+  [-3, 8],
+  [-3.25, 8],
+  [-3.5, 8],
+  [-3.75, 8],
+  [-4, 7],
+  [-4.5, 7],
+])('REIMS1: lens cylinder %s allows an axis difference of %s', (cylinder, tolerance) => {
+  const search = createSearchEqualLens('single', { sphere: 0, cylinder, axis: 90 })
+  const atTolerance = createGlassesEqualOdOs('single', {
+    sphere: 0,
+    cylinder,
+    axis: 90 + tolerance,
+  })
+  const beyondTolerance = createGlassesEqualOdOs('single', {
+    sphere: 0,
+    cylinder,
+    axis: 90 + tolerance + 1,
+  })
+  expect(calculateAllPhilscore(search, atTolerance)).toHaveLength(1)
+  expect(calculateAllPhilscore(search, beyondTolerance)).toHaveLength(0)
+})
+
 test('Dont filter bigger axis diff if (lens) cylinder is small, even with backward wraparound', () => {
   // same as above, but with smaller cylinder
   const glasses = createGlassesEqualOdOs('single', {
