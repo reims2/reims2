@@ -75,10 +75,6 @@ export default defineConfig({
               link: '/dev/ai-notes/backup-options',
               text: 'Backup tool options',
             },
-            {
-              link: '/dev/ai-notes/auto-freeze',
-              text: 'Automatic deploy freeze',
-            },
           ],
         },
       ],

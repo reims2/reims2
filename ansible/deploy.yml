@@ -13,6 +13,8 @@
     reims2_db_user: reims2
     db_port: 3306
   pre_tasks:
+    - name: Check prod is quiet
+      ansible.builtin.import_tasks: tasks/prod-quiet.yml
     - name: Create the shared networks
       community.docker.docker_network:
         name: "{{ item }}"

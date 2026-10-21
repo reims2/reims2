@@ -51,8 +51,7 @@ jobs:
 
   deploy-staging:
     name: "Deploy staging"
-    # set the DEPLOY_FREEZE repo variable to true during campaigns
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_FREEZE != 'true'
+    if: github.ref == 'refs/heads/main'
     needs:
       - e2e
     uses: ./.github/workflows/ansible.yml
@@ -62,7 +61,7 @@ jobs:
 
   deploy-prod:
     name: "Deploy production"
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_FREEZE != 'true'
+    if: github.ref == 'refs/heads/main'
     needs:
       - frontend-ci
       - backend-ci
