@@ -19,4 +19,4 @@
         msg: >-
           {{ prod_recent_activity.stdout }} glasses added or dispensed in the last 48 hours, prod left alone.
           Re-run once it's quiet.
-      when: prod_recent_activity.stdout | int > 0
+      when: prod_recent_activity.stdout | int > 2
