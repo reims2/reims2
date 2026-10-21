@@ -10,7 +10,7 @@ trap 'rm -rf "$work"' EXIT
 
 s3() {
   docker run --rm -e AWS_ACCESS_KEY_ID={{ aws_key_id }} -e AWS_SECRET_ACCESS_KEY={{ aws_secret_key }} \
-    -v "$work:/work" --entrypoint aws dokku/s3backup:{{ s3backup_version }} "$@"
+    -v "$work:/work" amazon/aws-cli:{{ s3backup_awscli_version }} "$@"
 }
 db() {
   docker compose exec -T mariadb sh -c 'exec mariadb -uroot -p"$MARIADB_ROOT_PASSWORD" "$MARIADB_DATABASE" "$@"' sh "$@"
@@ -28,17 +28,21 @@ key=${1:-$(s3 s3 ls "s3://{{ s3backup_bucket_name }}/" | awk '{print $4}' | grep
 echo "Restoring $key"
 s3 s3 cp --quiet "s3://{{ s3backup_bucket_name }}/$key" "/work/$key"
 tar -xzf "$work/$key" -C "$work"
+# backup/dump.sql in older archives, backup/db/dump.sql since offen
+dump=$(find "$work" -name dump.sql)
+[ -n "$dump" ] || { echo "$key holds no dump.sql, pass an older key" >&2; exit 1; }
+grafana_db=$(find "$work" -name grafana.db)
 
 docker compose stop backend
 # Flyway filled its history on first start, the dump brings the real rows
 db -e "delete from flyway_schema_history"
-db < "$work/backup/dump.sql"
+db < "$dump"
 docker compose up -d --wait backend
 
-if [ -f "$work/backup/grafana.db" ]; then
+if [ -n "$grafana_db" ]; then
   cd /srv/monitoring
   docker compose stop grafana
-  install -m 640 -o 472 -g 0 "$work/backup/grafana.db" {{ s3backup_grafana_db }}
+  install -m 640 -o 472 -g 0 "$grafana_db" {{ s3backup_grafana_data_location }}/grafana.db
   docker compose up -d --wait grafana
 fi
 echo "Restored $key"
