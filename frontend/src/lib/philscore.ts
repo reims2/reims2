@@ -61,15 +61,22 @@ function filterLens(
 }
 
 function calcAxisTolerance(cylinder: number, isHighTolerance: boolean): number {
-  // Numbers taken from REIMS1, in short: Smaller cylinders allow for a greater tolerance.
-  const toleranceYValues = [7, 8, 9, 10, 13, 15, 20, 25, 35, 90]
-  const toleranceXValues = [-4, -3, -2, -1.75, -1.25, -1, -0.75, -0.5, -0.25, 0]
-  // Implement simple "lookup table"
-  let result = toleranceYValues[0]
-  for (let i = 0; i < toleranceXValues.length; i++) {
-    if (cylinder < toleranceXValues[i]) break
-    result = toleranceYValues[i]
-  }
+  // Rows of REIMS1's ATOL.prg: [cylinder at or below, tolerance], first match wins.
+  // In short: Smaller cylinders allow for a greater tolerance.
+  const toleranceSteps = [
+    [-4, 7],
+    [-3, 8],
+    [-2.5, 8],
+    [-2, 9],
+    [-1.75, 10],
+    [-1.5, 10],
+    [-1.25, 13],
+    [-1, 15],
+    [-0.75, 20],
+    [-0.5, 25],
+    [-0.25, 35],
+  ]
+  let result = toleranceSteps.find(([maxCylinder]) => cylinder <= maxCylinder)?.[1] ?? 90
   if (isHighTolerance) result *= 2
   return result
 }
@@ -78,25 +85,17 @@ function checkForSingleAxisTolerance(rx: Eye, lens: Eye, isHighTolerance: boolea
   /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
   const allowedTolerance = calcAxisTolerance(lens.cylinder, isHighTolerance)
 
-  // Now calculate the minima and maxima. We have two pairs of min and max because we have to account for "wraparound"
-  // An axis of 0 with a tolerance of plus and minus 10, has to be between 170-180 and 0-10, because 180 wraps around to 0.
-  // This is all we do here really
   const axisSub = rx.axis - allowedTolerance
   const axisAdd = rx.axis + allowedTolerance
 
-  const minimum1 = axisAdd > 180 || axisSub < 0 ? 0 : axisSub
+  // No wraparound: a single range
+  if (axisSub >= 0 && axisAdd <= 180) return lens.axis >= axisSub && lens.axis <= axisAdd
+
+  // Wraparound: two ranges, because 180 wraps around to 0.
+  // An axis of 0 with a tolerance of plus and minus 10, has to be between 170-180 and 0-10.
   const maximum1 = axisAdd > 180 ? axisAdd - 180 : axisAdd
-
-  let minimum2 = axisAdd > 180 || axisSub < 0 ? axisSub : 0
-  if (axisSub < 0) minimum2 += 180
-
-  const maximum2 = axisAdd > 180 || axisSub < 0 ? 180 : 0
-
-  // Now return true if the lens axis lays inbetween one of the two min-max pairs
-  return (
-    (lens.axis >= minimum1 && lens.axis <= maximum1) ||
-    (lens.axis >= minimum2 && lens.axis <= maximum2)
-  )
+  const minimum2 = axisSub < 0 ? axisSub + 180 : axisSub
+  return (lens.axis >= 0 && lens.axis <= maximum1) || (lens.axis >= minimum2 && lens.axis <= 180)
 }
 
 function checkForTolerances(lens: Eye, rx: Eye, tolerance: number): boolean {
