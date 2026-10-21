@@ -31,7 +31,7 @@ fi
 docker run -i \
       -e AWS_ACCESS_KEY_ID={{ aws_key_id }}\
       -e AWS_SECRET_ACCESS_KEY={{ aws_secret_key }}\
-      -e BUCKET_NAME={{ aws_bucket_name }} \
+      -e BUCKET_NAME={{ s3backup_bucket_name }} \
       -e BACKUP_NAME=reims2-backup \
       -v {{ s3backup_data_location }}:/backup dokku/s3backup:{{ s3backup_version }}
 
