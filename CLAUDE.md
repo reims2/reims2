@@ -143,9 +143,9 @@ resolves to `src/`.
 GitHub Actions in `.github/workflows/`: `pr.yml` runs lint+test+build for frontend/backend/docs,
 ansible-lint and the `@fast` e2e specs on PRs. `main.yml` additionally builds and pushes per-component
 images to GHCR (`docker.yml`), runs `e2e.yml` against them, then deploys staging (dev.reims2.app) and
-production through `ansible.yml`, which runs the `ansible/` playbooks. The repo variable `DEPLOY_FREEZE`
-skips the production step. `staging.yml` deploys any branch to staging by hand, `server-setup.yml` runs
-`setup.yml`.
+production through `ansible.yml`, which runs the `ansible/` playbooks. Pushes leave production alone while
+it's in use during a campaign (`ansible/tasks/prod-quiet.yml`). `staging.yml` deploys any branch to staging
+by hand, `server-setup.yml` runs `setup.yml`.
 
 ## Documentation
 

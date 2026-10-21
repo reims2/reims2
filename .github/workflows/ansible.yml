@@ -44,8 +44,11 @@ jobs:
           VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
           PLAYBOOK: ${{ inputs.playbook }}
           STACK: ${{ inputs.stack }}
+          # running the workflow by hand skips it, that's the hotfix path
+          PROD_QUIET_CHECK: ${{ inputs.stack == 'prod' && github.event_name == 'push' }}
         run: |
           args=(-i hosts "$PLAYBOOK" -e "stack=$STACK" -e "app_tag=sha-${GITHUB_SHA::7}")
+          args+=(-e "prod_quiet_check=$PROD_QUIET_CHECK")
           if [ -n "$VAULT_PASSWORD" ]; then
             printf '%s' "$VAULT_PASSWORD" > "$RUNNER_TEMP/vault_password"
             args+=(--vault-password-file "$RUNNER_TEMP/vault_password")
