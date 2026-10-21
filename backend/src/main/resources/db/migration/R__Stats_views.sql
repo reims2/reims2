@@ -3,11 +3,12 @@
 CREATE OR REPLACE VIEW stats_glasses AS
 SELECT
   g.id, g.sku, g.location, g.glasses_type, g.glasses_size, g.appearance, g.creation_date,
-  CASE
+  -- cast, or grafana's utf8mb4_unicode_ci connection can't compare literals against it
+  CAST(CASE
     WHEN g.dispensed AND d.dispense_reason = 'DISPENSED' THEN 'dispensed'
     WHEN g.dispensed THEN 'removed'
     ELSE 'in_stock'
-  END AS status,
+  END AS VARCHAR(20)) AS status,
   CASE WHEN g.dispensed THEN d.dispense_reason END AS dispense_reason,
   CASE WHEN g.dispensed THEN d.modify_date END AS dispense_date,
   od.sphere AS od_sphere, od.cylinder AS od_cylinder, od.axis AS od_axis, od.additional AS od_add,
