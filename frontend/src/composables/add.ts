@@ -5,7 +5,7 @@ import { useRootStore } from '@/stores/root'
 
 import { Glasses, GlassesInput, SanitizedGlassesInput } from '@/model/GlassesModel'
 
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 import { ReimsAxiosError } from '@/lib/axios'
 
 export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => void) => {

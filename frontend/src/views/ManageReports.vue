@@ -49,7 +49,7 @@
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 const toast = useToast()
 
 const glassesStore = useGlassesStore()

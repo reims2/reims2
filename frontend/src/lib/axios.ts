@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { useAuthStore } from '@/stores/auth'
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 
 export class ReimsAxiosError extends Error {
   isNetwork: boolean

@@ -1,6 +1,6 @@
 import { useTableStore } from '@/stores/table'
 import { Glasses } from '@/model/GlassesModel'
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 import { ReimsAxiosError } from '@/lib/axios'
 
 import { TableSortBy } from '@/model/ReimsModel'

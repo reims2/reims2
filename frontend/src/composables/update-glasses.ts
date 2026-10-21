@@ -1,6 +1,6 @@
 import { useNow, useOnline, watchThrottled } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 import dayjs from 'dayjs'
 
 export const useUpdatesGlassesInterval = () => {

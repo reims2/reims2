@@ -47,7 +47,7 @@ import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
 import { useRoute } from 'vue-router'
 import { ReimsAxiosError } from '@/lib/axios'
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 import { reimsSiteSelects } from '@/util/util'
 import { useRootStore } from '@/stores/root'
 
