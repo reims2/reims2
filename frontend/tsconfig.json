@@ -1,33 +1,7 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "noImplicitAny": false,
-    "jsx": "preserve",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
-    "skipLibCheck": true,
-    "noEmit": true,
-    "useUnknownInCatchVariables": false,
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "types": ["vitest/globals"]
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "files": [],
   "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ],
-  "exclude": ["node_modules"],
-  "vueCompilerOptions": {
-    "globalTypesPath": "./vue-global-types.d.ts"
-  }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

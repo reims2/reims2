@@ -30,7 +30,9 @@ export const useUpdatesGlassesInterval = () => {
       else await glassesStore.loadGlassesIfChanged()
     } catch (error) {
       if (!glassesStore.hasGlassesLoaded) {
-        toast.error(`Could not load glasses database, please retry later (${error.message})`)
+        toast.error(
+          `Could not load glasses database, please retry later (${(error as Error).message})`,
+        )
       } else if (dayjs().diff(glassesStore.lastRefresh, 'day') > 3) {
         // if the last successful update is longer ago, mark DB as outdated
         glassesStore.isOutdated = true

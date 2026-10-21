@@ -54,7 +54,7 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
         // no free skus left.
         toast.error(error.message)
       } else {
-        toast.error(`Could not add glasses, please retry (${error.message})`)
+        toast.error(`Could not add glasses, please retry (${(error as Error).message})`)
       }
       return
     } finally {

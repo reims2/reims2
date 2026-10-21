@@ -124,7 +124,7 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
         }
       } else {
         toast.error(
-          `Could not undo dispension/deletion of glasses, please retry (${error.message}).`,
+          `Could not undo dispension/deletion of glasses, please retry (${(error as Error).message}).`,
         )
       }
       return
@@ -179,7 +179,7 @@ export const useDeleteGlasses = (
           return
         }
       } else {
-        toast.error(`Could not ${actionString} glasses, please retry (${error.message})`)
+        toast.error(`Could not ${actionString} glasses, please retry (${(error as Error).message})`)
       }
       return
     } finally {

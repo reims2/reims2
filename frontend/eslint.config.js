@@ -1,10 +1,11 @@
+import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
 
-export default tseslint.config(
+export default defineConfig(
   {
     ignores: [
       '*.d.ts',
@@ -38,7 +39,8 @@ export default tseslint.config(
       },
     },
     rules: {
-      'spaced-comment': 'warn',
+      // TypeScript already reports undefined names, including auto-imported globals
+      'no-undef': 'off',
       'no-warning-comments': 'warn',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
