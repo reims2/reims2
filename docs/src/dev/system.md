@@ -12,7 +12,7 @@ REIMS2 is composed of:
 
 Each component runs as a Docker container in a Docker Compose project on a single server.
 
-GitHub Actions deploys every push to the `main` branch with the Ansible playbooks, first to dev.reims2.app and then to production.
+GitHub Actions deploys every push to the `main` branch with the Ansible playbooks, first to dev.reims2.app and then to production, unless production was used in the last 48 hours.
 
 For setting up a new instance, refer to the provided Ansible scripts. These scripts also provide a detailed overview of the REIMS2 system.
 [Ansible scripts](https://github.com/reims2/reims2/tree/main/ansible)

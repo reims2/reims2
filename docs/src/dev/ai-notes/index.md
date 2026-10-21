@@ -8,8 +8,6 @@ still worth keeping around.
   analysis of what to restock each site with after a campaign.
 - [Backup tool options](/dev/ai-notes/backup-options): off-the-shelf replacements for `backup.sh`, put off
   until after a campaign.
-- [Automatic deploy freeze](/dev/ai-notes/auto-freeze): plan to replace `DEPLOY_FREEZE` with a check of
-  whether prod is in use.
 
 Guidelines:
 

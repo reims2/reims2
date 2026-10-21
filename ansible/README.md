@@ -14,9 +14,11 @@ services come from the root `compose.yaml`, which the `app` role copies next to 
 
 ## Everyday use
 
-- A push to `main` builds images, runs e2e, deploys staging and then prod. Set the repo variable
-  `DEPLOY_FREEZE` to `true` during campaigns to keep these deploys and automatic server setup off the box.
-  For a hotfix mid-campaign, delete the variable before merging and set it again once the fix is deployed.
+- A push to `main` builds images, runs e2e, deploys staging and then prod. If glasses were added or
+  dispensed on prod in the last 48 hours, a push leaves prod alone and its prod deploy or server setup fails
+  instead (`tasks/prod-quiet.yml`). 48 hours, because offline sites may only sync in the evening and
+  Renovate merges on weekends. Re-run the latest failed runs once it's quiet. For a hotfix mid-campaign,
+  run Deploy on `main` by hand, which skips the check.
 - The Staging workflow deploys the branch picked in "Use workflow from" to dev.reims2.app.
   The next push to `main` puts main back.
 - Server setup runs on changes to `setup.yml`, the setup or hardening roles, or `requirements.yml`.

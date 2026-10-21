@@ -2,6 +2,9 @@
 - name: Initial server configuration and hardening
   hosts: all
   become: true
+  pre_tasks:
+    - name: Check prod is quiet
+      ansible.builtin.import_tasks: tasks/prod-quiet.yml
   roles:
     - setup
     - hardening
