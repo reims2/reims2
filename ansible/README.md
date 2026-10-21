@@ -52,15 +52,22 @@ scripts/copy-prod-to-staging.sh
 
 Without a backup the database starts with no users. Insert a first admin the way
 `scripts/copy-prod-to-staging.sh` inserts `test` (bcrypt hash, all roles), then add everyone else in the
-app. Outside this repo live the AWS S3 bucket `reims2-backup` (credentials in the vault), the
-healthchecks.io check that `backup.sh` pings, and UptimeRobot checks of reims2.app.
+app. Outside this repo live the AWS S3 bucket `reims2-backup`, the healthchecks.io check of the backup
+and UptimeRobot checks of reims2.app. The bucket has versioning and Object Lock (compliance mode, 30
+days default retention) on. Its key, in the vault, may only `s3:PutObject`, `s3:GetObject`,
+`s3:ListBucket` and `s3:GetBucketLocation`, so root on the box can't destroy a backup. The
+healthchecks.io check filters on the HTTP request body: `docker-volume-backup succeeded` is success,
+`docker-volume-backup failed` is failure, anything else is ignored.
 
 ## Backups and restore
 
-Every 6 hours `backup.sh` dumps the database (without the `roles` table, which Flyway seeds) and a copy
-of Grafana's `grafana.db` to S3 as `reims2-backup-<timestamp>.tgz`, then pings healthchecks.io. It
-refuses to upload while the `glasses` table is empty, so a fresh box can't overwrite the newest backup
-with an empty one.
+Every 6 hours [offen/docker-volume-backup](https://offen.github.io/docker-volume-backup/) (in
+`/srv/prod/s3backup`) dumps the database (without the `roles` table, which Flyway seeds) through a label
+on `mariadb` in `roles/app/files/compose.prod.yaml`, stops Grafana for a few seconds to copy its data
+dir and uploads both to S3 as `reims2-backup-<timestamp>.tgz`. Old backups are kept. The dump refuses
+while the `glasses` table is empty, so a fresh box never uploads an empty backup. Each run reports
+success or failure to healthchecks.io. `cd /srv/prod/s3backup && docker compose exec backup backup`
+runs one now, `docker compose logs backup` there shows past runs.
 
 `restore.sh [backup key]` restores the newest backup by default, into a database without glasses. To
 restore over live data, delete it with `cd /srv/prod && docker compose down -v` and deploy again first. `scripts/copy-prod-to-staging.sh` copies prod's data into staging. Staging
@@ -83,6 +90,6 @@ UI edits and Grafana users live in `grafana.db`, which the backup includes. The 
 | `reims2_db_password`, `reims2_db_root_password`, `reims2_jwt_secret` | app secrets, no single quotes                                       | in `vars/`                      |
 | `monitoring_db_password`                                             | password of the `monitoring` DB user                                | `vars/prod.yml`                 |
 | `aws_key_id`, `aws_secret_key`                                       | S3 credentials for backups                                          | `vars/prod.yml`                 |
-| `s3backup_healthcheck_url`                                           | healthchecks.io ping URL, empty disables it                         | `vars/prod.yml`                 |
-| `s3backup_enabled`                                                   | `false` deploys backup scripts without the cron job, for test boxes | `true`                          |
+| `s3backup_healthcheck_url`                                           | shoutrrr URL of the healthchecks.io check, empty disables it        | `vars/prod.yml`                 |
+| `s3backup_enabled`                                                   | `false` deploys the backup but keeps it stopped, for test boxes     | `true`                          |
 | `traefik_https_letsencrypt_enabled`                                  | `false` serves Traefik's default certificate, for test boxes        | `true`                          |
