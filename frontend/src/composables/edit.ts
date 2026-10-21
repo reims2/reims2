@@ -10,10 +10,8 @@ import dayjs from 'dayjs'
 import { useIntervalFn } from '@vueuse/core'
 import { formatSku } from '@/util/format-glasses'
 
-type GlassesWithKey = Glasses & { key?: string }
-
 export const useEditGlasses = (
-  selected: MaybeRefOrGetter<GlassesWithKey | null>,
+  selected: MaybeRefOrGetter<Glasses | null>,
   onDeletedFn?: () => void,
 ) => {
   const skuValue = computed(() => toValue(selected)?.sku ?? null)

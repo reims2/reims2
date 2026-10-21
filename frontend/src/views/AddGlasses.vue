@@ -47,7 +47,7 @@
         md="4"
         lg="3"
         class="pl-md-6 pt-3 pt-md-2"
-        aria-role="region"
+        role="region"
         aria-labelledby="heading-recently-added"
       >
         <div id="heading-recently-added" class="text-title-large font-weight-medium pb-2">
