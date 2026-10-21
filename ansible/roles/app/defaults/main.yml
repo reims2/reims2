@@ -1,0 +1,2 @@
+---
+app_install_location: "/srv/{{ stack }}"

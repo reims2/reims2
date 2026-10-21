@@ -1,0 +1,7 @@
+# Staging shares the box with prod, so it yields CPU under contention
+services:
+  mariadb:
+    cpu_shares: 256
+  backend:
+    cpu_shares: 256
+    cpus: 1

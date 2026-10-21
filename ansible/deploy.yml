@@ -1,0 +1,29 @@
+---
+# Deploys one stack. -e stack=prod: traefik, monitoring, app, backups. -e stack=staging: app only.
+# -e app_tag=sha-<commit> picks the images, without it the stack keeps its deployed tag.
+- name: Deploy REIMS2
+  hosts: all
+  become: true
+  vars_files:
+    - "vars/{{ stack }}.yml"
+  vars:
+    proxy_network: proxy
+    monitoring_network: monitoring
+    reims2_db_name: reims2-db
+    reims2_db_user: reims2
+    db_port: 3306
+  pre_tasks:
+    - name: Create the shared networks
+      community.docker.docker_network:
+        name: "{{ item }}"
+      loop:
+        - "{{ proxy_network }}"
+        - "{{ monitoring_network }}"
+  roles:
+    - role: traefik
+      when: stack == 'prod'
+    - role: monitoring
+      when: stack == 'prod'
+    - role: app
+    - role: s3backup
+      when: stack == 'prod'

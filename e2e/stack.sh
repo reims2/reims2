@@ -15,7 +15,7 @@ case "${1:-up}" in
     compose up -d --wait
     # schema comes from Flyway on backend start, so the data-only dump goes in afterwards
     compose exec -T mariadb sh -c 'mariadb -uroot -p"$MARIADB_ROOT_PASSWORD" "$MARIADB_DATABASE"' \
-      < ansible/dump.example.sql
+      < e2e/dump.example.sql
     ;;
   down)
     compose down -v
