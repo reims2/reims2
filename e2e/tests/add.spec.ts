@@ -4,6 +4,8 @@ import { EyeInput } from './eye-input.po'
 test('Add glasses', { tag: '@fast' }, async ({ page }) => {
   const eyeInput = new EyeInput(page)
   await page.goto('/add')
+  // Category autofocuses after a delay, typing before that can land in it
+  await expect(eyeInput.category).toBeFocused()
 
   await eyeInput.category.fill('m')
   await eyeInput.appearance.fill('m')
