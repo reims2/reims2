@@ -8,13 +8,11 @@
               ref="inputComponent"
               v-model="glasses"
               v-model:sync-eyes="syncEyeAdd"
-              :bal-enabled="true"
               :glasses-type-only="true"
             ></glass-input>
             <v-col cols="12" class="pa-0">
               <v-checkbox
                 v-model="highTolerance"
-                default-value="false"
                 label="Increase search tolerance (might yield bad results)"
                 tabindex="-1"
               />
@@ -53,7 +51,7 @@
         lg="5"
         xl="3"
         class="pt-10 pt-md-0 px-0 pl-md-6"
-        aria-role="region"
+        role="region"
         aria-labelledby="heading-results"
       >
         <div id="heading-results" class="text-title-large font-weight-medium pb-2">Results</div>

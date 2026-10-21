@@ -18,11 +18,11 @@
             </v-col>
             <v-col v-if="selected" aria-label="Glasses result">
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card :key="selected.key" :model-value="selected" editable>
+                <glass-card :model-value="selected" editable>
                   <template #actions>
                     <v-btn variant="text" class="mx-0" @click="startDispension">Dispense</v-btn>
                     <div class="d-flex flex-grow-1 justify-end">
-                      <v-menu offset-y left>
+                      <v-menu>
                         <template #activator="{ props }">
                           <v-btn icon v-bind="props" aria-label="More options">
                             <v-icon>{{ mdiDotsVertical }}</v-icon>
@@ -51,7 +51,7 @@
         md="4"
         lg="3"
         class="pl-md-6 pt-3 pt-md-2"
-        aria-role="region"
+        role="region"
         aria-labelledby="heading-recently-dispensed"
       >
         <div class="pb-4 d-flex align-center">
@@ -108,11 +108,9 @@ const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButto
 
 const isOnline = useOnline()
 
-type GlassesWithKey = Glasses & { key?: string }
-
 const valid = ref(false)
 const errorMesssage = ref('')
-const selected = ref<GlassesWithKey | null>(null)
+const selected = ref<Glasses | null>(null)
 const inputSku = ref<number | null>(null)
 
 // Component refs

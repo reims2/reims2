@@ -1,5 +1,5 @@
 <template>
-  <v-footer app color="primary" elevation="4" class="justify-center text-body-medium pa-1" padless>
+  <v-footer app color="primary" elevation="4" class="justify-center text-body-medium pa-1">
     <div v-if="showLastUpdate" class="d-flex">
       <last-refresh-span />
       <span class="px-2">—</span>
@@ -9,7 +9,7 @@
       <a
         href="https://partnersforvisualhealth.org/"
         tabindex="-1"
-        target="”_blank”"
+        target="_blank"
         rel="noopener"
         class="text-white"
       >

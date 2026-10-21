@@ -26,11 +26,10 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   size="x-large"
-                  large
                   variant="outlined"
                   color="white"
                 >
-                  <v-icon left size="24">
+                  <v-icon start size="24">
                     {{ mdiFileDocument }}
                   </v-icon>
                   View Manual

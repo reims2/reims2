@@ -24,7 +24,6 @@
               density="compact"
               variant="underlined"
               hide-details
-              small-chips
               label="Filter"
               :items="['single', 'multifocal']"
               style="min-width: 70px"

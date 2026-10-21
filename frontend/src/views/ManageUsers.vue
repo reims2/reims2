@@ -2,7 +2,9 @@
   <v-container>
     <v-row density="compact" class="d-flex justify-center">
       <v-col cols="12" md="6" lg="5">
-        <v-table>
+        <v-progress-circular v-if="items == null" indeterminate />
+        <v-alert v-else-if="items.length == 0" type="warning">No users loaded.</v-alert>
+        <v-table v-else>
           <thead>
             <tr>
               <th class="text-left">Username</th>
@@ -10,9 +12,7 @@
               <th></th>
             </tr>
           </thead>
-          <v-progress-circular v-if="items == null" indeterminate />
-          <v-alert v-else-if="items.length == 0" type="warning">No users loaded.</v-alert>
-          <tbody v-else>
+          <tbody>
             <tr v-for="item in items" :key="item.username">
               <td :class="isCurrentUser(item.username) ? 'font-weight-bold' : ''">
                 {{ item.username }}
@@ -39,13 +39,13 @@
         </v-table>
 
         <v-alert
-          v-if="editInfo"
+          v-model="editInfo"
           type="info"
           color="primary"
           variant="outlined"
           density="compact"
           class="mt-4"
-          dismissible
+          closable
         >
           If you want to edit an existing user, you have to delete and re-add them.
         </v-alert>

@@ -3,7 +3,7 @@
     style="min-width: 290px"
     class="mb-2"
     :loading="loading"
-    aria-role="group"
+    role="group"
     :aria-labelledby="'heading-glass-' + displayedGlass.sku"
   >
     <v-card-title class="pb-0 pt-4">
@@ -60,14 +60,18 @@
                 </v-chip>
               </div>
             </div>
-            <tr v-for="dataKey in eyeDataKeys" :key="dataKey">
-              <td class="text-medium-emphasis pr-2">
-                {{ eyeUIData[dataKey].label }}
-              </td>
-              <td>
-                <span>{{ displayedGlass[eye.key][dataKey] }} {{ eyeUIData[dataKey].suffix }}</span>
-              </td>
-            </tr>
+            <table>
+              <tr v-for="dataKey in eyeDataKeys" :key="dataKey">
+                <td class="text-medium-emphasis pr-2">
+                  {{ eyeUIData[dataKey].label }}
+                </td>
+                <td>
+                  <span>
+                    {{ displayedGlass[eye.key][dataKey] }} {{ eyeUIData[dataKey].suffix }}
+                  </span>
+                </td>
+              </tr>
+            </table>
           </v-col>
         </v-row>
       </v-container>
