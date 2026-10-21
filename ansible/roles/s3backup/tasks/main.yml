@@ -1,56 +1,36 @@
-- name: Install backup tools
-  ansible.builtin.package:
-    name:
-      - sqlite3 # consistent grafana.db copy
-      - curl # healthchecks.io ping
-    state: present
-  become: true
-
-- name: Create install dirs
+- name: Create the install dir
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ s3backup_install_location }}"
     state: directory
     mode: "0700"
     owner: "root"
     group: "root"
-  with_items:
-    - "{{ s3backup_install_location }}"
   become: true
 
-- name: Create the log directory
-  ansible.builtin.file:
-    path: "{{ s3backup_log_location }}"
-    state: directory
-    mode: "0755"
-  become: true
-
-- name: Rotate the backup log
+- name: Deploy the restore script
   ansible.builtin.template:
-    src: logrotate.conf.j2
-    dest: /etc/logrotate.d/reims2
-    mode: "0644"
-  become: true
-
-# no run on deploy: on a fresh box that would upload an empty backup, see restore.sh
-- name: Deploy backup and restore scripts
-  ansible.builtin.template:
-    src: "{{ item }}"
-    dest: "{{ s3backup_install_location }}/{{ item }}"
+    src: restore.sh
+    dest: "{{ s3backup_install_location }}/restore.sh"
     mode: "0700"
     owner: "root"
     group: "root"
-  loop:
-    - backup.sh
-    - restore.sh
   become: true
 
-- name: Schedule the backup
-  ansible.builtin.cron:
-    name: s3backup reims2
-    minute: "0"
-    hour: "*/6"
-    user: root
-    job: "bash {{ s3backup_install_location }}/backup.sh >> {{ s3backup_log_location }}/backup.log 2>&1"
-    cron_file: s3backup-reims2
+- name: Create docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ s3backup_install_location }}/docker-compose.yml"
+    mode: "0600"
+    owner: "root"
+    group: "root"
+  become: true
+
+- name: Start the backup
+  community.docker.docker_compose_v2:
+    project_src: "{{ s3backup_install_location }}"
+    project_name: s3backup
     state: "{{ 'present' if s3backup_enabled else 'absent' }}"
+    pull: missing
+    wait: true
+    remove_orphans: true
   become: true

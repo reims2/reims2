@@ -1,0 +1,25 @@
+{{ ansible_managed | comment }}
+
+services:
+  backup:
+    image: offen/docker-volume-backup:v2.49.1@sha256:e1da571e739d73f633f19e7a9f324007907089ffd80b3b7a1d71de5b87f80d77
+    restart: unless-stopped
+    environment:
+      BACKUP_CRON_EXPRESSION: "0 */6 * * *"
+      # sorts together with the older dokku/s3backup uploads, restore.sh picks the last one
+      BACKUP_FILENAME: reims2-backup-%Y-%m-%d-%H-%M-%S.tgz
+      AWS_S3_BUCKET_NAME: "{{ s3backup_bucket_name }}"
+      AWS_ACCESS_KEY_ID: "{{ aws_key_id }}"
+      AWS_SECRET_ACCESS_KEY: "{{ aws_secret_key }}"
+      EXEC_FORWARD_OUTPUT: "true"
+      # grafana downloads its plugins again by itself, only grafana.db matters
+      BACKUP_EXCLUDE_REGEXP: "^/backup/grafana/plugins"
+{% if s3backup_healthcheck_url %}
+      NOTIFICATION_URLS: "{{ s3backup_healthcheck_url }}"
+      NOTIFICATION_LEVEL: info
+{% endif %}
+    volumes:
+      # the mariadb archive-pre label in compose.prod.yaml writes dump.sql here
+      - "{{ s3backup_install_location }}/dump:/backup/db:ro"
+      - "{{ s3backup_grafana_data_location }}:/backup/grafana:ro"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
