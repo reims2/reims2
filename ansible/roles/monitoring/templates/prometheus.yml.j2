@@ -1,22 +1,17 @@
 {{ ansible_managed | comment }}
 
 global:
-  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
-  # scrape_timeout is set to the global default (10s).
-
-# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
-rule_files:
+  scrape_interval: 15s
+  evaluation_interval: 15s
 
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: "prometheus"
     static_configs:
       - targets: ["localhost:{{prometheus_port}}"]
 
   - job_name: node
     static_configs:
-      - targets: ["{{ node_exporter_host }}:{{ node_exporter_port }}"]
+      - targets: ["host.docker.internal:{{ node_exporter_port }}"]
         # keep the old instance label, the "Server statistics" dashboard filters on it
         labels:
           instance: "node_exporter:9100"

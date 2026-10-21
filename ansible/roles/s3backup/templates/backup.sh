@@ -13,7 +13,16 @@ trap 'ping_healthcheck /fail' ERR
 rm -rf {{ s3backup_data_location }} || true
 mkdir -m 700 -p {{ s3backup_data_location }}
 
-docker exec "$(docker ps -q -f name=^{{ stack_name }}_mariadb)" sh -c 'exec mariadb-dump {{ reims2_db_name }} --ignore-table={{ reims2_db_name }}.roles --complete-insert --no-create-info -uroot -p"{{ reims2_db_root_password }}"' > {{ s3backup_data_location }}/dump.sql
+cd /srv/{{ stack }}
+
+# a fresh box has no glasses yet, uploading that would make an empty backup the newest one
+glasses=$(docker compose exec -T mariadb sh -c 'exec mariadb -uroot -p"$MARIADB_ROOT_PASSWORD" "$MARIADB_DATABASE" -N -e "select count(*) from glasses"')
+if [ "$glasses" -eq 0 ]; then
+  echo "glasses is empty, refusing to back up" >&2
+  false
+fi
+
+docker compose exec -T mariadb sh -c 'exec mariadb-dump "$MARIADB_DATABASE" --ignore-table="$MARIADB_DATABASE.roles" --complete-insert --no-create-info -uroot -p"$MARIADB_ROOT_PASSWORD"' > {{ s3backup_data_location }}/dump.sql
 
 if [ -f "{{ s3backup_grafana_db }}" ]; then
   sqlite3 "{{ s3backup_grafana_db }}" ".backup '{{ s3backup_data_location }}/grafana.db'"

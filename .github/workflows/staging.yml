@@ -1,0 +1,25 @@
+name: Staging
+
+# Deploys the branch picked in "Use workflow from" to dev.reims2.app
+on:
+  workflow_dispatch:
+
+jobs:
+  docker:
+    strategy:
+      matrix:
+        component: [frontend, backend, docs]
+    name: "Docker build"
+    uses: ./.github/workflows/docker.yml
+    secrets: inherit # pass all secrets
+    with:
+      component: ${{ matrix.component }}
+
+  staging:
+    name: "Staging"
+    needs:
+      - docker
+    uses: ./.github/workflows/ansible.yml
+    secrets: inherit
+    with:
+      stack: staging

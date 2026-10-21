@@ -87,7 +87,7 @@
         "/defaults/main.ya?ml$/"
       ],
       "matchStrings": [
-        "renovate:? datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?_(?:VERSION|version)=(?<currentValue>.*)\\s"
+        "renovate:? datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?_(?:VERSION|version)[=:] ?(?<currentValue>.*)\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
@@ -99,10 +99,9 @@
     ]
   },
   "ignoreDeps": [
-    "reims2/reims2-frontend",
-    "reims2/reims2-backend",
-    "reims2/reims2-docs",
-    "reims2/reims2"
+    "ghcr.io/reims2/reims2-frontend",
+    "ghcr.io/reims2/reims2-backend",
+    "ghcr.io/reims2/reims2-docs"
   ],
   "schedule": [
     "before 2pm on Saturday"

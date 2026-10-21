@@ -1,0 +1,104 @@
+---
+# single quotes keep compose from interpolating $ in secrets, so they can't contain one
+- name: Check secrets fit into .env
+  ansible.builtin.assert:
+    that: "\"'\" not in (reims2_db_password ~ reims2_db_root_password ~ reims2_jwt_secret)"
+    fail_msg: DB passwords and the JWT secret must not contain a single quote
+  no_log: true
+
+- name: Create the stack directory
+  ansible.builtin.file:
+    path: "{{ app_install_location }}"
+    state: directory
+    mode: "0700"
+    owner: root
+    group: root
+
+- name: Read the deployed tag
+  ansible.builtin.slurp:
+    src: "{{ app_install_location }}/deployed-tag"
+  register: app_deployed_tag_file
+  failed_when: false
+
+- name: Pick the tag
+  ansible.builtin.set_fact:
+    app_previous_tag: "{{ app_deployed_tag_file.content | default('') | b64decode | trim }}"
+    app_new_tag: "{{ app_tag | default(app_deployed_tag_file.content | default('') | b64decode | trim, true) | default('latest', true) }}"
+
+- name: Copy compose files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ app_install_location }}/{{ item | basename }}"
+    mode: "0644"
+  loop:
+    - "{{ playbook_dir }}/../compose.yaml"
+    - compose.server.yaml
+    - "compose.{{ stack }}.yaml"
+
+- name: Deploy the stack at {{ app_new_tag }}
+  block:
+    - name: Write .env
+      ansible.builtin.template:
+        src: env.j2
+        dest: "{{ app_install_location }}/.env"
+        mode: "0600"
+      vars:
+        app_env_tag: "{{ app_new_tag }}"
+
+    - name: Start the stack
+      community.docker.docker_compose_v2:
+        project_src: "{{ app_install_location }}"
+        project_name: "{{ stack }}"
+        files: [compose.yaml, compose.server.yaml, "compose.{{ stack }}.yaml"]
+        pull: always
+        wait: true
+        wait_timeout: 300
+        remove_orphans: true
+
+    - name: Remember the deployed tag
+      ansible.builtin.copy:
+        content: "{{ app_new_tag }}\n"
+        dest: "{{ app_install_location }}/deployed-tag"
+        mode: "0644"
+
+  rescue:
+    - name: Roll back to {{ app_previous_tag }}
+      when: app_previous_tag | length > 0 and app_previous_tag != app_new_tag
+      block:
+        - name: Write .env with the previous tag
+          ansible.builtin.template:
+            src: env.j2
+            dest: "{{ app_install_location }}/.env"
+            mode: "0600"
+          vars:
+            app_env_tag: "{{ app_previous_tag }}"
+
+        - name: Start the previous tag
+          community.docker.docker_compose_v2:
+            project_src: "{{ app_install_location }}"
+            project_name: "{{ stack }}"
+            files: [compose.yaml, compose.server.yaml, "compose.{{ stack }}.yaml"]
+            pull: always
+            wait: true
+            wait_timeout: 300
+            remove_orphans: true
+
+    - name: Fail the deploy
+      ansible.builtin.fail:
+        msg: >-
+          Deploying {{ app_new_tag }} failed{{ ', rolled back to ' ~ app_previous_tag
+          if (app_previous_tag | length > 0 and app_previous_tag != app_new_tag) else '' }}.
+          See `cd {{ app_install_location }} && docker compose logs`.
+
+# Grafana and the mysqld exporter read prod's DB through this user
+- name: Create the monitoring DB user
+  when: stack == 'prod'
+  ansible.builtin.command:
+    cmd: docker compose exec -T mariadb sh -c 'exec mariadb -uroot -p"$MARIADB_ROOT_PASSWORD"'
+    chdir: "{{ app_install_location }}"
+    stdin: |
+      CREATE USER IF NOT EXISTS 'monitoring'@'%' IDENTIFIED BY '{{ monitoring_db_password }}';
+      ALTER USER 'monitoring'@'%' IDENTIFIED BY '{{ monitoring_db_password }}';
+      GRANT SELECT, PROCESS, REPLICATION CLIENT ON *.* TO 'monitoring'@'%';
+  changed_when: false
+  no_log: true

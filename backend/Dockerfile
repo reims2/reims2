@@ -29,5 +29,6 @@ COPY --from=build /usr/src/app/target/extracted/application/ ./
 
 HEALTHCHECK --interval=5s --timeout=10s --retries=8 --start-period=120s CMD wget -nv -t1 --spider http://localhost:$PORT/api || exit 1
 
+# exit on OOM so the container restarts instead of limping on
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["java", "-jar", "application.jar", "--spring.profiles.active=prod" ]
+CMD ["java", "-XX:+ExitOnOutOfMemoryError", "-jar", "application.jar", "--spring.profiles.active=prod" ]

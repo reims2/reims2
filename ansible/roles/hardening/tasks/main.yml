@@ -16,7 +16,6 @@
     os_auth_pam_passwdqc_enable: false # dont need strong PW policy
     os_ignore_home_folder_users: [dokku]
     ufw_manage_defaults: false # we handle it manually
-  register: os_hardening
 
 - name: SSH hardening
   ansible.builtin.include_role:
@@ -29,10 +28,3 @@
     ssh_max_auth_retries: 4
     sftp_umask: "0022"
     ssh_allow_tcp_forwarding: true
-  register: ssh_hardening
-
-  # Not using notify handler because include_role doesn't support it. But we try to do it using var.changed
-- name: Restart server
-  ansible.builtin.reboot:
-    reboot_timeout: 600
-  when: ssh_hardening.changed or os_hardening.changed

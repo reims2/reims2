@@ -1,5 +1,2 @@
 ---
-dependencies:
-  - role: common
-  - role: docker_stack
-  - role: mariadb
+dependencies: []
