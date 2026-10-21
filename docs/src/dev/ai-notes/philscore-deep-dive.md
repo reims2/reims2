@@ -9,8 +9,9 @@ no first-hand rationale survives. Sources are the decompiled FoxPro in the sibli
 `SCRNS/ASEARCH.spr`), the [REIMS manual](/reims-manual.pdf), the
 [Working with REIMS](/working-with-reims.pdf) handout and the
 [PhilScore breakdown](/philscore-breakdown.pdf). Claims are tagged **source** (read from REIMS1 code
-or docs), **measured** (checked by running `philscore.ts` against a literal TypeScript port of the
-FoxPro) or **inferred**.
+or docs), **measured** (checked by running `philscore.ts` against the FoxPro: `ATOLTF` and `RANK`
+compiled unmodified with the Harbour xBase compiler, the SQL filter through a TypeScript port) or
+**inferred**.
 
 The only stated intent, from the manual: rank candidates "by recognizing spherical equivalents,
 sphere and cylinder differences and cylinder-driven axis tolerances."
@@ -169,9 +170,12 @@ first port (August 2021) were fixed in October 2026, with tests in `philscore_fi
   where REIMS1 used `[999, 999]`, so axis 0 passed for every Rx axis. `sanitizeEyeValues` stores an
   entered 180 as 0, so this hit every horizontal-axis lens added through REIMS2. Rx
   `0.00 -1.50 x 90` matched lens `0.00 -1.50 x 180` with score 0.05, although that lens is 90
-  degrees off and leaves about 3 D of astigmatism. Dispense data from earlier campaigns carries this
-  bias. Together with the zero-cylinder quirk, it may feed the "need more zero-ish axis" finding in
-  [Inventory analysis](/inventory-analysis) (not verified against data).
+  degrees off and leaves about 3 D of astigmatism. Only 0.7 % of cylinder eyes were stored at axis
+  0, so the impact stayed small. Replaying each pair dispensed in 2023 to 2026 as an Rx against the
+  stock of that moment, such a lens was the #1 suggestion in 0.8 % of searches, mostly far enough
+  off to leave more astigmatism than no cylinder at all. Axis-0 pairs with more than 0.50 D cylinder
+  were dispensed 3 times as often as near-horizontal ones. That's too few pairs to explain the "need
+  more zero-ish axis" finding in [Inventory analysis](/inventory-analysis).
 - **The axis table was shifted at two places.** Cylinder -2.25 got 8 degrees instead of 9, and
   -3.25 to -3.75 got 7 instead of 8.
 
