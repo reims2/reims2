@@ -1,17 +1,13 @@
-// Plugins
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
+import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa'
 import AutoImport from 'unplugin-auto-import/vite'
-
-// Utilities
 import { defineConfig } from 'vitest/config'
 import { fileURLToPath, URL } from 'node:url'
-
 import { loadEnv } from 'vite'
 
 const statusPlugin = {
-  fetchDidSucceed: ({ response }) => {
+  fetchDidSucceed: async ({ response }: { response: Response }) => {
     if (response.status >= 500) {
       // Throwing anything here will trigger fetchDidFail.
       throw new Error('Server error.')
@@ -91,11 +87,10 @@ const vitePWAconf: Partial<VitePWAOptions> = {
   },
 }
 
-// https://vitejs.dev/config/
-export default ({ mode }) => {
-  // Load app-level env vars to node-level env vars.
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
-  return defineConfig({
+// https://vite.dev/config/
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd())
+  return {
     plugins: [
       vue({
         template: { transformAssetUrls },
@@ -110,13 +105,10 @@ export default ({ mode }) => {
       VitePWA(vitePWAconf),
       AutoImport({
         imports: ['vue'],
-        eslintrc: {
-          enabled: true,
-          filepath: 'src/.eslintrc-auto-import.json',
-        },
         dts: 'src/auto-imports.d.ts',
       }),
     ],
+    devtools: { apply: 'serve' },
     test: {
       globals: true,
       environment: 'happy-dom',
@@ -128,23 +120,20 @@ export default ({ mode }) => {
       },
       coverage: {
         provider: 'v8',
-        all: true,
         exclude: ['.yarn/**', '**/test/**', 'e2e/**'],
         include: ['src/**'],
       },
     },
-    define: { 'process.env': {} },
     resolve: {
       alias: {
         '@/': fileURLToPath(new URL('./src/', import.meta.url)),
       },
-      extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
     },
     server: {
       port: 3000,
       proxy: {
         '/api': {
-          target: process.env.VITE_API_URL,
+          target: env.VITE_API_URL,
           secure: false,
           autoRewrite: true,
           changeOrigin: true,
@@ -152,16 +141,5 @@ export default ({ mode }) => {
       },
       strictPort: true,
     },
-    // fix: https://github.com/vitejs/vite/issues/18164#issuecomment-2365314292
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler',
-        },
-        sass: {
-          api: 'modern-compiler',
-        },
-      },
-    },
-  })
-}
+  }
+})

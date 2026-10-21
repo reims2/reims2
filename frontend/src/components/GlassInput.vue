@@ -49,18 +49,14 @@ const modelValue = defineModel<GlassesInput>({ required: true })
 const syncEyes = defineModel<boolean>('syncEyes', { default: false })
 
 const firstInput = ref<HTMLElement[] | null>(null)
-const metadataToShow: Ref<GeneralGlassesDataKey[]> = ref([])
+const metadataToShow = computed<GeneralGlassesDataKey[]>(() =>
+  glassesTypeOnly ? ['glassesType'] : ['glassesType', 'appearance', 'glassesSize'],
+)
 
 const isMultifocal = computed(() => modelValue.value.glassesType !== 'single')
 
-watchEffect(() => {
-  metadataToShow.value = glassesTypeOnly
-    ? ['glassesType']
-    : ['glassesType', 'appearance', 'glassesSize']
-})
-
-function updateMeta(key: string, value: string) {
-  modelValue.value[key] = value
+function updateMeta(key: GeneralGlassesDataKey, value: string) {
+  Object.assign(modelValue.value, { [key]: value })
 }
 
 function resetBalEye(nonBalEye: EyeSearch, balEye: EyeSearch) {
