@@ -7,6 +7,8 @@ export const test = base.extend<{ glassesSku: string }>({
     const eyeInput = new EyeInput(page)
 
     await page.goto('/add')
+    // Category autofocuses after a delay, typing before that can land in it
+    await expect(eyeInput.category).toBeFocused()
 
     await eyeInput.category.fill('s')
     await eyeInput.appearance.fill('m')

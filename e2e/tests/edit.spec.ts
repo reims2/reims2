@@ -38,6 +38,8 @@ test('Edit glasses', async ({ page, glassesSku }) => {
   await page.getByRole('button', { name: 'Edit' }).click()
 
   const eyeInput = new EyeInput(page)
+  // Category autofocuses after a delay, typing before that can land in it
+  await expect(eyeInput.category).toBeFocused()
   await eyeInput.appearance.fill('f')
   await eyeInput.odSphere.fill('7')
   await page.getByRole('button', { name: 'Save' }).click()
