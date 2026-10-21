@@ -2,7 +2,9 @@
   <v-container>
     <v-row density="compact" class="d-flex justify-center">
       <v-col cols="12" md="6" lg="5">
-        <v-table>
+        <v-progress-circular v-if="items == null" indeterminate />
+        <v-alert v-else-if="items.length == 0" type="warning">No users loaded.</v-alert>
+        <v-table v-else>
           <thead>
             <tr>
               <th class="text-left">Username</th>
@@ -10,9 +12,7 @@
               <th></th>
             </tr>
           </thead>
-          <v-progress-circular v-if="items == null" indeterminate />
-          <v-alert v-else-if="items.length == 0" type="warning">No users loaded.</v-alert>
-          <tbody v-else>
+          <tbody>
             <tr v-for="item in items" :key="item.username">
               <td :class="isCurrentUser(item.username) ? 'font-weight-bold' : ''">
                 {{ item.username }}
@@ -39,13 +39,13 @@
         </v-table>
 
         <v-alert
-          v-if="editInfo"
+          v-model="editInfo"
           type="info"
           color="primary"
           variant="outlined"
           density="compact"
           class="mt-4"
-          dismissible
+          closable
         >
           If you want to edit an existing user, you have to delete and re-add them.
         </v-alert>
@@ -128,7 +128,7 @@ import { User } from '@/model/UserModel'
 import { useUsersStore } from '@/stores/users'
 import { useAuthStore } from '@/stores/auth'
 
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 const toast = useToast()
 
 const usersStore = useUsersStore()
@@ -152,7 +152,7 @@ async function startLoading() {
   try {
     items.value = await usersStore.get()
   } catch (error) {
-    toast.error(`Could not load users (${error.message}).`)
+    toast.error(`Could not load users (${(error as Error).message}).`)
   }
 }
 
@@ -169,7 +169,7 @@ const addUser = async () => {
     })
     dialog.value = false
   } catch (error) {
-    toast.error(`Could not add user (${error.message}).`)
+    toast.error(`Could not add user (${(error as Error).message}).`)
   }
 
   form.value?.reset()
@@ -183,7 +183,7 @@ const deleteUser = async (userId: number) => {
   try {
     await usersStore.deleteUser(userId)
   } catch (error) {
-    toast.error(`Could not delete user (${error.message}).`)
+    toast.error(`Could not delete user (${(error as Error).message}).`)
   }
   await startLoading()
   deleteLoading.value = false

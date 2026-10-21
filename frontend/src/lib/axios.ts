@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { useAuthStore } from '@/stores/auth'
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 
 export class ReimsAxiosError extends Error {
   isNetwork: boolean
@@ -16,8 +16,6 @@ export class ReimsAxiosError extends Error {
     statusCode: number | null = null,
   ) {
     super(message)
-    // Set the prototype explicitly.
-    Object.setPrototypeOf(this, ReimsAxiosError.prototype)
     this.name = 'ReimsAxiosError'
     this.isNetwork = isNetwork
     this.isServerSide = isServer
@@ -36,7 +34,6 @@ type ApiErrorResponse = {
 export const useAxios = () => {
   const authStore = useAuthStore()
   const toast = useToast()
-  const token = computed(() => authStore.accessToken)
 
   const instance = axios.create({
     timeout: 12000,
@@ -73,12 +70,11 @@ export const useAxios = () => {
     },
   )
 
-  watchEffect(() => {
-    instance.interceptors.request.use((config) => {
-      if (token.value != null) config.headers.Authorization = `Bearer ${token.value}`
-      else delete config.headers.Authorization
-      return config
-    })
+  instance.interceptors.request.use((config) => {
+    const token = authStore.accessToken
+    if (token != null) config.headers.Authorization = `Bearer ${token}`
+    else delete config.headers.Authorization
+    return config
   })
 
   return instance

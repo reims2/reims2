@@ -1,8 +1,15 @@
-// Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
-const routes = [
+declare module 'vue-router' {
+  interface RouteMeta {
+    // false marks a public route
+    auth?: boolean
+    title?: string
+  }
+}
+
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('@/layouts/DefaultLayout.vue'),
@@ -77,12 +84,8 @@ const router = createRouter({
 })
 router.beforeEach((to) => {
   const authStore = useAuthStore()
-  // We set a flag for disabling login redirect while running CI tests
-  const shouldRedirect = import.meta.env.VITE_REDIRECT_UNAUTHENTICATED !== 'false'
-  if (!authStore.isLoggedIn && shouldRedirect) {
-    if (to.meta.auth === undefined || (to.meta.auth && to.name !== 'Login')) {
-      return { name: 'Login', query: { redirect: to.fullPath } }
-    }
+  if (!authStore.isLoggedIn && to.meta.auth !== false) {
+    return { name: 'Login', query: { redirect: to.fullPath } }
   }
 })
 router.afterEach((to) => {

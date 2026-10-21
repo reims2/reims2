@@ -1,13 +1,13 @@
-import { useNow, useOnline, watchThrottled } from '@vueuse/core'
+import { useIntervalFn, useNow, useOnline, watchThrottled } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 import dayjs from 'dayjs'
 
 export const useUpdatesGlassesInterval = () => {
   const glassesStore = useGlassesStore()
   const toast = useToast()
   const isOnline = useOnline()
-  const now = useNow()
+  const now = useNow({ scheduler: (cb) => useIntervalFn(cb, 15 * 1000) })
   const lastRefresh = computed(() => glassesStore.lastRefresh)
 
   onMounted(() => {
@@ -30,7 +30,9 @@ export const useUpdatesGlassesInterval = () => {
       else await glassesStore.loadGlassesIfChanged()
     } catch (error) {
       if (!glassesStore.hasGlassesLoaded) {
-        toast.error(`Could not load glasses database, please retry later (${error.message})`)
+        toast.error(
+          `Could not load glasses database, please retry later (${(error as Error).message})`,
+        )
       } else if (dayjs().diff(glassesStore.lastRefresh, 'day') > 3) {
         // if the last successful update is longer ago, mark DB as outdated
         glassesStore.isOutdated = true

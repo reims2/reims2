@@ -5,6 +5,8 @@ test('Search multifocal', { tag: '@fast' }, async ({ page }) => {
   const eyeInput = new EyeInput(page)
 
   await page.goto('/find')
+  // Category autofocuses after a delay, typing before that can land in it
+  await expect(eyeInput.category).toBeFocused()
 
   await eyeInput.category.fill('m')
 

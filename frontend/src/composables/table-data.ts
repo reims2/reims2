@@ -1,6 +1,6 @@
 import { useTableStore } from '@/stores/table'
 import { Glasses } from '@/model/GlassesModel'
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 import { ReimsAxiosError } from '@/lib/axios'
 
 import { TableSortBy } from '@/model/ReimsModel'
@@ -53,7 +53,7 @@ export const useTableData = (
       if (error instanceof ReimsAxiosError && error.statusCode === 404) {
         items.value = []
       } else {
-        toast.error(`Could not load table data, please retry (${error.message})`)
+        toast.error(`Could not load table data, please retry (${(error as Error).message})`)
       }
     } finally {
       loading.value = false

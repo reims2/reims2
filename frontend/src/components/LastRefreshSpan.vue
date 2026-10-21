@@ -13,36 +13,20 @@
 </template>
 
 <script setup lang="ts">
+import { useIntervalFn, useNow } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
 import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-
-dayjs.extend(relativeTime)
-
-const glassesStore = useGlassesStore()
-const lastRefresh = computed(() => glassesStore.lastRefresh)
-const lastRefreshString = ref<string | null>(null)
 
 const { showSpinner = true } = defineProps<{ showSpinner?: boolean }>()
 
-watch(
-  lastRefresh,
-  () => {
-    generateTimeString()
-  },
-  { immediate: true },
-)
-const refreshInterval = setInterval(() => generateTimeString(), 10 * 1000)
+const glassesStore = useGlassesStore()
+const now = useNow({ scheduler: (cb) => useIntervalFn(cb, 10 * 1000) })
 
-onBeforeUnmount(() => clearInterval(refreshInterval))
-
-function generateTimeString() {
-  if (!lastRefresh.value) {
-    lastRefreshString.value = ': none yet'
-  } else if (dayjs().diff(lastRefresh.value, 'minute') < 1) {
-    lastRefreshString.value = 'just now' // don't bother the user with anything less than X minutes
-  } else {
-    lastRefreshString.value = dayjs().to(lastRefresh.value)
-  }
-}
+const lastRefreshString = computed(() => {
+  const lastRefresh = glassesStore.lastRefresh
+  if (!lastRefresh) return ': none yet'
+  // don't bother the user with anything less than a minute
+  if (dayjs(now.value).diff(lastRefresh, 'minute') < 1) return 'just now'
+  return dayjs(now.value).to(lastRefresh)
+})
 </script>

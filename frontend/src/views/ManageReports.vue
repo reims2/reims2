@@ -49,7 +49,7 @@
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 const toast = useToast()
 
 const glassesStore = useGlassesStore()
@@ -68,7 +68,7 @@ async function downloadDispensedReport() {
     filename.value = `dispense_report_${rootStore.reimsSite}.csv`
     downloadCsv(csvFile)
   } catch (error) {
-    toast.error(`Could not load dispense report (${error.message})`)
+    toast.error(`Could not load dispense report (${(error as Error).message})`)
   }
   loadingDispensedReport.value = false
 }
@@ -80,7 +80,7 @@ async function downloadSearchesReport() {
     filename.value = `unsuccessful_searches_${rootStore.reimsSite}.csv`
     downloadCsv(csvFile)
   } catch (error) {
-    toast.error(`Could not load unsuccessful searches report (${error.message})`)
+    toast.error(`Could not load unsuccessful searches report (${(error as Error).message})`)
   }
   loadingSearchesReport.value = false
 }
@@ -92,7 +92,7 @@ async function downloadInventoryReport() {
     filename.value = `inventory_${rootStore.reimsSite}.csv`
     downloadCsv(csvFile)
   } catch (error) {
-    toast.error(`Could not load inventory report (${error.message})`)
+    toast.error(`Could not load inventory report (${(error as Error).message})`)
   }
   loadingInventoryReport.value = false
 }
@@ -102,7 +102,8 @@ async function downloadCsv(csvBlob: Blob) {
     toast.warning('Report contains no glasses.')
     return
   }
-  const blob = new Blob([csvBlob], { type: 'application/csv' })
+  const blob = new Blob([csvBlob], { type: 'text/csv' })
+  if (csvUri.value) URL.revokeObjectURL(csvUri.value)
   csvUri.value = URL.createObjectURL(blob)
   await nextTick()
   downloadLink.value?.click()

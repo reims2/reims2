@@ -9,7 +9,7 @@
               <select-glasses-input
                 ref="firstInput"
                 v-model:sku="inputSku"
-                v-model:error-messsage="errorMesssage"
+                v-model:error-message="errorMessage"
                 :loading="isLoading"
                 hint-for-selected="Press ENTER to dispense"
                 style="max-width: 500px"
@@ -18,11 +18,11 @@
             </v-col>
             <v-col v-if="selected" aria-label="Glasses result">
               <div class="d-flex flex-shrink-1 justify-start">
-                <glass-card :key="selected.key" :model-value="selected" editable>
+                <glass-card :model-value="selected" editable>
                   <template #actions>
                     <v-btn variant="text" class="mx-0" @click="startDispension">Dispense</v-btn>
                     <div class="d-flex flex-grow-1 justify-end">
-                      <v-menu offset-y left>
+                      <v-menu>
                         <template #activator="{ props }">
                           <v-btn icon v-bind="props" aria-label="More options">
                             <v-icon>{{ mdiDotsVertical }}</v-icon>
@@ -51,7 +51,7 @@
         md="4"
         lg="3"
         class="pl-md-6 pt-3 pt-md-2"
-        aria-role="region"
+        role="region"
         aria-labelledby="heading-recently-dispensed"
       >
         <div class="pb-4 d-flex align-center">
@@ -95,6 +95,8 @@
 import { mdiDotsVertical } from '@mdi/js'
 
 import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
+import GlassCard from '@/components/GlassCard.vue'
+import DeleteButton from '@/components/DeleteButton.vue'
 import { Glasses } from '@/model/GlassesModel'
 import { useRoute } from 'vue-router'
 import { useEditGlasses } from '@/composables/edit'
@@ -103,16 +105,11 @@ import { useDisplay } from 'vuetify'
 
 const { mobile } = useDisplay()
 
-const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
-const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
-
 const isOnline = useOnline()
 
-type GlassesWithKey = Glasses & { key?: string }
-
 const valid = ref(false)
-const errorMesssage = ref('')
-const selected = ref<GlassesWithKey | null>(null)
+const errorMessage = ref('')
+const selected = ref<Glasses | null>(null)
 const inputSku = ref<number | null>(null)
 
 // Component refs
@@ -131,14 +128,14 @@ onActivated(() => {
 
 function startDispension() {
   if (!selected.value) {
-    errorMesssage.value = 'SKU not found'
+    errorMessage.value = 'SKU not found'
     return
   }
   submitDeletion('DISPENSED')
 }
 
 watchEffect(() => {
-  if (selected.value) errorMesssage.value = ''
+  if (selected.value) errorMessage.value = ''
 })
 
 function onDeleted() {
@@ -146,9 +143,3 @@ function onDeleted() {
   form.value?.reset()
 }
 </script>
-
-<style scoped>
-.position {
-  bottom: 50px;
-}
-</style>

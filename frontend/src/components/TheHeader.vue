@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="primary" extension-height="80px">
+  <v-app-bar color="primary">
     <v-app-bar-nav-icon @click.stop="rootStore.toggleDrawer" />
     <v-toolbar-title>
       {{ title }}
@@ -11,7 +11,6 @@
 import { useRootStore } from '@/stores/root'
 import { useRoute } from 'vue-router'
 const route = useRoute()
-const title = computed(() => (rootStore.isDev ? 'Develop: ' : '') + route.meta.title || 'REIMS2')
-
 const rootStore = useRootStore()
+const title = computed(() => (rootStore.isDev ? 'Develop: ' : '') + (route.meta.title || 'REIMS2'))
 </script>

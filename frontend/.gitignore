@@ -1,6 +1,7 @@
 ### Own entries
 vue-global-types.d.ts 
 vite.config.ts.timestamp*
+*.tsbuildinfo
 
 # for testing
 #assets/out.json

@@ -43,11 +43,10 @@
 
 <script setup lang="ts">
 import TheHeader from '@/components/TheHeader.vue'
-import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ReimsAxiosError } from '@/lib/axios'
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 import { reimsSiteSelects } from '@/util/util'
 import { useRootStore } from '@/stores/root'
 
@@ -61,6 +60,7 @@ const isLoading = ref(false)
 const rootStore = useRootStore()
 const authStore = useAuthStore()
 const route = useRoute()
+const router = useRouter()
 const redirect = computed(() => (route.query.redirect as string) ?? '/find')
 
 if (authStore.isLoggedIn) {
@@ -76,7 +76,7 @@ const userLogin = async () => {
     if (err instanceof ReimsAxiosError && err.statusCode === 401 && err.apiMessage != null) {
       toast.error(err.apiMessage)
     } else {
-      toast.error(`Login failed (${err.message})`)
+      toast.error(`Login failed (${(err as Error).message})`)
       console.error(err)
     }
   } finally {
