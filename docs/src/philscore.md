@@ -62,9 +62,9 @@ This function is invoked for every single lens. It calculates the absolute axis 
 
 | Cylinder       | Axis tolerance |
 | -------------- | -------------- |
-| Less than -3   | 7              |
-| -3 to -2.25    | 8              |
-| -2             | 9              |
+| -4 or less     | 7              |
+| -3.75 to -2.5  | 8              |
+| -2.25 and -2   | 9              |
 | -1.75 and -1.5 | 10             |
 | -1.25          | 13             |
 | -1             | 15             |
