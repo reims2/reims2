@@ -96,6 +96,7 @@
 import { useGlassesStore } from '@/stores/glasses'
 
 import GlassInput from '@/components/GlassInput.vue'
+import GlassCard from '@/components/GlassCard.vue'
 
 import { GlassesInput as GlassesInputType } from '@/model/GlassesModel'
 import { resetEyeInput } from '@/util/eye-utils'
@@ -103,8 +104,6 @@ import { resetEyeInput } from '@/util/eye-utils'
 import { useEnterToTab } from 'vue3-enter-to-tab'
 import { useFindGlasses } from '@/composables/find'
 import { useDisplay } from 'vuetify'
-
-const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 
 const { mobile } = useDisplay()
 
@@ -152,7 +151,6 @@ const { vPreventEnterTab } = useEnterToTab(form)
 async function submitAndUpdate() {
   startSearch()
 
-  // inputComponent.value?.reset() // fixme should this be enabeld to reset syncEye?
   page.value = 1
   // on desktop, focus input again; on mobile, scroll to bottom
   if (!mobile.value) inputComponent.value?.focus()

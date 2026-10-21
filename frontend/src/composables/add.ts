@@ -22,7 +22,9 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
       .map((sku) => allGlasses.value.find((g) => g.sku === sku))
       .filter((itm) => itm != null) as Glasses[]
   })
-  const freeSlots = computed(() => 5000 - allGlasses.value.length)
+  // matches the SKU range per location in the backend's MainServiceImpl
+  const skusPerLocation = 5000
+  const freeSlots = computed(() => skusPerLocation - allGlasses.value.length)
 
   watch(allGlasses, () => {
     // Filter out deleted glasses

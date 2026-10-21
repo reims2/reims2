@@ -28,15 +28,14 @@ import TheFooter from '@/components/TheFooter.vue'
 import TheHeader from '@/components/TheHeader.vue'
 import TheDrawer from '@/components/TheDrawer.vue'
 import TheBottomBar from '@/components/TheBottomBar.vue'
+import OfflineBanner from '@/components/OfflineBanner.vue'
+import InitialLoadOverlay from '@/components/InitialLoadOverlay.vue'
 
 import { useOnline } from '@vueuse/core'
 import { useAuthStore } from '@/stores/auth'
 import { useUpdatesGlassesInterval } from '@/composables/update-glasses'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRouter } from 'vue-router'
-
-const OfflineBanner = defineAsyncComponent(() => import('@/components/OfflineBanner.vue'))
-const InitialLoadOverlay = defineAsyncComponent(() => import('@/components/InitialLoadOverlay.vue'))
 
 const router = useRouter()
 const glassesStore = useGlassesStore()

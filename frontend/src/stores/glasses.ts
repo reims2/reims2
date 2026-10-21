@@ -162,7 +162,6 @@ export const useGlassesStore = defineStore(
         }
         allGlassesHash.value = newHash
         lastRefresh.value = new Date().toISOString()
-        // TODO: wird nie auf true gesetzt
         isOutdated.value = false
       } finally {
         isRefreshingGlasses.value = false
@@ -193,7 +192,6 @@ export const useGlassesStore = defineStore(
     function deleteOfflineGlasses(sku: number) {
       if (arrayContainsSku(allGlasses.value, sku)) {
         // call arrayContainsSku to avoid unnecessary reactive changes when replacing the array like this
-        // TODO?
         allGlasses.value = allGlasses.value.filter((el) => el.sku !== sku)
       }
     }

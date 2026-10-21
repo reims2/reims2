@@ -102,7 +102,8 @@ async function downloadCsv(csvBlob: Blob) {
     toast.warning('Report contains no glasses.')
     return
   }
-  const blob = new Blob([csvBlob], { type: 'application/csv' })
+  const blob = new Blob([csvBlob], { type: 'text/csv' })
+  if (csvUri.value) URL.revokeObjectURL(csvUri.value)
   csvUri.value = URL.createObjectURL(blob)
   await nextTick()
   downloadLink.value?.click()

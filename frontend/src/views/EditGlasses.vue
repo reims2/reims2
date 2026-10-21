@@ -9,7 +9,7 @@
               <select-glasses-input
                 ref="firstInput"
                 v-model:sku="inputSku"
-                v-model:error-messsage="errorMesssage"
+                v-model:error-message="errorMessage"
                 :loading="isLoading"
                 hint-for-selected="Press ENTER to dispense"
                 style="max-width: 500px"
@@ -95,6 +95,8 @@
 import { mdiDotsVertical } from '@mdi/js'
 
 import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
+import GlassCard from '@/components/GlassCard.vue'
+import DeleteButton from '@/components/DeleteButton.vue'
 import { Glasses } from '@/model/GlassesModel'
 import { useRoute } from 'vue-router'
 import { useEditGlasses } from '@/composables/edit'
@@ -103,13 +105,10 @@ import { useDisplay } from 'vuetify'
 
 const { mobile } = useDisplay()
 
-const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
-const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
-
 const isOnline = useOnline()
 
 const valid = ref(false)
-const errorMesssage = ref('')
+const errorMessage = ref('')
 const selected = ref<Glasses | null>(null)
 const inputSku = ref<number | null>(null)
 
@@ -129,14 +128,14 @@ onActivated(() => {
 
 function startDispension() {
   if (!selected.value) {
-    errorMesssage.value = 'SKU not found'
+    errorMessage.value = 'SKU not found'
     return
   }
   submitDeletion('DISPENSED')
 }
 
 watchEffect(() => {
-  if (selected.value) errorMesssage.value = ''
+  if (selected.value) errorMessage.value = ''
 })
 
 function onDeleted() {
@@ -144,9 +143,3 @@ function onDeleted() {
   form.value?.reset()
 }
 </script>
-
-<style scoped>
-.position {
-  bottom: 50px;
-}
-</style>
