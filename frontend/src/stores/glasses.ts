@@ -48,6 +48,8 @@ export const useGlassesStore = defineStore(
       } as GlassesRequest
       const response = await axiosInstance.post('/api/glasses', request)
       const addedGlasses = response.data
+      // the SKU may be a reissued one that is still cached for its dispensed previous pair
+      deleteOfflineGlasses(addedGlasses.sku)
       addOfflineGlasses(addedGlasses)
       return addedGlasses
     }
