@@ -3,7 +3,6 @@
 - name: Leave prod alone while a campaign uses it
   when: prod_quiet_check | default(false) | bool
   block:
-    # fails on a fresh box or without a database, which counts as quiet
     - name: Count glasses added or dispensed in the last 48 hours
       ansible.builtin.command:
         cmd: docker compose exec -T mariadb sh -c 'exec mariadb -uroot -p"$MARIADB_ROOT_PASSWORD" -N "$MARIADB_DATABASE"'
@@ -13,7 +12,6 @@
                + (select count(*) from dispense where modify_date > now() - interval 48 hour);
       register: prod_recent_activity
       changed_when: false
-      failed_when: false
 
     # fail rather than skip: GitHub has no neutral job result and a cancelled run is easy to miss
     - name: Stop if prod is in use
@@ -21,4 +19,4 @@
         msg: >-
           {{ prod_recent_activity.stdout }} glasses added or dispensed in the last 48 hours, prod left alone.
           Re-run once it's quiet.
-      when: prod_recent_activity.stdout | default('') | int > 0
+      when: prod_recent_activity.stdout | int > 0
