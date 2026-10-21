@@ -6,6 +6,11 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  # paths-filter lists the PR's files through the API
+  pull-requests: read
+
 jobs:
   frontend-ci:
     name: "Frontend"
