@@ -43,7 +43,7 @@
     "@vitejs/devtools": "0.7.6",
     "@vitejs/plugin-vue": "6.0.10",
     "@vitest/coverage-v8": "5.0.4",
-    "@vitest/ui": "5.0.4",
+    "@vitest/ui": "5.0.5",
     "eslint": "10.9.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-vue": "10.10.0",
