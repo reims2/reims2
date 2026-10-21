@@ -6,6 +6,9 @@ on:
       - "main"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   frontend-ci:
     name: "Frontend"
@@ -13,6 +16,9 @@ jobs:
   backend-ci:
     name: "Backend"
     uses: ./.github/workflows/backend.yml
+    # backend.yml submits the maven dependency graph on main
+    permissions:
+      contents: write
   docs-ci:
     name: "Docs"
     uses: ./.github/workflows/docs.yml
@@ -26,6 +32,9 @@ jobs:
         component: [frontend, backend, docs]
     name: "Docker build"
     uses: ./.github/workflows/docker.yml
+    permissions:
+      contents: read
+      packages: write
     concurrency: docker-${{ matrix.component }}-${{ github.ref }}
     secrets: inherit # pass all secrets
     with:

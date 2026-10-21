@@ -11,6 +11,9 @@ on:
       - "ansible/roles/hardening/**"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   setup:
     # setup upgrades packages and restarts sshd, so automatic runs respect the campaign freeze
