@@ -6,7 +6,7 @@ s3backup_log_location: /var/log/reims2
 # renovate: datasource=docker depName=docker.io/dokku/s3backup
 s3backup_version: 0.14.0
 
-aws_bucket_name: reims2-backup
+s3backup_bucket_name: reims2-backup
 
 # Grafana keeps its users and UI edits in this SQLite file, skipped if it doesn't exist
 s3backup_grafana_db: /srv/monitoring/grafana/data/grafana.db

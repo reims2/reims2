@@ -1,4 +1,5 @@
 import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
 import '@/assets/sass/toastification.scss'
 
 export default {

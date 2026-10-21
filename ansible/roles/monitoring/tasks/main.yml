@@ -7,8 +7,8 @@
     group: "root"
   with_items:
     - "{{ monitoring_install_location }}"
-    - "{{ grafana_install_location }}"
-    - "{{ prometheus_install_location }}"
+    - "{{ monitoring_install_location }}/grafana"
+    - "{{ monitoring_install_location }}/prometheus"
   become: true
 
 - name: Create data directories
@@ -19,18 +19,18 @@
     owner: "root"
     group: "root"
   with_items:
-    - "{{ grafana_data_location }}"
-    - "{{ prometheus_data_location }}"
-    - "{{ grafana_provisioning_location }}/datasources"
-    - "{{ grafana_provisioning_location }}/dashboards"
-    - "{{ grafana_provisioning_location }}/dashboards/json"
+    - "{{ monitoring_install_location }}/grafana/data"
+    - "{{ monitoring_install_location }}/prometheus/data"
+    - "{{ monitoring_install_location }}/grafana/provisioning/datasources"
+    - "{{ monitoring_install_location }}/grafana/provisioning/dashboards"
+    - "{{ monitoring_install_location }}/grafana/provisioning/dashboards/json"
   become: true
 
 - name: Allow containers to reach node_exporter on the host
   community.general.ufw:
     rule: allow
     from_ip: 172.16.0.0/12
-    port: "{{ node_exporter_port }}"
+    port: "9100"
     proto: tcp
   become: true
 
@@ -46,35 +46,35 @@
 - name: Copy prometheus config
   ansible.builtin.template:
     src: prometheus.yml.j2
-    dest: "{{ prometheus_config_location }}"
+    dest: "{{ monitoring_install_location }}/prometheus/prometheus.yml"
     owner: root
     group: root
     mode: "0644"
-  notify: restart prometheus
+  notify: Restart prometheus
 
 - name: Copy grafana datasources config
   ansible.builtin.template:
     src: grafana-datasources.yml.j2
-    dest: "{{ grafana_provisioning_location }}/datasources/custom.yaml"
+    dest: "{{ monitoring_install_location }}/grafana/provisioning/datasources/custom.yaml"
     owner: root
     group: root
     mode: "0644"
-  notify: restart grafana
+  notify: Restart grafana
 
 - name: Copy grafana dashboard provider config
   ansible.builtin.template:
     src: grafana-dashboards.yml.j2
-    dest: "{{ grafana_provisioning_location }}/dashboards/reims2.yaml"
+    dest: "{{ monitoring_install_location }}/grafana/provisioning/dashboards/reims2.yaml"
     owner: root
     group: root
     mode: "0644"
-  notify: restart grafana
+  notify: Restart grafana
 
 # grafana polls this directory, dashboard changes need no restart
 - name: Copy grafana dashboards
   ansible.builtin.copy:
     src: dashboards/
-    dest: "{{ grafana_provisioning_location }}/dashboards/json/"
+    dest: "{{ monitoring_install_location }}/grafana/provisioning/dashboards/json/"
     owner: root
     group: root
     mode: "0644"
