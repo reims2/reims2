@@ -2,7 +2,7 @@ import { useGlassesStore } from '@/stores/glasses'
 
 import { Glasses } from '@/model/GlassesModel'
 
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 import { ReimsAxiosError } from '@/lib/axios'
 import { MaybeRefOrGetter } from 'vue'
 import { DeletionReason } from '@/model/ReimsModel'
@@ -10,10 +10,8 @@ import dayjs from 'dayjs'
 import { useIntervalFn } from '@vueuse/core'
 import { formatSku } from '@/util/format-glasses'
 
-type GlassesWithKey = Glasses & { key?: string }
-
 export const useEditGlasses = (
-  selected: MaybeRefOrGetter<GlassesWithKey | null>,
+  selected: MaybeRefOrGetter<Glasses | null>,
   onDeletedFn?: () => void,
 ) => {
   const skuValue = computed(() => toValue(selected)?.sku ?? null)
@@ -126,7 +124,7 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
         }
       } else {
         toast.error(
-          `Could not undo dispension/deletion of glasses, please retry (${error.message}).`,
+          `Could not undo dispension/deletion of glasses, please retry (${(error as Error).message}).`,
         )
       }
       return
@@ -181,7 +179,7 @@ export const useDeleteGlasses = (
           return
         }
       } else {
-        toast.error(`Could not ${actionString} glasses, please retry (${error.message})`)
+        toast.error(`Could not ${actionString} glasses, please retry (${(error as Error).message})`)
       }
       return
     } finally {

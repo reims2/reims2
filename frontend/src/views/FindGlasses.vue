@@ -8,13 +8,11 @@
               ref="inputComponent"
               v-model="glasses"
               v-model:sync-eyes="syncEyeAdd"
-              :bal-enabled="true"
               :glasses-type-only="true"
             ></glass-input>
             <v-col cols="12" class="pa-0">
               <v-checkbox
                 v-model="highTolerance"
-                default-value="false"
                 label="Increase search tolerance (might yield bad results)"
                 tabindex="-1"
               />
@@ -53,7 +51,7 @@
         lg="5"
         xl="3"
         class="pt-10 pt-md-0 px-0 pl-md-6"
-        aria-role="region"
+        role="region"
         aria-labelledby="heading-results"
       >
         <div id="heading-results" class="text-title-large font-weight-medium pb-2">Results</div>
@@ -98,6 +96,7 @@
 import { useGlassesStore } from '@/stores/glasses'
 
 import GlassInput from '@/components/GlassInput.vue'
+import GlassCard from '@/components/GlassCard.vue'
 
 import { GlassesInput as GlassesInputType } from '@/model/GlassesModel'
 import { resetEyeInput } from '@/util/eye-utils'
@@ -105,8 +104,6 @@ import { resetEyeInput } from '@/util/eye-utils'
 import { useEnterToTab } from 'vue3-enter-to-tab'
 import { useFindGlasses } from '@/composables/find'
 import { useDisplay } from 'vuetify'
-
-const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
 
 const { mobile } = useDisplay()
 
@@ -154,7 +151,6 @@ const { vPreventEnterTab } = useEnterToTab(form)
 async function submitAndUpdate() {
   startSearch()
 
-  // inputComponent.value?.reset() // fixme should this be enabeld to reset syncEye?
   page.value = 1
   // on desktop, focus input again; on mobile, scroll to bottom
   if (!mobile.value) inputComponent.value?.focus()

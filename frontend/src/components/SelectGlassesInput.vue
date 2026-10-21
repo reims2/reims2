@@ -8,7 +8,7 @@
     :hint="hint"
     persistent-hint
     :loading="loading"
-    :error-messages="errorMesssage"
+    :error-messages="errorMessage"
     @update:model-value="(val) => (sku = parseInt(val))"
   />
 </template>
@@ -29,14 +29,14 @@ const { hintForSelected = '' } = defineProps<{
 }>()
 
 const sku = defineModel<number | null>('sku', { required: true })
-const errorMessage = defineModel<string>('errorMesssage', { default: '' })
+const errorMessage = defineModel<string>('errorMessage', { default: '' })
 
 const { mobile } = useDisplay()
 const glassesStore = useGlassesStore()
 
-const hint = ref('')
 const selected = ref<Glasses | null>(null)
 const input = useTemplateRef('input')
+const hint = computed(() => (selected.value ? hintForSelected : ''))
 
 watch(
   () => sku.value,
@@ -45,7 +45,6 @@ watch(
       errorMessage.value = ''
       selected.value = glassesStore.getGlassLocal(newSku)
       emit('change', selected.value)
-      if (!selected.value) hint.value = ''
       // also fetch glasses in background to update database
       try {
         selected.value = await glassesStore.fetchSingle(newSku)
@@ -54,7 +53,6 @@ watch(
       }
     } else {
       selected.value = null
-      hint.value = ''
     }
     emit('change', selected.value)
   },
@@ -68,12 +66,6 @@ watch(
     emit('change', selected.value)
   },
 )
-
-watchEffect(() => {
-  if (selected.value) {
-    hint.value = hintForSelected
-  }
-})
 
 function focus() {
   input.value?.focus()

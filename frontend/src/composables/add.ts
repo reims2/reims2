@@ -5,7 +5,7 @@ import { useRootStore } from '@/stores/root'
 
 import { Glasses, GlassesInput, SanitizedGlassesInput } from '@/model/GlassesModel'
 
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 import { ReimsAxiosError } from '@/lib/axios'
 
 export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => void) => {
@@ -22,7 +22,9 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
       .map((sku) => allGlasses.value.find((g) => g.sku === sku))
       .filter((itm) => itm != null) as Glasses[]
   })
-  const freeSlots = computed(() => 5000 - allGlasses.value.length)
+  // matches the SKU range per location in the backend's MainServiceImpl
+  const skusPerLocation = 5000
+  const freeSlots = computed(() => skusPerLocation - allGlasses.value.length)
 
   watch(allGlasses, () => {
     // Filter out deleted glasses
@@ -54,7 +56,7 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
         // no free skus left.
         toast.error(error.message)
       } else {
-        toast.error(`Could not add glasses, please retry (${error.message})`)
+        toast.error(`Could not add glasses, please retry (${(error as Error).message})`)
       }
       return
     } finally {

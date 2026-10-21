@@ -47,7 +47,7 @@
         md="4"
         lg="3"
         class="pl-md-6 pt-3 pt-md-2"
-        aria-role="region"
+        role="region"
         aria-labelledby="heading-recently-added"
       >
         <div id="heading-recently-added" class="text-title-large font-weight-medium pb-2">
@@ -76,6 +76,8 @@
 
 <script setup lang="ts">
 import GlassInput from '@/components/GlassInput.vue'
+import GlassCard from '@/components/GlassCard.vue'
+import DeleteButton from '@/components/DeleteButton.vue'
 import { useRootStore } from '@/stores/root'
 import { useEnterToTab } from 'vue3-enter-to-tab'
 
@@ -84,9 +86,6 @@ import { Glasses, GlassesInput as GlassesInputType } from '@/model/GlassesModel'
 import { useDisplay } from 'vuetify'
 import { useAddGlasses } from '@/composables/add'
 import { useDeleteGlasses } from '@/composables/edit'
-
-const GlassCard = defineAsyncComponent(() => import('@/components/GlassCard.vue'))
-const DeleteButton = defineAsyncComponent(() => import('@/components/DeleteButton.vue'))
 
 const { mobile } = useDisplay()
 
@@ -117,6 +116,9 @@ const {
 
 const { vPreventEnterTab } = useEnterToTab(form)
 
+const skuToDelete = ref<number | null>(null)
+const { deleteGlasses } = useDeleteGlasses(skuToDelete)
+
 async function submit() {
   if (!valid.value) return
   submitAdd()
@@ -128,7 +130,7 @@ async function onSuccess() {
   if (mobile.value) results.value?.$el.scrollIntoView(true)
 }
 async function submitDeletion(glasses: Glasses) {
-  const { deleteGlasses } = useDeleteGlasses(glasses.sku)
+  skuToDelete.value = glasses.sku
   await deleteGlasses('WRONGLY_ADDED')
 }
 
