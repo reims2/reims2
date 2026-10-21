@@ -2,7 +2,7 @@ import { useGlassesStore } from '@/stores/glasses'
 
 import { Glasses } from '@/model/GlassesModel'
 
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 import { ReimsAxiosError } from '@/lib/axios'
 import { MaybeRefOrGetter } from 'vue'
 import { DeletionReason } from '@/model/ReimsModel'

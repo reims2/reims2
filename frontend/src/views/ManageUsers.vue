@@ -128,7 +128,7 @@ import { User } from '@/model/UserModel'
 import { useUsersStore } from '@/stores/users'
 import { useAuthStore } from '@/stores/auth'
 
-import { useToast } from 'vue-toastification'
+import { useToast } from '@/composables/toast'
 const toast = useToast()
 
 const usersStore = useUsersStore()

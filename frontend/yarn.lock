@@ -6326,7 +6326,6 @@ __metadata:
     vue: "npm:3.5.44"
     vue-eslint-parser: "npm:10.4.1"
     vue-router: "npm:5.4.0"
-    vue-toastification: "npm:2.0.0-rc.5"
     vue-tsc: "npm:3.3.13"
     vue3-enter-to-tab: "npm:3.1.6"
     vuetify: "npm:4.2.5"
@@ -7865,15 +7864,6 @@ __metadata:
     vite:
       optional: true
   checksum: 10/2803a733305991431caafecc8ffb0dc5212445dc2f924f8c2ddd82eb563e65345ca79673d767a1433360583e871931c7b4735a1fe54853cc805f1040cd51c7ec
-  languageName: node
-  linkType: hard
-
-"vue-toastification@npm:2.0.0-rc.5":
-  version: 2.0.0-rc.5
-  resolution: "vue-toastification@npm:2.0.0-rc.5"
-  peerDependencies:
-    vue: ^3.0.2
-  checksum: 10/da2698e8a24f3de99269d71327879c389236179225dca9112d1de971fcd2e809d83670e1195f3c59a232f8b53c5625b93d573e809da7cb587527b5d339ec9bdb
   languageName: node
   linkType: hard
 
