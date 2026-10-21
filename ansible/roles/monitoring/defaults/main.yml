@@ -2,17 +2,5 @@
 monitoring_domain: monitoring.{{ app_domain }}
 monitoring_install_location: /srv/monitoring
 
-grafana_install_location: "{{ monitoring_install_location }}/grafana"
-grafana_data_location: "{{ grafana_install_location }}/data"
-grafana_provisioning_location: "{{ grafana_install_location }}/provisioning"
-
-prometheus_install_location: "{{ monitoring_install_location }}/prometheus"
-prometheus_data_location: "{{ prometheus_install_location }}/data"
-prometheus_config_location: "{{ prometheus_install_location }}/prometheus.yml"
-
-grafana_port: "3000"
-prometheus_port: "9090"
-
 # node_exporter runs on the host network and listens on docker0, prometheus reaches it via host-gateway
-node_exporter_host: "{{ ansible_facts['docker0']['ipv4']['address'] | default('172.17.0.1') }}"
-node_exporter_port: "9100"
+monitoring_node_exporter_host: "{{ ansible_facts['docker0']['ipv4']['address'] | default('172.17.0.1') }}"

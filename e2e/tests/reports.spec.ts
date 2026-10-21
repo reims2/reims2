@@ -7,8 +7,9 @@ test('Download reports', async ({ page }) => {
   const inventoryDownloadPromise = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Download' }).first().click()
   const inventoryCsv = await inventoryDownloadPromise
-  // TODO increase size in future, this is for an empty DB
-  expect((await fs.promises.stat(await inventoryCsv.path())).size).toBeGreaterThan(200)
+  // header plus at least one of the seeded glasses
+  const inventory = await fs.promises.readFile(await inventoryCsv.path(), 'utf8')
+  expect(inventory.trim().split('\n').length).toBeGreaterThan(1)
 
   // await page.getByRole('combobox').click()
   const dispenseDownloadPromise = page.waitForEvent('download')

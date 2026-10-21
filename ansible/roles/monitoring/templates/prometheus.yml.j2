@@ -7,11 +7,11 @@ global:
 scrape_configs:
   - job_name: "prometheus"
     static_configs:
-      - targets: ["localhost:{{prometheus_port}}"]
+      - targets: ["localhost:9090"]
 
   - job_name: node
     static_configs:
-      - targets: ["host.docker.internal:{{ node_exporter_port }}"]
+      - targets: ["host.docker.internal:9100"]
         # keep the old instance label, the "Server statistics" dashboard filters on it
         labels:
           instance: "node_exporter:9100"

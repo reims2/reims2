@@ -24,9 +24,9 @@ if [ "$existing" -ne 0 ]; then
   exit 1
 fi
 
-key=${1:-$(s3 s3 ls "s3://{{ aws_bucket_name }}/" | awk '{print $4}' | grep '^reims2-backup-.*\.tgz$' | sort | tail -1)}
+key=${1:-$(s3 s3 ls "s3://{{ s3backup_bucket_name }}/" | awk '{print $4}' | grep '^reims2-backup-.*\.tgz$' | sort | tail -1)}
 echo "Restoring $key"
-s3 s3 cp --quiet "s3://{{ aws_bucket_name }}/$key" "/work/$key"
+s3 s3 cp --quiet "s3://{{ s3backup_bucket_name }}/$key" "/work/$key"
 tar -xzf "$work/$key" -C "$work"
 
 docker compose stop backend
