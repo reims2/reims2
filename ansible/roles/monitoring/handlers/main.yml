@@ -1,12 +1,12 @@
 # config files are bind mounts, compose up doesn't notice when they change
-- name: restart grafana
+- name: Restart grafana
   community.docker.docker_compose_v2:
     project_src: "{{ monitoring_install_location }}"
     project_name: monitoring
     services: [grafana]
     state: restarted
 
-- name: restart prometheus
+- name: Restart prometheus
   community.docker.docker_compose_v2:
     project_src: "{{ monitoring_install_location }}"
     project_name: monitoring

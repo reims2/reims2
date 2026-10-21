@@ -3,7 +3,8 @@
     user: "{{ ansible_user }}"
     state: present
     key: "{{ lookup('file', 'creds/pub_keys') }}"
-  ignore_errors: true
+  # creds/ is not in git, so CI runs leave the keys as they are
+  when: (playbook_dir ~ '/creds/pub_keys') is file
 
 - name: Install Docker
   ansible.builtin.include_role:
