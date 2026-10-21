@@ -72,6 +72,10 @@ export default defineConfig({
               text: 'PhilScore deep dive',
             },
             {
+              link: '/dev/ai-notes/philscore-improvements',
+              text: 'PhilScore improvement ideas',
+            },
+            {
               link: '/dev/ai-notes/inventory-refill-analysis',
               text: 'Inventory refill analysis',
             },

@@ -6,6 +6,8 @@ still worth keeping around.
 
 - [PhilScore deep dive](/dev/ai-notes/philscore-deep-dive): why each rule and constant of the matching
   algorithm exists, and where REIMS2 differs from REIMS1.
+- [PhilScore improvement ideas](/dev/ai-notes/philscore-improvements): literature review on matching
+  donated glasses, and proposals for changing the algorithm based on it.
 - [Inventory refill analysis](/dev/ai-notes/inventory-refill-analysis): methodology handover from an
   analysis of what to restock each site with after a campaign.
 
