@@ -1,4 +1,4 @@
-import { useNow, useOnline, watchThrottled } from '@vueuse/core'
+import { useIntervalFn, useNow, useOnline, watchThrottled } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
 import { useToast } from '@/composables/toast'
 import dayjs from 'dayjs'
@@ -7,7 +7,7 @@ export const useUpdatesGlassesInterval = () => {
   const glassesStore = useGlassesStore()
   const toast = useToast()
   const isOnline = useOnline()
-  const now = useNow()
+  const now = useNow({ scheduler: (cb) => useIntervalFn(cb, 15 * 1000) })
   const lastRefresh = computed(() => glassesStore.lastRefresh)
 
   onMounted(() => {

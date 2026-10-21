@@ -14,7 +14,7 @@
           REIMS {{ reimsSiteName }}
         </router-link>
       </div>
-      <div v-if="true && !isMiniDrawer" class="text-medium-emphasis ml-3 mb-1">
+      <div v-if="!isMiniDrawer" class="text-medium-emphasis ml-3 mb-1">
         Logged in as
         <span class="font-weight-bold">{{ authStore.user }}</span>
       </div>
@@ -92,13 +92,12 @@
 import { useRootStore } from '@/stores/root'
 import { useAuthStore } from '@/stores/auth'
 import AboutDialog from './AboutDialog.vue'
+import LocationDialog from './LocationDialog.vue'
 
 import { mdiInformation, mdiLogout, mdiMapMarkerMultiple, mdiFileDocument } from '@mdi/js'
 import { DrawerItem } from '@/model/ReimsModel'
 import { useDisplay } from 'vuetify'
 import { useOnline } from '@vueuse/core'
-
-const LocationDialog = defineAsyncComponent(() => import('@/components/LocationDialog.vue'))
 
 const isOnline = useOnline()
 const { mobile } = useDisplay()
@@ -126,9 +125,6 @@ const isMiniDrawer = computed(() => {
 </script>
 
 <style scoped>
-.dev-background {
-  background-color: rgb(var(--v-theme-accent));
-}
 .no-decoration {
   text-decoration: none !important;
 }
