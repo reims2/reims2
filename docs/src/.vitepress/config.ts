@@ -76,6 +76,10 @@ export default defineConfig({
               text: 'PhilScore improvement ideas',
             },
             {
+              link: '/dev/ai-notes/predicted-blur-matching',
+              text: 'Predicted-blur matching',
+            },
+            {
               link: '/dev/ai-notes/inventory-refill-analysis',
               text: 'Inventory refill analysis',
             },
