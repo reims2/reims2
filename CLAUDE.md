@@ -100,7 +100,7 @@ network connection during a campaign. The backend only learns about a search whe
 (`POST /api/glasses/{location}/unsuccessfulSearch`); that's also the only path by which prescription
 values reach the server. The algorithm is a deliberate port of the original REIMS1 implementation. Read
 `docs/src/philscore.md` before changing its tolerance or scoring rules: any behavioral difference from
-REIMS1 is treated as a bug, not an opportunity to improve it.
+REIMS1 not documented there is treated as a bug, not an opportunity to improve it.
 
 ### Offline-first sync
 

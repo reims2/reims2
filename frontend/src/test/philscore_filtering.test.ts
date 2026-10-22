@@ -295,6 +295,37 @@ test('Dont filter lens with axis 0 if rx axis is close to it across wraparound',
   expect(result).toHaveLength(1)
 })
 
+// REIMS2 only: REIMS1 compared the lens axis to the meaningless axis 0 of a zero-cylinder rx
+test('Dont filter by axis if rx cylinder is 0', () => {
+  const glasses = createGlassesEqualOdOs('single', {
+    sphere: 0.75,
+    cylinder: -0.5,
+    axis: 90,
+  })
+  const search = createSearchEqualLens('single', {
+    sphere: 0.75,
+    cylinder: 0,
+    axis: 0,
+  })
+  const result = calculateAllPhilscore(search, glasses)
+  expect(result).toHaveLength(1)
+})
+
+test('Filter too much lens cylinder if rx cylinder is 0', () => {
+  const glasses = createGlassesEqualOdOs('single', {
+    sphere: 0.75,
+    cylinder: -0.75,
+    axis: 90,
+  })
+  const search = createSearchEqualLens('single', {
+    sphere: 0.75,
+    cylinder: 0,
+    axis: 0,
+  })
+  const result = calculateAllPhilscore(search, glasses)
+  expect(result).toHaveLength(0)
+})
+
 // [lens cylinder, axis tolerance in degrees], from REIMS1 ATOL.prg
 test.each([
   [-0.25, 35],
