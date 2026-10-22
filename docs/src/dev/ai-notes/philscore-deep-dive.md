@@ -27,7 +27,8 @@ sphere and cylinder differences and cylinder-driven axis tolerances."
   the rules encode what an optician does by hand. What is era-driven is FoxPro/SQL plumbing: one
   scalar sort column and rectangular `BETWEEN` windows. **inferred**
 - Scoring and both filters match REIMS1 exactly over about 3.5 million Rx/lens combinations and
-  every pair of axes, after two axis-filter bugs were fixed in October 2026. See
+  every pair of axes, after two axis-filter bugs were fixed in October 2026. The one deliberate
+  difference since is that a zero-cylinder Rx skips the axis filter. See
   [Where REIMS2 differs](#where-reims2-differs-from-reims1). **measured**
 
 ## How REIMS1 ran a search
@@ -77,8 +78,9 @@ than the tolerance for a new lens, which fits donated glasses. Every value stays
 where crossed cylinders stop beating no cylinder at all. **inferred**
 
 Keying on the lens cylinder is half right: axis error only matters when both lens and Rx have
-cylinder. Lens cylinder 0 is handled, Rx cylinder 0 isn't. Its axis is then a meaningless 0, and the
-filter still demands lenses near 0/180 (the [2024 zero-cylinder case](/2024_bugs_investigated)).
+cylinder. REIMS1 handles lens cylinder 0 but not Rx cylinder 0. Its axis is then a meaningless 0, and
+the filter still demands lenses near 0/180 (the [2024 zero-cylinder case](/2024_bugs_investigated)).
+REIMS2 skips the filter for it, see below.
 `SPEQXX.prg` gives each SE candidate its own axis tolerance from its reduced cylinder, so the intent
 looks like "the cylinder actually worn decides how much axis error matters". **inferred**
 
@@ -179,6 +181,15 @@ first port (August 2021) were fixed in October 2026, with tests in `philscore_fi
 - **The axis table was shifted at two places.** Cylinder -2.25 got 8 degrees instead of 9, and
   -3.25 to -3.75 got 7 instead of 8.
 
+One deliberate difference was added in October 2026: **a zero-cylinder Rx skips the axis filter.**
+With no astigmatism to correct, a lens cylinder leaves the same residual whatever its axis, so
+`-0.50 x 90` and `-0.50 x 180` are equivalent for this patient, yet REIMS1 only took the second.
+The sphere/cylinder window still caps the lens cylinder at 0.50 D (1.00 D with high tolerance), as
+before. Replayed against the stock of that moment, about half of the 754 unique unsuccessful
+searches from 2024 to 2026 now find a pair. Among dispensed pairs replayed as Rx, 34 % (multifocal)
+to 50 % (single) have a zero-cylinder eye, and the first suggestion changes in 16 to 19 % of
+searches. The change only adds pairs, no search lost one. **measured**
+
 Two minor differences remain:
 
 - **Input rounding.** `sanitizeEyeValues` rounds away from zero, REIMS1's `QTRINC` to the nearest
@@ -190,9 +201,9 @@ Two minor differences remain:
 
 REIMS1 behaves the same way here:
 
-- A zero-cylinder Rx filters lenses against a meaningless axis 0.
 - The hyperope penalty also hits SE substitutions whose SE is exact.
 - SE substitutions beyond 0.5 D of cylinder get no credit for exact SE (see above).
 - Over-minus for a myope is free.
-- A spherical lens collects an axis term against the Rx axis, at most 0.025.
+- A spherical lens, or any lens for a zero-cylinder Rx, collects an axis term against a meaningless
+  axis, at most 0.025.
 - Each eye is scored alone and summed, so nothing weighs how the errors of both eyes relate.
