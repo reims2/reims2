@@ -98,9 +98,13 @@ export default defineConfig(({ mode }) => {
       // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
       vuetify({
         autoImport: true,
-        styles: {
-          configFile: './src/assets/sass/vuetify.scss',
-        },
+        // The configFile mode keeps state that Vitest's fsModuleCache skips on reruns, and tests need no CSS.
+        styles:
+          mode === 'test'
+            ? 'none'
+            : {
+                configFile: './src/assets/sass/vuetify.scss',
+              },
       }),
       VitePWA(vitePWAconf),
       AutoImport({
