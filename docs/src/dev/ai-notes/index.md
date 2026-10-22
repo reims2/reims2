@@ -8,6 +8,8 @@ still worth keeping around.
   algorithm exists, and where REIMS2 differs from REIMS1.
 - [PhilScore improvement ideas](/dev/ai-notes/philscore-improvements): literature review on matching
   donated glasses, and proposals for changing the algorithm based on it.
+- [Predicted-blur matching](/dev/ai-notes/predicted-blur-matching): spec for a second matching
+  algorithm to run next to PhilScore, with replay results against real data.
 - [Inventory refill analysis](/dev/ai-notes/inventory-refill-analysis): methodology handover from an
   analysis of what to restock each site with after a campaign.
 

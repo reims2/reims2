@@ -161,7 +161,8 @@ Per eye, `sqrt(dM^2 + w^2 * |dJ|^2)` plus the asymmetry of 4, then 5 and 6 on to
 the three exclusive rules, the SE candidates and the axis table. PhilScore already ranks like plain B
 (Kendall tau 0.89 in the deep dive), so most rankings stay. The changes land where the literature
 disagrees: axis, SE swaps and plus prescriptions. Extra weight on oblique J45 is possible, but the evidence
-is mixed, so leave it out at first.
+is mixed, so leave it out at first. Worked out together with 3 to 6, and replayed against real data,
+in [Predicted-blur matching](/dev/ai-notes/predicted-blur-matching).
 
 ### 8. Never return nothing
 
