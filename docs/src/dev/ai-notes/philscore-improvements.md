@@ -123,9 +123,7 @@ spherical lenses and zero-cylinder Rx goes away. Works alone, with the rest of P
 
 Filter on SE (`|dM|` within the tolerance) and on residual astigmatism (`2 * |dJ|` below a budget),
 instead of the axis table and the SE candidate windows. Rotation and dropped cylinder then share one
-budget, and a zero-cylinder Rx no longer demands lenses near axis 0 (the
-[2024 zero-cylinder case](/2024_bugs_investigated)). Ready-made trials accept 1 to 2 D, Ramke 2006 used
-1 D. Pick the value by replaying past searches so the match rate stays about where it is.
+budget. Ready-made trials accept 1 to 2 D, Ramke 2006 used 1 D. Pick the value by replaying past searches so the match rate stays about where it is.
 
 ### 3. Quality tiers
 

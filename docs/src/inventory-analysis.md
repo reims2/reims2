@@ -2,7 +2,7 @@
 
 This is a very rough interpretation of the results. Raw graphs are also shown [here](https://github.com/reims2/data-analysis/blob/main/analysis.ipynb)
 
-This considers all dispensed glasses since the 2023 campaign and also unsuccessful searches made in (parts of) the 2024 campaign and all of the 2025 campaign.
+This considers all dispensed glasses since the 2023 campaign and also unsuccessful searches made in (parts of) the 2024 campaign and all of the 2025 campaign. Until October 2026, a search with zero cylinder only matched lenses with an axis near 0 ([details](/dev/ai-notes/philscore-deep-dive#where-reims2-differs-from-reims1)), so the "zero-ish axis" needs below partly reflect that filter rather than missing stock.
 
 The analysis for singlefocal is much worse than for multifocal since we have much more dispensed multifocals and therefore more data.
 
