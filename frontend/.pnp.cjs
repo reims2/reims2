@@ -35,7 +35,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/node", "npm:24.19.2"],\
-          ["@vitejs/devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.7.6"],\
+          ["@vitejs/devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.8.0"],\
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.0.10"],\
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.0.4"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.0.5"],\
@@ -2431,22 +2431,22 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@devframes/agentic", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/@devframes-agentic-npm-1.0.0-8719cca01f-c1ba8cb6f9.zip/node_modules/@devframes/agentic/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/@devframes-agentic-npm-1.2.6-ef0b86f05d-5ab33e4263.zip/node_modules/@devframes/agentic/",\
         "packageDependencies": [\
-          ["@devframes/agentic", "npm:1.0.0"]\
+          ["@devframes/agentic", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-agentic-virtual-29a0e370d4/0/cache/@devframes-agentic-npm-1.0.0-8719cca01f-c1ba8cb6f9.zip/node_modules/@devframes/agentic/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-agentic-virtual-2786e94689/0/cache/@devframes-agentic-npm-1.2.6-ef0b86f05d-5ab33e4263.zip/node_modules/@devframes/agentic/",\
         "packageDependencies": [\
-          ["@devframes/agentic", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@modelcontextprotocol/client", "npm:2.0.0"],\
-          ["@modelcontextprotocol/server", "npm:2.0.0"],\
+          ["@devframes/agentic", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@modelcontextprotocol/client", "npm:2.3.1"],\
+          ["@modelcontextprotocol/server", "npm:2.3.1"],\
           ["@types/devframe", null],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["h3", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:2.0.1-rc.32"],\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["h3", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:2.0.8"],\
           ["pathe", "npm:2.0.3"]\
         ],\
         "packagePeers": [\
@@ -2457,23 +2457,23 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@devframes/hub", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/@devframes-hub-npm-1.0.0-8975155c06-88f1656bb8.zip/node_modules/@devframes/hub/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/@devframes-hub-npm-1.2.6-ba62803c5d-a74e862071.zip/node_modules/@devframes/hub/",\
         "packageDependencies": [\
-          ["@devframes/hub", "npm:1.0.0"]\
+          ["@devframes/hub", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-hub-virtual-53b02e8a3c/0/cache/@devframes-hub-npm-1.0.0-8975155c06-88f1656bb8.zip/node_modules/@devframes/hub/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-hub-virtual-db35620bf0/0/cache/@devframes-hub-npm-1.2.6-ba62803c5d-a74e862071.zip/node_modules/@devframes/hub/",\
         "packageDependencies": [\
-          ["@devframes/agentic", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/hub", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["@devframes/agentic", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/hub", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["@types/devframe", null],\
           ["@types/devframes__agentic", null],\
           ["destr", "npm:2.0.5"],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["h3", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:2.0.1-rc.32"],\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["h3", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:2.0.8"],\
           ["pathe", "npm:2.0.3"],\
           ["tinyexec", "npm:1.3.1"],\
           ["zigpty", "npm:0.2.1"]\
@@ -2486,16 +2486,16 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-hub-virtual-742be19dbf/0/cache/@devframes-hub-npm-1.0.0-8975155c06-88f1656bb8.zip/node_modules/@devframes/hub/",\
+      ["virtual:c15d5083bfc933659462343d92aba1f857c50b677f8413a3acb9a4caa54c03a56d9590965aa77e0a09ad773ecfdffa36b721d745f1317c0c389bba05d5d33cb7#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-hub-virtual-61b598d77a/0/cache/@devframes-hub-npm-1.2.6-ba62803c5d-a74e862071.zip/node_modules/@devframes/hub/",\
         "packageDependencies": [\
           ["@devframes/agentic", null],\
-          ["@devframes/hub", "virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0"],\
+          ["@devframes/hub", "virtual:c15d5083bfc933659462343d92aba1f857c50b677f8413a3acb9a4caa54c03a56d9590965aa77e0a09ad773ecfdffa36b721d745f1317c0c389bba05d5d33cb7#npm:1.2.6"],\
           ["@types/devframe", null],\
           ["@types/devframes__agentic", null],\
           ["destr", "npm:2.0.5"],\
-          ["devframe", "virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0"],\
-          ["h3", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:2.0.1-rc.32"],\
+          ["devframe", "virtual:c15d5083bfc933659462343d92aba1f857c50b677f8413a3acb9a4caa54c03a56d9590965aa77e0a09ad773ecfdffa36b721d745f1317c0c389bba05d5d33cb7#npm:1.2.6"],\
+          ["h3", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:2.0.8"],\
           ["pathe", "npm:2.0.3"],\
           ["tinyexec", "npm:1.3.1"],\
           ["zigpty", "npm:0.2.1"]\
@@ -2510,23 +2510,23 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@devframes/hub-ui", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/@devframes-hub-ui-npm-1.0.0-020639607c-75aec0706e.zip/node_modules/@devframes/hub-ui/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/@devframes-hub-ui-npm-1.2.6-4c755d1ea9-9c5ed982b9.zip/node_modules/@devframes/hub-ui/",\
         "packageDependencies": [\
-          ["@devframes/hub-ui", "npm:1.0.0"]\
+          ["@devframes/hub-ui", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-hub-ui-virtual-43a2a464e6/0/cache/@devframes-hub-ui-npm-1.0.0-020639607c-75aec0706e.zip/node_modules/@devframes/hub-ui/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-hub-ui-virtual-5b8a5fd058/0/cache/@devframes-hub-ui-npm-1.2.6-4c755d1ea9-9c5ed982b9.zip/node_modules/@devframes/hub-ui/",\
         "packageDependencies": [\
-          ["@devframes/hub", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/hub-ui", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/json-render", null],\
+          ["@devframes/hub", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/hub-ui", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/json-render", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["@types/devframe", null],\
           ["@types/devframes__hub", null],\
           ["@types/devframes__json-render", null],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"]\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"]\
         ],\
         "packagePeers": [\
           "@devframes/hub",\
@@ -2540,22 +2540,22 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@devframes/json-render", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/@devframes-json-render-npm-1.0.0-201db86bf4-7b1b4ac8e3.zip/node_modules/@devframes/json-render/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/@devframes-json-render-npm-1.2.6-810958d454-f613a7682c.zip/node_modules/@devframes/json-render/",\
         "packageDependencies": [\
-          ["@devframes/json-render", "npm:1.0.0"]\
+          ["@devframes/json-render", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-json-render-virtual-c753adf753/0/cache/@devframes-json-render-npm-1.0.0-201db86bf4-7b1b4ac8e3.zip/node_modules/@devframes/json-render/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-json-render-virtual-80c84fb287/0/cache/@devframes-json-render-npm-1.2.6-810958d454-f613a7682c.zip/node_modules/@devframes/json-render/",\
         "packageDependencies": [\
-          ["@devframes/hub", "virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0"],\
-          ["@devframes/json-render", "virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0"],\
-          ["@json-render/core", "virtual:c753adf7535daa85979f64370e3e5a066c74bc9f7dac420e9d97c1c96e107e623b1251449db3756e91b2130f8e177462b3c32f26013f725594d437afe6698b47#npm:0.20.0"],\
+          ["@devframes/hub", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/json-render", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@json-render/core", "virtual:80c84fb287651e9db764eb25e93b6ba0bcd7263acbd597e199fe0eb9e006e7de733d98d6e637bd6278497707e9d6597dbed5276bf0bc783995065b175dfb3af7#npm:0.21.1"],\
           ["@types/devframe", null],\
           ["@types/devframes__hub", null],\
-          ["devframe", "virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0"],\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["zod", "npm:4.6.5"]\
         ],\
         "packagePeers": [\
@@ -2568,21 +2568,21 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@devframes/json-render-ui", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/@devframes-json-render-ui-npm-1.0.0-07554e30b3-a3d7203323.zip/node_modules/@devframes/json-render-ui/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/@devframes-json-render-ui-npm-1.2.6-8ac5453caa-29ecb55aaa.zip/node_modules/@devframes/json-render-ui/",\
         "packageDependencies": [\
-          ["@devframes/json-render-ui", "npm:1.0.0"]\
+          ["@devframes/json-render-ui", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-json-render-ui-virtual-b2cdf72890/0/cache/@devframes-json-render-ui-npm-1.0.0-07554e30b3-a3d7203323.zip/node_modules/@devframes/json-render-ui/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-json-render-ui-virtual-b758de6174/0/cache/@devframes-json-render-ui-npm-1.2.6-8ac5453caa-29ecb55aaa.zip/node_modules/@devframes/json-render-ui/",\
         "packageDependencies": [\
-          ["@devframes/hub", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/json-render-ui", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["@devframes/hub", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/json-render-ui", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["@types/devframe", null],\
           ["@types/devframes__hub", null],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"]\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"]\
         ],\
         "packagePeers": [\
           "@devframes/hub",\
@@ -2594,23 +2594,23 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@devframes/plugin-inspect", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/@devframes-plugin-inspect-npm-1.0.0-fa09722229-1d605d5389.zip/node_modules/@devframes/plugin-inspect/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/@devframes-plugin-inspect-npm-1.2.6-74211c321b-cbb896e1c5.zip/node_modules/@devframes/plugin-inspect/",\
         "packageDependencies": [\
-          ["@devframes/plugin-inspect", "npm:1.0.0"]\
+          ["@devframes/plugin-inspect", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-plugin-inspect-virtual-4e78037835/0/cache/@devframes-plugin-inspect-npm-1.0.0-fa09722229-1d605d5389.zip/node_modules/@devframes/plugin-inspect/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-plugin-inspect-virtual-e12cd9b663/0/cache/@devframes-plugin-inspect-npm-1.2.6-74211c321b-cbb896e1c5.zip/node_modules/@devframes/plugin-inspect/",\
         "packageDependencies": [\
-          ["@devframes/plugin-inspect", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["@devframes/plugin-inspect", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["@devframes/plugin-inspect--assets", null],\
           ["@types/devframe", null],\
           ["@types/devframes__plugin-inspect--assets", null],\
           ["@types/vite", null],\
-          ["cac", "npm:7.0.0"],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["cac", "npm:7.1.0"],\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.3.4"]\
         ],\
         "packagePeers": [\
@@ -2625,26 +2625,26 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@devframes/plugin-messages", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/@devframes-plugin-messages-npm-1.0.0-6e255ab4c5-93427c33d1.zip/node_modules/@devframes/plugin-messages/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/@devframes-plugin-messages-npm-1.2.6-74bb50bfac-6794c8d4aa.zip/node_modules/@devframes/plugin-messages/",\
         "packageDependencies": [\
-          ["@devframes/plugin-messages", "npm:1.0.0"]\
+          ["@devframes/plugin-messages", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-plugin-messages-virtual-de64316e55/0/cache/@devframes-plugin-messages-npm-1.0.0-6e255ab4c5-93427c33d1.zip/node_modules/@devframes/plugin-messages/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-plugin-messages-virtual-6e17761b28/0/cache/@devframes-plugin-messages-npm-1.2.6-74bb50bfac-6794c8d4aa.zip/node_modules/@devframes/plugin-messages/",\
         "packageDependencies": [\
-          ["@devframes/hub", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/plugin-messages", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["@devframes/hub", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/plugin-messages", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["@devframes/plugin-messages--assets", null],\
-          ["@devframes/service-open", "virtual:de64316e557669a57d58c70a99435d2cfe93eeb8814b8c9e5aeeb7597c1581735fcf99b66923e1035356bdd67aafc81f97b6b92ba9b116e7822c108312924dd2#npm:1.0.0"],\
+          ["@devframes/service-open", "virtual:6e17761b2892c5828adb84f4852968ab70e1dbd7180daaef0db10d319d4c6dd2ac6d66cd9bdb9b4d331c1e5ab9a08fbe323cf6e81abf443d140b2cb1a42deb84#npm:1.2.6"],\
           ["@types/devframe", null],\
           ["@types/devframes__hub", null],\
           ["@types/devframes__plugin-messages--assets", null],\
           ["@types/vite", null],\
-          ["cac", "npm:7.0.0"],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["cac", "npm:7.1.0"],\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.3.4"]\
         ],\
         "packagePeers": [\
@@ -2661,24 +2661,24 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@devframes/plugin-terminals", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/@devframes-plugin-terminals-npm-1.0.0-0ffdebd65c-43c61cfb82.zip/node_modules/@devframes/plugin-terminals/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/@devframes-plugin-terminals-npm-1.2.6-47caafc6fc-0fd44e3630.zip/node_modules/@devframes/plugin-terminals/",\
         "packageDependencies": [\
-          ["@devframes/plugin-terminals", "npm:1.0.0"]\
+          ["@devframes/plugin-terminals", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-plugin-terminals-virtual-8484d1b6a4/0/cache/@devframes-plugin-terminals-npm-1.0.0-0ffdebd65c-43c61cfb82.zip/node_modules/@devframes/plugin-terminals/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-plugin-terminals-virtual-ef0b2411d2/0/cache/@devframes-plugin-terminals-npm-1.2.6-47caafc6fc-0fd44e3630.zip/node_modules/@devframes/plugin-terminals/",\
         "packageDependencies": [\
-          ["@devframes/plugin-terminals", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["@devframes/plugin-terminals", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["@devframes/plugin-terminals--assets", null],\
-          ["@devframes/vite", "virtual:8484d1b6a414f4b0dde1191b9e34bafa73e8d289b758c75d449a023643d5f5b5f12967cce40e837d2548575d948c18ac4609619168db08069caba37c38da9534#npm:1.0.0"],\
+          ["@devframes/vite", "virtual:ef0b2411d207276109879c86b34e4b99ab43b652b2512fb08af9cd2f10b728fd864f88adbaa6612ae772b2ca4e4daf1e26aa0b703901964b66dfc9d1bfd53667#npm:1.2.6"],\
           ["@types/devframe", null],\
           ["@types/devframes__plugin-terminals--assets", null],\
           ["@types/vite", null],\
-          ["cac", "npm:7.0.0"],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["cac", "npm:7.1.0"],\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.3.4"],\
           ["zigpty", "npm:0.2.1"]\
         ],\
@@ -2694,19 +2694,19 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@devframes/service-open", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/@devframes-service-open-npm-1.0.0-272362a4e7-83491ab9b2.zip/node_modules/@devframes/service-open/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/@devframes-service-open-npm-1.2.6-f32a5deb62-d4f9c406d1.zip/node_modules/@devframes/service-open/",\
         "packageDependencies": [\
-          ["@devframes/service-open", "npm:1.0.0"]\
+          ["@devframes/service-open", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:de64316e557669a57d58c70a99435d2cfe93eeb8814b8c9e5aeeb7597c1581735fcf99b66923e1035356bdd67aafc81f97b6b92ba9b116e7822c108312924dd2#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-service-open-virtual-1e6a4f0e7d/0/cache/@devframes-service-open-npm-1.0.0-272362a4e7-83491ab9b2.zip/node_modules/@devframes/service-open/",\
+      ["virtual:6e17761b2892c5828adb84f4852968ab70e1dbd7180daaef0db10d319d4c6dd2ac6d66cd9bdb9b4d331c1e5ab9a08fbe323cf6e81abf443d140b2cb1a42deb84#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-service-open-virtual-71b309eda8/0/cache/@devframes-service-open-npm-1.2.6-f32a5deb62-d4f9c406d1.zip/node_modules/@devframes/service-open/",\
         "packageDependencies": [\
-          ["@devframes/service-open", "virtual:de64316e557669a57d58c70a99435d2cfe93eeb8814b8c9e5aeeb7597c1581735fcf99b66923e1035356bdd67aafc81f97b6b92ba9b116e7822c108312924dd2#npm:1.0.0"],\
+          ["@devframes/service-open", "virtual:6e17761b2892c5828adb84f4852968ab70e1dbd7180daaef0db10d319d4c6dd2ac6d66cd9bdb9b4d331c1e5ab9a08fbe323cf6e81abf443d140b2cb1a42deb84#npm:1.2.6"],\
           ["@types/devframe", null],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["pathe", "npm:2.0.3"]\
         ],\
         "packagePeers": [\
@@ -2717,24 +2717,24 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@devframes/vite", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/@devframes-vite-npm-1.0.0-d2d836dc8c-6c49237077.zip/node_modules/@devframes/vite/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/@devframes-vite-npm-1.2.6-d6b14b390f-5c5174941f.zip/node_modules/@devframes/vite/",\
         "packageDependencies": [\
-          ["@devframes/vite", "npm:1.0.0"]\
+          ["@devframes/vite", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:8484d1b6a414f4b0dde1191b9e34bafa73e8d289b758c75d449a023643d5f5b5f12967cce40e837d2548575d948c18ac4609619168db08069caba37c38da9534#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@devframes-vite-virtual-4002a74b1f/0/cache/@devframes-vite-npm-1.0.0-d2d836dc8c-6c49237077.zip/node_modules/@devframes/vite/",\
+      ["virtual:ef0b2411d207276109879c86b34e4b99ab43b652b2512fb08af9cd2f10b728fd864f88adbaa6612ae772b2ca4e4daf1e26aa0b703901964b66dfc9d1bfd53667#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@devframes-vite-virtual-4d3d7a865d/0/cache/@devframes-vite-npm-1.2.6-d6b14b390f-5c5174941f.zip/node_modules/@devframes/vite/",\
         "packageDependencies": [\
           ["@devframes/hub", null],\
           ["@devframes/hub-ui", null],\
-          ["@devframes/vite", "virtual:8484d1b6a414f4b0dde1191b9e34bafa73e8d289b758c75d449a023643d5f5b5f12967cce40e837d2548575d948c18ac4609619168db08069caba37c38da9534#npm:1.0.0"],\
+          ["@devframes/vite", "virtual:ef0b2411d207276109879c86b34e4b99ab43b652b2512fb08af9cd2f10b728fd864f88adbaa6612ae772b2ca4e4daf1e26aa0b703901964b66dfc9d1bfd53667#npm:1.2.6"],\
           ["@types/devframe", null],\
           ["@types/devframes__hub", null],\
           ["@types/devframes__hub-ui", null],\
           ["@types/vite", null],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["pathe", "npm:2.0.3"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.3.4"]\
         ],\
@@ -3022,17 +3022,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@json-render/core", [\
-      ["npm:0.20.0", {\
-        "packageLocation": "./.yarn/cache/@json-render-core-npm-0.20.0-f35975b69c-9db4673779.zip/node_modules/@json-render/core/",\
+      ["npm:0.21.1", {\
+        "packageLocation": "./.yarn/cache/@json-render-core-npm-0.21.1-9ad3b71421-edafbc9f22.zip/node_modules/@json-render/core/",\
         "packageDependencies": [\
-          ["@json-render/core", "npm:0.20.0"]\
+          ["@json-render/core", "npm:0.21.1"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:c753adf7535daa85979f64370e3e5a066c74bc9f7dac420e9d97c1c96e107e623b1251449db3756e91b2130f8e177462b3c32f26013f725594d437afe6698b47#npm:0.20.0", {\
-        "packageLocation": "./.yarn/__virtual__/@json-render-core-virtual-fc83dd266c/0/cache/@json-render-core-npm-0.20.0-f35975b69c-9db4673779.zip/node_modules/@json-render/core/",\
+      ["virtual:80c84fb287651e9db764eb25e93b6ba0bcd7263acbd597e199fe0eb9e006e7de733d98d6e637bd6278497707e9d6597dbed5276bf0bc783995065b175dfb3af7#npm:0.21.1", {\
+        "packageLocation": "./.yarn/__virtual__/@json-render-core-virtual-cd95821abc/0/cache/@json-render-core-npm-0.21.1-9ad3b71421-edafbc9f22.zip/node_modules/@json-render/core/",\
         "packageDependencies": [\
-          ["@json-render/core", "virtual:c753adf7535daa85979f64370e3e5a066c74bc9f7dac420e9d97c1c96e107e623b1251449db3756e91b2130f8e177462b3c32f26013f725594d437afe6698b47#npm:0.20.0"],\
+          ["@json-render/core", "virtual:80c84fb287651e9db764eb25e93b6ba0bcd7263acbd597e199fe0eb9e006e7de733d98d6e637bd6278497707e9d6597dbed5276bf0bc783995065b175dfb3af7#npm:0.21.1"],\
           ["@types/zod", null],\
           ["zod", "npm:4.6.5"]\
         ],\
@@ -3053,11 +3053,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@modelcontextprotocol/client", [\
-      ["npm:2.0.0", {\
-        "packageLocation": "./.yarn/cache/@modelcontextprotocol-client-npm-2.0.0-456fa853ea-fd0c0d545a.zip/node_modules/@modelcontextprotocol/client/",\
+      ["npm:2.3.1", {\
+        "packageLocation": "./.yarn/cache/@modelcontextprotocol-client-npm-2.3.1-3897381dd7-520b1b5c20.zip/node_modules/@modelcontextprotocol/client/",\
         "packageDependencies": [\
-          ["@modelcontextprotocol/client", "npm:2.0.0"],\
-          ["@modelcontextprotocol/core", "npm:2.0.0"],\
+          ["@modelcontextprotocol/client", "npm:2.3.1"],\
+          ["@modelcontextprotocol/core", "npm:2.3.1"],\
           ["cross-spawn", "npm:7.0.6"],\
           ["eventsource", "npm:3.0.7"],\
           ["eventsource-parser", "npm:3.1.1"],\
@@ -3069,21 +3069,21 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@modelcontextprotocol/core", [\
-      ["npm:2.0.0", {\
-        "packageLocation": "./.yarn/cache/@modelcontextprotocol-core-npm-2.0.0-2368fe0f60-65d695e0fb.zip/node_modules/@modelcontextprotocol/core/",\
+      ["npm:2.3.1", {\
+        "packageLocation": "./.yarn/cache/@modelcontextprotocol-core-npm-2.3.1-2c36df3ef6-ca30f0b162.zip/node_modules/@modelcontextprotocol/core/",\
         "packageDependencies": [\
-          ["@modelcontextprotocol/core", "npm:2.0.0"],\
+          ["@modelcontextprotocol/core", "npm:2.3.1"],\
           ["zod", "npm:4.6.5"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@modelcontextprotocol/server", [\
-      ["npm:2.0.0", {\
-        "packageLocation": "./.yarn/cache/@modelcontextprotocol-server-npm-2.0.0-542acaa5a8-32d50b224f.zip/node_modules/@modelcontextprotocol/server/",\
+      ["npm:2.3.1", {\
+        "packageLocation": "./.yarn/cache/@modelcontextprotocol-server-npm-2.3.1-ff579c1f16-13bcf61340.zip/node_modules/@modelcontextprotocol/server/",\
         "packageDependencies": [\
-          ["@modelcontextprotocol/core", "npm:2.0.0"],\
-          ["@modelcontextprotocol/server", "npm:2.0.0"],\
+          ["@modelcontextprotocol/core", "npm:2.3.1"],\
+          ["@modelcontextprotocol/server", "npm:2.3.1"],\
           ["zod", "npm:4.6.5"]\
         ],\
         "linkType": "HARD"\
@@ -4209,37 +4209,38 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@vitejs/devtools", [\
-      ["npm:0.7.6", {\
-        "packageLocation": "./.yarn/cache/@vitejs-devtools-npm-0.7.6-f4a8e00755-afa5796210.zip/node_modules/@vitejs/devtools/",\
+      ["npm:0.8.0", {\
+        "packageLocation": "./.yarn/cache/@vitejs-devtools-npm-0.8.0-28de3573f7-e1ea8397a9.zip/node_modules/@vitejs/devtools/",\
         "packageDependencies": [\
-          ["@vitejs/devtools", "npm:0.7.6"]\
+          ["@vitejs/devtools", "npm:0.8.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.7.6", {\
-        "packageLocation": "./.yarn/__virtual__/@vitejs-devtools-virtual-00696c4367/0/cache/@vitejs-devtools-npm-0.7.6-f4a8e00755-afa5796210.zip/node_modules/@vitejs/devtools/",\
+      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.8.0", {\
+        "packageLocation": "./.yarn/__virtual__/@vitejs-devtools-virtual-06f0917ab6/0/cache/@vitejs-devtools-npm-0.8.0-28de3573f7-e1ea8397a9.zip/node_modules/@vitejs/devtools/",\
         "packageDependencies": [\
-          ["@devframes/agentic", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/hub", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/hub-ui", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/json-render-ui", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/plugin-inspect", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/plugin-messages", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["@devframes/plugin-terminals", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["@devframes/agentic", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/hub", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/hub-ui", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/json-render", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/json-render-ui", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/plugin-inspect", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/plugin-messages", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["@devframes/plugin-terminals", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["@types/vite", null],\
           ["@types/vitejs__devtools-oxc", null],\
           ["@types/vitejs__devtools-rolldown", null],\
           ["@types/vitejs__devtools-vite", null],\
           ["@types/vitejs__devtools-vitest", null],\
-          ["@vitejs/devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.7.6"],\
-          ["@vitejs/devtools-kit", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:0.7.6"],\
+          ["@vitejs/devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.8.0"],\
+          ["@vitejs/devtools-kit", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:0.8.0"],\
           ["@vitejs/devtools-oxc", null],\
           ["@vitejs/devtools-rolldown", null],\
           ["@vitejs/devtools-vite", null],\
           ["@vitejs/devtools-vitest", null],\
-          ["cac", "npm:7.0.0"],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["h3", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:2.0.1-rc.32"],\
+          ["cac", "npm:7.1.0"],\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["h3", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:2.0.8"],\
           ["local-pkg", "npm:1.2.1"],\
           ["nostics", "npm:1.3.0"],\
           ["obug", "npm:3.0.0"],\
@@ -4262,24 +4263,23 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@vitejs/devtools-kit", [\
-      ["npm:0.7.6", {\
-        "packageLocation": "./.yarn/cache/@vitejs-devtools-kit-npm-0.7.6-b2178b9f26-c781b456a5.zip/node_modules/@vitejs/devtools-kit/",\
+      ["npm:0.8.0", {\
+        "packageLocation": "./.yarn/cache/@vitejs-devtools-kit-npm-0.8.0-5aed566c98-051b98f9b7.zip/node_modules/@vitejs/devtools-kit/",\
         "packageDependencies": [\
-          ["@vitejs/devtools-kit", "npm:0.7.6"]\
+          ["@vitejs/devtools-kit", "npm:0.8.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:0.7.6", {\
-        "packageLocation": "./.yarn/__virtual__/@vitejs-devtools-kit-virtual-0b4ba87bb2/0/cache/@vitejs-devtools-kit-npm-0.7.6-b2178b9f26-c781b456a5.zip/node_modules/@vitejs/devtools-kit/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:0.8.0", {\
+        "packageLocation": "./.yarn/__virtual__/@vitejs-devtools-kit-virtual-c15d5083bf/0/cache/@vitejs-devtools-kit-npm-0.8.0-5aed566c98-051b98f9b7.zip/node_modules/@vitejs/devtools-kit/",\
         "packageDependencies": [\
-          ["@devframes/hub", "virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0"],\
-          ["@devframes/json-render", "virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0"],\
+          ["@devframes/hub", "virtual:c15d5083bfc933659462343d92aba1f857c50b677f8413a3acb9a4caa54c03a56d9590965aa77e0a09ad773ecfdffa36b721d745f1317c0c389bba05d5d33cb7#npm:1.2.6"],\
           ["@types/vite", null],\
-          ["@vitejs/devtools-kit", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:0.7.6"],\
-          ["devframe", "virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0"],\
+          ["@vitejs/devtools-kit", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:0.8.0"],\
+          ["devframe", "virtual:c15d5083bfc933659462343d92aba1f857c50b677f8413a3acb9a4caa54c03a56d9590965aa77e0a09ad773ecfdffa36b721d745f1317c0c389bba05d5d33cb7#npm:1.2.6"],\
           ["local-pkg", "npm:1.2.1"],\
           ["nostics", "npm:1.3.0"],\
-          ["package-manager-detector", "npm:1.8.0"],\
+          ["package-manager-detector", "npm:1.9.0"],\
           ["vite", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.3.4"]\
         ],\
         "packagePeers": [\
@@ -5355,10 +5355,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["cac", [\
-      ["npm:7.0.0", {\
-        "packageLocation": "./.yarn/cache/cac-npm-7.0.0-6bd0c0700a-1ada3b0904.zip/node_modules/cac/",\
+      ["npm:7.1.0", {\
+        "packageLocation": "./.yarn/cache/cac-npm-7.1.0-3d63bd444c-2be44f8fd9.zip/node_modules/cac/",\
         "packageDependencies": [\
-          ["cac", "npm:7.0.0"]\
+          ["cac", "npm:7.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5612,11 +5612,11 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:fe15e279051122debe59aea00a9a818962f4b285c011213bd825fe275e09f4f8b98be662de8968102e6fecb936726d5f563a681d2100e1fa22630fba18f195d4#npm:0.4.12", {\
-        "packageLocation": "./.yarn/__virtual__/crossws-virtual-d130b565e5/0/cache/crossws-npm-0.4.12-c2268472e2-3383681b25.zip/node_modules/crossws/",\
+      ["virtual:28f1fd5ea8dc77ac21ba89b89bb55d4d13663d4fe1f21f1fbe9acf702f0250cde902711ed616d742d4a5e3aa371a51fd994c649a27b1a0e7532f4a2dd7148dc5#npm:0.4.12", {\
+        "packageLocation": "./.yarn/__virtual__/crossws-virtual-e1e996b5cc/0/cache/crossws-npm-0.4.12-c2268472e2-3383681b25.zip/node_modules/crossws/",\
         "packageDependencies": [\
           ["@types/srvx", null],\
-          ["crossws", "virtual:fe15e279051122debe59aea00a9a818962f4b285c011213bd825fe275e09f4f8b98be662de8968102e6fecb936726d5f563a681d2100e1fa22630fba18f195d4#npm:0.4.12"],\
+          ["crossws", "virtual:28f1fd5ea8dc77ac21ba89b89bb55d4d13663d4fe1f21f1fbe9acf702f0250cde902711ed616d742d4a5e3aa371a51fd994c649a27b1a0e7532f4a2dd7148dc5#npm:0.4.12"],\
           ["srvx", null]\
         ],\
         "packagePeers": [\
@@ -5827,23 +5827,23 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["devframe", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/devframe-npm-1.0.0-ecae437a12-c5d4b4909f.zip/node_modules/devframe/",\
+      ["npm:1.2.6", {\
+        "packageLocation": "./.yarn/cache/devframe-npm-1.2.6-75e2a79cea-cac0fb693e.zip/node_modules/devframe/",\
         "packageDependencies": [\
-          ["devframe", "npm:1.0.0"]\
+          ["devframe", "npm:1.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/devframe-virtual-66987611e1/0/cache/devframe-npm-1.0.0-ecae437a12-c5d4b4909f.zip/node_modules/devframe/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/devframe-virtual-5f404f882d/0/cache/devframe-npm-1.2.6-75e2a79cea-cac0fb693e.zip/node_modules/devframe/",\
         "packageDependencies": [\
-          ["@devframes/agentic", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
+          ["@devframes/agentic", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
           ["@types/cac", null],\
           ["@types/devframes__agentic", null],\
-          ["cac", "npm:7.0.0"],\
-          ["crossws", "virtual:fe15e279051122debe59aea00a9a818962f4b285c011213bd825fe275e09f4f8b98be662de8968102e6fecb936726d5f563a681d2100e1fa22630fba18f195d4#npm:0.4.12"],\
-          ["devframe", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:1.0.0"],\
-          ["h3", "virtual:fe15e279051122debe59aea00a9a818962f4b285c011213bd825fe275e09f4f8b98be662de8968102e6fecb936726d5f563a681d2100e1fa22630fba18f195d4#npm:2.0.1-rc.32"],\
+          ["cac", "npm:7.1.0"],\
+          ["crossws", "virtual:28f1fd5ea8dc77ac21ba89b89bb55d4d13663d4fe1f21f1fbe9acf702f0250cde902711ed616d742d4a5e3aa371a51fd994c649a27b1a0e7532f4a2dd7148dc5#npm:0.4.12"],\
+          ["devframe", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:1.2.6"],\
+          ["h3", "virtual:28f1fd5ea8dc77ac21ba89b89bb55d4d13663d4fe1f21f1fbe9acf702f0250cde902711ed616d742d4a5e3aa371a51fd994c649a27b1a0e7532f4a2dd7148dc5#npm:2.0.8"],\
           ["nostics", "npm:1.3.0"],\
           ["pathe", "npm:2.0.3"]\
         ],\
@@ -5855,16 +5855,16 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/devframe-virtual-fe15e27905/0/cache/devframe-npm-1.0.0-ecae437a12-c5d4b4909f.zip/node_modules/devframe/",\
+      ["virtual:c15d5083bfc933659462343d92aba1f857c50b677f8413a3acb9a4caa54c03a56d9590965aa77e0a09ad773ecfdffa36b721d745f1317c0c389bba05d5d33cb7#npm:1.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/devframe-virtual-28f1fd5ea8/0/cache/devframe-npm-1.2.6-75e2a79cea-cac0fb693e.zip/node_modules/devframe/",\
         "packageDependencies": [\
           ["@devframes/agentic", null],\
           ["@types/cac", null],\
           ["@types/devframes__agentic", null],\
           ["cac", null],\
-          ["crossws", "virtual:fe15e279051122debe59aea00a9a818962f4b285c011213bd825fe275e09f4f8b98be662de8968102e6fecb936726d5f563a681d2100e1fa22630fba18f195d4#npm:0.4.12"],\
-          ["devframe", "virtual:0b4ba87bb201812d067d2ce00d19a651be824e143e67efe17b51a606c1005f73f9fd3de8b6edff36fd7dcb51f8a77e2855dff2ac561e13e9347bf3b3e3358c9a#npm:1.0.0"],\
-          ["h3", "virtual:fe15e279051122debe59aea00a9a818962f4b285c011213bd825fe275e09f4f8b98be662de8968102e6fecb936726d5f563a681d2100e1fa22630fba18f195d4#npm:2.0.1-rc.32"],\
+          ["crossws", "virtual:28f1fd5ea8dc77ac21ba89b89bb55d4d13663d4fe1f21f1fbe9acf702f0250cde902711ed616d742d4a5e3aa371a51fd994c649a27b1a0e7532f4a2dd7148dc5#npm:0.4.12"],\
+          ["devframe", "virtual:c15d5083bfc933659462343d92aba1f857c50b677f8413a3acb9a4caa54c03a56d9590965aa77e0a09ad773ecfdffa36b721d745f1317c0c389bba05d5d33cb7#npm:1.2.6"],\
+          ["h3", "virtual:28f1fd5ea8dc77ac21ba89b89bb55d4d13663d4fe1f21f1fbe9acf702f0250cde902711ed616d742d4a5e3aa371a51fd994c649a27b1a0e7532f4a2dd7148dc5#npm:2.0.8"],\
           ["nostics", "npm:1.3.0"],\
           ["pathe", "npm:2.0.3"]\
         ],\
@@ -6794,23 +6794,23 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["h3", [\
-      ["npm:2.0.1-rc.32", {\
-        "packageLocation": "./.yarn/cache/h3-npm-2.0.1-rc.32-9df31a07bd-73a9f70da8.zip/node_modules/h3/",\
+      ["npm:2.0.8", {\
+        "packageLocation": "./.yarn/cache/h3-npm-2.0.8-7e81bba1c2-e6bec593fa.zip/node_modules/h3/",\
         "packageDependencies": [\
-          ["h3", "npm:2.0.1-rc.32"]\
+          ["h3", "npm:2.0.8"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:2.0.1-rc.32", {\
-        "packageLocation": "./.yarn/__virtual__/h3-virtual-6e572fcb03/0/cache/h3-npm-2.0.1-rc.32-9df31a07bd-73a9f70da8.zip/node_modules/h3/",\
+      ["virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:2.0.8", {\
+        "packageLocation": "./.yarn/__virtual__/h3-virtual-257405989c/0/cache/h3-npm-2.0.8-7e81bba1c2-e6bec593fa.zip/node_modules/h3/",\
         "packageDependencies": [\
           ["@types/crossws", null],\
           ["@types/ocache", null],\
           ["crossws", null],\
-          ["h3", "virtual:00696c43673412b9f8587efd9b2c044204e1f8971b6ee339ac5fc694226fde29c02403fb797cca39fe101cade40a84ed49f850be9a7c207cac919b080cdce5ba#npm:2.0.1-rc.32"],\
+          ["h3", "virtual:06f0917ab6d2b7d9b781c9ee3adc44ccfc3e29c10b76330109daaa10d89cf5d2dba52531baaae38ef8f03225d24e46afbc9ed02b2133579883e5613fa074191b#npm:2.0.8"],\
           ["ocache", null],\
-          ["rou3", "npm:0.9.2"],\
-          ["srvx", "npm:1.0.5"]\
+          ["rou3", "npm:1.0.0"],\
+          ["srvx", "npm:1.0.6"]\
         ],\
         "packagePeers": [\
           "@types/crossws",\
@@ -6820,16 +6820,16 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["virtual:fe15e279051122debe59aea00a9a818962f4b285c011213bd825fe275e09f4f8b98be662de8968102e6fecb936726d5f563a681d2100e1fa22630fba18f195d4#npm:2.0.1-rc.32", {\
-        "packageLocation": "./.yarn/__virtual__/h3-virtual-3f6441f96b/0/cache/h3-npm-2.0.1-rc.32-9df31a07bd-73a9f70da8.zip/node_modules/h3/",\
+      ["virtual:28f1fd5ea8dc77ac21ba89b89bb55d4d13663d4fe1f21f1fbe9acf702f0250cde902711ed616d742d4a5e3aa371a51fd994c649a27b1a0e7532f4a2dd7148dc5#npm:2.0.8", {\
+        "packageLocation": "./.yarn/__virtual__/h3-virtual-2098b9250b/0/cache/h3-npm-2.0.8-7e81bba1c2-e6bec593fa.zip/node_modules/h3/",\
         "packageDependencies": [\
           ["@types/crossws", null],\
           ["@types/ocache", null],\
-          ["crossws", "virtual:fe15e279051122debe59aea00a9a818962f4b285c011213bd825fe275e09f4f8b98be662de8968102e6fecb936726d5f563a681d2100e1fa22630fba18f195d4#npm:0.4.12"],\
-          ["h3", "virtual:fe15e279051122debe59aea00a9a818962f4b285c011213bd825fe275e09f4f8b98be662de8968102e6fecb936726d5f563a681d2100e1fa22630fba18f195d4#npm:2.0.1-rc.32"],\
+          ["crossws", "virtual:28f1fd5ea8dc77ac21ba89b89bb55d4d13663d4fe1f21f1fbe9acf702f0250cde902711ed616d742d4a5e3aa371a51fd994c649a27b1a0e7532f4a2dd7148dc5#npm:0.4.12"],\
+          ["h3", "virtual:28f1fd5ea8dc77ac21ba89b89bb55d4d13663d4fe1f21f1fbe9acf702f0250cde902711ed616d742d4a5e3aa371a51fd994c649a27b1a0e7532f4a2dd7148dc5#npm:2.0.8"],\
           ["ocache", null],\
-          ["rou3", "npm:0.9.2"],\
-          ["srvx", "npm:1.0.5"]\
+          ["rou3", "npm:1.0.0"],\
+          ["srvx", "npm:1.0.6"]\
         ],\
         "packagePeers": [\
           "@types/crossws",\
@@ -8115,10 +8115,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["package-manager-detector", [\
-      ["npm:1.8.0", {\
-        "packageLocation": "./.yarn/cache/package-manager-detector-npm-1.8.0-8fc31e80c5-5d79b8bf3d.zip/node_modules/package-manager-detector/",\
+      ["npm:1.9.0", {\
+        "packageLocation": "./.yarn/cache/package-manager-detector-npm-1.9.0-1b7a7e0176-8a9b229a91.zip/node_modules/package-manager-detector/",\
         "packageDependencies": [\
-          ["package-manager-detector", "npm:1.8.0"]\
+          ["package-manager-detector", "npm:1.9.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8555,7 +8555,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:8.1.0"],\
           ["@types/eslint", "npm:9.6.1"],\
           ["@types/node", "npm:24.19.2"],\
-          ["@vitejs/devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.7.6"],\
+          ["@vitejs/devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.8.0"],\
           ["@vitejs/plugin-vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:6.0.10"],\
           ["@vitest/coverage-v8", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.0.4"],\
           ["@vitest/ui", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:5.0.5"],\
@@ -8676,10 +8676,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["rou3", [\
-      ["npm:0.9.2", {\
-        "packageLocation": "./.yarn/cache/rou3-npm-0.9.2-11bd37ebc5-4514865e50.zip/node_modules/rou3/",\
+      ["npm:1.0.0", {\
+        "packageLocation": "./.yarn/cache/rou3-npm-1.0.0-3e31d745c1-749cd294f6.zip/node_modules/rou3/",\
         "packageDependencies": [\
-          ["rou3", "npm:0.9.2"]\
+          ["rou3", "npm:1.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9155,10 +9155,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["srvx", [\
-      ["npm:1.0.5", {\
-        "packageLocation": "./.yarn/cache/srvx-npm-1.0.5-2c4b173295-6f29886921.zip/node_modules/srvx/",\
+      ["npm:1.0.6", {\
+        "packageLocation": "./.yarn/cache/srvx-npm-1.0.6-e5ac7e9634-5b5a146f74.zip/node_modules/srvx/",\
         "packageDependencies": [\
-          ["srvx", "npm:1.0.5"]\
+          ["srvx", "npm:1.0.6"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10006,7 +10006,7 @@ const RAW_RUNTIME_STATE =
           ["@types/tsx", null],\
           ["@types/vitejs__devtools", null],\
           ["@types/yaml", null],\
-          ["@vitejs/devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.7.6"],\
+          ["@vitejs/devtools", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:0.8.0"],\
           ["esbuild", null],\
           ["fsevents", "patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"],\
           ["jiti", null],\

@@ -40,7 +40,7 @@
     "@testing-library/vue": "8.1.0",
     "@types/eslint": "9.6.1",
     "@types/node": "24.19.2",
-    "@vitejs/devtools": "0.7.6",
+    "@vitejs/devtools": "0.8.0",
     "@vitejs/plugin-vue": "6.0.10",
     "@vitest/coverage-v8": "5.0.4",
     "@vitest/ui": "5.0.5",
