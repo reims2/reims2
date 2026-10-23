@@ -65,6 +65,9 @@ This is also confirmed by the fact that screenshots `Ex1-SphBi2` (OS BAL) and `E
 
 ### Implications and Next Steps
 
+> [!NOTE]
+> Fixed in October 2026 with the first option below: the axis check is skipped when the search cylinder is 0, see [Matching Algorithm](/philscore#checkforaxistolerance).
+
 The next steps involve deciding whether this behavior is intended or requires modification.
 
 - If the behavior is not intended, several solutions are available:

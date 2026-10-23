@@ -6,7 +6,7 @@ The corresponding [code can be found here](https://github.com/reims2/reims2/blob
 
 ## Current Status
 
-The algorithm is a replica of the one used in the previous REIMS1 system. We have comprehensive testing in place to ensure that the REIMS2 implementation aligns with the REIMS1 implementation. Any discrepancies are treated as bugs and are fixed accordingly. Several tests in `philscore_score.test.ts` are prefixed `REIMS1:` because their expected score was taken directly from the legacy system: treat those as a parity contract, not a spec to simplify.
+The algorithm is a replica of the one used in the previous REIMS1 system. We have comprehensive testing in place to ensure that the REIMS2 implementation aligns with the REIMS1 implementation. Any discrepancies are treated as bugs and are fixed accordingly, except for the deliberate ones marked `REIMS2 only` in the tests, such as skipping the axis check for a zero-cylinder rx (see [`checkForAxisTolerance`](#checkforaxistolerance)). Several tests in `philscore_score.test.ts` are prefixed `REIMS1:` because their expected score was taken directly from the legacy system: treat those as a parity contract, not a spec to simplify.
 
 We are open to refining the algorithm, see [Potential Improvements](#potential-improvements) for more information.
 
@@ -56,7 +56,7 @@ It also checks the prescription's spherical equivalents. `calcSphericalEquivalen
 
 ### checkForAxisTolerance
 
-This function is invoked for every single lens. It calculates the absolute axis tolerance based on the `lens` (:exclamation: crucially, not rx :exclamation:) cylinder. A higher lens cylinder allows for less axis tolerance. It calculates the allowed range, that is, rx axis plus or minus tolerance (and accounts for wraparound at 180 degrees). It checks whether the lens axis is inside the range.
+This function is invoked for every single lens. If the rx cylinder is 0, the check passes: there's no astigmatism to align with, so the rx axis 0 is only a placeholder. REIMS1 compared against it anyway, which hid good matches such as the [2024 zero-cylinder case](/2024_bugs_investigated). Otherwise it calculates the absolute axis tolerance based on the `lens` (:exclamation: crucially, not rx :exclamation:) cylinder. A higher lens cylinder allows for less axis tolerance. It calculates the allowed range, that is, rx axis plus or minus tolerance (and accounts for wraparound at 180 degrees). It checks whether the lens axis is inside the range.
 
 ::: details Details: Axis tolerance mapping table
 

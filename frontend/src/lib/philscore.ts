@@ -83,6 +83,9 @@ function calcAxisTolerance(cylinder: number, isHighTolerance: boolean): number {
 
 function checkForSingleAxisTolerance(rx: Eye, lens: Eye, isHighTolerance: boolean): boolean {
   /* The AtoLTF Test: We filter out all glasses that have a too big axis difference */
+  // A zero-cylinder rx has no axis to match, its axis 0 is only a placeholder (REIMS1 checked it anyway)
+  if (rx.cylinder === 0) return true
+
   const allowedTolerance = calcAxisTolerance(lens.cylinder, isHighTolerance)
 
   const axisSub = rx.axis - allowedTolerance
