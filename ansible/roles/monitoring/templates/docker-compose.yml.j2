@@ -98,7 +98,7 @@ services:
 
   # compose only restarts containers that exit, this restarts unhealthy ones on the whole host
   autoheal:
-    image: willfarrell/autoheal:latest@sha256:708c424faa160b2075f816bd013bc9bb2f165acb340743518702b1586437ce69
+    image: willfarrell/autoheal:latest@sha256:0f0ce6b17107f8c428f228586ad79187dd6eda431b25309229eb7f38efdcf5a1
     restart: unless-stopped
     network_mode: none
     environment:
