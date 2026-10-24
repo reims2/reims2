@@ -9,8 +9,8 @@ import java.util.Date;
 
 
 @Entity
-@Table(name = "unsuccessful_search")
-public class UnsuccessfulSearch extends BaseEntity {
+@Table(name = "search_log")
+public class SearchLog extends BaseEntity {
 
     @Column(name = "glasses_type")
     private String glassesType;
@@ -29,6 +29,9 @@ public class UnsuccessfulSearch extends BaseEntity {
 
     @Column(name = "increase_search_tolerance")
     private Boolean increaseSearchTolerance;
+
+    @Column(name = "result_count")
+    private int resultCount;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "OS_ID")
@@ -100,11 +103,19 @@ public class UnsuccessfulSearch extends BaseEntity {
         this.increaseSearchTolerance = increaseSearchTolerance;
     }
 
+    public int getResultCount() {
+        return resultCount;
+    }
+
+    public void setResultCount(int resultCount) {
+        this.resultCount = resultCount;
+    }
+
     @Override
     public String toString() {
-        return "UnsuccessfulSearch [glassesType=" + glassesType + ", location=" + location + ", searchDate="
-            + searchDate + ", balLens=" + balLens + ", increaseSearchTolerance=" + increaseSearchTolerance + ", os="
-            + os + ", od=" + od + "]";
+        return "SearchLog [glassesType=" + glassesType + ", location=" + location + ", searchDate="
+            + searchDate + ", balLens=" + balLens + ", increaseSearchTolerance=" + increaseSearchTolerance
+            + ", resultCount=" + resultCount + ", os=" + os + ", od=" + od + "]";
     }
 
 

@@ -83,6 +83,20 @@ const vitePWAconf: Partial<VitePWAOptions> = {
           plugins: [statusPlugin],
         },
       },
+      {
+        handler: 'NetworkOnly',
+        urlPattern: /\/api\/glasses\/[^/]+\/searchLog$/,
+        method: 'POST',
+        options: {
+          backgroundSync: {
+            name: 'reimsSearchQueue',
+            options: {
+              maxRetentionTime: 60 * 24 * 60, // retry search log for 60 days
+            },
+          },
+          plugins: [statusPlugin],
+        },
+      },
     ],
   },
 }

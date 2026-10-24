@@ -1,29 +1,35 @@
 package org.pvh.model.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.model.validator.IEnumValidator;
 
 import java.util.Date;
 
-public class UnsuccessfulSearchDTO {
+public class SearchLogDTO {
     @IEnumValidator(enumClass = GlassesTypeEnum.class)
     private String glassesType;
     private String balLens;
     private Boolean increaseSearchTolerance;
     private Date searchDate;
+    @NotNull
+    @Min(0)
+    private Integer resultCount;
 
     private EyeDTO os;
     private EyeDTO od;
 
 
-    public UnsuccessfulSearchDTO(@IEnumValidator(enumClass = GlassesTypeEnum.class) String glassesType,
-                                 @IEnumValidator(enumClass = BalLensEnum.class) String balLens,
-                                 Boolean increaseSearchTolerance, Date searchDate, EyeDTO os, EyeDTO od) {
+    public SearchLogDTO(@IEnumValidator(enumClass = GlassesTypeEnum.class) String glassesType,
+                        @IEnumValidator(enumClass = BalLensEnum.class) String balLens,
+                        Boolean increaseSearchTolerance, Date searchDate, Integer resultCount, EyeDTO os, EyeDTO od) {
         this.glassesType = glassesType;
         this.increaseSearchTolerance = increaseSearchTolerance;
         this.balLens = balLens;
         this.searchDate = searchDate;
+        this.resultCount = resultCount;
         this.os = os;
         this.od = od;
     }
@@ -42,6 +48,14 @@ public class UnsuccessfulSearchDTO {
 
     public void setSearchDate(Date searchDate) {
         this.searchDate = searchDate;
+    }
+
+    public Integer getResultCount() {
+        return resultCount;
+    }
+
+    public void setResultCount(Integer resultCount) {
+        this.resultCount = resultCount;
     }
 
     public EyeDTO getOs() {

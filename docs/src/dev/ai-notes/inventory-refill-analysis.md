@@ -17,8 +17,8 @@ root), and its results are written up in [Inventory analysis](/inventory-analysi
   warehouse. Warehouse availability can be assumed sufficient, so the question is what to pick, not
   whether enough exists.
 - Culling of dead stock only happens on-site in San Salvador, every few years, usually by age.
-- Search runs client-side and offline (see the root `CLAUDE.md`), so the backend only learns of a
-  search when it fails. A successful dispense record stores the dispensed item's own
+- Search runs client-side and offline (see the root `CLAUDE.md`), so until the `1.4` migration the
+  backend only learned of a search when it failed. A successful dispense record stores the dispensed item's own
   sphere/cylinder/axis/add, never the prescription that was searched for. That asymmetry drives most
   of the statistical pitfalls below.
 - The database snapshots to S3 roughly every 3 hours, so historical inventory state is partly
@@ -95,8 +95,11 @@ Since dispense records store the item handed over rather than the request search
 region produces no dispensing, so it looks like zero demand. Reasoning from that is circular and
 will recommend refilling exactly what's already stocked. Ranked fixes:
 
-1. **Best**: log the request on every search, not just failed ones. Cheap and removes the problem
-   entirely, though as a frontend change it was estimated at a few months of work.
+1. **Best**: log the request on every search, not just failed ones. Done: `search_log` holds every
+   search with its `result_count`, 0 marking a failure. Rows from before the `1.4` entry in
+   `flyway_schema_history` are failures only, minus those made offline. To get the request behind a
+   dispensed item, match it one to one to an earlier same-day search at the same site whose
+   recalculated top results contain it.
 2. **Interim**: treat a dispensed item as an interval-censored observation. The request lay inside
    that item's tolerance region, and since it was the top-ranked available option, that narrows it
    down further. EM or sampling over the latent request is legitimate here.
