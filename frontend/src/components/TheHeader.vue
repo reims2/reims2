@@ -4,13 +4,25 @@
     <v-toolbar-title>
       {{ title }}
     </v-toolbar-title>
+    <v-chip
+      v-if="pendingCount > 0"
+      color="warning"
+      variant="flat"
+      class="mr-3"
+      :prepend-icon="mdiCloudUploadOutline"
+    >
+      {{ pendingCount }} waiting to upload
+    </v-chip>
   </v-app-bar>
 </template>
 
 <script setup lang="ts">
+import { mdiCloudUploadOutline } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
+import { usePendingChanges } from '@/composables/pending-changes'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 const rootStore = useRootStore()
+const { pendingCount } = usePendingChanges()
 const title = computed(() => (rootStore.isDev ? 'Develop: ' : '') + (route.meta.title || 'REIMS2'))
 </script>

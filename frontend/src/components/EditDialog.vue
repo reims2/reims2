@@ -69,7 +69,7 @@ async function updateGlasses() {
     const returnedGlasses = await glassesStore.editGlasses(newGlasses)
     originalGlasses.value = returnedGlasses
   } catch (error) {
-    if (error instanceof ReimsAxiosError && (error.isServerSide || error.isNetwork)) {
+    if (error instanceof ReimsAxiosError && error.isNetwork) {
       toast.error(`Glasses will be automatically edited as soon as the connection is back.`)
       // no return here, we act like it's successful
     } else {
