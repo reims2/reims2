@@ -1,45 +1,58 @@
 import { EyeInput } from './eye-input.po'
-import { test, expect } from './fixtures'
+import { test, expect, formatSku } from './fixtures'
 
 test.beforeEach(async ({ page }) => {
-  page.goto('/edit')
-  await expect(page.locator('div').filter({ hasText: 'Setting up REIMS2' })).toHaveCount(0)
+  await page.goto('/edit')
+  await expect(page.getByText('Setting up REIMS2')).toHaveCount(0)
 })
 
-test('Dispense glasses with button and revert', { tag: '@fast' }, async ({ page, glassesSku }) => {
-  await page.getByLabel('SKU', { exact: true }).fill(glassesSku)
+test('Dispense glasses with button', { tag: '@fast' }, async ({ page, createGlasses }) => {
+  const sku = formatSku((await createGlasses()).sku)
+  await page.getByLabel('SKU', { exact: true }).fill(sku)
   await page.getByRole('button', { name: 'Dispense' }).click()
-  await expect(
-    page.getByText(`Successfully dispensed glasses with SKU ${glassesSku}`),
-  ).toBeVisible()
-
-  // Disabled for now due to race conditions
-  // await page.getByLabel('Recently dispensed or deleted').getByTestId('result-0').getByRole('button', { name: 'Undo' }).click()
-  // await expect(page.getByLabel('Recently dispensed or deleted')).toContainText('SKU 0005')
-  // const successUndo = page.getByText(
-  //   `Reverted dispension/deletion of SKU ${glassesSku} successfully`,
-  // )
-  // const failureUndoAlreadyUsed = page.getByText(`Previous SKU is already used`)
-  // await expect(successUndo.or(failureUndoAlreadyUsed)).toBeVisible()
+  await expect(page.getByText(`Successfully dispensed glasses with SKU ${sku}`)).toBeVisible()
 })
 
-test('Delete glasses', async ({ page, glassesSku }) => {
-  await page.getByLabel('SKU', { exact: true }).fill(glassesSku)
+test.describe('Undo', () => {
+  // a freed SKU goes to the next added pair, so this needs a site no other test adds to
+  test.use({ location: 'sm' })
+
+  test('Undo dispension', async ({ page, createGlasses, api }, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium', 'other browsers would add to sm concurrently')
+    const { sku } = await createGlasses()
+    await page.getByLabel('SKU', { exact: true }).fill(formatSku(sku))
+    await page.getByRole('button', { name: 'Dispense' }).click()
+    await expect(page.getByText(`Successfully dispensed glasses`)).toBeVisible()
+
+    const recent = page.getByRole('region', { name: 'Recently dispensed or deleted' })
+    const dispensed = recent.getByTestId('result-0')
+    await expect(dispensed).toContainText(`SKU ${formatSku(sku)}`)
+    await dispensed.getByRole('button', { name: 'Undo' }).click()
+    await expect(
+      page.getByText(`Reverted dispension/deletion of SKU ${formatSku(sku)} successfully`),
+    ).toBeVisible()
+    expect((await api.get(`/api/glasses/sm/${sku}`)).ok()).toBe(true)
+  })
+})
+
+test('Delete glasses', async ({ page, createGlasses }) => {
+  const sku = formatSku((await createGlasses()).sku)
+  await page.getByLabel('SKU', { exact: true }).fill(sku)
   await page.getByLabel('More options').click()
   await page.getByRole('button', { name: 'Delete' }).click()
   await page.getByRole('combobox').first().click()
   await page.getByRole('option', { name: 'Not found in storage' }).click()
   await page.getByRole('button', { name: 'Confirm deletion' }).click()
-  await expect(page.getByText(`Successfully deleted glasses with SKU ${glassesSku}`)).toBeVisible()
+  await expect(page.getByText(`Successfully deleted glasses with SKU ${sku}`)).toBeVisible()
 })
 
-test('Edit glasses', async ({ page, glassesSku }) => {
-  await page.getByLabel('SKU', { exact: true }).fill(glassesSku)
+test('Edit glasses', async ({ page, createGlasses }) => {
+  const sku = formatSku((await createGlasses()).sku)
+  await page.getByLabel('SKU', { exact: true }).fill(sku)
   await page.getByRole('button', { name: 'Edit' }).click()
 
   const eyeInput = new EyeInput(page)
-  // Category autofocuses after a delay, typing before that can land in it
-  await expect(eyeInput.category).toBeFocused()
+  await eyeInput.waitForAutofocus()
   await eyeInput.appearance.fill('f')
   await eyeInput.odSphere.fill('7')
   await page.getByRole('button', { name: 'Save' }).click()
