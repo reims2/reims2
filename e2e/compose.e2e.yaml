@@ -6,6 +6,8 @@ services:
     command:
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
+      # skip other stacks' containers on this host, they share the localhost rule but not the network
+      - --providers.docker.constraints=Label(`traefik.docker.network`,`${PROXY_NETWORK}`)
       - --entryPoints.websecure.address=:3000
     ports:
       - ${E2E_PORT:-3000}:3000

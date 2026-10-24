@@ -12,6 +12,9 @@ DELETE FROM users;
 ALTER TABLE users AUTO_INCREMENT = 1;
 DELETE FROM user_roles;
 ALTER TABLE user_roles AUTO_INCREMENT = 1;
+-- search logs point at eye rows, which the dump below deletes
+DELETE FROM search_log;
+ALTER TABLE search_log AUTO_INCREMENT = 1;
 
 INSERT INTO users (id, username, password) VALUES (1,'test','$2a$10$vpFqQIbEm0Zd0eco2hLxgOTiujxoziOGvKgbX6KE1ud8hwdHJXsE2');
 INSERT INTO user_roles (user_id, role_id) VALUES
