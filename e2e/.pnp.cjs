@@ -28,6 +28,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@axe-core/playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.11.1"],\
           ["@eslint/js", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.0.1"],\
           ["@playwright/test", "npm:1.64.1"],\
           ["@types/node", "npm:24.19.2"],\
@@ -42,6 +43,29 @@ const RAW_RUNTIME_STATE =
           ["typescript-eslint", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:8.68.0"]\
         ],\
         "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@axe-core/playwright", [\
+      ["npm:4.11.1", {\
+        "packageLocation": "./.yarn/cache/@axe-core-playwright-npm-4.11.1-6b812926f8-d2a0fce217.zip/node_modules/@axe-core/playwright/",\
+        "packageDependencies": [\
+          ["@axe-core/playwright", "npm:4.11.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.11.1", {\
+        "packageLocation": "./.yarn/__virtual__/@axe-core-playwright-virtual-5bd7a22982/0/cache/@axe-core-playwright-npm-4.11.1-6b812926f8-d2a0fce217.zip/node_modules/@axe-core/playwright/",\
+        "packageDependencies": [\
+          ["@axe-core/playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.11.1"],\
+          ["@types/playwright-core", null],\
+          ["axe-core", "npm:4.11.4"],\
+          ["playwright-core", null]\
+        ],\
+        "packagePeers": [\
+          "@types/playwright-core",\
+          "playwright-core"\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@eslint-community/eslint-utils", [\
@@ -521,6 +545,15 @@ const RAW_RUNTIME_STATE =
           ["fast-json-stable-stringify", "npm:2.1.0"],\
           ["json-schema-traverse", "npm:0.4.1"],\
           ["uri-js", "npm:4.4.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["axe-core", [\
+      ["npm:4.11.4", {\
+        "packageLocation": "./.yarn/cache/axe-core-npm-4.11.4-4d6cf56d11-49095daa42.zip/node_modules/axe-core/",\
+        "packageDependencies": [\
+          ["axe-core", "npm:4.11.4"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -1142,6 +1175,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:.", {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@axe-core/playwright", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:4.11.1"],\
           ["@eslint/js", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.0.1"],\
           ["@playwright/test", "npm:1.64.1"],\
           ["@types/node", "npm:24.19.2"],\
