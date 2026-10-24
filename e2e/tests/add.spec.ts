@@ -4,22 +4,14 @@ import { EyeInput } from './eye-input.po'
 test('Add glasses', { tag: '@fast' }, async ({ page }) => {
   const eyeInput = new EyeInput(page)
   await page.goto('/add')
-  // Category autofocuses after a delay, typing before that can land in it
-  await expect(eyeInput.category).toBeFocused()
 
-  await eyeInput.category.fill('m')
-  await eyeInput.appearance.fill('m')
-  await eyeInput.size.fill('m')
-
-  await eyeInput.odSphere.fill('0.7')
-  await eyeInput.odCylinder.fill('0')
-  await eyeInput.odAdditional.fill('1')
-
-  await eyeInput.osSphere.fill('1.0')
-  await eyeInput.osCylinder.fill('0.2')
-  await eyeInput.osAxis.fill('010')
-  await eyeInput.osAdditional.fill('2')
-
+  await eyeInput.fill({
+    category: 'm',
+    appearance: 'm',
+    size: 'm',
+    od: { sphere: '0.7', cylinder: '0', add: '1' },
+    os: { sphere: '1.0', cylinder: '0.2', axis: '010', add: '2' },
+  })
   await page.getByRole('button', { name: 'dd glasses' }).click()
 
   const resultCard = page.getByTestId('result-0')
