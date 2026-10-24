@@ -54,8 +54,9 @@ function filterLens(
     if (!checkForTolerances(lens, targetEyeRx, tolerance)) return false
     if (!isSinglefocal && !checkForAdditionalTolerance(lens, targetEyeRx, tolerance)) return false
   } else {
-    // is disabled/BAL, so check for RX of other eye
-    if (!checkForTolerances(lens, otherEyeRx, 1.0)) return false
+    // BAL lens only has to look alike, so compare its spherical equivalent with the other eye's Rx
+    const seDiff = lens.sphere + lens.cylinder / 2 - (otherEyeRx.sphere + otherEyeRx.cylinder / 2)
+    if (Math.abs(seDiff) > 1.0) return false
   }
   return true
 }

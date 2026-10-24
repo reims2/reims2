@@ -108,6 +108,37 @@ test('isBal should filter glasses with disabled lens sphere out of range', () =>
   expect(result).toHaveLength(0)
 })
 
+test('isBal should ignore the disabled lens cylinder if its SE is in range', () => {
+  // SE +0.125 vs the other eye's +1.00, cylinder alone is 1.75 off
+  const glasses = createGlasses(
+    'single',
+    { sphere: 1, cylinder: -1.75, axis: 110 },
+    { sphere: 1, cylinder: 0, axis: 0 },
+  )
+  const search: GlassesSearch = {
+    od: { sphere: 0, cylinder: 0, axis: 0, isBAL: true },
+    os: { sphere: 1, cylinder: 0, axis: 0, isBAL: false },
+    glassesType: 'single',
+  }
+  const result = calculateAllPhilscore(search, glasses)
+  expect(result).toHaveLength(1)
+})
+
+test('isBal should filter a disabled lens with matching sphere but SE out of range', () => {
+  const glasses = createGlasses(
+    'single',
+    { sphere: 1, cylinder: -4, axis: 110 },
+    { sphere: 1, cylinder: 0, axis: 0 },
+  )
+  const search: GlassesSearch = {
+    od: { sphere: 0, cylinder: 0, axis: 0, isBAL: true },
+    os: { sphere: 1, cylinder: 0, axis: 0, isBAL: false },
+    glassesType: 'single',
+  }
+  const result = calculateAllPhilscore(search, glasses)
+  expect(result).toHaveLength(0)
+})
+
 test('Filter if sphere much bigger', () => {
   const glasses = createGlassesEqualOdOs('single', {
     sphere: 1.75,
