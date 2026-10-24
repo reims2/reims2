@@ -62,7 +62,7 @@ function scorePair(terms: GlassesSearch, glass: Glasses): BlurResult | null {
   const scored = EYES.filter((key) => !terms[key].isBAL)
   const balEye = EYES.find((key) => terms[key].isBAL)
 
-  // so the pair looks and weighs alike
+  // BAL lens SE within 1 D of the other lens, so the pair looks and weighs alike
   if (balEye) {
     const seDiff = Math.abs(powerVector(glass[balEye]).m - powerVector(glass[scored[0]]).m)
     if (seDiff > BLUR_PARAMS.balSeDifference + EPS) return null

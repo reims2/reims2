@@ -81,6 +81,8 @@ test('An eye more than 0.25 D blurrier than with no glasses drops the pair', () 
 
 test('Extra minus costs more only on a plus single vision Rx', () => {
   expect(scoreOf('single', eye(2), eye(1.75))).toBeCloseTo(0.375)
+  // plus sphere, but a minus SE
+  expect(scoreOf('single', eye(0.5, -1.5, 90), eye(0.25, -1.5, 90))).toBeCloseTo(0.25)
   expect(scoreOf('single', eye(-2), eye(-2.25))).toBeCloseTo(0.25)
   expect(scoreOf('multifocal', eye(2, 0, 0, 2), eye(1.75, 0, 0, 2.25))).toBeCloseTo(0.25)
 })
@@ -106,6 +108,24 @@ test('A BAL eye is not scored, but its lens SE must be within 1 D of the other l
   expect(result[0].osScore).toBe(0)
   expect(result[0].osError).toBeNull()
   expect(calculateAllBlurscore(rx, [lenses('single', eye(-2.25), eye(-3.5))])).toHaveLength(0)
+})
+
+test('The BAL lens SE is compared with the other lens, not the Rx', () => {
+  // the OD lens is 1.00 from the OS Rx, but 1.25 from the OS lens
+  const rx = { ...search('single', eye(0), eye(-2)), od: { ...eye(0), isBAL: true } }
+  expect(calculateAllBlurscore(rx, [lenses('single', eye(-3), eye(-1.75))])).toHaveLength(0)
+  expect(calculateAllBlurscore(rx, [lenses('single', eye(-2.75), eye(-1.75))])).toHaveLength(1)
+})
+
+test('The no-glasses baseline has no balance term', () => {
+  // scores 1.06, better than no glasses only if their 1.25 D imbalance counted
+  const rx = search('single', eye(0), eye(-1.25), true)
+  expect(calculateAllBlurscore(rx, [lenses('single', eye(0.25), eye(-0.25))])).toHaveLength(0)
+})
+
+test('Stock lenses in plus cylinder or at axis 180 match like their usual form', () => {
+  expect(scoreOf('single', eye(-1, -1, 90), eye(-2, 1, 0))).toBeCloseTo(0, 9)
+  expect(scoreOf('single', eye(-1, -1, 0), eye(-1, -1, 180))).toBeCloseTo(0, 9)
 })
 
 test('Only glasses of the searched type are considered', () => {
