@@ -22,6 +22,18 @@
           </v-tooltip>
           {{ glasses.score.toFixed(2) }}
         </v-chip>
+        <v-chip
+          v-if="grade"
+          class="mr-2 px-2"
+          size="small"
+          color="white"
+          label
+          :ripple="false"
+          :style="{ 'background-color': gradeColors[grade] }"
+        >
+          <v-tooltip activator="parent" location="bottom">Predicted blur</v-tooltip>
+          {{ grade }}
+        </v-chip>
         <div
           :id="'heading-glass-' + displayedGlass.sku"
           class="text-title-large font-weight-medium"
@@ -98,12 +110,23 @@ import {
   generalGlassesDataKeys,
 } from '@/model/GlassesModel'
 import { calcColorGradient } from '@/lib/color'
+import { BlurGrade } from '@/lib/blurscore'
+import { MatchResult } from '@/lib/interleave'
 import { formatGlassesForDisplay } from '@/util/format-glasses'
 import EditDialog from '@/components/EditDialog.vue'
 
 const { editable = false } = defineProps<{ editable?: boolean }>()
 
 const glasses = defineModel<Glasses | GlassesResult>('modelValue', { required: true })
+
+// on the PhilScore chip's color scale
+const gradeColors: Record<BlurGrade, string> = {
+  excellent: calcColorGradient(0),
+  good: calcColorGradient(0.5),
+  fair: calcColorGradient(1),
+  poor: calcColorGradient(2),
+}
+const grade = computed(() => (glasses.value as MatchResult).grade)
 
 const eyes: { text: string; key: GlassesEyeIndex }[] = [
   { text: 'OD', key: 'od' },
