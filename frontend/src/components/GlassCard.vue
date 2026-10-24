@@ -117,9 +117,7 @@ import EditDialog from '@/components/EditDialog.vue'
 
 const { editable = false } = defineProps<{ editable?: boolean }>()
 
-const glasses = defineModel<Glasses | GlassesResult | MatchResult>('modelValue', {
-  required: true,
-})
+const glasses = defineModel<Glasses | GlassesResult>('modelValue', { required: true })
 
 // on the PhilScore chip's color scale
 const gradeColors: Record<BlurGrade, string> = {

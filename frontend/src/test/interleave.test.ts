@@ -23,38 +23,28 @@ function blurscore(...ids: number[]): BlurResult[] {
   }))
 }
 
-const ids = (results: MatchResult[]) => results.map((result) => result.id)
-const algorithms = (results: MatchResult[]) => results.map((result) => result.algorithm)
+// e.g. 'p1' for pair 1 added by PhilScore
+const picks = (results: MatchResult[]) => results.map((result) => result.algorithm[0] + result.id)
 
 describe('interleave', () => {
   it('alternates, PhilScore first', () => {
     const results = interleave(philscore(1, 2, 3), blurscore(11, 12, 13), true)
-    expect(ids(results)).toEqual([1, 11, 2, 12, 3, 13])
-    expect(algorithms(results)).toEqual([
-      'philscore',
-      'blurscore',
-      'philscore',
-      'blurscore',
-      'philscore',
-      'blurscore',
-    ])
+    expect(picks(results)).toEqual(['p1', 'b11', 'p2', 'b12', 'p3', 'b13'])
   })
 
   it('alternates, blurscore first', () => {
     const results = interleave(philscore(1, 2, 3), blurscore(11, 12, 13), false)
-    expect(ids(results)).toEqual([11, 1, 12, 2, 13, 3])
+    expect(picks(results)).toEqual(['b11', 'p1', 'b12', 'p2', 'b13', 'p3'])
   })
 
   it('fills with the longer list once the shorter one runs out', () => {
     const results = interleave(philscore(1), blurscore(11, 12, 13), true)
-    expect(ids(results)).toEqual([1, 11, 12, 13])
-    expect(algorithms(results)).toEqual(['philscore', 'blurscore', 'blurscore', 'blurscore'])
+    expect(picks(results)).toEqual(['p1', 'b11', 'b12', 'b13'])
   })
 
   it('lists a pair found by both once, for the first to add it', () => {
     const results = interleave(philscore(1, 2), blurscore(1, 12), true)
-    expect(ids(results)).toEqual([1, 12, 2])
-    expect(algorithms(results)).toEqual(['philscore', 'blurscore', 'philscore'])
+    expect(picks(results)).toEqual(['p1', 'b12', 'p2'])
   })
 
   it('gives a shared pair both scores, whoever added it', () => {

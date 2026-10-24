@@ -121,11 +121,5 @@ export interface SearchLog {
   balLens: 'DISABLE_OD' | 'DISABLE_OS' | 'DISABLE_NONE'
   searchDate: number
   resultCount: number // PhilScore's own count
-  results: SearchLogResult[] // the merged list as shown
-}
-
-export interface SearchLogResult {
-  id: number
-  sku: number | null
-  algorithm: MatchAlgorithm
+  results: { id: number; sku: number | null; algorithm: MatchAlgorithm }[] // the merged list as shown
 }

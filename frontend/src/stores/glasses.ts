@@ -1,10 +1,4 @@
-import {
-  Glasses,
-  GlassesSearch,
-  SanitizedGlassesInput,
-  SearchLog,
-  SearchLogResult,
-} from '@/model/GlassesModel'
+import { Glasses, GlassesSearch, SanitizedGlassesInput, SearchLog } from '@/model/GlassesModel'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useRootStore } from './root'
 import { ReimsAxiosError, useAxios } from '@/lib/axios'
@@ -57,19 +51,19 @@ export const useGlassesStore = defineStore(
     async function logSearch(
       glassesSearch: GlassesSearch,
       resultCount: number,
-      results: SearchLogResult[],
+      results: SearchLog['results'],
     ): Promise<void> {
-      let balLens = 'DISABLE_NONE'
+      let balLens: SearchLog['balLens'] = 'DISABLE_NONE'
       if (glassesSearch.os.isBAL) balLens = 'DISABLE_OS'
       if (glassesSearch.od.isBAL) balLens = 'DISABLE_OD'
-      const request = {
+      const request: SearchLog = {
         ...glassesSearch,
         balLens,
         searchDate: Date.now(),
-        increaseSearchTolerance: glassesSearch.highTolerance,
+        increaseSearchTolerance: Boolean(glassesSearch.highTolerance),
         resultCount,
         results,
-      } as SearchLog
+      }
       await axiosInstance.post(`/api/glasses/${rootStore.reimsSite}/searchLog`, request)
     }
     async function fetchSingle(sku: number): Promise<Glasses> {

@@ -9,47 +9,33 @@ export interface MatchResult extends Glasses {
   grade?: BlurGrade // only when blurscore found the pair
 }
 
-// Team-draft interleaving (Radlinski et al. 2008): the algorithm with fewer pairs listed so far
-// adds its best unlisted pair, philscoreFirst breaks ties.
+// Team-draft interleaving (Radlinski et al. 2008) with one coin per search: the lists take turns
+// adding their best unlisted pair, and the other fills once one runs out.
 export default function interleave(
   philscore: GlassesResult[],
   blurscore: BlurResult[],
   philscoreFirst: boolean,
   max = 30,
 ): MatchResult[] {
-  const lists: Record<MatchAlgorithm, GlassesResult[]> = { philscore, blurscore }
-  const next = { philscore: 0, blurscore: 0 }
-  const picks = { philscore: 0, blurscore: 0 }
-  const philscoreById = new Map(philscore.map((result) => [result.id, result]))
-  const gradeById = new Map(blurscore.map((result) => [result.id, result.grade]))
-  const listed = new Set<number>()
   const results: MatchResult[] = []
-
-  function nextUnlisted(algorithm: MatchAlgorithm): GlassesResult | undefined {
-    const list = lists[algorithm]
-    while (next[algorithm] < list.length && listed.has(list[next[algorithm]].id)) next[algorithm]++
-    return list[next[algorithm]]
-  }
+  const unlisted = (list: GlassesResult[]) =>
+    list.find((glass) => !results.some((result) => result.id === glass.id))
 
   while (results.length < max) {
-    const philscoreTurn =
-      picks.philscore < picks.blurscore || (picks.philscore === picks.blurscore && philscoreFirst)
-    const turn: MatchAlgorithm = philscoreTurn ? 'philscore' : 'blurscore'
-    const algorithm = nextUnlisted(turn) ? turn : philscoreTurn ? 'blurscore' : 'philscore'
-    const glass = nextUnlisted(algorithm)
+    const philscoreTurn = (results.length % 2 === 0) === philscoreFirst
+    const fromPhilscore = unlisted(philscore)
+    const fromBlurscore = unlisted(blurscore)
+    const glass = (philscoreTurn ? fromPhilscore : fromBlurscore) ?? fromPhilscore ?? fromBlurscore
     if (!glass) break
-
-    listed.add(glass.id)
-    picks[algorithm]++
-    const phil = philscoreById.get(glass.id)
+    const phil = philscore.find((result) => result.id === glass.id)
     results.push({
       ...glass,
-      algorithm,
+      algorithm: glass === fromPhilscore ? 'philscore' : 'blurscore',
       // a BlurResult reuses these fields for blur, so take them from PhilScore only
       score: phil?.score,
       odScore: phil?.odScore,
       osScore: phil?.osScore,
-      grade: gradeById.get(glass.id),
+      grade: blurscore.find((result) => result.id === glass.id)?.grade,
     })
   }
   return results
