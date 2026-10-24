@@ -2,11 +2,13 @@ package org.pvh.model.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import org.pvh.model.entity.SearchResult;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.model.validator.IEnumValidator;
 
 import java.util.Date;
+import java.util.List;
 
 public class SearchLogDTO {
     @IEnumValidator(enumClass = GlassesTypeEnum.class)
@@ -17,6 +19,8 @@ public class SearchLogDTO {
     @NotNull
     @Min(0)
     private Integer resultCount;
+    // no validation, Workbox drops a replayed log that gets a 4xx
+    private List<SearchResult> results;
 
     private EyeDTO os;
     private EyeDTO od;
@@ -24,12 +28,14 @@ public class SearchLogDTO {
 
     public SearchLogDTO(@IEnumValidator(enumClass = GlassesTypeEnum.class) String glassesType,
                         @IEnumValidator(enumClass = BalLensEnum.class) String balLens,
-                        Boolean increaseSearchTolerance, Date searchDate, Integer resultCount, EyeDTO os, EyeDTO od) {
+                        Boolean increaseSearchTolerance, Date searchDate, Integer resultCount, List<SearchResult> results,
+                        EyeDTO os, EyeDTO od) {
         this.glassesType = glassesType;
         this.increaseSearchTolerance = increaseSearchTolerance;
         this.balLens = balLens;
         this.searchDate = searchDate;
         this.resultCount = resultCount;
+        this.results = results;
         this.os = os;
         this.od = od;
     }
@@ -56,6 +62,14 @@ public class SearchLogDTO {
 
     public void setResultCount(Integer resultCount) {
         this.resultCount = resultCount;
+    }
+
+    public List<SearchResult> getResults() {
+        return results;
+    }
+
+    public void setResults(List<SearchResult> results) {
+        this.results = results;
     }
 
     public EyeDTO getOs() {

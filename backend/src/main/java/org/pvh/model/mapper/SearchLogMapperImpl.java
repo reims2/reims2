@@ -34,6 +34,7 @@ public class SearchLogMapperImpl implements SearchLogMapper {
             searchLog.getIncreaseSearchTolerance(),
             searchLog.getSearchDate(),
             searchLog.getResultCount(),
+            searchLog.getResults(),
             GlassesMapperImpl.getInstance().eyeToEyeDTO(searchLog.getOs()),
             GlassesMapperImpl.getInstance().eyeToEyeDTO(searchLog.getOd()));
 
@@ -77,6 +78,7 @@ public class SearchLogMapperImpl implements SearchLogMapper {
         searchLog.setIncreaseSearchTolerance(searchLogDTO.getIncreaseSearchTolerance());
         searchLog.setSearchDate(searchLogDTO.getSearchDate());
         searchLog.setResultCount(searchLogDTO.getResultCount());
+        searchLog.setResults(searchLogDTO.getResults());
         return searchLog;
     }
 }
