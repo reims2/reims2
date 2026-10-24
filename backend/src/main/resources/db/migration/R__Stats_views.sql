@@ -23,6 +23,7 @@ SELECT
   s.id, s.location, s.glasses_type, s.bal_lens, s.increase_search_tolerance, s.search_date,
   od.sphere AS od_sphere, od.cylinder AS od_cylinder, od.axis AS od_axis, od.additional AS od_add,
   os.sphere AS os_sphere, os.cylinder AS os_cylinder, os.axis AS os_axis, os.additional AS os_add
-FROM unsuccessful_search s
+FROM search_log s
 LEFT JOIN eye od ON od.id = s.od_id
-LEFT JOIN eye os ON os.id = s.os_id;
+LEFT JOIN eye os ON os.id = s.os_id
+WHERE s.result_count = 0;

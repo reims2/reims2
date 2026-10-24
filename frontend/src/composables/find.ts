@@ -32,8 +32,9 @@ export const useFindGlasses = (
       highTolerance: toValue(highTolerance),
     }
     matches.value = philScore(eyeModel)
-    if (matches.value.length === 0 && isUserSubmitted) {
-      glassesStore.addUnsuccessfulSearch(eyeModel)
+    if (isUserSubmitted) {
+      // offline the service worker queues it, the page still gets the network error
+      glassesStore.logSearch(eyeModel, matches.value.length).catch(() => {})
     }
   }
 

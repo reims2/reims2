@@ -3,11 +3,11 @@ package org.pvh.service;
 import org.pvh.error.NoSkusLeftException;
 import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Glasses;
-import org.pvh.model.entity.UnsuccessfulSearch;
+import org.pvh.model.entity.SearchLog;
 import org.pvh.repository.DispenseRepository;
 import org.pvh.repository.EyeRepository;
 import org.pvh.repository.GlassesRepository;
-import org.pvh.repository.UnsuccessfulSearchRepository;
+import org.pvh.repository.SearchLogRepository;
 import org.pvh.util.GlassesSpecs;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -28,14 +28,14 @@ public class MainServiceImpl implements MainService {
     private final GlassesRepository glassesRepository;
     private final EyeRepository eyeRepository;
     private final DispenseRepository dispenseRepository;
-    private final UnsuccessfulSearchRepository unsuccessfulSearchRepository;
+    private final SearchLogRepository searchLogRepository;
 
     public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository,
-                           UnsuccessfulSearchRepository unsuccessfulSearchRepository) {
+                           SearchLogRepository searchLogRepository) {
         this.glassesRepository = glassesRepository;
         this.eyeRepository = eyeRepository;
         this.dispenseRepository = dispenseRepository;
-        this.unsuccessfulSearchRepository = unsuccessfulSearchRepository;
+        this.searchLogRepository = searchLogRepository;
     }
 
     @Override
@@ -154,13 +154,13 @@ public class MainServiceImpl implements MainService {
 
 
     @Override
-    public List<UnsuccessfulSearch> findUnsuccessfulSearchByLocation(String location) {
-        return unsuccessfulSearchRepository.findAllByLocation(location);
+    public List<SearchLog> findUnsuccessfulSearchesByLocation(String location) {
+        return searchLogRepository.findAllByLocationAndResultCount(location, 0);
     }
 
     @Override
-    public UnsuccessfulSearch saveUnsuccessfulSearch(UnsuccessfulSearch search) {
-        return unsuccessfulSearchRepository.save(search);
+    public SearchLog saveSearchLog(SearchLog search) {
+        return searchLogRepository.save(search);
     }
 
 }

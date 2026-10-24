@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
-import org.pvh.model.entity.UnsuccessfulSearch;
+import org.pvh.model.entity.SearchLog;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,17 +110,31 @@ public class StatsViewsIntegrationTest {
         assertNull(row.get("dispense_date"));
     }
 
-    @Test
-    public void statsUnsuccessfulSearch_flattensEyes() {
-        UnsuccessfulSearch search = new UnsuccessfulSearch();
+    private long saveSearchLog(int resultCount) {
+        SearchLog search = new SearchLog();
         search.setGlassesType("multifocal");
         search.setLocation("sm");
         search.setSearchDate(new Date());
         search.setBalLens(BalLensEnum.DISABLE_NONE);
         search.setIncreaseSearchTolerance(false);
+        search.setResultCount(resultCount);
         search.setOd(new Eye(new BigDecimal("1.25"), new BigDecimal("-0.50"), 10, new BigDecimal("2.00")));
         search.setOs(new Eye(new BigDecimal("-1.50"), new BigDecimal("-0.75"), 170, new BigDecimal("2.25")));
-        long id = mainService.saveUnsuccessfulSearch(search).getId();
+        return mainService.saveSearchLog(search).getId();
+    }
+
+    @Test
+    public void statsUnsuccessfulSearch_skipsSearchesWithResults() {
+        long id = saveSearchLog(3);
+
+        Integer count = jdbcTemplate.queryForObject(
+            "SELECT COUNT(*) FROM stats_unsuccessful_search WHERE id = ?", Integer.class, id);
+        assertEquals(0, count);
+    }
+
+    @Test
+    public void statsUnsuccessfulSearch_flattensEyes() {
+        long id = saveSearchLog(0);
 
         Map<String, Object> row = jdbcTemplate.queryForMap("SELECT * FROM stats_unsuccessful_search WHERE id = ?", id);
         assertEquals("sm", row.get("location"));
