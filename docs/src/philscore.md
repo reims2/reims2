@@ -31,7 +31,7 @@ Initially, we exclude glasses based on the following criteria:
 4. If multifocal, exclude glasses where the lens' `additional` deviates from the desired `additional` more than tolerated. This is performed once for OD and once for OS.
 
 > [!NOTE] Note on BAL
-> If the rx has BAL enabled for an eye, we bypass steps 2 and 4 for that eye. Step 3 for that eye instead compares the lens against the non-BAL eye's prescription. That check always uses a tolerance of `1.0`, regardless of whether "high tolerance" is turned on for this search.
+> If the rx has BAL enabled for an eye, we bypass steps 2 and 4 for that eye. Step 3 for that eye instead only requires the lens' spherical equivalent (sphere + cylinder / 2) to be within `1.0` of the non-BAL eye's prescription, so both lenses look and weigh alike. Cylinder and axis of the BAL lens don't matter on their own. The tolerance stays `1.0` even with "high tolerance" turned on. REIMS1 had no such check, its one-eye search left the other lens unfiltered.
 
 After filtering, we calculate the PhilScore for the remaining glasses using the following steps:
 
