@@ -7,6 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # same key as ansible.yml, the action's galaxy install is then a no-op
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: |
+            ~/.ansible/roles
+            ~/.ansible/collections
+          key: ansible-galaxy-${{ hashFiles('ansible/requirements.yml') }}
       - name: Run ansible-lint
         uses: ansible/ansible-lint@9bce2bfb8f4a984e6b13767bc0d6bf0a49492164 # v26.10.1
         with:
