@@ -49,7 +49,7 @@ const RAW_RUNTIME_STATE =
           ["globals", "npm:17.13.0"],\
           ["happy-dom", "npm:21.0.4"],\
           ["jwt-decode", "npm:4.0.0"],\
-          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.3"],\
+          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.0"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
           ["prettier", "npm:3.9.6"],\
           ["reims2-frontend", "workspace:."],\
@@ -3255,7 +3255,7 @@ const RAW_RUNTIME_STATE =
           ["@pinia/testing", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:2.0.2"],\
           ["@types/pinia", null],\
           ["nostics", "npm:1.3.0"],\
-          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.3"]\
+          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.0"]\
         ],\
         "packagePeers": [\
           "@types/pinia",\
@@ -8216,22 +8216,22 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["pinia", [\
-      ["npm:4.0.3", {\
-        "packageLocation": "./.yarn/cache/pinia-npm-4.0.3-a7e3626672-345ed6db41.zip/node_modules/pinia/",\
+      ["npm:4.1.0", {\
+        "packageLocation": "./.yarn/cache/pinia-npm-4.1.0-28315b1d5d-a44bfd93ce.zip/node_modules/pinia/",\
         "packageDependencies": [\
-          ["pinia", "npm:4.0.3"]\
+          ["pinia", "npm:4.1.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.3", {\
-        "packageLocation": "./.yarn/__virtual__/pinia-virtual-a38dfb2bef/0/cache/pinia-npm-4.0.3-a7e3626672-345ed6db41.zip/node_modules/pinia/",\
+      ["virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.0", {\
+        "packageLocation": "./.yarn/__virtual__/pinia-virtual-68f2952afa/0/cache/pinia-npm-4.1.0-28315b1d5d-a44bfd93ce.zip/node_modules/pinia/",\
         "packageDependencies": [\
           ["@types/typescript", null],\
           ["@types/vue", null],\
           ["@types/vue__devtools-api", null],\
           ["@vue/devtools-api", "npm:8.2.1"],\
           ["nostics", "npm:1.3.0"],\
-          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.3"],\
+          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.0"],\
           ["typescript", "patch:typescript@npm%3A6.0.3#optional!builtin<compat/typescript>::version=6.0.3&hash=5786d5"],\
           ["vue", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:3.5.44"]\
         ],\
@@ -8263,7 +8263,7 @@ const RAW_RUNTIME_STATE =
           ["@types/pinia", null],\
           ["@types/pinia__nuxt", null],\
           ["defu", "npm:6.1.7"],\
-          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.3"],\
+          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.0"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"]\
         ],\
         "packagePeers": [\
@@ -8569,7 +8569,7 @@ const RAW_RUNTIME_STATE =
           ["globals", "npm:17.13.0"],\
           ["happy-dom", "npm:21.0.4"],\
           ["jwt-decode", "npm:4.0.0"],\
-          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.3"],\
+          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.0"],\
           ["pinia-plugin-persistedstate", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.7.1"],\
           ["prettier", "npm:3.9.6"],\
           ["reims2-frontend", "workspace:."],\
@@ -10320,7 +10320,7 @@ const RAW_RUNTIME_STATE =
           ["nostics", "npm:1.3.0"],\
           ["pathe", "npm:2.0.3"],\
           ["picomatch", "npm:4.0.7"],\
-          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.0.3"],\
+          ["pinia", "virtual:f38e57d791791749fcbabd309fca608b4b94dece2d82ce843f1a41fa3116db596a20c099e6de2af31c105fe4ac076cf46376e7075977c7d2a35411de7ab0cc23#npm:4.1.0"],\
           ["scule", "npm:1.3.0"],\
           ["tinyglobby", "npm:0.2.17"],\
           ["unplugin", "virtual:d3d66d2c037611d4f0dffddd595c13c29717a5c29ed02b4741a187f3c38e487ee3945a71f2c38caaf0f2a72352e9a7997245e989c3a2361c95776603d796098c#npm:3.4.0"],\
