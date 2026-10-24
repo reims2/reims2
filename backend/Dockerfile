@@ -4,10 +4,11 @@ ENV PORT=5000
 WORKDIR /usr/src/app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN --mount=type=cache,target=/root/.m2 ./mvnw -Dmaven.repo.local=/root/.m2 dependency:go-offline
+# deps live in a layer, not a cache mount: CI exports layers to the gha cache but never mount contents
+RUN ./mvnw -Dmaven.repo.local=/root/.m2 dependency:go-offline
 
 COPY ./src ./src
-RUN --mount=type=cache,target=/root/.m2 ./mvnw -Dmaven.repo.local=/root/.m2 clean install -DskipTests
+RUN ./mvnw -Dmaven.repo.local=/root/.m2 clean install -DskipTests
 
 WORKDIR /usr/src/app/target
 RUN mv ./*.jar application.jar
