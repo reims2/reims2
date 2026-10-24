@@ -239,10 +239,11 @@ average (blur 0.22), because nothing checks it.
 
 ## Comparison with PhilScore
 
-- The Find page shows one list built by team-draft interleaving (Radlinski et al. 2008,
-  `frontend/src/lib/interleave.ts`). A coin per search picks which algorithm adds first. After that,
-  the one with fewer pairs listed adds its best unlisted pair. A pair both found counts for whichever
-  added it first. The list stops at 30.
+- The Find page shows one list built by a variant of team-draft interleaving (Radlinski et al. 2008,
+  `frontend/src/lib/interleave.ts`) that flips one coin per search instead of per round. The coin
+  picks which algorithm adds first, then they take turns adding their best unlisted pair, and the
+  other fills once one runs out. A pair both found counts for whichever added it first. The list
+  stops at 30.
 - Each list's first pick lands in the top 2, and volunteers mostly take one of the top 3. On the
   replay, PhilScore fills 50.6 % of the top-3 slots and 49.9 % of all slots, although one list is 3
   times longer than the other in 16 % of searches.

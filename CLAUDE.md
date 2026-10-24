@@ -48,7 +48,7 @@ yarn lint          # eslint --fix
 yarn format:check  # prettier --check
 yarn test          # vitest run --coverage
 yarn vitest run src/test/philscore_score.test.ts   # single test file
-yarn build         # vue-tsc --noEmit && vite build, what CI runs
+yarn build         # vue-tsc --build && vite build, what CI runs
 ```
 
 ### E2E (`e2e/`)
