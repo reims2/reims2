@@ -15,7 +15,11 @@ export default tseslint.config(
     ],
   },
   {
-    extends: [eslint.configs.recommended, ...tseslint.configs.recommended],
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.recommended,
+      playwright.configs['flat/recommended'],
+    ],
     files: ['**/*.ts'],
     languageOptions: {
       ecmaVersion: 'latest',
@@ -23,9 +27,12 @@ export default tseslint.config(
       globals: globals.node,
       parserOptions: {
         parser: tseslint.parser,
+        projectService: true,
       },
     },
     rules: {
+      '@typescript-eslint/no-floating-promises': 'error',
+      'playwright/no-skipped-test': ['warn', { allowConditional: true }],
       'spaced-comment': 'warn',
       'no-warning-comments': 'warn',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
