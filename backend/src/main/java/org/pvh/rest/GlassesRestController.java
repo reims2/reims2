@@ -263,11 +263,7 @@ public class GlassesRestController {
             currentGlasses.get().getDispense().setDispenseReason(DispenseReasonEnum.DISPENSED);
 
         currentGlasses.get().setSku(null);
-        try {
-            this.mainService.saveGlassesAfterDispense(currentGlasses.get());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
+        this.mainService.saveGlassesAfterDispense(currentGlasses.get());
         changeService.setNewHashValue(location);
         logger.info("Dispensed glasses with SKU {} (in {}) with reason {}", sku, location,
             currentGlasses.get().getDispense().getDispenseReason());

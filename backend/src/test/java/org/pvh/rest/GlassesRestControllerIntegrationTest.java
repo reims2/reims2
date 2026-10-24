@@ -15,8 +15,10 @@ import org.pvh.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -32,6 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -44,7 +48,7 @@ public class GlassesRestControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
+    @MockitoSpyBean
     private MainService mainService;
 
     @Autowired
@@ -211,6 +215,20 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder",
                 Matchers.is(saveEntitySa2.getOd().getCylinder().doubleValue())))
             .andDo(print());
+    }
+
+    @Test
+    public void dispense_whenSaveFails_thenNoSuccess()
+        throws Exception {
+        Glasses glasses = mainService.saveGlasses(
+            new Glasses("single", "medium", "neutral", "sa", new Dispense(),
+                new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2, BigDecimal.ONE),
+                new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2, BigDecimal.ONE)));
+        doThrow(new DataAccessResourceFailureException("database down"))
+            .when(mainService).saveGlassesAfterDispense(any());
+
+        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + glasses.getSku()))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
