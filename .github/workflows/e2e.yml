@@ -56,6 +56,12 @@ jobs:
       - name: Install dependencies
         working-directory: ./e2e
         run: yarn install --immutable
+      - name: Lint
+        working-directory: ./e2e
+        run: |
+          yarn eslint --max-warnings 0 tests playwright.config.ts
+          yarn format:check
+          yarn typecheck
       - name: Install Playwright browsers
         working-directory: ./e2e
         run: |
