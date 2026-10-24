@@ -37,6 +37,13 @@ jobs:
           printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      # on a hit the install below is a no-op, so a Galaxy outage doesn't block deploys
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: |
+            ~/.ansible/roles
+            ~/.ansible/collections
+          key: ansible-galaxy-${{ hashFiles('ansible/requirements.yml') }}
       - name: Install dependencies
         run: ansible-galaxy install -r requirements.yml
       - name: Run ${{ inputs.playbook }}
