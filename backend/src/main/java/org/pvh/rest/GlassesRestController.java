@@ -9,12 +9,12 @@ import org.pvh.error.PVHException;
 import org.pvh.model.dto.ChangeValueDTO;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
-import org.pvh.model.dto.UnsuccessfulSearchDTO;
+import org.pvh.model.dto.SearchLogDTO;
 import org.pvh.model.entity.Glasses;
-import org.pvh.model.entity.UnsuccessfulSearch;
+import org.pvh.model.entity.SearchLog;
 import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.mapper.GlassesMapperImpl;
-import org.pvh.model.mapper.UnsuccessfulSearchMapperImpl;
+import org.pvh.model.mapper.SearchLogMapperImpl;
 import org.pvh.repository.RSQL.CustomRsqlVisitor;
 import org.pvh.service.ChangeService;
 import org.pvh.service.MainService;
@@ -161,7 +161,7 @@ public class GlassesRestController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping(path = "/unsuccessful/{location}.csv")
     public void getAllUnsuccessfulSearchesCsv(HttpServletResponse servletResponse, @PathVariable("location") String location) {
-        List<UnsuccessfulSearch> searches = mainService.findUnsuccessfulSearchByLocation(location);
+        List<SearchLog> searches = mainService.findUnsuccessfulSearchesByLocation(location);
         if (searches.isEmpty()) {
             servletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return;
@@ -322,22 +322,22 @@ public class GlassesRestController {
 
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @PostMapping(path = "/{location}/unsuccessfulSearch", produces = "application/json")
-    public ResponseEntity<Void> addUnsuccessfulSearch(@PathVariable("location") String location,
-                                                      @RequestBody @Valid UnsuccessfulSearchDTO unsuccessfulSearchDTO, UriComponentsBuilder ucBuilder) {
-        UnsuccessfulSearch searchResponse;
+    @PostMapping(path = "/{location}/searchLog", produces = "application/json")
+    public ResponseEntity<Void> addSearchLog(@PathVariable("location") String location,
+                                             @RequestBody @Valid SearchLogDTO searchLogDTO, UriComponentsBuilder ucBuilder) {
+        SearchLog searchResponse;
         try {
             HttpHeaders headers = new HttpHeaders();
-            if (unsuccessfulSearchDTO == null) {
+            if (searchLogDTO == null) {
                 return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
             }
-            UnsuccessfulSearch search =
-                UnsuccessfulSearchMapperImpl.getInstance().unsuccessfulSearchDTOToUnsuccessfulSearch(unsuccessfulSearchDTO, location);
-            searchResponse = this.mainService.saveUnsuccessfulSearch(search);
+            SearchLog search =
+                SearchLogMapperImpl.getInstance().searchLogDTOToSearchLog(searchLogDTO, location);
+            searchResponse = this.mainService.saveSearchLog(search);
         } catch (RuntimeException e) {
-            throw new PVHException("Something bad happened while adding unsuccessful search.", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new PVHException("Something bad happened while adding search log.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        logger.info("Added new unsuccessful search with following Attributes: {}", searchResponse.toString());
+        logger.info("Added new search log with following Attributes: {}", searchResponse.toString());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

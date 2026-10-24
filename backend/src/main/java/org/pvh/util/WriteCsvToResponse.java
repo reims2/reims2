@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.TimeZone;
-import org.pvh.model.entity.UnsuccessfulSearch;
+import org.pvh.model.entity.SearchLog;
 
 public class WriteCsvToResponse {
 
@@ -48,12 +48,12 @@ public class WriteCsvToResponse {
     }
 
     public static void writeSearchesToCsvHttpResponse(HttpServletResponse servletResponse,
-            Collection<UnsuccessfulSearch> glasses) {
+            Collection<SearchLog> glasses) {
         // TODO here and above: we shouldn't use getWriter() before business logic is
         // done, since it's impossible to send an error after writing has started
         try (CSVWriter writer = new CSVWriter(servletResponse.getWriter())) {
             writer.writeNext(header);
-            for (UnsuccessfulSearch glass : glasses) {
+            for (SearchLog glass : glasses) {
                 writeSingleSearch(writer, glass);
             }
         } catch (IOException e) {
@@ -63,7 +63,7 @@ public class WriteCsvToResponse {
         servletResponse.setContentType("text/csv");
     }
 
-    private static void writeSingleSearch(CSVWriter writer, UnsuccessfulSearch glass) {
+    private static void writeSingleSearch(CSVWriter writer, SearchLog glass) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // come up with an alternative to hardcoding EL Salvador's timezone
         df.setTimeZone(TimeZone.getTimeZone("CST"));

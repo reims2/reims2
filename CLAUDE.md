@@ -96,9 +96,9 @@ This is the central design fact of the system: the backend does no prescription 
 prescription typed into the UI, `frontend/src/lib/philscore.ts` filters and scores every glass held in
 `useGlassesStore` (`frontend/src/stores/glasses.ts`), purely in the browser. See
 `frontend/src/composables/find.ts` for how a search is wired up. This is what lets the app work with no
-network connection during a campaign. The backend only learns about a search when it finds no match
-(`POST /api/glasses/{location}/unsuccessfulSearch`); that's also the only path by which prescription
-values reach the server. The algorithm is a deliberate port of the original REIMS1 implementation. Read
+network connection during a campaign. The backend only learns each search's prescription and match count
+(`POST /api/glasses/{location}/searchLog`, stored in `search_log`); that's also the only path by which
+prescription values reach the server. The algorithm is a deliberate port of the original REIMS1 implementation. Read
 `docs/src/philscore.md` before changing its tolerance or scoring rules: any behavioral difference from
 REIMS1 not documented there is treated as a bug, not an opportunity to improve it.
 
@@ -109,8 +109,8 @@ REIMS1 not documented there is treated as a bug, not an opportunity to improve i
 - Rather than re-polling that full list, it cheaply polls `GET /api/glasses/{location}/changes` for a hash
   that the backend (`ChangeService`) bumps on every write. The full list is only refetched when the hash
   changes.
-- Dispense/undispense and edit `PUT` requests are queued with Workbox background sync
-  (`frontend/vite.config.ts`) when offline, then replayed once connectivity returns.
+- Dispense/undispense and edit `PUT` requests and search log `POST`s are queued with Workbox background
+  sync (`frontend/vite.config.ts`) when offline, then replayed once connectivity returns.
 
 ### Domain model
 

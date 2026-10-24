@@ -16,15 +16,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -45,6 +49,9 @@ public class GlassesRestControllerIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private ChangeValue callChangeValueAndReturnHash(String location) throws Exception {
 
@@ -504,5 +511,34 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType("text/csv"))
             .andDo(print());
+    }
+
+    @Test
+    public void logSearch_storesResultCount()
+        throws Exception {
+        Map<String, Object> search = new HashMap<>(Map.of(
+            "glassesType", "single",
+            "balLens", "DISABLE_NONE",
+            "increaseSearchTolerance", false,
+            "searchDate", System.currentTimeMillis(),
+            "resultCount", 2,
+            "od", new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.ZERO),
+            "os", new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.ZERO)));
+
+        this.mockMvc.perform(post("/api/glasses/sa/searchLog").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(search)))
+            .andExpect(status().isCreated());
+        assertEquals(2, jdbcTemplate.queryForObject(
+            "SELECT result_count FROM search_log ORDER BY id DESC LIMIT 1", Integer.class));
+
+        search.remove("resultCount");
+        this.mockMvc.perform(post("/api/glasses/sa/searchLog").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(search)))
+            .andExpect(status().isBadRequest());
+
+        search.put("resultCount", -1);
+        this.mockMvc.perform(post("/api/glasses/sa/searchLog").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(search)))
+            .andExpect(status().isBadRequest());
     }
 }

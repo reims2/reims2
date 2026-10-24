@@ -111,11 +111,12 @@ export interface GlassesSearch {
   highTolerance?: boolean
 }
 
-export interface UnsuccessfulGlassesSearch {
+export interface SearchLog {
   glassesType: GlassesType
   od: Eye
   os: Eye
   increaseSearchTolerance: boolean
   balLens: 'DISABLE_OD' | 'DISABLE_OS' | 'DISABLE_NONE'
   searchDate: number
+  resultCount: number
 }
