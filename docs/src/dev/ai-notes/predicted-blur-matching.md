@@ -1,7 +1,8 @@
 # Predicted-blur matching
 
 A second matching algorithm, meant to run next to PhilScore on the same search so volunteers can
-compare both, and maybe merge them later. Nothing is implemented yet. It works out proposal 7 of
+compare both, and maybe merge them later. It's implemented in `frontend/src/lib/blurscore.ts`, but
+not shown in the UI yet. It works out proposal 7 of
 [PhilScore improvement ideas](/dev/ai-notes/philscore-improvements), which also has the literature.
 How results are compared, shown and logged is decided elsewhere.
 
@@ -147,7 +148,7 @@ model counts astigmatism once, so with `w = 2` it errs on the pessimistic side.
 ## Worked examples
 
 PhilScore sums both eyes, so compare the order, not the values. Same lens on both eyes unless noted.
-These make good unit tests.
+They're unit tests in `frontend/src/test/blurscore.test.ts`.
 
 | Rx                  | Lens                                  | PhilScore | Blur                          |
 | ------------------- | ------------------------------------- | --------- | ----------------------------- |
@@ -237,12 +238,13 @@ average (blur 0.22), because nothing checks it.
   but we don't know who they are.
 - Is the worse of distance and reading right for a multifocal, or should distance count more?
 
-## Left to the builder
+## Implementation
 
-- A module next to `frontend/src/lib/philscore.ts` with the same signature as
-  `calculateAllPhilscore`. All parameters in one exported object, so an optometrist's answer is a
-  one-line change.
-- Return `dM`, `2 * dJ` and `dNear` per eye with each result, so the UI can say why ("0.25 too much
-  minus, astigmatism fine").
-- Break ties by the worse eye's blur, then SKU, so the order is stable.
-- Skip multifocal lenses without an add, as PhilScore does.
+- `calculateAllBlurscore` takes the same arguments as `calculateAllPhilscore`. All parameters are in
+  `BLUR_PARAMS`, so an optometrist's answer is a one-line change.
+- Each result has its grade, each eye's blur as `odScore` and `osScore`, and per eye the focus
+  error, leftover cylinder and reading error (`dM`, `2 * dJ`, `dNear`), so the UI can say why ("0.25
+  too much minus, astigmatism fine").
+- Ties go by the worse eye's blur, then SKU, so the order is stable.
+- Multifocal lenses without an add are skipped, as PhilScore does.
+- On the replay, it gives the prototype's scores for all 4,119 searches.
