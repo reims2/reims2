@@ -116,11 +116,15 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
           toast.error(
             `Reverting is not possible here, please readd glasses manually (Error: ${error.apiMessage}).`,
           )
-        } else if (error.isServerSide || error.isNetwork) {
+        } else if (error.isNetwork) {
           toast.warning(
             "Network or server error. Dispension/deletion will be automatically reverted as soon as you're back online.",
           )
           onSuccessFn?.()
+        } else {
+          toast.error(
+            `Could not undo dispension/deletion of glasses, please retry (${error.apiMessage ?? error.message}).`,
+          )
         }
       } else {
         toast.error(
@@ -168,7 +172,7 @@ export const useDeleteGlasses = (
           )
         } else if (error.isServerSide) {
           toast.error(
-            `Could not ${actionString} glasses. Please report this to the REIMS2 developers (Error ${error.apiMessage})`,
+            `Could not ${actionString} glasses because of a server error. Please retry later (Error ${error.statusCode})`,
           )
         } else if (error.isNetwork) {
           glassesStore.deleteOfflineGlasses(sku)
@@ -177,6 +181,10 @@ export const useDeleteGlasses = (
           )
           onSuccessFn?.()
           return
+        } else {
+          toast.error(
+            `Could not ${actionString} glasses, please retry (${error.apiMessage ?? error.message})`,
+          )
         }
       } else {
         toast.error(`Could not ${actionString} glasses, please retry (${(error as Error).message})`)

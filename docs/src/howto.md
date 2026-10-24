@@ -20,7 +20,7 @@ In case glasses are recorded with incorrect data, REIMS2 allows you to correct t
 
 REIMS2 is designed to operate fully offline, enabling you to find, dispense, and edit glasses without an internet connection. This feature is particularly useful in remote areas with limited or no internet connectivity.
 
-To use REIMS2 offline, ensure that the application has been accessed at least once in the past month on the machine you're using, with a working internet connection. Google Chrome is required for this feature. If you use the "Dispense" or "Edit" functions while offline, you'll need to connect to the internet at least once per week. This is not necessary if you're only using the application to find matches. When offline, REIMS2 will display a banner at the top of the page indicating that it's running offline. Any changes made while offline will be automatically uploaded when the connection is restored.
+To use REIMS2 offline, ensure that the application has been accessed at least once in the past month on the machine you're using, with a working internet connection. Google Chrome is required for this feature. If you use the "Dispense" or "Edit" functions while offline, you'll need to connect to the internet at least once per week. This is not necessary if you're only using the application to find matches. When offline, REIMS2 will display a banner at the top of the page indicating that it's running offline. Any changes made while offline will be automatically uploaded when the connection is restored. Until then, the top bar shows how many changes are still waiting to upload.
 
 Please note that adding new glasses or creating reports is not possible while offline.
 
