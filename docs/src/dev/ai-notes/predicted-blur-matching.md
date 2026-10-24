@@ -247,4 +247,5 @@ average (blur 0.22), because nothing checks it.
   too much minus, astigmatism fine").
 - Ties go by the worse eye's blur, then SKU, so the order is stable.
 - Multifocal lenses without an add are skipped, as PhilScore does.
-- On the replay, it gives the prototype's scores for all 4,119 searches.
+- On the replay, it gives the prototype's scores for all 4,119 searches. It orders equal scores by
+  the worse eye and SKU instead of float noise, which changes 7 first picks and none of the shares.
