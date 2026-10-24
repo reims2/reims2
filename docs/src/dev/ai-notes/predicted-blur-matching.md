@@ -1,10 +1,9 @@
 # Predicted-blur matching
 
-A second matching algorithm, meant to run next to PhilScore on the same search so volunteers can
-compare both, and maybe merge them later. It's implemented in `frontend/src/lib/blurscore.ts`, but
-not shown in the UI yet. It works out proposal 7 of
+A second matching algorithm, implemented in `frontend/src/lib/blurscore.ts`. The Find page runs it
+next to PhilScore on every search and interleaves both lists to find out which offers better
+glasses, see [Comparison with PhilScore](#comparison-with-philscore). It works out proposal 7 of
 [PhilScore improvement ideas](/dev/ai-notes/philscore-improvements), which also has the literature.
-How results are compared, shown and logged is decided elsewhere.
 
 ## Summary
 
@@ -237,6 +236,29 @@ average (blur 0.22), because nothing checks it.
 - Should a lens with more cylinder than the Rx cost extra? It distorts more for first-time wearers,
   but we don't know who they are.
 - Is the worse of distance and reading right for a multifocal, or should distance count more?
+
+## Comparison with PhilScore
+
+- The Find page shows one list built by team-draft interleaving (Radlinski et al. 2008,
+  `frontend/src/lib/interleave.ts`). A coin per search picks which algorithm adds first. After that,
+  the one with fewer pairs listed adds its best unlisted pair. A pair both found counts for whichever
+  added it first. The list stops at 30.
+- Each list's first pick lands in the top 2, and volunteers mostly take one of the top 3. On the
+  replay, PhilScore fills 50.6 % of the top-3 slots and 49.9 % of all slots, although one list is 3
+  times longer than the other in 16 % of searches.
+- A card shows the PhilScore chip if PhilScore found the pair and the grade chip if blur found it.
+- `search_log.results` stores the shown list as JSON, e.g.
+  `[{"id": 4711, "sku": 123, "algorithm": "philscore"}]`. `result_count` stays PhilScore's count.
+- After the campaign, read a database backup. Order searches by `search_date`, not `id`, since
+  queued offline rows arrive late. Match each dispense one to one to the latest earlier search at the
+  same site whose `results` contain its glasses `id`, and count how often the candidates disagree on
+  the algorithm. Credit that algorithm and report blur's share with a 95 % interval per glasses type,
+  and again for searches where both lists had at least 3 pairs (recomputed offline). Also check how
+  often the dispensed pair had the best PhilScore or grade on its page, to see whether volunteers
+  just follow a chip.
+- About 900 pairs are dispensed per campaign, and roughly 500 of those searches have different first
+  picks. So 55/45 is detectable and 60/40 is clear. No clear winner means switching wouldn't be
+  worse.
 
 ## Implementation
 
