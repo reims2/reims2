@@ -31,7 +31,7 @@
     "vue": "3.5.44",
     "vue-router": "5.4.0",
     "vue3-enter-to-tab": "3.1.6",
-    "vuetify": "4.2.5"
+    "vuetify": "4.2.6"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
