@@ -1,5 +1,3 @@
-.yarn
 dist
-.yarnrc.yml
+pnpm-lock.yaml
 **/auto-imports.d.ts
-.pnp.*
