@@ -4,7 +4,6 @@ const authFile = '.auth/user.json'
 
 test('Login', async ({ page }) => {
   await page.goto('/')
-  await page.getByRole('link', { name: 'Open REIMS2' }).click()
   await page.getByLabel('Username').fill('test')
   await page.getByLabel('Password').fill('testtest')
   await page.getByLabel('Password').press('Enter')
