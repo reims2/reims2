@@ -5,13 +5,13 @@
 Reims is expected to be running at `http://localhost:3000` with username `test` and password `testtest`.
 `./stack.sh build && ./stack.sh up` starts exactly that with Docker (the root `compose.yaml` plus a
 Traefik routing like prod), and `./stack.sh down` removes it again. CI runs the tests the same way,
-plus `yarn lint`, `yarn format:check` and `yarn typecheck`. Specs create the glasses they need through
+plus `pnpm lint`, `pnpm format:check` and `pnpm typecheck`. Specs create the glasses they need through
 the API with the `createGlasses` fixture (`tests/fixtures.ts`), which deletes them again afterwards, so
 don't rely on the seeded rows.
 
-1. `yarn install`
+1. `pnpm install`
 
-2. `yarn run test:ui` for the playwright UI
+2. `pnpm test:ui` for the playwright UI
 
 3. Don't forget to set the active project in the top left corner in the playwright UI
 
@@ -19,10 +19,10 @@ don't rely on the seeded rows.
 
 Environment variable `BASE_URL` can be used to change REIMS URL.
 
-`yarn run test` to run tests in console
+`pnpm test` to run tests in console
 
 ### To run with docker
 
-A hacky workaround using npm. Delete `node_modules` and `package-lock.json` after running this, otherwise yarn will complain.
+A hacky workaround that runs the Playwright UI from its Docker image.
 
-`export DISPLAY=:0.0 && xhost +local:docker; docker run -it -v ./:/srv/e2e --rm --ipc=host --net=host --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -e DISPLAY=$DISPLAY mcr.microsoft.com/playwright:v1.55.0 /bin/bash -c 'cd /srv/e2e/ && BASE_URL=http://localhost:5173/; npm i; npx -y playwright test --ui`
+`export DISPLAY=:0.0 && xhost +local:docker; docker run -it -v ./:/srv/e2e --rm --ipc=host --net=host --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -e DISPLAY=$DISPLAY mcr.microsoft.com/playwright:v1.55.0 /bin/bash -c 'cd /srv/e2e/ && BASE_URL=http://localhost:5173/; corepack enable; pnpm install; pnpm playwright test --ui`

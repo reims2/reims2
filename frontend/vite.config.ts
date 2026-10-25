@@ -153,7 +153,7 @@ export default defineConfig(({ mode }) => {
       },
       coverage: {
         provider: 'v8',
-        exclude: ['.yarn/**', '**/test/**', 'e2e/**'],
+        exclude: ['**/test/**', 'e2e/**'],
         include: ['src/**'],
       },
     },
