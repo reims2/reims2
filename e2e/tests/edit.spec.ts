@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
   await expect(page.getByText('Setting up REIMS2')).toHaveCount(0)
 })
 
-test('Dispense glasses with button', { tag: '@fast' }, async ({ page, createGlasses }) => {
+test('Dispense glasses with button', async ({ page, createGlasses }) => {
   const sku = formatSku((await createGlasses()).sku)
   await page.getByLabel('SKU', { exact: true }).fill(sku)
   await page.getByRole('button', { name: 'Dispense' }).click()

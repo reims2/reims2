@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-test('Switch location', { tag: '@fast' }, async ({ page }) => {
+test('Switch location', async ({ page }) => {
   await page.goto('/find')
 
   await page.getByText('Change location').click()
