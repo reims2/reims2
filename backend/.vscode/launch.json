@@ -7,7 +7,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "mainClass": "org.pvh.PVHApplication",
-      "projectName": "spring-pvh-rest",
+      "projectName": "reims2-backend",
       "args": "",
       "env": {
         "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException",
@@ -20,7 +20,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "mainClass": "org.pvh.PVHApplication",
-      "projectName": "spring-pvh-rest",
+      "projectName": "reims2-backend",
       "args": "--spring.profiles.active=local",
       "env": {
         "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException",
