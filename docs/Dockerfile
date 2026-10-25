@@ -25,4 +25,4 @@ COPY --from=build /usr/src/app/docs/src/.vitepress/dist /usr/share/caddy/docs
 
 EXPOSE 5000
 
-HEALTHCHECK --interval=5s --timeout=5s --retries=3 --start-period=15s CMD wget -nv -t1 --spider 'http://localhost:5000/docs/' || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 --start-period=15s --start-interval=1s CMD wget -nv -t1 --spider 'http://localhost:5000/docs/' || exit 1
