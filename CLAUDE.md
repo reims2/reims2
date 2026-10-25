@@ -110,11 +110,8 @@ REIMS1 not documented there is treated as a bug, not an opportunity to improve i
 - Rather than re-polling that full list, it cheaply polls `GET /api/glasses/{location}/changes` for a hash
   that the backend (`ChangeService`) bumps on every write. The full list is only refetched when the hash
   changes.
-- Dispense/undispense and edit `PUT` requests and search log `POST`s are queued with Workbox background
-  sync (`frontend/vite.config.ts`) when offline, then replayed once connectivity returns. A 5xx on the
-  first try isn't queued and shows an error, but a replay that hits a 5xx stays queued. The header's
-  "waiting to upload" chip counts the queued dispense/edit requests straight from Workbox's IndexedDB
-  (`frontend/src/composables/pending-changes.ts`).
+- Dispenses, edits and search logs that get no response are queued in an IndexedDB outbox
+  (`frontend/src/lib/outbox.ts`) and upload while the app is open.
 
 ### Domain model
 

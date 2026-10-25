@@ -18,7 +18,7 @@ describe('useFindGlasses', () => {
     createTestingPinia()
     const glassesStore = useGlassesStore()
     glassesStore.allGlasses = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
-    vi.mocked(glassesStore.logSearch).mockResolvedValue()
+    vi.mocked(glassesStore.logSearch).mockResolvedValue('sent')
   })
 
   it('logs a search with matches', () => {

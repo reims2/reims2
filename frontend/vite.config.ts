@@ -6,32 +6,6 @@ import { defineConfig } from 'vitest/config'
 import { fileURLToPath, URL } from 'node:url'
 import { loadEnv } from 'vite'
 
-interface QueueEntry {
-  request: Request
-}
-
-// Workbox's own replay counts any response as success, this keeps a 5xx queued for the next sync.
-// workbox-build copies its source into the service worker, so it can't use anything from this file.
-const replayUntilSuccess = async ({
-  queue,
-}: {
-  queue: {
-    shiftRequest(): Promise<QueueEntry | undefined>
-    unshiftRequest(entry: QueueEntry): Promise<void>
-  }
-}) => {
-  let entry
-  while ((entry = await queue.shiftRequest())) {
-    try {
-      const response = await fetch(entry.request.clone())
-      if (response.status >= 500) throw new Error(`Server error ${response.status}`)
-    } catch (error) {
-      await queue.unshiftRequest(entry)
-      throw error
-    }
-  }
-}
-
 // https://vite-pwa-org.netlify.app/guide/
 const vitePWAconf: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
@@ -69,50 +43,6 @@ const vitePWAconf: Partial<VitePWAOptions> = {
   workbox: {
     navigateFallbackDenylist: [/^\/docs.*/, /^\/api\/.*/],
     globPatterns: ['**/*.{js,css,html,woff2}'],
-    runtimeCaching: [
-      {
-        handler: 'NetworkOnly',
-        urlPattern: /\/api\/glasses\/(un)?dispense.*/,
-        method: 'PUT',
-        options: {
-          backgroundSync: {
-            name: 'reimsDispenseQueue',
-            options: {
-              maxRetentionTime: 60 * 24 * 60, // retry dispense for 60 days
-              onSync: replayUntilSuccess,
-            },
-          },
-        },
-      },
-      {
-        handler: 'NetworkOnly',
-        urlPattern: /\/api\/glasses(\/[^/]+){2}\/?/,
-        method: 'PUT',
-        options: {
-          backgroundSync: {
-            name: 'reimsEditQueue',
-            options: {
-              maxRetentionTime: 7 * 24 * 60, // retry edit for 7 days
-              onSync: replayUntilSuccess,
-            },
-          },
-        },
-      },
-      {
-        handler: 'NetworkOnly',
-        urlPattern: /\/api\/glasses\/[^/]+\/searchLog$/,
-        method: 'POST',
-        options: {
-          backgroundSync: {
-            name: 'reimsSearchQueue',
-            options: {
-              maxRetentionTime: 60 * 24 * 60, // retry search log for 60 days
-              onSync: replayUntilSuccess,
-            },
-          },
-        },
-      },
-    ],
   },
 }
 

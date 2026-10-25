@@ -31,7 +31,6 @@
 import { DisplayedGlasses, Glasses } from '@/model/GlassesModel'
 import GlassInput from '@/components/GlassInput.vue'
 import { useGlassesStore } from '@/stores/glasses'
-import { ReimsAxiosError } from '@/lib/axios'
 import { useToast } from '@/composables/toast'
 import { sanitizeEyeValues } from '@/util/eye-utils'
 import { formatGlassesForDisplay } from '@/util/format-glasses'
@@ -66,19 +65,17 @@ async function updateGlasses() {
   }
   try {
     loading.value = true
-    const returnedGlasses = await glassesStore.editGlasses(newGlasses)
-    originalGlasses.value = returnedGlasses
-  } catch (error) {
-    if (error instanceof ReimsAxiosError && error.isNetwork) {
-      toast.error(`Glasses will be automatically edited as soon as the connection is back.`)
-      // no return here, we act like it's successful
-    } else {
-      toast.error(`Glasses can't be edited (${(error as Error).message}). Please retry later`)
-      return
+    const result = await glassesStore.editGlasses(newGlasses)
+    if (result === 'queued') {
+      toast.warning(`Glasses will be automatically edited as soon as the connection is back.`)
     }
+  } catch (error) {
+    toast.error(`Glasses can't be edited (${(error as Error).message}). Please retry later`)
+    return
   } finally {
     loading.value = false
   }
+  originalGlasses.value = glassesStore.getGlassLocal(newGlasses.sku ?? NaN) ?? newGlasses
   dialogOpen.value = false
 }
 </script>

@@ -5,6 +5,17 @@ import { vuetifyOptions } from '@/plugins/vuetify'
 
 import { Eye, Glasses, GlassesSearch, GlassesType } from '@/model/GlassesModel'
 
+// happy-dom has no Web Locks, a lock that is always free is enough for one tab
+export function stubWebLocks() {
+  Object.defineProperty(navigator, 'locks', {
+    configurable: true,
+    value: {
+      request: (_name: string, _options: object, callback: (lock: object) => unknown) =>
+        callback({}),
+    },
+  })
+}
+
 export function renderWithVuetify<C>(
   component: C,
   options: RenderOptions<C>,
