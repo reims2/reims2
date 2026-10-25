@@ -10,9 +10,9 @@ type GlassesForm = {
 }
 
 export class EyeInput {
-  readonly category = this.page.getByLabel('Category')
-  readonly appearance = this.page.getByLabel('Frame appearance')
-  readonly size = this.page.getByLabel('Frame size')
+  readonly category = this.page.getByRole('textbox', { name: 'Category', exact: true })
+  readonly appearance = this.page.getByRole('textbox', { name: 'Frame appearance', exact: true })
+  readonly size = this.page.getByRole('textbox', { name: 'Frame size', exact: true })
 
   readonly odInput = this.page.getByLabel('OD', { exact: true })
   readonly osInput = this.page.getByLabel('OS', { exact: true })

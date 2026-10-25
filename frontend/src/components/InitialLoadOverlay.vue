@@ -9,7 +9,12 @@
   >
     <v-sheet theme="light" class="pa-10" rounded>
       <div v-if="isLoading">
-        <v-progress-linear indeterminate color="primary" class="mb-5" />
+        <v-progress-linear
+          indeterminate
+          color="primary"
+          class="mb-5"
+          aria-label="Loading glasses"
+        />
         <div class="text-medium-emphasis">Setting up REIMS2, please wait...</div>
       </div>
       <div v-else class="d-flex flex-column">

@@ -1,6 +1,6 @@
 <template>
   <v-app-bar color="primary">
-    <v-app-bar-nav-icon @click.stop="rootStore.toggleDrawer" />
+    <v-app-bar-nav-icon aria-label="Toggle menu" @click.stop="rootStore.toggleDrawer" />
     <v-toolbar-title>
       {{ title }}
     </v-toolbar-title>

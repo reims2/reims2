@@ -17,6 +17,6 @@ test('Add and delete a user', async ({ page }, testInfo) => {
 
   const row = page.getByRole('row').filter({ hasText: username })
   await expect(row).toContainText('ROLE_USER')
-  await row.getByRole('button').last().click()
+  await row.getByRole('button', { name: `Delete ${username}` }).click()
   await expect(row).toHaveCount(0)
 })
