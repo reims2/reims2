@@ -14,11 +14,6 @@ export default defineConfig(
       '**/coverage/**',
       '**/dist/**',
 
-      // yarn/pnp internals
-      '.yarn/**',
-      '.pnp.cjs',
-      '.pnp.loader.mjs',
-
       // vite generates these sometimes; never lint them
       '**/vite.config.*.timestamp-*.mjs',
     ],

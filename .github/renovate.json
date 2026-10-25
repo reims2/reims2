@@ -29,7 +29,7 @@
   },
   "osvVulnerabilityAlerts": true,
   "postUpdateOptions": [
-    "yarnDedupeHighest"
+    "pnpmDedupe"
   ],
   "packageRules": [
     {

@@ -41,14 +41,14 @@ test-data migrations. Tests run against an in-memory H2 DB with security disable
 ### Frontend (`frontend/`)
 
 ```bash
-corepack enable && yarn install
-yarn dev:local     # dev server on :3000 against a local backend on :9966
-yarn dev:remote    # dev server against the dev.reims2.app API instead
-yarn lint          # eslint --fix
-yarn format:check  # prettier --check
-yarn test          # vitest run --coverage
-yarn vitest run src/test/philscore_score.test.ts   # single test file
-yarn build         # vue-tsc --noEmit && vite build, what CI runs
+pnpm install
+pnpm dev:local     # dev server on :3000 against a local backend on :9966
+pnpm dev:remote    # dev server against the dev.reims2.app API instead
+pnpm lint          # eslint --fix
+pnpm format:check  # prettier --check
+pnpm test          # vitest run --coverage
+pnpm vitest run src/test/philscore_score.test.ts   # single test file
+pnpm build         # vue-tsc --noEmit && vite build, what CI runs
 ```
 
 ### E2E (`e2e/`)
@@ -61,10 +61,10 @@ seeded from `e2e/dump.example.sql` (port via `E2E_PORT`). Specs create their own
 ```bash
 ./stack.sh build     # or `pull` to test published images (set TAG, e.g. sha-abc1234)
 ./stack.sh up        # start, or reseed a running stack; `down` deletes it
-yarn install
-yarn test:ui                             # Playwright UI, pick the project top-left before running
-yarn playwright test tests/find.spec.ts  # single spec, headless
-yarn playwright test --project chromium # what CI runs on every PR
+pnpm install
+pnpm test:ui                             # Playwright UI, pick the project top-left before running
+pnpm playwright test tests/find.spec.ts  # single spec, headless
+pnpm playwright test --project chromium # what CI runs on every PR
 ```
 
 CI runs the same stack inside the GitHub runner, never on the server: all specs on Chromium on PRs (images
@@ -73,9 +73,9 @@ built from source) and on `main` (the images just pushed), on all browsers weekl
 ### Docs (`docs/`)
 
 ```bash
-yarn install
-yarn dev    # vitepress dev src
-yarn build  # vitepress build src
+pnpm install
+pnpm dev    # vitepress dev src
+pnpm build  # vitepress build src
 ```
 
 ### Ansible (`ansible/`)

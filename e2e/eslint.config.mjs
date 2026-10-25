@@ -6,13 +6,7 @@ import playwright from 'eslint-plugin-playwright'
 
 export default tseslint.config(
   {
-    ignores: [
-      '*.d.ts',
-      '**/test-results',
-      '**/playwright-report',
-      '**/.yarn',
-      '**/.auth',
-    ],
+    ignores: ['*.d.ts', '**/test-results', '**/playwright-report', '**/.auth'],
   },
   {
     extends: [

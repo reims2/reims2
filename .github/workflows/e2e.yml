@@ -51,33 +51,36 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: "e2e/.nvmrc"
-          cache: "yarn"
-          cache-dependency-path: "e2e/yarn.lock"
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: "e2e/package.json"
+          cache: true
+          cache_dependency_path: "e2e/pnpm-lock.yaml"
       - name: Install dependencies
         working-directory: ./e2e
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
       - name: Lint
         working-directory: ./e2e
         run: |
-          yarn eslint --max-warnings 0 tests playwright.config.ts
-          yarn format:check
-          yarn typecheck
+          pnpm eslint --max-warnings 0 tests playwright.config.ts
+          pnpm format:check
+          pnpm typecheck
       - name: Install Playwright browsers
         working-directory: ./e2e
         run: |
           if [ "$FULL" = true ]; then
-            yarn playwright install --with-deps
+            pnpm playwright install --with-deps
           else
             # the runner image already has chromium's system libraries
-            yarn playwright install chromium
+            pnpm playwright install chromium
           fi
       - name: Run tests
         working-directory: ./e2e
         run: |
           if [ "$FULL" = true ]; then
-            yarn playwright test
+            pnpm playwright test
           else
-            yarn playwright test --project chromium
+            pnpm playwright test --project chromium
           fi
 
       - name: Stack logs
