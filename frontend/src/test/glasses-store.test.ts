@@ -134,10 +134,12 @@ describe('glasses store', () => {
       vi.useRealTimers()
     })
 
-    it('sends the search with its result count', async () => {
+    it('sends the search with its result count and shown results', async () => {
+      const results = [{ id: 4, sku: 5, algorithm: 'blurscore' }]
       await useGlassesStore().logSearch(
         { glassesType: 'multifocal', od, os, highTolerance: true },
         3,
+        results,
       )
       expect(api.post).toHaveBeenCalledWith(
         '/api/glasses/sm/searchLog',
@@ -149,6 +151,7 @@ describe('glasses store', () => {
           increaseSearchTolerance: true,
           searchDate: Date.parse('2026-01-15T18:30:00Z'),
           resultCount: 3,
+          results,
         }),
       )
     })
@@ -158,7 +161,7 @@ describe('glasses store', () => {
       ['os', 'DISABLE_OS'],
     ] as const)('marks a BAL lens on %s as %s', async (eyeName, balLens) => {
       const search = { glassesType: 'single' as const, od, os, [eyeName]: { ...od, isBAL: true } }
-      await useGlassesStore().logSearch(search, 0)
+      await useGlassesStore().logSearch(search, 0, [])
       expect(api.post).toHaveBeenCalledWith(
         '/api/glasses/sm/searchLog',
         expect.objectContaining({ balLens, increaseSearchTolerance: false, resultCount: 0 }),
