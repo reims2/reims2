@@ -17,23 +17,40 @@ describe('useFindGlasses', () => {
   beforeEach(() => {
     createTestingPinia()
     const glassesStore = useGlassesStore()
-    glassesStore.allGlasses = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
+    // for an Rx of +2, PhilScore ranks 2.5 third but blurscore predicts less blur for 1.75
+    glassesStore.allGlasses = [2, 2.25, 1.75, 2.5].map((sphere, i) => ({
+      ...createGlassesEqualOdOs('single', { sphere, cylinder: 0, axis: 0 })[0],
+      id: i + 1,
+      sku: i + 1,
+    }))
     vi.mocked(glassesStore.logSearch).mockResolvedValue()
   })
 
-  it('logs a search with matches', () => {
-    expect(search('-2')).toHaveLength(1)
+  it('shows an alternative and logs which algorithm placed each pair', () => {
+    expect(search('2')?.map(({ id, algorithm }) => [id, algorithm])).toEqual([
+      [1, 'philscore'],
+      [2, 'philscore'],
+      [3, 'blurscore'],
+      [4, 'philscore'],
+    ])
     expect(useGlassesStore().logSearch).toHaveBeenCalledWith(
       expect.objectContaining({ glassesType: 'single' }),
-      1,
+      4,
+      [
+        { id: 1, sku: 1, algorithm: 'philscore' },
+        { id: 2, sku: 2, algorithm: 'philscore' },
+        { id: 3, sku: 3, algorithm: 'blurscore' },
+        { id: 4, sku: 4, algorithm: 'philscore' },
+      ],
     )
   })
 
   it('logs a search without matches', () => {
-    expect(search('5')).toHaveLength(0)
+    expect(search('-5')).toHaveLength(0)
     expect(useGlassesStore().logSearch).toHaveBeenCalledWith(
       expect.objectContaining({ glassesType: 'single' }),
       0,
+      [],
     )
   })
 })

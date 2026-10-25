@@ -48,17 +48,22 @@ export const useGlassesStore = defineStore(
       addOfflineGlasses(addedGlasses)
       return addedGlasses
     }
-    async function logSearch(glassesSearch: GlassesSearch, resultCount: number): Promise<void> {
-      let balLens = 'DISABLE_NONE'
+    async function logSearch(
+      glassesSearch: GlassesSearch,
+      resultCount: number,
+      results: SearchLog['results'],
+    ): Promise<void> {
+      let balLens: SearchLog['balLens'] = 'DISABLE_NONE'
       if (glassesSearch.os.isBAL) balLens = 'DISABLE_OS'
       if (glassesSearch.od.isBAL) balLens = 'DISABLE_OD'
-      const request = {
+      const request: SearchLog = {
         ...glassesSearch,
         balLens,
         searchDate: Date.now(),
-        increaseSearchTolerance: glassesSearch.highTolerance,
+        increaseSearchTolerance: Boolean(glassesSearch.highTolerance),
         resultCount,
-      } as SearchLog
+        results,
+      }
       await axiosInstance.post(`/api/glasses/${rootStore.reimsSite}/searchLog`, request)
     }
     async function fetchSingle(sku: number): Promise<Glasses> {

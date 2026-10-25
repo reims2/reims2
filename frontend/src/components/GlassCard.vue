@@ -32,6 +32,17 @@
         >
           SKU {{ displayedGlass.sku }}
         </div>
+        <span
+          v-if="alternative"
+          class="ml-2 d-flex"
+          role="img"
+          aria-label="Experimental suggestion from a new matching method"
+        >
+          <v-icon :icon="mdiFlaskOutline" size="x-small" class="text-medium-emphasis" />
+          <v-tooltip activator="parent" location="bottom">
+            Experimental suggestion from a new matching method
+          </v-tooltip>
+        </span>
       </div>
     </v-card-title>
     <v-card-subtitle class="pb-2 d-flex align-center">
@@ -106,12 +117,16 @@ import {
   generalGlassesDataKeys,
 } from '@/model/GlassesModel'
 import { calcColorGradient } from '@/lib/color'
+import { MatchResult } from '@/lib/interleave'
 import { formatGlassesForDisplay } from '@/util/format-glasses'
 import EditDialog from '@/components/EditDialog.vue'
+import { mdiFlaskOutline } from '@mdi/js'
 
 const { editable = false } = defineProps<{ editable?: boolean }>()
 
 const glasses = defineModel<Glasses | GlassesResult>('modelValue', { required: true })
+
+const alternative = computed(() => (glasses.value as MatchResult).algorithm === 'blurscore')
 
 const eyes: { text: string; key: GlassesEyeIndex }[] = [
   { text: 'OD', key: 'od' },
