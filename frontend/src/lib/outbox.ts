@@ -4,6 +4,7 @@ import type { components } from '@/model/api'
 import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
 import { ReimsAxiosError } from '@/lib/axios'
 import { useToast } from '@/composables/toast'
+import { formatSku } from '@/util/format-glasses'
 
 type Payloads = {
   dispense: { glasses: Glasses; reason: DeletionReason }
@@ -46,11 +47,17 @@ export async function count() {
 // an older glasses change would overwrite what happened on site since
 const MAX_CHANGE_AGE = 30 * 24 * 60 * 60 * 1000
 
+function label(entry: OutboxEntry) {
+  if (entry.kind === 'searchLog') return 'search log'
+  const { glasses } = entry.payload
+  return `${entry.kind} of SKU ${formatSku(glasses.dispense?.previousSku ?? glasses.sku)}`
+}
+
 /** Returns false if the entry stays queued */
 async function attempt(entry: OutboxEntry, send: SendFn): Promise<boolean> {
   const toast = useToast()
   if (entry.kind !== 'searchLog' && Date.now() - entry.createdAt > MAX_CHANGE_AGE) {
-    toast.error(`A queued ${entry.kind} older than 30 days was discarded, please check it`)
+    toast.error(`A queued ${label(entry)} older than 30 days was discarded, please check it`)
     return true
   }
   try {
@@ -59,7 +66,7 @@ async function attempt(entry: OutboxEntry, send: SendFn): Promise<boolean> {
     if (!(error instanceof ReimsAxiosError) || error.isNetwork || error.isServerSide) return false
     if (error.statusCode === 401) return false
     toast.error(
-      `A queued ${entry.kind} was rejected by the server (${error.apiMessage ?? error.message}), please check it`,
+      `A queued ${label(entry)} was rejected by the server (${error.apiMessage ?? error.message}), please check it`,
     )
   }
   return true
