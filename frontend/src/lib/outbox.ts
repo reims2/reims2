@@ -3,6 +3,7 @@ import { Glasses, SearchLog } from '@/model/GlassesModel'
 import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
 import { ReimsAxiosError } from '@/lib/axios'
 import { useToast } from '@/composables/toast'
+import { formatSku } from '@/util/format-glasses'
 
 type Payloads = {
   dispense: { sku: number; reason: DeletionReason }
@@ -45,11 +46,19 @@ export async function count() {
 // an older glasses change would overwrite what happened on site since
 const MAX_CHANGE_AGE = 30 * 24 * 60 * 60 * 1000
 
+function label(entry: OutboxEntry) {
+  if (entry.kind === 'searchLog') return 'search log'
+  const { payload } = entry
+  const sku =
+    'sku' in payload ? payload.sku : (payload.glasses.dispense?.previousSku ?? payload.glasses.sku)
+  return `${entry.kind} of SKU ${formatSku(sku)}`
+}
+
 /** Returns false if the entry stays queued */
 async function attempt(entry: OutboxEntry, send: SendFn): Promise<boolean> {
   const toast = useToast()
   if (entry.kind !== 'searchLog' && Date.now() - entry.createdAt > MAX_CHANGE_AGE) {
-    toast.error(`A queued ${entry.kind} older than 30 days was discarded, please check it`)
+    toast.error(`A queued ${label(entry)} older than 30 days was discarded, please check it`)
     return true
   }
   try {
@@ -57,8 +66,15 @@ async function attempt(entry: OutboxEntry, send: SendFn): Promise<boolean> {
   } catch (error) {
     if (!(error instanceof ReimsAxiosError) || error.isNetwork || error.isServerSide) return false
     if (error.statusCode === 401) return false
+    // also a first try that reached the server but timed out
+    if (entry.kind === 'dispense' && error.statusCode === 404) {
+      toast.warning(
+        `SKU ${formatSku(entry.payload.sku)} not found on server, was it already dispensed?`,
+      )
+      return true
+    }
     toast.error(
-      `A queued ${entry.kind} was rejected by the server (${error.apiMessage ?? error.message}), please check it`,
+      `A queued ${label(entry)} was rejected by the server (${error.apiMessage ?? error.message}), please check it`,
     )
   }
   return true

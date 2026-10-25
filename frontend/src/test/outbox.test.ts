@@ -74,9 +74,18 @@ describe('outbox', () => {
     expect(sent).toEqual([1, 3])
     expect(await outbox.count()).toBe(0)
     expect(toastQueue.value).toEqual([
-      { color: 'error', text: expect.stringContaining('queued dispense was rejected') },
+      { color: 'error', text: expect.stringContaining('queued dispense of SKU 0002 was rejected') },
     ])
     expect(toastQueue.value[0].text).toContain('nope')
+  })
+
+  it('warns on a 404 on dispense, which a timed out first try also causes', async () => {
+    await outbox.add(dispense(7))
+    await outbox.flush(sender({ 7: clientError(404) }).send)
+    expect(toastQueue.value).toEqual([
+      { color: 'warning', text: 'SKU 0007 not found on server, was it already dispensed?' },
+    ])
+    expect(await outbox.count()).toBe(0)
   })
 
   it('sends search logs in order with glasses changes', async () => {
@@ -104,7 +113,7 @@ describe('outbox', () => {
     await outbox.flush(send)
     expect(sent).toEqual([10, 2])
     expect(toastQueue.value).toEqual([
-      { color: 'error', text: expect.stringContaining('dispense older than 30 days') },
+      { color: 'error', text: expect.stringContaining('dispense of SKU 0001 older than 30 days') },
     ])
   })
 })
