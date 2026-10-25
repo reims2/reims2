@@ -2,10 +2,13 @@ package org.pvh.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -32,6 +35,10 @@ public class SearchLog extends BaseEntity {
 
     @Column(name = "result_count")
     private int resultCount;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "results")
+    private List<SearchResult> results;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "OS_ID")
@@ -111,11 +118,19 @@ public class SearchLog extends BaseEntity {
         this.resultCount = resultCount;
     }
 
+    public List<SearchResult> getResults() {
+        return results;
+    }
+
+    public void setResults(List<SearchResult> results) {
+        this.results = results;
+    }
+
     @Override
     public String toString() {
         return "SearchLog [glassesType=" + glassesType + ", location=" + location + ", searchDate="
             + searchDate + ", balLens=" + balLens + ", increaseSearchTolerance=" + increaseSearchTolerance
-            + ", resultCount=" + resultCount + ", os=" + os + ", od=" + od + "]";
+            + ", resultCount=" + resultCount + ", results=" + results + ", os=" + os + ", od=" + od + "]";
     }
 
 
