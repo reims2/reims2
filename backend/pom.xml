@@ -19,24 +19,7 @@
     </parent>
 
     <properties>
-        <spring-data-jdbc.version>1.2.1.RELEASE</spring-data-jdbc.version>
-        <springfox-swagger.version>3.0.0</springfox-swagger.version>
-        <jacoco.version>0.8.15</jacoco.version>
-        <sonar.junit.reportPaths>target/surefire-reports</sonar.junit.reportPaths>
-        <sonar.sources>src/main</sonar.sources>
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <aggregate.report.dir>tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
-        <docker.jib-maven-plugin.version>3.5.2</docker.jib-maven-plugin.version>
-        <docker.image.prefix>springcommunity</docker.image.prefix>
-        <sonar.exclusions>
-            **/dto/*.java, **/entity/*.java,
-            **/enums/*.java,
-            **/repository/*.java,
-            **/repository/**/*.java,
-        </sonar.exclusions>
         <java.version>21</java.version>
     </properties>
     <dependencies>
@@ -127,17 +110,6 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jdbc-core</artifactId>
-            <version>${spring-data-jdbc.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -193,15 +165,6 @@
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>5.8.0.7211</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -223,69 +186,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <haltOnFailure>false</haltOnFailure>
-                            <rules>
-                                <rule>
-                                    <element>BUNDLE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>LINE</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.87</minimum>
-                                        </limit>
-                                        <limit>
-                                            <counter>BRANCH</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.74</minimum>
-                                        </limit>
-                                    </limits>
-                                    <excludes>
-                                        <!-- <exclude>com.xyz.ClassToExclude</exclude> -->
-                                    </excludes>
-                                </rule>
-                            </rules>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>${docker.jib-maven-plugin.version}</version>
-                <configuration>
-                    <to>
-                        <image>docker.io/${docker.image.prefix}/${project.artifactId}</image>
-                        <tags>
-                            <tag>${project.version}</tag>
-                            <tag>latest</tag>
-                        </tags>
-                    </to>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
