@@ -5,7 +5,7 @@ import { createGlassesEqualOdOs, renderWithVuetify } from './util'
 const [pair] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
 const marker = 'Experimental suggestion from a new matching method'
 
-function renderCard(modelValue: object) {
+function renderCard(modelValue: MatchResult) {
   return renderWithVuetify(GlassCard, { props: { modelValue } })
 }
 
