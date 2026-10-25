@@ -44,6 +44,6 @@ describe('GlassInput', () => {
     Object.assign(model.od, { sphere: '1', cylinder: '-0.5', axis: '010', add: '2' })
     await fireEvent.click(eye('OD').getByLabelText('BAL lens (Disable OD)'))
     expect(model.od).toEqual({ sphere: '-2', cylinder: '', axis: '', add: '', isBAL: true })
-    expect(model.os.isBAL).toBe(false)
+    expect(model.os).toMatchObject({ isBAL: false })
   })
 })

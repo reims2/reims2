@@ -29,9 +29,12 @@ export class EyeInput {
 
   constructor(readonly page: Page) {}
 
-  // Category autofocuses after a delay, typing before that can land in it
+  // Vuetify focuses an autofocus field again 50ms after it scrolls into view (useAutofocus),
+  // which pulls focus back to Category if typing has moved on by then
   async waitForAutofocus() {
     await expect(this.category).toBeFocused()
+    // eslint-disable-next-line playwright/no-wait-for-timeout
+    await this.page.waitForTimeout(150)
   }
 
   async fill(form: GlassesForm) {
