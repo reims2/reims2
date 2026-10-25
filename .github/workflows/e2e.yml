@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      # schedule and manual runs get the full suite on all browsers, everything else @fast on chromium
+      # schedule and manual runs test all browsers, everything else only chromium
       FULL: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -68,7 +68,8 @@ jobs:
           if [ "$FULL" = true ]; then
             yarn playwright install --with-deps
           else
-            yarn playwright install --with-deps chromium
+            # the runner image already has chromium's system libraries
+            yarn playwright install chromium
           fi
       - name: Run tests
         working-directory: ./e2e
@@ -76,7 +77,7 @@ jobs:
           if [ "$FULL" = true ]; then
             yarn playwright test
           else
-            yarn playwright test --project chromium --grep @fast
+            yarn playwright test --project chromium
           fi
 
       - name: Stack logs

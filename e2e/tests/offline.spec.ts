@@ -1,7 +1,7 @@
 import { EyeInput } from './eye-input.po'
 import { test, expect, formatSku } from './fixtures'
 
-test('Search works offline', { tag: '@fast' }, async ({ page, context, createGlasses }) => {
+test('Search works offline', async ({ page, context, createGlasses }) => {
   const eye = { sphere: -7.25, cylinder: 0, axis: 0, add: 0 }
   const sku = formatSku((await createGlasses({ od: eye, os: eye })).sku)
 
