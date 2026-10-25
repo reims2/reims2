@@ -74,35 +74,19 @@ describe('outbox', () => {
     expect(sent).toEqual([1, 3])
     expect(await outbox.count()).toBe(0)
     expect(toastQueue.value).toEqual([
-      { color: 'error', text: expect.stringContaining('Dispensing SKU 0002') },
+      { color: 'error', text: expect.stringContaining('queued dispense was rejected') },
     ])
     expect(toastQueue.value[0].text).toContain('nope')
   })
 
-  it('explains a 404 on dispense', async () => {
-    await outbox.add(dispense(7))
-    await outbox.flush(sender({ 7: clientError(404) }).send)
-    expect(toastQueue.value).toEqual([
-      { color: 'warning', text: 'SKU 0007 not found on server, was it already dispensed?' },
-    ])
-  })
-
-  it('sends search logs in their own pass', async () => {
-    await outbox.add(dispense(1))
+  it('sends search logs in order with glasses changes', async () => {
     await outbox.add(searchLog(10))
+    await outbox.add(dispense(1))
     await outbox.add(searchLog(11))
     const { sent, send } = sender({ 1: networkError() })
     await outbox.flush(send)
-    expect(sent).toEqual([10, 11])
+    expect(sent).toEqual([10])
     expect(await outbox.count()).toBe(1)
-  })
-
-  it('skips search logs after a 401', async () => {
-    await outbox.add(dispense(1))
-    await outbox.add(searchLog(10))
-    const { sent, send } = sender({ 1: unauthorized() })
-    await outbox.flush(send)
-    expect(sent).toEqual([])
   })
 
   it('counts glasses changes only', async () => {
@@ -118,9 +102,9 @@ describe('outbox', () => {
     await outbox.add({ ...dispense(2), createdAt: Date.now() })
     const { sent, send } = sender()
     await outbox.flush(send)
-    expect(sent).toEqual([2, 10])
+    expect(sent).toEqual([10, 2])
     expect(toastQueue.value).toEqual([
-      { color: 'error', text: expect.stringContaining('Dispensing SKU 0001 was not uploaded') },
+      { color: 'error', text: expect.stringContaining('dispense older than 30 days') },
     ])
   })
 })

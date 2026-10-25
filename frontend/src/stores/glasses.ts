@@ -129,7 +129,6 @@ export const useGlassesStore = defineStore(
       return 'queued'
     }
     async function send(entry: OutboxEntry): Promise<Glasses | undefined> {
-      if (entry.kind !== 'searchLog') controllerGetAll.abort()
       switch (entry.kind) {
         case 'dispense': {
           const { sku, reason } = entry.payload

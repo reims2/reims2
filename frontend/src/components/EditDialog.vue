@@ -75,7 +75,7 @@ async function updateGlasses() {
   } finally {
     loading.value = false
   }
-  originalGlasses.value = glassesStore.getGlassLocal(newGlasses.sku ?? NaN) ?? newGlasses
+  originalGlasses.value = newGlasses
   dialogOpen.value = false
 }
 </script>
