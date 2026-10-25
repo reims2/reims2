@@ -29,13 +29,15 @@ public class MainServiceImpl implements MainService {
     private final EyeRepository eyeRepository;
     private final DispenseRepository dispenseRepository;
     private final SearchLogRepository searchLogRepository;
+    private final ChangeService changeService;
 
     public MainServiceImpl(GlassesRepository glassesRepository, EyeRepository eyeRepository, DispenseRepository dispenseRepository,
-                           SearchLogRepository searchLogRepository) {
+                           SearchLogRepository searchLogRepository, ChangeService changeService) {
         this.glassesRepository = glassesRepository;
         this.eyeRepository = eyeRepository;
         this.dispenseRepository = dispenseRepository;
         this.searchLogRepository = searchLogRepository;
+        this.changeService = changeService;
     }
 
     @Override
@@ -53,6 +55,8 @@ public class MainServiceImpl implements MainService {
     @Override
     @Transactional
     public Glasses saveGlasses(Glasses glasses) throws DataAccessException, NoSkusLeftException {
+        // first statement of every write, so the changevalue row lock is held before InnoDB takes its snapshot
+        changeService.setNewHashValue(glasses.getLocation());
         eyeRepository.save(glasses.getOs());
         eyeRepository.save(glasses.getOd());
         // If dispense is already set...
@@ -83,12 +87,14 @@ public class MainServiceImpl implements MainService {
     @Override
     @Transactional
     public void deleteGlasses(Glasses glasses) throws DataAccessException {
+        changeService.setNewHashValue(glasses.getLocation());
         glassesRepository.delete(glasses);
     }
 
     @Override
     @Transactional
     public Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException {
+        changeService.setNewHashValue(glasses.getLocation());
         // dispenseRepository.save(glasses.getDispense());
 
         return glassesRepository.save(glasses);
@@ -97,6 +103,7 @@ public class MainServiceImpl implements MainService {
     @Override
     @Transactional
     public Glasses saveGlassesAfterEdit(Glasses glasses) throws DataAccessException {
+        changeService.setNewHashValue(glasses.getLocation());
         eyeRepository.save(glasses.getOs());
         eyeRepository.save(glasses.getOd());
         return glassesRepository.save(glasses);
