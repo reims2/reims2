@@ -10,12 +10,12 @@ import jakarta.validation.constraints.Pattern;
 @Table(name = "changevalue")
 public class ChangeValue {
     @Id
-    @Column(name = "hash_value")
-    private String hashValue;
-
     @Column(name = "location")
     @Pattern(regexp = "sm|sa")
     private String location;
+
+    @Column(name = "hash_value")
+    private String hashValue;
 
     public ChangeValue(String hashValue, String location) {
         this.hashValue = hashValue;
