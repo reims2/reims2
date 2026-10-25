@@ -55,7 +55,8 @@ yarn build         # vue-tsc --noEmit && vite build, what CI runs
 
 Expects REIMS running at `http://localhost:3000` (override with `BASE_URL`), login `test`/`testtest`.
 `e2e/stack.sh` provides exactly that: the root `compose.yaml` stack plus a Traefik that routes like prod,
-seeded from `e2e/dump.example.sql` (port via `E2E_PORT`).
+seeded from `e2e/dump.example.sql` (port via `E2E_PORT`). Specs create their own glasses through the
+`createGlasses` fixture in `e2e/tests/fixtures.ts` instead of relying on seed rows.
 
 ```bash
 ./stack.sh build     # or `pull` to test published images (set TAG, e.g. sha-abc1234)
