@@ -339,8 +339,16 @@ export interface components {
             searchDate: number;
             /** Format: int32 */
             resultCount: number;
+            results?: components["schemas"]["SearchResult"][];
             os: components["schemas"]["EyeDTO"];
             od: components["schemas"]["EyeDTO"];
+        };
+        SearchResult: {
+            /** Format: int64 */
+            id: number;
+            /** Format: int32 */
+            sku: number | null;
+            algorithm: string;
         };
         RoleName: {
             /** @enum {string} */
