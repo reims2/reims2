@@ -63,6 +63,7 @@
             indeterminate
             size="x-small"
             class="ml-2"
+            aria-label="Loading recently dispensed glasses"
           ></v-progress-circular>
         </div>
         <v-alert v-if="!isOnline" type="warning" variant="outlined" density="compact">

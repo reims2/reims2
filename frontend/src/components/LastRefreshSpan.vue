@@ -5,6 +5,7 @@
       indeterminate
       size="17"
       color="white"
+      aria-label="Refreshing glasses"
       class="mr-2 ma-0 pa-0"
     />
     Last update {{ lastRefreshString }}

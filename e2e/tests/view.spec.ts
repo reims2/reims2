@@ -6,8 +6,8 @@ test('Filter table and open glasses for editing', async ({ page, createGlasses }
   await page.goto('/view')
 
   // first From/To pair filters OD sphere
-  await page.getByLabel('From').first().fill('9.75')
-  await page.getByLabel('To').first().fill('9.75')
+  await page.getByRole('spinbutton', { name: 'From', exact: true }).first().fill('9.75')
+  await page.getByRole('spinbutton', { name: 'To', exact: true }).first().fill('9.75')
   const row = page.getByRole('row').filter({ hasText: sku })
   await expect(row).toBeVisible()
   await expect(row).toContainText('+9.75')
