@@ -43,7 +43,7 @@ test('Inventory works offline', async ({ page, context, createGlasses }) => {
 })
 
 test('Dispense offline uploads once back online', async ({ page, context, createGlasses, api }) => {
-  const { sku } = await createGlasses()
+  const { id, sku } = await createGlasses()
   await page.goto('/edit')
   await expect(page.getByText('Setting up REIMS2')).toHaveCount(0)
   const skuInput = page.getByLabel('SKU', { exact: true })
@@ -61,5 +61,7 @@ test('Dispense offline uploads once back online', async ({ page, context, create
 
   await context.setOffline(false)
   await expect(page.getByRole('button', { name: /Sync status: \d+ waiting/ })).toBeHidden({ timeout: 15000 })
-  expect((await api.get(`/api/glasses/sa/${sku}`)).status()).toBe(404)
+  // the freed SKU may already belong to another test's new pair
+  const current = await api.get(`/api/glasses/sa/${sku}`)
+  expect(current.ok() && (await current.json()).id === id).toBe(false)
 })

@@ -78,7 +78,7 @@ async function updateGlasses() {
     if (result === 'queued') {
       toast.warning(`Glasses will be automatically edited as soon as the connection is back.`)
     }
-    originalGlasses.value = glassesStore.getGlassLocal(newGlasses.sku ?? NaN) ?? newGlasses
+    originalGlasses.value = newGlasses
   } catch (error) {
     if (
       error instanceof ReimsAxiosError &&
