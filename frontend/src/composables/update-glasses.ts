@@ -1,4 +1,4 @@
-import { useIntervalFn, useNow, useOnline, watchThrottled } from '@vueuse/core'
+import { useEventListener, useIntervalFn, useNow, useOnline, watchThrottled } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
 import { useToast } from '@/composables/toast'
 import dayjs from 'dayjs'
@@ -14,6 +14,9 @@ export const useUpdatesGlassesInterval = () => {
     updateGlasses(true)
   })
 
+  useIntervalFn(uploadPending, 10 * 1000)
+  useEventListener('online', uploadPending)
+
   watchThrottled(
     [isOnline, now],
     () => {
@@ -24,7 +27,16 @@ export const useUpdatesGlassesInterval = () => {
     { throttle: 15000 },
   )
 
+  async function uploadPending() {
+    try {
+      await glassesStore.uploadPending()
+    } catch (error) {
+      console.warn('Upload of pending changes failed', error)
+    }
+  }
+
   async function updateGlasses(firstLoad = false) {
+    await uploadPending()
     try {
       if (firstLoad) await glassesStore.loadGlasses()
       else await glassesStore.loadGlassesIfChanged()

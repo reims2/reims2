@@ -8,11 +8,13 @@
     :color="status.color"
     :prepend-icon="status.icon"
     :aria-label="`Sync status: ${status.label}`"
-    @click="refresh"
+    @click="sync"
   >
     {{ status.label }}
     <v-tooltip activator="parent" location="end" aria-label="Sync details">
-      <div v-if="pendingCount > 0">{{ pendingCount }} changes waiting to upload.</div>
+      <div v-if="glassesStore.pendingCount > 0">
+        {{ glassesStore.pendingCount }} changes waiting to upload.
+      </div>
       <div v-if="glassesStore.isOutdated">The data is older than 3 days.</div>
       <last-refresh-span :show-spinner="false" />
       <div v-if="isOnline">Click to refresh now.</div>
@@ -29,27 +31,30 @@ import {
 } from '@mdi/js'
 import { useOnline } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
-import { usePendingChanges } from '@/composables/pending-changes'
 import LastRefreshSpan from '@/components/LastRefreshSpan.vue'
 import { useToast } from '@/composables/toast'
 
 const glassesStore = useGlassesStore()
 const isOnline = useOnline()
 const toast = useToast()
-const { pendingCount } = usePendingChanges()
 
-function refresh() {
+onMounted(() => glassesStore.refreshPendingCount())
+
+async function sync() {
   if (!isOnline.value) return
-  glassesStore
-    .loadGlasses()
-    .catch((error) => toast.warning(`Could not refresh glasses (${(error as Error).message})`))
+  try {
+    await glassesStore.uploadPending()
+    await glassesStore.loadGlasses()
+  } catch (error) {
+    toast.warning(`Could not refresh glasses (${(error as Error).message})`)
+  }
 }
 
 const status = computed(() => {
-  if (pendingCount.value > 0)
+  if (glassesStore.pendingCount > 0)
     return {
       icon: mdiCloudUploadOutline,
-      label: `${pendingCount.value} waiting`,
+      label: `${glassesStore.pendingCount} waiting`,
       color: 'rail-warn',
     }
   if (glassesStore.isOutdated)

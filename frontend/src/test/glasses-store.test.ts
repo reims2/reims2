@@ -1,9 +1,14 @@
+import 'fake-indexeddb/auto'
 import { createPinia, setActivePinia } from 'pinia'
 import { useGlassesStore } from '@/stores/glasses'
+import { useAuthStore } from '@/stores/auth'
 import { useRootStore } from '@/stores/root'
 import { ReimsAxiosError } from '@/lib/axios'
+import * as outbox from '@/lib/outbox'
 import { Glasses } from '@/model/GlassesModel'
-import { createGlasses } from './util'
+import { createGlasses, stubWebLocks } from './util'
+
+stubWebLocks()
 
 const api = vi.hoisted(() => ({ get: vi.fn(), post: vi.fn(), put: vi.fn() }))
 vi.mock('@/lib/axios', async (importOriginal) => ({
@@ -15,11 +20,17 @@ const eye = { sphere: 1, cylinder: 0, axis: 0, add: 0 }
 function pair(id: number, sku: number | null): Glasses {
   return { ...createGlasses('single', eye, eye)[0], id, sku }
 }
+const dispenseOf = (previousSku: number) => ({
+  previousSku,
+  modifyDate: null,
+  dispenseReason: 'DISPENSED' as const,
+})
 
 describe('glasses store', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     setActivePinia(createPinia())
     vi.resetAllMocks()
+    await outbox.flush(async () => {})
   })
 
   it('replaces a cached pair when its SKU is reissued to a new pair', async () => {
@@ -109,13 +120,13 @@ describe('glasses store', () => {
     store.allGlasses = [pair(1, 5), pair(2, 6)]
     api.put.mockResolvedValue({})
 
-    await store.dispense(pair(1, 5), 'DISPENSED')
+    expect(await store.dispense(pair(1, 5), 'DISPENSED')).toBe('sent')
     expect(api.put).toHaveBeenCalledWith('/api/glasses/1/dispense?reason=DISPENSED', {})
     await store.dispense(pair(2, 6), 'WRONGLY_ADDED')
     expect(store.allGlasses).toEqual([])
 
     api.put.mockResolvedValue({ status: 200, data: pair(1, 5) })
-    await store.undispense(pair(1, null))
+    expect(await store.undispense(pair(1, null))).toBe('sent')
     await store.undispense(pair(1, null))
     expect(api.put).toHaveBeenLastCalledWith('/api/glasses/1/undispense', {})
     expect(store.allGlasses).toEqual([pair(1, 5)])
@@ -126,12 +137,54 @@ describe('glasses store', () => {
     expect(store.allGlasses).toEqual([pair(1, 5)])
   })
 
-  it('does not change the cache when a write fails', async () => {
+  it('queues a change without a response and applies it locally', async () => {
     const store = useGlassesStore()
     store.allGlasses = [pair(1, 5)]
     api.put.mockRejectedValue(new ReimsAxiosError('Network error', true))
+    expect(await store.dispense(pair(1, 5), 'DISPENSED')).toBe('queued')
+    expect(store.getGlassLocal(5)).toBeNull()
+    expect(store.pendingCount).toBe(1)
+  })
+
+  it('queues reactive glasses', async () => {
+    const store = useGlassesStore()
+    const dispensed = reactive({ ...pair(1, null), dispense: dispenseOf(5) })
+    api.put.mockRejectedValue(new ReimsAxiosError('Network error', true))
+    expect(await store.undispense(dispensed)).toBe('queued')
+    expect(store.getGlassLocal(5)?.id).toBe(1)
+  })
+
+  it('queues behind waiting changes without trying to send', async () => {
+    const store = useGlassesStore()
+    store.allGlasses = [pair(1, 5), pair(2, 6)]
+    api.put.mockRejectedValueOnce(new ReimsAxiosError('Network error', true))
+    await store.dispense(pair(1, 5), 'DISPENSED')
+    expect(await store.dispense(pair(2, 6), 'DISPENSED')).toBe('queued')
+    expect(api.put).toHaveBeenCalledTimes(1)
+    expect(store.pendingCount).toBe(2)
+  })
+
+  it('throws on a server error without changing the cache', async () => {
+    const store = useGlassesStore()
+    store.allGlasses = [pair(1, 5)]
+    api.put.mockRejectedValue(new ReimsAxiosError('Server error', false, true, null, 502))
     await expect(store.dispense(pair(1, 5), 'DISPENSED')).rejects.toThrow()
     expect(store.getGlassLocal(5)).not.toBeNull()
+    expect(store.pendingCount).toBe(0)
+  })
+
+  it('uploads a queued search log to the site it was made at', async () => {
+    const store = useGlassesStore()
+    useAuthStore().accessToken = 'token'
+    api.post.mockRejectedValueOnce(new ReimsAxiosError('Network error', true))
+    const searchEye = { ...eye, isBAL: false }
+    const search = { glassesType: 'single' as const, od: searchEye, os: searchEye }
+    expect(await store.logSearch(search, 0, [])).toBe('queued')
+    useRootStore().reimsSite = 'sm'
+
+    api.post.mockResolvedValue({})
+    await store.uploadPending()
+    expect(api.post).toHaveBeenLastCalledWith('/api/glasses/sa/searchLog', expect.anything())
   })
 
   it('replaces an edited pair with the server version', async () => {
