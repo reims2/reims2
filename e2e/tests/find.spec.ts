@@ -1,7 +1,7 @@
 import { EyeInput } from './eye-input.po'
 import { test, expect, formatSku } from './fixtures'
 
-test('Search multifocal', { tag: '@fast' }, async ({ page, createGlasses }) => {
+test('Search multifocal', async ({ page, createGlasses }) => {
   const { sku } = await createGlasses({
     glassesType: 'multifocal',
     od: { sphere: 4.25, cylinder: 0, axis: 0, add: 2.5 },

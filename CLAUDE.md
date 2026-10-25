@@ -64,11 +64,11 @@ seeded from `e2e/dump.example.sql` (port via `E2E_PORT`). Specs create their own
 yarn install
 yarn test:ui                             # Playwright UI, pick the project top-left before running
 yarn playwright test tests/find.spec.ts  # single spec, headless
-yarn playwright test --project chromium --grep @fast # same subset CI runs on every PR
+yarn playwright test --project chromium # what CI runs on every PR
 ```
 
-CI runs the same stack inside the GitHub runner, never on the server: specs tagged `@fast` on PRs (images
-built from source) and on `main` (the images just pushed), the full suite weekly.
+CI runs the same stack inside the GitHub runner, never on the server: all specs on Chromium on PRs (images
+built from source) and on `main` (the images just pushed), on all browsers weekly.
 
 ### Docs (`docs/`)
 
@@ -145,7 +145,7 @@ resolves to `src/`.
 ### CI/CD
 
 GitHub Actions in `.github/workflows/`: `pr.yml` runs lint+test+build for frontend/backend/docs,
-ansible-lint and the `@fast` e2e specs on PRs. `main.yml` additionally builds and pushes per-component
+ansible-lint and the e2e specs on PRs. `main.yml` additionally builds and pushes per-component
 images to GHCR (`docker.yml`), runs `e2e.yml` against them, then deploys staging (dev.reims2.app) and
 production through `ansible.yml`, which runs the `ansible/` playbooks. Pushes leave production alone while
 it's in use during a campaign (`ansible/tasks/prod-quiet.yml`). `staging.yml` deploys any branch to staging
