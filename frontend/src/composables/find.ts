@@ -1,7 +1,6 @@
 import {
   Glasses,
   GlassesInput,
-  GlassesResult,
   GlassesSearch,
   GlassesType,
   SanitizedEyeSearch,
@@ -9,6 +8,8 @@ import {
 import { sanitizeEyeValues } from '@/util/eye-utils'
 import { MaybeRefOrGetter } from 'vue'
 import calculateAllPhilscore from '@/lib/philscore'
+import calculateAllBlurscore from '@/lib/blurscore'
+import interleave, { MatchResult } from '@/lib/interleave'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
 
@@ -17,7 +18,7 @@ export const useFindGlasses = (
   highTolerance: MaybeRefOrGetter<boolean>,
   isValid: MaybeRefOrGetter<boolean>,
 ) => {
-  const matches = ref<null | GlassesResult[]>(null)
+  const matches = ref<null | MatchResult[]>(null)
   const glassesStore = useGlassesStore()
   const rootStore = useRootStore()
   const allGlasses = computed(() => glassesStore.allGlasses)
@@ -31,10 +32,13 @@ export const useFindGlasses = (
       od: sanitizeEyeValues(glasses.value.od) as SanitizedEyeSearch,
       highTolerance: toValue(highTolerance),
     }
-    matches.value = philScore(eyeModel)
+    const stock = allGlasses.value || ([] as Glasses[])
+    const philscore = calculateAllPhilscore(eyeModel, stock)
+    matches.value = interleave(philscore, calculateAllBlurscore(eyeModel, stock))
     if (isUserSubmitted) {
+      const results = matches.value.map(({ id, sku, algorithm }) => ({ id, sku, algorithm }))
       // offline the service worker queues it, the page still gets the network error
-      glassesStore.logSearch(eyeModel, matches.value.length).catch(() => {})
+      glassesStore.logSearch(eyeModel, philscore.length, results).catch(() => {})
     }
   }
 
@@ -49,10 +53,6 @@ export const useFindGlasses = (
     },
     { deep: true },
   )
-
-  function philScore(terms: GlassesSearch): GlassesResult[] {
-    return calculateAllPhilscore(terms, allGlasses.value || ([] as Glasses[]))
-  }
   return {
     matches,
     startSearch,

@@ -100,6 +100,8 @@ export interface GlassesResult extends Glasses {
   osScore: number
 }
 
+export type MatchAlgorithm = 'philscore' | 'blurscore'
+
 export interface SanitizedEyeSearch extends Eye {
   isBAL: boolean
 }
@@ -118,5 +120,6 @@ export interface SearchLog {
   increaseSearchTolerance: boolean
   balLens: 'DISABLE_OD' | 'DISABLE_OS' | 'DISABLE_NONE'
   searchDate: number
-  resultCount: number
+  resultCount: number // PhilScore's own count
+  results: { id: number; sku: number | null; algorithm: MatchAlgorithm }[] // the merged list as shown
 }
