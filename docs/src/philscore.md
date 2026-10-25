@@ -8,7 +8,7 @@ The corresponding [code can be found here](https://github.com/reims2/reims2/blob
 
 The algorithm is a replica of the one used in the previous REIMS1 system. We have comprehensive testing in place to ensure that the REIMS2 implementation aligns with the REIMS1 implementation. Any discrepancies are treated as bugs and are fixed accordingly, except for the deliberate ones marked `REIMS2 only` in the tests, such as skipping the axis check for a zero-cylinder rx (see [`checkForAxisTolerance`](#checkforaxistolerance)). Several tests in `philscore_score.test.ts` are prefixed `REIMS1:` because their expected score was taken directly from the legacy system: treat those as a parity contract, not a spec to simplify.
 
-We are open to refining the algorithm, see [Potential Improvements](#potential-improvements) for more information.
+We are open to refining the algorithm, see [Potential Improvements](#potential-improvements) for more information. The Find page currently adds some [predicted-blur matching](/dev/ai-notes/predicted-blur-matching) picks to PhilScore's results as experimental suggestions, without changing PhilScore itself.
 
 ## Glossary
 
