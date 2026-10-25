@@ -48,7 +48,12 @@
       </template>
 
       <template #item.actions="{ item }">
-        <v-btn :to="{ name: 'Edit', query: { sku: Number(item.sku) } }" icon size="x-small">
+        <v-btn
+          :to="{ name: 'Edit', query: { sku: Number(item.sku) } }"
+          icon
+          size="x-small"
+          :aria-label="`Edit SKU ${item.sku}`"
+        >
           <v-icon>{{ mdiPencil }}</v-icon>
         </v-btn>
       </template>

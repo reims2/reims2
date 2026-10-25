@@ -1,15 +1,8 @@
 import AxeBuilder from '@axe-core/playwright'
 import { test, expect } from './fixtures'
 
-// violations the app already had when this check was added, drop rules here as they get fixed
-const knownViolations = [
-  'aria-progressbar-name',
-  'aria-required-children',
-  'aria-tooltip-name',
-  'button-name',
-  'color-contrast',
-  'link-name',
-]
+// Vuetify gives nav lists role=list but their link items role=link, with no listitem in between
+const knownViolations = ['aria-required-children']
 
 for (const path of ['/find', '/add', '/edit', '/view', '/manage/reports', '/manage/users']) {
   test(`No new accessibility violations on ${path}`, async ({ page }) => {

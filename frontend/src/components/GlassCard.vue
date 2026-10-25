@@ -17,7 +17,11 @@
           :ripple="false"
           :style="{ 'background-color': calcColorGradient(glasses.score) }"
         >
-          <v-tooltip activator="parent" location="bottom">
+          <v-tooltip
+            activator="parent"
+            location="bottom"
+            aria-label="Result (Philscore) - lower values are better"
+          >
             Result (Philscore) - lower values are better
           </v-tooltip>
           {{ glasses.score.toFixed(2) }}
@@ -33,7 +37,7 @@
     <v-card-subtitle class="pb-2 d-flex align-center">
       <span v-for="key in generalGlassesDataKeys" :key="key" class="pr-2">
         <span class="no-child-padding">
-          <v-tooltip location="bottom" activator="parent">
+          <v-tooltip location="bottom" activator="parent" :aria-label="glassesMetaUIData[key].desc">
             {{ glassesMetaUIData[key].desc }}
           </v-tooltip>
           <v-icon size="small">
@@ -53,7 +57,11 @@
               </div>
               <div v-if="isGlassesResult(glasses)" class="d-flex align-center">
                 <v-chip class="ml-2 px-2" size="x-small" label :ripple="false">
-                  <v-tooltip activator="parent" location="bottom">
+                  <v-tooltip
+                    activator="parent"
+                    location="bottom"
+                    :aria-label="`PhilScore only for ${eye.text}`"
+                  >
                     PhilScore only for {{ eye.text }}
                   </v-tooltip>
                   {{ (eye.key == 'od' ? glasses.odScore : glasses.osScore).toFixed(2) }}

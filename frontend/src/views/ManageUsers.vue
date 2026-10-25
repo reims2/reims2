@@ -2,7 +2,7 @@
   <v-container>
     <v-row density="compact" class="d-flex justify-center">
       <v-col cols="12" md="6" lg="5">
-        <v-progress-circular v-if="items == null" indeterminate />
+        <v-progress-circular v-if="items == null" indeterminate aria-label="Loading users" />
         <v-alert v-else-if="items.length == 0" type="warning">No users loaded.</v-alert>
         <v-table v-else>
           <thead>
@@ -19,7 +19,7 @@
               </td>
               <td>{{ item.roles.map((el) => el.name).join(', ') }}</td>
               <td class="d-flex align-center">
-                <v-btn icon size="x-small" @click="editInfo = true">
+                <v-btn icon size="x-small" aria-label="Edit user" @click="editInfo = true">
                   <v-icon>{{ mdiPencil }}</v-icon>
                 </v-btn>
                 <v-btn
@@ -28,6 +28,7 @@
                   size="x-small"
                   color="error"
                   class="ml-2"
+                  :aria-label="`Delete ${item.username}`"
                   :loading="deleteLoading == item.id"
                   @click="deleteUser(item.id!)"
                 >

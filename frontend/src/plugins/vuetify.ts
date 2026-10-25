@@ -37,6 +37,8 @@ export const vuetifyOptions: VuetifyOptions = {
           success: '#006d3c',
           warning: '#9e4300',
         },
+        // Vuetify's 0.6 leaves labels and hints below the WCAG AA contrast ratio
+        variables: { 'medium-emphasis-opacity': 0.7 },
       },
     },
     variations: {
