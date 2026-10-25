@@ -1,15 +1,14 @@
 # Predicted-blur matching
 
-A second matching algorithm, meant to run next to PhilScore on the same search so volunteers can
-compare both, and maybe merge them later. It's implemented in `frontend/src/lib/blurscore.ts`, but
-not shown in the UI yet. It works out proposal 7 of
+A second matching algorithm, implemented in `frontend/src/lib/blurscore.ts`. The Find page runs it
+next to PhilScore on every search and offers some of its picks as experimental suggestions, to find
+out whether volunteers take them, see [Comparison with PhilScore](#comparison-with-philscore). It works out proposal 7 of
 [PhilScore improvement ideas](/dev/ai-notes/philscore-improvements), which also has the literature.
-How results are compared, shown and logged is decided elsewhere.
 
 ## Summary
 
 - One number per pair: the blur the patient is predicted to see, in diopters (D). Lower is better.
-  Volunteers see it as a grade.
+  Volunteers only see a small flask icon on the cards it suggests.
 - Same inputs as PhilScore, no new fields, runs in the browser.
 - Power vectors replace the axis table, the spherical equivalent (SE) candidates, the three bonus
   rules and the add window.
@@ -237,6 +236,30 @@ average (blur 0.22), because nothing checks it.
 - Should a lens with more cylinder than the Rx cost extra? It distorts more for first-time wearers,
   but we don't know who they are.
 - Is the worse of distance and reading right for a multifocal, or should distance count more?
+
+## Comparison with PhilScore
+
+- The Find page keeps PhilScore's list, but the last card of each page of 3 goes to blur's best
+  unlisted pair graded good or better, if blur predicts strictly less blur for it than for
+  PhilScore's pick (`frontend/src/lib/interleave.ts`). Such pairs also fill the list once PhilScore
+  runs out. The list stops at 30. PhilScore keeps the first 2 cards, so the untested algorithm never
+  takes the top one.
+- The card keeps its PhilScore chip if PhilScore found the pair and shows a small flask icon next to
+  the SKU. Its tooltip says "Experimental suggestion from a new matching method".
+- On the replay, page 1 gets an alternative in 39 % of single vision, 66 % of multifocal and 51 % of
+  unsuccessful searches, 3 to 5 per 30 cards. About a quarter are pairs PhilScore doesn't find, the
+  rest it ranks lower. Without "strictly less", blur's second choice would step in whenever its first
+  is PhilScore's pick, and half the single vision alternatives would be no better than the pair they
+  replace. When PhilScore finds nothing, a good blur pair exists in only 2 to 10 % of searches.
+- `search_log.results` stores the shown list as JSON, e.g.
+  `[{"id": 4711, "sku": 123, "algorithm": "blurscore"}]`, where `blurscore` marks an alternative.
+  `result_count` stays PhilScore's count.
+- After the campaign, read a database backup. Order searches by `search_date`, not `id`, since
+  queued offline rows arrive late. Match each dispense one to one to the latest earlier search at the
+  same site whose `results` contain its glasses `id`. Report how often an offered alternative was
+  dispensed, per glasses type with a 95 % interval. About 900 pairs are dispensed per campaign, so
+  roughly 450 searches offer one on page 1. Being third and marked experimental lowers the pick rate, so a low
+  share doesn't show blur is worse, but a clear one shows its picks are wanted.
 
 ## Implementation
 

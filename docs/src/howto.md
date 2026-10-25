@@ -10,7 +10,7 @@ The current location used by REIMS2 is displayed in the top left corner. To chan
 
 ## Dispensing Glasses
 
-Once suitable glasses have been identified for a patient, it's crucial to mark them as dispensed in the database. To do this, navigate to the "Edit" screen, input the SKU, and click "Dispense". Alternatively, you can press ENTER. A notification will appear confirming the successful dispensation.
+Each result on the Find screen shows its PhilScore (lower is better). The last result on a page can be an experimental suggestion picked by predicted blur, marked by a small flask icon, with or without a PhilScore. Once suitable glasses have been identified for a patient, it's crucial to mark them as dispensed in the database. To do this, navigate to the "Edit" screen, input the SKU, and click "Dispense". Alternatively, you can press ENTER. A notification will appear confirming the successful dispensation.
 
 ## Editing Existing Glasses
 
