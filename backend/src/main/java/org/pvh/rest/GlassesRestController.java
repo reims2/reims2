@@ -214,7 +214,6 @@ public class GlassesRestController {
         } finally {
             lock.unlock();
         }
-        changeService.setNewHashValue(glassesResponse.getLocation());
         logger.info("Added new glasses in {}. SKU is {}.", glassesResponse.getLocation(), glassesResponse.getSku());
         return new ResponseEntity<>(GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(glassesResponse), HttpStatus.CREATED);
     }
@@ -233,7 +232,6 @@ public class GlassesRestController {
         }
         Glasses glasses1 = GlassesMapperImpl.getInstance().updateGlassesFromGlassesRequestDTO(glasses, currentGlasses.get());
         logger.info("Edited glasses with SKU {} (in {})", sku, location);
-        changeService.setNewHashValue(location);
         return new ResponseEntity<>(
             GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(this.mainService.saveGlassesAfterEdit(glasses1)),
             HttpStatus.OK);
@@ -264,7 +262,6 @@ public class GlassesRestController {
 
         currentGlasses.get().setSku(null);
         this.mainService.saveGlassesAfterDispense(currentGlasses.get());
-        changeService.setNewHashValue(location);
         logger.info("Dispensed glasses with SKU {} (in {}) with reason {}", sku, location,
             currentGlasses.get().getDispense().getDispenseReason());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -298,7 +295,6 @@ public class GlassesRestController {
         currentGlasses.get().getDispense().setDispenseReason(null);
 
         this.mainService.saveGlassesAfterDispense(currentGlasses.get());
-        changeService.setNewHashValue(currentGlasses.get().getLocation());
         logger.info("Undispensed glasses with SKU {}", currentGlasses.get().getSku());
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -312,7 +308,6 @@ public class GlassesRestController {
         }
         this.mainService.deleteGlasses(glasses.get());
         logger.info("Completely deleted glasses with SKU {} (in {})", sku, location);
-        changeService.setNewHashValue(location);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
