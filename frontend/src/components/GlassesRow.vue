@@ -8,7 +8,7 @@
     <sku-tag
       :sku="displayed.sku ?? '????'"
       :state="state"
-      :score="isGlassesResult(glasses) ? glasses.score : null"
+      :score="'score' in glasses ? glasses.score : null"
     />
     <div class="d-flex flex-column ga-2 flex-1-1" :class="{ 'text-medium-emphasis': isDone }">
       <div
@@ -20,6 +20,17 @@
           </v-tooltip>
           <v-icon size="16" :icon="glassesMetaUIData[key].icon" />
           {{ glasses[key] }}
+        </span>
+        <span
+          v-if="alternative"
+          class="d-inline-flex"
+          role="img"
+          aria-label="Experimental suggestion from a new matching method"
+        >
+          <v-tooltip activator="parent" location="bottom">
+            Experimental suggestion from a new matching method
+          </v-tooltip>
+          <v-icon size="16" :icon="mdiFlaskOutline" />
         </span>
       </div>
       <table class="align-self-start text-body-large text-rx" style="border-collapse: collapse">
@@ -75,7 +86,9 @@
 </template>
 
 <script setup lang="ts">
+import { mdiFlaskOutline } from '@mdi/js'
 import { Glasses, GlassesEyeIndex, GlassesResult } from '@/model/GlassesModel'
+import { MatchResult } from '@/lib/interleave'
 import { formatGlassesForDisplay } from '@/util/format-glasses'
 import { glassesMetaUIData } from '@/util/glasses-utils'
 import EditDialog from '@/components/EditDialog.vue'
@@ -86,7 +99,7 @@ const {
   editable = false,
   selected = false,
 } = defineProps<{
-  glasses: Glasses | GlassesResult
+  glasses: Glasses | GlassesResult | MatchResult
   editable?: boolean
   // the glasses loaded into a form, not a list entry
   selected?: boolean
@@ -111,10 +124,7 @@ const state = computed(() => {
   return glasses.dispense?.dispenseReason === 'DISPENSED' ? 'dispensed' : 'deleted'
 })
 const isDone = computed(() => state.value !== 'stock')
+const alternative = computed(() => 'algorithm' in glasses && glasses.algorithm === 'blurscore')
 
 const displayed = computed(() => formatGlassesForDisplay(glasses))
-
-function isGlassesResult(value: Glasses | GlassesResult): value is GlassesResult {
-  return 'score' in value
-}
 </script>

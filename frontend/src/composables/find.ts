@@ -1,7 +1,6 @@
 import {
   Glasses,
   GlassesInput,
-  GlassesResult,
   GlassesSearch,
   GlassesType,
   SanitizedEyeSearch,
@@ -9,6 +8,8 @@ import {
 import { sanitizeEyeValues } from '@/util/eye-utils'
 import { MaybeRefOrGetter } from 'vue'
 import calculateAllPhilscore from '@/lib/philscore'
+import calculateAllBlurscore from '@/lib/blurscore'
+import interleave, { MatchResult } from '@/lib/interleave'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
 import { useDeleteGlasses, useUndoDispension } from '@/composables/edit'
@@ -18,7 +19,7 @@ export const useFindGlasses = (
   highTolerance: MaybeRefOrGetter<boolean>,
   isValid: MaybeRefOrGetter<boolean>,
 ) => {
-  const matches = ref<null | GlassesResult[]>(null)
+  const matches = ref<null | MatchResult[]>(null)
   const glassesStore = useGlassesStore()
   const rootStore = useRootStore()
   const allGlasses = computed(() => glassesStore.allGlasses)
@@ -32,10 +33,13 @@ export const useFindGlasses = (
       od: sanitizeEyeValues(glasses.value.od) as SanitizedEyeSearch,
       highTolerance: toValue(highTolerance),
     }
-    matches.value = philScore(eyeModel)
+    const stock = allGlasses.value || ([] as Glasses[])
+    const philscore = calculateAllPhilscore(eyeModel, stock)
+    matches.value = interleave(philscore, calculateAllBlurscore(eyeModel, stock))
     if (isUserSubmitted) {
+      const results = matches.value.map(({ id, sku, algorithm }) => ({ id, sku, algorithm }))
       // offline the service worker queues it, the page still gets the network error
-      glassesStore.logSearch(eyeModel, matches.value.length).catch(() => {})
+      glassesStore.logSearch(eyeModel, philscore.length, results).catch(() => {})
     }
   }
 
@@ -50,10 +54,6 @@ export const useFindGlasses = (
     },
     { deep: true },
   )
-
-  function philScore(terms: GlassesSearch): GlassesResult[] {
-    return calculateAllPhilscore(terms, allGlasses.value || ([] as Glasses[]))
-  }
   return {
     matches,
     startSearch,
@@ -62,9 +62,9 @@ export const useFindGlasses = (
 }
 
 // results are a snapshot, so a dispensed pair stays listed with an undo until the next search
-export const useDispenseResult = (matches: Ref<GlassesResult[] | null>) => {
+export const useDispenseResult = (matches: Ref<MatchResult[] | null>) => {
   const dispensedIds = ref<number[]>([])
-  const current = ref<GlassesResult | null>(null)
+  const current = ref<MatchResult | null>(null)
   watch(matches, () => (dispensedIds.value = []))
 
   const { isLoading: isDispensing, deleteGlasses } = useDeleteGlasses(
@@ -79,7 +79,7 @@ export const useDispenseResult = (matches: Ref<GlassesResult[] | null>) => {
   const isLoading = computed(() => isDispensing.value || isUndoing.value)
 
   // shaped like a dispensed pair from the server, so the row and the undo treat it the same
-  function shown(item: GlassesResult): GlassesResult {
+  function shown(item: MatchResult): MatchResult {
     if (!dispensedIds.value.includes(item.id)) return item
     const dispense = {
       previousSku: item.sku,
@@ -89,13 +89,13 @@ export const useDispenseResult = (matches: Ref<GlassesResult[] | null>) => {
     return { ...item, sku: null, dispensed: true, dispense }
   }
 
-  async function dispense(item: GlassesResult) {
+  async function dispense(item: MatchResult) {
     if (isLoading.value) return
     current.value = item
     await deleteGlasses('DISPENSED')
   }
 
-  async function undo(item: GlassesResult) {
+  async function undo(item: MatchResult) {
     if (isLoading.value) return
     current.value = item
     await undoDispension(shown(item))
