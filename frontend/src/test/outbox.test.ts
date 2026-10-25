@@ -77,7 +77,7 @@ describe('outbox', () => {
     expect(sent).toEqual([1, 3])
     expect(await outbox.count()).toBe(0)
     expect(toastQueue.value).toEqual([
-      { color: 'error', text: expect.stringContaining('queued dispense was rejected') },
+      { color: 'error', text: expect.stringContaining('queued dispense of SKU 0002 was rejected') },
     ])
     expect(toastQueue.value[0].text).toContain('nope')
   })
@@ -107,7 +107,7 @@ describe('outbox', () => {
     await outbox.flush(send)
     expect(sent).toEqual([10, 2])
     expect(toastQueue.value).toEqual([
-      { color: 'error', text: expect.stringContaining('dispense older than 30 days') },
+      { color: 'error', text: expect.stringContaining('dispense of SKU 0001 older than 30 days') },
     ])
   })
 })
