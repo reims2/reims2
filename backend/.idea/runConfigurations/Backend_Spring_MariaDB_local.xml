@@ -5,7 +5,7 @@
       <env name="PVH_DEBUG" value="true" />
       <env name="PVH_JWT_SECRET" value="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException" />
     </envs>
-    <module name="spring-pvh-rest" />
+    <module name="reims2-backend" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="org.pvh.PVHApplication" />
     <method v="2">
       <option name="Make" enabled="true" />

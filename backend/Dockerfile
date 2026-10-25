@@ -16,7 +16,9 @@ RUN java -Djarmode=tools -jar application.jar extract --layers --destination ext
 
 # PROD IMAGE
 FROM eclipse-temurin:25.0.4_7-jre-alpine@sha256:2ca9adf44f5c29d28ecd26cf92d75cc0c66b7f32bfd839a4439e363a8b428af8
-RUN apk add dumb-init
+RUN apk add --no-cache dumb-init
+RUN addgroup -S app && adduser -S -G app app
+USER app:app
 
 ENV HOST=0.0.0.0
 ENV PORT=5000
@@ -28,7 +30,7 @@ COPY --from=build /usr/src/app/target/extracted/spring-boot-loader/ ./
 COPY --from=build /usr/src/app/target/extracted/snapshot-dependencies/ ./
 COPY --from=build /usr/src/app/target/extracted/application/ ./
 
-HEALTHCHECK --interval=5s --timeout=10s --retries=8 --start-period=120s CMD wget -nv -t1 --spider http://localhost:$PORT/api || exit 1
+HEALTHCHECK --interval=5s --timeout=10s --retries=8 --start-period=120s CMD wget -nv -t1 --spider http://localhost:$PORT/actuator/health/liveness || exit 1
 
 # exit on OOM so the container restarts instead of limping on
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
