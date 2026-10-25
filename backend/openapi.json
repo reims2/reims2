@@ -699,6 +699,12 @@
             "format" : "int32",
             "minimum" : 0
           },
+          "results" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SearchResult"
+            }
+          },
           "os" : {
             "$ref" : "#/components/schemas/EyeDTO"
           },
@@ -707,6 +713,22 @@
           }
         },
         "required" : [ "balLens", "glassesType", "od", "os", "resultCount", "searchDate" ]
+      },
+      "SearchResult" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "sku" : {
+            "type" : [ "integer", "null" ],
+            "format" : "int32"
+          },
+          "algorithm" : {
+            "type" : "string"
+          }
+        }
       },
       "RoleName" : {
         "type" : "object",
