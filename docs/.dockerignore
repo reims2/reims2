@@ -1,11 +1,8 @@
 .*
 node_modules
-npm-debug.log
 Dockerfile
 src/.vitepress/dist
 src/.vitepress/cache
 README.*
 
 !src/.vitepress/config.ts
-# for last updated time in the footer
-!.git/
