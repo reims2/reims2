@@ -76,12 +76,12 @@ onMounted(() => {
   }
 })
 
-// Auto redirect to Login when logged out
+// Auto redirect to the start page when logged out
 watch(
   () => authStore.isLoggedIn,
   (isLoggedIn) => {
     if (!isLoggedIn) {
-      router.push({ name: 'Login' })
+      router.push({ name: 'Home' })
     }
   },
 )

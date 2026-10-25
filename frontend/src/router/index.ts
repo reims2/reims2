@@ -22,15 +22,7 @@ const routes: RouteRecordRaw[] = [
           auth: false,
         },
       },
-      {
-        path: '/login',
-        name: 'Login',
-        component: () => import('@/views/LoginPage.vue'),
-        meta: {
-          auth: false,
-          title: 'Login',
-        },
-      },
+      { path: '/login', redirect: (to) => ({ name: 'Home', query: to.query }) },
       { path: '/:catchAll(.*)', component: () => import('@/views/404Error.vue') },
     ],
   },
@@ -85,7 +77,7 @@ const router = createRouter({
 router.beforeEach((to) => {
   const authStore = useAuthStore()
   if (!authStore.isLoggedIn && to.meta.auth !== false) {
-    return { name: 'Login', query: { redirect: to.fullPath } }
+    return { name: 'Home', query: { redirect: to.fullPath } }
   }
 })
 router.afterEach((to) => {
