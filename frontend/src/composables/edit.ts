@@ -106,19 +106,15 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
     const glasses = toValue(glassesInput)
     if (isLoading.value || !glasses) return
     isLoading.value = true
+    let result
     try {
-      await glassesStore.undispense(glasses)
+      result = await glassesStore.undispense(glasses)
     } catch (error) {
       if (error instanceof ReimsAxiosError) {
         if (error.statusCode === 400) {
           toast.error(
             `Reverting is not possible here, please readd glasses manually (Error: ${error.apiMessage}).`,
           )
-        } else if (error.isNetwork) {
-          toast.warning(
-            "Network or server error. Dispension/deletion will be automatically reverted as soon as you're back online.",
-          )
-          onSuccessFn?.()
         } else {
           toast.error(
             `Could not undo dispension/deletion of glasses, please retry (${error.apiMessage ?? error.message}).`,
@@ -134,9 +130,15 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
       isLoading.value = false
     }
 
-    toast.info(
-      `Reverted dispension/deletion of SKU ${formatSku(glasses.dispense?.previousSku)} successfully`,
-    )
+    if (result === 'queued') {
+      toast.warning(
+        "Network or server error. Dispension/deletion will be automatically reverted as soon as you're back online.",
+      )
+    } else {
+      toast.info(
+        `Reverted dispension/deletion of SKU ${formatSku(glasses.dispense?.previousSku)} successfully`,
+      )
+    }
     onSuccessFn?.()
   }
   return {
@@ -161,8 +163,9 @@ export const useDeleteGlasses = (
     // show user the correct action string, even though it's the same in the backend
     const actionString = reason === 'DISPENSED' ? 'dispense' : 'delete'
     isLoading.value = true
+    let result
     try {
-      await glassesStore.dispense(glasses, reason ?? 'OTHER')
+      result = await glassesStore.dispense(glasses, reason ?? 'OTHER')
     } catch (error) {
       if (error instanceof ReimsAxiosError) {
         if (error.statusCode === 404) {
@@ -171,13 +174,6 @@ export const useDeleteGlasses = (
           toast.error(
             `Could not ${actionString} glasses because of a server error. Please retry later (Error ${error.statusCode})`,
           )
-        } else if (error.isNetwork) {
-          glassesStore.deleteOfflineGlassesById(glasses.id)
-          toast.warning(
-            `Glasses with SKU ${formatSku(sku)} will be ${actionString}d when you're back online`,
-          )
-          onSuccessFn?.()
-          return
         } else {
           toast.error(
             `Could not ${actionString} glasses, please retry (${error.apiMessage ?? error.message})`,
@@ -191,7 +187,13 @@ export const useDeleteGlasses = (
       isLoading.value = false
     }
 
-    toast.info(`Successfully ${actionString}d glasses with SKU ${formatSku(sku)}`)
+    if (result === 'queued') {
+      toast.warning(
+        `Glasses with SKU ${formatSku(sku)} will be ${actionString}d when you're back online`,
+      )
+    } else {
+      toast.info(`Successfully ${actionString}d glasses with SKU ${formatSku(sku)}`)
+    }
     onSuccessFn?.()
   }
   return {

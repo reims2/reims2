@@ -32,7 +32,7 @@ export const useFindGlasses = (
     matches.value = interleave(philscore, calculateAllBlurscore(eyeModel, stock))
     if (isUserSubmitted) {
       const results = matches.value.map(({ id, algorithm }) => ({ id, algorithm }))
-      // offline the service worker queues it, the page still gets the network error
+      // queued when offline, a server error isn't worth bothering the user with
       glassesStore.logSearch(eyeModel, philscore.length, results).catch(() => {})
     }
   }

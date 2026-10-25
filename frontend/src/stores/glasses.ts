@@ -2,7 +2,10 @@ import { Glasses, GlassesSearch, SanitizedGlassesInput } from '@/model/GlassesMo
 import type { components } from '@/model/api'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useRootStore } from './root'
+import { useAuthStore } from './auth'
 import { ReimsAxiosError, useAxios } from '@/lib/axios'
+import * as outbox from '@/lib/outbox'
+import { OutboxEntry } from '@/lib/outbox'
 import { DeletionReason } from '@/model/ReimsModel'
 import { Dayjs } from 'dayjs'
 
@@ -11,6 +14,8 @@ type GlassesRequest = components['schemas']['GlassesRequestDTO']
 type GlassesResponse = components['schemas']['GlassesResponseDTO']
 type SearchLogRequest = components['schemas']['SearchLogDTO']
 type ChangeValue = components['schemas']['ChangeValueDTO']
+
+export type SendResult = 'sent' | 'queued'
 
 const arrayContainsSku = (data: Glasses[], sku: number | null) => {
   if (sku === null) return false
@@ -23,12 +28,14 @@ export const useGlassesStore = defineStore(
   'glasses',
   () => {
     const rootStore = useRootStore()
+    const authStore = useAuthStore()
     const axiosInstance = useAxios()
     const allGlasses = ref([] as Glasses[])
     const allGlassesHash = ref('')
     const lastRefresh = ref(null as string | null)
     const isOutdated = ref(false)
     const isRefreshingGlasses = ref(false)
+    const pendingCount = ref(0)
 
     const hasGlassesLoaded = computed(() => {
       return allGlasses.value.length > 0
@@ -54,7 +61,7 @@ export const useGlassesStore = defineStore(
       glassesSearch: GlassesSearch,
       resultCount: number,
       results: SearchLogRequest['results'],
-    ): Promise<void> {
+    ): Promise<SendResult> {
       let balLens: SearchLogRequest['balLens'] = 'DISABLE_NONE'
       if (glassesSearch.os.isBAL) balLens = 'DISABLE_OS'
       if (glassesSearch.od.isBAL) balLens = 'DISABLE_OD'
@@ -66,7 +73,7 @@ export const useGlassesStore = defineStore(
         resultCount,
         results,
       }
-      await axiosInstance.post(`/api/glasses/${rootStore.reimsSite}/searchLog`, request)
+      return sendOrQueue({ ...newEntry(), kind: 'searchLog', payload: { request } })
     }
     async function fetchSingle(sku: number): Promise<Glasses> {
       controllerFetchSingle.abort()
@@ -92,36 +99,95 @@ export const useGlassesStore = defineStore(
       return fetchedGlasses
     }
     // writes go by id, so one queued offline can't hit a pair that got the SKU later
-    async function dispense(glasses: Glasses, reason: DeletionReason) {
-      // abort running fetch all request, since the fetch all will change after this request
-      controllerGetAll.abort()
-
-      await axiosInstance.put(`/api/glasses/${glasses.id}/dispense?reason=${reason}`, {})
-      deleteOfflineGlassesById(glasses.id)
+    async function dispense(glasses: Glasses, reason: DeletionReason): Promise<SendResult> {
+      return sendOrQueue({ ...newEntry(), kind: 'dispense', payload: { glasses, reason } })
     }
-    async function undispense(glasses: Glasses) {
-      // abort running fetch all request, since the fetch all will change after this request
-      controllerGetAll.abort()
-
-      const response = await axiosInstance.put<GlassesResponse>(
-        `/api/glasses/${glasses.id}/undispense`,
-        {},
-      )
-      // a 204 means it was already in stock and changed nothing
-      if (response.status === 200) addOfflineGlasses(response.data)
+    async function undispense(glasses: Glasses): Promise<SendResult> {
+      return sendOrQueue({ ...newEntry(), kind: 'undispense', payload: { glasses } })
     }
-    async function editGlasses(newGlasses: Glasses): Promise<Glasses> {
+    async function editGlasses(newGlasses: Glasses): Promise<SendResult> {
+      return sendOrQueue({ ...newEntry(), kind: 'edit', payload: { glasses: newGlasses } })
+    }
+    function newEntry() {
+      return { site: rootStore.reimsSite, createdAt: Date.now() }
+    }
+    async function sendOrQueue(entry: OutboxEntry): Promise<SendResult> {
       // abort running fetch all request, since the fetch all will change after this request
-      controllerGetAll.abort()
-
-      const request: GlassesRequest = newGlasses
-      const response = await axiosInstance.put<GlassesResponse>(
-        `/api/glasses/${newGlasses.id}`,
-        request,
-      )
-      const editedGlasses: Glasses = response.data
-      addOfflineGlasses(editedGlasses)
-      return editedGlasses
+      if (entry.kind !== 'searchLog') controllerGetAll.abort()
+      // a glasses change waits behind queued ones so the server gets them in order
+      if (entry.kind === 'searchLog' || (await outbox.count()) === 0) {
+        try {
+          applyLocal(entry, (await send(entry)) ?? null)
+          return 'sent'
+        } catch (e) {
+          if (!(e instanceof ReimsAxiosError && e.isNetwork)) throw e
+        }
+      }
+      await outbox.add(entry)
+      applyLocal(entry)
+      await refreshPendingCount()
+      return 'queued'
+    }
+    async function send(entry: OutboxEntry): Promise<Glasses | undefined> {
+      if (entry.kind !== 'searchLog') controllerGetAll.abort()
+      switch (entry.kind) {
+        case 'dispense': {
+          const { glasses, reason } = entry.payload
+          await axiosInstance.put(`/api/glasses/${glasses.id}/dispense?reason=${reason}`, {})
+          return
+        }
+        case 'undispense': {
+          const response = await axiosInstance.put<GlassesResponse>(
+            `/api/glasses/${entry.payload.glasses.id}/undispense`,
+            {},
+          )
+          // a 204 means it was already in stock and changed nothing
+          return response.status === 200 ? response.data : undefined
+        }
+        case 'edit': {
+          const request: GlassesRequest = entry.payload.glasses
+          const response = await axiosInstance.put<GlassesResponse>(
+            `/api/glasses/${entry.payload.glasses.id}`,
+            request,
+          )
+          return response.data
+        }
+        case 'searchLog':
+          await axiosInstance.post(`/api/glasses/${entry.site}/searchLog`, entry.payload.request)
+      }
+    }
+    /**
+     * Changes the local list like the server will, also while the change is still queued.
+     * serverGlasses is the server's answer, null if it sent none and undefined while queued.
+     */
+    function applyLocal(entry: OutboxEntry, serverGlasses?: Glasses | null) {
+      switch (entry.kind) {
+        case 'dispense':
+          deleteOfflineGlassesById(entry.payload.glasses.id)
+          break
+        case 'undispense': {
+          if (serverGlasses === null) break
+          const { glasses } = entry.payload
+          const sku = glasses.dispense?.previousSku ?? glasses.sku
+          addOfflineGlasses(
+            serverGlasses ?? { ...glasses, sku, dispensed: false, dispense: undefined },
+          )
+          break
+        }
+        case 'edit':
+          addOfflineGlasses(serverGlasses ?? entry.payload.glasses)
+      }
+    }
+    async function refreshPendingCount() {
+      pendingCount.value = await outbox.count()
+    }
+    async function uploadPending() {
+      if (!authStore.isLoggedIn) return
+      try {
+        await outbox.flush(send)
+      } finally {
+        await refreshPendingCount()
+      }
     }
     async function loadSearchesCsv(): Promise<Blob> {
       const response = await axiosInstance.get(
@@ -212,6 +278,7 @@ export const useGlassesStore = defineStore(
       isOutdated,
       allGlassesHash,
       isRefreshingGlasses,
+      pendingCount,
       hasGlassesLoaded,
       getGlassLocal,
       addGlasses,
@@ -220,6 +287,8 @@ export const useGlassesStore = defineStore(
       dispense,
       undispense,
       editGlasses,
+      refreshPendingCount,
+      uploadPending,
       loadSearchesCsv,
       loadDispensedCsv,
       loadInventoryCsv,

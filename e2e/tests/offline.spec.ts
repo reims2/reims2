@@ -41,3 +41,25 @@ test('Inventory works offline', async ({ page, context, createGlasses }) => {
   await page.getByRole('link', { name: 'Inventory' }).click()
   await expect(page.getByRole('row').filter({ hasText: sku })).toBeVisible()
 })
+
+test('Dispense offline uploads once back online', async ({ page, context, createGlasses, api }) => {
+  const { sku } = await createGlasses()
+  await page.goto('/edit')
+  await expect(page.getByText('Setting up REIMS2')).toHaveCount(0)
+  const skuInput = page.getByLabel('SKU', { exact: true })
+  await skuInput.fill(formatSku(sku))
+  await expect(page.getByLabel('Glasses result')).toBeVisible()
+
+  await context.setOffline(true)
+  await page.getByRole('button', { name: 'Dispense' }).click()
+  await expect(
+    page.getByText(`Glasses with SKU ${formatSku(sku)} will be dispensed when you're back online`),
+  ).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Sync status: 1 waiting' })).toBeVisible()
+  await skuInput.fill(formatSku(sku))
+  await expect(page.getByLabel('Glasses result')).toBeHidden()
+
+  await context.setOffline(false)
+  await expect(page.getByRole('button', { name: /Sync status: \d+ waiting/ })).toBeHidden({ timeout: 15000 })
+  expect((await api.get(`/api/glasses/sa/${sku}`)).status()).toBe(404)
+})

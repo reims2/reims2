@@ -97,11 +97,11 @@ scoring: any difference from REIMS1 not documented there is a bug.
   store persisted to local storage.
 - It polls `GET /api/glasses/{location}/changes` for a hash that `ChangeService` bumps on every write, and
   refetches the full list only when the hash moved.
-- Offline, dispense/undispense/edit `PUT`s and search log `POST`s are queued by Workbox background sync
-  (`frontend/vite.config.ts`). A 5xx on the first try isn't queued, the page shows it. A replay is dropped
-  on a 4xx and retried on a 5xx, so the backend answers 4xx only for a change that can never succeed: bad
-  input, or a conflict like editing a pair dispensed in the meantime.
-- The rail's sync status counts queued writes straight from Workbox's IndexedDB (`composables/pending-changes.ts`).
+- Dispenses, undos, edits and search logs that get no response are queued in an IndexedDB outbox
+  (`frontend/src/lib/outbox.ts`) and upload in order while the app is open. A 5xx on the first try isn't
+  queued, the page shows it. A queued entry is dropped on a 4xx and retried on a 5xx, so the backend answers
+  4xx only for a change that can never succeed: bad input, or a conflict like editing a pair dispensed in
+  the meantime. The rail's sync status shows the store's count of queued glasses changes.
 
 ### Domain model
 
