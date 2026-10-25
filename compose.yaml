@@ -38,6 +38,11 @@ services:
       DATABASE_NAME: ${DATABASE_NAME:-reims2-db}
       DATABASE_USER: ${DATABASE_USER:-reims2}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    # the JVM caps its heap at 60% of this, see backend/Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 768M
     networks:
       - default
       - proxy
