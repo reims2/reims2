@@ -96,10 +96,11 @@ region produces no dispensing, so it looks like zero demand. Reasoning from that
 will recommend refilling exactly what's already stocked. Ranked fixes:
 
 1. **Best**: log the request on every search, not just failed ones. Done: `search_log` holds every
-   search with its `result_count`, 0 marking a failure. Rows from before the `1.4` entry in
-   `flyway_schema_history` are failures only, minus those made offline. To get the request behind a
-   dispensed item, match it one to one to an earlier same-day search at the same site whose
-   recalculated top results contain it.
+   search with PhilScore's `result_count`, 0 marking a PhilScore failure. Rows from before the `1.4`
+   entry in `flyway_schema_history` are failures only, minus those made offline. To get the request
+   behind a dispensed item, match it to its search as in
+   [predicted blur matching](/dev/ai-notes/predicted-blur-matching#comparison-with-philscore). Rows
+   from before `1.5` have no `results`, so recalculate their top results instead.
 2. **Interim**: treat a dispensed item as an interval-censored observation. The request lay inside
    that item's tolerance region, and since it was the top-ranked available option, that narrows it
    down further. EM or sampling over the latent request is legitimate here.
