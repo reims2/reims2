@@ -8,38 +8,22 @@ How results are compared, shown and logged is decided elsewhere.
 
 ## Summary
 
-- One number per pair: the blur the patient is predicted to see, in diopters (D). Lower is better.
-  Volunteers see it as a grade.
-- Same inputs as PhilScore, no new fields, runs in the browser.
+- One number per pair: how blurry the worse eye sees through the lens, as the blur strength of the
+  error left uncorrected, in diopters (D). Lower is better. Volunteers see it as a grade.
+- Same inputs as PhilScore, no new fields, runs offline in the browser.
 - Power vectors replace the axis table, the spherical equivalent (SE) candidates, the three bonus
-  rules and the add window.
-- Against PhilScore with the October 2026 zero-cylinder fix, it finds a match as often, but picks a
-  different first pair in about half of single vision and two thirds of multifocal searches. Most
-  clear differences are reading power for multifocals and balance between the eyes.
+  rules and the add window. Its only parameters are five exclusion thresholds.
+- It finds a match as often as PhilScore, but picks a different first pair in half of single vision
+  and three quarters of multifocal searches. The clearest differences are reading power and balance
+  between the eyes.
 
-## Goals
-
-- Rank by what the patient will see, with rules an optometrist can check one by one.
-- Same inputs and offline behaviour as PhilScore, so both can run on every search.
-- Grades volunteers can read without knowing a scale.
-
-Replacing PhilScore now is not a goal, nor are pupil distance, prism and frame fit, which have no
-data. It must not return more pairs at the cost of worse first picks, or present differences below a
-quarter diopter as meaningful.
-
-## Alternatives considered
-
-| Approach                        | Why not                                                                                                                                                                                                                                                                                               |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Improve PhilScore step by step  | Ranks almost like PhilScore, so volunteers would have nothing to compare.                                                                                                                                                                                                                             |
-| Predicted acuity (20/xx)        | Needs best-corrected acuity, which isn't recorded. Acuity relative to the best is shown with the [grades](#_7-grades-and-order).                                                                                                                                                                      |
-| Arnold 2021 A/B/C grades        | Needs age and pupil distance, fitted on 8 to 10 subjects, and its two versions disagree, e.g. 0.5 or 1 D of over-plus per grade. In the [replay](#arnold-2021-as-a-matcher) it hands out extra plus far more often. Its relief for high cylinder and its age shape for over-minus are borrowed below. |
-| Percent match, like ReSpectacle | ReSpectacle's formula is unpublished. A percent relative to the Rx would rate a -6.00 that's 0.75 off as good and a -0.75 that's 0.25 off as poor, though the first is worse.                                                                                                                         |
+Replacing PhilScore is not a goal, nor are pupil distance, prism and frame fit, which have no data.
+Differences below a quarter diopter, the precision of a refraction, aren't treated as meaningful.
 
 ## Algorithm
 
 Inputs are sanitized as for PhilScore (`sanitizeEyeValues`), and only glasses of the searched type
-are considered. The letters are listed in [Parameters](#parameters).
+are considered.
 
 ### 1. Errors per eye
 
@@ -58,67 +42,61 @@ dJ  = |(J0, J45)_lens - (J0, J45)_rx|    leftover cylinder is 2 * dJ
 Axis wraparound and zero cylinder need no special case, since a zero cylinder has J = 0 whatever its
 stored axis. Trading cylinder for sphere is covered too, so no SE candidates are needed.
 
-### 2. Distance blur
+### 2. Blur per eye
 
 ```text
-astig  = w * dJ / (1 + |C_rx| / k)
-focus  = |dM|, times m if dM < 0 on a single vision search with M_rx > 0
-b_dist = sqrt(focus^2 + astig^2)
+b_dist = sqrt(dM^2 + dJ^2)
+
+dNear  = dM + (add_lens - add_rx)        multifocal only
+b_near = sqrt(dNear^2 + dJ^2)
+b_eye  = max(b_dist, b_near)             b_dist for single vision
 ```
 
-- `w`: how much leftover astigmatism counts against focus error. Optics, blur limits and pooled
-  acuity data put it at 1 per unit of blur strength (Atchison 2009, Guo 2010, Blendowske 2015).
-  Acuity at small blur puts it at 2 (Atchison 2011, Mathur 2015, 8 and 22 subjects). So does Arnold
-  2021's one-line limit for a low Rx cylinder, read on Blendowske's acuity scale. The default is
-  the upper end, see [open questions](#open-questions-for-optometrists). With `w = 2`, `astig` is the
-  leftover cylinder for a low-cylinder Rx.
-- `k`: patients with high cylinder see less sharply even when fully corrected and often get reduced
-  cylinder. Arnold 2021a's fit for donated glasses grows the tolerated error at about this rate,
-  its revised fit (2021b) more slowly. REIMS1's axis table is flat up to 1.50 D and then grows too.
-- `m`: a plus single vision Rx is mostly a hyperope or a presbyope's reader. Neither can focus
-  through extra minus without strain or blur. Myopes stay symmetric.
+`b_dist` is the blur strength of the leftover error (Thibos 1997), also called dioptric distance. In
+clinical terms, leftover cylinder counts with half its power, as in the SE rule, and too much plus
+counts the same as too much minus. A presbyope reads through sphere plus add, so `+1.25 add +2.25`
+reads like `+1.00 add +2.50`, and a multifocal is judged by the worse of distance and reading.
 
-### 3. Reading blur, multifocal only
+There are no extra weights, for these reasons:
+
+- Astigmatism. Blur limits, pooled acuity data and studies of real cylinder errors all fit blur
+  strength as it is (Atchison 2009, Guo 2010, Blendowske 2015, Remón 2017, Reddy 2017, Weisensee
+  2026). In Weisensee's 75 eyes after cataract surgery, the mixed astigmatism an exact-SE lens leaves
+  cost 0.24 logMAR per diopter of blur strength, mostly spherical errors 0.29. Only acuity with small
+  induced crossed cylinders costs about twice as much (Atchison 2011, Mathur 2015, 8 and 22
+  subjects).
+- High Rx cylinder. Arnold 2021's tolerance grows with the Rx cylinder, but faster for errors in
+  cylinder power than in axis, as Vinas 2013's astigmats were adapted to their own axis. One relief
+  factor can't capture that, and Rx with more than 2 D cylinder still find a pair in 90 % of
+  searches without one.
+- Focus direction. A young eye focuses through extra minus, a presbyope can't, and REIMS doesn't
+  record age.
+- Reading power direction. Holding the page closer makes up for too much, but narrows the range of
+  clear vision.
+
+### 3. Pair score and exclusions
 
 ```text
-dNear  = dM + (add_lens - add_rx)
-near   = -dNear if dNear < 0, else n * dNear
-b_near = sqrt(near^2 + astig^2)
-b_eye  = max(b_dist, b_near)
+score = max(b_od, b_os)
 ```
 
-A presbyope reads through sphere plus add, so `+1.25 add +2.25` reads like `+1.00 add +2.50`. Too
-little reading power can't be made up for, too much can by holding the page closer. For single
-vision, `b_eye = b_dist`.
+A pair is judged by its worse eye. Drop it if:
 
-### 4. Pair score
-
-```text
-score   = e * max(b_od, b_os) + (1 - e) * min(b_od, b_os) + balance
-balance = 0.5 * max(0, |dM_od - dM_os| - 0.25)
-```
-
-Drop the pair if `|dM_od - dM_os| > 1.0`. Both eyes focus by the same amount, so opposite focus
-errors can't both be cleared, and ready-made glasses trials cut at 1 D. The worse eye counts more
-because a pair is judged by its weak point.
-
-### 5. Exclusions
-
-Drop a pair if:
-
+- `|dM_od - dM_os| > 1.0`. Both eyes focus by the same amount, so opposite focus errors can't both
+  be cleared. Below that, imbalance costs nothing: ready-made glasses trials allow up to 1 D, and
+  induced anisometropia just under 1 D is well tolerated (Skov 2026).
 - an eye ends up more than 0.25 D blurrier than with no glasses (`b_eye` of a plano lens, add 0),
-- the score isn't lower than the same formula for plano lenses, without the balance term, or
+- the score isn't lower than for plano lenses, or
 - the score exceeds the limit: 0.75, or 1.25 with high tolerance.
 
-The first two matter for low prescriptions, e.g. `-1.00` for a `-0.50` myope.
-
-### 6. BAL
+The no-glasses rules matter for low prescriptions, e.g. `-1.00` for a `-0.50` myope. They rarely
+change the first pick, but decide whether a weak pair is shown at all.
 
 The form allows at most one BAL eye. That eye isn't scored, and its lens SE must be within 1.0 D of
 the other lens's SE, so the pair looks and weighs alike. The score is the other eye's `b_eye`, and
 the exclusions apply to that eye.
 
-### 7. Grades and order
+### 4. Grades and order
 
 | Score  | Grade     | Meaning, after Atchison 2005 | Best acuity kept, Blendowske 2015 |
 | ------ | --------- | ---------------------------- | --------------------------------- |
@@ -127,125 +105,109 @@ the exclusions apply to that eye.
 | ≤ 0.75 | fair      | around objectionable blur    | 64 %, about 2 lines lost          |
 | ≤ 1.25 | poor      | high tolerance only          | 39 %, about 4 lines lost          |
 
-Sort by score. A refraction repeats to about ±0.25 D, so pairs within one grade are close to
-equivalent. The acuity column is `1 / (1 + score^2)`, so the UI can show it for any score. Blendowske's
-model counts astigmatism once, so with `w = 2` it errs on the pessimistic side.
+Sort by score, then by the better eye, then by SKU. A refraction repeats to about ±0.25 D, so pairs
+within one grade are close to equivalent. The acuity column is Blendowske's `1 / (1 + score^2)`,
+fitted to pooled sphere and cylinder data with a coefficient of 1.02 (0.91 to 1.14) on `score^2`,
+so the UI can show it for any score.
 
 ## Parameters
 
-| Name                             | Default          | Basis                                                                                                                                                            |
-| -------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `w`, astigmatism weight          | 2                | Acuity at small blur (Atchison 2011, Mathur 2015). Optics, blur limits and pooled acuity give 1. Open.                                                           |
-| `k`, high-cylinder relief        | 2                | Arnold 2021a (1.8). Arnold 2021b and REIMS1's axis table above 2.50 D give 3.6 to 5. Without relief, 10 % of single vision searches find nothing instead of 3 %. |
-| `m`, extra minus on plus Rx      | 1.5              | Arnold 2021's age formulas at 55 to 60 give 1.25 to 1.96.                                                                                                        |
-| `n`, too much reading power      | 0.75             | Clinical judgement.                                                                                                                                              |
-| `e`, worse-eye share             | 0.75             | Judgement. WinGlasses optimizes one value for both eyes and offered pairs that worsened the weaker eye (Huang 2021).                                             |
-| Balance free, slope, drop        | 0.25, 0.5, 1.0 D | Ready-made trials, Skov 2026.                                                                                                                                    |
-| No-harm margin per eye           | 0.25 D           | One quarter step.                                                                                                                                                |
-| BAL lens SE difference           | 1.0 D            | PhilScore's BAL tolerance.                                                                                                                                       |
-| Limit, normal and high tolerance | 0.75 D, 1.25 D   | Objectionable blur. Gives match counts close to PhilScore's in the [replay](#replay).                                                                            |
+| Name                             | Default        | Basis                                                                                                 |
+| -------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------- |
+| Imbalance drop                   | 1.0 D          | Ready-made trials, Skov 2026.                                                                         |
+| No-harm margin per eye           | 0.25 D         | One quarter step.                                                                                     |
+| BAL lens SE difference           | 1.0 D          | PhilScore's BAL tolerance.                                                                            |
+| Limit, normal and high tolerance | 0.75 D, 1.25 D | Objectionable blur (Atchison 2005), which blur strength measures for astigmatism too (Atchison 2009). |
 
 ## Worked examples
 
 PhilScore sums both eyes, so compare the order, not the values. Same lens on both eyes unless noted.
-They're unit tests in `frontend/src/test/blurscore.test.ts`.
+They're unit tests in `frontend/src/test/blurscore.test.ts`. Errors within a quarter step tie.
 
 | Rx                  | Lens                                  | PhilScore | Blur                          |
 | ------------------- | ------------------------------------- | --------- | ----------------------------- |
-| `-1.50 -1.50 x 90`  | axis 10 degrees off                   | 0.01      | 0.30 good                     |
+| `-1.50 -1.50 x 90`  | axis 10 degrees off                   | 0.01      | 0.26 good                     |
 |                     | sphere 0.25 off                       | 0.50      | 0.25 excellent                |
-|                     | `-1.75 -1.00`, exact SE               | 0.50      | 0.29 good                     |
-|                     | `-2.00 -0.50`, exact SE               | 2.00      | 0.57 fair                     |
-| `-1.00 -3.00 x 180` | axis 8 degrees off                    | 0.00      | 0.33 good                     |
-| `+2.00 -1.00 x 90`  | `+1.75 -0.50`, exact SE               | 0.90      | 0.33 good                     |
+|                     | `-1.75 -1.00`, exact SE               | 0.50      | 0.25 excellent                |
+|                     | `-2.00 -0.50`, exact SE               | 2.00      | 0.50 good                     |
+| `-1.00 -3.00 x 180` | axis 8 degrees off                    | 0.00      | 0.42 good                     |
+| `+2.00 -1.00 x 90`  | `+1.75 -0.50`, exact SE               | 0.90      | 0.25 excellent                |
 |                     | `+2.25 -1.00`, 0.25 too much plus     | 0.50      | 0.25 excellent                |
-|                     | `+1.75 -1.00`, 0.25 too much minus    | 1.00      | 0.38 good                     |
+|                     | `+1.75 -1.00`, 0.25 too much minus    | 1.00      | 0.25 excellent                |
 | `+1.00 add +2.50`   | `+1.00 add +2.00`                     | 0.10      | 0.50 good                     |
 |                     | `+1.25 add +2.25`, same reading power | 0.55      | 0.25 excellent                |
 | `-2.00` both eyes   | `-2.25` and `-2.25`                   | 0.50      | 0.25 excellent                |
-|                     | `-2.25` and `-1.75`                   | 0.50      | 0.38 good                     |
+|                     | `-2.25` and `-1.75`                   | 0.50      | 0.25 excellent                |
 | `-0.50` both eyes   | `-1.00`, high tolerance               | 1.00      | dropped, not better than none |
 
 ## Replay
 
 Data from dev.reims2.app in October 2026, with the stock rebuilt for each moment from creation and
 dispense dates. Each of the 3,365 pairs dispensed in 2023 to 2026 served as a stand-in Rx, with the
-pair itself removed from stock. PhilScore includes the zero-cylinder fix, blur uses the default
-parameters. The prototype and scripts were throwaway.
+pair itself removed from stock. PhilScore includes the zero-cylinder fix.
 
-| Measure                                                        | Single vision  | Multifocal     |
-| -------------------------------------------------------------- | -------------- | -------------- |
-| Searches with a match, blur and PhilScore                      | 97 %, 98 %     | 99 %, 99 %     |
-| Median matches, blur and PhilScore                             | 27, 32         | 63, 46         |
-| Same first pick                                                | 48 %           | 35 %           |
-| PhilScore's first pick in blur's top 3                         | 74 %           | 57 %           |
-| PhilScore's first pick graded excellent or good                | 80 %           | 69 %           |
-| Different first picks within 0.25 D on every measure           | 57 %           | 26 %           |
-| Different first picks: reading power error, PhilScore and blur | -              | 0.43 D, 0.22 D |
-| Different first picks: eye imbalance, PhilScore and blur       | 0.22 D, 0.13 D | 0.20 D, 0.14 D |
+| Measure                                                         | Single vision  | Multifocal     |
+| --------------------------------------------------------------- | -------------- | -------------- |
+| Searches with a match, blur and PhilScore                       | 98 %, 98 %     | 100 %, 99 %    |
+| Median matches, blur and PhilScore                              | 67, 32         | 130, 46        |
+| Same first pick                                                 | 50 %           | 27 %           |
+| PhilScore's first pick in blur's top 3                          | 74 %           | 44 %           |
+| PhilScore's first pick graded excellent or good                 | 87 %           | 65 %           |
+| First picks: worse eye's blur strength, PhilScore and blur      | 0.27 D, 0.23 D | 0.43 D, 0.29 D |
+| First picks leaving 0.50 D cylinder or more, PhilScore and blur | 37 %, 40 %     | 36 %, 44 %     |
+| Different first picks: reading power error, PhilScore and blur  | -              | 0.43 D, 0.18 D |
+| Different first picks: eye imbalance, PhilScore and blur        | 0.23 D, 0.14 D | 0.20 D, 0.15 D |
 
-Both find a pair for about half of the 754 unique unsuccessful searches from 2024 to 2026 (blur 53 %,
-PhilScore 54 %). Multifocals get more matches because there's no fixed add window, and most of the
-extra ones grade fair. The stand-in Rx are lenses, not prescriptions, so this shows how the two
-differ, not which is better.
-
-### Sensitivity to `w` and `k`
-
-Rebuilt and rerun on the same data a day later, reproducing the table above within a few points.
-Values are single vision, then multifocal, for the first pick of each replayed dispense.
-
-| `w`, `k`       | Same first pick as default | An eye left with 0.50 D cylinder or more | Median matches | Unsuccessful searches matched |
-| -------------- | -------------------------- | ---------------------------------------- | -------------- | ----------------------------- |
-| 2, 2 (default) | 100 %, 100 %               | 34 %, 32 %                               | 27, 63         | 53 %                          |
-| 2, 3.6         | 95 %, 91 %                 | 32 %, 28 %                               | 22, 46         | 50 %                          |
-| 1.5, 3.6       | 87 %, 83 %                 | 38 %, 37 %                               | 38, 92         | 57 %                          |
-| 1.5, 2         | 83 %, 76 %                 | 40 %, 41 %                               | 47, 118        | 66 %                          |
-| 1, 3.6         | 72 %, 58 %                 | 45 %, 49 %                               | 67, 184        | 72 %                          |
-| 1, 2           | 68 %, 54 %                 | 47 %, 52 %                               | 76, 209        | 78 %                          |
-
-- `k` barely matters, `w` does. A lower `w` trades focus error for leftover cylinder.
-- With the limit fixed at 0.75, a lower `w` also lets far more pairs in, so the limit would have to
-  move with it.
-- No setting wins on every measure. Counting astigmatism once, all settings pick about equally well
-  (worse eye 0.24 to 0.26 D of blur strength for single vision, against 0.27 for PhilScore). Counting
-  it twice, the `w = 2` rows do best. The replay can't settle `w`, only optometrists or outcome data can.
-
-### Arnold 2021 as a matcher
-
-Arnold 2021b's grade, run on the same searches: the worst of both eyes and the anisometropia grade, B
-or better, age 60 for multifocal, and PhilScore's add window, since Arnold has no add. It agrees with
-PhilScore's first pick in 29 to 37 % of searches. Its first picks leave less cylinder (0.26 D on
-average, blur 0.35), but give an eye 0.50 D or more of extra plus in 19 % of single vision and 25 %
-of multifocal searches (blur 2 %, PhilScore 6 %), because it counts 1 D of extra plus as one lost
-line. With the first paper's 0.5 D per line that falls to 6 %, but reading power stays 0.42 D off on
-average (blur 0.22), because nothing checks it.
+Of the 687 unique unsuccessful searches from 2024 to 2026, blur finds a pair for 56 % and PhilScore
+for 50 %. Blur returns two to three times as many pairs, most of the extra ones graded fair, because
+leftover cylinder counts with half its power and multifocals have no fixed add window. Blur strength
+is what blur minimizes, so that row favours it, and its first picks leave more cylinder. The
+stand-in Rx are lenses, not prescriptions, so this shows how the two differ, not which is better.
 
 ## Open questions for optometrists
 
-- `w` and `k`, decided together. Leftover astigmatism counts `w / (1 + |C_rx| / k)` times as much as
-  focus error: 1.6 at 0.50 D Rx cylinder, 1.14 at 1.50, 1.0 at 2.00 and 0.8 at 3.00 with the
-  defaults. Below 1, dropping cylinder costs less than an equal sphere error, against REIMS1's "keep
-  as much cylinder as possible" and Reddy 2017. That's the case for `w = 1` with any relief: an exact
-  SE swap dropping 0.50 D from a -1.50 D cylinder would grade 0.14, excellent, against 0.29, good,
-  now. A lower `w` needs a higher `k`, e.g. `w = 1.5` with `k = 3.6` (0.26), and a lower limit. See
-  [sensitivity](#sensitivity-to-w-and-k) for how many first picks each choice changes.
-- The other [parameters](#parameters), especially `m`.
-- Age. Simulated on the replay, knowing it would change the first pick in 17 to 35 % of searches for
-  clearly young or old patients, mostly between 0.25 too much plus and 0.25 too much minus. It never
-  changes whether a match exists, so it's left out. An "under 40" checkbox on single vision searches
-  would capture most of it.
+- Should dropped cylinder cost more than its blur strength? Acuity says no. Side by side with full
+  correction, though, only 43 % were comfortable with 0.50 D dropped and 19 % with 1.00 D (Reddy
+  2017), although nobody returned their SE glasses later. See [Earlier versions](#earlier-versions)
+  for what a premium would change.
+- Age. Simulated on the first version, knowing it would change the first pick for clearly young or
+  old patients in 17 to 35 % of searches, mostly between 0.25 too much plus and 0.25 too much minus.
+  It never changes whether a match exists, so it's left out. An "under 40" checkbox on single vision
+  searches would capture most of it.
 - Should a lens with more cylinder than the Rx cost extra? It distorts more for first-time wearers,
   but we don't know who they are.
 - Is the worse of distance and reading right for a multifocal, or should distance count more?
 
 ## Implementation
 
-- `calculateAllBlurscore` takes the same arguments as `calculateAllPhilscore`. All parameters are in
-  `BLUR_PARAMS`, so an optometrist's answer is a one-line change.
+- `calculateAllBlurscore` takes the same arguments as `calculateAllPhilscore`. All thresholds are in
+  `BLUR_PARAMS`.
 - Each result has its grade, each eye's blur as `odScore` and `osScore`, and per eye the focus
   error, leftover cylinder and reading error (`dM`, `2 * dJ`, `dNear`), so the UI can say why ("0.25
   too much minus, astigmatism fine").
-- Ties go by the worse eye's blur, then SKU, so the order is stable.
 - Multifocal lenses without an add are skipped, as PhilScore does.
-- On the replay, it gives the prototype's scores for all 4,119 searches. It orders equal scores by
-  the worse eye and SKU instead of float noise, which changes 7 first picks and none of the shares.
+
+## Earlier versions
+
+The first version, also October 2026, had twelve parameters. A replay that removed one at a time
+showed which ones mattered:
+
+- Leftover astigmatism weighted by 2, after the induced-blur acuity studies, the least representative
+  end of the evidence. The weight shrank for high Rx cylinder as `2 / (1 + |C_rx| / 2)`, after Arnold
+  2021a, which only mattered against the weight of 2. A milder premium, `1.41 / (1 + |C_rx| / 3.6)`,
+  would leave 0.50 D cylinder or more in 37 % and 38 % of first picks instead of 41 % and 45 %, match
+  97 % of Rx with more than 2 D cylinder instead of 90 %, and cut the median matches from 67 and 130
+  to 47 and 90.
+- Extra minus on a plus single vision Rx costing 1.5 times, and too much reading power 0.75 times as
+  much. Removing them changed 3 % and 9 % of first picks, most within 0.25 D.
+- The worse eye counting 75 % and the better 25 %, plus 0.5 per diopter of imbalance beyond 0.25.
+  Removing them changed 12 to 15 % and 10 to 12 % of first picks, mostly within a grade, and no study
+  shows a cost for imbalance below 1 D.
+
+Alternatives that were never built: improving PhilScore step by step (it would rank like PhilScore,
+leaving volunteers nothing to compare), predicted acuity in 20/xx (needs best-corrected acuity, which
+isn't recorded) and a percent match like ReSpectacle (unpublished, and a percent of the Rx rates a
+-6.00 that's 0.75 off above a -0.75 that's 0.25 off). Arnold 2021b's A/B/C grade needs age and pupil
+distance and was fitted on 8 to 10 subjects. Run as a matcher on the replay, it agreed with
+PhilScore's first pick in 29 to 37 % of searches, but gave an eye 0.50 D or more of extra plus in 19
+to 25 % of them, against 6 % for PhilScore, because it counts 1 D of extra plus as one lost line.

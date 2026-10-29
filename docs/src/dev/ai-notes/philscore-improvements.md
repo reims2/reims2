@@ -15,9 +15,10 @@ ideally with sign-off from PVH optometrists.
 - That evidence backs the general shape of PhilScore but disagrees in three places:
   - **Axis is free in the score.** A lens 10 degrees off at -1.50 cylinder scores 0.003, but leaves as
     much blur as a sphere 0.25 to 0.5 D off.
-  - **Cylinder may be too cheap.** Per diopter of blur, one acuity study finds astigmatism costs twice as
-    much as defocus, while blur-limit studies and optics say the two are equal. PhilScore weighs it equally
-    at best, and patients often dislike dropped cylinder (Reddy 2017).
+  - **Cylinder may be too cheap.** Per diopter of blur, two acuity studies with induced cylinder find
+    astigmatism costs twice as much as defocus, while blur-limit studies, optics and studies of real
+    cylinder errors find the two about equal. PhilScore weighs it equally at best, and patients often
+    dislike dropped cylinder (Reddy 2017).
   - **Asymmetry follows age, not sphere sign.** Too much minus hurts every presbyope, not only hyperopes.
 - The biggest proposal deletes code: one weighted power-vector distance instead of the bonus rules.
 
@@ -25,48 +26,51 @@ ideally with sign-off from PVH optometrists.
 
 ### Recycled glasses programs
 
-| Source                         | Finding                                                                                                                                                                                                   |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Ramke 2006, Tuvalu             | 13 % of 102 donated pairs were usable. Pairs with more than 1.00 D cylinder or 0.50 D anisometropia were excluded.                                                                                        |
-| Wilson 2012                    | 7 % of 275 donated pairs were usable, at US$20.49 per delivered pair, twice the cost of ready-made glasses.                                                                                               |
-| Wan 2015, Timor-Leste          | 29 of 200 prescriptions (14.5 %) matched at least one of 1,854 donated pairs, but a match had to be near exact: 0.125 D in sphere and cylinder, axis within 5 degrees, PD within 3 mm.                    |
-| Pearce 2014, systematic review | No outcome study of recycled glasses met the inclusion criteria.                                                                                                                                          |
-| IAPB 2014 position paper       | Advises against recycled glasses, partly because sphere, cylinder, axis and lens centration make matching hard.                                                                                           |
-| REIMS1, VOSH and CVDW 2004     | Matches on spherical equivalents and axis tolerances. Built once the hand-sorted stock reached about 10,000 pairs (1995), in use from 1996, later also at other VOSH chapters.                            |
-| ReSpectacle, 2011              | Shows a percentage: green from 90 %, yellow 80 to 90 %, red 70 to 80 %. Formula unpublished.                                                                                                              |
-| WinGlasses, Huang 2021         | Matches on spherical equivalent and axis. Proprietary, behind a network of 10 clinics in Mexico, the US and Haiti. Optimizes one value for both eyes, which offered pairs that worsened the weaker eye.   |
-| Arnold 2021, two papers        | A, B and C grades for 1, 3 and 6 lines of acuity lost. The astigmatism allowance grows with the Rx cylinder, the over-minus allowance shrinks with age, PD and anisometropia graded too. Free Excel tool. |
-| VOSH Southeast field guide     | Axis within 5 to 10 degrees, lens cylinder not above the Rx cylinder, aim for 20/40.                                                                                                                      |
+| Source                         | Finding                                                                                                                                                                                                                                                                   |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Ramke 2006, Tuvalu             | 13 % of 102 donated pairs were usable. Pairs with more than 1.00 D cylinder or 0.50 D anisometropia were excluded.                                                                                                                                                        |
+| Wilson 2012                    | 7 % of 275 donated pairs were usable, at US$20.49 per delivered pair, twice the cost of ready-made glasses.                                                                                                                                                               |
+| Wan 2015, Timor-Leste          | 29 of 200 prescriptions (14.5 %) matched at least one of 1,854 donated pairs, but a match had to be near exact: 0.125 D in sphere and cylinder, axis within 5 degrees, PD within 3 mm.                                                                                    |
+| Pearce 2014, systematic review | No outcome study of recycled glasses met the inclusion criteria.                                                                                                                                                                                                          |
+| IAPB 2014 position paper       | Advises against recycled glasses, partly because sphere, cylinder, axis and lens centration make matching hard.                                                                                                                                                           |
+| REIMS1, VOSH and CVDW 2004     | Matches on spherical equivalents and axis tolerances. Built once the hand-sorted stock reached about 10,000 pairs (1995), in use from 1996, later also at other VOSH chapters.                                                                                            |
+| ReSpectacle, 2011              | Shows a percentage: green from 90 %, yellow 80 to 90 %, red 70 to 80 %. Formula unpublished.                                                                                                                                                                              |
+| WinGlasses, Huang 2021         | Matches on spherical equivalent and axis. Proprietary, behind a network of 10 clinics in Mexico, the US and Haiti. Optimizes one value for both eyes, which offered pairs that worsened the weaker eye.                                                                   |
+| Arnold 2021, two papers        | A, B and C grades for 1, 3 and 6 lines of acuity lost. The astigmatism allowance grows with the Rx cylinder and is 1.6 times larger for cylinder power than for axis errors, the over-minus allowance shrinks with age, PD and anisometropia graded too. Free Excel tool. |
+| VOSH Southeast field guide     | Axis within 5 to 10 degrees, lens cylinder not above the Rx cylinder, aim for 20/40.                                                                                                                                                                                      |
 
 ### Ready-made glasses: what can be left out
 
 Ready-made glasses have no cylinder and the same sphere in both eyes, so trials of them show what
 patients tolerate.
 
-| Source                  | Finding                                                                                                                                                                              |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Brady 2012, 363 adults  | Glasses at the SE of the eye with less error satisfied about as well as custom ones. Patients with more than 2.00 D cylinder gained less.                                            |
-| Zeng 2009, children     | Excluded 2.00 D cylinder or more, myopic anisometropia of 2 D or more and hyperopic anisometropia of 1 D or more.                                                                    |
-| Morjaria 2017, children | Eligible with anisometropia below 1.0 D and SE acuity within one line of full correction. Wear rates matched custom glasses.                                                         |
-| Reddy 2017, age 41 mean | Side by side with full correction, 100 % were comfortable with SE for 0.25 D cylinder, 43 % for 0.50, 26 % for 0.75 and 19 % for 1.00. None of those given SE glasses returned them. |
-| du Toit 2007            | Wearers tolerate up to 0.5 prism diopters vertical and 1.0 horizontal induced prism. Optical centre mismatch rarely matters up to +-1.50 D.                                          |
+| Source                  | Finding                                                                                                                                                                                                                                                                                 |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Brady 2012, 363 adults  | Glasses at the SE of the eye with less error satisfied about as well as custom ones. Patients with more than 2.00 D cylinder gained less.                                                                                                                                               |
+| Zeng 2009, children     | Excluded 2.00 D cylinder or more, myopic anisometropia of 2 D or more and hyperopic anisometropia of 1 D or more.                                                                                                                                                                       |
+| Morjaria 2017, children | Eligible with anisometropia below 1.0 D and SE acuity within one line of full correction. Wear rates matched custom glasses.                                                                                                                                                            |
+| Reddy 2017, age 41 mean | Side by side with full correction, 100 % were comfortable with SE for 0.25 D cylinder, 43 % for 0.50, 26 % for 0.75 and 19 % for 1.00. Acuity fell by nothing at 0.25 D, by more than a line at 1.00 D and by more than two lines beyond. None of those given SE glasses returned them. |
+| du Toit 2007            | Wearers tolerate up to 0.5 prism diopters vertical and 1.0 horizontal induced prism. Optical centre mismatch rarely matters up to +-1.50 D.                                                                                                                                             |
 
 ### What each error costs
 
-| Source                           | Finding                                                                                                                                                                                                                                               |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Thibos 1997, Thibos 2001         | Power vectors (M, J0, J45). Their length B measures overall blur.                                                                                                                                                                                     |
-| Raasch 1995, Blendowske 2015     | One combined dioptric distance predicts acuity for mixed sphere and cylinder errors. Blendowske: relative acuity `1 / (1 + B^2)`, fitted to pooled sphere and cylinder data with no extra weight on J.                                                |
-| Atchison 2005                    | Blur becomes noticeable at about 0.3 D, troublesome at 1.6 to 1.8 times that, objectionable at 2.1 to 2.5 times. Larger letters raise all three.                                                                                                      |
-| Atchison 2009, Guo 2010          | Blur limits for crossed cylinders are about 90 % of those for defocus, for plain cylinders 30 to 50 % higher, as blur strength predicts. Per unit of B, astigmatism and defocus are about equal.                                                      |
-| Atchison 2011, Mathur 2015       | Acuity drops 0.33 logMAR per diopter of astigmatic blur strength, against 0.18 for defocus. Only 8 and 22 subjects, blur up to 0.375 D, and eye drops (cycloplegia) only for the defocus runs, a confound the authors name. No measurable age effect. |
-| Kobashi 2012, Wolffsohn 2011     | Some axes hurt more: oblique in Kobashi, 45 and 180 more than 90 in Wolffsohn. Guo 2010 puts the axis effect at about 20 %, Remón 2017 found none.                                                                                                    |
-| Rosenfield 1995, Bullimore 1998  | A repeated refraction varies by +-0.27 D with the same examiner and by about +-0.8 D in SE between two clinicians, 95 % limits.                                                                                                                       |
-| Joseph 2021, 400 adults          | Glasses from a handheld autorefractor were liked as much as glasses from subjective refraction, with SE limits of -0.68 to +0.83 D.                                                                                                                   |
-| Skov 2026, review                | Induced anisometropia just under 1 D is well tolerated.                                                                                                                                                                                               |
-| Burge 2019, Rodriguez-Lopez 2026 | Different blur in the two eyes causes motion illusions, visible for some people.                                                                                                                                                                      |
-| Guyton 1977                      | Cylinder corrections distort space, mostly binocularly. Less cylinder means less distortion.                                                                                                                                                          |
-| Pointer 1995                     | The add people need rises steeply from the early 40s, and slower after the mid 50s.                                                                                                                                                                   |
+| Source                           | Finding                                                                                                                                                                                                                                                                                                                                                             |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Thibos 1997, Thibos 2001         | Power vectors (M, J0, J45). Their length B measures overall blur. In RMS wavefront error, J counts 1.41 times as much as M.                                                                                                                                                                                                                                         |
+| Raasch 1995, Blendowske 2015     | One combined dioptric distance predicts acuity for mixed sphere and cylinder errors. Blendowske: relative acuity `1 / (1 + B^2)`, fitted to pooled sphere and cylinder data with no extra weight on J.                                                                                                                                                              |
+| Atchison 2005                    | Blur becomes noticeable at about 0.3 D, troublesome at 1.6 to 1.8 times that, objectionable at 2.1 to 2.5 times. Larger letters raise all three.                                                                                                                                                                                                                    |
+| Atchison 2009, Guo 2010          | Blur limits for crossed cylinders are about 90 % of those for defocus, for plain cylinders 30 to 50 % higher, as blur strength predicts. Per unit of B, astigmatism and defocus are about equal.                                                                                                                                                                    |
+| Atchison 2011, Mathur 2015       | Acuity drops 0.33 logMAR per diopter of induced crossed-cylinder blur strength, against 0.18 for defocus. Only 8 and 22 subjects. Atchison 2011 went up to 0.375 D and used eye drops (cycloplegia) only for the defocus runs, a confound the authors name. Mathur 2015 used them throughout, went up to 0.5 D and found no age effect between 23 and 57-year-olds. |
+| Kobashi 2012, Wolffsohn 2011     | Some axes hurt more: oblique in Kobashi, 45 and 180 more than 90 in Wolffsohn. Guo 2010 puts the axis effect at about 20 %, Remón 2017 found none.                                                                                                                                                                                                                  |
+| Remón 2017, Weisensee 2026       | Per unit of blur strength, mixed astigmatism (what an exact-SE lens leaves) costs about as much acuity as defocus, simple astigmatism (one focal line on the retina) less. Remón induced it with lenses in young eyes, Weisensee measured real leftover cylinder in 75 eyes after cataract surgery, 0.25 logMAR per diopter.                                        |
+| Ohlendorf 2011                   | Real astigmatic lenses cost about half the acuity of the same astigmatism simulated on screen.                                                                                                                                                                                                                                                                      |
+| Vinas 2013                       | Astigmats lose less acuity to astigmatism along their own axis, even after 6 months of full correction.                                                                                                                                                                                                                                                             |
+| Rosenfield 1995, Bullimore 1998  | A repeated refraction varies by +-0.27 D with the same examiner and by about +-0.8 D in SE between two clinicians, 95 % limits.                                                                                                                                                                                                                                     |
+| Joseph 2021, 400 adults          | Glasses from a handheld autorefractor were liked as much as glasses from subjective refraction, with SE limits of -0.68 to +0.83 D.                                                                                                                                                                                                                                 |
+| Skov 2026, review                | Induced anisometropia just under 1 D is well tolerated.                                                                                                                                                                                                                                                                                                             |
+| Burge 2019, Rodriguez-Lopez 2026 | Different blur in the two eyes causes motion illusions, visible for some people. Shown for monovision, which sets the eyes 1 D or more apart.                                                                                                                                                                                                                       |
+| Guyton 1977                      | Cylinder corrections distort space, mostly binocularly. Less cylinder means less distortion.                                                                                                                                                                                                                                                                        |
+| Pointer 1995                     | The add people need rises steeply from the early 40s, and slower after the mid 50s.                                                                                                                                                                                                                                                                                 |
 
 ## Where PhilScore disagrees
 
@@ -168,7 +172,8 @@ the three exclusive rules, the SE candidates and the axis table. PhilScore alrea
 (Kendall tau 0.89 in the deep dive), so most rankings stay. The changes land where the literature
 disagrees: axis, SE swaps and plus prescriptions. Extra weight on oblique J45 is possible, but the evidence
 is mixed, so leave it out at first. Worked out together with 3 to 6, and replayed against real data,
-in [Predicted-blur matching](/dev/ai-notes/predicted-blur-matching).
+in [Predicted-blur matching](/dev/ai-notes/predicted-blur-matching). It settled on `w = 1` without
+relief.
 
 ### 8. Never return nothing
 
@@ -228,6 +233,7 @@ All PubMed links unless noted.
 - Kobashi H et al. 2012. [Effect of axis orientation on visual performance in astigmatic eyes](https://pubmed.ncbi.nlm.nih.gov/22727988/). J Cataract Refract Surg.
 - Mathur A et al. 2015. [Effect of age on visual acuity with defocus and astigmatism](https://pubmed.ncbi.nlm.nih.gov/25479447/). Optom Vis Sci.
 - Morjaria P et al. 2017. [Ready-made vs custom-made spectacles in India](https://pubmed.ncbi.nlm.nih.gov/28426857/). JAMA Ophthalmol.
+- Ohlendorf A et al. 2011. [Visual acuity with simulated and real astigmatic defocus](https://pubmed.ncbi.nlm.nih.gov/21460757/). Optom Vis Sci.
 - Pearce MG. 2014. [Outcomes of ready-made and recycled spectacles, a systematic review](https://pubmed.ncbi.nlm.nih.gov/24397254/). Clin Exp Optom.
 - Pointer JS. 1995. [The presbyopic add II: age-related trend](https://pubmed.ncbi.nlm.nih.gov/7667016/). Ophthalmic Physiol Opt.
 - Raasch TW. 1995. [Spherocylindrical refractive errors and visual acuity](https://pubmed.ncbi.nlm.nih.gov/7609953/). Optom Vis Sci.
@@ -240,8 +246,10 @@ All PubMed links unless noted.
 - Skov AG et al. 2026. [Tolerance to surgically induced anisometropia](https://pubmed.ncbi.nlm.nih.gov/40580148/). Acta Ophthalmol.
 - Thibos LN et al. 1997. [Power vectors](https://pubmed.ncbi.nlm.nih.gov/9255814/). Optom Vis Sci.
 - Thibos LN, Horner D. 2001. [Power vector analysis of the optical outcome of refractive surgery](https://pubmed.ncbi.nlm.nih.gov/11165859/). J Cataract Refract Surg.
+- Vinas M et al. 2013. [Astigmatism impact on visual performance: meridional and adaptational effects](https://pubmed.ncbi.nlm.nih.gov/24141632/). Optom Vis Sci.
 - VOSH Southeast. [The basics](https://voshsoutheast.org/educational/the-basics/).
 - Wan SL et al. 2015. [Do recycled spectacles meet the refractive needs of a developing country?](https://pubmed.ncbi.nlm.nih.gov/25425093/). Clin Exp Optom.
+- Weisensee J et al. 2026. [Same defocus, different vision: the role of astigmatism type in pseudophakic visual acuity loss](https://pubmed.ncbi.nlm.nih.gov/42060245/). Ophthalmic Physiol Opt.
 - Wilson DA et al. 2012. [Real cost of recycled spectacles](https://pubmed.ncbi.nlm.nih.gov/22327796/). Optom Vis Sci.
 - Wolffsohn JS et al. 2011. [Effect of uncorrected astigmatism on vision](https://pubmed.ncbi.nlm.nih.gov/21333869/). J Cataract Refract Surg.
 - Zeng Y et al. 2009. [Ready-made and custom spectacles in a school program in China](https://pubmed.ncbi.nlm.nih.gov/19592103/). Ophthalmology.

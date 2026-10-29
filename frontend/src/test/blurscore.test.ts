@@ -20,14 +20,14 @@ function scoreOf(glassesType: GlassesType, rx: Eye, od: Eye, os = od): number | 
 
 // Worked examples of docs/src/dev/ai-notes/predicted-blur-matching.md, same lens on both eyes
 const examples: [string, Eye, Eye, number, BlurGrade][] = [
-  ['axis 10 degrees off', eye(-1.5, -1.5, 90), eye(-1.5, -1.5, 100), 0.3, 'good'],
+  ['axis 10 degrees off', eye(-1.5, -1.5, 90), eye(-1.5, -1.5, 100), 0.26, 'good'],
   ['sphere 0.25 off', eye(-1.5, -1.5, 90), eye(-1.75, -1.5, 90), 0.25, 'excellent'],
-  ['exact SE, 0.50 D less cylinder', eye(-1.5, -1.5, 90), eye(-1.75, -1, 90), 0.29, 'good'],
-  ['exact SE, 1.00 D less cylinder', eye(-1.5, -1.5, 90), eye(-2, -0.5, 90), 0.57, 'fair'],
-  ['high cylinder, axis 8 degrees off', eye(-1, -3, 0), eye(-1, -3, 8), 0.33, 'good'],
-  ['plus Rx, exact SE', eye(2, -1, 90), eye(1.75, -0.5, 90), 0.33, 'good'],
+  ['exact SE, 0.50 D less cylinder', eye(-1.5, -1.5, 90), eye(-1.75, -1, 90), 0.25, 'excellent'],
+  ['exact SE, 1.00 D less cylinder', eye(-1.5, -1.5, 90), eye(-2, -0.5, 90), 0.5, 'good'],
+  ['high cylinder, axis 8 degrees off', eye(-1, -3, 0), eye(-1, -3, 8), 0.42, 'good'],
+  ['plus Rx, exact SE', eye(2, -1, 90), eye(1.75, -0.5, 90), 0.25, 'excellent'],
   ['plus Rx, 0.25 too much plus', eye(2, -1, 90), eye(2.25, -1, 90), 0.25, 'excellent'],
-  ['plus Rx, 0.25 too much minus', eye(2, -1, 90), eye(1.75, -1, 90), 0.375, 'good'],
+  ['plus Rx, 0.25 too much minus', eye(2, -1, 90), eye(1.75, -1, 90), 0.25, 'excellent'],
   ['add 0.50 too low', eye(1, 0, 0, 2.5), eye(1, 0, 0, 2), 0.5, 'good'],
   ['same reading power', eye(1, 0, 0, 2.5), eye(1.25, 0, 0, 2.25), 0.25, 'excellent'],
   ['both eyes 0.25 off', eye(-2), eye(-2.25), 0.25, 'excellent'],
@@ -41,13 +41,13 @@ test.each(examples)('Worked example: %s', (_, rx, lens, score, grade) => {
   expect(result[0].grade).toBe(grade)
 })
 
-test('Worked example: eyes 0.25 off in opposite directions', () => {
+test('Worked example: eyes 0.25 off in opposite directions cost no more than both off', () => {
   const result = calculateAllBlurscore(search('single', eye(-2)), [
     lenses('single', eye(-2.25), eye(-1.75)),
   ])
   expect(result).toHaveLength(1)
-  expect(result[0].score).toBeCloseTo(0.375)
-  expect(result[0].grade).toBe('good')
+  expect(result[0].score).toBeCloseTo(0.25)
+  expect(result[0].grade).toBe('excellent')
 })
 
 test('Worked example: a pair no better than no glasses is dropped, even with high tolerance', () => {
@@ -68,7 +68,7 @@ test('A score over 0.75 needs high tolerance and grades poor', () => {
 
 test('Eyes more than 1 D apart in focus error are dropped', () => {
   const rx = search('single', eye(-3), eye(-3), true)
-  // scores 1.19, under the high tolerance limit
+  // scores 0.75, under the high tolerance limit
   expect(calculateAllBlurscore(rx, [lenses('single', eye(-2.5), eye(-3.75))])).toHaveLength(0)
   expect(calculateAllBlurscore(rx, [lenses('single', eye(-2.5), eye(-3.5))])).toHaveLength(1)
 })
@@ -79,17 +79,20 @@ test('An eye more than 0.25 D blurrier than with no glasses drops the pair', () 
   expect(calculateAllBlurscore(rx, [lenses('single', eye(-0.75), eye(-3))])).toHaveLength(1)
 })
 
-test('Extra minus costs more only on a plus single vision Rx', () => {
-  expect(scoreOf('single', eye(2), eye(1.75))).toBeCloseTo(0.375)
-  // plus sphere, but a minus SE
-  expect(scoreOf('single', eye(0.5, -1.5, 90), eye(0.25, -1.5, 90))).toBeCloseTo(0.25)
-  expect(scoreOf('single', eye(-2), eye(-2.25))).toBeCloseTo(0.25)
+test('Extra minus and extra plus cost the same', () => {
+  expect(scoreOf('single', eye(2), eye(1.75))).toBeCloseTo(0.25)
+  expect(scoreOf('single', eye(2), eye(2.25))).toBeCloseTo(0.25)
   expect(scoreOf('multifocal', eye(2, 0, 0, 2), eye(1.75, 0, 0, 2.25))).toBeCloseTo(0.25)
 })
 
-test('Too much reading power costs less than too little', () => {
-  expect(scoreOf('multifocal', eye(1, 0, 0, 2), eye(1, 0, 0, 2.5))).toBeCloseTo(0.375)
+test('Too much and too little reading power cost the same', () => {
+  expect(scoreOf('multifocal', eye(1, 0, 0, 2), eye(1, 0, 0, 2.5))).toBeCloseTo(0.5)
   expect(scoreOf('multifocal', eye(1, 0, 0, 2), eye(1, 0, 0, 1.5))).toBeCloseTo(0.5)
+})
+
+test('Leftover cylinder counts as its blur strength, half its power', () => {
+  expect(scoreOf('single', eye(-2), eye(-1.75, -0.5, 90))).toBeCloseTo(0.25)
+  expect(scoreOf('single', eye(-1.5, -1.5, 90), eye(-2.25))).toBeCloseTo(0.75)
 })
 
 test('Axis error wraps around 180', () => {
@@ -117,10 +120,14 @@ test('The BAL lens SE is compared with the other lens, not the Rx', () => {
   expect(calculateAllBlurscore(rx, [lenses('single', eye(-2.75), eye(-1.75))])).toHaveLength(1)
 })
 
-test('The no-glasses baseline has no balance term', () => {
-  // scores 1.06, better than no glasses only if their 1.25 D imbalance counted
-  const rx = search('single', eye(0), eye(-1.25), true)
-  expect(calculateAllBlurscore(rx, [lenses('single', eye(0.25), eye(-0.25))])).toHaveLength(0)
+test('A pair is judged by its worse eye', () => {
+  const result = calculateAllBlurscore(search('single', eye(-2)), [
+    lenses('single', eye(-2), eye(-2.5)),
+  ])
+  expect(result).toHaveLength(1)
+  expect(result[0].score).toBeCloseTo(0.5)
+  expect(result[0].odScore).toBeCloseTo(0)
+  expect(result[0].osScore).toBeCloseTo(0.5)
 })
 
 test('Stock lenses in plus cylinder or at axis 180 match like their usual form', () => {
@@ -155,13 +162,13 @@ test('Each result has the errors per eye', () => {
   expect(result[0].osScore).toBeCloseTo(0.25)
 })
 
-test('Results are sorted by score, then by the worse eye, then by SKU', () => {
+test('Results are sorted by score, then by the better eye, then by SKU', () => {
   const glasses = [
-    lenses('single', eye(-1.75, -0.5, 90), eye(-2), 10), // 0.375, worse eye 0.5
-    lenses('single', eye(-2.25), eye(-1.75), 30), // 0.375, worse eye 0.25
+    lenses('single', eye(-2.25), eye(-1.75), 30), // 0.25, better eye 0.25
     lenses('single', eye(-2.25), eye(-1.75), 20),
+    lenses('single', eye(-2.25), eye(-2), 10), // 0.25, better eye 0
     lenses('single', eye(-2), eye(-2), 40),
   ]
   const result = calculateAllBlurscore(search('single', eye(-2)), glasses)
-  expect(result.map((r) => r.sku)).toEqual([40, 20, 30, 10])
+  expect(result.map((r) => r.sku)).toEqual([40, 10, 20, 30])
 })
