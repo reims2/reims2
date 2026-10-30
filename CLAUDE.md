@@ -134,7 +134,8 @@ There's no server-side filtering or paging of glasses: the View Glasses table fi
 glasses store in the browser (`frontend/src/composables/table-filter.ts`). DTOs in `model/dto/` are records
 that map to and from entities themselves (`GlassesResponseDTO.from`, `GlassesRequestDTO.applyTo`). Each write
 runs in one transaction that bumps the change hash first. Flyway owns the schema and Hibernate only validates
-against it. Errors are RFC 9457 problem details from
+against it. Before merging a migration, run `ansible/scripts/copy-prod-to-staging.sh` so staging tries it on
+prod's data first (see `ansible/README.md`). Errors are RFC 9457 problem details from
 `error/ApiExceptionHandler.java`. Only bad input may get a 4xx, since a queued offline change is dropped on a
 4xx but retried on a 5xx. Auth is JWT via Spring Security's OAuth2 resource server
 (`security/WebSecurityConfig.java`), with roles read from the database on every request. The two roles,
