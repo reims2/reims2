@@ -24,7 +24,9 @@ services come from the root `compose.yaml`, which the `app` role copies next to 
 - Server setup runs on changes to `setup.yml`, the setup or hardening roles, or `requirements.yml`.
 - On the server, every stack directory works with plain compose: `cd /srv/prod && docker compose logs
 backend`. The other projects are `/srv/staging`, `/srv/traefik` and `/srv/monitoring`.
-- A failed deploy rolls back to the previously deployed image tag and fails the job.
+- A deploy fails when the containers don't get healthy or `/api`, `/` and `/docs/` don't answer on the
+  public domain. It then rolls back to the previously deployed image tag and fails the job, and a failed
+  staging deploy skips prod.
 - `autoheal` (in `/srv/monitoring`) restarts containers whose healthcheck fails, since compose only
   restarts containers that exit.
 
@@ -70,7 +72,8 @@ success or failure to healthchecks.io. `cd /srv/prod/s3backup && docker compose 
 runs one now, `docker compose logs backup` there shows past runs.
 
 `restore.sh [backup key]` restores the newest backup by default, into a database without glasses. To
-restore over live data, delete it with `cd /srv/prod && docker compose down -v` and deploy again first. `scripts/copy-prod-to-staging.sh` copies prod's data into staging. Staging
+restore over live data, delete it with `cd /srv/prod && docker compose down -v` and deploy again first. `scripts/copy-prod-to-staging.sh` copies prod's data into staging. Run it before merging a migration, so the
+next `main` deploy tries the migration on prod's data on staging first. Staging
 keeps its own users and always has `test`/`testtest`.
 
 ## Grafana
