@@ -14,7 +14,8 @@ import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.repository.SearchLogRepository;
-import org.pvh.service.MainService;
+import org.pvh.service.GlassesService;
+import org.pvh.model.enums.LocationEnum;
 import org.pvh.util.CampaignZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -68,7 +69,7 @@ public class GlassesRestControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @MockitoSpyBean
-    private MainService mainService;
+    private GlassesService mainService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -85,7 +86,7 @@ public class GlassesRestControllerIntegrationTest {
         return new Eye(BigDecimal.ONE, BigDecimal.valueOf(-2), 2, BigDecimal.ONE);
     }
 
-    private static Glasses newGlasses(GlassesTypeEnum type, GlassesSizeEnum size, AppearanceEnum appearance, String location) {
+    private static Glasses newGlasses(GlassesTypeEnum type, GlassesSizeEnum size, AppearanceEnum appearance, LocationEnum location) {
         return new Glasses(type, size, appearance, location, eye(), eye());
     }
 
@@ -94,7 +95,7 @@ public class GlassesRestControllerIntegrationTest {
             glasses.getLocation(), EyeDTO.from(glasses.getOs()), EyeDTO.from(glasses.getOd()));
     }
 
-    private Glasses saveGlasses(String location) {
+    private Glasses saveGlasses(LocationEnum location) {
         return mainService.saveGlasses(newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.medium, AppearanceEnum.neutral, location));
     }
 
@@ -123,7 +124,7 @@ public class GlassesRestControllerIntegrationTest {
     public void givenGlasses_Dispense_And_Undispense()
         throws Exception {
 
-        Glasses saveEntitySa = saveGlasses("sa");
+        Glasses saveEntitySa = saveGlasses(LocationEnum.sa);
 
         ChangeValue cv = callChangeValueAndReturnHash("sa");
         // Get create Glasses
@@ -191,7 +192,7 @@ public class GlassesRestControllerIntegrationTest {
                         .doubleValue())))
             .andDo(print());
 
-        Glasses saveEntitySa2 = saveGlasses("sa");
+        Glasses saveEntitySa2 = saveGlasses(LocationEnum.sa);
 
         cv = callChangeValueAndReturnHash("sa");
         // Try to Undispense firstly created glass -> not possible because of secondly
@@ -255,7 +256,7 @@ public class GlassesRestControllerIntegrationTest {
     @Test
     public void dispense_whenDatabaseFails_thenServerError()
         throws Exception {
-        Glasses glasses = saveGlasses("sa");
+        Glasses glasses = saveGlasses(LocationEnum.sa);
         doThrow(new DataAccessResourceFailureException("database down"))
             .when(mainService).dispense(any(), anyInt(), any(), any());
 
@@ -267,7 +268,7 @@ public class GlassesRestControllerIntegrationTest {
     @Test
     public void dispense_whenSkuBelongsToOtherGlasses_thenConflict()
         throws Exception {
-        Glasses glasses = saveGlasses("sa");
+        Glasses glasses = saveGlasses(LocationEnum.sa);
 
         this.mockMvc.perform(put("/api/glasses/dispense/sa/" + glasses.getSku()).param("id", "" + (glasses.getId() + 1000)))
             .andExpect(status().isConflict());
@@ -280,9 +281,9 @@ public class GlassesRestControllerIntegrationTest {
 
     @Test
     public void addGlasses_thenStatus201() throws Exception {
-        Glasses glasses = newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.small, AppearanceEnum.neutral, "sm");
+        Glasses glasses = newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm);
 
-        Glasses failGlasses = newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.small, AppearanceEnum.neutral, "ss");
+        Glasses failGlasses = newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm);
 
         ChangeValue cv = callChangeValueAndReturnHash("sm");
 
@@ -308,7 +309,7 @@ public class GlassesRestControllerIntegrationTest {
         }
 
         this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON).content(
-                objectMapper.writeValueAsBytes(request(failGlasses))))
+                objectMapper.writeValueAsString(request(failGlasses)).replace("\"sm\"", "\"ss\"")))
             .andExpect(status().isBadRequest())
             .andDo(print());
         assertTrue(isChangeValueEqualNewChangeValue(cv, "sm"));
@@ -342,9 +343,9 @@ public class GlassesRestControllerIntegrationTest {
 
     @Test
     public void givenGlasses_whenGetGlasses_thenStatus200() throws Exception {
-        Glasses saveEntitySa = saveGlasses("sa");
+        Glasses saveEntitySa = saveGlasses(LocationEnum.sa);
         // Save two glasses for this test
-        saveGlasses("sa");
+        saveGlasses(LocationEnum.sa);
 
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa.getSku()))
             .andExpect(status().isOk())
@@ -364,7 +365,7 @@ public class GlassesRestControllerIntegrationTest {
                 Matchers.is(saveEntitySa.getOd().getCylinder().doubleValue())))
             .andDo(print());
 
-        Glasses saveEntitySm = saveGlasses("sm");
+        Glasses saveEntitySm = saveGlasses(LocationEnum.sm);
 
         this.mockMvc.perform(get("/api/glasses/sm/" + saveEntitySm.getSku()))
             .andExpect(status().isOk())
@@ -398,7 +399,7 @@ public class GlassesRestControllerIntegrationTest {
     public void givenGlasses_whenDeleteGlasses_thenStatus204()
         throws Exception {
 
-        Glasses saveEntitySa = saveGlasses("sm");
+        Glasses saveEntitySa = saveGlasses(LocationEnum.sm);
 
         ChangeValue cv = callChangeValueAndReturnHash("sm");
         this.mockMvc.perform(delete("/api/glasses/sm/" + saveEntitySa.getSku()))
@@ -417,7 +418,7 @@ public class GlassesRestControllerIntegrationTest {
     public void updateGlasses_thenStatus200()
         throws Exception {
 
-        Glasses glasses = newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.small, AppearanceEnum.neutral, "sm");
+        Glasses glasses = newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm);
 
         ChangeValue cv = callChangeValueAndReturnHash("sm");
         this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON).content(
@@ -430,7 +431,7 @@ public class GlassesRestControllerIntegrationTest {
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sm"));
 
         cv = callChangeValueAndReturnHash("sm");
-        Glasses glassesToUpdate = new Glasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.medium, AppearanceEnum.feminine, "sm",
+        Glasses glassesToUpdate = new Glasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.medium, AppearanceEnum.feminine, LocationEnum.sm,
             new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
             new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
 
@@ -468,11 +469,11 @@ public class GlassesRestControllerIntegrationTest {
 
     @Test
     public void updateGlasses_updatesEyesInPlaceAndKeepsLocation() throws Exception {
-        Glasses glasses = saveGlasses("sa");
+        Glasses glasses = saveGlasses(LocationEnum.sa);
         Integer eyeRows = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM eye", Integer.class);
 
         GlassesRequestDTO edit = new GlassesRequestDTO(glasses.getId(), GlassesTypeEnum.single, GlassesSizeEnum.small,
-            AppearanceEnum.feminine, "sm", new EyeDTO(BigDecimal.valueOf(3), BigDecimal.valueOf(-1), 90, BigDecimal.ZERO),
+            AppearanceEnum.feminine, LocationEnum.sm, new EyeDTO(BigDecimal.valueOf(3), BigDecimal.valueOf(-1), 90, BigDecimal.ZERO),
             new EyeDTO(BigDecimal.valueOf(-3), BigDecimal.ZERO, 0, BigDecimal.ZERO));
         this.mockMvc.perform(put("/api/glasses/sa/" + glasses.getSku()).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(edit)))
@@ -482,14 +483,14 @@ public class GlassesRestControllerIntegrationTest {
 
         assertEquals(eyeRows, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM eye", Integer.class));
         Glasses edited = mainService.findGlassesById(glasses.getId()).orElseThrow();
-        assertEquals("sa", edited.getLocation());
+        assertEquals(LocationEnum.sa, edited.getLocation());
         assertEquals(glasses.getOs().getId(), edited.getOs().getId());
         assertEquals(90, edited.getOs().getAxis());
     }
 
     @Test
     public void updateGlasses_whenSkuBelongsToOtherGlasses_thenConflict() throws Exception {
-        Glasses glasses = saveGlasses("sa");
+        Glasses glasses = saveGlasses(LocationEnum.sa);
         GlassesRequestDTO edit = request(glasses);
         GlassesRequestDTO staleEdit = new GlassesRequestDTO(glasses.getId() + 1000, edit.glassesType(), edit.glassesSize(),
             AppearanceEnum.masculine, edit.location(), edit.os(), edit.od());
@@ -502,15 +503,15 @@ public class GlassesRestControllerIntegrationTest {
 
     @Test
     public void glassesSku_isUnique() {
-        Glasses glasses = saveGlasses("sa");
-        Glasses other = saveGlasses("sa");
+        Glasses glasses = saveGlasses(LocationEnum.sa);
+        Glasses other = saveGlasses(LocationEnum.sa);
         assertThrows(DataIntegrityViolationException.class, () -> jdbcTemplate.update(
             "UPDATE glasses SET sku = ? WHERE id = ?", glasses.getSku(), other.getId()));
     }
 
     @Test
     public void glassesSku_isOnlyMissingWhenDispensed() {
-        Glasses glasses = saveGlasses("sa");
+        Glasses glasses = saveGlasses(LocationEnum.sa);
         assertThrows(DataIntegrityViolationException.class, () -> jdbcTemplate.update(
             "UPDATE glasses SET sku = NULL WHERE id = ?", glasses.getId()));
         assertThrows(DataIntegrityViolationException.class, () -> jdbcTemplate.update(
@@ -537,7 +538,7 @@ public class GlassesRestControllerIntegrationTest {
 
     @Test
     public void csvDates_areInElSalvadorTime() throws Exception {
-        Glasses glasses = saveGlasses("sa");
+        Glasses glasses = saveGlasses(LocationEnum.sa);
         String added = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(CampaignZone.ZONE)
             .format(glasses.getCreationDate());
 
@@ -548,8 +549,8 @@ public class GlassesRestControllerIntegrationTest {
 
     @Test
     public void dispensedGlasses_filtersByCampaignDay() throws Exception {
-        Glasses glasses = saveGlasses("sa");
-        mainService.dispense("sa", glasses.getSku(), null, null);
+        Glasses glasses = saveGlasses(LocationEnum.sa);
+        mainService.dispense(LocationEnum.sa, glasses.getSku(), null, null);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate today = LocalDate.now(CampaignZone.ZONE);
 

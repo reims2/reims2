@@ -6,11 +6,12 @@ import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
+import org.pvh.model.enums.LocationEnum;
 
 import java.time.Instant;
 
 public record GlassesResponseDTO(Long id, Integer sku, GlassesTypeEnum glassesType, GlassesSizeEnum glassesSize,
-                                 AppearanceEnum appearance, String location, boolean dispensed, Instant creationDate,
+                                 AppearanceEnum appearance, LocationEnum location, boolean dispensed, Instant creationDate,
                                  DispenseResponseDTO dispense, EyeDTO os, EyeDTO od) {
 
     public static GlassesResponseDTO from(Glasses glasses) {

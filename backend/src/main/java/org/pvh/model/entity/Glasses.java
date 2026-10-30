@@ -1,10 +1,10 @@
 package org.pvh.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
+import org.pvh.model.enums.LocationEnum;
 
 import java.time.Instant;
 
@@ -27,9 +27,9 @@ public class Glasses extends BaseEntity {
     @Column(name = "appearance")
     private AppearanceEnum appearance;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "location")
-    @Pattern(regexp = "sm|sa")
-    private String location;
+    private LocationEnum location;
 
     @Column(name = "dispensed")
     private boolean dispensed;
@@ -52,7 +52,7 @@ public class Glasses extends BaseEntity {
     public Glasses() {
     }
 
-    public Glasses(GlassesTypeEnum glassesType, GlassesSizeEnum glassesSize, AppearanceEnum appearance, String location, Eye os,
+    public Glasses(GlassesTypeEnum glassesType, GlassesSizeEnum glassesSize, AppearanceEnum appearance, LocationEnum location, Eye os,
                    Eye od) {
         this.glassesType = glassesType;
         this.glassesSize = glassesSize;
@@ -94,11 +94,11 @@ public class Glasses extends BaseEntity {
         this.od = od;
     }
 
-    public String getLocation() {
+    public LocationEnum getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(LocationEnum location) {
         this.location = location;
     }
 

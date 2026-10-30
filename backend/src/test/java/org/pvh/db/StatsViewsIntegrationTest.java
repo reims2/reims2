@@ -10,7 +10,9 @@ import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
-import org.pvh.service.MainService;
+import org.pvh.service.GlassesService;
+import org.pvh.service.SearchLogService;
+import org.pvh.model.enums.LocationEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -41,7 +43,10 @@ public class StatsViewsIntegrationTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private MainService mainService;
+    private GlassesService mainService;
+
+    @Autowired
+    private SearchLogService searchLogService;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -56,7 +61,7 @@ public class StatsViewsIntegrationTest {
 
     private Glasses saveGlasses() {
         Glasses glasses = mainService.saveGlasses(
-            new Glasses(GlassesTypeEnum.single, GlassesSizeEnum.medium, AppearanceEnum.neutral, "sm",
+            new Glasses(GlassesTypeEnum.single, GlassesSizeEnum.medium, AppearanceEnum.neutral, LocationEnum.sm,
                 new Eye(new BigDecimal("-1.50"), new BigDecimal("-0.75"), 170, new BigDecimal("2.25")),
                 new Eye(new BigDecimal("1.25"), new BigDecimal("-0.50"), 10, new BigDecimal("2.00"))));
         createdGlasses.add(glasses.getId());
@@ -120,14 +125,14 @@ public class StatsViewsIntegrationTest {
     private long saveSearchLog(int resultCount) {
         SearchLog search = new SearchLog();
         search.setGlassesType(GlassesTypeEnum.multifocal);
-        search.setLocation("sm");
+        search.setLocation(LocationEnum.sm);
         search.setSearchDate(Instant.now());
         search.setBalLens(BalLensEnum.DISABLE_NONE);
         search.setIncreaseSearchTolerance(false);
         search.setResultCount(resultCount);
         search.setOd(new Eye(new BigDecimal("1.25"), new BigDecimal("-0.50"), 10, new BigDecimal("2.00")));
         search.setOs(new Eye(new BigDecimal("-1.50"), new BigDecimal("-0.75"), 170, new BigDecimal("2.25")));
-        return mainService.saveSearchLog(search).getId();
+        return searchLogService.save(search).getId();
     }
 
     @Test
