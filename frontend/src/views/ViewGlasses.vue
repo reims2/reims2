@@ -1,14 +1,12 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
   <v-container fluid class="px-lg-10">
-    <v-data-table-server
+    <v-data-table
       v-model:items-per-page="itemsPerPage"
       v-model:sort-by="sortBy"
       v-model:page="page"
       :headers="headers"
       :items="formattedItems"
-      :items-length="totalItems"
-      :loading="loading"
       density="compact"
       must-sort
       :items-per-page-options="itemsPerPageOptions"
@@ -57,7 +55,7 @@
           <v-icon>{{ mdiPencil }}</v-icon>
         </v-btn>
       </template>
-    </v-data-table-server>
+    </v-data-table>
 
     <v-btn class="mr-4" variant="plain" tabindex="-1" @click="reset">Reset table</v-btn>
   </v-container>
@@ -65,10 +63,12 @@
 
 <script setup lang="ts">
 import { mdiPencil } from '@mdi/js'
+import dayjs from 'dayjs'
 import MinMaxInput from '@/components/MinMaxInput.vue'
-import { useTableData } from '@/composables/table-data'
 import { useTableFilter } from '@/composables/table-filter'
 import { TableSortBy } from '@/model/ReimsModel'
+import { useGlassesStore } from '@/stores/glasses'
+import { formatGlassesForDisplay } from '@/util/format-glasses'
 
 const headers = [
   { key: 'sku', title: 'SKU' },
@@ -83,7 +83,13 @@ const headers = [
   { key: 'os.add', title: 'OS Add' },
   { key: 'appearance', title: 'Appearance' },
   { key: 'glassesSize', title: 'Size' },
-  { key: 'creationDate', title: 'Added' },
+  {
+    key: 'creationDate',
+    title: 'Added',
+    // the API sends ISO strings despite the number type
+    sortRaw: (a: TableItem, b: TableItem) =>
+      dayjs(a.glasses.creationDate).diff(b.glasses.creationDate),
+  },
   { key: 'actions', title: '', sortable: false },
 ]
 
@@ -101,14 +107,17 @@ const sortBy = ref<TableSortBy[]>([{ key: 'sku', order: 'asc' }])
 
 const glassesTypeFilter = ref<string[]>([])
 
-const { filterString, resetFilters, eyeFilters } = useTableFilter(glassesTypeFilter)
-
-const { formattedItems, totalItems, loading } = useTableData(
-  page,
-  itemsPerPage,
-  sortBy,
-  filterString,
+const glassesStore = useGlassesStore()
+const { filteredGlasses, resetFilters, eyeFilters } = useTableFilter(
+  () => glassesStore.allGlasses,
+  glassesTypeFilter,
 )
+
+// keep the raw glasses so the formatted date column can sort chronologically
+const formattedItems = computed(() =>
+  filteredGlasses.value.map((glasses) => ({ ...formatGlassesForDisplay(glasses), glasses })),
+)
+type TableItem = (typeof formattedItems.value)[number]
 
 function reset() {
   sortBy.value = [{ key: 'sku', order: 'asc' }]

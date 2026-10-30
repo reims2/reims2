@@ -125,20 +125,6 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec)
-        throws DataAccessException {
-        Specification<Glasses> baseSpec = spec != null ? spec : Specification.unrestricted();
-        return glassesRepository.findAll(
-            baseSpec.and(GlassesSpecs.hasLocation(location)).and(GlassesSpecs.isDispensed(dispensed)), pageable);
-
-    }
-
-    @Override
-    public Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException {
-        return findByDispensedAndLocation(dispensed, location, pageable, null);
-    }
-
-    @Override
     public List<Glasses> findByDispensedAndLocation(boolean dispensed, String location) throws DataAccessException {
         return glassesRepository.findByDispensedAndLocation(dispensed, location);
     }

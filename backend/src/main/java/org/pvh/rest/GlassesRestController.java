@@ -1,7 +1,5 @@
 package org.pvh.rest;
 
-import cz.jirutka.rsql.parser.RSQLParser;
-import cz.jirutka.rsql.parser.ast.Node;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.pvh.error.NoSkusLeftException;
@@ -15,19 +13,12 @@ import org.pvh.model.entity.SearchLog;
 import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.mapper.GlassesMapperImpl;
 import org.pvh.model.mapper.SearchLogMapperImpl;
-import org.pvh.repository.RSQL.CustomRsqlVisitor;
 import org.pvh.service.ChangeService;
 import org.pvh.service.MainService;
 import org.pvh.util.WriteCsvToResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,63 +44,6 @@ public class GlassesRestController {
     private MainService mainService;
     @Autowired
     private ChangeService changeService;
-
-    private Sort.Direction getSortDirection(String direction) {
-        if (direction.equals("asc")) {
-            return Sort.Direction.ASC;
-        } else if (direction.equals("desc")) {
-            return Sort.Direction.DESC;
-        }
-
-        return Sort.Direction.ASC;
-    }
-
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @GetMapping(path = "/{location}")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> getAllGlassesPaginated(
-        @RequestParam(value = "search", required = false) String search,
-        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
-        @RequestParam(defaultValue = "sku,desc") String[] sort, @PathVariable("location") String location) {
-
-        List<Order> orders = new ArrayList<>();
-
-        if (sort[0].contains(",")) {
-            // will sort more than 2 fields
-            // sortOrder="field, direction"
-            for (String sortOrder : sort) {
-                String[] tempSort = sortOrder.split(",");
-                orders.add(new Order(getSortDirection(tempSort[1]), tempSort[0]));
-            }
-        } else {
-            // sort=[SKU, desc]
-            orders.add(new Order(getSortDirection(sort[1]), sort[0]));
-        }
-        Collection<GlassesResponseDTO> glasses;
-        Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
-        Page<Glasses> pageGlasses;
-        if (search == null) {
-            pageGlasses = mainService.findByDispensedAndLocation(false, location, pagingSort);
-        } else {
-            Node rootNode = new RSQLParser().parse(search);
-            Specification<Glasses> spec = rootNode.accept(new CustomRsqlVisitor<>());
-            pageGlasses = mainService.findByDispensedAndLocation(false, location, pagingSort, spec);
-        }
-
-        glasses = pageGlasses.getContent().stream().map(a -> GlassesMapperImpl.getInstance().glassesToGlassesResponseDTO(a))
-            .collect(Collectors.toList());
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("glasses", glasses);
-        response.put("currentPage", pageGlasses.getNumber());
-        response.put("totalItems", pageGlasses.getTotalElements());
-        response.put("totalPages", pageGlasses.getTotalPages());
-
-        if (glasses.isEmpty()) {
-            throw new PVHException("Glasses not found!", HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping(path = "/{location}/all")
