@@ -54,7 +54,7 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
     } catch (error) {
       if (error instanceof ReimsAxiosError && error.statusCode === 409) {
         // no free skus left.
-        toast.error(error.message)
+        toast.error(error.apiMessage ?? error.message)
       } else {
         toast.error(`Could not add glasses, please retry (${(error as Error).message})`)
       }

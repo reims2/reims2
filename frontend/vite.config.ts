@@ -155,6 +155,11 @@ export default defineConfig(({ mode }) => {
         provider: 'v8',
         exclude: ['**/test/**', 'e2e/**'],
         include: ['src/**'],
+        // floors for the framework-agnostic core, views and stores are covered by e2e
+        thresholds: {
+          'src/lib/**': { lines: 90, branches: 90 },
+          'src/util/**': { lines: 95, branches: 90 },
+        },
       },
     },
     resolve: {
