@@ -503,8 +503,18 @@ public class GlassesRestControllerIntegrationTest {
     @Test
     public void glassesSku_isUnique() {
         Glasses glasses = saveGlasses("sa");
+        Glasses other = saveGlasses("sa");
         assertThrows(DataIntegrityViolationException.class, () -> jdbcTemplate.update(
-            "INSERT INTO glasses (sku, location, dispensed) VALUES (?, 'sa', false)", glasses.getSku()));
+            "UPDATE glasses SET sku = ? WHERE id = ?", glasses.getSku(), other.getId()));
+    }
+
+    @Test
+    public void glassesSku_isOnlyMissingWhenDispensed() {
+        Glasses glasses = saveGlasses("sa");
+        assertThrows(DataIntegrityViolationException.class, () -> jdbcTemplate.update(
+            "UPDATE glasses SET sku = NULL WHERE id = ?", glasses.getId()));
+        assertThrows(DataIntegrityViolationException.class, () -> jdbcTemplate.update(
+            "UPDATE glasses SET dispensed = true WHERE id = ?", glasses.getId()));
     }
 
     @Test
