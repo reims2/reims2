@@ -32,6 +32,7 @@ export const vuetifyOptions: VuetifyOptions = {
           secondary: '#67697C',
           accent: '#b34c00',
           background: '#FFF',
+          'surface-muted': '#f4f7f7',
           error: '#ba1a1a',
           info: '#1a57c7',
           success: '#006d3c',

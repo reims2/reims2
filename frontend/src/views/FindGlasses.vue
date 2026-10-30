@@ -55,7 +55,13 @@
         aria-labelledby="heading-results"
       >
         <div id="heading-results" class="text-title-large font-weight-medium pb-2">Results</div>
-        <v-alert v-if="matches == null" type="info" color="primary" density="comfortable">
+        <v-alert
+          v-if="matches == null"
+          type="info"
+          color="primary"
+          variant="tonal"
+          density="comfortable"
+        >
           Start a new search to display results
         </v-alert>
         <v-alert v-else-if="matches.length === 0" type="warning" density="comfortable">
