@@ -6,7 +6,6 @@ import org.pvh.model.entity.SearchLog;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Date;
 import java.util.List;
@@ -29,12 +28,6 @@ public interface MainService {
     Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
 
     Page<Glasses> findAllGlasses(Pageable pageable) throws DataAccessException;
-
-
-    Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable, Specification<Glasses> spec)
-        throws DataAccessException;
-
-    Page<Glasses> findByDispensedAndLocation(boolean dispensed, String location, Pageable pageable) throws DataAccessException;
 
     List<Glasses> findByDispensedAndLocation(boolean dispensed, String location) throws DataAccessException;
 

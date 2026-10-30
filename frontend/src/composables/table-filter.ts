@@ -1,8 +1,11 @@
-import { GlassesEyeIndex } from '@/model/GlassesModel'
+import { Glasses, GlassesEyeIndex } from '@/model/GlassesModel'
 import { MinMaxObject } from '@/model/ReimsModel'
 import { MaybeRefOrGetter } from 'vue'
 
-export const useTableFilter = (glassesTypeFilter: MaybeRefOrGetter<string[]>) => {
+export const useTableFilter = (
+  glasses: MaybeRefOrGetter<Glasses[]>,
+  glassesTypeFilter: MaybeRefOrGetter<string[]>,
+) => {
   const eyeFilters = reactive({
     od: {
       sphere: {} as MinMaxObject,
@@ -15,47 +18,33 @@ export const useTableFilter = (glassesTypeFilter: MaybeRefOrGetter<string[]>) =>
   })
 
   type EyeValueKey = 'sphere' | 'cylinder'
-  const filterString = computed(() => {
-    let filterString = ''
-    const typeFilter = createSingleTypeFilter(toValue(glassesTypeFilter))
-    if (typeFilter) filterString += typeFilter + ';'
+  const filteredGlasses = computed(() => {
+    const types = toValue(glassesTypeFilter).filter((type) => type !== '')
     const eyeKeys: GlassesEyeIndex[] = ['od', 'os']
     const eyeValueKeys: EyeValueKey[] = ['sphere', 'cylinder']
-    for (const eyeName of eyeKeys) {
-      for (const valName of eyeValueKeys) {
-        const filter = createSingleFilter(eyeFilters[eyeName][valName], `${eyeName}.${valName}`)
-        if (filter) filterString += filter + ';'
-      }
-    }
-    return filterString.slice(0, -1)
+    const rangeFilters = eyeKeys.flatMap((eyeName) =>
+      eyeValueKeys.flatMap((valName) => {
+        const range = parseRange(eyeFilters[eyeName][valName])
+        return range ? [{ eyeName, valName, range }] : []
+      }),
+    )
+    return toValue(glasses).filter(
+      (glass) =>
+        (types.length === 0 || types.includes(glass.glassesType)) &&
+        rangeFilters.every(({ eyeName, valName, range: [min, max] }) => {
+          const value = glass[eyeName][valName]
+          return value >= min && value <= max
+        }),
+    )
   })
 
-  function createSingleFilter(value: MinMaxObject, filterName: string): string | null {
-    if (value == null) return null
-
-    const min = value.min != null ? parseFloat(value.min) : NaN
-    const max = value.max != null ? parseFloat(value.max) : NaN
-
-    const minText = `${filterName}>=${min}`
-    const maxText = `${filterName}<=${max}`
-
-    if (!isNaN(min) && !isNaN(max)) {
-      // swap min max automatically if entered wrongly
-      if (max < min) return `${filterName}>=${max};${filterName}<=${min}`
-      return minText + ';' + maxText
-    } else if (!isNaN(min)) return minText
-    else if (!isNaN(max)) return maxText
-    else return null
-  }
-
-  function createSingleTypeFilter(value: string[]): string | null {
-    if (value.length === 0) return null
-    let filterString = ''
-    for (const el of value) {
-      if (el === '') continue
-      filterString += `glassesType==${el},`
-    }
-    return filterString.slice(0, -1)
+  function parseRange(value: MinMaxObject): [number, number] | null {
+    const min = parseFloat(value.min ?? '')
+    const max = parseFloat(value.max ?? '')
+    if (isNaN(min) && isNaN(max)) return null
+    const range: [number, number] = [isNaN(min) ? -Infinity : min, isNaN(max) ? Infinity : max]
+    // swap min max automatically if entered wrongly
+    return range[0] <= range[1] ? range : [range[1], range[0]]
   }
 
   function resetFilters() {
@@ -66,7 +55,7 @@ export const useTableFilter = (glassesTypeFilter: MaybeRefOrGetter<string[]>) =>
   }
   return {
     glassesTypeFilter,
-    filterString,
+    filteredGlasses,
     resetFilters,
     eyeFilters,
   }

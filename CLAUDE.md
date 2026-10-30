@@ -126,18 +126,17 @@ SKU) so `PUT /undispense/{id}` can restore it, as long as the SKU hasn't been re
 ### Backend (`backend/src/main/java/org/pvh/`)
 
 Standard `rest/` → `service/` (`MainService`, `ChangeService`) → `repository/` layering on Spring Data JPA.
-Free-text filtering (the `?search=` param on `GET /api/glasses/{location}`) goes through a hand-rolled RSQL
-layer in `repository/RSQL/`, which also resolves dotted, joined properties, e.g.
-`od.sphere>=2.0;glassesType==single`. DTO-to-entity mapping uses MapStruct (`model/mapper/*Impl`). Despite
-being Spring `@Component`s, the codebase calls them via a static `getInstance()` singleton rather than
-autowiring. Follow that existing convention rather than injecting `GlassesMapper` directly. Auth is JWT
+There's no server-side filtering or paging of glasses: the View Glasses table filters, sorts and pages the
+glasses store in the browser (`frontend/src/composables/table-filter.ts`). DTO-to-entity mapping uses
+MapStruct (`model/mapper/*Impl`). Despite being Spring `@Component`s, the codebase calls them via a static
+`getInstance()` singleton rather than autowiring. Follow that existing convention rather than injecting `GlassesMapper` directly. Auth is JWT
 (`security/jwt/`) with two roles, `ROLE_USER` and `ROLE_ADMIN`, enforced with `@PreAuthorize` per endpoint.
 Deletes are admin-only; most other read/write endpoints allow both roles.
 
 ### Frontend (`frontend/src/`)
 
 `views/` are routed pages (`router/index.ts` gates everything except `/` and `/login` behind auth).
-`stores/` are Pinia state (`glasses`, `auth`, `root` for the selected site and UI state, `table`, `users`).
+`stores/` are Pinia state (`glasses`, `auth`, `root` for the selected site and UI state, `users`).
 `composables/` hold per-page view-model logic (`find.ts`, `add.ts`, `edit.ts`). `lib/` holds
 framework-agnostic core logic (`philscore.ts`, the typed `axios` error/instance wrapper). Path alias `@/`
 resolves to `src/`.

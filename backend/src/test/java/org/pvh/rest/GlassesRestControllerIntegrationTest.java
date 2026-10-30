@@ -9,7 +9,6 @@ import org.pvh.model.entity.ChangeValue;
 import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
-import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.model.mapper.GlassesMapperImpl;
 import org.pvh.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -366,59 +364,6 @@ public class GlassesRestControllerIntegrationTest {
                 .andDo(print());
 
             this.mockMvc.perform(get("/api/glasses/sa/" + -10))
-                .andExpect(status().is4xxClientError())
-                .andExpect(MockMvcResultMatchers.content()
-                    .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
-                    Matchers.is(notNullValue())))
-                .andDo(print());
-
-            int totalItems = mainService.findByDispensedAndLocation(false, "sm").size();
-
-            this.mockMvc.perform(get("/api/glasses/sm?size=2&page=0&sort=sku,asc"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                    .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.glasses[0].location",
-                    Matchers.is("sm")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems",
-                    Matchers.is(totalItems)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.currentPage", Matchers.is(0)))
-                .andDo(print());
-
-            int totalItemsSa = mainService.findByDispensedAndLocation(false, "sa").size();
-
-            this.mockMvc.perform(get("/api/glasses/sa?size=2&page=1&sort=sku,desc"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                    .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.glasses[0].location",
-                    Matchers.is("sa")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems",
-                    Matchers.is(totalItemsSa)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.currentPage", Matchers.is(1)))
-                .andDo(print());
-
-            int totalItemsSaWithMultifocal = mainService.findByDispensedAndLocation(false, "sa")
-                .stream()
-                .filter(a -> a.getGlassesType().equals(GlassesTypeEnum.multifocal))
-                .collect(Collectors.toList()).size();
-
-            this.mockMvc.perform(get(
-                    "/api/glasses/sa?size=1&page=2&sort=sku,desc&search=glassesType==multifocal"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                    .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.glasses[0].location",
-                    Matchers.is("sa")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.glasses[0].glassesType",
-                    Matchers.is("multifocal")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems",
-                    Matchers.is(totalItemsSaWithMultifocal)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.currentPage", Matchers.is(2)))
-                .andDo(print());
-
-            this.mockMvc.perform(get("/api/glasses/sa?size=2&page=2&sort=sku,desc&search=glassesType==aaa"))
                 .andExpect(status().is4xxClientError())
                 .andExpect(MockMvcResultMatchers.content()
                     .contentType(MediaType.APPLICATION_JSON))
