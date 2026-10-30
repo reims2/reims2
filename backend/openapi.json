@@ -1,0 +1,831 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/api/glasses/{location}/{sku}" : {
+      "get" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "getGlasses",
+        "parameters" : [ {
+          "name" : "sku",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GlassesResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "updateGlasses",
+        "parameters" : [ {
+          "name" : "sku",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GlassesRequestDTO"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GlassesResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "deleteGlasses",
+        "parameters" : [ {
+          "name" : "sku",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/glasses/undispense/{id}" : {
+      "put" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "undispense",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/glasses/dispense/{location}/{sku}" : {
+      "put" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "updateDispensed",
+        "parameters" : [ {
+          "name" : "sku",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        }, {
+          "name" : "reason",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "DISPENSED", "NOT_FOUND", "BROKEN", "TOO_HIGH_VALUES", "WRONGLY_ADDED", "OTHER" ]
+          }
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/glasses" : {
+      "post" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "addGlasses",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GlassesRequestDTO"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GlassesResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/glasses/{location}/searchLog" : {
+      "post" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "addSearchLog",
+        "parameters" : [ {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SearchLogDTO"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/auth/signup" : {
+      "post" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "registerUser",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SignupRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signin" : {
+      "post" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "authenticateUser",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/JwtResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api" : {
+      "get" : {
+        "tags" : [ "root-rest-controller" ],
+        "operationId" : "status",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "text/plain" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/glasses/{location}/changes" : {
+      "get" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "getGlassesChange",
+        "parameters" : [ {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ChangeValueDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/glasses/{location}/all" : {
+      "get" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "getAllGlasses",
+        "parameters" : [ {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/GlassesResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/glasses/{location}.csv" : {
+      "get" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "getAllGlassesCsv",
+        "parameters" : [ {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/glasses/unsuccessful/{location}.csv" : {
+      "get" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "getAllUnsuccessfulSearchesCsv",
+        "parameters" : [ {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/glasses/dispensed/{location}" : {
+      "get" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "getAllDispensedGlasses",
+        "parameters" : [ {
+          "name" : "startDate",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }, {
+          "name" : "endDate",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }, {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/GlassesResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/glasses/dispensed/{location}.csv" : {
+      "get" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "getAllDispensedGlassesCsv",
+        "parameters" : [ {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth" : {
+      "get" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "getAllUsers",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/user" : {
+      "get" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "getCurrentUserInfo",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/{id}" : {
+      "delete" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "deleteUser",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "EyeDTO" : {
+        "type" : "object",
+        "properties" : {
+          "sphere" : {
+            "type" : "number",
+            "maximum" : 30.0,
+            "minimum" : -30.0
+          },
+          "cylinder" : {
+            "type" : "number",
+            "maximum" : 0,
+            "minimum" : -6.0
+          },
+          "axis" : {
+            "type" : "integer",
+            "format" : "int32",
+            "maximum" : 180,
+            "minimum" : 0
+          },
+          "add" : {
+            "type" : "number",
+            "maximum" : 8.0,
+            "minimum" : 0
+          }
+        },
+        "required" : [ "axis", "cylinder", "sphere" ]
+      },
+      "GlassesRequestDTO" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "glassesType" : {
+            "type" : "string",
+            "enum" : [ "single", "multifocal" ]
+          },
+          "glassesSize" : {
+            "type" : "string",
+            "enum" : [ "large", "medium", "small", "child" ]
+          },
+          "appearance" : {
+            "type" : "string",
+            "enum" : [ "neutral", "feminine", "masculine" ]
+          },
+          "location" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          },
+          "os" : {
+            "$ref" : "#/components/schemas/EyeDTO"
+          },
+          "od" : {
+            "$ref" : "#/components/schemas/EyeDTO"
+          }
+        },
+        "required" : [ "appearance", "glassesSize", "glassesType", "location", "od", "os" ]
+      },
+      "DispenseResponseDTO" : {
+        "type" : "object",
+        "properties" : {
+          "modifyDate" : {
+            "type" : [ "string", "null" ],
+            "format" : "date-time"
+          },
+          "previousSku" : {
+            "type" : [ "integer", "null" ],
+            "format" : "int32"
+          },
+          "dispenseReason" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "DISPENSED", "NOT_FOUND", "BROKEN", "TOO_HIGH_VALUES", "WRONGLY_ADDED", "OTHER" ]
+          }
+        }
+      },
+      "GlassesResponseDTO" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "sku" : {
+            "type" : [ "integer", "null" ],
+            "format" : "int32"
+          },
+          "glassesType" : {
+            "type" : "string",
+            "enum" : [ "single", "multifocal" ]
+          },
+          "glassesSize" : {
+            "type" : "string",
+            "enum" : [ "large", "medium", "small", "child" ]
+          },
+          "appearance" : {
+            "type" : "string",
+            "enum" : [ "neutral", "feminine", "masculine" ]
+          },
+          "location" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          },
+          "dispensed" : {
+            "type" : "boolean"
+          },
+          "creationDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "dispense" : {
+            "$ref" : "#/components/schemas/DispenseResponseDTO"
+          },
+          "os" : {
+            "$ref" : "#/components/schemas/EyeDTO"
+          },
+          "od" : {
+            "$ref" : "#/components/schemas/EyeDTO"
+          }
+        }
+      },
+      "SearchLogDTO" : {
+        "type" : "object",
+        "properties" : {
+          "glassesType" : {
+            "type" : "string",
+            "enum" : [ "single", "multifocal" ]
+          },
+          "balLens" : {
+            "type" : "string",
+            "enum" : [ "DISABLE_OD", "DISABLE_OS", "DISABLE_NONE" ]
+          },
+          "increaseSearchTolerance" : {
+            "type" : "boolean"
+          },
+          "searchDate" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "resultCount" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 0
+          },
+          "os" : {
+            "$ref" : "#/components/schemas/EyeDTO"
+          },
+          "od" : {
+            "$ref" : "#/components/schemas/EyeDTO"
+          }
+        },
+        "required" : [ "balLens", "glassesType", "od", "os", "resultCount", "searchDate" ]
+      },
+      "RoleName" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "enum" : [ "ROLE_USER", "ROLE_ADMIN" ]
+          }
+        },
+        "required" : [ "name" ]
+      },
+      "SignupRequest" : {
+        "type" : "object",
+        "properties" : {
+          "username" : {
+            "type" : "string",
+            "maxLength" : 20,
+            "minLength" : 0
+          },
+          "password" : {
+            "type" : "string",
+            "maxLength" : 120,
+            "minLength" : 0
+          },
+          "roles" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/RoleName"
+            },
+            "uniqueItems" : true
+          }
+        },
+        "required" : [ "password", "username" ]
+      },
+      "MessageResponse" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "LoginRequest" : {
+        "type" : "object",
+        "properties" : {
+          "username" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "password" : {
+            "type" : "string",
+            "minLength" : 1
+          }
+        },
+        "required" : [ "password", "username" ]
+      },
+      "JwtResponse" : {
+        "type" : "object",
+        "properties" : {
+          "accessToken" : {
+            "type" : "string"
+          },
+          "tokenType" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "username" : {
+            "type" : "string"
+          },
+          "roles" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "ChangeValueDTO" : {
+        "type" : "object",
+        "properties" : {
+          "hashValue" : {
+            "type" : "string"
+          }
+        }
+      },
+      "RoleResponse" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string",
+            "enum" : [ "ROLE_USER", "ROLE_ADMIN" ]
+          }
+        }
+      },
+      "UserResponse" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "username" : {
+            "type" : "string"
+          },
+          "roles" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/RoleResponse"
+            }
+          }
+        }
+      }
+    }
+  }
+}

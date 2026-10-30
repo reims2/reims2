@@ -326,6 +326,7 @@ public class GlassesRestControllerIntegrationTest {
             "missing location", "{\"glassesType\":\"single\",\"glassesSize\":\"small\",\"appearance\":\"neutral\",\"os\":%1$s,\"od\":%1$s}",
             "missing type", "{\"glassesSize\":\"small\",\"appearance\":\"neutral\",\"location\":\"sa\",\"os\":%1$s,\"od\":%1$s}",
             "missing eye", "{\"glassesType\":\"single\",\"glassesSize\":\"small\",\"appearance\":\"neutral\",\"location\":\"sa\",\"os\":%1$s}",
+            "missing sphere", "{\"glassesType\":\"single\",\"glassesSize\":\"small\",\"appearance\":\"neutral\",\"location\":\"sa\",\"os\":%1$s,\"od\":{\"cylinder\":-1,\"axis\":10}}",
             "unknown type", "{\"glassesType\":\"bifocal\",\"glassesSize\":\"small\",\"appearance\":\"neutral\",\"location\":\"sa\",\"os\":%1$s,\"od\":%1$s}");
         for (var entry : invalid.entrySet()) {
             this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON)
