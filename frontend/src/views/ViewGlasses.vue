@@ -86,7 +86,6 @@ const headers = [
   {
     key: 'creationDate',
     title: 'Added',
-    // the API sends ISO strings despite the number type
     sortRaw: (a: TableItem, b: TableItem) =>
       dayjs(a.glasses.creationDate).diff(b.glasses.creationDate),
   },

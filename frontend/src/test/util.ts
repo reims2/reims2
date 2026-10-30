@@ -38,7 +38,7 @@ export function createGlasses(glassesType: GlassesType, od: Eye, os: Eye): Glass
       id: 1,
       sku: 1,
       location: 'sa',
-      creationDate: 0,
+      creationDate: '2024-01-01T00:00:00.000+00:00',
     },
   ]
 }

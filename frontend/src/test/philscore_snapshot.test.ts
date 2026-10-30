@@ -33,7 +33,7 @@ const inventory: Glasses[] = types
     appearance: 'neutral',
     glassesSize: 'medium',
     location: 'sa',
-    creationDate: 0,
+    creationDate: '2024-01-01T00:00:00.000+00:00',
   }))
 
 const flags = ['none', 'high', 'BAL os'] as const
