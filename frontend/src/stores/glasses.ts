@@ -86,8 +86,10 @@ export const useGlassesStore = defineStore(
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
 
+      // the server rejects the dispense if the SKU went to other glasses in the meantime
+      const id = getGlassLocal(sku)?.id
       await axiosInstance.put(
-        `/api/glasses/dispense/${rootStore.reimsSite}/${sku}?reason=${reason}`,
+        `/api/glasses/dispense/${rootStore.reimsSite}/${sku}?reason=${reason}${id != null ? `&id=${id}` : ''}`,
         {},
       )
       deleteOfflineGlasses(sku)

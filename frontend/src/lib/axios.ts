@@ -25,9 +25,9 @@ export class ReimsAxiosError extends Error {
   }
 }
 
+// RFC 9457 problem details
 type ApiErrorResponse = {
-  message: string
-  timestamp: number
+  detail?: string
   status: number
 }
 
@@ -48,7 +48,7 @@ export const useAxios = () => {
       const request = error.request as XMLHttpRequest | null
       const requestUrl = request?.responseURL || null
       const apiError = error.response.data as ApiErrorResponse | null
-      const apiMessage = apiError?.message || null
+      const apiMessage = apiError?.detail || null
 
       if (error.response.status >= 500) {
         throw new ReimsAxiosError('Server error', false, true, apiMessage, error.response.status)
