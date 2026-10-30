@@ -1,27 +1,15 @@
 package org.pvh.rest;
 
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(exposedHeaders = "errors, content-type")
-@RequestMapping("/")
 public class RootRestController {
 
-    @Value("#{servletContext.contextPath}")
-    private String servletContextPath;
-
-    @GetMapping("/")
-    public void redirectToSwagger(HttpServletResponse response) throws IOException {
-        response.sendRedirect(this.servletContextPath + "/api");
-    }
-
+    // external uptime check, actuator isn't routed publicly
     @GetMapping(value = "/api", produces = MediaType.TEXT_PLAIN_VALUE)
-    public @ResponseBody String status(HttpServletResponse response) {
+    public String status() {
         return "OK";
     }
 

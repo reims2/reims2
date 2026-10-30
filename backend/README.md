@@ -1,6 +1,6 @@
 # REIMS2 Backend
 
-Java 21 / Spring Boot 4 REST API for REIMS2. See the root `CLAUDE.md` for the architecture.
+Java 25 / Spring Boot 4 REST API for REIMS2. See the root `CLAUDE.md` for the architecture.
 
 ## Run locally
 

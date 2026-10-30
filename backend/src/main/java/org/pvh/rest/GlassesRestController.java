@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(exposedHeaders = "errors, content-type")
 @RequestMapping("api/glasses")
 public class GlassesRestController {
     private static final Logger logger = LoggerFactory.getLogger(GlassesRestController.class);
