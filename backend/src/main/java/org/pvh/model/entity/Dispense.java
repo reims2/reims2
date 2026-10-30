@@ -3,34 +3,25 @@ package org.pvh.model.entity;
 import jakarta.persistence.*;
 import org.pvh.model.enums.DispenseReasonEnum;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "dispense")
 public class Dispense extends BaseEntity {
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modify_date")
-    private Date modifyDate;
+    private Instant modifyDate;
     @Column(name = "previous_sku")
     private Integer previousSku;
+    @Enumerated(EnumType.STRING)
     @Column(name = "dispense_reason")
-    private String dispenseReason;
+    private DispenseReasonEnum dispenseReason;
 
-    public Dispense(Date modifyDate, String dispenseReason) {
-        this.modifyDate = modifyDate;
-        this.dispenseReason = dispenseReason;
-    }
-
-    public Dispense() {
-
-    }
-
-    public Date getModifyDate() {
+    public Instant getModifyDate() {
         return modifyDate;
     }
 
-    public void setModifyDate(Date modifyDate) {
+    public void setModifyDate(Instant modifyDate) {
         this.modifyDate = modifyDate;
     }
 
@@ -43,11 +34,11 @@ public class Dispense extends BaseEntity {
     }
 
     public DispenseReasonEnum getDispenseReason() {
-        return dispenseReason != null ? Enum.valueOf(DispenseReasonEnum.class, dispenseReason) : null;
+        return dispenseReason;
     }
 
     public void setDispenseReason(DispenseReasonEnum dispenseReason) {
-        this.dispenseReason = dispenseReason != null ? dispenseReason.name() : null;
+        this.dispenseReason = dispenseReason;
     }
 
     @Override

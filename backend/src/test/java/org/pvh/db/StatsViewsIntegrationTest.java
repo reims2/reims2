@@ -2,11 +2,13 @@ package org.pvh.db;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
+import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.BalLensEnum;
+import org.pvh.model.enums.GlassesSizeEnum;
+import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +49,9 @@ public class StatsViewsIntegrationTest {
         createdGlasses.forEach(id -> mainService.findGlassesById(id).ifPresent(mainService::deleteGlasses));
     }
 
-    private Glasses saveGlasses() throws Exception {
+    private Glasses saveGlasses() {
         Glasses glasses = mainService.saveGlasses(
-            new Glasses("single", "medium", "neutral", "sm", new Dispense(),
+            new Glasses(GlassesTypeEnum.single, GlassesSizeEnum.medium, AppearanceEnum.neutral, "sm",
                 new Eye(new BigDecimal("-1.50"), new BigDecimal("-0.75"), 170, new BigDecimal("2.25")),
                 new Eye(new BigDecimal("1.25"), new BigDecimal("-0.50"), 10, new BigDecimal("2.00"))));
         createdGlasses.add(glasses.getId());
@@ -112,9 +114,9 @@ public class StatsViewsIntegrationTest {
 
     private long saveSearchLog(int resultCount) {
         SearchLog search = new SearchLog();
-        search.setGlassesType("multifocal");
+        search.setGlassesType(GlassesTypeEnum.multifocal);
         search.setLocation("sm");
-        search.setSearchDate(new Date());
+        search.setSearchDate(Instant.now());
         search.setBalLens(BalLensEnum.DISABLE_NONE);
         search.setIncreaseSearchTolerance(false);
         search.setResultCount(resultCount);

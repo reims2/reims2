@@ -5,27 +5,27 @@ import jakarta.validation.constraints.Pattern;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 
-import java.util.Date;
+import java.time.Instant;
 
 
 @Entity
 @Table(name = "search_log")
 public class SearchLog extends BaseEntity {
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "glasses_type")
-    private String glassesType;
+    private GlassesTypeEnum glassesType;
 
     @Column(name = "location")
     @Pattern(regexp = "sm|sa")
     private String location;
 
-
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "search_date")
-    private Date searchDate;
+    private Instant searchDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "balLens")
-    private String balLens;
+    private BalLensEnum balLens;
 
     @Column(name = "increase_search_tolerance")
     private Boolean increaseSearchTolerance;
@@ -33,21 +33,21 @@ public class SearchLog extends BaseEntity {
     @Column(name = "result_count")
     private int resultCount;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "OS_ID")
     private Eye os;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "OD_ID")
     private Eye od;
 
 
     public BalLensEnum getBalLens() {
-        return balLens != null ? Enum.valueOf(BalLensEnum.class, balLens) : null;
+        return balLens;
     }
 
     public void setBalLens(BalLensEnum balLens) {
-        this.balLens = balLens != null ? balLens.name() : null;
+        this.balLens = balLens;
     }
 
     public Eye getOs() {
@@ -75,23 +75,18 @@ public class SearchLog extends BaseEntity {
     }
 
     public GlassesTypeEnum getGlassesType() {
-        return Enum.valueOf(GlassesTypeEnum.class, glassesType);
+        return glassesType;
     }
 
     public void setGlassesType(GlassesTypeEnum glassesType) {
-        this.glassesType = glassesType.name();
-    }
-
-    public void setGlassesType(String glassesType) {
         this.glassesType = glassesType;
     }
 
-
-    public Date getSearchDate() {
+    public Instant getSearchDate() {
         return searchDate;
     }
 
-    public void setSearchDate(Date searchDate) {
+    public void setSearchDate(Instant searchDate) {
         this.searchDate = searchDate;
     }
 

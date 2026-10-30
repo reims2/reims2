@@ -1,67 +1,27 @@
 # REIMS2 Backend
 
-REIMS2 Java Backend with Spring Boot
+Java 21 / Spring Boot 4 REST API for REIMS2. See the root `CLAUDE.md` for the architecture.
 
-# Run command
+## Run locally
 
-To run the backend, you'll have to type in the following command:
-
-Spin up a local MariaDB instance with Docker first:
+Start a MariaDB instance with Docker:
 
 ```bash
 docker run --detach --rm --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSWORD=reims --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 mariadb:latest
 ```
 
-Then start the backend with the following command:
+Then start the backend with the `dev` profile, which recreates the schema and fills it with test data:
 
 ```bash
-spring_profiles_active=local ./mvnw spring-boot:run
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-Then you can the API Endpoints via:
-http://localhost:9966/api/glasses
+The API runs on http://localhost:9966/api, Swagger UI on http://localhost:9966/swagger-ui/index.html.
 
-# Swagger Documentation
+`./mvnw test` runs the tests against an in-memory H2 database, no Docker needed.
 
-http://localhost:9966/v3/api-docs
+## Authentication
 
-http://localhost:9966/swagger-ui/index.html
-
-# Security
-
-Secured by JWT. How to deal with it?
-Well, Sign up a user:
-
-```
-http://localhost:9966/pvh/api/auth/signup
-```
-
-With Following Example Body:
-
-```
-{
-  "username": "test",
-  "password": "testtest",
-  "role" : ["mod", "user", "admin"]
-}
-```
-
-Or, with a one-liner in curl
-`curl -d '{"username": "test","password": "testtest","role" : ["mod", "user", "admin"]}' -H "Content-Type: application/json" -X POST https://reims2.app/api/auth/signup`
-
-Then you can log in with:
-
-```
-http://localhost:9966/api/auth/signin
-```
-
-With Following Example Body:
-
-```
-{
-  "username": "test",
-  "password": "testtest"
-}
-```
-
-You'll get an Bearer Token, which you will need to provide to get access on Endpoints.
+`POST /api/auth/signin` with `{"username": "test", "password": "testtest"}` (a user from the dev test data) returns a JWT
+as `accessToken`. Send it as `Authorization: Bearer <token>` with every other request. Admins create further users via
+`POST /api/auth/signup` with `{"username": "...", "password": "...", "roles": [{"name": "ROLE_USER"}]}`.

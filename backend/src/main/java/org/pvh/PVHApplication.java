@@ -5,7 +5,6 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.support.DatabaseStartupValidator;
 
@@ -13,7 +12,7 @@ import javax.sql.DataSource;
 import java.util.stream.Stream;
 
 @SpringBootApplication
-public class PVHApplication extends SpringBootServletInitializer {
+public class PVHApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PVHApplication.class, args);

@@ -1,13 +1,11 @@
 package org.pvh.service;
 
-import org.pvh.error.NoSkusLeftException;
+import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.pvh.model.enums.DispenseReasonEnum;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,29 +13,23 @@ public interface MainService {
 
     Optional<Glasses> findGlassesById(long glassesId);
 
-    Glasses saveGlasses(Glasses glasses) throws DataAccessException, NoSkusLeftException;
+    Optional<Glasses> findBySkuAndLocation(int sku, String location);
 
-    void deleteGlasses(Glasses glasses) throws DataAccessException;
+    Glasses saveGlasses(Glasses glasses);
 
-    Glasses saveGlassesAfterDispense(Glasses glasses) throws DataAccessException;
+    Glasses editGlasses(String location, int sku, GlassesRequestDTO edit);
 
-    Glasses saveGlassesAfterEdit(Glasses glasses) throws DataAccessException;
+    void dispense(String location, int sku, DispenseReasonEnum reason, Long expectedId);
 
-    Optional<Glasses> findAllByIdAndLocation(long id, String location);
+    boolean undispense(long id);
 
-    Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
+    void deleteGlasses(Glasses glasses);
 
-    Page<Glasses> findAllGlasses(Pageable pageable) throws DataAccessException;
+    List<Glasses> findByDispensedAndLocation(boolean dispensed, String location);
 
-    List<Glasses> findByDispensedAndLocation(boolean dispensed, String location) throws DataAccessException;
-
-    List<Glasses> findDispensedBetween(Date startDate, Date endDate, String location);
-
-    List<Glasses> findAllByLocationAndNotDispensed(String location);
+    List<Glasses> findDispensedBetween(Instant from, Instant to, String location);
 
     List<SearchLog> findUnsuccessfulSearchesByLocation(String location);
-
-    List<Glasses> findAllAndNotDispensed();
 
     SearchLog saveSearchLog(SearchLog search);
 }
