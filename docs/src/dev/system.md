@@ -2,7 +2,7 @@
 
 REIMS2 is composed of:
 
-- A backend implemented in Java 21 with Spring Boot 4
+- A backend implemented in Java 25 with Spring Boot 4
 - A MariaDB database
 - A frontend constructed with Vue 3 and Vuetify 3 written in Typescript
 - These docs generated with Vitepress
