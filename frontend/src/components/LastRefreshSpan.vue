@@ -8,7 +8,7 @@
     @click="glassesStore.loadGlasses()"
     @keydown.enter="glassesStore.loadGlasses()"
   >
-    <v-tooltip activator="parent" location="top">Refresh now</v-tooltip>
+    <v-tooltip activator="parent" location="top" aria-label="Refresh now">Refresh now</v-tooltip>
     <v-progress-circular
       v-if="glassesStore.isRefreshingGlasses"
       indeterminate
