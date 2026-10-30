@@ -1,19 +1,30 @@
 <template>
-  <div v-if="showSpinner" class="d-flex align-center" @click="glassesStore.loadGlasses()">
+  <div
+    v-if="showSpinner"
+    class="d-flex align-center"
+    style="cursor: pointer"
+    role="button"
+    tabindex="0"
+    @click="glassesStore.loadGlasses()"
+    @keydown.enter="glassesStore.loadGlasses()"
+  >
+    <v-tooltip activator="parent" location="top">Refresh now</v-tooltip>
     <v-progress-circular
-      :style="{ visibility: glassesStore.isRefreshingGlasses ? 'visible' : 'hidden' }"
+      v-if="glassesStore.isRefreshingGlasses"
       indeterminate
       size="17"
       color="white"
       aria-label="Refreshing glasses"
       class="mr-2 ma-0 pa-0"
     />
+    <v-icon v-else :icon="mdiRefresh" size="17" class="mr-2" />
     Last update {{ lastRefreshString }}
   </div>
   <span v-else>Last update {{ lastRefreshString }}.</span>
 </template>
 
 <script setup lang="ts">
+import { mdiRefresh } from '@mdi/js'
 import { useIntervalFn, useNow } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
 import dayjs from 'dayjs'
