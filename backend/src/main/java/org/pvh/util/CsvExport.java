@@ -1,20 +1,19 @@
 package org.pvh.util;
 
 import com.opencsv.CSVWriter;
-import jakarta.servlet.http.HttpServletResponse;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.pvh.model.entity.SearchLog;
 
-public class WriteCsvToResponse {
+public class CsvExport {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         .withZone(CampaignZone.ZONE);
@@ -34,40 +33,32 @@ public class WriteCsvToResponse {
             "OD Sphere", "OD Cylinder", "OD Axis", "OD Add",
             "OS Sphere", "OS Cylinder", "OS Axis", "OS Add" };
 
-    public static void writeGlassesToCsvHttpResponse(HttpServletResponse servletResponse, Collection<Glasses> glasses) {
-        try (CSVWriter writer = new CSVWriter(servletResponse.getWriter())) {
+    public static String glasses(Collection<Glasses> glasses) {
+        StringWriter out = new StringWriter();
+        try (CSVWriter writer = new CSVWriter(out)) {
             writer.writeNext(header);
-
-            for (Glasses glass : glasses) {
-                writeSingleGlasses(writer, glass);
-            }
+            glasses.forEach(glass -> writeSingleGlasses(writer, glass));
         } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new UncheckedIOException(e);
         }
-        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"glasses.csv\"");
-        servletResponse.setContentType("text/csv");
+        return out.toString();
     }
 
-    public static void writeSearchesToCsvHttpResponse(HttpServletResponse servletResponse,
-            Collection<SearchLog> glasses) {
-        // TODO here and above: we shouldn't use getWriter() before business logic is
-        // done, since it's impossible to send an error after writing has started
-        try (CSVWriter writer = new CSVWriter(servletResponse.getWriter())) {
+    public static String searches(Collection<SearchLog> searches) {
+        StringWriter out = new StringWriter();
+        try (CSVWriter writer = new CSVWriter(out)) {
             writer.writeNext(header);
-            for (SearchLog glass : glasses) {
-                writeSingleSearch(writer, glass);
-            }
+            searches.forEach(search -> writeSingleSearch(writer, search));
         } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new UncheckedIOException(e);
         }
-        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"unsuccessful_searches.csv\"");
-        servletResponse.setContentType("text/csv");
+        return out.toString();
     }
 
     private static void writeSingleSearch(CSVWriter writer, SearchLog glass) {
         List<String> rowList = new ArrayList<>();
         rowList.add("");
-        rowList.add(glass.getLocation());
+        rowList.add(glass.getLocation().name());
         rowList.add(glass.getGlassesType().toString());
         rowList.add("");
         rowList.add("");
@@ -94,7 +85,7 @@ public class WriteCsvToResponse {
     private static void writeSingleGlasses(CSVWriter writer, Glasses glass) {
         List<String> rowList = new ArrayList<>();
         rowList.add(glass.isDispensed() ? "" : glass.getSku().toString());
-        rowList.add(glass.getLocation());
+        rowList.add(glass.getLocation().name());
         rowList.add(glass.getGlassesType().toString());
         rowList.add(glass.getAppearance().toString());
         rowList.add(glass.getGlassesSize().toString());

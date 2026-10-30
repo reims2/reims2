@@ -2,11 +2,11 @@ package org.pvh.model.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
+import org.pvh.model.enums.LocationEnum;
 
 public record GlassesRequestDTO(
     // optional on edits, rejects the edit if the SKU now belongs to other glasses
@@ -14,7 +14,7 @@ public record GlassesRequestDTO(
     @NotNull GlassesTypeEnum glassesType,
     @NotNull GlassesSizeEnum glassesSize,
     @NotNull AppearanceEnum appearance,
-    @NotNull @Pattern(regexp = "sm|sa") String location,
+    @NotNull LocationEnum location,
     @NotNull @Valid EyeDTO os,
     @NotNull @Valid EyeDTO od) {
 

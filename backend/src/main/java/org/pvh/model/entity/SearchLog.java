@@ -1,9 +1,9 @@
 package org.pvh.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
+import org.pvh.model.enums.LocationEnum;
 
 import java.time.Instant;
 
@@ -16,9 +16,9 @@ public class SearchLog extends BaseEntity {
     @Column(name = "glasses_type")
     private GlassesTypeEnum glassesType;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "location")
-    @Pattern(regexp = "sm|sa")
-    private String location;
+    private LocationEnum location;
 
     @Column(name = "search_date")
     private Instant searchDate;
@@ -66,11 +66,11 @@ public class SearchLog extends BaseEntity {
         this.od = od;
     }
 
-    public String getLocation() {
+    public LocationEnum getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(LocationEnum location) {
         this.location = location;
     }
 

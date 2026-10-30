@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import org.pvh.model.entity.SearchLog;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
+import org.pvh.model.enums.LocationEnum;
 
 import java.time.Instant;
 
@@ -20,7 +21,7 @@ public record SearchLogDTO(
     @NotNull @Valid EyeDTO os,
     @NotNull @Valid EyeDTO od) {
 
-    public SearchLog toSearchLog(String location) {
+    public SearchLog toSearchLog(LocationEnum location) {
         SearchLog searchLog = new SearchLog();
         searchLog.setOs(os.toEye());
         searchLog.setOd(od.toEye());
