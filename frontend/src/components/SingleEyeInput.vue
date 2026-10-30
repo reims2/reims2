@@ -27,7 +27,7 @@
         v-if="balEnabled"
         v-model="isBAL"
         tabindex="-1"
-        class="py-0 my-0"
+        class="py-0 my-0 ml-n3"
         :label="`BAL lens (Disable ${eyeName})`"
         hide-details
       />

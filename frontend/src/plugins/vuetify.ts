@@ -4,6 +4,13 @@ import { type VuetifyOptions, createVuetify } from 'vuetify'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export const vuetifyOptions: VuetifyOptions = {
+  defaults: {
+    VTextField: { variant: 'outlined' },
+    VSelect: { variant: 'outlined' },
+    VAutocomplete: { variant: 'outlined' },
+    VCombobox: { variant: 'outlined' },
+    VTextarea: { variant: 'outlined' },
+  },
   icons: {
     defaultSet: 'mdi',
     aliases,

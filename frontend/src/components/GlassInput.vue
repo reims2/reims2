@@ -12,7 +12,7 @@
         />
       </v-col>
 
-      <v-col cols="12" md="6" class="px-0 pl-md-1 pr-md-5 py-md-0 py-1">
+      <v-col cols="12" md="6" class="px-0 pr-md-5 py-md-0 py-1">
         <single-eye-input
           eye-name="OD"
           :model-value="modelValue.od"
