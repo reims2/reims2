@@ -45,7 +45,7 @@ export type EyeKey = (typeof eyeKeys)[number]
 export type GlassesEyeIndex = 'od' | 'os'
 
 export interface Dispense {
-  modifyDate: number | null
+  modifyDate: string | null
   previousSku: number | null
   dispenseReason: DeletionReason | null
 }
@@ -85,7 +85,7 @@ export interface SanitizedGlassesInput extends GlassesMeta {
 export interface Glasses extends SanitizedGlassesInput {
   id: number // backend ID
   sku: number | null
-  creationDate: number
+  creationDate: string
   dispensed?: boolean
   dispense?: Dispense
   location: ReimsSite

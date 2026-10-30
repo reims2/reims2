@@ -40,7 +40,7 @@ export function formatSku(value?: number | null): string {
   return value.toString().padStart(4, '0')
 }
 
-function formatDate(date: number) {
+function formatDate(date: string) {
   return dayjs(date).format('DD.MM.YYYY')
 }
 
