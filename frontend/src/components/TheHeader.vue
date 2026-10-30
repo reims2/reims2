@@ -4,6 +4,9 @@
     <v-toolbar-title>
       {{ title }}
     </v-toolbar-title>
+    <v-chip variant="text" class="mr-1" :prepend-icon="mdiMapMarker">
+      {{ rootStore.reimsSiteName }}
+    </v-chip>
     <v-chip
       v-if="pendingCount > 0"
       color="warning"
@@ -17,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { mdiCloudUploadOutline } from '@mdi/js'
+import { mdiCloudUploadOutline, mdiMapMarker } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
 import { usePendingChanges } from '@/composables/pending-changes'
 import { useRoute } from 'vue-router'

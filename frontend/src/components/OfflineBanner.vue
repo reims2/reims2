@@ -14,13 +14,9 @@
       max-width="300px"
       class="mr-3 mr-md-7 mb-3 mb-md-0"
     >
-      <span v-if="isOutdated">
-        REIMS is running offline. Database is older than 3 days, which can lead to problems.
-      </span>
-      <span>
-        REIMS is running offline.
-        <last-refresh-span :show-spinner="false" />
-      </span>
+      <div>REIMS is running offline.</div>
+      <div v-if="isOutdated">The database is older than 3 days, which can lead to problems.</div>
+      <div><last-refresh-span :show-spinner="false" /></div>
     </v-alert>
   </v-overlay>
 </template>
