@@ -14,7 +14,6 @@ import org.pvh.security.model.entity.User;
 import org.pvh.security.model.enums.ERole;
 import org.pvh.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +40,6 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
-@ConditionalOnProperty(name = "pvh.security.enable", havingValue = "true")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;

@@ -2,6 +2,7 @@ package org.pvh.db;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.pvh.MariaDbTestConfiguration;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
@@ -12,8 +13,10 @@ import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -30,6 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Import(MariaDbTestConfiguration.class)
+@WithMockUser(roles = "USER")
 public class StatsViewsIntegrationTest {
 
     @Autowired
