@@ -1,9 +1,15 @@
-import { Glasses, GlassesSearch, SanitizedGlassesInput, SearchLog } from '@/model/GlassesModel'
+import { Glasses, GlassesSearch, SanitizedGlassesInput } from '@/model/GlassesModel'
+import type { components } from '@/model/api'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useRootStore } from './root'
 import { ReimsAxiosError, useAxios } from '@/lib/axios'
-import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
+import { DeletionReason } from '@/model/ReimsModel'
 import { Dayjs } from 'dayjs'
+
+// the generated API types check requests and responses against backend/openapi.json
+type GlassesRequest = components['schemas']['GlassesRequestDTO']
+type GlassesResponse = components['schemas']['GlassesResponseDTO']
+type SearchLogRequest = components['schemas']['SearchLogDTO']
 
 const arrayContainsSku = (data: Glasses[], sku: number | null) => {
   if (sku === null) return false
@@ -34,31 +40,28 @@ export const useGlassesStore = defineStore(
     async function addGlasses(newGlasses: SanitizedGlassesInput): Promise<Glasses> {
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
-      interface GlassesRequest extends SanitizedGlassesInput {
-        location: ReimsSite
-      }
-      const request = {
+      const request: GlassesRequest = {
         ...newGlasses,
         location: rootStore.reimsSite,
-      } as GlassesRequest
-      const response = await axiosInstance.post('/api/glasses', request)
-      const addedGlasses = response.data
+      }
+      const response = await axiosInstance.post<GlassesResponse>('/api/glasses', request)
+      const addedGlasses: Glasses = response.data
       // the SKU may be a reissued one that is still cached for its dispensed previous pair
-      deleteOfflineGlasses(addedGlasses.sku)
+      if (addedGlasses.sku !== null) deleteOfflineGlasses(addedGlasses.sku)
       addOfflineGlasses(addedGlasses)
       return addedGlasses
     }
     async function logSearch(glassesSearch: GlassesSearch, resultCount: number): Promise<void> {
-      let balLens = 'DISABLE_NONE'
+      let balLens: SearchLogRequest['balLens'] = 'DISABLE_NONE'
       if (glassesSearch.os.isBAL) balLens = 'DISABLE_OS'
       if (glassesSearch.od.isBAL) balLens = 'DISABLE_OD'
-      const request = {
+      const request: SearchLogRequest = {
         ...glassesSearch,
         balLens,
         searchDate: Date.now(),
-        increaseSearchTolerance: glassesSearch.highTolerance,
+        increaseSearchTolerance: glassesSearch.highTolerance ?? false,
         resultCount,
-      } as SearchLog
+      }
       await axiosInstance.post(`/api/glasses/${rootStore.reimsSite}/searchLog`, request)
     }
     async function fetchSingle(sku: number): Promise<Glasses> {
@@ -66,9 +69,12 @@ export const useGlassesStore = defineStore(
       controllerFetchSingle = new AbortController()
       let response
       try {
-        response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}/${sku}`, {
-          signal: controllerFetchSingle.signal,
-        })
+        response = await axiosInstance.get<GlassesResponse>(
+          `/api/glasses/${rootStore.reimsSite}/${sku}`,
+          {
+            signal: controllerFetchSingle.signal,
+          },
+        )
       } catch (e) {
         if (e instanceof ReimsAxiosError && e.statusCode === 404) {
           // delete glasses from local db if it doesn't exist on server
@@ -77,7 +83,7 @@ export const useGlassesStore = defineStore(
         throw e
       }
 
-      const fetchedGlasses = response.data
+      const fetchedGlasses: Glasses = response.data
       deleteOfflineGlasses(sku)
       addOfflineGlasses(fetchedGlasses)
       return fetchedGlasses
@@ -112,11 +118,12 @@ export const useGlassesStore = defineStore(
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
 
-      const response = await axiosInstance.put(
+      const request: GlassesRequest = newGlasses
+      const response = await axiosInstance.put<GlassesResponse>(
         `/api/glasses/${rootStore.reimsSite}/${newGlasses.sku}`,
-        newGlasses,
+        request,
       )
-      const editedGlasses = response.data
+      const editedGlasses: Glasses = response.data
       if (newGlasses.sku) deleteOfflineGlasses(newGlasses.sku)
       addOfflineGlasses(editedGlasses)
       return editedGlasses
@@ -146,9 +153,12 @@ export const useGlassesStore = defineStore(
         startDate: startDate.format('MM/DD/YYYY'),
         endDate: endDate.format('MM/DD/YYYY'),
       }
-      const response = await axiosInstance.get(`/api/glasses/dispensed/${rootStore.reimsSite}`, {
-        params,
-      })
+      const response = await axiosInstance.get<GlassesResponse[]>(
+        `/api/glasses/dispensed/${rootStore.reimsSite}`,
+        {
+          params,
+        },
+      )
       return response.data
     }
     async function loadGlassesIfChanged() {
@@ -173,10 +183,13 @@ export const useGlassesStore = defineStore(
       isRefreshingGlasses.value = true
       let response
       try {
-        response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}/all`, {
-          timeout: 60000,
-          signal: controllerGetAll.signal,
-        })
+        response = await axiosInstance.get<GlassesResponse[]>(
+          `/api/glasses/${rootStore.reimsSite}/all`,
+          {
+            timeout: 60000,
+            signal: controllerGetAll.signal,
+          },
+        )
       } finally {
         isRefreshingGlasses.value = false
       }

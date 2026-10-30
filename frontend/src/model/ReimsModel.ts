@@ -1,7 +1,10 @@
-export type ReimsSite = 'sa' | 'sm'
+import type { components } from '@/model/api'
 
-export type DeletionReason =
-  'DISPENSED' | 'TOO_HIGH_VALUES' | 'NOT_FOUND' | 'BROKEN' | 'OTHER' | 'WRONGLY_ADDED'
+export type ReimsSite = components['schemas']['GlassesResponseDTO']['location']
+
+export type DeletionReason = NonNullable<
+  components['schemas']['DispenseResponseDTO']['dispenseReason']
+>
 
 export interface DrawerItem {
   icon: string

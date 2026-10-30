@@ -1,6 +1,7 @@
 package org.pvh.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ public record SearchLogDTO(
     @NotNull BalLensEnum balLens,
     Boolean increaseSearchTolerance,
     // clients send epoch millis, Jackson would read a plain number as seconds
-    @NotNull @JsonFormat(without = JsonFormat.Feature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS) Instant searchDate,
+    @NotNull @JsonFormat(without = JsonFormat.Feature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS) @Schema(implementation = Long.class) Instant searchDate,
     @NotNull @Min(0) Integer resultCount,
     @NotNull @Valid EyeDTO os,
     @NotNull @Valid EyeDTO od) {

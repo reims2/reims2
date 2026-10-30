@@ -19,6 +19,7 @@ jobs:
             src:
               - ".github/**"
               - "frontend/**"
+              - "backend/openapi.json"
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         if: steps.filter.outputs.src == 'true'
         with:
@@ -39,6 +40,9 @@ jobs:
       - name: Check format
         if: steps.filter.outputs.src == 'true'
         run: pnpm format:check
+      - name: Check generated API types
+        if: steps.filter.outputs.src == 'true'
+        run: pnpm generate:api && git diff --exit-code src/model/api.d.ts
       - name: Run tests
         if: steps.filter.outputs.src == 'true'
         run: pnpm test
