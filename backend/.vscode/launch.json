@@ -10,8 +10,7 @@
       "projectName": "reims2-backend",
       "args": "",
       "env": {
-        "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException",
-        "PVH_DEBUG": "true"
+        "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException"
       }
     },
     {
@@ -21,10 +20,9 @@
       "cwd": "${workspaceFolder}",
       "mainClass": "org.pvh.PVHApplication",
       "projectName": "reims2-backend",
-      "args": "--spring.profiles.active=local",
+      "args": "--spring.profiles.active=dev",
       "env": {
-        "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException",
-        "PVH_DEBUG": "true"
+        "PVH_JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtestTokenTheKeyNeedsToBeAtLeast512BitsLongElseException"
       }
     }
   ]

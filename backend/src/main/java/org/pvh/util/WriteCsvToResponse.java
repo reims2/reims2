@@ -8,15 +8,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.TimeZone;
 import org.pvh.model.entity.SearchLog;
 
 public class WriteCsvToResponse {
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        .withZone(CampaignZone.ZONE);
 
     private static final String[] header = new String[] { "SKU",
             "Location",
@@ -64,17 +65,13 @@ public class WriteCsvToResponse {
     }
 
     private static void writeSingleSearch(CSVWriter writer, SearchLog glass) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        // come up with an alternative to hardcoding EL Salvador's timezone
-        df.setTimeZone(TimeZone.getTimeZone("CST"));
-
         List<String> rowList = new ArrayList<>();
         rowList.add("");
         rowList.add(glass.getLocation());
         rowList.add(glass.getGlassesType().toString());
         rowList.add("");
         rowList.add("");
-        rowList.add(df.format(glass.getSearchDate()));
+        rowList.add(DATE_FORMAT.format(glass.getSearchDate()));
         rowList.add("");
         rowList.add("");
         rowList.add("");
@@ -95,20 +92,16 @@ public class WriteCsvToResponse {
     }
 
     private static void writeSingleGlasses(CSVWriter writer, Glasses glass) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        // come up with an alternative to hardcoding EL Salvador's timezone
-        df.setTimeZone(TimeZone.getTimeZone("CST"));
-
         List<String> rowList = new ArrayList<>();
         rowList.add(glass.isDispensed() ? "" : glass.getSku().toString());
         rowList.add(glass.getLocation());
         rowList.add(glass.getGlassesType().toString());
         rowList.add(glass.getAppearance().toString());
         rowList.add(glass.getGlassesSize().toString());
-        rowList.add(df.format(glass.getCreationDate()));
+        rowList.add(DATE_FORMAT.format(glass.getCreationDate()));
         rowList.add(glass.isDispensed() ? "true" : "false");
         rowList.add(glass.isDispensed() ? glass.getDispense().getPreviousSku().toString() : "");
-        rowList.add(glass.isDispensed() ? df.format(glass.getDispense().getModifyDate()) : "");
+        rowList.add(glass.isDispensed() ? DATE_FORMAT.format(glass.getDispense().getModifyDate()) : "");
         if (glass.isDispensed() && glass.getDispense().getDispenseReason() != null)
             rowList.add(glass.getDispense().getDispenseReason().toString());
         else

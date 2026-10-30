@@ -1,22 +1,23 @@
 package org.pvh.repository.jpa;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import org.pvh.error.NoSkusLeftException;
 import org.pvh.model.entity.Glasses;
 import org.pvh.repository.CustomGlassesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
 
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public Glasses saveGlassesWithNextPossibleSKU(Glasses glasses, int min, int max) throws NoSkusLeftException {
+    public Glasses saveGlassesWithNextPossibleSKU(Glasses glasses, int min, int max) {
 
         Query query = entityManager.createQuery("SELECT sku FROM Glasses WHERE sku = :min");
         query.setParameter("min", min);
@@ -39,11 +40,11 @@ public class CustomGlassesRepositoryImpl implements CustomGlassesRepository {
                 // JPA returns BigInteger even though it really is just a java int => convert it
                 nextSKU = ((Number) findNextSKUQuery.getSingleResult()).intValue();
             } catch (NoResultException e) {
-                throw new NoSkusLeftException("No free SKU");
+                throw new NoSkusLeftException();
             }
         }
         glasses.setSku(nextSKU);
-        glasses.setCreationDate(new Date());
+        glasses.setCreationDate(Instant.now().truncatedTo(ChronoUnit.MILLIS));
 
         entityManager.persist(glasses);
         entityManager.flush();

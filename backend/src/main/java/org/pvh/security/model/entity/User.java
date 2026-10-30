@@ -1,7 +1,5 @@
 package org.pvh.security.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -21,7 +19,6 @@ public class User {
 
     @NotBlank
     @Size(max = 120)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -52,7 +49,6 @@ public class User {
         this.username = username;
     }
 
-    @JsonIgnore
     public String getPassword() {
         return password;
     }

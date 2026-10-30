@@ -6,8 +6,7 @@ import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Glasses;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
 
 public class GlassesSpecs {
 
@@ -25,14 +24,12 @@ public class GlassesSpecs {
         };
     }
 
-    public static Specification<Glasses> dispensedInRange(Date startDate, Date endDate) {
+    public static Specification<Glasses> dispensedInRange(Instant from, Instant to) {
         return (root, query, criteriaBuilder) -> {
-            Join<Glasses, Dispense> groupJoin = root.join("dispense");
-            Calendar c = Calendar.getInstance();
-            c.setTime(endDate);
-            c.add(Calendar.DATE, 1);
-            Date endDatePlus1 = c.getTime();
-            return criteriaBuilder.between(groupJoin.get("modifyDate"), startDate, endDatePlus1);
+            Join<Glasses, Dispense> dispense = root.join("dispense");
+            return criteriaBuilder.and(
+                criteriaBuilder.greaterThanOrEqualTo(dispense.<Instant>get("modifyDate"), from),
+                criteriaBuilder.lessThan(dispense.<Instant>get("modifyDate"), to));
         };
     }
 

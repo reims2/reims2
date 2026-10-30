@@ -15,7 +15,5 @@ public interface GlassesRepository extends JpaRepository<Glasses, Long>, CustomG
         "where g.dispensed = :dispensed and g.location = :location ")
     List<Glasses> findByDispensedAndLocation(boolean dispensed, String location);
 
-    Optional<Glasses> findAllByIdAndLocation(long id, String location);
-
-    Optional<Glasses> findAllBySkuAndLocation(int sku, String location);
+    Optional<Glasses> findBySkuAndLocation(int sku, String location);
 }

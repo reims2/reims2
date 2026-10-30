@@ -1,94 +1,35 @@
 package org.pvh.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import org.pvh.model.entity.SearchLog;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
-import org.pvh.model.validator.IEnumValidator;
 
-import java.util.Date;
+import java.time.Instant;
 
-public class SearchLogDTO {
-    @IEnumValidator(enumClass = GlassesTypeEnum.class)
-    private String glassesType;
-    private String balLens;
-    private Boolean increaseSearchTolerance;
-    private Date searchDate;
-    @NotNull
-    @Min(0)
-    private Integer resultCount;
+public record SearchLogDTO(
+    @NotNull GlassesTypeEnum glassesType,
+    @NotNull BalLensEnum balLens,
+    Boolean increaseSearchTolerance,
+    // clients send epoch millis, Jackson would read a plain number as seconds
+    @NotNull @JsonFormat(without = JsonFormat.Feature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS) Instant searchDate,
+    @NotNull @Min(0) Integer resultCount,
+    @NotNull @Valid EyeDTO os,
+    @NotNull @Valid EyeDTO od) {
 
-    private EyeDTO os;
-    private EyeDTO od;
-
-
-    public SearchLogDTO(@IEnumValidator(enumClass = GlassesTypeEnum.class) String glassesType,
-                        @IEnumValidator(enumClass = BalLensEnum.class) String balLens,
-                        Boolean increaseSearchTolerance, Date searchDate, Integer resultCount, EyeDTO os, EyeDTO od) {
-        this.glassesType = glassesType;
-        this.increaseSearchTolerance = increaseSearchTolerance;
-        this.balLens = balLens;
-        this.searchDate = searchDate;
-        this.resultCount = resultCount;
-        this.os = os;
-        this.od = od;
+    public SearchLog toSearchLog(String location) {
+        SearchLog searchLog = new SearchLog();
+        searchLog.setOs(os.toEye());
+        searchLog.setOd(od.toEye());
+        searchLog.setLocation(location);
+        searchLog.setGlassesType(glassesType);
+        searchLog.setBalLens(balLens);
+        searchLog.setIncreaseSearchTolerance(increaseSearchTolerance);
+        searchLog.setSearchDate(searchDate);
+        searchLog.setResultCount(resultCount);
+        return searchLog;
     }
-
-    public String getGlassesType() {
-        return glassesType;
-    }
-
-    public void setGlassesType(String glassesType) {
-        this.glassesType = glassesType;
-    }
-
-    public Date getSearchDate() {
-        return searchDate;
-    }
-
-    public void setSearchDate(Date searchDate) {
-        this.searchDate = searchDate;
-    }
-
-    public Integer getResultCount() {
-        return resultCount;
-    }
-
-    public void setResultCount(Integer resultCount) {
-        this.resultCount = resultCount;
-    }
-
-    public EyeDTO getOs() {
-        return os;
-    }
-
-    public void setOs(EyeDTO os) {
-        this.os = os;
-    }
-
-    public EyeDTO getOd() {
-        return od;
-    }
-
-    public void setOd(EyeDTO od) {
-        this.od = od;
-    }
-
-    public String getBalLens() {
-        return balLens;
-    }
-
-    public void setBalLens(String balLens) {
-        this.balLens = balLens;
-    }
-
-    public Boolean getIncreaseSearchTolerance() {
-        return increaseSearchTolerance;
-    }
-
-    public void setIncreaseSearchTolerance(Boolean increaseSearchTolerance) {
-        this.increaseSearchTolerance = increaseSearchTolerance;
-    }
-
-
 }
