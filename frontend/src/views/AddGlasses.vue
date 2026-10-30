@@ -9,7 +9,7 @@
               v-model="glasses"
               v-model:sync-eyes="syncEyeAdd"
             ></glass-input>
-            <v-col cols="12" class="px-0 pt-0">
+            <v-col cols="12" class="pl-1 pr-0 pt-0">
               <div class="pb-3 text-body-medium text-medium-emphasis">
                 You are in {{ reimsSiteName }} ({{ freeSlots }} SKUs left)
               </div>

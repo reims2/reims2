@@ -10,14 +10,15 @@
               v-model:sync-eyes="syncEyeAdd"
               :glasses-type-only="true"
             ></glass-input>
-            <v-col cols="12" class="pa-0">
+            <v-col cols="12" class="pa-0 pl-1">
               <v-checkbox
                 v-model="highTolerance"
                 label="Increase search tolerance (might yield bad results)"
                 tabindex="-1"
+                class="ml-n3"
               />
             </v-col>
-            <v-col cols="12" class="px-0">
+            <v-col cols="12" class="pl-1 pr-0">
               <div>
                 <v-btn
                   v-prevent-enter-tab
