@@ -1,0 +1,51 @@
+---
+# Staging runs on a copy of prod's data, so a deploy to main tries new migrations on it before prod gets them
+- name: Check for a prod stack to copy
+  ansible.builtin.stat:
+    path: /srv/prod/.env
+  register: app_prod_env
+
+# a never deployed staging has no users table yet, and prod's Flyway history would keep it from being created
+- name: Copy prod's data into staging
+  when: app_prod_env.stat.exists and app_previous_tag | length > 0
+  block:
+    - name: Start staging's database
+      community.docker.docker_compose_v2:
+        project_src: "{{ app_install_location }}"
+        project_name: "{{ stack }}"
+        files: [compose.yaml, compose.server.yaml, "compose.{{ stack }}.yaml"]
+        services: [mariadb]
+        wait: true
+        wait_timeout: 300
+
+    # starting the stack starts it again, and Flyway migrates the copied data
+    - name: Stop staging's backend
+      community.docker.docker_compose_v2:
+        project_src: "{{ app_install_location }}"
+        project_name: "{{ stack }}"
+        files: [compose.yaml, compose.server.yaml, "compose.{{ stack }}.yaml"]
+        services: [backend]
+        state: stopped
+
+    - name: Copy prod's database without its users
+      ansible.builtin.shell:
+        executable: /bin/bash
+        cmd: |
+          set -o pipefail
+          (cd /srv/prod && docker compose exec -T mariadb sh -c 'exec mariadb-dump -uroot -p"$MARIADB_ROOT_PASSWORD" \
+            --single-transaction --ignore-table="$MARIADB_DATABASE.users" --ignore-table="$MARIADB_DATABASE.user_roles" \
+            "$MARIADB_DATABASE"') |
+            (cd {{ app_install_location }} && docker compose exec -T mariadb sh -c 'exec mariadb -uroot -p"$MARIADB_ROOT_PASSWORD" "$MARIADB_DATABASE"')
+      changed_when: true
+
+    - name: Set the password of the test user
+      ansible.builtin.shell:
+        chdir: "{{ app_install_location }}"
+        cmd: docker compose exec -T mariadb sh -c 'exec mariadb -uroot -p"$MARIADB_ROOT_PASSWORD" "$MARIADB_DATABASE"'
+        stdin: |
+          INSERT INTO users (username, password) VALUES ('test', '{{ reims2_staging_test_password_hash }}')
+            ON DUPLICATE KEY UPDATE password = VALUES(password);
+          INSERT IGNORE INTO user_roles (user_id, role_id)
+            SELECT u.id, r.id FROM users u JOIN roles r WHERE u.username = 'test';
+      changed_when: true
+      no_log: true

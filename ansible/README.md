@@ -9,7 +9,8 @@ so day to day you only push to `main`.
 | prod    | `deploy.yml -e stack=prod`    | Traefik, Grafana/Prometheus, the app in `/srv/prod`, S3 backups |
 | staging | `deploy.yml -e stack=staging` | the app in `/srv/staging`, served at dev.reims2.app             |
 
-Prod values and vaulted secrets are in `vars/prod.yml`, staging values in `vars/staging.yml`. The app's
+Prod values and vaulted secrets are in `vars/prod.yml`, staging's in `vars/staging.yml` under their own vault
+password. The app's
 services come from the root `compose.yaml`, which the `app` role copies next to a generated `.env`.
 
 ## Everyday use
@@ -21,6 +22,10 @@ services come from the root `compose.yaml`, which the `app` role copies next to 
   run Deploy on `main` by hand, which skips the check.
 - The Staging workflow deploys the branch picked in "Use workflow from" to dev.reims2.app.
   The next push to `main` puts main back.
+- Every staging deploy first copies prod's data into staging, without prod's users
+  (`roles/app/tasks/copy-prod.yml`). So a push to `main` tries a new migration on prod's data before prod
+  gets it, and a branch's migrations are reset by the next deploy. Staging keeps its own users and always
+  has `test`, with the password from `creds/staging_test_password`.
 - Server setup runs on changes to `setup.yml`, the setup or hardening roles, or `requirements.yml`.
 - On the server, every stack directory works with plain compose: `cd /srv/prod && docker compose logs
 backend`. The other projects are `/srv/staging`, `/srv/traefik` and `/srv/monitoring`.
@@ -34,12 +39,13 @@ backend`. The other projects are `/srv/staging`, `/srv/traefik` and `/srv/monito
 
 Start from an Ubuntu LTS box with root SSH access. Point `reims2.app`, `dev.reims2.app` and
 `monitoring.reims2.app` at it first, so Traefik gets Let's Encrypt certificates. `creds/` is not in git.
-`creds/vault_password` opens the vault in `vars/prod.yml`, so keep a copy outside the repo.
+`creds/vault_password` opens the vault in `vars/prod.yml` and `creds/vault_password_staging` the one in
+`vars/staging.yml`, so keep copies outside the repo.
 `creds/pub_keys` lists every SSH key that gets root, since hardening turns off password logins. That
 includes the CI key: `ssh-keygen -t ed25519 -N '' -f creds/deploy`, then add `creds/deploy.pub`.
 
 CI logs in as root with that key, stored as the `DEPLOY_SSH_KEY` secret of the `production` and
-`staging` environments. It opens the vault with `VAULT_PASSWORD` in `production` and checks the host key
+`staging` environments. It opens each vault with the `VAULT_PASSWORD` secret of that environment and checks the host key
 against the repo variable `DEPLOY_KNOWN_HOSTS`. Refresh that after a reinstall: `ssh-keyscan reims2.app |
 gh variable set DEPLOY_KNOWN_HOSTS`. Then set up the box from a local checkout:
 
@@ -47,13 +53,14 @@ gh variable set DEPLOY_KNOWN_HOSTS`. Then set up the box from a local checkout:
 ansible-galaxy install -r requirements.yml
 ansible-playbook -i hosts setup.yml
 ansible-playbook -i hosts deploy.yml -e stack=prod -e app_tag=sha-<commit> --vault-password-file creds/vault_password
-ansible-playbook -i hosts deploy.yml -e stack=staging -e app_tag=sha-<commit>
+ansible-playbook -i hosts deploy.yml -e stack=staging -e app_tag=sha-<commit> --vault-password-file creds/vault_password_staging
 ssh root@reims2.app /srv/prod/s3backup/restore.sh
-scripts/copy-prod-to-staging.sh
+# again, now that staging exists it copies the restored data
+ansible-playbook -i hosts deploy.yml -e stack=staging --vault-password-file creds/vault_password_staging
 ```
 
 Without a backup the database starts with no users. Insert a first admin the way
-`scripts/copy-prod-to-staging.sh` inserts `test` (bcrypt hash, all roles), then add everyone else in the
+`roles/app/tasks/copy-prod.yml` sets `test` (bcrypt hash, all roles), then add everyone else in the
 app. Outside this repo live the AWS S3 bucket `reims2-backup`, the healthchecks.io check of the backup
 and UptimeRobot checks of reims2.app. The bucket has versioning and Object Lock (compliance mode, 30
 days default retention) on. Its key, in the vault, may only `s3:PutObject`, `s3:GetObject`,
@@ -72,9 +79,7 @@ success or failure to healthchecks.io. `cd /srv/prod/s3backup && docker compose 
 runs one now, `docker compose logs backup` there shows past runs.
 
 `restore.sh [backup key]` restores the newest backup by default, into a database without glasses. To
-restore over live data, delete it with `cd /srv/prod && docker compose down -v` and deploy again first. `scripts/copy-prod-to-staging.sh` copies prod's data into staging. Run it before merging a migration, so the
-next `main` deploy tries the migration on prod's data on staging first. Staging
-keeps its own users and always has `test`/`testtest`.
+restore over live data, delete it with `cd /srv/prod && docker compose down -v` and deploy again first.
 
 ## Grafana
 

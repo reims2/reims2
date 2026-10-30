@@ -10,7 +10,7 @@ campaigns in El Salvador. Staff match donated used glasses to a patient's prescr
 independent locations: Santa Ana (`sa`) and San Miguel (`sm`). They're almost always online. Offline
 use is a rare fallback, so give offline-only features and tests low priority.
 
-Live instance: https://reims2.app (demo: https://dev.reims2.app). Public docs: https://reims2.app/docs.
+Live instance: https://reims2.app (staging: https://dev.reims2.app). Public docs: https://reims2.app/docs.
 
 Five independent projects live here, each with its own README, dependencies, and CI job:
 
@@ -89,7 +89,7 @@ projects. CI runs these, see `ansible/README.md` for a new box, restore and vari
 ```bash
 ansible-playbook -i hosts setup.yml                                   # Docker, firewall, hardening
 ansible-playbook -i hosts deploy.yml -e stack=prod --vault-password-file creds/vault_password
-ansible-playbook -i hosts deploy.yml -e stack=staging                 # dev.reims2.app
+ansible-playbook -i hosts deploy.yml -e stack=staging --vault-password-file creds/vault_password_staging
 ```
 
 ## Architecture
@@ -134,8 +134,8 @@ There's no server-side filtering or paging of glasses: the View Glasses table fi
 glasses store in the browser (`frontend/src/composables/table-filter.ts`). DTOs in `model/dto/` are records
 that map to and from entities themselves (`GlassesResponseDTO.from`, `GlassesRequestDTO.applyTo`). Each write
 runs in one transaction that bumps the change hash first. Flyway owns the schema and Hibernate only validates
-against it. Before merging a migration, run `ansible/scripts/copy-prod-to-staging.sh` so staging tries it on
-prod's data first (see `ansible/README.md`). Errors are RFC 9457 problem details from
+against it. Every staging deploy copies prod's data first, so a push to `main` tries
+each migration on it before prod (`ansible/roles/app/tasks/copy-prod.yml`). Errors are RFC 9457 problem details from
 `error/ApiExceptionHandler.java`. Only bad input may get a 4xx, since a queued offline change is dropped on a
 4xx but retried on a 5xx. Auth is JWT via Spring Security's OAuth2 resource server
 (`security/WebSecurityConfig.java`), with roles read from the database on every request. The two roles,
