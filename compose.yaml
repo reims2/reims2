@@ -32,7 +32,6 @@ services:
         condition: service_healthy
     environment:
       PVH_JWT_SECRET: ${JWT_SECRET}
-      PVH_DEBUG: ${DEBUG:-false}
       DATABASE_HOST: mariadb
       DATABASE_PORT: "3306"
       DATABASE_NAME: ${DATABASE_NAME:-reims2-db}
