@@ -4,8 +4,6 @@ REIMS2 is the next version of the Richmond Eyeglass Inventory Matching System. I
 
 This mono-repository contains code for the frontend, backend, documentation, testing and ansible scripts. See their respective README files for a more detailed explanation.
 
-A demo version is available at https://dev.reims2.app
-
 ## Screenshots
 
 ### Main Page
