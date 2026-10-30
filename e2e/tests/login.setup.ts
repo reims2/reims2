@@ -13,6 +13,6 @@ test('Login', async ({ page }) => {
     (response) => response.url().includes('/all') && response.status() === 200,
   )
   await expect(page.getByText('Setting up REIMS2')).toHaveCount(0)
-  await expect(page.getByRole('link', { name: 'REIMS Santa Ana' })).toBeInViewport()
+  await expect(page.getByRole('button', { name: 'Change location (Santa Ana)' })).toBeInViewport()
   await page.context().storageState({ path: authFile })
 })

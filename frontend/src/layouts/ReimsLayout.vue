@@ -1,7 +1,8 @@
 <template>
   <v-app>
-    <the-drawer :main-items="mainItems" :other-items="otherItems" />
+    <!-- header first so it spans the full width above the drawer -->
     <the-header />
+    <the-drawer v-if="!mobile" :items="navItems" />
     <v-main class="background">
       <router-view v-slot="{ Component }" class="py-6 px-6">
         <transition name="fade">
@@ -14,7 +15,7 @@
       <offline-banner v-else-if="!isOnline" />
       <div v-if="!isOnline" style="min-height: 100px"></div>
     </v-main>
-    <the-bottom-bar v-if="mobile" :items="mainItems" />
+    <the-bottom-bar v-if="mobile" :items="navItems" />
     <the-footer v-if="!mobile" :show-last-update="true" />
   </v-app>
 </template>
@@ -46,14 +47,12 @@ useUpdatesGlassesInterval()
 const { mobile } = useDisplay()
 const authStore = useAuthStore()
 
-const mainItems = computed(() => [
-  { title: 'Find', icon: mdiFileFind, to: '/find' },
-  { title: 'Edit', icon: mdiPencil, to: '/edit' },
-  { title: 'View all', icon: mdiDatabase, to: '/view', disabled: !isOnline.value },
-  { title: 'Add', icon: mdiPlusCircle, to: '/add', disabled: !isOnline.value },
-])
-const otherItems = computed(() => {
+const navItems = computed(() => {
   const items = [
+    { title: 'Find', icon: mdiFileFind, to: '/find' },
+    { title: 'Edit', icon: mdiPencil, to: '/edit' },
+    { title: 'View all', icon: mdiDatabase, to: '/view', disabled: !isOnline.value },
+    { title: 'Add', icon: mdiPlusCircle, to: '/add', disabled: !isOnline.value },
     { title: 'Reports', icon: mdiChartBox, to: '/manage/reports', disabled: !isOnline.value },
   ]
   // if (authStore.user && authStore.roles && authStore.roles.includes('ROLE_ADMIN')) {
