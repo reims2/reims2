@@ -118,6 +118,11 @@ const isDrawerOpen = computed(() => {
 })
 const aboutDialogState = ref(false)
 
+// the persisted state is the desktop preference, on phones it would cover the page on load
+onMounted(() => {
+  if (mobile.value) rootStore.drawer = false
+})
+
 const isMiniDrawer = computed(() => {
   // Only on desktop and if drawer on mobile would be open
   return !mobile.value && !rootStore.drawer

@@ -6,7 +6,7 @@ This guide provides instructions on how to perform common tasks using REIMS2:
 
 ## Changing the Location
 
-The current location used by REIMS2 is displayed in the top left corner. To change this, click on "Change location" located at the bottom left. After selecting your desired location and clicking apply, the system will take a few moments to download the database for the new location. Once completed, the new location will be displayed in the top left corner.
+The current location used by REIMS2 is displayed in the top left corner. On a phone, open the menu with the button in the top left to see it. To change this, click on "Change location" located at the bottom left. After selecting your desired location and clicking apply, the system will take a few moments to download the database for the new location. Once completed, the new location will be displayed in the top left corner.
 
 ## Dispensing Glasses
 
@@ -14,13 +14,13 @@ Once suitable glasses have been identified for a patient, it's crucial to mark t
 
 ## Editing Existing Glasses
 
-In case glasses are recorded with incorrect data, REIMS2 allows you to correct this. Navigate to the "Edit" page and input the SKU of the glasses you wish to modify. Click on the value you want to change, and a text field will appear for you to input the correct value. Press ENTER to save the changes. A notification will confirm if the edit was successful.
+In case glasses are recorded with incorrect data, REIMS2 allows you to correct this. Navigate to the "Edit" page and input the SKU of the glasses you wish to modify. Click "Edit" on the glasses, correct the values in the dialog and click "Save". The dialog closes once the change is saved.
 
 ## Working Offline
 
 REIMS2 is designed to operate fully offline, enabling you to find, dispense, and edit glasses without an internet connection. This feature is particularly useful in remote areas with limited or no internet connectivity.
 
-To use REIMS2 offline, ensure that the application has been accessed at least once in the past month on the machine you're using, with a working internet connection. Google Chrome is required for this feature. If you use the "Dispense" or "Edit" functions while offline, you'll need to connect to the internet at least once per week. This is not necessary if you're only using the application to find matches. When offline, REIMS2 will display a banner at the top of the page indicating that it's running offline. Any changes made while offline will be automatically uploaded when the connection is restored. Until then, the top bar shows how many changes are still waiting to upload.
+To use REIMS2 offline, ensure that the application has been accessed at least once in the past month on the machine you're using, with a working internet connection. Google Chrome is required for this feature. If you use the "Dispense" or "Edit" functions while offline, you'll need to connect to the internet at least once per week. This is not necessary if you're only using the application to find matches. When offline, REIMS2 will display a banner in the bottom right corner indicating that it's running offline. Any changes made while offline will be automatically uploaded when the connection is restored. Until then, the top bar shows how many changes are still waiting to upload.
 
 Please note that adding new glasses or creating reports is not possible while offline.
 
@@ -30,7 +30,7 @@ If glasses are missing from the storage or if you wish to remove unused glasses,
 
 ## Generating a Report of Dispensed Glasses
 
-After a campaign, it's necessary to generate a report of all dispensed glasses. To do this, navigate to the "Reports" page, input a start and end date, and click "Download" under "Dispense report". This will download a `csv` file containing the dispense date and the SKU of each pair of glasses dispensed during the specified period.
+After a campaign, it's necessary to generate a report of all dispensed glasses. To do this, navigate to the "Reports" page and click "Download" under "Dispense & delete report". This will download a `csv` file of all glasses ever dispensed or deleted at the current location. Each row has the previous SKU, the date and the reason, for example dispensed or broken.
 
 ## Exporting the Current Inventory
 
