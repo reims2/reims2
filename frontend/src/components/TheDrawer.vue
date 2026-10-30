@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer :rail="!rootStore.drawer" permanent>
+  <v-navigation-drawer :rail="!rootStore.drawer" permanent color="surface-muted" border="0">
     <v-list nav color="primary" class="mt-2">
       <v-list-item
         v-for="item in items"

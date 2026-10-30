@@ -1,7 +1,8 @@
 <template>
   <v-app>
-    <!-- header first so it spans the full width above the drawer -->
+    <!-- header and footer before the drawer so they span the full width -->
     <the-header />
+    <the-footer v-if="!mobile" :show-last-update="true" />
     <the-drawer v-if="!mobile" :items="navItems" />
     <v-main class="background">
       <router-view v-slot="{ Component }" class="py-6 px-6">
@@ -16,7 +17,6 @@
       <div v-if="!isOnline" style="min-height: 100px"></div>
     </v-main>
     <the-bottom-bar v-if="mobile" :items="navItems" />
-    <the-footer v-if="!mobile" :show-last-update="true" />
   </v-app>
 </template>
 

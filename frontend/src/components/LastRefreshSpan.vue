@@ -13,7 +13,7 @@
       v-if="glassesStore.isRefreshingGlasses"
       indeterminate
       size="17"
-      color="white"
+      color="primary"
       aria-label="Refreshing glasses"
       class="mr-2 ma-0 pa-0"
     />
