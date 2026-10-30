@@ -4,6 +4,10 @@ services:
     cpu_shares: 256
   backend:
     cpu_shares: 256
+    environment:
+      # show unexpected 500s with exception and message, prod keeps those in the log only
+      SERVER_ERROR_INCLUDE_EXCEPTION: "true"
+      SERVER_ERROR_INCLUDE_MESSAGE: always
     deploy:
       resources:
         limits:
