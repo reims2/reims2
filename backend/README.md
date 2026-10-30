@@ -18,7 +18,7 @@ Then start the backend with the `dev` profile, which recreates the schema and fi
 
 The API runs on http://localhost:9966/api, Swagger UI on http://localhost:9966/swagger-ui/index.html.
 
-`./mvnw test` runs the tests against an in-memory H2 database, no Docker needed.
+`./mvnw test` runs the tests against a MariaDB that Testcontainers starts, so Docker has to run. If `OpenApiSpecTest` fails, the API changed: commit the rewritten `openapi.json` and run `pnpm generate:api` in `frontend/`.
 
 ## Authentication
 
