@@ -95,7 +95,7 @@ describe('glasses store', () => {
     api.delete.mockResolvedValue({})
 
     await store.dispense(5, 'DISPENSED')
-    expect(api.put).toHaveBeenCalledWith('/api/glasses/dispense/sa/5?reason=DISPENSED', {})
+    expect(api.put).toHaveBeenCalledWith('/api/glasses/dispense/sa/5?reason=DISPENSED&id=1', {})
     await store.deleteGlasses(6)
     expect(store.allGlasses).toEqual([])
 
