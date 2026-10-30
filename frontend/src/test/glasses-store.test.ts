@@ -1,5 +1,6 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { useGlassesStore } from '@/stores/glasses'
+import { useRootStore } from '@/stores/root'
 import { ReimsAxiosError } from '@/lib/axios'
 import { Glasses } from '@/model/GlassesModel'
 import { createGlasses } from './util'
@@ -119,5 +120,49 @@ describe('glasses store', () => {
     await store.editGlasses({ ...pair(1, 5), glassesSize: 'large' })
     expect(store.allGlasses).toHaveLength(1)
     expect(store.getGlassLocal(5)?.glassesSize).toBe('large')
+  })
+
+  describe('search log', () => {
+    const od = { sphere: -2, cylinder: -0.5, axis: 90, add: 0, isBAL: false }
+    const os = { sphere: 1, cylinder: 0, axis: 0, add: 0, isBAL: false }
+
+    beforeEach(() => {
+      vi.useFakeTimers({ now: new Date('2026-01-15T18:30:00Z') })
+      useRootStore().reimsSite = 'sm'
+    })
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('sends the search with its result count', async () => {
+      await useGlassesStore().logSearch(
+        { glassesType: 'multifocal', od, os, highTolerance: true },
+        3,
+      )
+      expect(api.post).toHaveBeenCalledWith(
+        '/api/glasses/sm/searchLog',
+        expect.objectContaining({
+          glassesType: 'multifocal',
+          od: expect.objectContaining({ sphere: -2, cylinder: -0.5, axis: 90, add: 0 }),
+          os: expect.objectContaining({ sphere: 1, cylinder: 0, axis: 0, add: 0 }),
+          balLens: 'DISABLE_NONE',
+          increaseSearchTolerance: true,
+          searchDate: Date.parse('2026-01-15T18:30:00Z'),
+          resultCount: 3,
+        }),
+      )
+    })
+
+    it.each([
+      ['od', 'DISABLE_OD'],
+      ['os', 'DISABLE_OS'],
+    ] as const)('marks a BAL lens on %s as %s', async (eyeName, balLens) => {
+      const search = { glassesType: 'single' as const, od, os, [eyeName]: { ...od, isBAL: true } }
+      await useGlassesStore().logSearch(search, 0)
+      expect(api.post).toHaveBeenCalledWith(
+        '/api/glasses/sm/searchLog',
+        expect.objectContaining({ balLens, increaseSearchTolerance: false, resultCount: 0 }),
+      )
+    })
   })
 })
