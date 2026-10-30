@@ -11,3 +11,15 @@ test('Switch location', async ({ page }) => {
   await expect(dialog.getByText('Change location')).toBeHidden()
   await expect(page.getByRole('navigation')).toContainText('REIMS San Miguel')
 })
+
+test('Switch location from the header', async ({ page }) => {
+  await page.goto('/find')
+
+  await page.getByRole('banner').getByText('Santa Ana').click()
+  const dialog = page.getByRole('dialog')
+  await dialog.getByRole('combobox').first().click()
+  await page.getByRole('option', { name: 'San Miguel' }).click()
+  await dialog.getByRole('button', { name: 'Apply' }).click()
+  await expect(dialog.getByText('Change location')).toBeHidden()
+  await expect(page.getByRole('banner')).toContainText('San Miguel')
+})
