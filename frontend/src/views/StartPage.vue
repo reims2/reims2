@@ -45,7 +45,7 @@
             <v-text-field
               v-model="username"
               label="Username"
-              :rules="[(v) => !!v || 'Item is required']"
+              :rules="[(v) => !!v || 'Enter your username']"
               :prepend-inner-icon="mdiAccount"
               required
               autocomplete="username"
@@ -57,7 +57,7 @@
               v-model="password"
               label="Password"
               type="password"
-              :rules="[(v) => !!v || 'Item is required']"
+              :rules="[(v) => !!v || 'Enter your password']"
               :prepend-inner-icon="mdiLock"
               required
               autocomplete="current-password"

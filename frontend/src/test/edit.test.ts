@@ -17,7 +17,7 @@ describe('dispense errors', () => {
     vi.mocked(useGlassesStore().dispense).mockRejectedValue(badRequest())
     await useDeleteGlasses(1234).deleteGlasses('DISPENSED')
     expect(toastQueue.value).toEqual([
-      { color: 'error', text: expect.stringContaining('database down') },
+      { color: 'error', timeout: -1, text: expect.stringContaining('database down') },
     ])
   })
 
@@ -27,7 +27,7 @@ describe('dispense errors', () => {
     )
     await useDeleteGlasses(1234).deleteGlasses('DISPENSED')
     expect(toastQueue.value).toEqual([
-      { color: 'error', text: expect.stringContaining('retry later (Error 502)') },
+      { color: 'error', timeout: -1, text: expect.stringContaining('retry later (Error 502)') },
     ])
   })
 
@@ -38,7 +38,7 @@ describe('dispense errors', () => {
     const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
     await useUndoDispension().undo(glasses)
     expect(toastQueue.value).toEqual([
-      { color: 'error', text: expect.stringContaining('not found') },
+      { color: 'error', timeout: -1, text: expect.stringContaining('not found') },
     ])
   })
 
@@ -49,7 +49,7 @@ describe('dispense errors', () => {
     const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
     await useUndoDispension().undo(glasses)
     expect(toastQueue.value).toEqual([
-      { color: 'error', text: expect.stringContaining('Bad Gateway') },
+      { color: 'error', timeout: -1, text: expect.stringContaining('Bad Gateway') },
     ])
   })
 })

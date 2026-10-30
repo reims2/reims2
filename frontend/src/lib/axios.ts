@@ -55,7 +55,7 @@ export const useAxios = () => {
       }
 
       if (error.response.status === 401 && !(requestUrl && requestUrl.includes('/api/auth'))) {
-        toast.warning('Credentials no longer valid. Please reload to log in again.')
+        toast.warning('Your login has expired. Please log in again.')
         authStore.logout()
         throw new ReimsAxiosError('Unauthorized')
       }
