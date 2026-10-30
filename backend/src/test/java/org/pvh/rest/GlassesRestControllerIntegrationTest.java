@@ -3,6 +3,7 @@ package org.pvh.rest;
 import tools.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.pvh.MariaDbTestConfiguration;
 import org.pvh.model.dto.EyeDTO;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.entity.ChangeValue;
@@ -18,10 +19,12 @@ import org.pvh.util.CampaignZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -57,6 +60,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Import(MariaDbTestConfiguration.class)
+@WithMockUser(roles = "USER")
 public class GlassesRestControllerIntegrationTest {
 
     @Autowired
@@ -389,6 +394,7 @@ public class GlassesRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void givenGlasses_whenDeleteGlasses_thenStatus204()
         throws Exception {
 

@@ -3,12 +3,14 @@ package org.pvh.security;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.pvh.MariaDbTestConfiguration;
 import org.pvh.repository.RoleRepository;
 import org.pvh.repository.UserRepository;
 import org.pvh.security.model.entity.User;
 import org.pvh.security.model.enums.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,8 +24,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = "pvh.security.enable=true")
+@SpringBootTest
 @AutoConfigureMockMvc
+@Import(MariaDbTestConfiguration.class)
 public class SecurityIntegrationTest {
 
     @Autowired
