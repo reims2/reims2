@@ -33,7 +33,7 @@ export const useFindGlasses = (
     }
     matches.value = philScore(eyeModel)
     if (isUserSubmitted) {
-      // offline the service worker queues it, the page still gets the network error
+      // queued when offline, a server error isn't worth bothering the user with
       glassesStore.logSearch(eyeModel, matches.value.length).catch(() => {})
     }
   }

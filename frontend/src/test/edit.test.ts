@@ -52,4 +52,31 @@ describe('dispense errors', () => {
       { color: 'error', text: expect.stringContaining('Bad Gateway') },
     ])
   })
+
+  it('confirms a sent dispense', async () => {
+    vi.mocked(useGlassesStore().dispense).mockResolvedValue('sent')
+    await useDeleteGlasses(1234).deleteGlasses('DISPENSED')
+    expect(toastQueue.value).toEqual([
+      { color: 'info', text: 'Successfully dispensed glasses with SKU 1234' },
+    ])
+  })
+
+  it('warns that a queued dispense uploads later', async () => {
+    const onSuccess = vi.fn()
+    vi.mocked(useGlassesStore().dispense).mockResolvedValue('queued')
+    await useDeleteGlasses(1234, onSuccess).deleteGlasses('DISPENSED')
+    expect(toastQueue.value).toEqual([
+      { color: 'warning', text: "Glasses with SKU 1234 will be dispensed when you're back online" },
+    ])
+    expect(onSuccess).toHaveBeenCalled()
+  })
+
+  it('warns that a queued undo uploads later', async () => {
+    vi.mocked(useGlassesStore().undispense).mockResolvedValue('queued')
+    const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
+    await useUndoDispension().undo(glasses)
+    expect(toastQueue.value).toEqual([
+      { color: 'warning', text: expect.stringContaining('reverted as soon as') },
+    ])
+  })
 })

@@ -5,13 +5,14 @@
       {{ title }}
     </v-toolbar-title>
     <v-chip
-      v-if="pendingCount > 0"
+      v-if="glassesStore.pendingCount > 0"
       color="warning"
       variant="flat"
       class="mr-3"
       :prepend-icon="mdiCloudUploadOutline"
+      @click="glassesStore.uploadPending()"
     >
-      {{ pendingCount }} waiting to upload
+      {{ glassesStore.pendingCount }} waiting to upload
     </v-chip>
   </v-app-bar>
 </template>
@@ -19,10 +20,11 @@
 <script setup lang="ts">
 import { mdiCloudUploadOutline } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
-import { usePendingChanges } from '@/composables/pending-changes'
+import { useGlassesStore } from '@/stores/glasses'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 const rootStore = useRootStore()
-const { pendingCount } = usePendingChanges()
+const glassesStore = useGlassesStore()
+onMounted(() => glassesStore.refreshPendingCount())
 const title = computed(() => (rootStore.isDev ? 'Develop: ' : '') + (route.meta.title || 'REIMS2'))
 </script>
