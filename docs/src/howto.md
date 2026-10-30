@@ -6,7 +6,7 @@ This guide provides instructions on how to perform common tasks using REIMS2:
 
 ## Changing the Location
 
-The current location used by REIMS2 is displayed in the top left corner. On a phone, open the menu with the button in the top left to see it. To change this, click on "Change location" located at the bottom left. After selecting your desired location and clicking apply, the system will take a few moments to download the database for the new location. Once completed, the new location will be displayed in the top left corner.
+The current location used by REIMS2 is displayed in the top bar. To change it, click on the location there or on "Change location" at the bottom of the menu. After selecting your desired location and clicking apply, the system will take a few moments to download the database for the new location. Once completed, the new location will be displayed in the top bar.
 
 ## Dispensing Glasses
 
