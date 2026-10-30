@@ -55,6 +55,24 @@
         wait_timeout: 300
         remove_orphans: true
 
+    # from the controller, so it goes through DNS, TLS and Traefik like a user's request
+    - name: Check the app answers publicly on {{ app_domain }}
+      ansible.builtin.uri:
+        url: "https://{{ app_domain }}{{ item.path }}"
+        return_content: true
+      delegate_to: localhost
+      become: false
+      register: app_public_check
+      until: app_public_check.status == 200 and item.expect in (app_public_check.content | default(''))
+      retries: 12
+      delay: 5
+      loop:
+        - { path: /api, expect: OK }
+        - { path: /, expect: REIMS2 }
+        - { path: /docs/, expect: REIMS2 }
+      loop_control:
+        label: "{{ item.path }}"
+
     - name: Remember the deployed tag
       ansible.builtin.copy:
         content: "{{ app_new_tag }}\n"
