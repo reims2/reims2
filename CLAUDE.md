@@ -13,7 +13,7 @@ Live instance: https://reims2.app (demo: https://dev.reims2.app). Public docs: h
 
 Five independent projects live here, each with its own README, dependencies, and CI job:
 
-- `backend/`: Java 21 / Spring Boot 3 REST API (Maven)
+- `backend/`: Java 21 / Spring Boot 4 REST API (Maven)
 - `frontend/`: Vue 3 / Vuetify 3 / TypeScript SPA (Vite), installable as an offline-capable PWA
 - `e2e/`: Playwright tests that run against the full stack from the root `compose.yaml`
 - `docs/`: VitePress site published at `/docs`, for both end users and developers
@@ -127,11 +127,14 @@ SKU) so `PUT /undispense/{id}` can restore it, as long as the SKU hasn't been re
 
 Standard `rest/` → `service/` (`MainService`, `ChangeService`) → `repository/` layering on Spring Data JPA.
 There's no server-side filtering or paging of glasses: the View Glasses table filters, sorts and pages the
-glasses store in the browser (`frontend/src/composables/table-filter.ts`). DTO-to-entity mapping uses
-MapStruct (`model/mapper/*Impl`). Despite being Spring `@Component`s, the codebase calls them via a static
-`getInstance()` singleton rather than autowiring. Follow that existing convention rather than injecting `GlassesMapper` directly. Auth is JWT
-(`security/jwt/`) with two roles, `ROLE_USER` and `ROLE_ADMIN`, enforced with `@PreAuthorize` per endpoint.
-Deletes are admin-only; most other read/write endpoints allow both roles.
+glasses store in the browser (`frontend/src/composables/table-filter.ts`). DTOs in `model/dto/` are records
+that map to and from entities themselves (`GlassesResponseDTO.from`, `GlassesRequestDTO.applyTo`). Each write
+runs in one transaction that bumps the change hash first. Errors are RFC 9457 problem details from
+`error/ApiExceptionHandler.java`. Only bad input may get a 4xx, since a queued offline change is dropped on a
+4xx but retried on a 5xx. Auth is JWT via Spring Security's OAuth2 resource server
+(`security/WebSecurityConfig.java`), with roles read from the database on every request. The two roles,
+`ROLE_USER` and `ROLE_ADMIN`, are enforced with `@PreAuthorize` per endpoint. Deletes are admin-only; most
+other read/write endpoints allow both roles.
 
 ### Frontend (`frontend/src/`)
 
