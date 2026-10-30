@@ -11,6 +11,7 @@ import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
 import org.pvh.model.enums.AppearanceEnum;
+import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.repository.SearchLogRepository;
@@ -546,6 +547,33 @@ public class GlassesRestControllerIntegrationTest {
         this.mockMvc.perform(get("/api/glasses/sa.csv"))
             .andExpect(content().string(containsString("\"" + glasses.getSku() + "\",\"sa\",\"multifocal\",\"neutral\",\"medium\",\""
                 + added + "\"")));
+    }
+
+    @Test
+    public void unsuccessfulSearchesCsv_onlyHasSearchesWithoutResultsAtThatLocation() throws Exception {
+        saveSearch(LocationEnum.sm, "7.25", 0);
+        saveSearch(LocationEnum.sm, "7.50", 3);
+        saveSearch(LocationEnum.sa, "7.75", 0);
+
+        this.mockMvc.perform(get("/api/glasses/unsuccessful/sm.csv"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("text/csv"))
+            .andExpect(content().string(containsString("\"7.25\"")))
+            .andExpect(content().string(not(containsString("\"7.50\""))))
+            .andExpect(content().string(not(containsString("\"7.75\""))));
+    }
+
+    private void saveSearch(LocationEnum location, String sphere, int resultCount) {
+        SearchLog search = new SearchLog();
+        search.setLocation(location);
+        search.setGlassesType(GlassesTypeEnum.single);
+        search.setSearchDate(Instant.now());
+        search.setBalLens(BalLensEnum.DISABLE_NONE);
+        search.setIncreaseSearchTolerance(false);
+        search.setResultCount(resultCount);
+        search.setOd(new Eye(new BigDecimal(sphere), BigDecimal.ZERO, 0, BigDecimal.ZERO));
+        search.setOs(new Eye(new BigDecimal(sphere), BigDecimal.ZERO, 0, BigDecimal.ZERO));
+        searchLogRepository.save(search);
     }
 
     @Test
