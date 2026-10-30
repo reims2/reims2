@@ -6,8 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 REIMS2 (Richmond Eyeglass Inventory Matching System) is a mono-repo for the inventory app used by the
 non-profit [Partners for Visual Health](https://partnersforvisualhealth.org/) at its annual eyeglass
-campaigns in El Salvador. Staff match donated used glasses to a patient's prescription on-site, often
-without internet access, at two independent locations: Santa Ana (`sa`) and San Miguel (`sm`).
+campaigns in El Salvador. Staff match donated used glasses to a patient's prescription on-site at two
+independent locations: Santa Ana (`sa`) and San Miguel (`sm`). They're almost always online. Offline
+use is a rare fallback, so give offline-only features and tests low priority.
 
 Live instance: https://reims2.app (demo: https://dev.reims2.app). Public docs: https://reims2.app/docs.
 
