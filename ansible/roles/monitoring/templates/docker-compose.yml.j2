@@ -29,7 +29,7 @@ services:
           memory: 512M
 
   prometheus:
-    image: prom/prometheus:v3.15.0@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
+    image: prom/prometheus:v3.15.1@sha256:fa3302279710be2f21a8301ec17a8b4f2301fd829bd113839b3b6b02b6f191a2
     restart: unless-stopped
     networks:
       - monitoring
@@ -98,7 +98,7 @@ services:
 
   # compose only restarts containers that exit, this restarts unhealthy ones on the whole host
   autoheal:
-    image: willfarrell/autoheal:latest@sha256:bee51452917d535d4072a6cc1f8d02153c6ed5d5d642e6f64d33353574696783
+    image: willfarrell/autoheal:latest@sha256:c4227b7a25b8ef08829ad3ad440af3a821e4277c9b1b2050a3f671ad9d87bfc6
     restart: unless-stopped
     network_mode: none
     environment:
