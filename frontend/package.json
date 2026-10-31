@@ -52,7 +52,7 @@
     "happy-dom": "21.0.4",
     "openapi-typescript": "7.13.0",
     "prettier": "3.9.6",
-    "sass-embedded": "1.105.2",
+    "sass-embedded": "1.106.1",
     "typescript": "6.0.3",
     "typescript-eslint": "8.68.0",
     "unplugin-auto-import": "21.1.0",
