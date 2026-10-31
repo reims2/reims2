@@ -1,7 +1,7 @@
 # overridden with the repo's .git by a named build context, empty for a plain build
 FROM scratch AS git
 
-FROM node:24.22.0@sha256:925de64a85319052d6971ae81ef2417da956e8a3a2c4a0fac732327970f017f5 AS build
+FROM node:26.12.0@sha256:45a2bf9d9300e9cf47ecb375e38447c140c45ef5fbae869c430475b05b98d86e AS build
 
 # mirrors the repo layout so git finds each page's history under docs/
 WORKDIR /usr/src/app/docs
