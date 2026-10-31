@@ -2,7 +2,7 @@
 
 services:
   backup:
-    image: offen/docker-volume-backup:v2.49.1@sha256:e1da571e739d73f633f19e7a9f324007907089ffd80b3b7a1d71de5b87f80d77
+    image: offen/docker-volume-backup:v2.49.3@sha256:570a4bea8c19f824b22a4ce31e01afdf418a7bb616dcb17052f0a78b504ac54c
     restart: unless-stopped
     environment:
       BACKUP_CRON_EXPRESSION: "0 */6 * * *"

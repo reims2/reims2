@@ -7,7 +7,7 @@ s3backup_bucket_name: reims2-backup
 s3backup_grafana_data_location: /srv/monitoring/grafana/data
 
 # renovate: datasource=docker depName=docker.io/amazon/aws-cli
-s3backup_awscli_version: 2.38.1
+s3backup_awscli_version: 2.38.5
 
 # shoutrrr URL of the healthchecks.io check, generic://hc-ping.com/<uuid>, empty disables it
 s3backup_healthcheck_url: ""
