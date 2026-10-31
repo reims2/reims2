@@ -40,7 +40,7 @@
     "@pinia/testing": "2.0.2",
     "@testing-library/vue": "8.1.0",
     "@types/eslint": "9.6.1",
-    "@types/node": "24.19.2",
+    "@types/node": "26.6.5",
     "@vitejs/devtools": "0.8.0",
     "@vitejs/plugin-vue": "6.0.10",
     "@vitest/coverage-v8": "5.0.4",
