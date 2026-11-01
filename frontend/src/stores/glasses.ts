@@ -93,23 +93,19 @@ export const useGlassesStore = defineStore(
       addOfflineGlasses(fetchedGlasses)
       return fetchedGlasses
     }
-    async function dispense(sku: number, reason: DeletionReason) {
+    // writes go by id, so one queued offline can't hit a pair that got the SKU later
+    async function dispense(glasses: Glasses, reason: DeletionReason) {
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
 
-      // the server rejects the dispense if the SKU went to other glasses in the meantime
-      const id = getGlassLocal(sku)?.id
-      await axiosInstance.put(
-        `/api/glasses/dispense/${rootStore.reimsSite}/${sku}?reason=${reason}${id != null ? `&id=${id}` : ''}`,
-        {},
-      )
-      deleteOfflineGlasses(sku)
+      await axiosInstance.put(`/api/glasses/${glasses.id}/dispense?reason=${reason}`, {})
+      if (glasses.sku !== null) deleteOfflineGlasses(glasses.sku)
     }
     async function undispense(glasses: Glasses) {
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
 
-      await axiosInstance.put(`/api/glasses/undispense/${glasses.id}`, {})
+      await axiosInstance.put(`/api/glasses/${glasses.id}/undispense`, {})
       addOfflineGlasses(glasses)
     }
     async function editGlasses(newGlasses: Glasses): Promise<Glasses> {
@@ -118,7 +114,7 @@ export const useGlassesStore = defineStore(
 
       const request: GlassesRequest = newGlasses
       const response = await axiosInstance.put<GlassesResponse>(
-        `/api/glasses/${rootStore.reimsSite}/${newGlasses.sku}`,
+        `/api/glasses/${newGlasses.id}`,
         request,
       )
       const editedGlasses: Glasses = response.data

@@ -131,7 +131,8 @@ Axis means nothing without cylinder: the frontend forces it to 0 when cylinder i
 `frontend/src/util/eye-utils.ts`), but code reading stored data, like an analysis of dispensed glasses,
 should check cylinder first.
 Dispensing doesn't delete the row. It clears the SKU and stamps a `Dispense` sub-record (reason, previous
-SKU) so `PUT /undispense/{id}` can restore it, as long as the SKU hasn't been reissued to a new pair since.
+SKU) so `PUT /{id}/undispense` can restore it, as long as the SKU hasn't been reissued to a new pair since. Writes
+address glasses by id, so a change queued offline can't hit a pair that got the same SKU later.
 
 ### Backend (`backend/src/main/java/org/pvh/`)
 

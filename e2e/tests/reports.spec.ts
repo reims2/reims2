@@ -11,8 +11,8 @@ async function downloadCsv(page: Page, buttonIndex: number): Promise<string[]> {
 
 test('Download reports', async ({ page, api, createGlasses }) => {
   const { sku: inStock } = await createGlasses()
-  const { sku: dispensed } = await createGlasses()
-  expect((await api.put(`/api/glasses/dispense/sa/${dispensed}?reason=DISPENSED`)).ok()).toBe(true)
+  const { id: dispensedId, sku: dispensed } = await createGlasses()
+  expect((await api.put(`/api/glasses/${dispensedId}/dispense?reason=DISPENSED`)).ok()).toBe(true)
   const eye = { sphere: 25, cylinder: 0, axis: 0, add: 0 }
   const searchLog = await api.post('/api/glasses/sa/searchLog', {
     data: {

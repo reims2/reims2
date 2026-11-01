@@ -12,58 +12,17 @@
     "bearer" : [ ]
   } ],
   "paths" : {
-    "/api/glasses/{location}/{sku}" : {
-      "get" : {
-        "tags" : [ "glasses-rest-controller" ],
-        "operationId" : "getGlasses",
-        "parameters" : [ {
-          "name" : "sku",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
-        }, {
-          "name" : "location",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "enum" : [ "sa", "sm" ]
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GlassesResponseDTO"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/api/glasses/{id}" : {
       "put" : {
         "tags" : [ "glasses-rest-controller" ],
         "operationId" : "updateGlasses",
         "parameters" : [ {
-          "name" : "sku",
+          "name" : "id",
           "in" : "path",
           "required" : true,
           "schema" : {
             "type" : "integer",
-            "format" : "int32"
-          }
-        }, {
-          "name" : "location",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "enum" : [ "sa", "sm" ]
+            "format" : "int64"
           }
         } ],
         "requestBody" : {
@@ -90,7 +49,7 @@
         }
       }
     },
-    "/api/glasses/undispense/{id}" : {
+    "/api/glasses/{id}/undispense" : {
       "put" : {
         "tags" : [ "glasses-rest-controller" ],
         "operationId" : "undispense",
@@ -113,25 +72,17 @@
         }
       }
     },
-    "/api/glasses/dispense/{location}/{sku}" : {
+    "/api/glasses/{id}/dispense" : {
       "put" : {
         "tags" : [ "glasses-rest-controller" ],
-        "operationId" : "updateDispensed",
+        "operationId" : "dispense",
         "parameters" : [ {
-          "name" : "sku",
+          "name" : "id",
           "in" : "path",
           "required" : true,
           "schema" : {
             "type" : "integer",
-            "format" : "int32"
-          }
-        }, {
-          "name" : "location",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "enum" : [ "sa", "sm" ]
+            "format" : "int64"
           }
         }, {
           "name" : "reason",
@@ -142,18 +93,13 @@
             "default" : "DISPENSED",
             "enum" : [ "DISPENSED", "NOT_FOUND", "BROKEN", "TOO_HIGH_VALUES", "WRONGLY_ADDED", "OTHER" ]
           }
-        }, {
-          "name" : "id",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "Dispensed"
+          },
+          "204" : {
+            "description" : "Was already dispensed"
           }
         }
       }
@@ -290,6 +236,41 @@
           }
         },
         "security" : [ ]
+      }
+    },
+    "/api/glasses/{location}/{sku}" : {
+      "get" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "getGlasses",
+        "parameters" : [ {
+          "name" : "sku",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GlassesResponseDTO"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/glasses/{location}/changes" : {
@@ -577,10 +558,6 @@
       "GlassesRequestDTO" : {
         "type" : "object",
         "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
           "glassesType" : {
             "type" : "string",
             "enum" : [ "single", "multifocal" ]

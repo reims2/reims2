@@ -132,8 +132,8 @@ const {
 
 const { vPreventEnterTab } = useEnterToTab(form)
 
-const skuToDelete = ref<number | null>(null)
-const { deleteGlasses } = useDeleteGlasses(skuToDelete)
+const glassesToDelete = ref<Glasses | null>(null)
+const { deleteGlasses } = useDeleteGlasses(glassesToDelete)
 
 function add() {
   if (valid.value) submitAdd()
@@ -146,7 +146,7 @@ async function onSuccess() {
   if (mobile.value) results.value?.$el.scrollIntoView(true)
 }
 async function submitDeletion(glasses: Glasses) {
-  skuToDelete.value = glasses.sku
+  glassesToDelete.value = glasses
   await deleteGlasses('WRONGLY_ADDED')
 }
 

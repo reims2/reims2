@@ -89,7 +89,7 @@ public class GlassesRestControllerIntegrationTest {
     }
 
     private static GlassesRequestDTO request(Glasses glasses) {
-        return new GlassesRequestDTO(glasses.getId(), glasses.getGlassesType(), glasses.getGlassesSize(), glasses.getAppearance(),
+        return new GlassesRequestDTO(glasses.getGlassesType(), glasses.getGlassesSize(), glasses.getAppearance(),
             glasses.getLocation(), EyeDTO.from(glasses.getOs()), EyeDTO.from(glasses.getOd()));
     }
 
@@ -144,20 +144,20 @@ public class GlassesRestControllerIntegrationTest {
             .andDo(print());
 
         // Dispense created Glasses for first time
-        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + saveEntitySa.getSku()))
+        this.mockMvc.perform(put("/api/glasses/" + saveEntitySa.getId() + "/dispense"))
             .andExpect(status().isOk())
             .andDo(print());
 
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sa"));
 
-        // Dispense created Glasses for second time --> Sku not valid anymore
+        // Dispense created Glasses for second time --> nothing to change
         cv = callChangeValueAndReturnHash("sa");
-        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + saveEntitySa.getSku()))
-            .andExpect(status().isNotFound())
+        this.mockMvc.perform(put("/api/glasses/" + saveEntitySa.getId() + "/dispense"))
+            .andExpect(status().isNoContent())
             .andDo(print());
         assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
         // Dispense non existing Glasses
-        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + -1))
+        this.mockMvc.perform(put("/api/glasses/-1/dispense"))
             .andExpect(status().isNotFound())
             .andDo(print());
         assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
@@ -195,21 +195,21 @@ public class GlassesRestControllerIntegrationTest {
         cv = callChangeValueAndReturnHash("sa");
         // Try to Undispense firstly created glass -> not possible because of secondly
         // created glass
-        this.mockMvc.perform(put("/api/glasses/undispense/" + saveEntitySa.getId()))
+        this.mockMvc.perform(put("/api/glasses/" + saveEntitySa.getId() + "/undispense"))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.detail", Matchers.is("SKU %04d is already used by other glasses.".formatted(saveEntitySa.getSku()))))
             .andDo(print());
         assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
 
         // dispense secondly created glass
-        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + saveEntitySa2.getSku()))
+        this.mockMvc.perform(put("/api/glasses/" + saveEntitySa2.getId() + "/dispense"))
             .andExpect(status().isOk())
             .andDo(print());
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sa"));
 
         // undispense secondly created glass
         cv = callChangeValueAndReturnHash("sa");
-        this.mockMvc.perform(put("/api/glasses/undispense/" + saveEntitySa2.getId()))
+        this.mockMvc.perform(put("/api/glasses/" + saveEntitySa2.getId() + "/undispense"))
             .andExpect(status().isOk())
             .andDo(print());
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sa"));
@@ -218,17 +218,17 @@ public class GlassesRestControllerIntegrationTest {
 
         // undispense secondly created glass second time
         cv = callChangeValueAndReturnHash("sa");
-        this.mockMvc.perform(put("/api/glasses/undispense/" + saveEntitySa2.getId()))
+        this.mockMvc.perform(put("/api/glasses/" + saveEntitySa2.getId() + "/undispense"))
             .andExpect(status().isNoContent())
             .andDo(print());
         assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
         // undispense empty glasss
-        this.mockMvc.perform(put("/api/glasses/undispense/fsdg"))
+        this.mockMvc.perform(put("/api/glasses/fsdg/undispense"))
             .andExpect(status().isBadRequest())
             .andDo(print());
         assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
         // undispense wrong id glasss
-        this.mockMvc.perform(put("/api/glasses/undispense/-1"))
+        this.mockMvc.perform(put("/api/glasses/-1/undispense"))
             .andExpect(status().isNotFound())
             .andDo(print());
         assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
@@ -251,18 +251,21 @@ public class GlassesRestControllerIntegrationTest {
             .andDo(print());
     }
 
+    // a dispense queued offline may replay after another device dispensed the same pair
     @Test
-    public void dispense_whenSkuBelongsToOtherGlasses_thenConflict()
+    public void dispense_twice_keepsTheFirstDispense()
         throws Exception {
         Glasses glasses = saveGlasses(LocationEnum.sa);
 
-        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + glasses.getSku()).param("id", "" + (glasses.getId() + 1000)))
-            .andExpect(status().isConflict());
-        assertFalse(glassesRepository.findById(glasses.getId()).orElseThrow().isDispensed());
-
-        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + glasses.getSku()).param("id", "" + glasses.getId()))
+        this.mockMvc.perform(put("/api/glasses/" + glasses.getId() + "/dispense").param("reason", "BROKEN"))
             .andExpect(status().isOk());
-        assertTrue(glassesRepository.findById(glasses.getId()).orElseThrow().isDispensed());
+        this.mockMvc.perform(put("/api/glasses/" + glasses.getId() + "/dispense"))
+            .andExpect(status().isNoContent());
+
+        Glasses dispensed = glassesRepository.findById(glasses.getId()).orElseThrow();
+        assertTrue(dispensed.isDispensed());
+        assertEquals(DispenseReasonEnum.BROKEN, dispensed.getDispense().getDispenseReason());
+        assertEquals(glasses.getSku(), dispensed.getDispense().getPreviousSku());
     }
 
     @Test
@@ -395,6 +398,7 @@ public class GlassesRestControllerIntegrationTest {
             .andDo(print())
             .andReturn().getResponse().getContentAsString();
         int sku = JsonPath.read(added, "$.sku");
+        int id = JsonPath.read(added, "$.id");
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sm"));
 
         cv = callChangeValueAndReturnHash("sm");
@@ -402,7 +406,7 @@ public class GlassesRestControllerIntegrationTest {
             new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
             new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + sku)
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     objectMapper.writeValueAsBytes(request(glassesToUpdate))))
@@ -423,7 +427,7 @@ public class GlassesRestControllerIntegrationTest {
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sm"));
 
         cv = callChangeValueAndReturnHash("sm");
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + sku)
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"glassesType\":\"multifocal\",\"glassesSize\":\"medium\",\"appearance\":\"test\",\"location\":\"sm\","
                     + "\"os\":" + VALID_EYE + ",\"od\":" + VALID_EYE + "}"))
@@ -439,10 +443,10 @@ public class GlassesRestControllerIntegrationTest {
         Glasses glasses = saveGlasses(LocationEnum.sa);
         Integer eyeRows = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM eye", Integer.class);
 
-        GlassesRequestDTO edit = new GlassesRequestDTO(glasses.getId(), GlassesTypeEnum.single, GlassesSizeEnum.small,
+        GlassesRequestDTO edit = new GlassesRequestDTO(GlassesTypeEnum.single, GlassesSizeEnum.small,
             AppearanceEnum.feminine, LocationEnum.sm, new EyeDTO(BigDecimal.valueOf(3), BigDecimal.valueOf(-1), 90, BigDecimal.ZERO),
             new EyeDTO(BigDecimal.valueOf(-3), BigDecimal.ZERO, 0, BigDecimal.ZERO));
-        this.mockMvc.perform(put("/api/glasses/sa/" + glasses.getSku()).contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(put("/api/glasses/" + glasses.getId()).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(edit)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.location", Matchers.is("sa")))
@@ -455,14 +459,16 @@ public class GlassesRestControllerIntegrationTest {
         assertEquals(90, edited.getOs().getAxis());
     }
 
+    // an edit queued offline may replay after the pair was dispensed
     @Test
-    public void updateGlasses_whenSkuBelongsToOtherGlasses_thenConflict() throws Exception {
+    public void updateGlasses_whenDispensed_thenConflict() throws Exception {
         Glasses glasses = saveGlasses(LocationEnum.sa);
+        mainService.dispense(glasses.getId(), DispenseReasonEnum.DISPENSED);
         GlassesRequestDTO edit = request(glasses);
-        GlassesRequestDTO staleEdit = new GlassesRequestDTO(glasses.getId() + 1000, edit.glassesType(), edit.glassesSize(),
+        GlassesRequestDTO staleEdit = new GlassesRequestDTO(edit.glassesType(), edit.glassesSize(),
             AppearanceEnum.masculine, edit.location(), edit.os(), edit.od());
 
-        this.mockMvc.perform(put("/api/glasses/sa/" + glasses.getSku()).contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(put("/api/glasses/" + glasses.getId()).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(staleEdit)))
             .andExpect(status().isConflict());
         assertEquals(AppearanceEnum.neutral, glassesRepository.findById(glasses.getId()).orElseThrow().getAppearance());
@@ -489,7 +495,7 @@ public class GlassesRestControllerIntegrationTest {
     public void whenDispensedCSVDownload_thenVerifyStatus()
         throws Exception {
         Glasses glasses = saveGlasses(LocationEnum.sa);
-        mainService.dispense(LocationEnum.sa, glasses.getSku(), DispenseReasonEnum.DISPENSED, null);
+        mainService.dispense(glasses.getId(), DispenseReasonEnum.DISPENSED);
         this.mockMvc.perform(get("/api/glasses/dispensed/sa.csv"))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType("text/csv"))
@@ -547,7 +553,7 @@ public class GlassesRestControllerIntegrationTest {
     @Test
     public void dispensedGlasses_filtersByCampaignDay() throws Exception {
         Glasses glasses = saveGlasses(LocationEnum.sa);
-        mainService.dispense(LocationEnum.sa, glasses.getSku(), null, null);
+        mainService.dispense(glasses.getId(), DispenseReasonEnum.DISPENSED);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate today = LocalDate.now(CampaignZone.ZONE);
 

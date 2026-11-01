@@ -131,26 +131,29 @@ public class GlassesRestController {
         return GlassesResponseDTO.from(added);
     }
 
-    @PutMapping(path = "/{location}/{sku}", produces = "application/json")
-    public GlassesResponseDTO updateGlasses(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location,
-                                            @RequestBody @Valid GlassesRequestDTO glasses) {
-        Glasses edited = glassesService.editGlasses(location, sku, glasses);
-        logger.info("Edited glasses with SKU {} (in {})", sku, location);
+    // by id, so a change queued offline can't hit a pair that got the SKU later
+    @PutMapping(path = "/{id}", produces = "application/json")
+    public GlassesResponseDTO updateGlasses(@PathVariable("id") long id, @RequestBody @Valid GlassesRequestDTO glasses) {
+        Glasses edited = glassesService.editGlasses(id, glasses);
+        logger.info("Edited glasses {} (SKU {} in {})", id, edited.getSku(), edited.getLocation());
         return GlassesResponseDTO.from(edited);
     }
 
-    @PutMapping(path = "/dispense/{location}/{sku}")
-    public void updateDispensed(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location,
-                                @RequestParam(defaultValue = "DISPENSED") DispenseReasonEnum reason,
-                                @RequestParam(required = false) Long id) {
-        glassesService.dispense(location, sku, reason, id);
-        logger.info("Dispensed glasses with SKU {} (in {}) with reason {}", sku, location, reason);
+    // nothing to change gives 204, see https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.4
+    @ApiResponse(responseCode = "200", description = "Dispensed")
+    @ApiResponse(responseCode = "204", description = "Was already dispensed")
+    @PutMapping(path = "/{id}/dispense")
+    public ResponseEntity<Void> dispense(@PathVariable("id") long id,
+                                         @RequestParam(defaultValue = "DISPENSED") DispenseReasonEnum reason) {
+        if (!glassesService.dispense(id, reason))
+            return ResponseEntity.noContent().build();
+        logger.info("Dispensed glasses {} with reason {}", id, reason);
+        return ResponseEntity.ok().build();
     }
 
-    // nothing to change gives 204, see https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.4
     @ApiResponse(responseCode = "200", description = "Back in stock")
     @ApiResponse(responseCode = "204", description = "Was already in stock")
-    @PutMapping(path = "/undispense/{id}")
+    @PutMapping(path = "/{id}/undispense")
     public ResponseEntity<Void> undispense(@PathVariable("id") long id) {
         if (!glassesService.undispense(id))
             return ResponseEntity.noContent().build();

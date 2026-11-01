@@ -22,7 +22,7 @@ public class DtoMappingTest {
 
     @Test
     public void requestToGlasses() {
-        GlassesRequestDTO request = new GlassesRequestDTO(null, GlassesTypeEnum.multifocal, GlassesSizeEnum.medium,
+        GlassesRequestDTO request = new GlassesRequestDTO(GlassesTypeEnum.multifocal, GlassesSizeEnum.medium,
             AppearanceEnum.feminine, LocationEnum.sa, OS, OD);
 
         Glasses glasses = request.toGlasses();
@@ -46,7 +46,7 @@ public class DtoMappingTest {
         dispense.setPreviousSku(22);
         dispense.setModifyDate(Instant.now());
         dispense.setDispenseReason(DispenseReasonEnum.BROKEN);
-        Glasses glasses = new GlassesRequestDTO(null, GlassesTypeEnum.single, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm,
+        Glasses glasses = new GlassesRequestDTO(GlassesTypeEnum.single, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm,
             OS, OD).toGlasses();
         glasses.setId(7L);
         glasses.setSku(5005);
@@ -71,12 +71,12 @@ public class DtoMappingTest {
 
     @Test
     public void applyToUpdatesEyesInPlaceAndKeepsLocation() {
-        Glasses glasses = new GlassesRequestDTO(null, GlassesTypeEnum.multifocal, GlassesSizeEnum.medium, AppearanceEnum.feminine,
+        Glasses glasses = new GlassesRequestDTO(GlassesTypeEnum.multifocal, GlassesSizeEnum.medium, AppearanceEnum.feminine,
             LocationEnum.sa, OS, OD).toGlasses();
         Eye os = glasses.getOs();
         EyeDTO newOs = new EyeDTO(BigDecimal.ONE, null, 90, null);
 
-        new GlassesRequestDTO(null, GlassesTypeEnum.single, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm, newOs, OD)
+        new GlassesRequestDTO(GlassesTypeEnum.single, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm, newOs, OD)
             .applyTo(glasses);
 
         assertSame(os, glasses.getOs());

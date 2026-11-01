@@ -72,7 +72,7 @@ const vitePWAconf: Partial<VitePWAOptions> = {
     runtimeCaching: [
       {
         handler: 'NetworkOnly',
-        urlPattern: /\/api\/glasses\/(un)?dispense.*/,
+        urlPattern: /\/api\/glasses\/\d+\/(un)?dispense\b/,
         method: 'PUT',
         options: {
           backgroundSync: {
@@ -86,7 +86,7 @@ const vitePWAconf: Partial<VitePWAOptions> = {
       },
       {
         handler: 'NetworkOnly',
-        urlPattern: /\/api\/glasses(\/[^/]+){2}\/?/,
+        urlPattern: /\/api\/glasses\/\d+$/,
         method: 'PUT',
         options: {
           backgroundSync: {

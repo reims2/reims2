@@ -73,9 +73,9 @@ export const test = base.extend<
       return newGlasses
     })
     // results are paginated, so leftovers from earlier runs could push a test's pair off page 1.
-    // There's no hard delete, and the id check skips a SKU that went to another test's pair.
-    for (const { id, sku } of created) {
-      await api.put(`/api/glasses/dispense/${location}/${sku}?reason=WRONGLY_ADDED&id=${id}`)
+    // There's no hard delete, and a pair a test already dispensed is left as it is.
+    for (const { id } of created) {
+      await api.put(`/api/glasses/${id}/dispense?reason=WRONGLY_ADDED`)
     }
   },
 })

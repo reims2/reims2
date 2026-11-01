@@ -9,8 +9,6 @@ import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.model.enums.LocationEnum;
 
 public record GlassesRequestDTO(
-    // optional on edits, rejects the edit if the SKU now belongs to other glasses
-    Long id,
     @NotNull GlassesTypeEnum glassesType,
     @NotNull GlassesSizeEnum glassesSize,
     @NotNull AppearanceEnum appearance,
