@@ -60,7 +60,9 @@ test('Dispense offline uploads once back online', async ({ page, context, create
   await expect(page.getByLabel('Glasses result')).toBeHidden()
 
   await context.setOffline(false)
-  await expect(page.getByRole('button', { name: /Sync status: \d+ waiting/ })).toBeHidden({ timeout: 15000 })
+  await expect(page.getByRole('button', { name: /Sync status: \d+ waiting/ })).toBeHidden({
+    timeout: 15000,
+  })
   // the freed SKU may already belong to another test's new pair
   const current = await api.get(`/api/glasses/sa/${sku}`)
   expect(current.ok() && (await current.json()).id === id).toBe(false)
