@@ -1,5 +1,5 @@
 <template>
-  <page-layout title="Add glasses" @keyup.a="submit">
+  <page-layout title="Add glasses" @keydown.a.exact.prevent="$event.repeat || add()">
     <template #chips>
       <v-chip variant="flat" color="primary-tonal" class="font-weight-bold text-tabular">
         {{ freeSlots.toLocaleString('en-US') }} free SKUs
@@ -44,7 +44,7 @@
               type="submit"
               :loading="loading"
               :prepend-icon="mdiPlus"
-              @click="addClicked"
+              @click="add"
             >
               Add glasses
               <v-chip size="x-small" label variant="tonal" class="ml-3 font-weight-bold">A</v-chip>
@@ -135,11 +135,7 @@ const { vPreventEnterTab } = useEnterToTab(form)
 const skuToDelete = ref<number | null>(null)
 const { deleteGlasses } = useDeleteGlasses(skuToDelete)
 
-async function submit() {
-  if (!valid.value) return
-  submitAdd()
-}
-function addClicked() {
+function add() {
   if (valid.value) submitAdd()
   else form.value?.validate()
 }

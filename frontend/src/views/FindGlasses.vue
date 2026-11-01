@@ -1,5 +1,5 @@
 <template>
-  <page-layout title="Find glasses" @keyup.s="submitAndUpdate">
+  <page-layout title="Find glasses" @keydown.s.exact.prevent="$event.repeat || search()">
     <v-col cols="12" md="5">
       <v-form ref="form" v-model="valid" @submit.prevent>
         <page-card title="Prescription">
@@ -200,12 +200,13 @@ function search() {
 }
 
 async function submitAndUpdate() {
+  // refocus first, the blur can reformat a field and that clears any matches found before it
+  if (!mobile.value) inputComponent.value?.focus()
+  await nextTick()
   startSearch()
 
   page.value = 1
-  // on desktop, focus input again; on mobile, scroll to bottom
-  if (!mobile.value) inputComponent.value?.focus()
-  else results.value?.$el.scrollIntoView(true)
+  if (mobile.value) results.value?.$el.scrollIntoView(true)
 }
 
 function reset() {
