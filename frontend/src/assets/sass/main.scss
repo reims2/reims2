@@ -1,0 +1,51 @@
+/* roboto-flex-latin-wght-normal */
+@font-face {
+  font-family: 'Roboto Flex Variable';
+  font-style: normal;
+  font-display: block;
+  font-weight: 100 1000;
+  src: url(@fontsource-variable/roboto-flex/files/roboto-flex-latin-wght-normal.woff2)
+    format('woff2-variations');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+// Overwrite global vuetify styles here. Vuetify's CSS is layered, so unlayered rules win without !important.
+
+.v-theme--light.v-bottom-navigation .v-btn:not(.v-btn--active) {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.v-text-field--prefixed.v-text-field .v-field__input {
+  // No padding on text fields that have a prefix
+  --v-field-padding-start: 0px;
+}
+
+// field borders at #8a9597, 3:1 against white
+.v-field {
+  --v-field-border-opacity: 0.52;
+}
+
+// 2 px ring with a 2 px gap on every control, white on the rail
+:where(a, button, [role='button'], [tabindex]:not(input)):focus-visible {
+  outline: 2px solid rgb(var(--v-theme-primary));
+  outline-offset: 2px;
+}
+.v-btn:focus-visible > .v-btn__overlay {
+  opacity: 0;
+}
+.bg-primary :focus-visible {
+  outline-color: #ffffff;
+}
+
+.text-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+// prescriptions
+.text-rx {
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
