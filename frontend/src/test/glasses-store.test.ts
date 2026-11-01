@@ -154,6 +154,20 @@ describe('glasses store', () => {
     expect(store.getGlassLocal(5)?.id).toBe(1)
   })
 
+  it('uploads a queued dispense with the id it was queued for', async () => {
+    useAuthStore().accessToken = 'token'
+    const store = useGlassesStore()
+    store.allGlasses = [pair(1, 5)]
+    api.put.mockRejectedValueOnce(new ReimsAxiosError('Network error', true))
+    expect(await store.dispense(pair(1, 5), 'DISPENSED')).toBe('queued')
+
+    api.put.mockClear()
+    api.put.mockResolvedValue({})
+    await store.uploadPending()
+    expect(api.put).toHaveBeenCalledExactlyOnceWith('/api/glasses/1/dispense?reason=DISPENSED', {})
+    expect(store.pendingCount).toBe(0)
+  })
+
   it('queues behind waiting changes without trying to send', async () => {
     const store = useGlassesStore()
     store.allGlasses = [pair(1, 5), pair(2, 6)]
