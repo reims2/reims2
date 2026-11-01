@@ -21,7 +21,7 @@
     </v-chip>
     <v-btn
       icon
-      href="/docs/howto"
+      :href="helpUrl(route.path)"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Documentation"
@@ -39,7 +39,9 @@ import { useRootStore } from '@/stores/root'
 import { usePendingChanges } from '@/composables/pending-changes'
 import { useAuthStore } from '@/stores/auth'
 import { useOnline } from '@vueuse/core'
+import { helpUrl } from '@/lib/help'
 import { useDisplay } from 'vuetify'
+import { useRoute } from 'vue-router'
 import LocationMenu from '@/components/LocationMenu.vue'
 import AccountMenu from '@/components/AccountMenu.vue'
 import ReimsLogo from '@/components/ReimsLogo.vue'
@@ -47,6 +49,7 @@ import ReimsLogo from '@/components/ReimsLogo.vue'
 const rootStore = useRootStore()
 const authStore = useAuthStore()
 const isOnline = useOnline()
+const route = useRoute()
 const { mobile } = useDisplay()
 const { pendingCount } = usePendingChanges()
 </script>
