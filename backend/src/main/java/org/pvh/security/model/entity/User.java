@@ -1,8 +1,6 @@
 package org.pvh.security.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
@@ -13,12 +11,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 20)
     private String username;
 
-    @NotBlank
-    @Size(max = 120)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

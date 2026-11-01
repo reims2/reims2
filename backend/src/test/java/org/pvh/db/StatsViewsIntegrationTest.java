@@ -10,6 +10,7 @@ import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
+import org.pvh.repository.GlassesRepository;
 import org.pvh.service.GlassesService;
 import org.pvh.service.SearchLogService;
 import org.pvh.model.enums.LocationEnum;
@@ -46,6 +47,9 @@ public class StatsViewsIntegrationTest {
     private GlassesService mainService;
 
     @Autowired
+    private GlassesRepository glassesRepository;
+
+    @Autowired
     private SearchLogService searchLogService;
 
     @Autowired
@@ -56,7 +60,7 @@ public class StatsViewsIntegrationTest {
     // the DB is shared across test classes and other tests expect free SKUs, e.g. 5001 in sm
     @AfterEach
     void deleteCreatedGlasses() {
-        createdGlasses.forEach(id -> mainService.findGlassesById(id).ifPresent(mainService::deleteGlasses));
+        createdGlasses.forEach(glassesRepository::deleteById);
     }
 
     private Glasses saveGlasses() {

@@ -4,6 +4,7 @@ import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,8 +23,8 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -33,6 +34,8 @@ import java.nio.charset.StandardCharsets;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
+
+    public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -52,7 +55,10 @@ public class WebSecurityConfig {
 
     @Bean
     public SecretKey jwtKey(@Value("${pvh.app.jwtSecret}") String secret) {
-        return new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA512");
+        byte[] bytes = secret.getBytes(StandardCharsets.UTF_8);
+        // else signing fails only at the first sign-in
+        Assert.isTrue(bytes.length >= 64, "pvh.app.jwtSecret must be at least 64 bytes for " + JWT_ALGORITHM);
+        return new SecretKeySpec(bytes, "HmacSHA512");
     }
 
     @Bean
@@ -62,16 +68,26 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder(SecretKey jwtKey) {
-        return NimbusJwtDecoder.withSecretKey(jwtKey).macAlgorithm(MacAlgorithm.HS512).build();
+        return NimbusJwtDecoder.withSecretKey(jwtKey).macAlgorithm(JWT_ALGORITHM).build();
+    }
+
+    // no resource server here: the frontend sends its stored token with the login request too, even an expired one
+    @Bean
+    @Order(1)
+    public SecurityFilterChain signinFilterChain(HttpSecurity http) throws Exception {
+        http
+            .securityMatcher("/api/auth/signin")
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(request -> request.anyRequest().permitAll())
+            .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        return http.build();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
-        DefaultBearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(request -> request
-                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api").permitAll()
                 .requestMatchers("/error").permitAll()
                 // only /api is routed publicly, prod exposes no actuator endpoint that leaks secrets
@@ -85,9 +101,6 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated())
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .oauth2ResourceServer(oauth2 -> oauth2
-                // the frontend sends its stored token with the login request too, even an expired one
-                .bearerTokenResolver(request ->
-                    request.getRequestURI().equals("/api/auth/signin") ? null : bearerTokenResolver.resolve(request))
                 // roles come from the database on every request, so deleting a user or changing roles applies right away
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(token -> {
                     UserDetails user = userDetailsService.loadUserByUsername(token.getSubject());

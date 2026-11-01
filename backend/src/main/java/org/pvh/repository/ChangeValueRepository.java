@@ -7,7 +7,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 public interface ChangeValueRepository extends JpaRepository<ChangeValue, LocationEnum> {
+    @Query("SELECT c.hashValue FROM ChangeValue c WHERE c.location = :location")
+    Optional<String> findHashValue(LocationEnum location);
+
     @Transactional
     @Modifying
     @Query("UPDATE ChangeValue SET hashValue = :hashValue WHERE location = :location")

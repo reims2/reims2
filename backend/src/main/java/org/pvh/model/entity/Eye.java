@@ -3,32 +3,24 @@ package org.pvh.model.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
+// validated as EyeDTO at the API boundary
 @Entity
 @Table(name = "eye")
 public class Eye extends BaseEntity {
 
     @Column(name = "sphere")
-    @DecimalMin(value = "-30.0")
-    @DecimalMax(value = "30.0")
     private BigDecimal sphere;
 
     @Column(name = "cylinder")
-    @NegativeOrZero(message = "Cylinder must be negative")
-    @DecimalMin(value = "-6.0", message = "Cylinder must be greater than -6 D")
     private BigDecimal cylinder;
 
     @Column(name = "axis")
-    @PositiveOrZero(message = "Axis must be positive")
-    @Max(value = 180)
     private int axis;
 
     @Column(name = "additional")
-    @PositiveOrZero(message = "Additional must be positive")
-    @DecimalMax(value = "8.0")
     private BigDecimal add;
 
     public Eye() {
