@@ -23,7 +23,9 @@ function renderView() {
     within(wrapper.getAllByRole('rowgroup')[1])
       .getAllByRole('row')
       .map((row) => within(row).getAllByRole('cell')[0].textContent)
-  const sortBy = (title: string) => fireEvent.click(wrapper.getByText(title, { selector: 'span' }))
+  // the first SPH header sits under OD
+  const sortBy = (title: string) =>
+    fireEvent.click(wrapper.getAllByText(title, { selector: 'th span' })[0])
   return { skus, sortBy }
 }
 
@@ -42,7 +44,7 @@ describe('ViewGlasses', () => {
 
   it('sorts diopters numerically', async () => {
     const { skus, sortBy } = renderView()
-    await sortBy('OD SPH')
+    await sortBy('SPH')
     expect(skus()).toEqual(['0002', '0003', '0001'])
   })
 })
