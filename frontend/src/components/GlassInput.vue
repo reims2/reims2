@@ -1,18 +1,28 @@
 <template>
-  <v-container class="pa-1">
+  <v-container class="pa-0">
     <v-row no-gutters>
-      <v-col v-for="item in metadataToShow" :key="item" cols="12" class="pa-0 pb-4">
+      <v-col
+        v-for="item in metadataToShow"
+        :key="item"
+        :cols="12"
+        :md="item === 'glassesType' ? 12 : 6"
+        class="pa-0 pb-5"
+        :class="{ 'pr-md-3': item === 'appearance', 'pl-md-3': item === 'glassesSize' }"
+      >
         <auto-complete-field
           ref="firstInput"
           :model-value="modelValue[item]"
           v-bind="glassesMetaUIData[item]"
           :clearable="false"
-          :persistent-hint="true"
+          :persistent-hint="!glassesTypeOnly"
           @update:model-value="(val) => updateMeta(item, val)"
         />
       </v-col>
+      <v-col v-if="!glassesTypeOnly" cols="12" class="pa-0 pb-6">
+        <v-divider />
+      </v-col>
 
-      <v-col cols="12" md="6" class="px-0 pr-md-5 py-md-0 py-1">
+      <v-col cols="12" md="6" class="px-0 pr-md-3 py-0">
         <single-eye-input
           eye-name="OD"
           :model-value="modelValue.od"
@@ -20,7 +30,7 @@
           @update:model-value="(val) => updateOdEye(val)"
         />
       </v-col>
-      <v-col cols="12" md="6" class="px-0 pl-md-5 py-0">
+      <v-col cols="12" md="6" class="px-0 pl-md-3 py-0">
         <single-eye-input
           eye-name="OS"
           :model-value="modelValue.os"

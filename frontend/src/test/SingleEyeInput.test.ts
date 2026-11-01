@@ -50,9 +50,9 @@ describe('SingleEyeInput', () => {
   })
 
   it('offers BAL only when searching', async () => {
-    expect(renderEye({}).queryByLabelText('BAL lens (Disable OD)')).toBeNull()
+    expect(renderEye({}).queryByLabelText('BAL lens (disables OD)')).toBeNull()
     const wrapper = renderEye({ isBAL: false })
-    await fireEvent.click(wrapper.getByLabelText('BAL lens (Disable OD)'))
+    await fireEvent.click(wrapper.getByLabelText('BAL lens (disables OD)'))
     expect(lastEmitted(wrapper)).toMatchObject({ isBAL: true })
   })
 })

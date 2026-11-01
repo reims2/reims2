@@ -1,25 +1,33 @@
 <template>
-  <v-dialog v-model="dialogOpen" width="500">
+  <v-dialog v-model="dialogOpen" max-width="640">
     <v-form ref="form" v-model="valid" @submit.prevent>
-      <v-card>
-        <v-toolbar color="primary" :title="`Editing SKU ${glassesInput.sku}`"></v-toolbar>
-        <v-card-text>
+      <v-card rounded="xl" class="pa-2">
+        <v-card-title class="text-title-large font-weight-semibold">
+          Editing SKU {{ glassesInput.sku }}
+        </v-card-title>
+        <v-card-text class="pt-4">
           <glass-input v-model="glassesInput"></glass-input>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn v-prevent-enter-tab variant="text" tabindex="-1" @click="dialogOpen = false">
+          <v-btn
+            v-prevent-enter-tab
+            variant="text"
+            class="text-medium-emphasis"
+            tabindex="-1"
+            @click="dialogOpen = false"
+          >
             Cancel
           </v-btn>
           <v-btn
             v-prevent-enter-tab
-            variant="text"
+            variant="tonal"
             color="primary"
             :disabled="!valid"
             :loading="loading"
             @click="updateGlasses()"
           >
-            Save
+            Save changes
           </v-btn>
         </v-card-actions>
       </v-card>
