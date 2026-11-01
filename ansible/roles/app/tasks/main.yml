@@ -35,6 +35,13 @@
     - compose.server.yaml
     - "compose.{{ stack }}.yaml"
 
+- name: Copy staging's seed
+  when: stack == 'staging'
+  ansible.builtin.copy:
+    src: staging-seed.sql.gz
+    dest: "{{ app_install_location }}/staging-seed.sql.gz"
+    mode: "0644"
+
 - name: Deploy the stack at {{ app_new_tag }}
   block:
     - name: Write .env
@@ -44,6 +51,16 @@
         mode: "0600"
       vars:
         app_env_tag: "{{ app_new_tag }}"
+
+    # MariaDB loads the seed into the new empty volume, then Flyway applies anything newer
+    - name: Delete staging's database
+      when: stack == 'staging'
+      community.docker.docker_compose_v2:
+        project_src: "{{ app_install_location }}"
+        project_name: "{{ stack }}"
+        files: [compose.yaml, compose.server.yaml, "compose.{{ stack }}.yaml"]
+        state: absent
+        remove_volumes: true
 
     - name: Start the stack
       community.docker.docker_compose_v2:

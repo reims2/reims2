@@ -21,6 +21,10 @@ services come from the root `compose.yaml`, which the `app` role copies next to 
   run Deploy on `main` by hand, which skips the check.
 - The Staging workflow deploys the branch picked in "Use workflow from" to dev.reims2.app.
   The next push to `main` puts main back.
+- Every staging deploy deletes staging's database and loads `roles/app/files/staging-seed.sql.gz`, a frozen
+  copy of prod's data from March 2024 with `test`/`testtest` as its only user and Flyway at V1_7. The backend
+  then applies newer migrations, so a push to `main` tries them on this data before prod. Changes made on
+  dev.reims2.app last until the next deploy. Replacing the seed takes a `mariadb-dump` without the real users.
 - Server setup runs on changes to `setup.yml`, the setup or hardening roles, or `requirements.yml`.
 - On the server, every stack directory works with plain compose: `cd /srv/prod && docker compose logs
 backend`. The other projects are `/srv/staging`, `/srv/traefik` and `/srv/monitoring`.
@@ -49,11 +53,10 @@ ansible-playbook -i hosts setup.yml
 ansible-playbook -i hosts deploy.yml -e stack=prod -e app_tag=sha-<commit> --vault-password-file creds/vault_password
 ansible-playbook -i hosts deploy.yml -e stack=staging -e app_tag=sha-<commit>
 ssh root@reims2.app /srv/prod/s3backup/restore.sh
-scripts/copy-prod-to-staging.sh
 ```
 
 Without a backup the database starts with no users. Insert a first admin the way
-`scripts/copy-prod-to-staging.sh` inserts `test` (bcrypt hash, all roles), then add everyone else in the
+`e2e/seed.sql` inserts `test` (bcrypt hash, all roles), then add everyone else in the
 app. Outside this repo live the AWS S3 bucket `reims2-backup`, the healthchecks.io check of the backup
 and UptimeRobot checks of reims2.app. The bucket has versioning and Object Lock (compliance mode, 30
 days default retention) on. Its key, in the vault, may only `s3:PutObject`, `s3:GetObject`,
@@ -72,9 +75,7 @@ success or failure to healthchecks.io. `cd /srv/prod/s3backup && docker compose 
 runs one now, `docker compose logs backup` there shows past runs.
 
 `restore.sh [backup key]` restores the newest backup by default, into a database without glasses. To
-restore over live data, delete it with `cd /srv/prod && docker compose down -v` and deploy again first. `scripts/copy-prod-to-staging.sh` copies prod's data into staging. Run it before merging a migration, so the
-next `main` deploy tries the migration on prod's data on staging first. Staging
-keeps its own users and always has `test`/`testtest`.
+restore over live data, delete it with `cd /srv/prod && docker compose down -v` and deploy again first.
 
 ## Grafana
 

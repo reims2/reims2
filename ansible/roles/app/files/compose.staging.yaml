@@ -2,6 +2,8 @@
 services:
   mariadb:
     cpu_shares: 256
+    volumes:
+      - ./staging-seed.sql.gz:/docker-entrypoint-initdb.d/staging-seed.sql.gz:ro
   backend:
     cpu_shares: 256
     environment:

@@ -58,7 +58,7 @@ pnpm build         # vue-tsc --noEmit && vite build, what CI runs
 
 Expects REIMS running at `http://localhost:3000` (override with `BASE_URL`), login `test`/`testtest`.
 `e2e/stack.sh` provides exactly that: the root `compose.yaml` stack plus a Traefik that routes like prod,
-seeded from `e2e/dump.example.sql` (port via `E2E_PORT`). Specs create their own glasses through the
+seeded from `e2e/seed.sql` (port via `E2E_PORT`). Specs create their own glasses through the
 `createGlasses` fixture in `e2e/tests/fixtures.ts` instead of relying on seed rows.
 
 ```bash
@@ -134,8 +134,8 @@ There's no server-side filtering or paging of glasses: the View Glasses table fi
 glasses store in the browser (`frontend/src/composables/table-filter.ts`). DTOs in `model/dto/` are records
 that map to and from entities themselves (`GlassesResponseDTO.from`, `GlassesRequestDTO.applyTo`). Each write
 runs in one transaction that bumps the change hash first. Flyway owns the schema and Hibernate only validates
-against it. Before merging a migration, run `ansible/scripts/copy-prod-to-staging.sh` so staging tries it on
-prod's data first (see `ansible/README.md`). Errors are RFC 9457 problem details from
+against it. Every staging deploy reloads a frozen copy of prod's data from March 2024, so a push to `main` tries
+new migrations on it before prod (see `ansible/README.md`). Errors are RFC 9457 problem details from
 `error/ApiExceptionHandler.java`. Only bad input may get a 4xx, since a queued offline change is dropped on a
 4xx but retried on a 5xx. Auth is JWT via Spring Security's OAuth2 resource server
 (`security/WebSecurityConfig.java`), with roles read from the database on every request. The two roles,
