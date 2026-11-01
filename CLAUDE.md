@@ -51,7 +51,7 @@ pnpm lint          # eslint --fix
 pnpm format:check  # prettier --check
 pnpm test          # vitest run --coverage
 pnpm vitest run src/test/philscore_score.test.ts   # single test file
-pnpm build         # vue-tsc --noEmit && vite build, what CI runs
+pnpm build         # vue-tsc --build && vite build, what CI runs
 ```
 
 ### E2E (`e2e/`)
