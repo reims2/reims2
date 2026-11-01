@@ -71,7 +71,10 @@ describe('useDispenseResult', () => {
   it('keeps a dispensed result listed as dispensed', async () => {
     const { shown, dispense } = useDispenseResult(ref([result]))
     await dispense(result)
-    expect(useGlassesStore().dispense).toHaveBeenCalledWith(1234, 'DISPENSED')
+    expect(useGlassesStore().dispense).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 7, sku: 1234 }),
+      'DISPENSED',
+    )
     expect(shown(result)).toMatchObject({
       sku: null,
       dispensed: true,

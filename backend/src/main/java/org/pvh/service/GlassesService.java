@@ -53,25 +53,34 @@ public class GlassesService {
     }
 
     @Transactional
-    public Glasses editGlasses(LocationEnum location, int sku, GlassesRequestDTO edit) {
-        return edit.applyTo(lockForChange(location, sku, edit.id()));
+    public Glasses editGlasses(long id, GlassesRequestDTO edit) {
+        Glasses glasses = lock(id);
+        if (glasses.isDispensed())
+            throw new ConflictException("These glasses were dispensed in the meantime.");
+        changeService.setNewHashValue(glasses.getLocation());
+        return edit.applyTo(glasses);
     }
 
+    // false if already dispensed, so a replayed or doubled dispense changes nothing
     @Transactional
-    public void dispense(LocationEnum location, int sku, DispenseReasonEnum reason, Long expectedId) {
-        Glasses glasses = lockForChange(location, sku, expectedId);
+    public boolean dispense(long id, DispenseReasonEnum reason) {
+        Glasses glasses = lock(id);
+        if (glasses.isDispensed())
+            return false;
+
+        changeService.setNewHashValue(glasses.getLocation());
+        Dispense dispense = glasses.getDispense();
+        dispense.setPreviousSku(glasses.getSku());
+        dispense.setModifyDate(now());
+        dispense.setDispenseReason(reason);
         glasses.setDispensed(true);
         glasses.setSku(null);
-        Dispense dispense = glasses.getDispense();
-        dispense.setModifyDate(now());
-        dispense.setPreviousSku(sku);
-        dispense.setDispenseReason(reason);
+        return true;
     }
 
     @Transactional
     public boolean undispense(long id) {
-        // a locking read takes no InnoDB snapshot, so the hash bump below still comes first, as in saveGlasses
-        Glasses glasses = glassesRepository.findLockedById(id).orElseThrow(() -> new NotFoundException("Glasses not found."));
+        Glasses glasses = lock(id);
         if (!glasses.isDispensed())
             return false;
 
@@ -89,14 +98,9 @@ public class GlassesService {
         return true;
     }
 
-    // bumps the hash before reading, like saveGlasses
-    private Glasses lockForChange(LocationEnum location, int sku, Long expectedId) {
-        changeService.setNewHashValue(location);
-        Glasses glasses = getBySkuAndLocation(sku, location);
-        // a change queued offline can arrive after its SKU went to newly added glasses
-        if (expectedId != null && !expectedId.equals(glasses.getId()))
-            throw new ConflictException("SKU " + formatSku(sku) + " now belongs to other glasses.");
-        return glasses;
+    // a locking read takes no InnoDB snapshot, so a hash bump right after it still comes first, as in saveGlasses
+    private Glasses lock(long id) {
+        return glassesRepository.findLockedById(id).orElseThrow(() -> new NotFoundException("Glasses not found."));
     }
 
     private int nextFreeSku(LocationEnum location) {

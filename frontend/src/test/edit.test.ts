@@ -15,7 +15,8 @@ describe('dispense errors', () => {
 
   it('shows a 400 on dispense', async () => {
     vi.mocked(useGlassesStore().dispense).mockRejectedValue(badRequest())
-    await useDeleteGlasses(1234).deleteGlasses('DISPENSED')
+    const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
+    await useDeleteGlasses(glasses).deleteGlasses('DISPENSED')
     expect(toastQueue.value).toEqual([
       { color: 'error', timeout: -1, text: expect.stringContaining('database down') },
     ])
@@ -25,7 +26,8 @@ describe('dispense errors', () => {
     vi.mocked(useGlassesStore().dispense).mockRejectedValue(
       new ReimsAxiosError('Server error', false, true, null, 502),
     )
-    await useDeleteGlasses(1234).deleteGlasses('DISPENSED')
+    const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
+    await useDeleteGlasses(glasses).deleteGlasses('DISPENSED')
     expect(toastQueue.value).toEqual([
       { color: 'error', timeout: -1, text: expect.stringContaining('retry later (Error 502)') },
     ])

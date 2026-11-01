@@ -94,13 +94,13 @@ describe('glasses store', () => {
     store.allGlasses = [pair(1, 5), pair(2, 6)]
     api.put.mockResolvedValue({})
 
-    await store.dispense(5, 'DISPENSED')
-    expect(api.put).toHaveBeenCalledWith('/api/glasses/dispense/sa/5?reason=DISPENSED&id=1', {})
-    await store.dispense(6, 'WRONGLY_ADDED')
+    await store.dispense(pair(1, 5), 'DISPENSED')
+    expect(api.put).toHaveBeenCalledWith('/api/glasses/1/dispense?reason=DISPENSED', {})
+    await store.dispense(pair(2, 6), 'WRONGLY_ADDED')
     expect(store.allGlasses).toEqual([])
 
     await store.undispense(pair(1, 5))
-    expect(api.put).toHaveBeenLastCalledWith('/api/glasses/undispense/1', {})
+    expect(api.put).toHaveBeenLastCalledWith('/api/glasses/1/undispense', {})
     expect(store.getGlassLocal(5)?.id).toBe(1)
   })
 
@@ -108,7 +108,7 @@ describe('glasses store', () => {
     const store = useGlassesStore()
     store.allGlasses = [pair(1, 5)]
     api.put.mockRejectedValue(new ReimsAxiosError('Network error', true))
-    await expect(store.dispense(5, 'DISPENSED')).rejects.toThrow()
+    await expect(store.dispense(pair(1, 5), 'DISPENSED')).rejects.toThrow()
     expect(store.getGlassLocal(5)).not.toBeNull()
   })
 
@@ -117,6 +117,7 @@ describe('glasses store', () => {
     store.allGlasses = [pair(1, 5)]
     api.put.mockResolvedValue({ data: { ...pair(1, 5), glassesSize: 'large' } })
     await store.editGlasses({ ...pair(1, 5), glassesSize: 'large' })
+    expect(api.put).toHaveBeenCalledWith('/api/glasses/1', expect.anything())
     expect(store.allGlasses).toHaveLength(1)
     expect(store.getGlassLocal(5)?.glassesSize).toBe('large')
   })

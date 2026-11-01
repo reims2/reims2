@@ -81,12 +81,12 @@ public class StatsViewsIntegrationTest {
         Glasses removed = saveGlasses();
         Glasses undispensed = saveGlasses();
 
-        mockMvc.perform(put("/api/glasses/dispense/sm/" + dispensed.getSku())).andExpect(status().isOk());
-        mockMvc.perform(put("/api/glasses/dispense/sm/" + removed.getSku()).param("reason", "BROKEN"))
+        mockMvc.perform(put("/api/glasses/" + dispensed.getId() + "/dispense")).andExpect(status().isOk());
+        mockMvc.perform(put("/api/glasses/" + removed.getId() + "/dispense").param("reason", "BROKEN"))
             .andExpect(status().isOk());
-        mockMvc.perform(put("/api/glasses/dispense/sm/" + undispensed.getSku()).param("reason", "BROKEN"))
+        mockMvc.perform(put("/api/glasses/" + undispensed.getId() + "/dispense").param("reason", "BROKEN"))
             .andExpect(status().isOk());
-        mockMvc.perform(put("/api/glasses/undispense/" + undispensed.getId())).andExpect(status().isOk());
+        mockMvc.perform(put("/api/glasses/" + undispensed.getId() + "/undispense")).andExpect(status().isOk());
 
         Map<String, Object> row = glassesRow(inStock.getId());
         assertEquals("in_stock", row.get("status"));

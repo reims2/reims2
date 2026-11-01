@@ -62,7 +62,7 @@ export const useDispenseResult = (matches: Ref<MatchResult[] | null>) => {
   watch(matches, () => (dispensedIds.value = []))
 
   const { isLoading: isDispensing, deleteGlasses } = useDeleteGlasses(
-    () => current.value?.sku ?? null,
+    () => current.value,
     () => {
       if (current.value) dispensedIds.value.push(current.value.id)
     },

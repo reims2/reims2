@@ -4,14 +4,14 @@
  */
 
 export interface paths {
-    "/api/glasses/{location}/{sku}": {
+    "/api/glasses/{id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["getGlasses"];
+        get?: never;
         put: operations["updateGlasses"];
         post?: never;
         delete?: never;
@@ -20,7 +20,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/glasses/undispense/{id}": {
+    "/api/glasses/{id}/undispense": {
         parameters: {
             query?: never;
             header?: never;
@@ -36,7 +36,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/glasses/dispense/{location}/{sku}": {
+    "/api/glasses/{id}/dispense": {
         parameters: {
             query?: never;
             header?: never;
@@ -44,7 +44,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        put: operations["updateDispensed"];
+        put: operations["dispense"];
         post?: never;
         delete?: never;
         options?: never;
@@ -124,6 +124,22 @@ export interface paths {
             cookie?: never;
         };
         get: operations["status"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/glasses/{location}/{sku}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getGlasses"];
         put?: never;
         post?: never;
         delete?: never;
@@ -288,8 +304,6 @@ export interface components {
             add?: number;
         };
         GlassesRequestDTO: {
-            /** Format: int64 */
-            id?: number;
             /** @enum {string} */
             glassesType: "single" | "multifocal";
             /** @enum {string} */
@@ -396,36 +410,12 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    getGlasses: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                sku: number;
-                location: "sa" | "sm";
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GlassesResponseDTO"];
-                };
-            };
-        };
-    };
     updateGlasses: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                sku: number;
-                location: "sa" | "sm";
+                id: number;
             };
             cookie?: never;
         };
@@ -473,23 +463,28 @@ export interface operations {
             };
         };
     };
-    updateDispensed: {
+    dispense: {
         parameters: {
             query?: {
                 reason?: "DISPENSED" | "NOT_FOUND" | "BROKEN" | "TOO_HIGH_VALUES" | "WRONGLY_ADDED" | "OTHER";
-                id?: number;
             };
             header?: never;
             path: {
-                sku: number;
-                location: "sa" | "sm";
+                id: number;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Dispensed */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Was already dispensed */
+            204: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -609,6 +604,29 @@ export interface operations {
                 };
                 content: {
                     "text/plain": string;
+                };
+            };
+        };
+    };
+    getGlasses: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sku: number;
+                location: "sa" | "sm";
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GlassesResponseDTO"];
                 };
             };
         };

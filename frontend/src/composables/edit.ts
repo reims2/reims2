@@ -14,8 +14,6 @@ export const useEditGlasses = (
   selected: MaybeRefOrGetter<Glasses | null>,
   onDeletedFn?: () => void,
 ) => {
-  const skuValue = computed(() => toValue(selected)?.sku ?? null)
-
   const {
     lastDispensed,
     isLoading: isLastDispensedLoading,
@@ -23,7 +21,7 @@ export const useEditGlasses = (
   } = useLastDispensed()
 
   const { isLoading: isDeletionLoading, deleteGlasses: submitDeletion } = useDeleteGlasses(
-    skuValue,
+    selected,
     () => {
       updateLastDispensed()
       onDeletedFn?.()
@@ -148,7 +146,7 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
 }
 
 export const useDeleteGlasses = (
-  skuInput: MaybeRefOrGetter<number | null>,
+  glassesInput: MaybeRefOrGetter<Glasses | null>,
   onSuccessFn?: () => void,
 ) => {
   const isLoading = ref(false)
@@ -157,25 +155,24 @@ export const useDeleteGlasses = (
   const toast = useToast()
 
   async function deleteGlasses(reason: DeletionReason | null): Promise<void> {
-    const sku = toValue(skuInput)
-    if (isLoading.value || !sku) return
+    const glasses = toValue(glassesInput)
+    if (isLoading.value || !glasses) return
+    const sku = glasses.sku
     // show user the correct action string, even though it's the same in the backend
     const actionString = reason === 'DISPENSED' ? 'dispense' : 'delete'
     isLoading.value = true
     try {
-      await glassesStore.dispense(sku, reason ?? 'OTHER')
+      await glassesStore.dispense(glasses, reason ?? 'OTHER')
     } catch (error) {
       if (error instanceof ReimsAxiosError) {
         if (error.statusCode === 404) {
-          toast.warning(
-            `SKU ${formatSku(sku)} not found on server, was it already ${actionString}d?`,
-          )
+          toast.warning(`SKU ${formatSku(sku)} not found on server, please reload.`)
         } else if (error.isServerSide) {
           toast.error(
             `Could not ${actionString} glasses because of a server error. Please retry later (Error ${error.statusCode})`,
           )
         } else if (error.isNetwork) {
-          glassesStore.deleteOfflineGlasses(sku)
+          if (sku !== null) glassesStore.deleteOfflineGlasses(sku)
           toast.warning(
             `Glasses with SKU ${formatSku(sku)} will be ${actionString}d when you're back online`,
           )
