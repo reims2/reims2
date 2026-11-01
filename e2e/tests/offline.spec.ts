@@ -24,3 +24,20 @@ test('Search works offline', async ({ page, context, createGlasses }) => {
   await page.getByRole('button', { name: 'earch glasses' }).click()
   await expect(page.getByLabel('Results').getByRole('group', { name: `SKU ${sku}` })).toBeVisible()
 })
+
+test('Inventory works offline', async ({ page, context, createGlasses }) => {
+  const eye = { sphere: -7.5, cylinder: 0, axis: 0, add: 0 }
+  const sku = formatSku((await createGlasses({ od: eye, os: eye })).sku)
+
+  const glassesLoaded = page.waitForResponse((r) => r.url().endsWith('/all') && r.ok())
+  await page.goto('/find')
+  await glassesLoaded
+  await page.waitForFunction(() => navigator.serviceWorker.controller !== null)
+
+  await context.setOffline(true)
+  await page.reload()
+  await expect(page.getByText('You are offline')).toBeVisible()
+
+  await page.getByRole('link', { name: 'Inventory' }).click()
+  await expect(page.getByRole('row').filter({ hasText: sku })).toBeVisible()
+})
