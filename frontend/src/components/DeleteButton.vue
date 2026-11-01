@@ -1,11 +1,13 @@
 <template>
   <v-dialog v-model="deleteDialog" width="500">
     <template #activator="{ props: activatorProps }">
-      <v-btn variant="text" v-bind="activatorProps">Delete</v-btn>
+      <v-btn variant="text" :prepend-icon="mdiDeleteOutline" v-bind="activatorProps">Delete</v-btn>
     </template>
-    <v-card>
-      <v-toolbar color="primary" title="Delete glasses"></v-toolbar>
-      <v-card-text class="text-high-emphasis pb-0">
+    <v-card rounded="xl" class="pa-2">
+      <v-card-title class="text-title-large font-weight-semibold">
+        Delete SKU {{ formatSku(glass.sku) }}
+      </v-card-title>
+      <v-card-text class="pb-0">
         <div class="pb-3">
           Glasses with SKU {{ glass.sku }} will be deleted.
           <span v-if="!fixedReason">
@@ -16,15 +18,21 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn variant="text" @click="deleteDialog = false">Cancel</v-btn>
-        <v-btn color="error" variant="text" @click="startDelete">Confirm deletion</v-btn>
+        <v-btn variant="text" class="text-medium-emphasis" @click="deleteDialog = false">
+          Cancel
+        </v-btn>
+        <v-btn color="error" variant="tonal" :prepend-icon="mdiDeleteOutline" @click="startDelete">
+          Confirm deletion
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
+import { mdiDeleteOutline } from '@mdi/js'
 import { Glasses } from '@/model/GlassesModel'
+import { formatSku } from '@/util/format-glasses'
 import { DeletionReason } from '@/model/ReimsModel'
 
 const { fixedReason = null } = defineProps<{

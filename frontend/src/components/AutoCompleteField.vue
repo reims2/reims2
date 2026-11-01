@@ -5,6 +5,7 @@
     :label="label"
     :rules="rules"
     :hint="hint"
+    density="compact"
     :autofocus="first && !mobile"
     clearable
     :persistent-hint="persistentHint"

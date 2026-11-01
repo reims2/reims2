@@ -1,14 +1,22 @@
 <template>
   <v-row class="pb-4" no-gutters role="group" :aria-labelledby="'eye-heading-' + eyeName">
-    <v-col class="text-headline-small pb-2">
-      <div :id="'eye-heading-' + eyeName" :class="isBAL ? 'text-medium-emphasis' : ''">
+    <v-col cols="12" class="pa-0 pb-5">
+      <v-chip
+        :id="'eye-heading-' + eyeName"
+        size="small"
+        label
+        variant="flat"
+        :color="isBAL ? 'surface-muted' : 'primary'"
+        class="font-weight-bold"
+      >
         {{ eyeName }}
-      </div>
+      </v-chip>
     </v-col>
     <v-col v-for="eyeKey in eyeKeys" :key="eyeKey" cols="12" class="py-0 pl-0">
       <v-text-field
         density="compact"
         type="number"
+        class="font-weight-medium text-tabular"
         :model-value="eyeData[eyeKey].value"
         :label="eyeData[eyeKey].label"
         :rules="!(eyeData[eyeKey].disabled || isBAL) ? eyeRules[eyeKey] : []"
@@ -27,8 +35,9 @@
         v-if="balEnabled"
         v-model="isBAL"
         tabindex="-1"
-        class="py-0 my-0 ml-n3"
-        :label="`BAL lens (Disable ${eyeName})`"
+        density="compact"
+        class="py-0 my-0 ml-n1 text-medium-emphasis"
+        :label="`BAL lens (disables ${eyeName})`"
         hide-details
       />
     </v-col>
