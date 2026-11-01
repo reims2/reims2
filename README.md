@@ -8,23 +8,28 @@ A demo version is available at https://dev.reims2.app
 
 ## Screenshots
 
-### Main Page
+### Main page
 
-![main](docs/screenshots/start.png)
+![main](docs/src/public/screenshots/start.jpg)
 
 ### Searching glasses
 
-![search](docs/screenshots/search.png)
+![search](docs/src/public/screenshots/find.png)
 
-### Editing glasses
+### Adding glasses
 
-![editing](docs/screenshots/edit.png)
+![adding](docs/src/public/screenshots/add.png)
+
+### Dispensing and editing
+
+![dispensing](docs/src/public/screenshots/dispense.png)
+
+![editing](docs/src/public/screenshots/edit-dialog.png)
 
 ### Inventory overview
 
-![inventory](docs/screenshots/inventory.png)
+![inventory](docs/src/public/screenshots/inventory.png)
 
+### Working offline
 
-### Documentation excerpt
-
-![documentation](docs/screenshots/docs.png)
+![offline](docs/src/public/screenshots/offline.png)
