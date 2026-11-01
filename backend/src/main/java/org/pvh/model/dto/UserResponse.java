@@ -1,8 +1,8 @@
-package org.pvh.model.payload.response;
+package org.pvh.model.dto;
 
-import org.pvh.security.model.entity.Role;
-import org.pvh.security.model.entity.User;
-import org.pvh.security.model.enums.ERole;
+import org.pvh.model.entity.Role;
+import org.pvh.model.entity.User;
+import org.pvh.model.enums.RoleEnum;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public record UserResponse(Long id, String username, List<RoleResponse> roles) {
         return new UserResponse(user.getId(), user.getUsername(), user.getRoles().stream().map(RoleResponse::from).toList());
     }
 
-    public record RoleResponse(Long id, ERole name) {
+    public record RoleResponse(Long id, RoleEnum name) {
         static RoleResponse from(Role role) {
             return new RoleResponse(role.getId(), role.getName());
         }

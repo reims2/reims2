@@ -1,12 +1,15 @@
 {
   "openapi" : "3.1.0",
   "info" : {
-    "title" : "OpenAPI definition",
+    "title" : "REIMS2",
     "version" : "v0"
   },
   "servers" : [ {
     "url" : "http://localhost",
     "description" : "Generated server url"
+  } ],
+  "security" : [ {
+    "bearer" : [ ]
   } ],
   "paths" : {
     "/api/glasses/{location}/{sku}" : {
@@ -107,8 +110,8 @@
           }
         } ],
         "responses" : {
-          "200" : {
-            "description" : "OK"
+          "204" : {
+            "description" : "No Content"
           }
         }
       }
@@ -128,7 +131,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "Back in stock"
+          },
+          "204" : {
+            "description" : "Was already in stock"
           }
         }
       }
@@ -159,6 +165,7 @@
           "required" : false,
           "schema" : {
             "type" : "string",
+            "default" : "DISPENSED",
             "enum" : [ "DISPENSED", "NOT_FOUND", "BROKEN", "TOO_HIGH_VALUES", "WRONGLY_ADDED", "OTHER" ]
           }
         }, {
@@ -192,8 +199,8 @@
           "required" : true
         },
         "responses" : {
-          "200" : {
-            "description" : "OK",
+          "201" : {
+            "description" : "Created",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -229,8 +236,8 @@
           "required" : true
         },
         "responses" : {
-          "200" : {
-            "description" : "OK"
+          "201" : {
+            "description" : "Created"
           }
         }
       }
@@ -288,7 +295,8 @@
               }
             }
           }
-        }
+        },
+        "security" : [ ]
       }
     },
     "/api" : {
@@ -306,7 +314,8 @@
               }
             }
           }
-        }
+        },
+        "security" : [ ]
       }
     },
     "/api/glasses/{location}/changes" : {
@@ -383,12 +392,15 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "text/csv" : {
                 "schema" : {
                   "type" : "string"
                 }
               }
             }
+          },
+          "204" : {
+            "description" : "Nothing to export"
           }
         }
       }
@@ -410,12 +422,15 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "text/csv" : {
                 "schema" : {
                   "type" : "string"
                 }
               }
             }
+          },
+          "204" : {
+            "description" : "Nothing to export"
           }
         }
       }
@@ -483,12 +498,15 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "text/csv" : {
                 "schema" : {
                   "type" : "string"
                 }
               }
             }
+          },
+          "204" : {
+            "description" : "Nothing to export"
           }
         }
       }
@@ -546,8 +564,8 @@
           }
         } ],
         "responses" : {
-          "200" : {
-            "description" : "OK"
+          "204" : {
+            "description" : "No Content"
           }
         }
       }
@@ -746,7 +764,7 @@
           },
           "password" : {
             "type" : "string",
-            "maxLength" : 120,
+            "maxLength" : 72,
             "minLength" : 0
           },
           "roles" : {
@@ -843,6 +861,13 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes" : {
+      "bearer" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
       }
     }
   }

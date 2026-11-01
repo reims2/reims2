@@ -121,12 +121,4 @@ public class SearchLog extends BaseEntity {
         this.results = results;
     }
 
-    @Override
-    public String toString() {
-        return "SearchLog [glassesType=" + glassesType + ", location=" + location + ", searchDate="
-            + searchDate + ", balLens=" + balLens + ", increaseSearchTolerance=" + increaseSearchTolerance
-            + ", resultCount=" + resultCount + ", os=" + os + ", od=" + od + "]";
-    }
-
-
 }

@@ -1,7 +1,7 @@
-package org.pvh.security.model.entity;
+package org.pvh.model.entity;
 
 import jakarta.persistence.*;
-import org.pvh.security.model.enums.ERole;
+import org.pvh.model.enums.RoleEnum;
 
 @Entity
 @Table(name = "roles")
@@ -12,7 +12,7 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private ERole name;
+    private RoleEnum name;
 
     public Long getId() {
         return id;
@@ -22,11 +22,11 @@ public class Role {
         this.id = id;
     }
 
-    public ERole getName() {
+    public RoleEnum getName() {
         return name;
     }
 
-    public void setName(ERole name) {
+    public void setName(RoleEnum name) {
         this.name = name;
     }
 }

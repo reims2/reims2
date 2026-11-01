@@ -1,4 +1,4 @@
-package org.pvh.model.payload.request;
+package org.pvh.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

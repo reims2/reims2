@@ -3,15 +3,12 @@ package org.pvh.security;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.pvh.MariaDbTestConfiguration;
+import org.pvh.IntegrationTest;
 import org.pvh.repository.RoleRepository;
 import org.pvh.repository.UserRepository;
-import org.pvh.security.model.entity.User;
-import org.pvh.security.model.enums.ERole;
+import org.pvh.model.entity.User;
+import org.pvh.model.enums.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,9 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Import(MariaDbTestConfiguration.class)
+@IntegrationTest
 public class SecurityIntegrationTest {
 
     @Autowired
@@ -43,11 +38,11 @@ public class SecurityIntegrationTest {
 
     @BeforeEach
     void createUsers() {
-        createUser("sec-user", ERole.ROLE_USER);
-        createUser("sec-admin", ERole.ROLE_ADMIN);
+        createUser("sec-user", RoleEnum.ROLE_USER);
+        createUser("sec-admin", RoleEnum.ROLE_ADMIN);
     }
 
-    private void createUser(String username, ERole role) {
+    private void createUser(String username, RoleEnum role) {
         if (userRepository.existsByUsername(username))
             return;
         User user = new User(username, encoder.encode("password"));
@@ -113,7 +108,7 @@ public class SecurityIntegrationTest {
 
     @Test
     void deletedUser_loosesAccess() throws Exception {
-        createUser("sec-deleted", ERole.ROLE_USER);
+        createUser("sec-deleted", RoleEnum.ROLE_USER);
         String token = login("sec-deleted");
         userRepository.delete(userRepository.findByUsername("sec-deleted").orElseThrow());
 
@@ -135,5 +130,20 @@ public class SecurityIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON).content(body))
             .andExpect(status().isBadRequest());
         mockMvc.perform(get("/api/glasses/sa/all").header("Authorization", login("sec-new"))).andExpect(status().isOk());
+    }
+
+    // BCrypt's limit is 72 bytes, so non-ASCII passwords hit it before 72 characters
+    @Test
+    void signup_rejectsPasswordsOver72Bytes() throws Exception {
+        String admin = login("sec-admin");
+        userRepository.findByUsername("sec-long").ifPresent(userRepository::delete);
+        for (String password : new String[] {"a".repeat(73), "ü".repeat(37)}) {
+            mockMvc.perform(post("/api/auth/signup").header("Authorization", admin).contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"username\":\"sec-long\",\"password\":\"" + password + "\"}"))
+                .andExpect(status().isBadRequest());
+        }
+        mockMvc.perform(post("/api/auth/signup").header("Authorization", admin).contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"sec-long\",\"password\":\"" + "ü".repeat(36) + "\"}"))
+            .andExpect(status().isOk());
     }
 }

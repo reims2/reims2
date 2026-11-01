@@ -37,7 +37,8 @@ docker run --detach --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSW
 ```
 
 The container above starts with the same frozen prod data as dev.reims2.app (login `test`/`testtest`). Tests start their own MariaDB through Testcontainers (`MariaDbTestConfiguration`), so
-`./mvnw test` needs Docker. They run with security on and sign in with `@WithMockUser`. `OpenApiSpecTest`
+`./mvnw test` needs Docker. Integration tests carry `@IntegrationTest`, which shares one Spring context and container and layers
+`src/test/resources/application-test.properties` over the main config. They run with security on and sign in with `@WithMockUser`. `OpenApiSpecTest`
 rewrites `backend/openapi.json` and fails when the API changed: commit the file and run `pnpm generate:api` in
 `frontend/`, which regenerates the request/response types in `src/model/api.d.ts`. CI checks both.
 
@@ -134,7 +135,7 @@ SKU) so `PUT /undispense/{id}` can restore it, as long as the SKU hasn't been re
 
 ### Backend (`backend/src/main/java/org/pvh/`)
 
-Standard `rest/` → `service/` (`GlassesService`, `SearchLogService`, `ChangeService`) → `repository/` layering on
+Standard `rest/` → `service/` (`GlassesService`, `SearchLogService`, `ChangeService`, `UserService`) → `repository/` layering on
 Spring Data JPA. `LocationEnum` holds the two sites and their SKU ranges, an unknown location is a 400.
 There's no server-side filtering or paging of glasses: the View Glasses table filters, sorts and pages the
 glasses store in the browser (`frontend/src/composables/table-filter.ts`). DTOs in `model/dto/` are records
@@ -142,9 +143,9 @@ that map to and from entities themselves (`GlassesResponseDTO.from`, `GlassesReq
 runs in one transaction that bumps the change hash first. Flyway owns the schema and Hibernate only validates
 against it. Every staging deploy reloads a frozen copy of prod's data from March 2024, so a push to `main` tries
 new migrations on it before prod (see `ansible/README.md`). Errors are RFC 9457 problem details from
-`error/ApiExceptionHandler.java`. Only bad input may get a 4xx, since a queued offline change is dropped on a
+`error/ApiExceptionHandler.java`, which maps the domain exceptions in `error/` to status codes, so services never pick one. Only bad input may get a 4xx, since a queued offline change is dropped on a
 4xx but retried on a 5xx. Auth is JWT via Spring Security's OAuth2 resource server
-(`security/WebSecurityConfig.java`), with roles read from the database on every request. The two roles,
+(`security/WebSecurityConfig.java`, tokens from `TokenService`, settings in `pvh.jwt.*`), with roles read from the database on every request. The two roles,
 `ROLE_USER` and `ROLE_ADMIN`, are enforced with `@PreAuthorize`, and a role hierarchy gives admins every user
 right. Deletes and user management are admin-only.
 

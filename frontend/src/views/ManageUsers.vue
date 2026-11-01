@@ -92,7 +92,7 @@
                       v-model="newPassword"
                       label="Password"
                       type="password"
-                      :rules="[(v) => !!v || 'Item is required']"
+                      :rules="passwordRules"
                       required
                     />
                   </v-col>
@@ -148,6 +148,11 @@ const authStore = useAuthStore()
 
 const items = ref<User[] | null>(null)
 const newPassword = ref('')
+// BCrypt's limit, see SignupRequest.java
+const passwordRules = [
+  (v: string) => !!v || 'Item is required',
+  (v: string) => new TextEncoder().encode(v ?? '').length <= 72 || 'Password is too long',
+]
 const newRoles = ref<string[]>([])
 const newName = ref('')
 
