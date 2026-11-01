@@ -3,7 +3,7 @@
     <v-main>
       <router-view />
     </v-main>
-    <the-footer :show-last-update="false" />
+    <the-footer />
   </v-app>
 </template>
 
