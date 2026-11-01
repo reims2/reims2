@@ -1,7 +1,9 @@
 FROM node:26.12.0@sha256:45a2bf9d9300e9cf47ecb375e38447c140c45ef5fbae869c430475b05b98d86e AS build
 
 WORKDIR /usr/src/app
-RUN npm install --global corepack@0.36.0 && corepack enable
+# renovate: datasource=npm depName=corepack
+ARG COREPACK_VERSION=0.36.0
+RUN npm install --global corepack@${COREPACK_VERSION} && corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
