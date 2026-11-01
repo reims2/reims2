@@ -56,6 +56,8 @@ watch(
     }
     emit('change', selected.value)
   },
+  // A pre-flush emit changes the parent's state mid-patch, its slots then render past their v-if.
+  { flush: 'post' },
 )
 
 watch(
