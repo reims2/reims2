@@ -1,83 +1,99 @@
 <template>
-  <v-container @keyup.a="submit">
-    <v-row class="justify-center" density="compact">
-      <v-col cols="12" md="6" lg="4" class="pb-2 px-2 pt-4">
-        <v-form ref="form" v-model="valid" @submit.prevent>
-          <v-row no-gutters>
+  <page-layout title="Add glasses" @keyup.a="submit">
+    <template #chips>
+      <v-chip variant="flat" color="primary-tonal" class="font-weight-bold text-tabular">
+        {{ freeSlots.toLocaleString('en-US') }} free SKUs
+      </v-chip>
+    </template>
+    <v-col cols="12" md="5">
+      <v-form ref="form" v-model="valid" @submit.prevent>
+        <page-card title="Glasses">
+          <template #header>
+            <v-btn
+              v-prevent-enter-tab
+              variant="text"
+              class="text-medium-emphasis"
+              tabindex="-1"
+              :prepend-icon="mdiRestore"
+              @click="reset"
+            >
+              Clear form
+            </v-btn>
+          </template>
+          <div class="pa-6">
             <glass-input
               ref="inputComponent"
               v-model="glasses"
               v-model:sync-eyes="syncEyeAdd"
             ></glass-input>
-            <v-col cols="12" class="pl-1 pr-0 pt-0">
-              <div class="pb-3 text-body-medium text-medium-emphasis">
-                You are in {{ reimsSiteName }} ({{ freeSlots }} SKUs left)
-              </div>
-              <div class="d-flex">
-                <v-btn
-                  v-prevent-enter-tab
-                  :disabled="!valid || loading"
-                  color="primary"
-                  class="mr-4"
-                  type="submit"
-                  :loading="loading"
-                  @click="submit"
-                >
-                  <span class="text-decoration-underline">A</span>
-                  dd glasses
-                </v-btn>
-                <v-btn
-                  v-prevent-enter-tab
-                  class="mr-4"
-                  variant="plain"
-                  tabindex="-1"
-                  @click="reset"
-                >
-                  Clear form
-                </v-btn>
-              </div>
-            </v-col>
-          </v-row>
-        </v-form>
-      </v-col>
-      <v-col
-        v-if="lastAdded != null && lastAdded.length > 0"
-        ref="results"
-        cols="12"
-        md="4"
-        lg="3"
-        class="pl-md-6 pt-3 pt-md-2"
-        role="region"
-        aria-labelledby="heading-recently-added"
-      >
-        <div id="heading-recently-added" class="text-title-large font-weight-medium pb-2">
-          Recently added
+          </div>
+          <template #footer>
+            <span class="text-body-medium text-medium-emphasis">
+              Adds to
+              <strong class="text-high-emphasis font-weight-semibold">{{ reimsSiteName }}</strong>
+              with the next free SKU
+            </span>
+            <v-spacer />
+            <v-btn
+              v-prevent-enter-tab
+              :disabled="loading"
+              color="primary"
+              size="large"
+              variant="flat"
+              elevation="2"
+              type="submit"
+              :loading="loading"
+              :prepend-icon="mdiPlus"
+              @click="addClicked"
+            >
+              Add glasses
+              <v-chip size="x-small" label variant="tonal" class="ml-3 font-weight-bold">A</v-chip>
+            </v-btn>
+          </template>
+        </page-card>
+      </v-form>
+    </v-col>
+
+    <v-col cols="12" md="7">
+      <page-card ref="results" title="Recently added">
+        <template #header>
+          <span v-if="lastAdded.length" class="text-body-medium text-medium-emphasis">
+            Last {{ Math.min(lastAdded.length, 3) }}, newest first
+          </span>
+        </template>
+        <p v-if="lastAdded.length === 0" class="pa-6 ma-0 text-body-medium text-medium-emphasis">
+          Glasses you add show up here with their new SKU.
+        </p>
+        <div v-else>
+          <div
+            v-for="(item, idx) in lastAdded.slice(0, 3)"
+            :key="item.id"
+            :data-testid="'result-' + idx"
+          >
+            <v-divider v-if="idx > 0" />
+            <glasses-row :glasses="item" editable>
+              <template #actions>
+                <delete-button
+                  :glass="item"
+                  fixed-reason="WRONGLY_ADDED"
+                  @delete="submitDeletion(item)"
+                />
+              </template>
+            </glasses-row>
+          </div>
         </div>
-        <div
-          v-for="(item, idx) in lastAdded.slice(0, 3)"
-          :key="item.id"
-          :style="'opacity: ' + (1 - idx * 0.2)"
-          :data-testid="'result-' + idx"
-        >
-          <glass-card :model-value="item" editable>
-            <template #actions>
-              <delete-button
-                :glass="item"
-                fixed-reason="WRONGLY_ADDED"
-                @delete="submitDeletion(item)"
-              />
-            </template>
-          </glass-card>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+      </page-card>
+    </v-col>
+  </page-layout>
 </template>
 
 <script setup lang="ts">
 import GlassInput from '@/components/GlassInput.vue'
-import GlassCard from '@/components/GlassCard.vue'
+import GlassesRow from '@/components/GlassesRow.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
+import PageLayout from '@/components/PageLayout.vue'
+import PageCard from '@/components/PageCard.vue'
+import { mdiRestore, mdiPlus } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
 import { useEnterToTab } from 'vue3-enter-to-tab'
 
@@ -122,6 +138,10 @@ const { deleteGlasses } = useDeleteGlasses(skuToDelete)
 async function submit() {
   if (!valid.value) return
   submitAdd()
+}
+function addClicked() {
+  if (valid.value) submitAdd()
+  else form.value?.validate()
 }
 async function onSuccess() {
   reset()

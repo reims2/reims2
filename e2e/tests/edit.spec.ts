@@ -9,6 +9,7 @@ test.beforeEach(async ({ page }) => {
 test('Dispense glasses with button', async ({ page, createGlasses }) => {
   const sku = formatSku((await createGlasses()).sku)
   await page.getByLabel('SKU', { exact: true }).fill(sku)
+  await expect(page.getByLabel('Glasses result')).toBeVisible()
   await page.getByRole('button', { name: 'Dispense' }).click()
   await expect(page.getByText(`Successfully dispensed glasses with SKU ${sku}`)).toBeVisible()
 })
@@ -21,12 +22,13 @@ test.describe('Undo', () => {
     test.skip(testInfo.project.name !== 'chromium', 'other browsers would add to sm concurrently')
     const { sku } = await createGlasses()
     await page.getByLabel('SKU', { exact: true }).fill(formatSku(sku))
+    await expect(page.getByLabel('Glasses result')).toBeVisible()
     await page.getByRole('button', { name: 'Dispense' }).click()
     await expect(page.getByText(`Successfully dispensed glasses`)).toBeVisible()
 
     const recent = page.getByRole('region', { name: 'Recently dispensed or deleted' })
     const dispensed = recent.getByTestId('result-0')
-    await expect(dispensed).toContainText(`SKU ${formatSku(sku)}`)
+    await expect(dispensed.getByRole('group', { name: `SKU ${formatSku(sku)}` })).toBeVisible()
     await dispensed.getByRole('button', { name: 'Undo' }).click()
     await expect(
       page.getByText(`Reverted dispension/deletion of SKU ${formatSku(sku)} successfully`),
@@ -38,7 +40,6 @@ test.describe('Undo', () => {
 test('Delete glasses', async ({ page, createGlasses }) => {
   const sku = formatSku((await createGlasses()).sku)
   await page.getByLabel('SKU', { exact: true }).fill(sku)
-  await page.getByLabel('More options').click()
   await page.getByRole('button', { name: 'Delete' }).click()
   await page.getByRole('combobox').first().click()
   await page.getByRole('option', { name: 'Not found in storage' }).click()
@@ -58,5 +59,7 @@ test('Edit glasses', async ({ page, createGlasses }) => {
   await page.getByRole('button', { name: 'Save' }).click()
   await expect(page.getByText('Editing SKU')).toBeHidden()
 
-  await expect(page.getByLabel('Glasses result')).toContainText('SPH+7.00')
+  await expect(
+    page.getByLabel('Glasses result').getByRole('row', { name: /^OD \+7\.00/ }),
+  ).toBeVisible()
 })

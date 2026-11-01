@@ -22,5 +22,5 @@ test('Search works offline', async ({ page, context, createGlasses }) => {
     os: { sphere: '-7.25', cylinder: '0' },
   })
   await page.getByRole('button', { name: 'earch glasses' }).click()
-  await expect(page.getByLabel('Results').getByLabel(`SKU ${sku}`)).toBeVisible()
+  await expect(page.getByLabel('Results').getByRole('group', { name: `SKU ${sku}` })).toBeVisible()
 })
