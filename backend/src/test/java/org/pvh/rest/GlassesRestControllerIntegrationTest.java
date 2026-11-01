@@ -16,6 +16,7 @@ import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
+import org.pvh.repository.GlassesRepository;
 import org.pvh.repository.SearchLogRepository;
 import org.pvh.service.GlassesService;
 import org.pvh.model.enums.LocationEnum;
@@ -73,6 +74,9 @@ public class GlassesRestControllerIntegrationTest {
 
     @Autowired
     private SearchLogRepository searchLogRepository;
+
+    @Autowired
+    private GlassesRepository glassesRepository;
 
     private static final String VALID_EYE = "{\"sphere\":1,\"cylinder\":-1,\"axis\":10,\"add\":1}";
 
@@ -210,7 +214,7 @@ public class GlassesRestControllerIntegrationTest {
             .andDo(print());
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sa"));
         // undispense must not leave the old reason behind
-        assertNull(mainService.findGlassesById(saveEntitySa2.getId()).orElseThrow().getDispense().getDispenseReason());
+        assertNull(glassesRepository.findById(saveEntitySa2.getId()).orElseThrow().getDispense().getDispenseReason());
 
         // undispense secondly created glass second time
         cv = callChangeValueAndReturnHash("sa");
@@ -254,11 +258,11 @@ public class GlassesRestControllerIntegrationTest {
 
         this.mockMvc.perform(put("/api/glasses/dispense/sa/" + glasses.getSku()).param("id", "" + (glasses.getId() + 1000)))
             .andExpect(status().isConflict());
-        assertFalse(mainService.findGlassesById(glasses.getId()).orElseThrow().isDispensed());
+        assertFalse(glassesRepository.findById(glasses.getId()).orElseThrow().isDispensed());
 
         this.mockMvc.perform(put("/api/glasses/dispense/sa/" + glasses.getSku()).param("id", "" + glasses.getId()))
             .andExpect(status().isOk());
-        assertTrue(mainService.findGlassesById(glasses.getId()).orElseThrow().isDispensed());
+        assertTrue(glassesRepository.findById(glasses.getId()).orElseThrow().isDispensed());
     }
 
     @Test
@@ -445,7 +449,7 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(jsonPath("$.os.axis", Matchers.is(90)));
 
         assertEquals(eyeRows, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM eye", Integer.class));
-        Glasses edited = mainService.findGlassesById(glasses.getId()).orElseThrow();
+        Glasses edited = glassesRepository.findById(glasses.getId()).orElseThrow();
         assertEquals(LocationEnum.sa, edited.getLocation());
         assertEquals(glasses.getOs().getId(), edited.getOs().getId());
         assertEquals(90, edited.getOs().getAxis());
@@ -461,7 +465,7 @@ public class GlassesRestControllerIntegrationTest {
         this.mockMvc.perform(put("/api/glasses/sa/" + glasses.getSku()).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(staleEdit)))
             .andExpect(status().isConflict());
-        assertEquals(AppearanceEnum.neutral, mainService.findGlassesById(glasses.getId()).orElseThrow().getAppearance());
+        assertEquals(AppearanceEnum.neutral, glassesRepository.findById(glasses.getId()).orElseThrow().getAppearance());
     }
 
     @Test

@@ -738,8 +738,7 @@
           },
           "password" : {
             "type" : "string",
-            "maxLength" : 72,
-            "minLength" : 0
+            "minLength" : 1
           },
           "roles" : {
             "type" : "array",

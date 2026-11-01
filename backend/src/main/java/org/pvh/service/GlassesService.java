@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GlassesService {
@@ -26,10 +25,6 @@ public class GlassesService {
     public GlassesService(GlassesRepository glassesRepository, ChangeService changeService) {
         this.glassesRepository = glassesRepository;
         this.changeService = changeService;
-    }
-
-    public Optional<Glasses> findGlassesById(long glassesId) {
-        return glassesRepository.findById(glassesId);
     }
 
     public Glasses getBySkuAndLocation(int sku, LocationEnum location) {
@@ -75,7 +70,8 @@ public class GlassesService {
 
     @Transactional
     public boolean undispense(long id) {
-        Glasses glasses = glassesRepository.findById(id).orElseThrow(() -> new NotFoundException("Glasses not found."));
+        // a locking read takes no InnoDB snapshot, so the hash bump below still comes first, as in saveGlasses
+        Glasses glasses = glassesRepository.findLockedById(id).orElseThrow(() -> new NotFoundException("Glasses not found."));
         if (!glasses.isDispensed())
             return false;
 
