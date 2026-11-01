@@ -167,8 +167,8 @@ importers:
   .:
     devDependencies:
       '@axe-core/playwright':
-        specifier: 4.11.1
-        version: 4.11.1(playwright-core@1.64.1)
+        specifier: 4.14.0
+        version: 4.14.0(playwright-core@1.64.1)
       '@eslint/js':
         specifier: 10.0.1
         version: 10.0.1(eslint@10.9.1)
@@ -205,8 +205,9 @@ importers:
 
 packages:
 
-  '@axe-core/playwright@4.11.1':
-    resolution: {integrity: sha512-mKEfoUIB1MkVTht0BGZFXtSAEKXMJoDkyV5YZ9jbBmZCcWDz71tegNsdTkIN8zc/yMi5Gm2kx7Z5YQ9PfWNAWw==}
+  '@axe-core/playwright@4.14.0':
+    resolution: {integrity: sha512-SGUhG5PIHd2eMdpgBF2PyQLOhX+qyDR2PT4cmoS4Qk2ak+jX/rrSvst9l0PGv5WTHolKpUMvVmoHpr4cZgf1RQ==}
+    engines: {node: '>=22.12.0'}
     peerDependencies:
       playwright-core: '>= 1.0.0'
 
@@ -358,8 +359,8 @@ packages:
   ajv@6.15.0:
     resolution: {integrity: sha512-fgFx7Hfoq60ytK2c7DhnF8jIvzYgOMxfugjLOSMHjLIPgenqa7S7oaagATUq99mV6IYvN2tRmC0wnTYX6iPbMw==}
 
-  axe-core@4.11.4:
-    resolution: {integrity: sha512-KunSNx+TVpkAw/6ULfhnx+HWRecjqZGTOyquAoWHYLRSdK1tB5Ihce1ZW+UY3fj33bYAFWPu7W/GRSmmrCGuxA==}
+  axe-core@4.14.0:
+    resolution: {integrity: sha512-9WTZxEjsZ7b13TH8JPmbV2z8CHbl80/2hm3XPEG4JgNdQLK81IBRXmSxHfMAOkSqQeRxT/0dwNDz2GOm3zzpcQ==}
     engines: {node: '>=4'}
 
   balanced-match@4.0.4:
@@ -650,9 +651,9 @@ packages:
 
 snapshots:
 
-  '@axe-core/playwright@4.11.1(playwright-core@1.64.1)':
+  '@axe-core/playwright@4.14.0(playwright-core@1.64.1)':
     dependencies:
-      axe-core: 4.11.4
+      axe-core: 4.14.0
       playwright-core: 1.64.1
 
   '@eslint-community/eslint-utils@4.10.1(eslint@10.9.1)':
@@ -823,7 +824,7 @@ snapshots:
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
 
-  axe-core@4.11.4: {}
+  axe-core@4.14.0: {}
 
   balanced-match@4.0.4: {}
 

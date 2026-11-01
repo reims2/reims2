@@ -8,7 +8,7 @@
         :prepend-icon="mdiMapMarker"
         :append-icon="mdiMenuDown"
         :disabled="!isOnline || switchingTo !== null"
-        :aria-label="`Change location (${rootStore.reimsSiteName})`"
+        :aria-label="`Change location, currently ${rootStore.reimsSiteName}`"
       >
         {{ rootStore.reimsSiteName }}
       </v-btn>
