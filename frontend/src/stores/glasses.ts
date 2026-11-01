@@ -112,13 +112,6 @@ export const useGlassesStore = defineStore(
       await axiosInstance.put(`/api/glasses/undispense/${glasses.id}`, {})
       addOfflineGlasses(glasses)
     }
-    async function deleteGlasses(sku: number) {
-      // abort running fetch all request, since the fetch all will change after this request
-      controllerGetAll.abort()
-
-      await axiosInstance.delete(`/api/glasses/${rootStore.reimsSite}/${sku}`)
-      deleteOfflineGlasses(sku)
-    }
     async function editGlasses(newGlasses: Glasses): Promise<Glasses> {
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
@@ -227,7 +220,6 @@ export const useGlassesStore = defineStore(
       fetchSingle,
       dispense,
       undispense,
-      deleteGlasses,
       editGlasses,
       loadSearchesCsv,
       loadDispensedCsv,

@@ -89,8 +89,8 @@ public class SecurityIntegrationTest {
         String user = login("sec-user");
         String admin = login("sec-admin");
 
-        mockMvc.perform(delete("/api/glasses/sa/9999").header("Authorization", user)).andExpect(status().isForbidden());
-        mockMvc.perform(delete("/api/glasses/sa/9999").header("Authorization", admin)).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/api/auth/999999").header("Authorization", user)).andExpect(status().isForbidden());
+        mockMvc.perform(delete("/api/auth/999999").header("Authorization", admin)).andExpect(status().isNotFound());
         mockMvc.perform(get("/api/auth").header("Authorization", user)).andExpect(status().isForbidden());
         mockMvc.perform(get("/api/auth").header("Authorization", admin))
             .andExpect(status().isOk())

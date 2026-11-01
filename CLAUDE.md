@@ -147,7 +147,7 @@ new migrations on it before prod (see `ansible/README.md`). Errors are RFC 9457 
 4xx but retried on a 5xx. Auth is JWT via Spring Security's OAuth2 resource server
 (`security/WebSecurityConfig.java`, tokens from `TokenService`, settings in `pvh.jwt.*`), with roles read from the database on every request. The two roles,
 `ROLE_USER` and `ROLE_ADMIN`, are enforced with `@PreAuthorize`, and a role hierarchy gives admins every user
-right. Deletes and user management are admin-only.
+right. User management is admin-only. Glasses are never deleted, removing a pair is a dispense with a reason.
 
 ### Frontend (`frontend/src/`)
 

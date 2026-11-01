@@ -48,7 +48,7 @@ public class AuthController {
     @GetMapping(value = "/user", produces = "application/json")
     public UserResponse getCurrentUserInfo(Principal userPrincipal) {
         return userService.findByUsername(userPrincipal.getName()).map(UserResponse::from)
-            .orElseThrow(() -> new NotFoundException("User was not found."));
+            .orElseThrow(() -> new NotFoundException("User not found."));
     }
 
     @PostMapping("/signup")

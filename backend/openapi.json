@@ -88,32 +88,6 @@
             }
           }
         }
-      },
-      "delete" : {
-        "tags" : [ "glasses-rest-controller" ],
-        "operationId" : "deleteGlasses",
-        "parameters" : [ {
-          "name" : "sku",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
-        }, {
-          "name" : "location",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "enum" : [ "sa", "sm" ]
-          }
-        } ],
-        "responses" : {
-          "204" : {
-            "description" : "No Content"
-          }
-        }
       }
     },
     "/api/glasses/undispense/{id}" : {

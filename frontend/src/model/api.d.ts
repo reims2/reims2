@@ -14,7 +14,7 @@ export interface paths {
         get: operations["getGlasses"];
         put: operations["updateGlasses"];
         post?: never;
-        delete: operations["deleteGlasses"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -443,27 +443,6 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["GlassesResponseDTO"];
                 };
-            };
-        };
-    };
-    deleteGlasses: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                sku: number;
-                location: "sa" | "sm";
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
         };
     };

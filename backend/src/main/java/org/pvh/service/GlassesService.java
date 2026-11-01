@@ -32,8 +32,9 @@ public class GlassesService {
         return glassesRepository.findById(glassesId);
     }
 
-    public Optional<Glasses> findBySkuAndLocation(int sku, LocationEnum location) {
-        return glassesRepository.findBySkuAndLocation(sku, location);
+    public Glasses getBySkuAndLocation(int sku, LocationEnum location) {
+        return glassesRepository.findBySkuAndLocation(sku, location)
+            .orElseThrow(() -> new NotFoundException("No glasses with SKU " + formatSku(sku) + " at this location."));
     }
 
     public List<Glasses> findByDispensedAndLocation(boolean dispensed, LocationEnum location) {
@@ -74,7 +75,7 @@ public class GlassesService {
 
     @Transactional
     public boolean undispense(long id) {
-        Glasses glasses = glassesRepository.findById(id).orElseThrow(GlassesService::notFound);
+        Glasses glasses = glassesRepository.findById(id).orElseThrow(() -> new NotFoundException("Glasses not found."));
         if (!glasses.isDispensed())
             return false;
 
@@ -82,7 +83,7 @@ public class GlassesService {
         Dispense dispense = glasses.getDispense();
         // the unique index on glasses.sku catches a pair added concurrently with this SKU
         if (glassesRepository.existsBySku(dispense.getPreviousSku()))
-            throw new BadRequestException("Previous SKU is already used");
+            throw new BadRequestException("SKU " + formatSku(dispense.getPreviousSku()) + " is already used by other glasses.");
 
         glasses.setDispensed(false);
         glasses.setSku(dispense.getPreviousSku());
@@ -92,18 +93,13 @@ public class GlassesService {
         return true;
     }
 
-    @Transactional
-    public void deleteGlasses(LocationEnum location, int sku) {
-        glassesRepository.delete(lockForChange(location, sku, null));
-    }
-
     // bumps the hash before reading, like saveGlasses
     private Glasses lockForChange(LocationEnum location, int sku, Long expectedId) {
         changeService.setNewHashValue(location);
-        Glasses glasses = glassesRepository.findBySkuAndLocation(sku, location).orElseThrow(GlassesService::notFound);
+        Glasses glasses = getBySkuAndLocation(sku, location);
         // a change queued offline can arrive after its SKU went to newly added glasses
         if (expectedId != null && !expectedId.equals(glasses.getId()))
-            throw new ConflictException("SKU " + sku + " now belongs to other glasses.");
+            throw new ConflictException("SKU " + formatSku(sku) + " now belongs to other glasses.");
         return glasses;
     }
 
@@ -114,8 +110,9 @@ public class GlassesService {
             .orElseThrow(() -> new ConflictException("No free SKUs left in this location."));
     }
 
-    private static NotFoundException notFound() {
-        return new NotFoundException("Entity not found!");
+    // as the frontend shows SKUs
+    private static String formatSku(int sku) {
+        return "%04d".formatted(sku);
     }
 
     private static Instant now() {
