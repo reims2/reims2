@@ -16,7 +16,7 @@
     <span v-if="struck" class="text-label-small font-weight-bold">
       {{ state === 'dispensed' ? 'Dispensed' : 'Deleted' }}
     </span>
-    <div v-else-if="score != null || blurScore != null" class="d-flex align-center ga-1">
+    <div v-else class="d-flex align-center ga-1">
       <v-chip
         v-if="score != null"
         size="x-small"

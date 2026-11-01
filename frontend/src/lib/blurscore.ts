@@ -1,7 +1,7 @@
 import { Eye, Glasses, GlassesEyeIndex, GlassesResult, GlassesSearch } from '@/model/GlassesModel'
 
 // Predicted-blur matching, see docs/src/dev/ai-notes/predicted-blur-matching.md
-export const BLUR_PARAMS = {
+const BLUR_PARAMS = {
   noHarmMargin: 0.25,
   balanceDrop: 1.0,
   balSeDifference: 1.0,
@@ -9,23 +9,9 @@ export const BLUR_PARAMS = {
   highToleranceLimit: 1.25,
 } as const
 
-export type BlurGrade = 'excellent' | 'good' | 'fair' | 'poor'
-
-export interface EyeError {
-  focusError: number // > 0 is too much plus
-  leftoverCylinder: number
-  readingError: number | null // multifocal only
-}
-
-export interface BlurResult extends GlassesResult {
-  grade: BlurGrade
-  odError: EyeError | null // null for a BAL eye
-  osError: EyeError | null
-}
-
 interface EyeBlur {
   blur: number
-  error: EyeError
+  focusError: number // > 0 is too much plus
 }
 
 const EYES = ['od', 'os'] as const
@@ -35,7 +21,7 @@ const EPS = 1e-9
 export default function calculateAllBlurscore(
   terms: GlassesSearch,
   glasses: Glasses[],
-): BlurResult[] {
+): GlassesResult[] {
   const isMultifocal = terms.glassesType === 'multifocal'
   const scored = EYES.filter((key) => !terms[key].isBAL)
   const planoBlur = Object.fromEntries(
@@ -59,7 +45,7 @@ function scorePair(
   glass: Glasses,
   scored: GlassesEyeIndex[],
   planoBlur: Record<GlassesEyeIndex, number>,
-): BlurResult | null {
+): GlassesResult | null {
   const isMultifocal = terms.glassesType === 'multifocal'
   const balEye = EYES.find((key) => terms[key].isBAL)
 
@@ -74,7 +60,7 @@ function scorePair(
     return null
   if (
     eyes.length === 2 &&
-    Math.abs(eyes[0].error.focusError - eyes[1].error.focusError) > BLUR_PARAMS.balanceDrop + EPS
+    Math.abs(eyes[0].focusError - eyes[1].focusError) > BLUR_PARAMS.balanceDrop + EPS
   )
     return null
 
@@ -89,11 +75,8 @@ function scorePair(
   return {
     ...glass,
     score,
-    grade: calcGrade(score),
     odScore: od?.blur ?? 0,
     osScore: os?.blur ?? 0,
-    odError: od?.error ?? null,
-    osError: os?.error ?? null,
   }
 }
 
@@ -104,18 +87,10 @@ function calcEyeBlur(rx: Eye, lens: Eye, isMultifocal: boolean): EyeBlur {
   const dM = lensVector.m - rxVector.m
   const dJ = Math.hypot(lensVector.j0 - rxVector.j0, lensVector.j45 - rxVector.j45)
   const distanceBlur = Math.hypot(dM, dJ)
-  if (!isMultifocal) {
-    return {
-      blur: distanceBlur,
-      error: { focusError: dM, leftoverCylinder: 2 * dJ, readingError: null },
-    }
-  }
+  if (!isMultifocal) return { blur: distanceBlur, focusError: dM }
 
   const dNear = dM + (lens.add ?? 0) - (rx.add ?? 0)
-  return {
-    blur: Math.max(distanceBlur, Math.hypot(dNear, dJ)),
-    error: { focusError: dM, leftoverCylinder: 2 * dJ, readingError: dNear },
-  }
+  return { blur: Math.max(distanceBlur, Math.hypot(dNear, dJ)), focusError: dM }
 }
 
 function powerVector(eye: Eye) {
@@ -127,18 +102,16 @@ function powerVector(eye: Eye) {
   }
 }
 
-function calcGrade(score: number): BlurGrade {
-  if (score <= 0.25 + EPS) return 'excellent'
-  if (score <= 0.5 + EPS) return 'good'
-  if (score <= 0.75 + EPS) return 'fair'
-  return 'poor'
+// graded good or better in the notes
+export function isGoodBlur(score: number): boolean {
+  return score <= 0.5 + EPS
 }
 
-function betterEye(result: BlurResult): number {
+function betterEye(result: GlassesResult): number {
   return Math.min(result.odScore, result.osScore)
 }
 
 // float noise from cos and sin shouldn't decide the order
-function compareScores(a: number, b: number): number {
+export function compareScores(a: number, b: number): number {
   return Math.abs(a - b) > EPS ? a - b : 0
 }

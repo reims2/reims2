@@ -38,10 +38,10 @@ describe('useFindGlasses', () => {
       expect.objectContaining({ glassesType: 'single' }),
       4,
       [
-        { id: 1, sku: 1, algorithm: 'philscore' },
-        { id: 2, sku: 2, algorithm: 'philscore' },
-        { id: 3, sku: 3, algorithm: 'blurscore' },
-        { id: 4, sku: 4, algorithm: 'philscore' },
+        { id: 1, algorithm: 'philscore' },
+        { id: 2, algorithm: 'philscore' },
+        { id: 3, algorithm: 'blurscore' },
+        { id: 4, algorithm: 'philscore' },
       ],
     )
   })
@@ -64,8 +64,6 @@ describe('useDispenseResult', () => {
     sku: 1234,
     algorithm: 'philscore',
     score: 1,
-    odScore: 0.5,
-    osScore: 0.5,
   }
 
   beforeEach(() => createTestingPinia())

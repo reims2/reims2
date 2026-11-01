@@ -125,7 +125,7 @@ public class SearchLog extends BaseEntity {
     public String toString() {
         return "SearchLog [glassesType=" + glassesType + ", location=" + location + ", searchDate="
             + searchDate + ", balLens=" + balLens + ", increaseSearchTolerance=" + increaseSearchTolerance
-            + ", resultCount=" + resultCount + ", results=" + results + ", os=" + os + ", od=" + od + "]";
+            + ", resultCount=" + resultCount + ", os=" + os + ", od=" + od + "]";
     }
 
 

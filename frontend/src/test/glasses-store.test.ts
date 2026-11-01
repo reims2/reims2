@@ -135,7 +135,7 @@ describe('glasses store', () => {
     })
 
     it('sends the search with its result count and shown results', async () => {
-      const results = [{ id: 4, sku: 5, algorithm: 'blurscore' }]
+      const results = [{ id: 4, algorithm: 'blurscore' }]
       await useGlassesStore().logSearch(
         { glassesType: 'multifocal', od, os, highTolerance: true },
         3,

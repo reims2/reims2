@@ -1,10 +1,4 @@
-import {
-  Glasses,
-  GlassesInput,
-  GlassesSearch,
-  GlassesType,
-  SanitizedEyeSearch,
-} from '@/model/GlassesModel'
+import { GlassesInput, GlassesSearch, GlassesType, SanitizedEyeSearch } from '@/model/GlassesModel'
 import { sanitizeEyeValues } from '@/util/eye-utils'
 import { MaybeRefOrGetter } from 'vue'
 import calculateAllPhilscore from '@/lib/philscore'
@@ -33,11 +27,11 @@ export const useFindGlasses = (
       od: sanitizeEyeValues(glasses.value.od) as SanitizedEyeSearch,
       highTolerance: toValue(highTolerance),
     }
-    const stock = allGlasses.value || ([] as Glasses[])
+    const stock = allGlasses.value
     const philscore = calculateAllPhilscore(eyeModel, stock)
     matches.value = interleave(philscore, calculateAllBlurscore(eyeModel, stock))
     if (isUserSubmitted) {
-      const results = matches.value.map(({ id, sku, algorithm }) => ({ id, sku, algorithm }))
+      const results = matches.value.map(({ id, algorithm }) => ({ id, algorithm }))
       // offline the service worker queues it, the page still gets the network error
       glassesStore.logSearch(eyeModel, philscore.length, results).catch(() => {})
     }

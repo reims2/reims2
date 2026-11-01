@@ -1,49 +1,41 @@
-import { BlurResult } from '@/lib/blurscore'
-import { Glasses, GlassesResult, MatchAlgorithm } from '@/model/GlassesModel'
+import { compareScores, isGoodBlur } from '@/lib/blurscore'
+import { Glasses, GlassesResult } from '@/model/GlassesModel'
 
 export interface MatchResult extends Glasses {
-  algorithm: MatchAlgorithm // blurscore marks an experimental suggestion
+  algorithm: 'philscore' | 'blurscore' // blurscore marks an experimental suggestion
   score?: number // PhilScore, only when PhilScore found the pair
-  odScore?: number
-  osScore?: number
   blurScore?: number // only when blurscore placed the pair
 }
 
-const EPS = 1e-9 // equal blur scores can differ by float noise
+const MAX_RESULTS = 30
 
-// PhilScore's list, but every third result goes to blurscore's best unlisted pair graded
-// good or better, if it predicts less blur for it than for PhilScore's pick. It also fills once PhilScore runs out.
+// PhilScore's list, but every third result goes to blurscore's best unlisted pair graded good or
+// better, if it predicts less blur for it than for PhilScore's pick. It also fills once PhilScore runs out.
 export default function interleave(
   philscore: GlassesResult[],
-  blurscore: BlurResult[],
-  max = 30,
+  blurscore: GlassesResult[],
 ): MatchResult[] {
   const results: MatchResult[] = []
-  const unlisted = <T extends Glasses>(list: T[]) =>
+  const unlisted = (list: GlassesResult[]) =>
     list.find((glass) => !results.some((result) => result.id === glass.id))
-  const good = blurscore.filter((result) => result.grade === 'excellent' || result.grade === 'good')
+  const good = blurscore.filter((result) => isGoodBlur(result.score))
   const blurOf = (glass?: Glasses) =>
     blurscore.find((result) => result.id === glass?.id)?.score ?? Infinity
 
-  while (results.length < max) {
+  while (results.length < MAX_RESULTS) {
     const fromPhilscore = unlisted(philscore)
     const best = unlisted(good)
-    const alternative =
+    if (
       (results.length % 3 === 2 || !fromPhilscore) &&
-      best !== undefined &&
-      best.score < blurOf(fromPhilscore) - EPS
-    const glass = alternative ? best : fromPhilscore
-    if (!glass) break
-    const phil = philscore.find((result) => result.id === glass.id)
-    results.push({
-      ...glass,
-      algorithm: alternative ? 'blurscore' : 'philscore',
-      // a BlurResult reuses these fields for blur, so take them from PhilScore only
-      score: phil?.score,
-      odScore: phil?.odScore,
-      osScore: phil?.osScore,
-      blurScore: alternative ? best.score : undefined,
-    })
+      best &&
+      compareScores(best.score, blurOf(fromPhilscore)) < 0
+    ) {
+      // best.score is its blur, so the PhilScore comes from PhilScore's list
+      const score = philscore.find((result) => result.id === best.id)?.score
+      results.push({ ...best, algorithm: 'blurscore', score, blurScore: best.score })
+    } else if (fromPhilscore) {
+      results.push({ ...fromPhilscore, algorithm: 'philscore' })
+    } else break
   }
   return results
 }

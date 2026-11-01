@@ -8,8 +8,8 @@
     <sku-tag
       :sku="displayed.sku ?? '????'"
       :state="state"
-      :score="'score' in glasses ? glasses.score : null"
-      :blur-score="'blurScore' in glasses ? glasses.blurScore : null"
+      :score="glasses.score"
+      :blur-score="glasses.blurScore"
     />
     <div class="d-flex flex-column ga-2 flex-1-1" :class="{ 'text-medium-emphasis': isDone }">
       <div
@@ -76,8 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { Glasses, GlassesEyeIndex, GlassesResult } from '@/model/GlassesModel'
-import { MatchResult } from '@/lib/interleave'
+import { Glasses, GlassesEyeIndex } from '@/model/GlassesModel'
 import { formatGlassesForDisplay } from '@/util/format-glasses'
 import { glassesMetaUIData } from '@/util/glasses-utils'
 import EditDialog from '@/components/EditDialog.vue'
@@ -88,7 +87,7 @@ const {
   editable = false,
   selected = false,
 } = defineProps<{
-  glasses: Glasses | GlassesResult | MatchResult
+  glasses: Glasses & { score?: number; blurScore?: number }
   editable?: boolean
   // the glasses loaded into a form, not a list entry
   selected?: boolean

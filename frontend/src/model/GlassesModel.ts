@@ -100,8 +100,6 @@ export interface GlassesResult extends Glasses {
   osScore: number
 }
 
-export type MatchAlgorithm = 'philscore' | 'blurscore'
-
 export interface SanitizedEyeSearch extends Eye {
   isBAL: boolean
 }
