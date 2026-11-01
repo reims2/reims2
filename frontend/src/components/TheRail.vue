@@ -47,7 +47,7 @@
         variant="text"
         color="on-rail"
         :prepend-icon="mdiHelpCircleOutline"
-        href="/docs/howto"
+        :href="helpUrl(route.path)"
         target="_blank"
         rel="noopener noreferrer"
         :disabled="!isOnline"
@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import { mdiHelpCircleOutline } from '@mdi/js'
 import { useOnline } from '@vueuse/core'
+import { helpUrl } from '@/lib/help'
 import { useRoute } from 'vue-router'
 import { useRootStore } from '@/stores/root'
 import { NavItem } from '@/model/ReimsModel'

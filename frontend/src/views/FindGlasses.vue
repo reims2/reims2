@@ -60,7 +60,8 @@
       <page-card ref="results" title="Results">
         <template #header>
           <span v-if="matches?.length" class="text-body-medium text-medium-emphasis text-tabular">
-            {{ matches.length }} {{ matches.length === 1 ? 'match' : 'matches, best first' }}
+            {{ matches.length }}
+            {{ matches.length === 1 ? 'match' : 'matches, best first (lower score is closer)' }}
           </span>
           <span v-else-if="matches" class="text-body-medium text-medium-emphasis">No matches</span>
         </template>
@@ -77,8 +78,8 @@
           title="No close matches in stock"
           :text="
             (highTolerance
-              ? 'Try a BAL lens, or check the prescription.'
-              : 'Try wider tolerance or a BAL lens.') +
+              ? 'Check the input, then try a BAL lens.'
+              : 'Check the input, then try wider tolerance or a BAL lens.') +
             ' Failed searches are logged to plan future stock.'
           "
           text-width="320"
