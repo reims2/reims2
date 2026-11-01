@@ -6,11 +6,12 @@ export interface MatchResult extends Glasses {
   score?: number // PhilScore, only when PhilScore found the pair
   odScore?: number
   osScore?: number
+  blurScore?: number // only when blurscore placed the pair
 }
 
 const EPS = 1e-9 // equal blur scores can differ by float noise
 
-// PhilScore's list, but the last card of each page of 3 goes to blurscore's best unlisted pair graded
+// PhilScore's list, but every third result goes to blurscore's best unlisted pair graded
 // good or better, if it predicts less blur for it than for PhilScore's pick. It also fills once PhilScore runs out.
 export default function interleave(
   philscore: GlassesResult[],
@@ -41,6 +42,7 @@ export default function interleave(
       score: phil?.score,
       odScore: phil?.odScore,
       osScore: phil?.osScore,
+      blurScore: alternative ? best.score : undefined,
     })
   }
   return results
