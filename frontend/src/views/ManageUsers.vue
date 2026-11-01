@@ -1,128 +1,139 @@
 <template>
-  <v-container>
-    <v-row density="compact" class="d-flex justify-center">
-      <v-col cols="12" md="6" lg="5">
-        <v-progress-circular v-if="items == null" indeterminate aria-label="Loading users" />
-        <v-alert v-else-if="items.length == 0" type="warning">No users loaded.</v-alert>
-        <v-table v-else>
+  <page-layout title="Users">
+    <v-col cols="12" md="8" lg="7">
+      <page-card title="Accounts">
+        <template #header>
+          <v-btn color="primary" :prepend-icon="mdiAccountPlusOutline" @click="dialog = true">
+            Add new user
+          </v-btn>
+        </template>
+        <div v-if="items == null" class="pa-6">
+          <v-progress-circular indeterminate color="primary" aria-label="Loading users" />
+        </div>
+        <div v-else-if="items.length == 0" class="pa-6">
+          <v-alert type="warning" variant="tonal">No users loaded.</v-alert>
+        </div>
+        <v-table v-else hover>
           <thead>
             <tr>
-              <th class="text-left">Username</th>
-              <th class="text-left">Roles</th>
-              <th></th>
+              <th class="text-left bg-surface-muted text-medium-emphasis font-weight-bold pl-6">
+                Username
+              </th>
+              <th class="text-left bg-surface-muted text-medium-emphasis font-weight-bold">
+                Roles
+              </th>
+              <th class="bg-surface-muted"><span class="d-sr-only">Actions</span></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in items" :key="item.username">
-              <td :class="isCurrentUser(item.username) ? 'font-weight-bold' : ''">
+              <td class="pl-6" :class="isCurrentUser(item.username) ? 'font-weight-bold' : ''">
                 {{ item.username }}
               </td>
               <td>{{ item.roles.map((el) => el.name).join(', ') }}</td>
-              <td class="d-flex align-center">
-                <v-btn icon size="x-small" aria-label="Edit user" @click="editInfo = true">
-                  <v-icon>{{ mdiPencil }}</v-icon>
-                </v-btn>
+              <td class="text-right text-no-wrap">
+                <v-btn
+                  :icon="mdiPencilOutline"
+                  variant="text"
+                  size="small"
+                  class="text-medium-emphasis"
+                  aria-label="Edit user"
+                  @click="editInfo = true"
+                />
                 <v-btn
                   v-if="!isCurrentUser(item.username)"
-                  icon
-                  size="x-small"
+                  :icon="mdiDeleteOutline"
+                  variant="text"
+                  size="small"
                   color="error"
-                  class="ml-2"
                   :aria-label="`Delete ${item.username}`"
                   :loading="deleteLoading == item.id"
                   @click="deleteUser(item.id!)"
-                >
-                  <v-icon>{{ mdiDelete }}</v-icon>
-                </v-btn>
+                />
               </td>
             </tr>
           </tbody>
         </v-table>
 
-        <v-alert
-          v-model="editInfo"
-          type="info"
-          color="primary"
-          variant="outlined"
-          density="compact"
-          class="mt-4"
-          closable
-        >
-          If you want to edit an existing user, you have to delete and re-add them.
-        </v-alert>
-        <v-dialog v-model="dialog" max-width="500px" persistent>
-          <template #activator="{ props }">
-            <v-btn color="primary" v-bind="props" class="mt-3">Add new user</v-btn>
-          </template>
-          <v-card>
-            <v-toolbar color="primary" title="Add new user"></v-toolbar>
-            <v-card-text>
-              <v-form ref="form" v-model="valid">
-                <v-container>
-                  <v-alert
-                    v-if="newRoles.includes('ROLE_ADMIN')"
-                    type="warning"
-                    prominent
-                    density="comfortable"
-                  >
-                    Users with the admin role can add and delete users, so be careful to apply that
-                    role only when necessary.
-                  </v-alert>
-                  <v-row density="compact">
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="newName"
-                        label="Username"
-                        :rules="[(v) => !!v || 'Item is required']"
-                        required
-                        autocorrect="off"
-                        autocapitalize="off"
-                      />
-                    </v-col>
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="newPassword"
-                        label="Password"
-                        type="password"
-                        :rules="[(v) => !!v || 'Item is required']"
-                        required
-                      />
-                    </v-col>
-                    <v-col cols="12">
-                      <v-select
-                        v-model="newRoles"
-                        :items="['ROLE_USER', 'ROLE_ADMIN']"
-                        multiple
-                        label="Roles"
-                        :rules="[(v) => v.length > 0 || 'Item is required']"
-                        required
-                      />
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn variant="text" @click="dialog = false">Cancel</v-btn>
-              <v-btn
-                color="primary"
-                variant="text"
-                :disabled="!valid"
-                :loading="addLoading"
-                @click="addUser()"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-col>
-    </v-row>
-  </v-container>
+        <div v-if="editInfo" class="px-6 pb-6">
+          <v-alert v-model="editInfo" type="info" variant="tonal" density="compact" closable>
+            If you want to edit an existing user, you have to delete and re-add them.
+          </v-alert>
+        </div>
+      </page-card>
+      <v-dialog v-model="dialog" max-width="500px" persistent>
+        <v-card class="pa-2">
+          <v-card-title class="text-title-large font-weight-semibold">Add new user</v-card-title>
+          <v-card-text>
+            <v-form ref="form" v-model="valid">
+              <v-container>
+                <v-alert
+                  v-if="newRoles.includes('ROLE_ADMIN')"
+                  type="warning"
+                  variant="tonal"
+                  density="comfortable"
+                >
+                  Users with the admin role can add and delete users, so be careful to apply that
+                  role only when necessary.
+                </v-alert>
+                <v-row density="compact">
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="newName"
+                      label="Username"
+                      :rules="[(v) => !!v || 'Item is required']"
+                      required
+                      autocorrect="off"
+                      autocapitalize="off"
+                    />
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="newPassword"
+                      label="Password"
+                      type="password"
+                      :rules="[(v) => !!v || 'Item is required']"
+                      required
+                    />
+                  </v-col>
+                  <v-col cols="12">
+                    <v-select
+                      v-model="newRoles"
+                      :items="['ROLE_USER', 'ROLE_ADMIN']"
+                      multiple
+                      label="Roles"
+                      :rules="[(v) => v.length > 0 || 'Item is required']"
+                      required
+                    />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn variant="text" class="text-medium-emphasis" @click="dialog = false">
+              Cancel
+            </v-btn>
+            <v-btn
+              color="primary"
+              variant="tonal"
+              :disabled="!valid"
+              :loading="addLoading"
+              @click="addUser()"
+            >
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-col>
+  </page-layout>
 </template>
 <script setup lang="ts">
-import { mdiDelete, mdiPencil } from '@mdi/js'
+import { mdiAccountPlusOutline, mdiDeleteOutline, mdiPencilOutline } from '@mdi/js'
+import PageLayout from '@/components/PageLayout.vue'
+import PageCard from '@/components/PageCard.vue'
 
 import { User } from '@/model/UserModel'
 

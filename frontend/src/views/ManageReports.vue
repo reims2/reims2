@@ -1,51 +1,57 @@
 <template>
-  <v-container>
-    <v-row density="compact" class="d-flex justify-center">
-      <v-col cols="12" md="6" lg="4">
-        <div class="pb-2 text-headline-small">Statistics dashboard</div>
-        <div class="pb-4 text-medium-emphasis">Visit the dashboard to see live statistics.</div>
-        <v-btn color="accent" href="https://monitoring.reims2.app" target="_blank">
-          Open dashboard
-        </v-btn>
+  <page-layout title="Reports">
+    <v-col cols="12" md="6">
+      <v-card
+        border
+        elevation="1"
+        class="pa-3 h-100 d-flex flex-column"
+        title="Statistics dashboard"
+        text="Visit the dashboard to see live statistics."
+      >
+        <v-spacer />
+        <v-card-actions class="px-4 pb-4">
+          <v-btn
+            color="primary"
+            variant="tonal"
+            :append-icon="mdiOpenInNew"
+            href="https://monitoring.reims2.app"
+            target="_blank"
+          >
+            Open dashboard
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+    <v-col v-for="report in reports" :key="report.file" cols="12" md="6">
+      <v-card
+        border
+        elevation="1"
+        class="pa-3 h-100 d-flex flex-column"
+        :title="report.title"
+        :text="report.text"
+      >
+        <v-spacer />
+        <v-card-actions class="px-4 pb-4">
+          <v-btn
+            color="primary"
+            variant="tonal"
+            :prepend-icon="mdiDownload"
+            :loading="report.loading"
+            @click="download(report)"
+          >
+            Download
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
 
-        <v-divider class="my-7" />
-
-        <div class="pb-2 text-headline-small">Current inventory report</div>
-        <div class="pb-4 text-medium-emphasis">
-          This report contains all glasses in the storage of the current location.
-        </div>
-        <v-btn color="accent" :loading="loadingInventoryReport" @click="downloadInventoryReport">
-          Download
-        </v-btn>
-
-        <v-divider class="my-7" />
-
-        <div class="pb-2 text-headline-small">Dispense & delete report</div>
-        <div class="pb-2 text-medium-emphasis">
-          This report contains all glasses that were dispensed and deleted.
-        </div>
-
-        <v-btn color="accent" :loading="loadingDispensedReport" @click="downloadDispensedReport">
-          Download
-        </v-btn>
-
-        <v-divider class="my-7" />
-
-        <div class="pb-2 text-headline-small">Unsuccessful searches report</div>
-        <div class="pb-4 text-medium-emphasis">
-          This report contains all searches that returned no results.
-        </div>
-        <v-btn color="accent" :loading="loadingSearchesReport" @click="downloadSearchesReport">
-          Download
-        </v-btn>
-
-        <a ref="downloadLink" :href="csvUri" target="_blank" :download="filename" class="d-none" />
-      </v-col>
-    </v-row>
-  </v-container>
+    <a ref="downloadLink" :href="csvUri" target="_blank" :download="filename" class="d-none" />
+  </page-layout>
 </template>
 
 <script setup lang="ts">
+import PageLayout from '@/components/PageLayout.vue'
+import { mdiDownload, mdiOpenInNew } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 
@@ -54,47 +60,45 @@ const toast = useToast()
 
 const glassesStore = useGlassesStore()
 const rootStore = useRootStore()
-const loadingSearchesReport = ref(false)
-const loadingDispensedReport = ref(false)
-const loadingInventoryReport = ref(false)
 const csvUri = ref('')
 const filename = ref('')
 const downloadLink = useTemplateRef('downloadLink')
 
-async function downloadDispensedReport() {
-  loadingDispensedReport.value = true
-  try {
-    const csvFile = await glassesStore.loadDispensedCsv()
-    filename.value = `dispense_report_${rootStore.reimsSite}.csv`
-    downloadCsv(csvFile)
-  } catch (error) {
-    toast.error(`Could not load dispense report (${(error as Error).message})`)
-  }
-  loadingDispensedReport.value = false
-}
+const reports = reactive([
+  {
+    title: 'Current inventory report',
+    text: 'This report contains all glasses in the storage of the current location.',
+    file: 'inventory',
+    load: glassesStore.loadInventoryCsv,
+    loading: false,
+  },
+  {
+    title: 'Dispense & delete report',
+    text: 'This report contains all glasses that were dispensed and deleted.',
+    file: 'dispense_report',
+    load: glassesStore.loadDispensedCsv,
+    loading: false,
+  },
+  {
+    title: 'Unsuccessful searches report',
+    text: 'This report contains all searches that returned no results.',
+    file: 'unsuccessful_searches',
+    load: glassesStore.loadSearchesCsv,
+    loading: false,
+  },
+])
 
-async function downloadSearchesReport() {
-  loadingSearchesReport.value = true
+async function download(report: (typeof reports)[number]) {
+  report.loading = true
   try {
-    const csvFile = await glassesStore.loadSearchesCsv()
-    filename.value = `unsuccessful_searches_${rootStore.reimsSite}.csv`
+    const csvFile = await report.load()
+    filename.value = `${report.file}_${rootStore.reimsSite}.csv`
     downloadCsv(csvFile)
   } catch (error) {
-    toast.error(`Could not load unsuccessful searches report (${(error as Error).message})`)
+    toast.error(`Could not load the ${report.title.toLowerCase()} (${(error as Error).message})`)
+  } finally {
+    report.loading = false
   }
-  loadingSearchesReport.value = false
-}
-
-async function downloadInventoryReport() {
-  loadingInventoryReport.value = true
-  try {
-    const csvFile = await glassesStore.loadInventoryCsv()
-    filename.value = `inventory_${rootStore.reimsSite}.csv`
-    downloadCsv(csvFile)
-  } catch (error) {
-    toast.error(`Could not load inventory report (${(error as Error).message})`)
-  }
-  loadingInventoryReport.value = false
 }
 
 async function downloadCsv(csvBlob: Blob) {

@@ -23,6 +23,13 @@
       </div>
       <v-divider class="mb-2 mx-n2" />
       <v-list-item
+        v-if="authStore.roles.includes('ROLE_ADMIN')"
+        title="Users"
+        :prepend-icon="mdiAccountMultipleOutline"
+        to="/manage/users"
+        :disabled="!isOnline"
+      />
+      <v-list-item
         title="About REIMS2"
         :prepend-icon="mdiInformationOutline"
         @click="isAboutDialogOpen = true"
@@ -37,14 +44,17 @@
 import {
   mdiAccountCircle,
   mdiAccountCircleOutline,
+  mdiAccountMultipleOutline,
   mdiInformationOutline,
   mdiLogout,
 } from '@mdi/js'
+import { useOnline } from '@vueuse/core'
 import { useAuthStore } from '@/stores/auth'
 import AboutDialog from '@/components/AboutDialog.vue'
 
 const { stacked = false } = defineProps<{ stacked?: boolean }>()
 
 const authStore = useAuthStore()
+const isOnline = useOnline()
 const isAboutDialogOpen = ref(false)
 </script>
