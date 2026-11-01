@@ -56,7 +56,7 @@ It also checks the prescription's spherical equivalents. `calcSphericalEquivalen
 
 ### checkForAxisTolerance
 
-This function is invoked for every single lens. If the rx cylinder is 0, the check passes: there's no astigmatism to align with, so the rx axis 0 is only a placeholder. REIMS1 compared against it anyway, which hid good matches such as the [2024 zero-cylinder case](/2024_bugs_investigated). Otherwise it calculates the absolute axis tolerance based on the `lens` (:exclamation: crucially, not rx :exclamation:) cylinder. A higher lens cylinder allows for less axis tolerance. It calculates the allowed range, that is, rx axis plus or minus tolerance (and accounts for wraparound at 180 degrees). It checks whether the lens axis is inside the range.
+This function is invoked for every single lens. If the rx cylinder is 0, the check passes: there's no astigmatism to align with, so the rx axis 0 is only a placeholder. REIMS1 compared against it anyway, which hid good matches such as the [2024 zero-cylinder case](/dev/2024_bugs_investigated). Otherwise it calculates the absolute axis tolerance based on the `lens` (:exclamation: crucially, not rx :exclamation:) cylinder. A higher lens cylinder allows for less axis tolerance. It calculates the allowed range, that is, rx axis plus or minus tolerance (and accounts for wraparound at 180 degrees). It checks whether the lens axis is inside the range.
 
 ::: details Details: Axis tolerance mapping table
 
@@ -90,7 +90,7 @@ Here's how it works with these inputs:
 3. However, an axis of -5 degrees doesn't exist. So, the function adjusts the allowed range to 175 to 180 degrees (for the negative part) and 0 to 25 degrees (for the positive part).
 4. The function then checks if the lens axis (178 degrees) falls within this allowed range. In this case, the lens is _allowed_ because 178 is between 175 and 180.
 
-A real BAL search hitting this exact check is worked through in the [2024 campaign investigation](/2024_bugs_investigated).
+A real BAL search hitting this exact check is worked through in the [2024 campaign investigation](/dev/2024_bugs_investigated).
 
 ## Scoring Function Descriptions
 

@@ -21,8 +21,8 @@ Differences below a quarter diopter, the precision of a refraction, aren't treat
 
 ## Algorithm
 
-Convert Rx and lens to power vectors (see
-[Optometry basics](/optometry-basics#power-vectors-measuring-how-far-apart-two-axes-are)):
+Convert Rx and lens to power vectors (Thibos, Wheeler & Horner, 1997). Doubling the axis handles the
+wraparound at 180, and the vector shrinks to 0 with the cylinder:
 
 ```text
 M   = S + C/2

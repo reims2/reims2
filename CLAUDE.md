@@ -68,6 +68,7 @@ pnpm install
 pnpm test:ui                             # Playwright UI, pick the project top-left before running
 pnpm playwright test tests/find.spec.ts  # single spec, headless
 pnpm playwright test --project chromium # what CI runs on every PR
+pnpm screenshots                         # regenerate docs/src/public/screenshots, commit by hand
 ```
 
 CI runs the same stack inside the GitHub runner, never on the server: all specs on Chromium on PRs (images
@@ -125,6 +126,9 @@ REIMS1 not documented there is treated as a bug, not an opportunity to improve i
 
 A `Glasses` row has a `location` (`sa`/`sm`), a `sku` (present while in stock, cleared on dispense), a
 `glassesType` (`single` or `multifocal`), and two `Eye`s (`os`/`od`) with sphere/cylinder/axis/add.
+Axis means nothing without cylinder: the frontend forces it to 0 when cylinder is 0 (`sanitizeEyeValues` in
+`frontend/src/util/eye-utils.ts`), but code reading stored data, like an analysis of dispensed glasses,
+should check cylinder first.
 Dispensing doesn't delete the row. It clears the SKU and stamps a `Dispense` sub-record (reason, previous
 SKU) so `PUT /undispense/{id}` can restore it, as long as the SKU hasn't been reissued to a new pair since.
 
