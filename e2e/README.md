@@ -15,6 +15,12 @@ don't rely on the seeded rows.
 
 3. Don't forget to set the active project in the top left corner in the playwright UI
 
+## Screenshots
+
+`pnpm screenshots` saves the screenshots for the user guide and the root README to
+`docs/src/public/screenshots/`. Run it against a fresh `./stack.sh up` and commit the images that changed.
+The weekly CI run also runs it, only to check that it still passes.
+
 ## Optionally
 
 Environment variable `BASE_URL` can be used to change REIMS URL.

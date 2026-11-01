@@ -6,7 +6,8 @@
     "lint": "eslint tests playwright.config.ts --fix",
     "typecheck": "tsc",
     "test": "playwright test",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "screenshots": "playwright test --project screenshots"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",
