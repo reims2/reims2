@@ -1,6 +1,5 @@
 package org.pvh.error;
 
-import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -33,11 +32,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             .sorted()
             .collect(Collectors.joining(", ")));
         return handleExceptionInternal(ex, body, headers, status, request);
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    ProblemDetail handleBadRequest(ConstraintViolationException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

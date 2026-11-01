@@ -18,6 +18,7 @@ import org.pvh.util.CsvExport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,6 @@ import java.util.Optional;
 public class GlassesRestController {
     private static final Logger logger = LoggerFactory.getLogger(GlassesRestController.class);
 
-    private static final String ENTITY_NOT_FOUND = "Entity not found!";
     private final GlassesService glassesService;
     private final SearchLogService searchLogService;
     private final ChangeService changeService;
@@ -49,7 +49,7 @@ public class GlassesRestController {
 
     private static ResponseEntity<String> csv(String filename, String body) {
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+            .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(filename).build().toString())
             .header(HttpHeaders.CONTENT_TYPE, "text/csv")
             .body(body);
     }
@@ -145,9 +145,7 @@ public class GlassesRestController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/{location}/{sku}", produces = "application/json")
     public ResponseEntity<Void> deleteGlasses(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location) {
-        Glasses glasses = glassesService.findBySkuAndLocation(sku, location)
-            .orElseThrow(() -> new PVHException(ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND));
-        glassesService.deleteGlasses(glasses);
+        glassesService.deleteGlasses(location, sku);
         logger.info("Completely deleted glasses with SKU {} (in {})", sku, location);
         return ResponseEntity.noContent().build();
     }

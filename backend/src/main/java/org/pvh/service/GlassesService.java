@@ -1,5 +1,6 @@
 package org.pvh.service;
 
+import org.pvh.error.NoSkusLeftException;
 import org.pvh.error.PVHException;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.entity.Dispense;
@@ -35,26 +36,34 @@ public class GlassesService {
         return glassesRepository.findBySkuAndLocation(sku, location);
     }
 
+    public List<Glasses> findByDispensedAndLocation(boolean dispensed, LocationEnum location) {
+        return glassesRepository.findByDispensedAndLocation(dispensed, location);
+    }
+
+    public List<Glasses> findDispensedBetween(Instant from, Instant to, LocationEnum location) {
+        return glassesRepository.findDispensedBetween(location, from, to);
+    }
+
     @Transactional
     public Glasses saveGlasses(Glasses glasses) {
+        LocationEnum location = glasses.getLocation();
         // first statement of every write, so the changevalue row lock is held before InnoDB takes its snapshot
-        changeService.setNewHashValue(glasses.getLocation());
+        changeService.setNewHashValue(location);
         if (glasses.getDispense() == null)
             glasses.setDispense(new Dispense());
-        LocationEnum location = glasses.getLocation();
-        return glassesRepository.saveGlassesWithNextPossibleSKU(glasses, location.getMinSku(), location.getMaxSku());
+        glasses.setSku(nextFreeSku(location));
+        glasses.setCreationDate(now());
+        return glassesRepository.saveAndFlush(glasses);
     }
 
     @Transactional
     public Glasses editGlasses(LocationEnum location, int sku, GlassesRequestDTO edit) {
-        changeService.setNewHashValue(location);
-        return edit.applyTo(findForChange(location, sku, edit.id()));
+        return edit.applyTo(lockForChange(location, sku, edit.id()));
     }
 
     @Transactional
     public void dispense(LocationEnum location, int sku, DispenseReasonEnum reason, Long expectedId) {
-        changeService.setNewHashValue(location);
-        Glasses glasses = findForChange(location, sku, expectedId);
+        Glasses glasses = lockForChange(location, sku, expectedId);
         glasses.setDispensed(true);
         glasses.setSku(null);
         Dispense dispense = glasses.getDispense();
@@ -65,15 +74,14 @@ public class GlassesService {
 
     @Transactional
     public boolean undispense(long id) {
-        Glasses glasses = glassesRepository.findById(id)
-            .orElseThrow(() -> new PVHException("Entity not found!", HttpStatus.NOT_FOUND));
+        Glasses glasses = glassesRepository.findById(id).orElseThrow(GlassesService::notFound);
         if (!glasses.isDispensed())
             return false;
 
         changeService.setNewHashValue(glasses.getLocation());
         Dispense dispense = glasses.getDispense();
         // the unique index on glasses.sku catches a pair added concurrently with this SKU
-        if (glassesRepository.findBySkuAndLocation(dispense.getPreviousSku(), glasses.getLocation()).isPresent())
+        if (glassesRepository.existsBySku(dispense.getPreviousSku()))
             throw new PVHException("Previous SKU is already used", HttpStatus.BAD_REQUEST);
 
         glasses.setDispensed(false);
@@ -85,31 +93,32 @@ public class GlassesService {
     }
 
     @Transactional
-    public void deleteGlasses(Glasses glasses) {
-        changeService.setNewHashValue(glasses.getLocation());
-        glassesRepository.delete(glasses);
+    public void deleteGlasses(LocationEnum location, int sku) {
+        glassesRepository.delete(lockForChange(location, sku, null));
     }
 
-    private Glasses findForChange(LocationEnum location, int sku, Long expectedId) {
-        Glasses glasses = glassesRepository.findBySkuAndLocation(sku, location)
-            .orElseThrow(() -> new PVHException("Entity not found!", HttpStatus.NOT_FOUND));
+    // bumps the hash before reading, like saveGlasses
+    private Glasses lockForChange(LocationEnum location, int sku, Long expectedId) {
+        changeService.setNewHashValue(location);
+        Glasses glasses = glassesRepository.findBySkuAndLocation(sku, location).orElseThrow(GlassesService::notFound);
         // a change queued offline can arrive after its SKU went to newly added glasses
         if (expectedId != null && !expectedId.equals(glasses.getId()))
             throw new PVHException("SKU " + sku + " now belongs to other glasses.", HttpStatus.CONFLICT);
         return glasses;
     }
 
+    private int nextFreeSku(LocationEnum location) {
+        if (!glassesRepository.existsBySku(location.getMinSku()))
+            return location.getMinSku();
+        return glassesRepository.findFirstFreeSkuAfterUsed(location.getMinSku(), location.getMaxSku())
+            .orElseThrow(NoSkusLeftException::new);
+    }
+
+    private static PVHException notFound() {
+        return new PVHException("Entity not found!", HttpStatus.NOT_FOUND);
+    }
+
     private static Instant now() {
         return Instant.now().truncatedTo(ChronoUnit.MILLIS);
     }
-
-    public List<Glasses> findByDispensedAndLocation(boolean dispensed, LocationEnum location) {
-        return glassesRepository.findByDispensedAndLocation(dispensed, location);
-    }
-
-    public List<Glasses> findDispensedBetween(Instant from, Instant to, LocationEnum location) {
-        return glassesRepository.findDispensedBetween(location, from, to);
-    }
-
-
 }

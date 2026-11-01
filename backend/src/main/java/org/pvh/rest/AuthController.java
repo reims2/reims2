@@ -9,6 +9,7 @@ import org.pvh.model.payload.response.MessageResponse;
 import org.pvh.model.payload.response.UserResponse;
 import org.pvh.repository.RoleRepository;
 import org.pvh.repository.UserRepository;
+import org.pvh.security.WebSecurityConfig;
 import org.pvh.security.model.entity.Role;
 import org.pvh.security.model.entity.User;
 import org.pvh.security.model.enums.ERole;
@@ -23,7 +24,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -74,7 +74,7 @@ public class AuthController {
             .issuedAt(now)
             .expiresAt(now.plusMillis(jwtExpirationMs))
             .build();
-        String jwt = jwtEncoder.encode(JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS512).build(), claims))
+        String jwt = jwtEncoder.encode(JwtEncoderParameters.from(JwsHeader.with(WebSecurityConfig.JWT_ALGORITHM).build(), claims))
             .getTokenValue();
         List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
