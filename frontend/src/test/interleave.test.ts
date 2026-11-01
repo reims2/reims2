@@ -1,5 +1,4 @@
 import interleave, { MatchResult } from '@/lib/interleave'
-import { BlurResult } from '@/lib/blurscore'
 import { GlassesResult } from '@/model/GlassesModel'
 import { createGlassesEqualOdOs } from './util'
 
@@ -9,8 +8,8 @@ function philscore(...ids: number[]): GlassesResult[] {
   return ids.map((id, i) => ({ ...base, id, sku: id, score: i, odScore: i / 2, osScore: i / 2 }))
 }
 
-// [id, predicted blur], graded like blurscore.ts
-function blurscore(...pairs: [number, number][]): BlurResult[] {
+// [id, predicted blur]
+function blurscore(...pairs: [number, number][]): GlassesResult[] {
   return pairs.map(([id, score]) => ({
     ...base,
     id,
@@ -18,9 +17,6 @@ function blurscore(...pairs: [number, number][]): BlurResult[] {
     score,
     odScore: score,
     osScore: score,
-    grade: score <= 0.25 ? 'excellent' : score <= 0.5 ? 'good' : 'fair',
-    odError: null,
-    osError: null,
   }))
 }
 
@@ -64,10 +60,13 @@ test('gives an alternative PhilScore did not find no PhilScore', () => {
     id: 11,
     algorithm: 'blurscore',
     score: undefined,
-    odScore: undefined,
-    osScore: undefined,
     blurScore: 0.25,
   })
+})
+
+test('shows at most 30 results', () => {
+  const ids = Array.from({ length: 40 }, (_, i) => i + 1)
+  expect(interleave(philscore(...ids), [])).toHaveLength(30)
 })
 
 test('gives only an alternative a blur score, and keeps its PhilScore', () => {

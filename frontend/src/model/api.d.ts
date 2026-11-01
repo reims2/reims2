@@ -346,8 +346,6 @@ export interface components {
         SearchResult: {
             /** Format: int64 */
             id: number;
-            /** Format: int32 */
-            sku: number | null;
             algorithm: string;
         };
         RoleName: {

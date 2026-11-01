@@ -721,10 +721,6 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "sku" : {
-            "type" : [ "integer", "null" ],
-            "format" : "int32"
-          },
           "algorithm" : {
             "type" : "string"
           }

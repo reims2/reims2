@@ -100,7 +100,7 @@ will recommend refilling exactly what's already stocked. Ranked fixes:
    entry in `flyway_schema_history` are failures only, minus those made offline. To get the request
    behind a dispensed item, match it to its search as in
    [predicted blur matching](/dev/ai-notes/predicted-blur-matching#comparison-with-philscore). Rows
-   from before `1.5` have no `results`, so recalculate their top results instead.
+   from before `1.8` have no `results`, so recalculate their top results instead.
 2. **Interim**: treat a dispensed item as an interval-censored observation. The request lay inside
    that item's tolerance region, and since it was the top-ranked available option, that narrows it
    down further. EM or sampling over the latent request is legitimate here.

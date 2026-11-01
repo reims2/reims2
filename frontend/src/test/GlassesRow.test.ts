@@ -10,15 +10,7 @@ function renderRow(glasses: MatchResult) {
 }
 
 test('marks an alternative as experimental and keeps its PhilScore', () => {
-  const match: MatchResult = {
-    ...pair,
-    algorithm: 'blurscore',
-    score: 0.25,
-    odScore: 0.1,
-    osScore: 0.15,
-    blurScore: 0.5,
-  }
-  const row = renderRow(match)
+  const row = renderRow({ ...pair, algorithm: 'blurscore', score: 0.25, blurScore: 0.5 })
   expect(row.getByLabelText(marker)).toBeTruthy()
   expect(row.getByText('0.25')).toBeTruthy()
 })
@@ -30,13 +22,7 @@ test('shows no PhilScore for an alternative PhilScore did not find', () => {
 })
 
 test('shows no marker for a PhilScore pick', () => {
-  const row = renderRow({
-    ...pair,
-    algorithm: 'philscore',
-    score: 0.25,
-    odScore: 0.1,
-    osScore: 0.15,
-  })
+  const row = renderRow({ ...pair, algorithm: 'philscore', score: 0.25 })
   expect(row.queryByLabelText(marker)).toBeNull()
   expect(row.getByText('0.25')).toBeTruthy()
 })

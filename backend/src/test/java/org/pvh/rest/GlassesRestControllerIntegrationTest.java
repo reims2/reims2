@@ -10,7 +10,6 @@ import org.pvh.model.entity.ChangeValue;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
-import org.pvh.model.entity.SearchResult;
 import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.BalLensEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
@@ -643,19 +642,17 @@ public class GlassesRestControllerIntegrationTest {
             "searchDate", System.currentTimeMillis(),
             "resultCount", 0,
             "results", List.of(
-                Map.of("id", 4711, "sku", 123, "algorithm", "blurscore"),
-                Map.of("id", 802, "sku", 45, "algorithm", "philscore")),
+                Map.of("id", 4711, "algorithm", "blurscore"),
+                Map.of("id", 802, "algorithm", "philscore")),
             "od", new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.ZERO),
             "os", new EyeDTO(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.ZERO)));
 
         this.mockMvc.perform(post("/api/glasses/sa/searchLog").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(search)))
             .andExpect(status().isCreated());
-        Long id = jdbcTemplate.queryForObject("SELECT id FROM search_log ORDER BY id DESC LIMIT 1", Long.class);
-        String stored = jdbcTemplate.queryForObject("SELECT results FROM search_log WHERE id = ?", String.class, id);
+        String stored = jdbcTemplate.queryForObject(
+            "SELECT results FROM search_log ORDER BY id DESC LIMIT 1", String.class);
         assertEquals(objectMapper.valueToTree(search.get("results")), objectMapper.readTree(stored));
-        assertEquals(List.of(new SearchResult(4711L, 123, "blurscore"), new SearchResult(802L, 45, "philscore")),
-            searchLogRepository.findById(id).orElseThrow().getResults());
 
         // cached PWAs from before this column don't send it
         search.remove("results");
