@@ -2,17 +2,22 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'REIMS2 manual',
+  title: 'REIMS2 docs',
   description: 'This is the documentation for REIMS2',
   lastUpdated: true,
   appearance: true,
   cleanUrls: true,
   base: '/docs',
+  head: [['link', { rel: 'icon', href: '/docs/logo.svg' }]],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
+    logo: '/logo.svg',
+    siteTitle: 'REIMS2 docs',
     nav: [
-      { text: 'Manual', link: '/' },
+      { text: 'User guide', link: '/guide/' },
       { text: 'For developers', link: '/dev/' },
+      // the app lives one level above the docs base, target makes it a plain link
+      { text: 'Open REIMS2', link: '/../', target: '_self' },
     ],
     search: {
       provider: 'local',
@@ -21,22 +26,22 @@ export default defineConfig({
     sidebar: {
       '/': [
         {
-          text: 'Overview',
+          text: 'User guide',
           items: [
-            { link: '/', text: 'Introduction' },
-            { link: '/howto', text: 'User Guide' },
+            { link: '/guide/find', text: 'Find glasses' },
+            { link: '/guide/dispense', text: 'Dispense and undo' },
+            { link: '/guide/add', text: 'Add glasses' },
+            { link: '/guide/edit', text: 'Edit or delete' },
+            { link: '/guide/location', text: 'Change the location' },
+            { link: '/guide/offline', text: 'Work offline' },
+            { link: '/guide/reports', text: 'Reports' },
           ],
         },
         {
-          text: 'Internals',
+          text: 'Background',
           items: [
             { link: '/optometry-basics', text: 'Optometry basics' },
-            { link: '/philscore', text: 'Matching Algorithm' },
-            { link: '/inventory-analysis', text: 'Inventory analysis' },
-            {
-              link: '/2024_bugs_investigated',
-              text: '2024 campaign investigation',
-            },
+            { link: '/philscore', text: 'Matching algorithm' },
           ],
         },
       ],
@@ -47,6 +52,15 @@ export default defineConfig({
             { link: '/dev/', text: 'Introduction' },
             { link: '/dev/system', text: 'System overview' },
             { link: '/dev/analysis', text: 'REIMS1 analysis' },
+          ],
+        },
+        {
+          text: 'Campaigns',
+          items: [
+            {
+              link: '/dev/2024_bugs_investigated',
+              text: '2024 campaign investigation',
+            },
           ],
         },
         {

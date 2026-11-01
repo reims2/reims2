@@ -19,7 +19,7 @@ sphere and cylinder differences and cylinder-driven axis tolerances."
 ## Summary
 
 - The bonus rules are a hand-tuned approximation of the power-vector distance between Rx and lens
-  (see [Optometry basics](/optometry-basics#power-vectors-measuring-how-far-apart-two-axes-are)).
+  (defined in [Predicted-blur matching](/dev/ai-notes/predicted-blur-matching#algorithm)).
   Per search, rank agreement with that distance (mean Kendall tau, equal axes) is 0.67 for plain
   `|dS| + |dC|` and 0.89 for the PhilScore, 0.82 for plus Rx because of the hyperope penalty.
   **measured**
@@ -79,7 +79,7 @@ where crossed cylinders stop beating no cylinder at all. **inferred**
 
 Keying on the lens cylinder is half right: axis error only matters when both lens and Rx have
 cylinder. REIMS1 handles lens cylinder 0 but not Rx cylinder 0. Its axis is then a meaningless 0, and
-the filter still demands lenses near 0/180 (the [2024 zero-cylinder case](/2024_bugs_investigated)).
+the filter still demands lenses near 0/180 (the [2024 zero-cylinder case](/dev/2024_bugs_investigated)).
 REIMS2 skips the filter for it, see below.
 `SPEQXX.prg` gives each SE candidate its own axis tolerance from its reduced cylinder, so the intent
 looks like "the cylinder actually worn decides how much axis error matters". **inferred**
@@ -176,8 +176,8 @@ first port (August 2021) were fixed in October 2026, with tests in `philscore_fi
   0, so the impact stayed small. Replaying each pair dispensed in 2023 to 2026 as an Rx against the
   stock of that moment, such a lens was the #1 suggestion in 0.8 % of searches, mostly far enough
   off to leave more astigmatism than no cylinder at all. Axis-0 pairs with more than 0.50 D cylinder
-  were dispensed 3 times as often as near-horizontal ones. That's too few pairs to explain the "need
-  more zero-ish axis" finding in [Inventory analysis](/inventory-analysis).
+  were dispensed 3 times as often as near-horizontal ones. That's too few pairs to explain the 2025
+  inventory analysis asking for more zero-ish axis.
 - **The axis table was shifted at two places.** Cylinder -2.25 got 8 degrees instead of 9, and
   -3.25 to -3.75 got 7 instead of 8.
 

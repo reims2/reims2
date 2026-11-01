@@ -4,7 +4,7 @@ Handover notes from a task analyzing what to restock each site with after a camp
 transferable knowledge doesn't have to be re-derived next time. This describes an analysis
 methodology, not code in this repository: the analysis code lives in the sibling
 [`reims2/data-analysis`](https://github.com/reims2/data-analysis) repo (`analysis.py`/`.ipynb` in its
-root), and its results are written up in [Inventory analysis](/inventory-analysis). See
+root). See
 [Optometry basics](/optometry-basics) for the domain background this leans on.
 
 ## The setting
@@ -43,7 +43,7 @@ defines "close enough to substitute." There's no need to choose a bin size or ke
 things follow:
 
 1. The neighborhood is **anisotropic and position-dependent**: axis tolerance is unlimited at zero
-   cylinder and very tight at high cylinder (see [Optometry basics](/optometry-basics)). No fixed
+   cylinder and very tight at high cylinder (see the [axis table](/dev/ai-notes/philscore-deep-dive#axis-table)). No fixed
    grid or metric represents that, which is why standardizing features and running k-means or Ward
    gives geometry unrelated to whether two items actually substitute for each other.
 2. Reimplementing the rule faithfully, not just approximately, is the highest-value first step.
