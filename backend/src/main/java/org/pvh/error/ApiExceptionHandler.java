@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.transaction.TransactionException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,8 +36,28 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, body, headers, status, request);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    ProblemDetail handleBadRequest(BadRequestException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    ProblemDetail handleBadCredentials() {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    ProblemDetail handleNotFound(NotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    ProblemDetail handleConflict(ConflictException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
-    ProblemDetail handleConflict(DataIntegrityViolationException ex) {
+    ProblemDetail handleConstraintConflict(DataIntegrityViolationException ex) {
         logger.warn("Write rejected by a database constraint", ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT,
             "This change conflicts with another one, please reload and try again.");
@@ -45,5 +67,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     ProblemDetail handleDatabaseError(Exception ex) {
         logger.error("Database error", ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Database error, please try again later.");
+    }
+
+    // left to Spring Security, which answers 401 or 403 depending on the login
+    @ExceptionHandler(AccessDeniedException.class)
+    void rethrowAccessDenied(AccessDeniedException ex) {
+        throw ex;
+    }
+
+    @ExceptionHandler(Exception.class)
+    ProblemDetail handleUnexpected(Exception ex) {
+        logger.error("Unexpected error", ex);
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error, please try again later.");
     }
 }

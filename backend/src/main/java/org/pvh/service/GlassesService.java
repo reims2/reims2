@@ -1,14 +1,14 @@
 package org.pvh.service;
 
-import org.pvh.error.NoSkusLeftException;
-import org.pvh.error.PVHException;
+import org.pvh.error.BadRequestException;
+import org.pvh.error.ConflictException;
+import org.pvh.error.NotFoundException;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.LocationEnum;
 import org.pvh.repository.GlassesRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,7 +82,7 @@ public class GlassesService {
         Dispense dispense = glasses.getDispense();
         // the unique index on glasses.sku catches a pair added concurrently with this SKU
         if (glassesRepository.existsBySku(dispense.getPreviousSku()))
-            throw new PVHException("Previous SKU is already used", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Previous SKU is already used");
 
         glasses.setDispensed(false);
         glasses.setSku(dispense.getPreviousSku());
@@ -103,7 +103,7 @@ public class GlassesService {
         Glasses glasses = glassesRepository.findBySkuAndLocation(sku, location).orElseThrow(GlassesService::notFound);
         // a change queued offline can arrive after its SKU went to newly added glasses
         if (expectedId != null && !expectedId.equals(glasses.getId()))
-            throw new PVHException("SKU " + sku + " now belongs to other glasses.", HttpStatus.CONFLICT);
+            throw new ConflictException("SKU " + sku + " now belongs to other glasses.");
         return glasses;
     }
 
@@ -111,11 +111,11 @@ public class GlassesService {
         if (!glassesRepository.existsBySku(location.getMinSku()))
             return location.getMinSku();
         return glassesRepository.findFirstFreeSkuAfterUsed(location.getMinSku(), location.getMaxSku())
-            .orElseThrow(NoSkusLeftException::new);
+            .orElseThrow(() -> new ConflictException("No free SKUs left in this location."));
     }
 
-    private static PVHException notFound() {
-        return new PVHException("Entity not found!", HttpStatus.NOT_FOUND);
+    private static NotFoundException notFound() {
+        return new NotFoundException("Entity not found!");
     }
 
     private static Instant now() {

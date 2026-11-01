@@ -2,7 +2,7 @@ package org.pvh.db;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.pvh.MariaDbTestConfiguration;
+import org.pvh.IntegrationTest;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
@@ -15,9 +15,6 @@ import org.pvh.service.GlassesService;
 import org.pvh.service.SearchLogService;
 import org.pvh.model.enums.LocationEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,9 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Import(MariaDbTestConfiguration.class)
+@IntegrationTest
 @WithMockUser(roles = "USER")
 public class StatsViewsIntegrationTest {
 
@@ -57,7 +52,6 @@ public class StatsViewsIntegrationTest {
 
     private final List<Long> createdGlasses = new ArrayList<>();
 
-    // the DB is shared across test classes and other tests expect free SKUs, e.g. 5001 in sm
     @AfterEach
     void deleteCreatedGlasses() {
         createdGlasses.forEach(glassesRepository::deleteById);

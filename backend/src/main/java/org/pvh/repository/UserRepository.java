@@ -1,6 +1,6 @@
 package org.pvh.repository;
 
-import org.pvh.security.model.entity.User;
+import org.pvh.model.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

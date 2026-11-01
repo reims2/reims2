@@ -1,7 +1,10 @@
 package org.pvh.rest;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.pvh.error.PVHException;
+import org.pvh.error.NotFoundException;
 import org.pvh.model.dto.ChangeValueDTO;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
@@ -25,11 +28,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/glasses")
@@ -47,6 +53,13 @@ public class GlassesRestController {
         this.changeService = changeService;
     }
 
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @ApiResponse(responseCode = "200", content = @Content(mediaType = "text/csv", schema = @Schema(type = "string")))
+    @ApiResponse(responseCode = "204", description = "Nothing to export", content = @Content)
+    private @interface CsvResponses {
+    }
+
     private static ResponseEntity<String> csv(String filename, String body) {
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(filename).build().toString())
@@ -59,6 +72,7 @@ public class GlassesRestController {
         return glassesService.findByDispensedAndLocation(false, location).stream().map(GlassesResponseDTO::from).toList();
     }
 
+    @CsvResponses
     @GetMapping(path = "/{location}.csv")
     public ResponseEntity<String> getAllGlassesCsv(@PathVariable("location") LocationEnum location) {
         List<Glasses> glasses = glassesService.findByDispensedAndLocation(false, location);
@@ -70,15 +84,17 @@ public class GlassesRestController {
 
     @GetMapping(path = "/dispensed/{location}")
     public List<GlassesResponseDTO> getAllDispensedGlasses(
-        @RequestParam @DateTimeFormat(pattern = "MM/dd/yyyy") Optional<LocalDate> startDate,
-        @RequestParam @DateTimeFormat(pattern = "MM/dd/yyyy") Optional<LocalDate> endDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate endDate,
         @PathVariable("location") LocationEnum location) {
-        Instant from = startDate.map(date -> date.atStartOfDay(CampaignZone.ZONE).toInstant()).orElse(Instant.EPOCH);
-        Instant to = endDate.orElse(LocalDate.now(CampaignZone.ZONE)).plusDays(1).atStartOfDay(CampaignZone.ZONE).toInstant();
+        Instant from = startDate == null ? Instant.EPOCH : startDate.atStartOfDay(CampaignZone.ZONE).toInstant();
+        LocalDate lastDay = endDate == null ? LocalDate.now(CampaignZone.ZONE) : endDate;
+        Instant to = lastDay.plusDays(1).atStartOfDay(CampaignZone.ZONE).toInstant();
 
         return glassesService.findDispensedBetween(from, to, location).stream().map(GlassesResponseDTO::from).toList();
     }
 
+    @CsvResponses
     @GetMapping(path = "/dispensed/{location}.csv")
     public ResponseEntity<String> getAllDispensedGlassesCsv(@PathVariable("location") LocationEnum location) {
         List<Glasses> glasses = glassesService.findByDispensedAndLocation(true, location);
@@ -88,6 +104,7 @@ public class GlassesRestController {
         return csv("glasses.csv", CsvExport.glasses(glasses));
     }
 
+    @CsvResponses
     @GetMapping(path = "/unsuccessful/{location}.csv")
     public ResponseEntity<String> getAllUnsuccessfulSearchesCsv(@PathVariable("location") LocationEnum location) {
         List<SearchLog> searches = searchLogService.findUnsuccessful(location);
@@ -100,7 +117,7 @@ public class GlassesRestController {
     @GetMapping(path = "/{location}/{sku}", produces = "application/json")
     public GlassesResponseDTO getGlasses(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location) {
         return glassesService.findBySkuAndLocation(sku, location).map(GlassesResponseDTO::from)
-            .orElseThrow(() -> new PVHException("Glasses not found!", HttpStatus.NOT_FOUND));
+            .orElseThrow(() -> new NotFoundException("Glasses not found!"));
     }
 
     @GetMapping(path = "/{location}/changes", produces = "application/json")
@@ -109,10 +126,11 @@ public class GlassesRestController {
     }
 
     @PostMapping(path = "", produces = "application/json")
-    public ResponseEntity<GlassesResponseDTO> addGlasses(@RequestBody @Valid GlassesRequestDTO glasses) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public GlassesResponseDTO addGlasses(@RequestBody @Valid GlassesRequestDTO glasses) {
         Glasses added = glassesService.saveGlasses(glasses.toGlasses());
         logger.info("Added new glasses in {}. SKU is {}.", added.getLocation(), added.getSku());
-        return ResponseEntity.status(HttpStatus.CREATED).body(GlassesResponseDTO.from(added));
+        return GlassesResponseDTO.from(added);
     }
 
     @PutMapping(path = "/{location}/{sku}", produces = "application/json")
@@ -123,38 +141,38 @@ public class GlassesRestController {
         return GlassesResponseDTO.from(edited);
     }
 
-    @PutMapping(path = "/dispense/{location}/{sku}", produces = "application/json")
-    public ResponseEntity<Void> updateDispensed(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location,
-                                                @RequestParam Optional<DispenseReasonEnum> reason, @RequestParam Optional<Long> id) {
-        DispenseReasonEnum dispenseReason = reason.orElse(DispenseReasonEnum.DISPENSED);
-        glassesService.dispense(location, sku, dispenseReason, id.orElse(null));
-        logger.info("Dispensed glasses with SKU {} (in {}) with reason {}", sku, location, dispenseReason);
-        return ResponseEntity.ok().build();
+    @PutMapping(path = "/dispense/{location}/{sku}")
+    public void updateDispensed(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location,
+                                @RequestParam(defaultValue = "DISPENSED") DispenseReasonEnum reason,
+                                @RequestParam(required = false) Long id) {
+        glassesService.dispense(location, sku, reason, id);
+        logger.info("Dispensed glasses with SKU {} (in {}) with reason {}", sku, location, reason);
     }
 
-    @PutMapping(path = "/undispense/{id}", produces = "application/json")
+    // nothing to change gives 204, see https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.4
+    @ApiResponse(responseCode = "200", description = "Back in stock")
+    @ApiResponse(responseCode = "204", description = "Was already in stock")
+    @PutMapping(path = "/undispense/{id}")
     public ResponseEntity<Void> undispense(@PathVariable("id") long id) {
-        if (!glassesService.undispense(id)) {
-            // nothing to change, see https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4
+        if (!glassesService.undispense(id))
             return ResponseEntity.noContent().build();
-        }
         logger.info("Undispensed glasses with id {}", id);
         return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(value = "/{location}/{sku}", produces = "application/json")
-    public ResponseEntity<Void> deleteGlasses(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location) {
+    @DeleteMapping(value = "/{location}/{sku}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteGlasses(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location) {
         glassesService.deleteGlasses(location, sku);
         logger.info("Completely deleted glasses with SKU {} (in {})", sku, location);
-        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(path = "/{location}/searchLog", produces = "application/json")
-    public ResponseEntity<Void> addSearchLog(@PathVariable("location") LocationEnum location,
-                                             @RequestBody @Valid SearchLogDTO searchLogDTO) {
+    @PostMapping(path = "/{location}/searchLog")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addSearchLog(@PathVariable("location") LocationEnum location, @RequestBody @Valid SearchLogDTO searchLogDTO) {
         SearchLog search = searchLogService.save(searchLogDTO.toSearchLog(location));
-        logger.info("Added new search log with following Attributes: {}", search);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        // no prescription values, the search log table is the only place they belong
+        logger.info("Added search log {} in {} with {} results", search.getId(), location, search.getResultCount());
     }
 }

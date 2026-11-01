@@ -1,7 +1,7 @@
-package org.pvh.security.services;
+package org.pvh.security;
 
 import org.pvh.repository.UserRepository;
-import org.pvh.security.model.entity.User;
+import org.pvh.model.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,7 +1,12 @@
 package org.pvh.security;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import org.springframework.beans.factory.annotation.Value;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -17,14 +22,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -33,9 +36,10 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@EnableConfigurationProperties(JwtProperties.class)
+@SecurityScheme(name = "bearer", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
+@OpenAPIDefinition(info = @Info(title = "REIMS2", version = "v0"), security = @SecurityRequirement(name = "bearer"))
 public class WebSecurityConfig {
-
-    public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -54,11 +58,8 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecretKey jwtKey(@Value("${pvh.app.jwtSecret}") String secret) {
-        byte[] bytes = secret.getBytes(StandardCharsets.UTF_8);
-        // else signing fails only at the first sign-in
-        Assert.isTrue(bytes.length >= 64, "pvh.app.jwtSecret must be at least 64 bytes for " + JWT_ALGORITHM);
-        return new SecretKeySpec(bytes, "HmacSHA512");
+    public SecretKey jwtKey(JwtProperties properties) {
+        return new SecretKeySpec(properties.secret().getBytes(StandardCharsets.UTF_8), "HmacSHA512");
     }
 
     @Bean
@@ -68,7 +69,7 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder(SecretKey jwtKey) {
-        return NimbusJwtDecoder.withSecretKey(jwtKey).macAlgorithm(JWT_ALGORITHM).build();
+        return NimbusJwtDecoder.withSecretKey(jwtKey).macAlgorithm(TokenService.ALGORITHM).build();
     }
 
     // no resource server here: the frontend sends its stored token with the login request too, even an expired one

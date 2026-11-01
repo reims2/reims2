@@ -1,4 +1,4 @@
-package org.pvh.security.model.entity;
+package org.pvh.model.entity;
 
 import jakarta.persistence.*;
 

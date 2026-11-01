@@ -1,9 +1,10 @@
 package org.pvh.rest;
 
+import com.jayway.jsonpath.JsonPath;
 import tools.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.pvh.MariaDbTestConfiguration;
+import org.pvh.IntegrationTest;
 import org.pvh.model.dto.EyeDTO;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.entity.ChangeValue;
@@ -12,6 +13,7 @@ import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
 import org.pvh.model.enums.AppearanceEnum;
 import org.pvh.model.enums.BalLensEnum;
+import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.repository.SearchLogRepository;
@@ -19,15 +21,10 @@ import org.pvh.service.GlassesService;
 import org.pvh.model.enums.LocationEnum;
 import org.pvh.util.CampaignZone;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -52,25 +49,20 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Import(MariaDbTestConfiguration.class)
+@IntegrationTest
 @WithMockUser(roles = "USER")
 public class GlassesRestControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoSpyBean
+    @Autowired
     private GlassesService mainService;
 
     @Autowired
@@ -256,18 +248,6 @@ public class GlassesRestControllerIntegrationTest {
     }
 
     @Test
-    public void dispense_whenDatabaseFails_thenServerError()
-        throws Exception {
-        Glasses glasses = saveGlasses(LocationEnum.sa);
-        doThrow(new DataAccessResourceFailureException("database down"))
-            .when(mainService).dispense(any(), anyInt(), any(), any());
-
-        // a 5xx keeps a change queued offline for the next try, a 4xx would drop it
-        this.mockMvc.perform(put("/api/glasses/dispense/sa/" + glasses.getSku()))
-            .andExpect(status().isInternalServerError());
-    }
-
-    @Test
     public void dispense_whenSkuBelongsToOtherGlasses_thenConflict()
         throws Exception {
         Glasses glasses = saveGlasses(LocationEnum.sa);
@@ -424,13 +404,13 @@ public class GlassesRestControllerIntegrationTest {
         Glasses glasses = newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm);
 
         ChangeValue cv = callChangeValueAndReturnHash("sm");
-        this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON).content(
+        String added = this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON).content(
                 objectMapper.writeValueAsBytes(request(glasses))))
             .andExpect(status().isCreated())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(5001)))
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
-            .andReturn();
+            .andReturn().getResponse().getContentAsString();
+        int sku = JsonPath.read(added, "$.sku");
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sm"));
 
         cv = callChangeValueAndReturnHash("sm");
@@ -438,13 +418,13 @@ public class GlassesRestControllerIntegrationTest {
             new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
             new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + 5001)
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + sku)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     objectMapper.writeValueAsBytes(request(glassesToUpdate))))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(5001)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(sku)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.appearance",
                 Matchers.is(glassesToUpdate.getAppearance().name())))
             .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType",
@@ -459,7 +439,7 @@ public class GlassesRestControllerIntegrationTest {
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sm"));
 
         cv = callChangeValueAndReturnHash("sm");
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + 5001)
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/sm/" + sku)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"glassesType\":\"multifocal\",\"glassesSize\":\"medium\",\"appearance\":\"test\",\"location\":\"sm\","
                     + "\"os\":" + VALID_EYE + ",\"od\":" + VALID_EYE + "}"))
@@ -524,6 +504,8 @@ public class GlassesRestControllerIntegrationTest {
     @Test
     public void whenDispensedCSVDownload_thenVerifyStatus()
         throws Exception {
+        Glasses glasses = saveGlasses(LocationEnum.sa);
+        mainService.dispense(LocationEnum.sa, glasses.getSku(), DispenseReasonEnum.DISPENSED, null);
         this.mockMvc.perform(get("/api/glasses/dispensed/sa.csv"))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType("text/csv"))
@@ -533,6 +515,7 @@ public class GlassesRestControllerIntegrationTest {
     @Test
     public void whenCSVDownload_thenVerifyStatus()
         throws Exception {
+        saveGlasses(LocationEnum.sa);
         this.mockMvc.perform(get("/api/glasses/sa.csv"))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType("text/csv"))

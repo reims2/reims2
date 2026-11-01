@@ -1,4 +1,4 @@
-package org.pvh.model.payload.response;
+package org.pvh.model.dto;
 
 import java.util.List;
 
