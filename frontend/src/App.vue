@@ -22,7 +22,7 @@ useRegisterSW({
 </script>
 
 <style>
-/* the queue sits outside the layouts, so keep toasts above the footer and bottom nav */
+/* the queue sits outside the layouts, so keep toasts above the bottom nav */
 .v-snackbar {
   margin-bottom: 64px;
 }
