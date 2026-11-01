@@ -1,6 +1,14 @@
+// Settings only: this file is compiled into every Vuetify component, global rules go in main.scss.
 // v4 shrank the default grid breakpoints and container max-widths; restore v3's values.
 @use 'vuetify/settings' with (
   $body-font-family: 'Roboto Flex Variable',
+  $rounded: (
+    'xl': 12px,
+  ),
+  $button-border-radius: 8px,
+  $button-height: 40px,
+  $snackbar-elevation: 3,
+  $empty-state-title-font-size: 1.125rem,
   $grid-breakpoints: (
     'xs': 0,
     'sm': 600px,
@@ -18,28 +26,3 @@
     'xxl': 2400px,
   )
 );
-
-/* roboto-flex-latin-wght-normal */
-@font-face {
-  font-family: 'Roboto Flex Variable';
-  font-style: normal;
-  font-display: block;
-  font-weight: 100 1000;
-  src: url(@fontsource-variable/roboto-flex/files/roboto-flex-latin-wght-normal.woff2)
-    format('woff2-variations');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-// Overwrite global vuetify styles here. Vuetify's CSS is layered, so unlayered rules win without !important.
-
-.v-theme--light.v-bottom-navigation .v-btn:not(.v-btn--active) {
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.v-text-field--prefixed.v-text-field .v-field__input {
-  // No padding on text fields that have a prefix
-  --v-field-padding-start: 0px;
-}
