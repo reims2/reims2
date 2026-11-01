@@ -142,6 +142,10 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     devtools: { apply: 'serve' },
+    optimizeDeps: {
+      // The dep scan can't see auto-imported components, so each new one would force a full reload.
+      include: ['vuetify/components/*'],
+    },
     test: {
       globals: true,
       environment: 'happy-dom',
