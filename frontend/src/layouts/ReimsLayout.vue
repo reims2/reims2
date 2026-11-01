@@ -70,7 +70,6 @@ const navItems = computed<NavItem[]>(() => [
     icon: mdiArchiveOutline,
     activeIcon: mdiArchive,
     to: '/view',
-    disabled: !isOnline.value,
   },
 ])
 

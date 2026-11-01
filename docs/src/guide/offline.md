@@ -1,6 +1,6 @@
 # Work offline
 
-Find, dispense and edit work without internet. Add, Inventory, Reports, changing the location and this
+Find, dispense, edit and the inventory work without internet. Add, Reports, changing the location and this
 guide don't.
 
 This needs Google Chrome, and REIMS2 opened online on that device in the past month. Log in on every device
