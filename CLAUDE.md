@@ -25,9 +25,10 @@ Five independent projects live here, each with its own README, dependencies, and
 ### Backend (`backend/`)
 
 ```bash
-# one-off local DB
+# one-off local DB, loads staging's seed
 docker run --detach --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSWORD=reims \
-  --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 mariadb:latest
+  --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 \
+  -v "$PWD/../ansible/roles/app/files/staging-seed.sql.gz:/docker-entrypoint-initdb.d/staging-seed.sql.gz:ro" mariadb:13
 
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev    # http://localhost:9966, swagger-ui at /swagger-ui/index.html
 ./mvnw test                                              # all tests
@@ -35,8 +36,7 @@ docker run --detach --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSW
 ./mvnw package                                            # build, what CI runs
 ```
 
-The `dev` profile drops/recreates the schema against the MariaDB container above and seeds it via Flyway
-test-data migrations. Tests start their own MariaDB through Testcontainers (`MariaDbTestConfiguration`), so
+The container above starts with the same frozen prod data as dev.reims2.app (login `test`/`testtest`). Tests start their own MariaDB through Testcontainers (`MariaDbTestConfiguration`), so
 `./mvnw test` needs Docker. They run with security on and sign in with `@WithMockUser`. `OpenApiSpecTest`
 rewrites `backend/openapi.json` and fails when the API changed: commit the file and run `pnpm generate:api` in
 `frontend/`, which regenerates the request/response types in `src/model/api.d.ts`. CI checks both.

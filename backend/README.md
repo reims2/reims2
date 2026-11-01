@@ -4,13 +4,13 @@ Java 25 / Spring Boot 4 REST API for REIMS2. See the root `CLAUDE.md` for the ar
 
 ## Run locally
 
-Start a MariaDB instance with Docker:
+Start a MariaDB instance with Docker. It loads the same frozen prod data as dev.reims2.app:
 
 ```bash
-docker run --detach --rm --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSWORD=reims --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 mariadb:latest
+docker run --detach --rm --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSWORD=reims --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 -v "$PWD/../ansible/roles/app/files/staging-seed.sql.gz:/docker-entrypoint-initdb.d/staging-seed.sql.gz:ro" mariadb:13
 ```
 
-Then start the backend with the `dev` profile, which recreates the schema and fills it with test data:
+Then start the backend with the `dev` profile:
 
 ```bash
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
@@ -22,6 +22,6 @@ The API runs on http://localhost:9966/api, Swagger UI on http://localhost:9966/s
 
 ## Authentication
 
-`POST /api/auth/signin` with `{"username": "test", "password": "testtest"}` (a user from the dev test data) returns a JWT
+`POST /api/auth/signin` with `{"username": "test", "password": "testtest"}` (the user in the local database) returns a JWT
 as `accessToken`. Send it as `Authorization: Bearer <token>` with every other request. Admins create further users via
 `POST /api/auth/signup` with `{"username": "...", "password": "...", "roles": [{"name": "ROLE_USER"}]}`.
