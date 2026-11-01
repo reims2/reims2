@@ -69,3 +69,58 @@ test('Dispense from results', async ({ page, createGlasses }) => {
   await expect(result.getByText('Dispensed')).toBeVisible()
   await expect(result.getByRole('button', { name: 'Undo' })).toBeVisible()
 })
+
+test('S searches from a field that still needs formatting', async ({ page, createGlasses }) => {
+  const eye = { sphere: 5.25, cylinder: 0, axis: 0, add: 0 }
+  const { sku } = await createGlasses({ od: eye, os: eye })
+  const eyeInput = new EyeInput(page)
+
+  const glassesLoaded = page.waitForResponse((r) => r.url().endsWith('/all') && r.ok())
+  await page.goto('/find')
+  await glassesLoaded
+  await eyeInput.waitForAutofocus()
+
+  await eyeInput.category.fill('s')
+  await eyeInput.odSphere.fill('5.2')
+  await eyeInput.osSphere.fill('5.2')
+  await eyeInput.osSphere.press('s')
+
+  await expect(eyeInput.osSphere).toHaveValue('5.25')
+  await expect(
+    page.getByLabel('Results').getByRole('group', { name: `SKU ${formatSku(sku)}` }),
+  ).toBeVisible()
+})
+
+test('S shows the missing fields like the search button', async ({ page }) => {
+  const eyeInput = new EyeInput(page)
+  await page.goto('/find')
+  await eyeInput.waitForAutofocus()
+
+  await eyeInput.odSphere.press('s')
+
+  await expect(eyeInput.osInput.getByText('Required', { exact: true })).toBeVisible()
+})
+
+test('Holding S searches once and leaves Category alone', async ({ page, createGlasses }) => {
+  const eye = { sphere: 5.5, cylinder: 0, axis: 0, add: 0 }
+  const { sku } = await createGlasses({ od: eye, os: eye })
+  const eyeInput = new EyeInput(page)
+
+  const glassesLoaded = page.waitForResponse((r) => r.url().endsWith('/all') && r.ok())
+  await page.goto('/find')
+  await glassesLoaded
+  await eyeInput.waitForAutofocus()
+
+  await eyeInput.category.fill('single')
+  await eyeInput.odSphere.fill('5.50')
+  await eyeInput.osSphere.fill('5.50')
+  await page.keyboard.down('s')
+  await expect(eyeInput.category).toBeFocused()
+  await page.keyboard.down('s')
+  await page.keyboard.up('s')
+
+  await expect(eyeInput.category).toHaveValue('single')
+  await expect(
+    page.getByLabel('Results').getByRole('group', { name: `SKU ${formatSku(sku)}` }),
+  ).toBeVisible()
+})

@@ -12,8 +12,8 @@
     hide-details="auto"
     autocorrect="off"
     autocapitalize="off"
-    @keyup.a.stop
-    @keyup.s.stop
+    @keydown.a.stop="ignoreRepeat"
+    @keydown.s.stop="ignoreRepeat"
     @blur="autoComplete()"
   />
 </template>
@@ -49,6 +49,11 @@ function focus() {
 }
 
 defineExpose({ focus })
+
+// a held shortcut key would otherwise repeat into this field once the page focuses it
+function ignoreRepeat(event: KeyboardEvent) {
+  if (event.repeat) event.preventDefault()
+}
 
 function autoComplete() {
   /** autocomplete item data based on first characters. i.e. for id=glassesType return single for character s.
