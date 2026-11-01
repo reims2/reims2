@@ -5,7 +5,7 @@ import { ReimsAxiosError } from '@/lib/axios'
 import { Glasses } from '@/model/GlassesModel'
 import { createGlasses } from './util'
 
-const api = vi.hoisted(() => ({ get: vi.fn(), post: vi.fn(), put: vi.fn(), delete: vi.fn() }))
+const api = vi.hoisted(() => ({ get: vi.fn(), post: vi.fn(), put: vi.fn() }))
 vi.mock('@/lib/axios', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/axios')>()),
   useAxios: () => api,
@@ -89,15 +89,14 @@ describe('glasses store', () => {
     expect(store.isRefreshingGlasses).toBe(false)
   })
 
-  it('removes dispensed and deleted pairs and restores undispensed ones', async () => {
+  it('removes dispensed pairs and restores undispensed ones', async () => {
     const store = useGlassesStore()
     store.allGlasses = [pair(1, 5), pair(2, 6)]
     api.put.mockResolvedValue({})
-    api.delete.mockResolvedValue({})
 
     await store.dispense(5, 'DISPENSED')
     expect(api.put).toHaveBeenCalledWith('/api/glasses/dispense/sa/5?reason=DISPENSED&id=1', {})
-    await store.deleteGlasses(6)
+    await store.dispense(6, 'WRONGLY_ADDED')
     expect(store.allGlasses).toEqual([])
 
     await store.undispense(pair(1, 5))

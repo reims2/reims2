@@ -193,7 +193,7 @@ public class GlassesRestControllerIntegrationTest {
         // created glass
         this.mockMvc.perform(put("/api/glasses/undispense/" + saveEntitySa.getId()))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.detail", Matchers.is("Previous SKU is already used")))
+            .andExpect(jsonPath("$.detail", Matchers.is("SKU %04d is already used by other glasses.".formatted(saveEntitySa.getSku()))))
             .andDo(print());
         assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
 
@@ -375,26 +375,6 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.detail",
                 Matchers.is(notNullValue())))
             .andDo(print());
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void givenGlasses_whenDeleteGlasses_thenStatus204()
-        throws Exception {
-
-        Glasses saveEntitySa = saveGlasses(LocationEnum.sm);
-
-        ChangeValue cv = callChangeValueAndReturnHash("sm");
-        this.mockMvc.perform(delete("/api/glasses/sm/" + saveEntitySa.getSku()))
-            .andExpect(status().isNoContent())
-            .andDo(print());
-        assertFalse(isChangeValueEqualNewChangeValue(cv, "sm"));
-
-        cv = callChangeValueAndReturnHash("sm");
-        this.mockMvc.perform(delete("/api/glasses/sm/-1"))
-            .andExpect(status().isNotFound())
-            .andDo(print());
-        assertTrue(isChangeValueEqualNewChangeValue(cv, "sm"));
     }
 
     @Test

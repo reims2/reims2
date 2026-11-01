@@ -41,7 +41,7 @@ public class UserService {
     @Transactional
     public User register(String username, String password, Set<RoleEnum> roleNames) {
         if (userRepository.existsByUsername(username))
-            throw new BadRequestException("Username is already taken!");
+            throw new BadRequestException("Username is already taken.");
         if (password.getBytes(StandardCharsets.UTF_8).length > SignupRequest.MAX_PASSWORD_BYTES)
             throw new BadRequestException("password must be at most " + SignupRequest.MAX_PASSWORD_BYTES + " bytes");
 
@@ -55,6 +55,6 @@ public class UserService {
 
     @Transactional
     public void delete(long id) {
-        userRepository.delete(userRepository.findById(id).orElseThrow(() -> new NotFoundException("User was not found.")));
+        userRepository.delete(userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found.")));
     }
 }

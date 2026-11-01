@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.pvh.error.NotFoundException;
 import org.pvh.model.dto.ChangeValueDTO;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
@@ -116,8 +115,7 @@ public class GlassesRestController {
 
     @GetMapping(path = "/{location}/{sku}", produces = "application/json")
     public GlassesResponseDTO getGlasses(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location) {
-        return glassesService.findBySkuAndLocation(sku, location).map(GlassesResponseDTO::from)
-            .orElseThrow(() -> new NotFoundException("Glasses not found!"));
+        return GlassesResponseDTO.from(glassesService.getBySkuAndLocation(sku, location));
     }
 
     @GetMapping(path = "/{location}/changes", produces = "application/json")
@@ -158,14 +156,6 @@ public class GlassesRestController {
             return ResponseEntity.noContent().build();
         logger.info("Undispensed glasses with id {}", id);
         return ResponseEntity.ok().build();
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(value = "/{location}/{sku}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteGlasses(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location) {
-        glassesService.deleteGlasses(location, sku);
-        logger.info("Completely deleted glasses with SKU {} (in {})", sku, location);
     }
 
     @PostMapping(path = "/{location}/searchLog")
