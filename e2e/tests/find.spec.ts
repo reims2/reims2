@@ -33,22 +33,14 @@ test('Search multifocal', async ({ page, createGlasses }) => {
 
   await page.getByRole('button', { name: 'earch glasses' }).click()
 
-  const result = page.getByLabel('Results').getByLabel(`SKU ${formatSku(sku)}`)
+  const result = page.getByLabel('Results').getByRole('group', { name: `SKU ${formatSku(sku)}` })
   await expect(result).toBeVisible()
   await expect(result).toMatchAriaSnapshot(`
     - group:
-      - text: /multifocal neutral medium OD/
+      - text: /multifocal.*medium.*neutral/
       - table:
-        - row "SPH +4.25 D"
-        - row "CYL +0.00 D"
-        - row "Axis 000"
-        - row "Add +2.50 D"
-      - text: /OS/
-      - table:
-        - row "SPH +4.50 D"
-        - row "CYL -1.00 D"
-        - row "Axis 150"
-        - row "Add +2.50 D"
-      - link "Open Glasses"
+        - row "OD +4.25 +0.00 Add +2.50"
+        - row "OS +4.50 -1.00 × 150 Add +2.50"
+      - link "Open"
   `)
 })

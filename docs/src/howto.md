@@ -6,11 +6,11 @@ This guide provides instructions on how to perform common tasks using REIMS2:
 
 ## Changing the Location
 
-The current location used by REIMS2 is displayed at the top left. To change it, click on the location and pick the new one. REIMS2 then takes a few moments to download the database for the new location and shows the new location once completed.
+The current location used by REIMS2 is displayed at the top of the menu on the left (on phones, at the top left). To change it, click on the location and pick the new one. REIMS2 then takes a few moments to download the database for the new location and shows the new location once completed.
 
 ## Dispensing Glasses
 
-Once suitable glasses have been identified for a patient, it's crucial to mark them as dispensed in the database. To do this, navigate to the "Edit" screen, input the SKU, and click "Dispense". Alternatively, you can press ENTER. A notification will appear confirming the successful dispensation.
+Once suitable glasses have been identified for a patient, it's crucial to mark them as dispensed in the database. To do this, click "Open" on the search result in "Find", or navigate to the "Edit" page and input the SKU. Then click "Dispense" or press ENTER. A notification will appear confirming the successful dispensation. A pair dispensed by mistake can be restored with "Undo" under "Recently dispensed or deleted" on the "Edit" page.
 
 ## Editing Existing Glasses
 
@@ -20,13 +20,13 @@ In case glasses are recorded with incorrect data, REIMS2 allows you to correct t
 
 REIMS2 is designed to operate fully offline, enabling you to find, dispense, and edit glasses without an internet connection. This feature is particularly useful in remote areas with limited or no internet connectivity.
 
-To use REIMS2 offline, ensure that the application has been accessed at least once in the past month on the machine you're using, with a working internet connection. Google Chrome is required for this feature. If you use the "Dispense" or "Edit" functions while offline, you'll need to connect to the internet at least once per week. This is not necessary if you're only using the application to find matches. When offline, REIMS2 will display a banner in the bottom right corner indicating that it's running offline. Any changes made while offline will be automatically uploaded when the connection is restored. Until then, the top bar shows how many changes are still waiting to upload.
+To use REIMS2 offline, ensure that the application has been accessed at least once in the past month on the machine you're using, with a working internet connection. Google Chrome is required for this feature. If you use the "Dispense" or "Edit" functions while offline, you'll need to connect to the internet at least once per week. This is not necessary if you're only using the application to find matches. When offline, REIMS2 will display a banner in the bottom right corner indicating that it's running offline. Any changes made while offline will be automatically uploaded when the connection is restored. Until then, the sync status at the bottom of the menu shows how many changes are still waiting to upload.
 
 Please note that adding new glasses or creating reports is not possible while offline.
 
 ## Deleting or Replacing Glasses
 
-If glasses are missing from the storage or if you wish to remove unused glasses, you can delete them. Navigate to the "Edit" screen, input the SKU, click the three dots in the bottom right corner of the glasses, and select "Delete". You'll be prompted to provide a reason for the deletion, which will be recorded in the campaign reports.
+If glasses are missing from the storage or if you wish to remove unused glasses, you can delete them. Navigate to the "Edit" page, input the SKU, and click "Delete" next to "Edit". You'll be prompted to provide a reason for the deletion, which will be recorded in the campaign reports.
 
 ## Generating a Report of Dispensed Glasses
 

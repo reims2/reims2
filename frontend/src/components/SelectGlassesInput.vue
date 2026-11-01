@@ -5,6 +5,7 @@
     :autofocus="!mobile"
     label="SKU"
     type="number"
+    hide-spin-buttons
     :hint="hint"
     persistent-hint
     :loading="loading"
@@ -23,9 +24,9 @@ const emit = defineEmits<{
   change: [glasses: Glasses | null]
 }>()
 
-const { hintForSelected = '' } = defineProps<{
+const { hint = '' } = defineProps<{
   loading: boolean
-  hintForSelected?: string
+  hint?: string
 }>()
 
 const sku = defineModel<number | null>('sku', { required: true })
@@ -36,7 +37,6 @@ const glassesStore = useGlassesStore()
 
 const selected = ref<Glasses | null>(null)
 const input = useTemplateRef('input')
-const hint = computed(() => (selected.value ? hintForSelected : ''))
 
 watch(
   () => sku.value,

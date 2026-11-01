@@ -22,7 +22,7 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
       .map((sku) => allGlasses.value.find((g) => g.sku === sku))
       .filter((itm) => itm != null) as Glasses[]
   })
-  // matches the SKU range per location in the backend's MainServiceImpl
+  // matches the SKU range per location in the backend's LocationEnum
   const skusPerLocation = 5000
   const freeSlots = computed(() => skusPerLocation - allGlasses.value.length)
 

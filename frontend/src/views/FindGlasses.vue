@@ -1,109 +1,131 @@
 <template>
-  <v-container @keyup.s="submitAndUpdate">
-    <v-row no-gutters class="justify-center">
-      <v-col cols="12" md="6" lg="5" class="px-3">
-        <v-form ref="form" v-model="valid" @submit.prevent>
-          <v-row no-gutters>
+  <page-layout title="Find glasses" @keyup.s="submitAndUpdate">
+    <v-col cols="12" md="5">
+      <v-form ref="form" v-model="valid" @submit.prevent>
+        <page-card title="Prescription">
+          <template #header>
+            <v-btn
+              v-prevent-enter-tab
+              variant="text"
+              class="text-medium-emphasis"
+              tabindex="-1"
+              :prepend-icon="mdiRestore"
+              @click="reset"
+            >
+              Clear form
+            </v-btn>
+          </template>
+          <div class="pa-6">
             <glass-input
               ref="inputComponent"
               v-model="glasses"
               v-model:sync-eyes="syncEyeAdd"
               :glasses-type-only="true"
             ></glass-input>
-            <v-col cols="12" class="pa-0 pl-1">
-              <v-checkbox
-                v-model="highTolerance"
-                label="Increase search tolerance (might yield bad results)"
-                tabindex="-1"
-                class="ml-n3"
-              />
-            </v-col>
-            <v-col cols="12" class="pl-1 pr-0">
-              <div>
-                <v-btn
-                  v-prevent-enter-tab
-                  :disabled="Boolean(searchButtonDisabled)"
-                  color="primary"
-                  class="mr-4"
-                  type="submit"
-                  @click="submitAndUpdate"
-                >
-                  <span class="text-decoration-underline">S</span>
-                  earch glasses
-                </v-btn>
-                <v-btn
-                  v-prevent-enter-tab
-                  class="mr-4"
-                  variant="plain"
-                  tabindex="-1"
-                  @click="reset"
-                >
-                  Clear form
-                </v-btn>
-              </div>
-            </v-col>
-          </v-row>
-        </v-form>
-      </v-col>
-      <v-col
-        ref="results"
-        cols="12"
-        md="6"
-        lg="5"
-        xl="3"
-        class="pt-10 pt-md-0 px-0 pl-md-6"
-        role="region"
-        aria-labelledby="heading-results"
-      >
-        <div id="heading-results" class="text-title-large font-weight-medium pb-2">Results</div>
-        <v-alert
+          </div>
+          <template #footer>
+            <v-checkbox
+              v-model="highTolerance"
+              tabindex="-1"
+              density="compact"
+              hide-details
+              class="flex-1-1 ml-n1"
+            >
+              <template #label>
+                <span class="d-flex flex-column text-body-medium">
+                  <span class="text-high-emphasis font-weight-medium">Wider tolerance</span>
+                  <span class="text-body-small text-medium-emphasis">May give poor matches</span>
+                </span>
+              </template>
+            </v-checkbox>
+            <v-btn
+              v-prevent-enter-tab
+              color="primary"
+              size="large"
+              variant="flat"
+              elevation="2"
+              type="submit"
+              :prepend-icon="mdiMagnify"
+              @click="search"
+            >
+              Search glasses
+              <v-chip size="x-small" label variant="tonal" class="ml-3 font-weight-bold">S</v-chip>
+            </v-btn>
+          </template>
+        </page-card>
+      </v-form>
+    </v-col>
+
+    <v-col cols="12" md="7">
+      <page-card ref="results" title="Results">
+        <template #header>
+          <span v-if="matches?.length" class="text-body-medium text-medium-emphasis text-tabular">
+            {{ matches.length }} {{ matches.length === 1 ? 'match' : 'matches, best first' }}
+          </span>
+          <span v-else-if="matches" class="text-body-medium text-medium-emphasis">No matches</span>
+        </template>
+
+        <v-empty-state
           v-if="matches == null"
-          type="info"
-          color="primary"
-          variant="tonal"
-          density="comfortable"
-        >
-          Start a new search to display results
-        </v-alert>
-        <v-alert v-else-if="matches.length === 0" type="warning" density="comfortable">
-          No suitable glasses found.
-          <p>
-            You can also try searching with
-            <span class="font-italic">Increase search tolerance</span>
-            or
-            <span class="font-italic">BAL lens</span>
-            enabled.
-          </p>
-        </v-alert>
-        <div v-else>
-          <div v-for="item in paginatedMatches" :key="item.id">
-            <glass-card :model-value="item">
+          :icon="mdiMagnify"
+          title="Search to see matches"
+          class="py-12"
+        />
+        <v-empty-state
+          v-else-if="matches.length === 0"
+          :icon="mdiMagnifyRemoveOutline"
+          title="No close matches in stock"
+          :text="
+            (highTolerance
+              ? 'Try a BAL lens, or check the prescription.'
+              : 'Try wider tolerance or a BAL lens.') +
+            ' Failed searches are logged to plan future stock.'
+          "
+          text-width="320"
+          class="py-12"
+        />
+
+        <template v-else>
+          <div
+            v-for="(item, idx) in paginatedMatches"
+            :key="item.id"
+            :data-testid="'result-' + idx"
+          >
+            <v-divider v-if="idx > 0" />
+            <glasses-row :glasses="item">
               <template #actions>
                 <v-btn
                   :to="{ path: '/edit', query: { sku: item.sku } }"
                   variant="text"
-                  class="mx-0"
                   color="primary"
                 >
-                  Open Glasses
+                  Open
                 </v-btn>
               </template>
-            </glass-card>
+            </glasses-row>
           </div>
-          <div class="text-center">
-            <v-pagination v-model="page" :length="pageCount" rounded="circle" />
-          </div>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+          <nav v-if="pageCount > 1" aria-label="Result pages" class="border-t pa-1">
+            <v-pagination
+              v-model="page"
+              :length="pageCount"
+              rounded="circle"
+              density="comfortable"
+              active-color="primary"
+            />
+          </nav>
+        </template>
+      </page-card>
+    </v-col>
+  </page-layout>
 </template>
 
 <script setup lang="ts">
-import { useGlassesStore } from '@/stores/glasses'
+import { mdiRestore, mdiMagnify, mdiMagnifyRemoveOutline } from '@mdi/js'
 
 import GlassInput from '@/components/GlassInput.vue'
-import GlassCard from '@/components/GlassCard.vue'
+import GlassesRow from '@/components/GlassesRow.vue'
+import PageLayout from '@/components/PageLayout.vue'
+import PageCard from '@/components/PageCard.vue'
 
 import { GlassesInput as GlassesInputType } from '@/model/GlassesModel'
 import { resetEyeInput } from '@/util/eye-utils'
@@ -120,8 +142,6 @@ const glasses: Ref<GlassesInputType> = ref({
   os: { sphere: '', cylinder: '', axis: '', add: '', isBAL: false },
 })
 
-const glassesStore = useGlassesStore()
-
 const inputComponent = useTemplateRef('inputComponent')
 const form = useTemplateRef('form')
 const results = useTemplateRef('results')
@@ -132,13 +152,10 @@ const syncEyeAdd = ref(true)
 
 const highTolerance = ref(false)
 
-const itemsPerPage = 3
+const itemsPerPage = 5
 
 const { matches, startSearch } = useFindGlasses(glasses, highTolerance, valid)
 
-const searchButtonDisabled = computed(() => {
-  return !valid.value && glassesStore.hasGlassesLoaded
-})
 const paginatedMatches = computed(() => {
   if (matches.value == null) return null
   return matches.value.slice(
@@ -154,6 +171,12 @@ const pageCount = computed(() => {
 })
 
 const { vPreventEnterTab } = useEnterToTab(form)
+
+// an enabled button that shows the missing fields beats a greyed out one
+function search() {
+  if (valid.value) submitAndUpdate()
+  else form.value?.validate()
+}
 
 async function submitAndUpdate() {
   startSearch()

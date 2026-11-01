@@ -17,13 +17,8 @@ test('Add glasses', async ({ page }) => {
   const resultCard = page.getByTestId('result-0')
   await expect(resultCard).toBeVisible()
 
-  await expect(resultCard.getByTestId('OD-card')).toContainText('SPH+0.75 D')
-  await expect(resultCard.getByTestId('OD-card')).toContainText('CYL+0.00 D')
-  await expect(resultCard.getByTestId('OD-card')).toContainText('Axis000')
-  await expect(resultCard.getByTestId('OD-card')).toContainText('Add+1.00 D')
-
-  await expect(resultCard.getByTestId('OS-card')).toContainText('SPH+1.00 D')
-  await expect(resultCard.getByTestId('OS-card')).toContainText('CYL-0.25 D')
-  await expect(resultCard.getByTestId('OS-card')).toContainText('Axis010')
-  await expect(resultCard.getByTestId('OS-card')).toContainText('Add+2.00 D')
+  await expect(resultCard.getByRole('row', { name: 'OD +0.75 +0.00 Add +1.00' })).toBeVisible()
+  await expect(
+    resultCard.getByRole('row', { name: 'OS +1.00 -0.25 × 010 Add +2.00' }),
+  ).toBeVisible()
 })
