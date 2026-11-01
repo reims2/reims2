@@ -10,7 +10,7 @@ The current location used by REIMS2 is displayed at the top of the menu on the l
 
 ## Dispensing Glasses
 
-Once suitable glasses have been identified for a patient, it's crucial to mark them as dispensed in the database. To do this, click "Open" on the search result in "Find", or navigate to the "Edit" page and input the SKU. Then click "Dispense" or press ENTER. A notification will appear confirming the successful dispensation. A pair dispensed by mistake can be restored with "Undo" under "Recently dispensed or deleted" on the "Edit" page.
+Once suitable glasses have been identified for a patient, it's crucial to mark them as dispensed in the database. Click "Dispense" right on the search result in "Find". To dispense a pair by its SKU, navigate to the "Edit" page, input the SKU, and click "Dispense" or press ENTER. A notification will appear confirming the successful dispensation. A pair dispensed by mistake can be restored with "Undo", either on the search result or under "Recently dispensed or deleted" on the "Edit" page.
 
 ## Editing Existing Glasses
 
