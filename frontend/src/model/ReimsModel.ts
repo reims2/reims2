@@ -6,8 +6,9 @@ export type DeletionReason = NonNullable<
   components['schemas']['DispenseResponseDTO']['dispenseReason']
 >
 
-export interface DrawerItem {
+export interface NavItem {
   icon: string
+  activeIcon: string
   title: string
   to: string
   disabled?: boolean

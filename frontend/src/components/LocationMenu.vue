@@ -1,7 +1,26 @@
 <template>
-  <v-menu location="bottom start">
+  <v-menu :location="stacked ? 'end top' : 'bottom start'">
     <template #activator="{ props }">
       <v-btn
+        v-if="stacked"
+        v-bind="props"
+        stacked
+        variant="tonal"
+        color="white"
+        :width="96"
+        height="auto"
+        class="py-2 px-1 text-body-small font-weight-semibold"
+        :prepend-icon="mdiMapMarkerOutline"
+        :disabled="!isOnline || switchingTo !== null"
+        :aria-label="`Change location, currently ${rootStore.reimsSiteName}`"
+      >
+        <span class="d-inline-flex align-center">
+          {{ rootStore.reimsSiteName }}
+          <v-icon :icon="mdiMenuDown" size="16" />
+        </span>
+      </v-btn>
+      <v-btn
+        v-else
         v-bind="props"
         variant="tonal"
         class="ml-2 ml-sm-0 text-none"
@@ -13,7 +32,7 @@
         {{ rootStore.reimsSiteName }}
       </v-btn>
     </template>
-    <v-list density="comfortable" min-width="200">
+    <v-list min-width="220">
       <v-list-item
         v-for="site in reimsSiteSelects"
         :key="site.value"
@@ -42,13 +61,15 @@
 </template>
 
 <script setup lang="ts">
-import { mdiCheck, mdiMapMarker, mdiMenuDown } from '@mdi/js'
+import { mdiCheck, mdiMapMarker, mdiMapMarkerOutline, mdiMenuDown } from '@mdi/js'
 import { useOnline } from '@vueuse/core'
 import { ReimsSite } from '@/model/ReimsModel'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 import { useToast } from '@/composables/toast'
 import { reimsSiteMap, reimsSiteSelects } from '@/util/util'
+
+const { stacked = false } = defineProps<{ stacked?: boolean }>()
 
 const toast = useToast()
 const rootStore = useRootStore()

@@ -13,7 +13,7 @@ test('Search works offline', async ({ page, context, createGlasses }) => {
 
   await context.setOffline(true)
   await page.reload()
-  await expect(page.getByText('REIMS is running offline.')).toBeVisible()
+  await expect(page.getByText('You are offline')).toBeVisible()
 
   const eyeInput = new EyeInput(page)
   await eyeInput.fill({
