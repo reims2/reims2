@@ -40,6 +40,11 @@
   outline-color: #ffffff;
 }
 
+// MD3 press animation
+.v-btn:active {
+  border-radius: 8px;
+}
+
 .text-tabular {
   font-variant-numeric: tabular-nums;
 }
