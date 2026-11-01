@@ -11,12 +11,9 @@ import java.util.stream.Collectors;
 
 public record SignupRequest(
     @NotBlank @Size(max = 20) String username,
-    // UserService also checks the byte length for non-ASCII passwords
-    @NotBlank @Size(max = SignupRequest.MAX_PASSWORD_BYTES) String password,
+    // UserService checks the length, BCrypt's limit is in bytes
+    @NotBlank String password,
     Set<@Valid RoleName> roles) {
-
-    // BCrypt ignores everything after 72 bytes, Spring Security rejects longer passwords
-    public static final int MAX_PASSWORD_BYTES = 72;
 
     public Set<RoleEnum> roleNames() {
         return roles == null ? Set.of() : roles.stream().map(RoleName::name).collect(Collectors.toSet());

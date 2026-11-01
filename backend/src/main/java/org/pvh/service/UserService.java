@@ -2,7 +2,6 @@ package org.pvh.service;
 
 import org.pvh.error.BadRequestException;
 import org.pvh.error.NotFoundException;
-import org.pvh.model.dto.SignupRequest;
 import org.pvh.model.entity.Role;
 import org.pvh.model.entity.User;
 import org.pvh.model.enums.RoleEnum;
@@ -20,6 +19,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+    // BCrypt ignores everything after 72 bytes, Spring Security rejects longer passwords
+    private static final int MAX_PASSWORD_BYTES = 72;
+
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -42,8 +44,8 @@ public class UserService {
     public User register(String username, String password, Set<RoleEnum> roleNames) {
         if (userRepository.existsByUsername(username))
             throw new BadRequestException("Username is already taken.");
-        if (password.getBytes(StandardCharsets.UTF_8).length > SignupRequest.MAX_PASSWORD_BYTES)
-            throw new BadRequestException("password must be at most " + SignupRequest.MAX_PASSWORD_BYTES + " bytes");
+        if (password.getBytes(StandardCharsets.UTF_8).length > MAX_PASSWORD_BYTES)
+            throw new BadRequestException("Password is too long.");
 
         Set<Role> roles = (roleNames.isEmpty() ? Set.of(RoleEnum.ROLE_USER) : roleNames).stream()
             .map(name -> roleRepository.findByName(name).orElseThrow(() -> new IllegalStateException("Role " + name + " is missing")))

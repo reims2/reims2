@@ -148,7 +148,7 @@ const authStore = useAuthStore()
 
 const items = ref<User[] | null>(null)
 const newPassword = ref('')
-// BCrypt's limit, see SignupRequest.java
+// BCrypt's limit, see UserService.java
 const passwordRules = [
   (v: string) => !!v || 'Item is required',
   (v: string) => new TextEncoder().encode(v ?? '').length <= 72 || 'Password is too long',

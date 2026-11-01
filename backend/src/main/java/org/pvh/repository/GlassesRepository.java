@@ -1,9 +1,11 @@
 package org.pvh.repository;
 
+import jakarta.persistence.LockModeType;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.enums.LocationEnum;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,6 +24,10 @@ public interface GlassesRepository extends JpaRepository<Glasses, Long> {
 
     @EntityGraph(attributePaths = {"od", "os", "dispense"})
     Optional<Glasses> findBySkuAndLocation(int sku, LocationEnum location);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @EntityGraph(attributePaths = {"od", "os", "dispense"})
+    Optional<Glasses> findLockedById(long id);
 
     boolean existsBySku(int sku);
 
