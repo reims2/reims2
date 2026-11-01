@@ -90,7 +90,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^Dockerfile$/",
+        "/(^|/)Dockerfile$/",
         "/^.github/.+/*\\.ya?ml$/",
         "/defaults/main.ya?ml$/"
       ],
