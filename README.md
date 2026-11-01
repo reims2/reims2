@@ -10,21 +10,21 @@ A demo version is available at https://dev.reims2.app
 
 ### Main Page
 
-![main](https://github.com/user-attachments/assets/e54d21bd-562e-49d8-9e0c-fab51b8f272a)
+![main](docs/screenshots/start.png)
 
 ### Searching glasses
 
-![search](https://github.com/user-attachments/assets/2aa309cb-84ce-4050-a8f1-a11f169fec28)
+![search](docs/screenshots/search.png)
 
 ### Editing glasses
 
-![editing](https://github.com/user-attachments/assets/c3a2d58e-659f-49f1-8c91-0b6a2a1f3044)
+![editing](docs/screenshots/edit.png)
 
 ### Inventory overview
 
-![inventory](https://github.com/user-attachments/assets/05e33d06-d0f3-4881-a1f0-8ba46f073c37)
+![inventory](docs/screenshots/inventory.png)
 
 
 ### Documentation excerpt
 
-![image](https://github.com/user-attachments/assets/0b496f9e-5bc6-4049-b98e-9d1a8e52e838)
+![documentation](docs/screenshots/docs.png)
