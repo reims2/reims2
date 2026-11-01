@@ -14,6 +14,16 @@ test('Dispense glasses with button', async ({ page, createGlasses }) => {
   await expect(page.getByText(`Successfully dispensed glasses with SKU ${sku}`)).toBeVisible()
 })
 
+test('Typing on to an unknown SKU clears the result', async ({ page, createGlasses }) => {
+  const sku = formatSku((await createGlasses()).sku)
+  await page.getByLabel('SKU', { exact: true }).fill(sku)
+  await expect(page.getByLabel('Glasses result')).toBeVisible()
+  await page.getByLabel('SKU', { exact: true }).fill('99999')
+  await expect(page.getByLabel('Glasses result')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Dispense' }).click()
+  await expect(page.getByText('SKU not found')).toBeVisible()
+})
+
 test.describe('Undo', () => {
   // a freed SKU goes to the next added pair, so this needs a site no other test adds to
   test.use({ location: 'sm' })
