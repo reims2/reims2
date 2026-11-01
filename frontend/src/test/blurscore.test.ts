@@ -18,7 +18,7 @@ function scoreOf(glassesType: GlassesType, rx: Eye, od: Eye, os = od): number | 
   return calculateAllBlurscore(search(glassesType, rx), [lenses(glassesType, od, os)])[0]?.score
 }
 
-// Worked examples of docs/src/dev/ai-notes/predicted-blur-matching.md, same lens on both eyes
+// Worked examples, same lens on both eyes
 const examples: [string, Eye, Eye, number, BlurGrade][] = [
   ['axis 10 degrees off', eye(-1.5, -1.5, 90), eye(-1.5, -1.5, 100), 0.26, 'good'],
   ['sphere 0.25 off', eye(-1.5, -1.5, 90), eye(-1.75, -1.5, 90), 0.25, 'excellent'],
