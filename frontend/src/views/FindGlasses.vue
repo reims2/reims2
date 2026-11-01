@@ -92,15 +92,35 @@
             :data-testid="'result-' + idx"
           >
             <v-divider v-if="idx > 0" />
-            <glasses-row :glasses="item">
+            <glasses-row :glasses="shown(item)">
               <template #actions>
                 <v-btn
-                  :to="{ path: '/edit', query: { sku: item.sku } }"
+                  v-if="shown(item).dispensed"
                   variant="text"
                   color="primary"
+                  :loading="isLoading && current?.id === item.id"
+                  @click="undo(item)"
                 >
-                  Open
+                  Undo
                 </v-btn>
+                <template v-else>
+                  <v-btn
+                    :to="{ path: '/edit', query: { sku: item.sku } }"
+                    variant="text"
+                    color="primary"
+                  >
+                    Open
+                  </v-btn>
+                  <v-btn
+                    variant="flat"
+                    color="primary"
+                    min-width="100"
+                    :loading="isLoading && current?.id === item.id"
+                    @click="dispense(item)"
+                  >
+                    Dispense
+                  </v-btn>
+                </template>
               </template>
             </glasses-row>
           </div>
@@ -131,7 +151,7 @@ import { GlassesInput as GlassesInputType } from '@/model/GlassesModel'
 import { resetEyeInput } from '@/util/eye-utils'
 
 import { useEnterToTab } from 'vue3-enter-to-tab'
-import { useFindGlasses } from '@/composables/find'
+import { useDispenseResult, useFindGlasses } from '@/composables/find'
 import { useDisplay } from 'vuetify'
 
 const { mobile } = useDisplay()
@@ -155,6 +175,7 @@ const highTolerance = ref(false)
 const itemsPerPage = 5
 
 const { matches, startSearch } = useFindGlasses(glasses, highTolerance, valid)
+const { shown, dispense, undo, isLoading, current } = useDispenseResult(matches)
 
 const paginatedMatches = computed(() => {
   if (matches.value == null) return null

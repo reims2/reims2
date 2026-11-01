@@ -42,5 +42,30 @@ test('Search multifocal', async ({ page, createGlasses }) => {
         - row "OD +4.25 +0.00 Add +2.50"
         - row "OS +4.50 -1.00 × 150 Add +2.50"
       - link "Open"
+      - button "Dispense"
   `)
+})
+
+test('Dispense from results', async ({ page, createGlasses }) => {
+  const { sku } = await createGlasses({
+    od: { sphere: -6.5, cylinder: 0, axis: 0, add: 0 },
+    os: { sphere: -6.75, cylinder: 0, axis: 0, add: 0 },
+  })
+  const glassesLoaded = page.waitForResponse((r) => r.url().endsWith('/all') && r.ok())
+  await page.goto('/find')
+  await glassesLoaded
+  await new EyeInput(page).fill({
+    category: 's',
+    od: { sphere: '-6.5', cylinder: '0' },
+    os: { sphere: '-6.75', cylinder: '0' },
+  })
+  await page.getByRole('button', { name: 'earch glasses' }).click()
+
+  const result = page.getByLabel('Results').getByRole('group', { name: `SKU ${formatSku(sku)}` })
+  await result.getByRole('button', { name: 'Dispense' }).click()
+  await expect(
+    page.getByText(`Successfully dispensed glasses with SKU ${formatSku(sku)}`),
+  ).toBeVisible()
+  await expect(result.getByText('Dispensed')).toBeVisible()
+  await expect(result.getByRole('button', { name: 'Undo' })).toBeVisible()
 })
