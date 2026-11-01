@@ -3,7 +3,7 @@ import { MatchResult } from '@/lib/interleave'
 import { createGlassesEqualOdOs, renderWithVuetify } from './util'
 
 const [pair] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
-const marker = 'Experimental suggestion from a new matching method'
+const marker = 'Experimental suggestion from a new matching method. Try it! Blur score: 0.50'
 
 function renderRow(glasses: MatchResult) {
   return renderWithVuetify(GlassesRow, { props: { glasses } })
@@ -16,6 +16,7 @@ test('marks an alternative as experimental and keeps its PhilScore', () => {
     score: 0.25,
     odScore: 0.1,
     osScore: 0.15,
+    blurScore: 0.5,
   }
   const row = renderRow(match)
   expect(row.getByLabelText(marker)).toBeTruthy()
@@ -23,7 +24,7 @@ test('marks an alternative as experimental and keeps its PhilScore', () => {
 })
 
 test('shows no PhilScore for an alternative PhilScore did not find', () => {
-  const row = renderRow({ ...pair, algorithm: 'blurscore' })
+  const row = renderRow({ ...pair, algorithm: 'blurscore', blurScore: 0.5 })
   expect(row.getByLabelText(marker)).toBeTruthy()
   expect(row.queryByText(/^\d+\.\d\d$/)).toBeNull()
 })

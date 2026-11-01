@@ -27,7 +27,7 @@ function blurscore(...pairs: [number, number][]): BlurResult[] {
 // e.g. 'p1' for pair 1 placed by PhilScore, 'b11' for an alternative
 const picks = (results: MatchResult[]) => results.map((result) => result.algorithm[0] + result.id)
 
-test('puts a good alternative last on each page and fills once PhilScore runs out', () => {
+test('puts a good alternative every third result and fills once PhilScore runs out', () => {
   const blur = blurscore([11, 0.25], [12, 0.5], [13, 0.75])
   expect(picks(interleave(philscore(1, 2, 3, 4), blur))).toEqual([
     'p1',
@@ -66,5 +66,12 @@ test('gives an alternative PhilScore did not find no PhilScore', () => {
     score: undefined,
     odScore: undefined,
     osScore: undefined,
+    blurScore: 0.25,
   })
+})
+
+test('gives only an alternative a blur score, and keeps its PhilScore', () => {
+  const [first, , third] = interleave(philscore(1, 2, 3, 4), blurscore([4, 0.25], [3, 0.5]))
+  expect(first.blurScore).toBeUndefined()
+  expect(third).toMatchObject({ id: 4, algorithm: 'blurscore', score: 3, blurScore: 0.25 })
 })
