@@ -26,7 +26,7 @@ Five independent projects live here, each with its own README, dependencies, and
 
 ```bash
 # one-off local DB, loads staging's seed
-docker run --detach --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSWORD=reims \
+docker run --detach --name reims-db --env MARIADB_USER=reims2 --env MARIADB_PASSWORD=reims \
   --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 \
   -v "$PWD/../ansible/roles/app/files/staging-seed.sql.gz:/docker-entrypoint-initdb.d/staging-seed.sql.gz:ro" mariadb:13
 
@@ -141,11 +141,12 @@ Spring Data JPA. `LocationEnum` holds the two sites and their SKU ranges, an unk
 There's no server-side filtering or paging of glasses: the View Glasses table filters, sorts and pages the
 glasses store in the browser (`frontend/src/composables/table-filter.ts`). DTOs in `model/dto/` are records
 that map to and from entities themselves (`GlassesResponseDTO.from`, `GlassesRequestDTO.applyTo`). Each write
-runs in one transaction that bumps the change hash first. Flyway owns the schema and Hibernate only validates
+runs in one transaction. It bumps the change hash before any plain read, so InnoDB's snapshot can't predate the
+hash lock. Only a locking read of the changed row may come first. Flyway owns the schema and Hibernate only validates
 against it. Every staging deploy reloads a frozen copy of prod's data from March 2024, so a push to `main` tries
 new migrations on it before prod (see `ansible/README.md`). Errors are RFC 9457 problem details from
-`error/ApiExceptionHandler.java`, which maps the domain exceptions in `error/` to status codes, so services never pick one. Only bad input may get a 4xx, since a queued offline change is dropped on a
-4xx but retried on a 5xx. Auth is JWT via Spring Security's OAuth2 resource server
+`error/ApiExceptionHandler.java`, which maps the domain exceptions in `error/` to status codes, so services never pick one. A queued offline change is dropped on a 4xx but retried on a 5xx, so a 4xx is
+only for a change that can never succeed: bad input, or a conflict like editing a pair dispensed in the meantime. Auth is JWT via Spring Security's OAuth2 resource server
 (`security/WebSecurityConfig.java`, tokens from `TokenService`, settings in `pvh.jwt.*`), with roles read from the database on every request. The two roles,
 `ROLE_USER` and `ROLE_ADMIN`, are enforced with `@PreAuthorize`, and a role hierarchy gives admins every user
 right. User management is admin-only. Glasses are never deleted, removing a pair is a dispense with a reason.

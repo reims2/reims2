@@ -52,6 +52,14 @@
       vars:
         app_env_tag: "{{ app_new_tag }}"
 
+    # before the delete, so staging is only down for the restart and a failed pull leaves it running
+    - name: Pull staging's images
+      when: stack == 'staging'
+      community.docker.docker_compose_v2_pull:
+        project_src: "{{ app_install_location }}"
+        project_name: "{{ stack }}"
+        files: [compose.yaml, compose.server.yaml, "compose.{{ stack }}.yaml"]
+
     # MariaDB loads the seed into the new empty volume, then Flyway applies anything newer
     - name: Delete staging's database
       when: stack == 'staging'
