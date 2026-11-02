@@ -66,10 +66,7 @@ describe('useDispenseResult', () => {
     score: 1,
   }
 
-  beforeEach(() => {
-    createTestingPinia()
-    vi.mocked(useGlassesStore().dispense).mockResolvedValue(true)
-  })
+  beforeEach(() => createTestingPinia())
 
   it('keeps a dispensed result listed as dispensed', async () => {
     const { shown, dispense } = useDispenseResult(ref([result]))

@@ -129,14 +129,6 @@ describe('glasses store', () => {
     ])
   })
 
-  it('tells when a dispense changed nothing', async () => {
-    const store = useGlassesStore()
-    store.allGlasses = [pair(1, 5)]
-    api.put.mockResolvedValue({ status: 204 })
-    expect(await store.dispense(pair(1, 5), 'DISPENSED')).toBe(false)
-    expect(store.allGlasses).toEqual([])
-  })
-
   it('does not change the cache when a write fails', async () => {
     const store = useGlassesStore()
     store.allGlasses = [pair(1, 5)]

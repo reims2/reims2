@@ -94,18 +94,13 @@ export const useGlassesStore = defineStore(
       addOfflineGlasses(fetchedGlasses)
       return fetchedGlasses
     }
-    // writes go by id, so one queued offline can't hit a pair that got the SKU later.
-    // False if the pair was already dispensed, e.g. on another device.
-    async function dispense(glasses: Glasses, reason: DeletionReason): Promise<boolean> {
+    // writes go by id, so one queued offline can't hit a pair that got the SKU later
+    async function dispense(glasses: Glasses, reason: DeletionReason) {
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
 
-      const response = await axiosInstance.put(
-        `/api/glasses/${glasses.id}/dispense?reason=${reason}`,
-        {},
-      )
+      await axiosInstance.put(`/api/glasses/${glasses.id}/dispense?reason=${reason}`, {})
       deleteOfflineGlassesById(glasses.id)
-      return response.status !== 204
     }
     async function undispense(glasses: Glasses) {
       // abort running fetch all request, since the fetch all will change after this request
