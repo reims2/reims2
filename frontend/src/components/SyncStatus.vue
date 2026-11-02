@@ -8,7 +8,7 @@
     :color="status.color"
     :prepend-icon="status.icon"
     :aria-label="`Sync status: ${status.label}`"
-    @click="isOnline && glassesStore.loadGlasses()"
+    @click="refresh"
   >
     {{ status.label }}
     <v-tooltip activator="parent" location="end" aria-label="Sync details">
@@ -31,10 +31,19 @@ import { useOnline } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
 import { usePendingChanges } from '@/composables/pending-changes'
 import LastRefreshSpan from '@/components/LastRefreshSpan.vue'
+import { useToast } from '@/composables/toast'
 
 const glassesStore = useGlassesStore()
 const isOnline = useOnline()
+const toast = useToast()
 const { pendingCount } = usePendingChanges()
+
+function refresh() {
+  if (!isOnline.value) return
+  glassesStore
+    .loadGlasses()
+    .catch((error) => toast.warning(`Could not refresh glasses (${(error as Error).message})`))
+}
 
 const status = computed(() => {
   if (pendingCount.value > 0)

@@ -161,8 +161,9 @@ export const useDeleteGlasses = (
     // show user the correct action string, even though it's the same in the backend
     const actionString = reason === 'DISPENSED' ? 'dispense' : 'delete'
     isLoading.value = true
+    let changed: boolean
     try {
-      await glassesStore.dispense(glasses, reason ?? 'OTHER')
+      changed = await glassesStore.dispense(glasses, reason ?? 'OTHER')
     } catch (error) {
       if (error instanceof ReimsAxiosError) {
         if (error.statusCode === 404) {
@@ -191,6 +192,13 @@ export const useDeleteGlasses = (
       isLoading.value = false
     }
 
+    if (!changed) {
+      // the cache was stale, SKU may already belong to other glasses
+      toast.warning(
+        `SKU ${formatSku(sku)} was already dispensed or deleted, nothing changed. Check the SKU again before handing out these glasses.`,
+      )
+      return
+    }
     toast.info(`Successfully ${actionString}d glasses with SKU ${formatSku(sku)}`)
     onSuccessFn?.()
   }

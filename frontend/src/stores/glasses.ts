@@ -10,6 +10,7 @@ import { Dayjs } from 'dayjs'
 type GlassesRequest = components['schemas']['GlassesRequestDTO']
 type GlassesResponse = components['schemas']['GlassesResponseDTO']
 type SearchLogRequest = components['schemas']['SearchLogDTO']
+type ChangeValue = components['schemas']['ChangeValueDTO']
 
 const arrayContainsSku = (data: Glasses[], sku: number | null) => {
   if (sku === null) return false
@@ -93,20 +94,42 @@ export const useGlassesStore = defineStore(
       addOfflineGlasses(fetchedGlasses)
       return fetchedGlasses
     }
-    // writes go by id, so one queued offline can't hit a pair that got the SKU later
-    async function dispense(glasses: Glasses, reason: DeletionReason) {
+    // writes go by id, so one queued offline can't hit a pair that got the SKU later.
+    // False if the pair was already dispensed, e.g. on another device.
+    async function dispense(glasses: Glasses, reason: DeletionReason): Promise<boolean> {
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
 
-      await axiosInstance.put(`/api/glasses/${glasses.id}/dispense?reason=${reason}`, {})
+      const response = await axiosInstance.put(
+        `/api/glasses/${glasses.id}/dispense?reason=${reason}`,
+        {},
+      )
       deleteOfflineGlassesById(glasses.id)
+      return response.status !== 204
     }
     async function undispense(glasses: Glasses) {
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
 
       await axiosInstance.put(`/api/glasses/${glasses.id}/undispense`, {})
-      addOfflineGlasses(glasses)
+      const sku = glasses.dispense?.previousSku ?? glasses.sku
+      if (sku === null) return
+      // only the stored fields, a Find result also carries its scores
+      const { id, glassesType, glassesSize, appearance, location, creationDate, od, os } = glasses
+      deleteOfflineGlasses(sku)
+      addOfflineGlasses({
+        id,
+        sku,
+        glassesType,
+        glassesSize,
+        appearance,
+        location,
+        creationDate,
+        od,
+        os,
+        dispensed: false,
+        dispense: { modifyDate: null, previousSku: null, dispenseReason: null },
+      })
     }
     async function editGlasses(newGlasses: Glasses): Promise<Glasses> {
       // abort running fetch all request, since the fetch all will change after this request
@@ -118,7 +141,6 @@ export const useGlassesStore = defineStore(
         request,
       )
       const editedGlasses: Glasses = response.data
-      deleteOfflineGlassesById(newGlasses.id)
       addOfflineGlasses(editedGlasses)
       return editedGlasses
     }
@@ -156,45 +178,39 @@ export const useGlassesStore = defineStore(
       return response.data
     }
     async function loadGlassesIfChanged() {
-      if (isRefreshingGlasses.value) return
+      if (!isRefreshingGlasses.value) await refreshGlasses(false)
+    }
+    async function loadGlasses() {
+      await refreshGlasses(true)
+    }
+    // the hash goes first, so a write in between only causes another load later
+    async function refreshGlasses(force: boolean) {
+      controllerGetAll.abort()
+      const controller = new AbortController()
+      controllerGetAll = controller
+      const site = rootStore.reimsSite
       isRefreshingGlasses.value = true
       try {
-        const response = await axiosInstance.get(`/api/glasses/${rootStore.reimsSite}/changes`)
-        const newHash = response.data.hashValue
-        if (newHash !== allGlassesHash.value) {
-          await loadGlasses()
+        const change = await axiosInstance.get<ChangeValue>(`/api/glasses/${site}/changes`, {
+          signal: controller.signal,
+        })
+        if (force || change.data.hashValue !== allGlassesHash.value) {
+          const response = await axiosInstance.get<GlassesResponse[]>(`/api/glasses/${site}/all`, {
+            timeout: 60000,
+            signal: controller.signal,
+          })
+          allGlasses.value = response.data
         }
-        allGlassesHash.value = newHash
+        allGlassesHash.value = change.data.hashValue
         lastRefresh.value = new Date().toISOString()
         isOutdated.value = false
       } finally {
-        isRefreshingGlasses.value = false
+        if (controllerGetAll === controller) isRefreshingGlasses.value = false
       }
-    }
-    async function loadGlasses() {
-      controllerGetAll.abort() // not really necessary
-      controllerGetAll = new AbortController()
-      isRefreshingGlasses.value = true
-      let response
-      try {
-        response = await axiosInstance.get<GlassesResponse[]>(
-          `/api/glasses/${rootStore.reimsSite}/all`,
-          {
-            timeout: 60000,
-            signal: controllerGetAll.signal,
-          },
-        )
-      } finally {
-        isRefreshingGlasses.value = false
-      }
-      allGlasses.value = response.data
-      lastRefresh.value = new Date().toISOString()
-      isOutdated.value = false
     }
     function addOfflineGlasses(glasses: Glasses) {
-      if (!arrayContainsSku(allGlasses.value, glasses.sku)) {
-        allGlasses.value.push(glasses)
-      }
+      deleteOfflineGlassesById(glasses.id)
+      allGlasses.value.push(glasses)
     }
     function deleteOfflineGlassesById(id: number) {
       if (allGlasses.value.some((el) => el.id === id)) {

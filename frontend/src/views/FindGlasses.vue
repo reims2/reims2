@@ -93,10 +93,10 @@
             :data-testid="'result-' + idx"
           >
             <v-divider v-if="idx > 0" />
-            <glasses-row :glasses="shown(item)">
+            <glasses-row :glasses="item">
               <template #actions>
                 <v-btn
-                  v-if="shown(item).dispensed"
+                  v-if="item.dispensed"
                   variant="text"
                   color="primary"
                   :loading="isLoading && current?.id === item.id"
@@ -180,10 +180,9 @@ const { shown, dispense, undo, isLoading, current } = useDispenseResult(matches)
 
 const paginatedMatches = computed(() => {
   if (matches.value == null) return null
-  return matches.value.slice(
-    itemsPerPage * (page.value - 1),
-    itemsPerPage * (page.value - 1) + itemsPerPage,
-  )
+  return matches.value
+    .slice(itemsPerPage * (page.value - 1), itemsPerPage * (page.value - 1) + itemsPerPage)
+    .map(shown)
 })
 
 const pageCount = computed(() => {

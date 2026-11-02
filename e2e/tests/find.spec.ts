@@ -67,7 +67,14 @@ test('Dispense from results', async ({ page, createGlasses }) => {
     page.getByText(`Successfully dispensed glasses with SKU ${formatSku(sku)}`),
   ).toBeVisible()
   await expect(result.getByText('Dispensed')).toBeVisible()
-  await expect(result.getByRole('button', { name: 'Undo' })).toBeVisible()
+  await result.getByRole('button', { name: 'Undo' }).click()
+  await expect(
+    page.getByText(`Reverted dispension/deletion of SKU ${formatSku(sku)}`),
+  ).toBeVisible()
+
+  // a new search reads the local cache, which has to hold the pair in stock again
+  await page.getByRole('button', { name: 'earch glasses' }).click()
+  await expect(result.getByRole('button', { name: 'Dispense' })).toBeVisible()
 })
 
 test('S searches from a field that still needs formatting', async ({ page, createGlasses }) => {
