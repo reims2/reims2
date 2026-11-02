@@ -155,14 +155,14 @@ public class GlassesRestController {
     }
 
     @ApiResponse(responseCode = "200", description = "Back in stock")
-    @ApiResponse(responseCode = "204", description = "Was already in stock")
-    @PutMapping(path = "/{id}/undispense")
-    public ResponseEntity<Void> undispense(@PathVariable("id") long id) {
+    @ApiResponse(responseCode = "204", description = "Was already in stock", content = @Content)
+    @PutMapping(path = "/{id}/undispense", produces = "application/json")
+    public ResponseEntity<GlassesResponseDTO> undispense(@PathVariable("id") long id) {
         Optional<Glasses> undispensed = glassesService.undispense(id);
         if (undispensed.isEmpty())
             return ResponseEntity.noContent().build();
         logger.info("Undispensed glasses {} (SKU {} in {})", id, undispensed.get().getSku(), undispensed.get().getLocation());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(GlassesResponseDTO.from(undispensed.get()));
     }
 
     @PostMapping(path = "/{location}/searchLog")

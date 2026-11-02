@@ -114,19 +114,16 @@ describe('glasses store', () => {
     await store.dispense(pair(2, 6), 'WRONGLY_ADDED')
     expect(store.allGlasses).toEqual([])
 
-    // shaped like Find's dispensed result, which also carries its scores
-    const dispense = { previousSku: 5, dispenseReason: 'DISPENSED' as const, modifyDate: null }
-    const shown = { ...pair(1, null), dispensed: true, dispense, score: 0.5, blurScore: 0.1 }
-    await store.undispense(shown)
-    await store.undispense(shown)
+    api.put.mockResolvedValue({ status: 200, data: pair(1, 5) })
+    await store.undispense(pair(1, null))
+    await store.undispense(pair(1, null))
     expect(api.put).toHaveBeenLastCalledWith('/api/glasses/1/undispense', {})
-    expect(store.allGlasses).toEqual([
-      {
-        ...pair(1, 5),
-        dispensed: false,
-        dispense: { modifyDate: null, previousSku: null, dispenseReason: null },
-      },
-    ])
+    expect(store.allGlasses).toEqual([pair(1, 5)])
+
+    // already in stock
+    api.put.mockResolvedValue({ status: 204, data: '' })
+    await store.undispense(pair(2, null))
+    expect(store.allGlasses).toEqual([pair(1, 5)])
   })
 
   it('does not change the cache when a write fails', async () => {

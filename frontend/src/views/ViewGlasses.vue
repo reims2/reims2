@@ -160,9 +160,9 @@ const filters = [
 
 // the range the table filters on, so the chip can't disagree with it
 function summary({ eye, value }: (typeof filters)[number]) {
-  const range = parseRange(eyeFilters[eye][value])
-  if (!range) return 'any'
-  const [from, to] = range.map((bound) => (isFinite(bound) ? formatDiopter(bound, true) : null))
+  const [from, to] = (parseRange(eyeFilters[eye][value]) ?? []).map((bound) =>
+    isFinite(bound) ? formatDiopter(bound, true) : null,
+  )
   if (from && to) return from === to ? from : `${from} to ${to}`
   if (from) return `from ${from}`
   if (to) return `up to ${to}`
