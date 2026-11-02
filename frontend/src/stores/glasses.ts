@@ -47,8 +47,6 @@ export const useGlassesStore = defineStore(
       }
       const response = await axiosInstance.post<GlassesResponse>('/api/glasses', request)
       const addedGlasses: Glasses = response.data
-      // the SKU may be a reissued one that is still cached for its dispensed previous pair
-      if (addedGlasses.sku !== null) deleteOfflineGlasses(addedGlasses.sku)
       addOfflineGlasses(addedGlasses)
       return addedGlasses
     }
@@ -90,7 +88,6 @@ export const useGlassesStore = defineStore(
       }
 
       const fetchedGlasses: Glasses = response.data
-      deleteOfflineGlasses(sku)
       addOfflineGlasses(fetchedGlasses)
       return fetchedGlasses
     }
@@ -106,25 +103,12 @@ export const useGlassesStore = defineStore(
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
 
-      await axiosInstance.put(`/api/glasses/${glasses.id}/undispense`, {})
-      const sku = glasses.dispense?.previousSku ?? glasses.sku
-      if (sku === null) return
-      // only the stored fields, a Find result also carries its scores
-      const { id, glassesType, glassesSize, appearance, location, creationDate, od, os } = glasses
-      deleteOfflineGlasses(sku)
-      addOfflineGlasses({
-        id,
-        sku,
-        glassesType,
-        glassesSize,
-        appearance,
-        location,
-        creationDate,
-        od,
-        os,
-        dispensed: false,
-        dispense: { modifyDate: null, previousSku: null, dispenseReason: null },
-      })
+      const response = await axiosInstance.put<GlassesResponse>(
+        `/api/glasses/${glasses.id}/undispense`,
+        {},
+      )
+      // a 204 means it was already in stock and changed nothing
+      if (response.status === 200) addOfflineGlasses(response.data)
     }
     async function editGlasses(newGlasses: Glasses): Promise<Glasses> {
       // abort running fetch all request, since the fetch all will change after this request
@@ -203,9 +187,12 @@ export const useGlassesStore = defineStore(
         if (controllerGetAll === controller) isRefreshingGlasses.value = false
       }
     }
+    // the server's version replaces the cached copy and a pair that held its SKU before
     function addOfflineGlasses(glasses: Glasses) {
-      deleteOfflineGlassesById(glasses.id)
-      allGlasses.value.push(glasses)
+      allGlasses.value = [
+        ...allGlasses.value.filter((el) => el.id !== glasses.id && el.sku !== glasses.sku),
+        glasses,
+      ]
     }
     function deleteOfflineGlassesById(id: number) {
       if (allGlasses.value.some((el) => el.id === id)) {

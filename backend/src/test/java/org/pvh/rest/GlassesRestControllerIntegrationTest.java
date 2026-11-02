@@ -211,6 +211,8 @@ public class GlassesRestControllerIntegrationTest {
         cv = callChangeValueAndReturnHash("sa");
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa2.getId() + "/undispense"))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.sku", Matchers.is(saveEntitySa2.getSku())))
+            .andExpect(jsonPath("$.dispensed", Matchers.is(false)))
             .andDo(print());
         assertFalse(isChangeValueEqualNewChangeValue(cv, "sa"));
         // undispense must not leave the old reason behind

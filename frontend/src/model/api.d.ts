@@ -452,7 +452,9 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["GlassesResponseDTO"];
+                };
             };
             /** @description Was already in stock */
             204: {

@@ -64,7 +64,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "Back in stock"
+            "description" : "Back in stock",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GlassesResponseDTO"
+                }
+              }
+            }
           },
           "204" : {
             "description" : "Was already in stock"
