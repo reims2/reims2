@@ -35,6 +35,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/glasses")
@@ -145,9 +146,11 @@ public class GlassesRestController {
     @PutMapping(path = "/{id}/dispense")
     public ResponseEntity<Void> dispense(@PathVariable("id") long id,
                                          @RequestParam(defaultValue = "DISPENSED") DispenseReasonEnum reason) {
-        if (!glassesService.dispense(id, reason))
+        Optional<Glasses> dispensed = glassesService.dispense(id, reason);
+        if (dispensed.isEmpty())
             return ResponseEntity.noContent().build();
-        logger.info("Dispensed glasses {} with reason {}", id, reason);
+        logger.info("Dispensed glasses {} (SKU {} in {}) with reason {}", id, dispensed.get().getDispense().getPreviousSku(),
+            dispensed.get().getLocation(), reason);
         return ResponseEntity.ok().build();
     }
 
@@ -155,9 +158,10 @@ public class GlassesRestController {
     @ApiResponse(responseCode = "204", description = "Was already in stock")
     @PutMapping(path = "/{id}/undispense")
     public ResponseEntity<Void> undispense(@PathVariable("id") long id) {
-        if (!glassesService.undispense(id))
+        Optional<Glasses> undispensed = glassesService.undispense(id);
+        if (undispensed.isEmpty())
             return ResponseEntity.noContent().build();
-        logger.info("Undispensed glasses with id {}", id);
+        logger.info("Undispensed glasses {} (SKU {} in {})", id, undispensed.get().getSku(), undispensed.get().getLocation());
         return ResponseEntity.ok().build();
     }
 
