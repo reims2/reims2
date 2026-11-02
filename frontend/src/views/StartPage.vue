@@ -4,44 +4,55 @@
       <v-img
         :src="heroImage"
         cover
-        position="left"
-        gradient="135deg, rgba(0, 46, 51, 0.95), rgba(0, 92, 102, 0.85)"
+        position="30% center"
+        gradient="rgba(0, 47, 53, 0.86), rgba(0, 47, 53, 0.86)"
         class="h-100 text-white"
       >
-        <div class="d-flex align-center h-100 pa-6 pa-sm-10 pa-lg-16">
-          <v-sheet color="transparent" max-width="640">
-            <p class="text-label-large text-uppercase opacity-80 mb-2">
+        <div class="d-flex flex-column justify-space-between ga-12 h-100 pa-6 pa-sm-10 pa-lg-16">
+          <reims-logo class="hero-logo" />
+          <div class="hero-text">
+            <p class="text-label-large text-uppercase hero-eyebrow mb-5">
               Partners for Visual Health
             </p>
-            <h1 class="text-display-medium text-lg-display-large font-weight-bold mb-4">REIMS2</h1>
-            <p class="text-body-large text-md-title-large opacity-90 mb-6">
-              The Richmond Eyeglass Inventory Matching System. It matches donated glasses to patient
-              prescriptions at the annual eyeglass campaigns in El Salvador.
+            <h1 class="text-display-small text-lg-display-medium font-weight-bold mb-5">
+              Donated glasses, matched to each prescription
+            </h1>
+            <p class="hero-lead ma-0">
+              The Richmond Eyeglass Inventory Matching System, used at the annual eyeglass campaigns
+              in El Salvador.
             </p>
-            <v-list bg-color="transparent" lines="two" class="d-none d-sm-block pa-0">
-              <v-list-item
-                :prepend-icon="mdiMagnify"
-                title="Match prescriptions"
-                subtitle="Ranks every pair in stock against a prescription, scored like the original REIMS."
-                class="px-0"
-              />
-              <v-list-item
-                :prepend-icon="mdiWifiOff"
-                title="Works offline"
-                subtitle="Search, dispense and edit without internet. Changes upload once you are back online."
-                class="px-0"
-              />
-            </v-list>
-          </v-sheet>
+          </div>
+          <div class="hero-text d-none d-sm-flex ga-6">
+            <div
+              v-for="point in points"
+              :key="point.title"
+              class="d-flex align-start ga-4 flex-1-1-0"
+            >
+              <div class="hero-tile d-flex align-center justify-center flex-shrink-0">
+                <v-icon :icon="point.icon" />
+              </div>
+              <div>
+                <p class="text-body-large font-weight-semibold mb-1">{{ point.title }}</p>
+                <p class="text-body-medium hero-muted ma-0">{{ point.text }}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </v-img>
     </v-col>
 
-    <v-col cols="12" md="5" class="d-flex align-center justify-center pa-6 pa-sm-10">
-      <v-sheet width="100%" max-width="380">
+    <v-col
+      cols="12"
+      md="5"
+      class="d-flex flex-column align-center justify-center ga-4 py-12 px-6 px-sm-8"
+    >
+      <v-card border elevation="1" width="100%" max-width="400" class="pa-6 pa-sm-8">
         <v-form v-model="valid" @submit.prevent="userLogin">
           <template v-if="!authStore.isLoggedIn">
-            <h2 class="text-headline-small mb-6">Sign in</h2>
+            <h2 class="text-headline-medium font-weight-bold mb-1">Sign in</h2>
+            <p class="text-body-medium text-medium-emphasis mb-7">
+              Then pick the site you are working at today.
+            </p>
             <v-text-field
               v-model="username"
               label="Username"
@@ -64,14 +75,29 @@
               class="mb-1"
             />
           </template>
+          <template v-else>
+            <h2 class="text-headline-medium font-weight-bold mb-1">Welcome back</h2>
+            <p class="text-body-medium text-medium-emphasis mb-7">
+              Check the site, then open REIMS2. Signed in as
+              <strong class="text-high-emphasis font-weight-semibold">{{ authStore.user }}</strong>
+            </p>
+          </template>
           <v-select
             v-model="rootStore.reimsSite"
             :items="reimsSiteSelects"
             label="Location"
             :prepend-inner-icon="mdiMapMarker"
-            class="mb-2"
+            class="mb-3"
           />
-          <v-btn v-if="authStore.isLoggedIn" color="primary" size="large" block to="/find">
+          <v-btn
+            v-if="authStore.isLoggedIn"
+            color="primary"
+            size="large"
+            elevation="2"
+            block
+            to="/find"
+            :append-icon="mdiArrowRight"
+          >
             Open REIMS2
           </v-btn>
           <v-btn
@@ -79,32 +105,40 @@
             :disabled="!valid"
             color="primary"
             size="large"
+            elevation="2"
             block
             type="submit"
             :loading="isLoading"
           >
-            Login
+            Sign in
           </v-btn>
         </v-form>
+      </v-card>
 
-        <v-btn
-          class="mt-6"
-          href="/docs/"
-          target="_blank"
-          rel="noopener noreferrer"
-          variant="tonal"
-          block
-          :prepend-icon="mdiFileDocument"
-        >
-          View Manual
-        </v-btn>
-      </v-sheet>
+      <v-btn
+        href="/docs/"
+        target="_blank"
+        rel="noopener noreferrer"
+        variant="text"
+        color="primary"
+        :prepend-icon="mdiBookOpenVariant"
+      >
+        Read the manual
+      </v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script setup lang="ts">
-import { mdiAccount, mdiFileDocument, mdiLock, mdiMapMarker, mdiMagnify, mdiWifiOff } from '@mdi/js'
+import {
+  mdiAccount,
+  mdiArrowRight,
+  mdiBookOpenVariant,
+  mdiLock,
+  mdiMagnify,
+  mdiMapMarker,
+  mdiWifiOff,
+} from '@mdi/js'
 import { useAuthStore } from '@/stores/auth'
 import { useRoute, useRouter } from 'vue-router'
 import { ReimsAxiosError } from '@/lib/axios'
@@ -112,6 +146,20 @@ import { useToast } from '@/composables/toast'
 import { reimsSiteSelects } from '@/util/util'
 import { useRootStore } from '@/stores/root'
 import heroImage from '@/assets/img/pfvh-hero.jpg'
+import ReimsLogo from '@/components/ReimsLogo.vue'
+
+const points = [
+  {
+    icon: mdiMagnify,
+    title: 'Match prescriptions',
+    text: 'Ranks every pair in stock, scored like the original REIMS.',
+  },
+  {
+    icon: mdiWifiOff,
+    title: 'Works offline',
+    text: 'Search, dispense and edit without internet. Changes upload once you are back online.',
+  },
+]
 
 const toast = useToast()
 
@@ -143,3 +191,30 @@ const userLogin = async () => {
   }
 }
 </script>
+
+<style scoped>
+.hero-logo {
+  font-size: 30px;
+}
+.hero-text {
+  max-width: 640px;
+}
+.hero-eyebrow {
+  color: #8fd6dd;
+  letter-spacing: 0.08em;
+}
+.hero-lead {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: #d3e9ec;
+}
+.hero-muted {
+  color: #a6d2d8;
+}
+.hero-tile {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+}
+</style>
