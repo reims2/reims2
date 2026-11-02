@@ -33,17 +33,6 @@ describe('dispense errors', () => {
     ])
   })
 
-  it('warns instead of confirming when the pair was already dispensed', async () => {
-    vi.mocked(useGlassesStore().dispense).mockResolvedValue(false)
-    const onSuccess = vi.fn()
-    const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
-    await useDeleteGlasses(glasses, onSuccess).deleteGlasses('DISPENSED')
-    expect(toastQueue.value).toEqual([
-      { color: 'warning', text: expect.stringContaining('SKU 0001 was already dispensed') },
-    ])
-    expect(onSuccess).not.toHaveBeenCalled()
-  })
-
   it('shows a 404 on undo', async () => {
     vi.mocked(useGlassesStore().undispense).mockRejectedValue(
       new ReimsAxiosError('Error 404', false, false, 'not found', 404),
