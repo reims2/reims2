@@ -135,7 +135,9 @@ glasses by id, so a queued change can't hit a pair that got the SKU later.
 
 `views/` are routed pages, and `router/index.ts` puts all but the start page behind login. `composables/`
 hold per-page logic (`find.ts`, `add.ts`, `edit.ts`), `lib/` framework-agnostic core logic and the typed
-axios wrapper. `@/` resolves to `src/`.
+axios wrapper. `@/` resolves to `src/`. Build UI from Vuetify components, their props and utility classes, with
+colors from the theme in `plugins/vuetify.ts`. Write custom CSS only when Vuetify has no way to get the look,
+and keep it small.
 
 ### CI/CD
 
