@@ -103,7 +103,7 @@ import dayjs from 'dayjs'
 import { mdiPencilOutline } from '@mdi/js'
 import PageLayout from '@/components/PageLayout.vue'
 import MinMaxInput from '@/components/MinMaxInput.vue'
-import { useTableFilter } from '@/composables/table-filter'
+import { parseRange, useTableFilter } from '@/composables/table-filter'
 import { GlassesEyeIndex } from '@/model/GlassesModel'
 import { TableSortBy } from '@/model/ReimsModel'
 import { useGlassesStore } from '@/stores/glasses'
@@ -158,11 +158,11 @@ const filters = [
   { label: 'OS CYL', eye: 'os', value: 'cylinder' },
 ] as const
 
+// the range the table filters on, so the chip can't disagree with it
 function summary({ eye, value }: (typeof filters)[number]) {
-  const { min, max } = eyeFilters[eye][value]
-  const fmt = (value?: string) =>
-    value == null || value === '' ? null : formatDiopter(Number(value), true)
-  const [from, to] = [fmt(min), fmt(max)]
+  const range = parseRange(eyeFilters[eye][value])
+  if (!range) return 'any'
+  const [from, to] = range.map((bound) => (isFinite(bound) ? formatDiopter(bound, true) : null))
   if (from && to) return from === to ? from : `${from} to ${to}`
   if (from) return `from ${from}`
   if (to) return `up to ${to}`

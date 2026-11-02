@@ -14,6 +14,18 @@ function lastEmitted(wrapper: RenderResult) {
 }
 
 describe('SingleEyeInput', () => {
+  it('keeps the S and A shortcut letters out of the field, but not Ctrl+A', () => {
+    const sphere = renderEye({}).getByLabelText('Sphere')
+    const prevented = (init: KeyboardEventInit) => {
+      const event = new KeyboardEvent('keydown', { bubbles: true, cancelable: true, ...init })
+      sphere.dispatchEvent(event)
+      return event.defaultPrevented
+    }
+    expect(prevented({ key: 's' })).toBe(true)
+    expect(prevented({ key: 'A', shiftKey: true })).toBe(true)
+    expect(prevented({ key: 'a', ctrlKey: true })).toBe(false)
+  })
+
   it('rounds the sphere to a quarter step on blur', async () => {
     const wrapper = renderEye({ sphere: '1.2' })
     await fireEvent.blur(wrapper.getByLabelText('Sphere'))

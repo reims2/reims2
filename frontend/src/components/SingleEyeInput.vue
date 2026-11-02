@@ -26,8 +26,8 @@
         @update:model-value="(val) => emitUpdate(eyeKey, val)"
         @blur="formatAndEmit(eyeKey)"
         @focus="$event.target.select()"
-        @keydown.s.exact.prevent
-        @keydown.a.exact.prevent
+        @keydown.s.a.exact.prevent
+        @keydown.shift.s.a.exact.prevent
       />
     </v-col>
     <v-col cols="12" class="pa-0">
