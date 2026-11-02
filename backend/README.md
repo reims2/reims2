@@ -7,7 +7,7 @@ Java 25 / Spring Boot 4 REST API for REIMS2. See the root `CLAUDE.md` for the ar
 Start a MariaDB instance with Docker. It loads the same frozen prod data as dev.reims2.app:
 
 ```bash
-docker run --detach --rm --name reims-db --env MARIADB_USER=reims --env MARIADB_PASSWORD=reims --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 -v "$PWD/../ansible/roles/app/files/staging-seed.sql.gz:/docker-entrypoint-initdb.d/staging-seed.sql.gz:ro" mariadb:13
+docker run --detach --rm --name reims-db --env MARIADB_USER=reims2 --env MARIADB_PASSWORD=reims --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 -v "$PWD/../ansible/roles/app/files/staging-seed.sql.gz:/docker-entrypoint-initdb.d/staging-seed.sql.gz:ro" mariadb:13
 ```
 
 Then start the backend with the `dev` profile:

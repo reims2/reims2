@@ -25,7 +25,7 @@ export const test = base.extend<
   page: async ({ page, location }, use) => {
     if (location !== 'sa') {
       await page.addInitScript((site) => {
-        localStorage.setItem('root', JSON.stringify({ reimsSite: site, drawer: true }))
+        localStorage.setItem('root', JSON.stringify({ reimsSite: site }))
       }, location)
     }
     await use(page)
