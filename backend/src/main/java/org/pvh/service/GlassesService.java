@@ -44,7 +44,7 @@ public class GlassesService {
     @Transactional
     public Glasses saveGlasses(Glasses glasses) {
         LocationEnum location = glasses.getLocation();
-        // first statement of every write, so the changevalue row lock is held before InnoDB takes its snapshot
+        // first statement, so the changevalue row lock is held before InnoDB takes its snapshot
         changeService.setNewHashValue(location);
         if (glasses.getDispense() == null)
             glasses.setDispense(new Dispense());
@@ -85,15 +85,18 @@ public class GlassesService {
         Glasses glasses = lock(id);
         if (!glasses.isDispensed())
             return Optional.empty();
+        Dispense dispense = glasses.getDispense();
+        Integer previousSku = dispense.getPreviousSku();
+        if (previousSku == null)
+            throw new BadRequestException("These glasses have no previous SKU to restore.");
 
         changeService.setNewHashValue(glasses.getLocation());
-        Dispense dispense = glasses.getDispense();
         // the unique index on glasses.sku catches a pair added concurrently with this SKU
-        if (glassesRepository.existsBySku(dispense.getPreviousSku()))
-            throw new BadRequestException("SKU " + formatSku(dispense.getPreviousSku()) + " is already used by other glasses.");
+        if (glassesRepository.existsBySku(previousSku))
+            throw new BadRequestException("SKU " + formatSku(previousSku) + " is already used by other glasses.");
 
         glasses.setDispensed(false);
-        glasses.setSku(dispense.getPreviousSku());
+        glasses.setSku(previousSku);
         dispense.setModifyDate(now());
         dispense.setPreviousSku(null);
         dispense.setDispenseReason(null);

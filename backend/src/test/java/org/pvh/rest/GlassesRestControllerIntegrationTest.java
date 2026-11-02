@@ -475,6 +475,20 @@ public class GlassesRestControllerIntegrationTest {
     }
 
     @Test
+    public void undispense_withoutPreviousSku_thenBadRequest() throws Exception {
+        Glasses glasses = saveGlasses(LocationEnum.sa);
+        mainService.dispense(glasses.getId(), DispenseReasonEnum.DISPENSED);
+        jdbcTemplate.update("UPDATE dispense SET previous_sku = NULL WHERE id = ?", glasses.getDispense().getId());
+
+        this.mockMvc.perform(put("/api/glasses/" + glasses.getId() + "/undispense"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.detail", Matchers.is("These glasses have no previous SKU to restore.")));
+        assertTrue(glassesRepository.findById(glasses.getId()).orElseThrow().isDispensed());
+        // the database is shared, and real dispensed rows always have one
+        jdbcTemplate.update("UPDATE dispense SET previous_sku = ? WHERE id = ?", glasses.getSku(), glasses.getDispense().getId());
+    }
+
+    @Test
     public void glassesSku_isUnique() {
         Glasses glasses = saveGlasses(LocationEnum.sa);
         Glasses other = saveGlasses(LocationEnum.sa);

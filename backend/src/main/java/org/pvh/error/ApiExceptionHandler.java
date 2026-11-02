@@ -20,7 +20,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.stream.Collectors;
 
-// clients drop a queued offline change on a 4xx and retry it on a 5xx, so only bad input may map to 4xx
+// clients drop a queued offline change on a 4xx and retry it on a 5xx, so a 4xx is only for a change that can never
+// succeed: bad input, or a conflict like editing a pair that was dispensed in the meantime
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
