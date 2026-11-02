@@ -78,6 +78,21 @@ describe('glasses store', () => {
     expect(store.isRefreshingGlasses).toBe(false)
   })
 
+  it('remembers the hash of a full load', async () => {
+    const store = useGlassesStore()
+    store.allGlassesHash = 'abc'
+    api.get
+      .mockResolvedValueOnce({ data: { hashValue: 'def' } })
+      .mockResolvedValueOnce({ data: [pair(1, 5)] })
+    await store.loadGlasses()
+    expect(store.allGlasses).toHaveLength(1)
+    expect(store.allGlassesHash).toBe('def')
+
+    api.get.mockResolvedValueOnce({ data: { hashValue: 'def' } })
+    await store.loadGlassesIfChanged()
+    expect(api.get).toHaveBeenCalledTimes(3)
+  })
+
   it('keeps the old hash when loading all glasses fails', async () => {
     const store = useGlassesStore()
     store.allGlassesHash = 'abc'
@@ -99,9 +114,27 @@ describe('glasses store', () => {
     await store.dispense(pair(2, 6), 'WRONGLY_ADDED')
     expect(store.allGlasses).toEqual([])
 
-    await store.undispense(pair(1, 5))
+    // shaped like Find's dispensed result, which also carries its scores
+    const dispense = { previousSku: 5, dispenseReason: 'DISPENSED' as const, modifyDate: null }
+    const shown = { ...pair(1, null), dispensed: true, dispense, score: 0.5, blurScore: 0.1 }
+    await store.undispense(shown)
+    await store.undispense(shown)
     expect(api.put).toHaveBeenLastCalledWith('/api/glasses/1/undispense', {})
-    expect(store.getGlassLocal(5)?.id).toBe(1)
+    expect(store.allGlasses).toEqual([
+      {
+        ...pair(1, 5),
+        dispensed: false,
+        dispense: { modifyDate: null, previousSku: null, dispenseReason: null },
+      },
+    ])
+  })
+
+  it('tells when a dispense changed nothing', async () => {
+    const store = useGlassesStore()
+    store.allGlasses = [pair(1, 5)]
+    api.put.mockResolvedValue({ status: 204 })
+    expect(await store.dispense(pair(1, 5), 'DISPENSED')).toBe(false)
+    expect(store.allGlasses).toEqual([])
   })
 
   it('does not change the cache when a write fails', async () => {

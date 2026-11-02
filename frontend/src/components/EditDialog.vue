@@ -80,6 +80,13 @@ async function updateGlasses() {
     if (error instanceof ReimsAxiosError && error.isNetwork) {
       toast.error(`Glasses will be automatically edited as soon as the connection is back.`)
       // no return here, we act like it's successful
+    } else if (
+      error instanceof ReimsAxiosError &&
+      (error.statusCode === 404 || error.statusCode === 409)
+    ) {
+      // dispensed or gone on the server, a retry can't help
+      glassesStore.deleteOfflineGlassesById(originalGlasses.value.id)
+      toast.error(`Glasses can't be edited (${error.apiMessage ?? error.message})`)
     } else {
       toast.error(`Glasses can't be edited (${(error as Error).message}). Please retry later`)
       return

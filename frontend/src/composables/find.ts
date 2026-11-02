@@ -74,7 +74,7 @@ export const useDispenseResult = (matches: Ref<MatchResult[] | null>) => {
 
   // shaped like a dispensed pair from the server, so the row and the undo treat it the same
   function shown(item: MatchResult): MatchResult {
-    if (!dispensedIds.value.includes(item.id)) return item
+    if (item.dispensed || !dispensedIds.value.includes(item.id)) return item
     const dispense = {
       previousSku: item.sku,
       dispenseReason: 'DISPENSED' as const,

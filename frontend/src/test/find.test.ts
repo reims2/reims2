@@ -66,7 +66,10 @@ describe('useDispenseResult', () => {
     score: 1,
   }
 
-  beforeEach(() => createTestingPinia())
+  beforeEach(() => {
+    createTestingPinia()
+    vi.mocked(useGlassesStore().dispense).mockResolvedValue(true)
+  })
 
   it('keeps a dispensed result listed as dispensed', async () => {
     const { shown, dispense } = useDispenseResult(ref([result]))
@@ -90,6 +93,15 @@ describe('useDispenseResult', () => {
       expect.objectContaining({ id: 7, dispense: expect.objectContaining({ previousSku: 1234 }) }),
     )
     expect(shown(result)).toBe(result)
+  })
+
+  it('undoes from the row as shown', async () => {
+    const { shown, dispense, undo } = useDispenseResult(ref([result]))
+    await dispense(result)
+    await undo(shown(result))
+    expect(useGlassesStore().undispense).toHaveBeenCalledWith(
+      expect.objectContaining({ dispense: expect.objectContaining({ previousSku: 1234 }) }),
+    )
   })
 
   it('forgets dispensed results on a new search', async () => {

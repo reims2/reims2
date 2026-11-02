@@ -73,3 +73,25 @@ test('Edit glasses', async ({ page, createGlasses }) => {
     page.getByLabel('Glasses result').getByRole('row', { name: /^OD \+7\.00/ }),
   ).toBeVisible()
 })
+
+test('Dispensing glasses another device dispensed warns', async ({ page, createGlasses, api }) => {
+  const glasses = await createGlasses()
+  const sku = formatSku(glasses.sku)
+  await page.getByLabel('SKU', { exact: true }).fill(sku)
+  await expect(page.getByLabel('Glasses result')).toBeVisible()
+  await api.put(`/api/glasses/${glasses.id}/dispense`)
+  await page.getByRole('button', { name: 'Dispense' }).click()
+  await expect(page.getByText(`SKU ${sku} was already dispensed or deleted`)).toBeVisible()
+})
+
+test('Editing glasses another device dispensed', async ({ page, createGlasses, api }) => {
+  const glasses = await createGlasses()
+  await page.getByLabel('SKU', { exact: true }).fill(formatSku(glasses.sku))
+  await page.getByRole('button', { name: 'Edit' }).click()
+  await new EyeInput(page).waitForAutofocus()
+  await api.put(`/api/glasses/${glasses.id}/dispense`)
+  await page.getByRole('button', { name: 'Save' }).click()
+  await expect(page.getByText('These glasses were dispensed in the meantime.')).toBeVisible()
+  await expect(page.getByText('Editing SKU')).toBeHidden()
+  await expect(page.getByLabel('Glasses result')).toHaveCount(0)
+})
