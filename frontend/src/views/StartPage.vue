@@ -8,9 +8,9 @@
         gradient="rgba(0, 47, 53, 0.86), rgba(0, 47, 53, 0.86)"
         class="h-100 text-white"
       >
-        <div class="d-flex flex-column justify-space-between ga-12 h-100 pa-6 pa-sm-10 pa-lg-16">
+        <div class="d-flex flex-column h-100 pa-6 pa-sm-10 pa-lg-16">
           <reims-logo class="text-headline-medium" />
-          <v-sheet color="transparent" max-width="640">
+          <v-sheet color="transparent" max-width="640" class="my-auto pt-12">
             <p class="text-label-large text-uppercase text-on-rail mb-5">
               Partners for Visual Health
             </p>
@@ -21,17 +21,13 @@
               The Richmond Eyeglass Inventory Matching System, used at the annual eyeglass campaigns
               in El Salvador.
             </p>
-          </v-sheet>
-          <v-sheet color="transparent" max-width="640" class="d-none d-sm-flex ga-6">
-            <div
-              v-for="point in points"
-              :key="point.title"
-              class="d-flex align-start ga-4 flex-1-1-0"
-            >
-              <v-avatar :icon="point.icon" color="white" variant="tonal" rounded="lg" />
-              <div>
-                <p class="text-body-large font-weight-semibold mb-1">{{ point.title }}</p>
-                <p class="text-body-medium text-on-rail ma-0">{{ point.text }}</p>
+            <div class="d-none d-sm-flex flex-column ga-5 mt-10">
+              <div v-for="point in points" :key="point.title" class="d-flex align-center ga-4">
+                <v-avatar :icon="point.icon" color="white" variant="tonal" rounded="lg" />
+                <div>
+                  <p class="text-body-large font-weight-semibold ma-0">{{ point.title }}</p>
+                  <p class="text-body-medium text-on-rail ma-0">{{ point.text }}</p>
+                </div>
               </div>
             </div>
           </v-sheet>
