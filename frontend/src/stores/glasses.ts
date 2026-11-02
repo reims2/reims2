@@ -99,7 +99,7 @@ export const useGlassesStore = defineStore(
       controllerGetAll.abort()
 
       await axiosInstance.put(`/api/glasses/${glasses.id}/dispense?reason=${reason}`, {})
-      if (glasses.sku !== null) deleteOfflineGlasses(glasses.sku)
+      deleteOfflineGlassesById(glasses.id)
     }
     async function undispense(glasses: Glasses) {
       // abort running fetch all request, since the fetch all will change after this request
@@ -118,7 +118,7 @@ export const useGlassesStore = defineStore(
         request,
       )
       const editedGlasses: Glasses = response.data
-      if (newGlasses.sku) deleteOfflineGlasses(newGlasses.sku)
+      deleteOfflineGlassesById(newGlasses.id)
       addOfflineGlasses(editedGlasses)
       return editedGlasses
     }
@@ -196,6 +196,11 @@ export const useGlassesStore = defineStore(
         allGlasses.value.push(glasses)
       }
     }
+    function deleteOfflineGlassesById(id: number) {
+      if (allGlasses.value.some((el) => el.id === id)) {
+        allGlasses.value = allGlasses.value.filter((el) => el.id !== id)
+      }
+    }
     function deleteOfflineGlasses(sku: number) {
       if (arrayContainsSku(allGlasses.value, sku)) {
         // call arrayContainsSku to avoid unnecessary reactive changes when replacing the array like this
@@ -225,6 +230,7 @@ export const useGlassesStore = defineStore(
       loadGlasses,
       addOfflineGlasses,
       deleteOfflineGlasses,
+      deleteOfflineGlassesById,
     }
   },
   { persist: { pick: ['allGlasses', 'lastRefresh', 'allGlassesHash', 'isOutdated'] } },

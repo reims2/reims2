@@ -172,7 +172,7 @@ export const useDeleteGlasses = (
             `Could not ${actionString} glasses because of a server error. Please retry later (Error ${error.statusCode})`,
           )
         } else if (error.isNetwork) {
-          if (sku !== null) glassesStore.deleteOfflineGlasses(sku)
+          glassesStore.deleteOfflineGlassesById(glasses.id)
           toast.warning(
             `Glasses with SKU ${formatSku(sku)} will be ${actionString}d when you're back online`,
           )

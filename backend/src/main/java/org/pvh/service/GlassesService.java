@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GlassesService {
@@ -61,12 +62,12 @@ public class GlassesService {
         return edit.applyTo(glasses);
     }
 
-    // false if already dispensed, so a replayed or doubled dispense changes nothing
+    // empty if already dispensed, so a replayed or doubled dispense changes nothing
     @Transactional
-    public boolean dispense(long id, DispenseReasonEnum reason) {
+    public Optional<Glasses> dispense(long id, DispenseReasonEnum reason) {
         Glasses glasses = lock(id);
         if (glasses.isDispensed())
-            return false;
+            return Optional.empty();
 
         changeService.setNewHashValue(glasses.getLocation());
         Dispense dispense = glasses.getDispense();
@@ -75,14 +76,15 @@ public class GlassesService {
         dispense.setDispenseReason(reason);
         glasses.setDispensed(true);
         glasses.setSku(null);
-        return true;
+        return Optional.of(glasses);
     }
 
+    // empty if already in stock
     @Transactional
-    public boolean undispense(long id) {
+    public Optional<Glasses> undispense(long id) {
         Glasses glasses = lock(id);
         if (!glasses.isDispensed())
-            return false;
+            return Optional.empty();
 
         changeService.setNewHashValue(glasses.getLocation());
         Dispense dispense = glasses.getDispense();
@@ -95,7 +97,7 @@ public class GlassesService {
         dispense.setModifyDate(now());
         dispense.setPreviousSku(null);
         dispense.setDispenseReason(null);
-        return true;
+        return Optional.of(glasses);
     }
 
     // a locking read takes no InnoDB snapshot, so a hash bump right after it still comes first, as in saveGlasses
