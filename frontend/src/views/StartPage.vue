@@ -9,34 +9,32 @@
         class="h-100 text-white"
       >
         <div class="d-flex flex-column justify-space-between ga-12 h-100 pa-6 pa-sm-10 pa-lg-16">
-          <reims-logo class="hero-logo" />
-          <div class="hero-text">
-            <p class="text-label-large text-uppercase hero-eyebrow mb-5">
+          <reims-logo class="text-headline-medium" />
+          <v-sheet color="transparent" max-width="640">
+            <p class="text-label-large text-uppercase text-on-rail mb-5">
               Partners for Visual Health
             </p>
             <h1 class="text-display-small text-lg-display-medium font-weight-bold mb-5">
               Donated glasses, matched to each prescription
             </h1>
-            <p class="hero-lead ma-0">
+            <p class="text-body-large text-md-title-medium text-on-rail ma-0">
               The Richmond Eyeglass Inventory Matching System, used at the annual eyeglass campaigns
               in El Salvador.
             </p>
-          </div>
-          <div class="hero-text d-none d-sm-flex ga-6">
+          </v-sheet>
+          <v-sheet color="transparent" max-width="640" class="d-none d-sm-flex ga-6">
             <div
               v-for="point in points"
               :key="point.title"
               class="d-flex align-start ga-4 flex-1-1-0"
             >
-              <div class="hero-tile d-flex align-center justify-center flex-shrink-0">
-                <v-icon :icon="point.icon" />
-              </div>
+              <v-avatar :icon="point.icon" color="white" variant="tonal" rounded="lg" />
               <div>
                 <p class="text-body-large font-weight-semibold mb-1">{{ point.title }}</p>
-                <p class="text-body-medium hero-muted ma-0">{{ point.text }}</p>
+                <p class="text-body-medium text-on-rail ma-0">{{ point.text }}</p>
               </div>
             </div>
-          </div>
+          </v-sheet>
         </div>
       </v-img>
     </v-col>
@@ -49,10 +47,7 @@
       <v-card border elevation="1" width="100%" max-width="400" class="pa-6 pa-sm-8">
         <v-form v-model="valid" @submit.prevent="userLogin">
           <template v-if="!authStore.isLoggedIn">
-            <h2 class="text-headline-medium font-weight-bold mb-1">Sign in</h2>
-            <p class="text-body-medium text-medium-emphasis mb-7">
-              Then pick the site you are working at today.
-            </p>
+            <h2 class="text-headline-medium font-weight-bold mb-6">Sign in</h2>
             <v-text-field
               v-model="username"
               label="Username"
@@ -77,8 +72,8 @@
           </template>
           <template v-else>
             <h2 class="text-headline-medium font-weight-bold mb-1">Welcome back</h2>
-            <p class="text-body-medium text-medium-emphasis mb-7">
-              Check the site, then open REIMS2. Signed in as
+            <p class="text-body-medium text-medium-emphasis mb-6">
+              Signed in as
               <strong class="text-high-emphasis font-weight-semibold">{{ authStore.user }}</strong>
             </p>
           </template>
@@ -191,30 +186,3 @@ const userLogin = async () => {
   }
 }
 </script>
-
-<style scoped>
-.hero-logo {
-  font-size: 30px;
-}
-.hero-text {
-  max-width: 640px;
-}
-.hero-eyebrow {
-  color: #8fd6dd;
-  letter-spacing: 0.08em;
-}
-.hero-lead {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  color: #d3e9ec;
-}
-.hero-muted {
-  color: #a6d2d8;
-}
-.hero-tile {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.12);
-}
-</style>
