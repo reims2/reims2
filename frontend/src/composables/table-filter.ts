@@ -2,6 +2,15 @@ import { Glasses, GlassesEyeIndex } from '@/model/GlassesModel'
 import { MinMaxObject } from '@/model/ReimsModel'
 import { MaybeRefOrGetter } from 'vue'
 
+export function parseRange(value: MinMaxObject): [number, number] | null {
+  const min = parseFloat(value.min ?? '')
+  const max = parseFloat(value.max ?? '')
+  if (isNaN(min) && isNaN(max)) return null
+  const range: [number, number] = [isNaN(min) ? -Infinity : min, isNaN(max) ? Infinity : max]
+  // swap min max automatically if entered wrongly
+  return range[0] <= range[1] ? range : [range[1], range[0]]
+}
+
 export const useTableFilter = (
   glasses: MaybeRefOrGetter<Glasses[]>,
   glassesTypeFilter: MaybeRefOrGetter<string[]>,
@@ -37,15 +46,6 @@ export const useTableFilter = (
         }),
     )
   })
-
-  function parseRange(value: MinMaxObject): [number, number] | null {
-    const min = parseFloat(value.min ?? '')
-    const max = parseFloat(value.max ?? '')
-    if (isNaN(min) && isNaN(max)) return null
-    const range: [number, number] = [isNaN(min) ? -Infinity : min, isNaN(max) ? Infinity : max]
-    // swap min max automatically if entered wrongly
-    return range[0] <= range[1] ? range : [range[1], range[0]]
-  }
 
   function resetFilters() {
     eyeFilters.od.sphere = {}
