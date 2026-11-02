@@ -4,181 +4,154 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-REIMS2 (Richmond Eyeglass Inventory Matching System) is a mono-repo for the inventory app used by the
-non-profit [Partners for Visual Health](https://partnersforvisualhealth.org/) at its annual eyeglass
-campaigns in El Salvador. Staff match donated used glasses to a patient's prescription on-site at two
-independent locations: Santa Ana (`sa`) and San Miguel (`sm`). They're almost always online. Offline
-use is a rare fallback, so give offline-only features and tests low priority.
+REIMS2 (Richmond Eyeglass Inventory Matching System) is the inventory app
+[Partners for Visual Health](https://partnersforvisualhealth.org/) uses at its annual eyeglass campaigns in
+El Salvador. Staff match donated used glasses to a patient's prescription at two independent sites, Santa
+Ana (`sa`) and San Miguel (`sm`). They're almost always online, so offline-only features and tests get low
+priority.
 
-Live instance: https://reims2.app (demo: https://dev.reims2.app). Public docs: https://reims2.app/docs.
+Live: https://reims2.app, demo: https://dev.reims2.app, docs: https://reims2.app/docs.
 
-Five independent projects live here, each with its own README, dependencies, and CI job:
+Five independent projects, each with its own README, dependencies and CI job:
 
 - `backend/`: Java 25 / Spring Boot 4 REST API (Maven)
-- `frontend/`: Vue 3 / Vuetify 3 / TypeScript SPA (Vite), installable as an offline-capable PWA
-- `e2e/`: Playwright tests that run against the full stack from the root `compose.yaml`
-- `docs/`: VitePress site published at `/docs`, for both end users and developers
-- `ansible/`: playbooks that set up the VPS and deploy the stack as Docker Compose projects
+- `frontend/`: Vue 3 / Vuetify 4 / TypeScript SPA (Vite), an installable PWA
+- `e2e/`: Playwright specs against the full stack from the root `compose.yaml`
+- `docs/`: VitePress site served at `/docs`, for users and developers
+- `ansible/`: playbooks that set up the VPS and deploy everything as Docker Compose projects
 
 ## Commands
 
 ### Backend (`backend/`)
 
 ```bash
-# one-off local DB, loads staging's seed
+# local DB with the same frozen prod data as dev.reims2.app, login test/testtest
 docker run --detach --name reims-db --env MARIADB_USER=reims2 --env MARIADB_PASSWORD=reims \
   --env MARIADB_DATABASE=reims --env MARIADB_ROOT_PASSWORD=root -p 3306:3306 \
   -v "$PWD/../ansible/roles/app/files/staging-seed.sql.gz:/docker-entrypoint-initdb.d/staging-seed.sql.gz:ro" mariadb:13
 
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev    # http://localhost:9966, swagger-ui at /swagger-ui/index.html
-./mvnw test                                              # all tests
-./mvnw test -Dtest=GlassesRestControllerIntegrationTest   # single test class
-./mvnw package                                            # build, what CI runs
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev    # :9966, Swagger UI at /swagger-ui/index.html
+./mvnw test -Dtest=GlassesRestControllerIntegrationTest   # one class, drop -Dtest for all
+./mvnw package                                            # what CI runs
 ```
 
-The container above starts with the same frozen prod data as dev.reims2.app (login `test`/`testtest`). Tests start their own MariaDB through Testcontainers (`MariaDbTestConfiguration`), so
-`./mvnw test` needs Docker. Integration tests carry `@IntegrationTest`, which shares one Spring context and container and layers
-`src/test/resources/application-test.properties` over the main config. They run with security on and sign in with `@WithMockUser`. `OpenApiSpecTest`
-rewrites `backend/openapi.json` and fails when the API changed: commit the file and run `pnpm generate:api` in
-`frontend/`, which regenerates the request/response types in `src/model/api.d.ts`. CI checks both.
+Tests start MariaDB through Testcontainers, so they need Docker. `@IntegrationTest` classes share one Spring
+context and database that nothing cleans up, so a test that breaks a row's invariants has to restore it.
+They run with security on and sign in with `@WithMockUser`. `OpenApiSpecTest` rewrites `backend/openapi.json`
+and fails when the API changed: commit it and run `pnpm generate:api` in `frontend/` to regenerate
+`src/model/api.d.ts`. CI checks both.
 
 ### Frontend (`frontend/`)
 
 ```bash
-pnpm install
-pnpm dev:local     # dev server on :3000 against a local backend on :9966
-pnpm dev:remote    # dev server against the dev.reims2.app API instead
+pnpm dev:local     # :3000 against a local backend on :9966, dev:remote uses dev.reims2.app instead
 pnpm lint          # eslint --fix
-pnpm format:check  # prettier --check
-pnpm test          # vitest run --coverage
-pnpm vitest run src/test/philscore_score.test.ts   # single test file
-pnpm build         # vue-tsc --build && vite build, what CI runs
+pnpm format:check
+pnpm test          # vitest with coverage
+pnpm vitest run src/test/philscore_score.test.ts
+pnpm build         # vue-tsc + vite build, what CI runs
 ```
 
 ### E2E (`e2e/`)
 
-Expects REIMS running at `http://localhost:3000` (override with `BASE_URL`), login `test`/`testtest`.
-`e2e/stack.sh` provides exactly that: the root `compose.yaml` stack plus a Traefik that routes like prod,
-seeded from `e2e/seed.sql` (port via `E2E_PORT`). Specs create their own glasses through the
-`createGlasses` fixture in `e2e/tests/fixtures.ts` instead of relying on seed rows.
+Specs expect REIMS at `http://localhost:3000` (`BASE_URL` overrides it) with login `test`/`testtest`.
+`./stack.sh` provides that: the root compose stack plus a Traefik that routes like prod, seeded from
+`seed.sql`. Specs create their own glasses with the `createGlasses` fixture (`tests/fixtures.ts`).
 
 ```bash
-./stack.sh build     # or `pull` to test published images (set TAG, e.g. sha-abc1234)
-./stack.sh up        # start, or reseed a running stack; `down` deletes it
-pnpm install
-pnpm test:ui                             # Playwright UI, pick the project top-left before running
-pnpm playwright test tests/find.spec.ts  # single spec, headless
-pnpm playwright test --project chromium # what CI runs on every PR
-pnpm screenshots                         # regenerate docs/src/public/screenshots, commit by hand
+./stack.sh build && ./stack.sh up        # `pull` tests published images (TAG=sha-abc1234), `down` deletes
+pnpm playwright test --project chromium  # what PRs run, add a spec path for one
+pnpm test:ui                             # pick the project top-left first
+pnpm screenshots                         # regenerates docs/src/public/screenshots, commit by hand
 ```
 
-CI runs the same stack inside the GitHub runner, never on the server: all specs on Chromium on PRs (images
-built from source) and on `main` (the images just pushed), on all browsers weekly.
+CI runs this stack in the GitHub runner: Chromium on PRs and `main`, all browsers weekly.
 
-### Docs (`docs/`)
+### Docs and Ansible
 
-```bash
-pnpm install
-pnpm dev    # vitepress dev src
-pnpm build  # vitepress build src
-```
+`docs/`: `pnpm dev`, `pnpm build`, `pnpm format:check`.
 
-### Ansible (`ansible/`)
-
-Runs backend, frontend, docs, MariaDB, Traefik, Grafana/Prometheus and S3 backups as Docker Compose
-projects. CI runs these, see `ansible/README.md` for a new box, restore and variables.
+`ansible/` normally runs from CI. `ansible/README.md` covers a new box, restores and variables.
 
 ```bash
-ansible-playbook -i hosts setup.yml                                   # Docker, firewall, hardening
+ansible-playbook -i hosts setup.yml                     # Docker, firewall, hardening
+ansible-playbook -i hosts deploy.yml -e stack=staging   # dev.reims2.app
 ansible-playbook -i hosts deploy.yml -e stack=prod --vault-password-file creds/vault_password
-ansible-playbook -i hosts deploy.yml -e stack=staging                 # dev.reims2.app
 ```
 
 ## Architecture
 
-### Matching runs entirely client-side
+### Matching runs in the browser
 
-This is the central design fact of the system: the backend does no prescription matching. Given a
-prescription typed into the UI, `frontend/src/lib/philscore.ts` and `frontend/src/lib/blurscore.ts`
-(predicted blur) each filter and score every glass held in `useGlassesStore`
-(`frontend/src/stores/glasses.ts`), purely in the browser. For now `frontend/src/lib/interleave.ts`
-adds blur's picks to PhilScore's list as experimental suggestions, see `docs/src/dev/ai-notes/predicted-blur-matching.md`. See
-`frontend/src/composables/find.ts` for how a search is wired up. This is what lets the app work with no
-network connection during a campaign. The backend only learns each search's prescription, PhilScore's match count
-and the shown pairs (`POST /api/glasses/{location}/searchLog`, stored in `search_log`); that's also the
-only path by which prescription values reach the server. PhilScore is a deliberate port of the original REIMS1 implementation. Read
-`docs/src/philscore.md` before changing its tolerance or scoring rules: any behavioral difference from
-REIMS1 not documented there is treated as a bug, not an opportunity to improve it.
+The backend does no prescription matching. `frontend/src/lib/philscore.ts` and `lib/blurscore.ts` (predicted
+blur) score every pair in the glasses store (`stores/glasses.ts`) client-side. `lib/interleave.ts` mixes
+blur's picks into PhilScore's list as experimental suggestions (`docs/src/dev/ai-notes/predicted-blur-matching.md`),
+and `composables/find.ts` wires up a search. Prescription values only reach the server through the search
+log (`POST /api/glasses/{location}/searchLog`): the prescription, PhilScore's match count and the shown
+pairs. PhilScore is a deliberate port of REIMS1. Read `docs/src/philscore.md` before changing tolerances or
+scoring: any difference from REIMS1 not documented there is a bug.
 
 ### Offline-first sync
 
-- On load, the frontend fetches all non-dispensed glasses for the current site
-  (`GET /api/glasses/{location}/all`) into a Pinia store persisted to local storage.
-- Rather than re-polling that full list, it cheaply polls `GET /api/glasses/{location}/changes` for a hash
-  that the backend (`ChangeService`) bumps on every write. The full list is only refetched when the hash
-  changes.
-- Dispense/undispense and edit `PUT` requests and search log `POST`s are queued with Workbox background
-  sync (`frontend/vite.config.ts`) when offline, then replayed once connectivity returns. A 5xx on the
-  first try isn't queued and shows an error, but a replay that hits a 5xx stays queued. The header's
-  "waiting to upload" chip counts the queued dispense/edit requests straight from Workbox's IndexedDB
-  (`frontend/src/composables/pending-changes.ts`).
+- The frontend keeps all in-stock glasses of the current site (`GET /api/glasses/{location}/all`) in a Pinia
+  store persisted to local storage.
+- It polls `GET /api/glasses/{location}/changes` for a hash that `ChangeService` bumps on every write, and
+  refetches the full list only when the hash moved.
+- Offline, dispense/undispense/edit `PUT`s and search log `POST`s are queued by Workbox background sync
+  (`frontend/vite.config.ts`). A 5xx on the first try isn't queued, the page shows it. A replay is dropped
+  on a 4xx and retried on a 5xx, so the backend answers 4xx only for a change that can never succeed: bad
+  input, or a conflict like editing a pair dispensed in the meantime.
+- The rail's sync status counts queued writes straight from Workbox's IndexedDB (`composables/pending-changes.ts`).
 
 ### Domain model
 
-A `Glasses` row has a `location` (`sa`/`sm`), a `sku` (present while in stock, cleared on dispense), a
-`glassesType` (`single` or `multifocal`), and two `Eye`s (`os`/`od`) with sphere/cylinder/axis/add.
-Axis means nothing without cylinder: the frontend forces it to 0 when cylinder is 0 (`sanitizeEyeValues` in
-`frontend/src/util/eye-utils.ts`), but code reading stored data, like an analysis of dispensed glasses,
-should check cylinder first.
-Dispensing doesn't delete the row. It clears the SKU and stamps a `Dispense` sub-record (reason, previous
-SKU) so `PUT /{id}/undispense` can restore it, as long as the SKU hasn't been reissued to a new pair since. Writes
-address glasses by id, so a change queued offline can't hit a pair that got the same SKU later.
+A `Glasses` row has a `location`, a `sku` (only while in stock), a `glassesType` (`single`/`multifocal`) and
+two `Eye`s (`od`/`os`) with sphere, cylinder, axis and add. Axis means nothing without cylinder: the frontend
+forces it to 0 then (`sanitizeEyeValues`), but code reading stored data should check cylinder first.
+
+Glasses are never deleted. Dispensing, also with a deletion reason, clears the SKU and stamps a `Dispense`
+record (reason, previous SKU), so `PUT /{id}/undispense` can restore it unless the SKU went to a new pair
+since. Add hands out the lowest free SKU, so a freed one comes back with the next pair. Writes address
+glasses by id, so a queued change can't hit a pair that got the SKU later.
 
 ### Backend (`backend/src/main/java/org/pvh/`)
 
-Standard `rest/` → `service/` (`GlassesService`, `SearchLogService`, `ChangeService`, `UserService`) → `repository/` layering on
-Spring Data JPA. `LocationEnum` holds the two sites and their SKU ranges, an unknown location is a 400.
-There's no server-side filtering or paging of glasses: the View Glasses table filters, sorts and pages the
-glasses store in the browser (`frontend/src/composables/table-filter.ts`). DTOs in `model/dto/` are records
-that map to and from entities themselves (`GlassesResponseDTO.from`, `GlassesRequestDTO.applyTo`). Each write
-runs in one transaction. It bumps the change hash before any plain read, so InnoDB's snapshot can't predate the
-hash lock. Only a locking read of the changed row may come first. Flyway owns the schema and Hibernate only validates
-against it. Every staging deploy reloads a frozen copy of prod's data from March 2024, so a push to `main` tries
-new migrations on it before prod (see `ansible/README.md`). Errors are RFC 9457 problem details from
-`error/ApiExceptionHandler.java`, which maps the domain exceptions in `error/` to status codes, so services never pick one. A queued offline change is dropped on a 4xx but retried on a 5xx, so a 4xx is
-only for a change that can never succeed: bad input, or a conflict like editing a pair dispensed in the meantime. Auth is JWT via Spring Security's OAuth2 resource server
-(`security/WebSecurityConfig.java`, tokens from `TokenService`, settings in `pvh.jwt.*`), with roles read from the database on every request. The two roles,
-`ROLE_USER` and `ROLE_ADMIN`, are enforced with `@PreAuthorize`, and a role hierarchy gives admins every user
-right. User management is admin-only. Glasses are never deleted, removing a pair is a dispense with a reason.
+- `rest/` → `service/` → `repository/` on Spring Data JPA. DTO records in `model/dto/` map to and from
+  entities themselves (`GlassesResponseDTO.from`, `GlassesRequestDTO.applyTo`). `LocationEnum` holds the
+  sites and their SKU ranges.
+- No server-side filtering or paging: the Inventory page filters, sorts and pages the store in the browser
+  (`frontend/src/composables/table-filter.ts`).
+- Each write is one transaction that bumps the change hash before any plain read, so InnoDB's snapshot
+  can't predate the hash lock. Only a locking read of the changed row may come first.
+- Flyway owns the schema, Hibernate only validates. Every staging deploy reloads a frozen copy of prod's data
+  from March 2024, so a push to `main` tries new migrations on real data before prod.
+- Errors are RFC 9457 problem details. `error/ApiExceptionHandler.java` maps the domain exceptions in
+  `error/` to status codes, services never pick one.
+- Auth is JWT via Spring Security's OAuth2 resource server (`security/WebSecurityConfig.java`, `TokenService`,
+  `pvh.jwt.*`), with roles read from the database on every request. `@PreAuthorize` enforces `ROLE_USER` and
+  `ROLE_ADMIN`, a role hierarchy gives admins every user right, and user management is admin-only.
 
 ### Frontend (`frontend/src/`)
 
-`views/` are routed pages (`router/index.ts` gates everything except `/` and `/login` behind auth).
-`stores/` are Pinia state (`glasses`, `auth`, `root` for the selected site and UI state, `users`).
-`composables/` hold per-page view-model logic (`find.ts`, `add.ts`, `edit.ts`). `lib/` holds
-framework-agnostic core logic (`philscore.ts`, the typed `axios` error/instance wrapper). Path alias `@/`
-resolves to `src/`.
+`views/` are routed pages, and `router/index.ts` puts all but the start page behind login. `composables/`
+hold per-page logic (`find.ts`, `add.ts`, `edit.ts`), `lib/` framework-agnostic core logic and the typed
+axios wrapper. `@/` resolves to `src/`.
 
 ### CI/CD
 
-GitHub Actions in `.github/workflows/`: `pr.yml` runs lint+test+build for frontend/backend/docs,
-ansible-lint and the e2e specs on PRs. `main.yml` additionally builds and pushes per-component
-images to GHCR (`docker.yml`), runs `e2e.yml` against them, then deploys staging (dev.reims2.app) and
-production through `ansible.yml`, which runs the `ansible/` playbooks. Pushes leave production alone while
-it's in use during a campaign (`ansible/tasks/prod-quiet.yml`). `staging.yml` deploys any branch to staging
-by hand, `server-setup.yml` runs `setup.yml`.
+`.github/workflows/pr.yml` runs lint, tests and builds for frontend, backend and docs, plus ansible-lint and
+e2e. `main.yml` also pushes images to GHCR (`docker.yml`), runs e2e against them, then deploys staging and
+prod through `ansible.yml`. Prod is left alone while a campaign uses it (`ansible/tasks/prod-quiet.yml`).
+`staging.yml` deploys any branch to staging by hand, `server-setup.yml` runs `setup.yml`.
 
 ## Documentation
 
-`docs/src/` is the VitePress source for the published site (nav/sidebar in `docs/src/.vitepress/config.ts`).
-Worth reading before touching related code: `optometry-basics.md` (domain background for prescriptions),
-`philscore.md` (matching algorithm), `dev/system.md` (system overview), `dev/user-stories.md` /
-`dev/requirements.md` (original product scope), `dev/notes.md` (raw meeting notes, historical: check
-against current code before trusting as spec).
+`docs/src/` is the published site (nav in `.vitepress/config.ts`). Read before touching related code:
+`optometry-basics.md` (prescription basics), `philscore.md` and `dev/system.md`. `dev/user-stories.md` and
+`dev/requirements.md` are the original scope. `dev/notes.md` holds raw historical meeting notes, check them
+against the code before trusting them as spec.
 
-When adding documentation, extend an existing page and integrate new facts into existing sentences
-instead of bolting on new sections. Check whether a topic is already covered elsewhere before adding
-a new page, and consolidate into one place rather than restating it. Keep sentences short. Skip em
-dashes. Longer write-ups from a session (architecture deep-dives, investigation reports, migration
-handovers) belong in `docs/src/dev/ai-notes/`, not this file and not the repo root. Keep entries
-there short too: one focused page beats an exhaustive one.
+When writing docs, extend an existing page and work new facts into its sentences instead of adding
+sections, and keep each topic in one place. Short sentences, no em dashes. Longer session write-ups (deep
+dives, investigations, handovers) go in `docs/src/dev/ai-notes/` as short focused pages, not here and not in
+the repo root.
