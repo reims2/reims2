@@ -7,8 +7,6 @@
     ":separateMajorReleases",
     "helpers:pinGitHubActionDigests",
     "docker:pinDigests",
-    ":automergeLinters",
-    ":automergeTesters",
     ":automergePr",
     ":prConcurrentLimit10",
     "schedule:automergeWeekends"
@@ -19,12 +17,15 @@
   "labels": [
     "dependencies"
   ],
+  "automerge": true,
   "platformAutomerge": true,
+  "assignees": [
+    "l3d00m"
+  ],
   "lockFileMaintenance": {
     "enabled": true,
-    "automerge": true,
     "schedule": [
-      "before 2pm on Saturday"
+      "* 0-13 1 * *"
     ]
   },
   "osvVulnerabilityAlerts": true,
@@ -33,57 +34,139 @@
   ],
   "packageRules": [
     {
-      "groupName": "all patch dependencies",
-      "matchPackageNames": [
-        "!vuetify"
-      ],
-      "matchUpdateTypes": [
-        "patch",
-        "digest"
-      ],
-      "automerge": true
-    },
-    {
-      "groupName": "all minor dev dependencies",
-      "matchDepTypes": [
-        "devDependencies",
-        "action",
-        "galaxy-collection"
-      ],
-      "matchUpdateTypes": [
-        "minor"
-      ],
-      "automerge": true
-    },
-    {
-      "matchPackageNames": [
-        "playwright",
-        "@playwright/test",
-        "mcr.microsoft.com/playwright"
-      ],
-      "matchDatasources": [
-        "docker",
-        "npm"
-      ],
-      "groupName": "playwright monorepo",
+      "description": "Everything that ships to prod, monthly",
+      "groupName": "all non-major dependencies",
       "matchUpdateTypes": [
         "minor",
-        "major"
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest"
       ]
     },
     {
-      "extends": [
-        "packages:linters",
-        "schedule:monthly"
+      "description": "On its own, the Visual check stops it when screenshots change",
+      "groupName": "vuetify",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest"
       ],
-      "groupName": "linters"
+      "matchPackageNames": [
+        "vuetify"
+      ]
     },
     {
-      "extends": [
-        "packages:test",
-        "schedule:monthly"
+      "description": "Only runs in CI or builds, so every three months",
+      "groupName": "toolchain",
+      "schedule": [
+        "* 0-13 1 1,4,7,10 *"
       ],
-      "groupName": "test packages"
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest"
+      ],
+      "matchPackageNames": [
+        "node",
+        "@types/node",
+        "pnpm",
+        "corepack",
+        "maven",
+        "maven-wrapper"
+      ]
+    },
+    {
+      "groupName": "toolchain",
+      "schedule": [
+        "* 0-13 1 1,4,7,10 *"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest"
+      ],
+      "matchManagers": [
+        "github-actions"
+      ]
+    },
+    {
+      "description": "Break most often, so apart from everything else",
+      "groupName": "linters",
+      "schedule": [
+        "* 0-13 1 1,4,7,10 *"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest"
+      ],
+      "extends": [
+        "packages:linters"
+      ],
+      "matchPackageNames": [
+        "typescript",
+        "vue-tsc",
+        "vue-eslint-parser",
+        "globals",
+        "ansible/ansible-lint"
+      ]
+    },
+    {
+      "groupName": "test packages",
+      "schedule": [
+        "* 0-13 1 1,4,7,10 *"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest"
+      ],
+      "extends": [
+        "packages:test"
+      ],
+      "matchPackageNames": [
+        "happy-dom",
+        "@pinia/testing",
+        "@playwright/test",
+        "@axe-core/playwright"
+      ]
+    },
+    {
+      "description": "Majors get a PR each, so closing one keeps that major away. Monorepos still come together.",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "minimumReleaseAge": "30 days"
+    },
+    {
+      "description": "MariaDB converts prod's data files and CI never runs the Galaxy roles",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "matchPackageNames": [
+        "mariadb"
+      ],
+      "automerge": false
+    },
+    {
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "matchManagers": [
+        "ansible-galaxy"
+      ],
+      "automerge": false
     }
   ],
   "customManagers": [
@@ -112,7 +195,7 @@
     "ghcr.io/reims2/reims2-docs"
   ],
   "schedule": [
-    "before 2pm on Saturday"
+    "* 0-13 1 * *"
   ],
   "timezone": "Europe/Berlin",
   "npm": {
