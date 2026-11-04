@@ -8,8 +8,10 @@
     "helpers:pinGitHubActionDigests",
     "docker:pinDigests",
     ":automergePr",
-    ":prConcurrentLimit10",
-    "schedule:automergeWeekends"
+    ":prConcurrentLimit10"
+  ],
+  "automergeSchedule": [
+    "* * * * 6"
   ],
   "configMigration": true,
   "minimumReleaseAge": "7 days",
@@ -61,8 +63,8 @@
     {
       "description": "Only runs in CI or builds, so every three months",
       "groupName": "toolchain",
-      "schedule": [
-        "* 0-13 1 1,4,7,10 *"
+      "extends": [
+        "schedule:quarterly"
       ],
       "matchUpdateTypes": [
         "minor",
@@ -82,8 +84,8 @@
     },
     {
       "groupName": "toolchain",
-      "schedule": [
-        "* 0-13 1 1,4,7,10 *"
+      "extends": [
+        "schedule:quarterly"
       ],
       "matchUpdateTypes": [
         "minor",
@@ -99,9 +101,6 @@
     {
       "description": "Break most often, so apart from everything else",
       "groupName": "linters",
-      "schedule": [
-        "* 0-13 1 1,4,7,10 *"
-      ],
       "matchUpdateTypes": [
         "minor",
         "patch",
@@ -110,7 +109,8 @@
         "digest"
       ],
       "extends": [
-        "packages:linters"
+        "packages:linters",
+        "schedule:quarterly"
       ],
       "matchPackageNames": [
         "typescript",
@@ -122,9 +122,6 @@
     },
     {
       "groupName": "test packages",
-      "schedule": [
-        "* 0-13 1 1,4,7,10 *"
-      ],
       "matchUpdateTypes": [
         "minor",
         "patch",
@@ -133,7 +130,8 @@
         "digest"
       ],
       "extends": [
-        "packages:test"
+        "packages:test",
+        "schedule:quarterly"
       ],
       "matchPackageNames": [
         "happy-dom",
