@@ -25,7 +25,7 @@ async function highlight(locator: Locator) {
 async function shoot(page: Page, name: string, blur = true) {
   if (blur) await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur())
   await page.mouse.move(0, 0)
-  if (test.info().project.name === 'visual') {
+  if (process.env.VISUAL) {
     await expect(page).toHaveScreenshot(name.replace(/\.jpg$/, '.png'))
     return
   }
