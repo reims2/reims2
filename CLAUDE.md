@@ -142,7 +142,8 @@ and keep it small.
 ### CI/CD
 
 `.github/workflows/pr.yml` runs lint, tests and builds for frontend, backend and docs, plus ansible-lint and
-e2e. `main.yml` also pushes images to GHCR (`docker.yml`), runs e2e against them, then deploys staging and
+e2e. On Renovate PRs that change the frontend, `visual.yml` also compares the guide screenshots with the PR's
+base. `main.yml` also pushes images to GHCR (`docker.yml`), runs e2e against them, then deploys staging and
 prod through `ansible.yml`. Prod is left alone while a campaign uses it (`ansible/tasks/prod-quiet.yml`).
 `staging.yml` deploys any branch to staging by hand, `server-setup.yml` runs `setup.yml`.
 
