@@ -24,7 +24,7 @@ describe('useFindGlasses', () => {
       id: i + 1,
       sku: i + 1,
     }))
-    vi.mocked(glassesStore.logSearch).mockResolvedValue('sent')
+    vi.mocked(glassesStore.logSearch).mockResolvedValue()
   })
 
   it('shows an alternative and logs which algorithm placed each pair', () => {

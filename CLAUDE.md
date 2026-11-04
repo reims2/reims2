@@ -97,11 +97,11 @@ scoring: any difference from REIMS1 not documented there is a bug.
   store persisted to local storage.
 - It polls `GET /api/glasses/{location}/changes` for a hash that `ChangeService` bumps on every write, and
   refetches the full list only when the hash moved.
-- Dispenses, undos, edits and search logs that get no response are queued in an IndexedDB outbox
-  (`frontend/src/lib/outbox.ts`) and upload in order while the app is open. A 5xx on the first try isn't
-  queued, the page shows it. A queued entry is dropped on a 4xx and retried on a 5xx, so the backend answers
-  4xx only for a change that can never succeed: bad input, or a conflict like editing a pair dispensed in
-  the meantime. The rail's sync status shows the store's count of queued glasses changes.
+- Dispenses, undos and edits that get no response are queued in a localStorage outbox
+  (`frontend/src/lib/outbox.ts`) and upload in order while the app is open. Search logs aren't queued. A
+  5xx on the first try isn't queued, the page shows it. A queued entry is retried on a 5xx and dropped on a
+  4xx, which also makes the next poll reload all glasses. So the backend answers 4xx only for a change that
+  can never succeed: bad input, or a conflict like editing a pair dispensed in the meantime.
 
 ### Domain model
 

@@ -32,7 +32,7 @@ export const useFindGlasses = (
     matches.value = interleave(philscore, calculateAllBlurscore(eyeModel, stock))
     if (isUserSubmitted) {
       const results = matches.value.map(({ id, algorithm }) => ({ id, algorithm }))
-      // queued when offline, a server error isn't worth bothering the user with
+      // a search log lost offline isn't worth bothering the user with
       glassesStore.logSearch(eyeModel, philscore.length, results).catch(() => {})
     }
   }

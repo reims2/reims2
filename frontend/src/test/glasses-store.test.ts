@@ -1,4 +1,3 @@
-import 'fake-indexeddb/auto'
 import { createPinia, setActivePinia } from 'pinia'
 import { useGlassesStore } from '@/stores/glasses'
 import { useAuthStore } from '@/stores/auth'
@@ -27,10 +26,10 @@ const dispenseOf = (previousSku: number) => ({
 })
 
 describe('glasses store', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     setActivePinia(createPinia())
     vi.resetAllMocks()
-    await outbox.flush(async () => {})
+    outbox.queue.value = []
   })
 
   it('replaces a cached pair when its SKU is reissued to a new pair', async () => {
@@ -187,18 +186,18 @@ describe('glasses store', () => {
     expect(store.pendingCount).toBe(0)
   })
 
-  it('uploads a queued search log to the site it was made at', async () => {
-    const store = useGlassesStore()
+  it('reloads everything at the next poll after a queued change was rejected', async () => {
     useAuthStore().accessToken = 'token'
-    api.post.mockRejectedValueOnce(new ReimsAxiosError('Network error', true))
-    const searchEye = { ...eye, isBAL: false }
-    const search = { glassesType: 'single' as const, od: searchEye, os: searchEye }
-    expect(await store.logSearch(search, 0, [])).toBe('queued')
-    useRootStore().reimsSite = 'sm'
+    const store = useGlassesStore()
+    store.allGlasses = [pair(1, 5)]
+    store.allGlassesHash = 'abc'
+    api.put.mockRejectedValueOnce(new ReimsAxiosError('Network error', true))
+    await store.dispense(pair(1, 5), 'DISPENSED')
 
-    api.post.mockResolvedValue({})
+    api.put.mockRejectedValue(new ReimsAxiosError('Error 409', false, false, 'conflict', 409))
     await store.uploadPending()
-    expect(api.post).toHaveBeenLastCalledWith('/api/glasses/sa/searchLog', expect.anything())
+    expect(store.pendingCount).toBe(0)
+    expect(store.allGlassesHash).toBe('')
   })
 
   it('replaces an edited pair with the server version', async () => {

@@ -34,7 +34,7 @@ export const useGlassesStore = defineStore(
     const lastRefresh = ref(null as string | null)
     const isOutdated = ref(false)
     const isRefreshingGlasses = ref(false)
-    const pendingCount = ref(0)
+    const pendingCount = computed(() => outbox.queue.value.length)
 
     const hasGlassesLoaded = computed(() => {
       return allGlasses.value.length > 0
@@ -60,7 +60,7 @@ export const useGlassesStore = defineStore(
       glassesSearch: GlassesSearch,
       resultCount: number,
       results: SearchLogRequest['results'],
-    ): Promise<SendResult> {
+    ): Promise<void> {
       let balLens: SearchLogRequest['balLens'] = 'DISABLE_NONE'
       if (glassesSearch.os.isBAL) balLens = 'DISABLE_OS'
       if (glassesSearch.od.isBAL) balLens = 'DISABLE_OD'
@@ -72,7 +72,7 @@ export const useGlassesStore = defineStore(
         resultCount,
         results,
       }
-      return sendOrQueue({ ...newEntry(), kind: 'searchLog', payload: { request } })
+      await axiosInstance.post(`/api/glasses/${rootStore.reimsSite}/searchLog`, request)
     }
     async function fetchSingle(sku: number): Promise<Glasses> {
       controllerFetchSingle.abort()
@@ -99,83 +99,66 @@ export const useGlassesStore = defineStore(
     }
     // writes go by id, so one queued offline can't hit a pair that got the SKU later
     async function dispense(glasses: Glasses, reason: DeletionReason): Promise<SendResult> {
-      return sendOrQueue({ ...newEntry(), kind: 'dispense', payload: { glasses, reason } })
+      return sendOrQueue({ kind: 'dispense', glasses, reason })
     }
     async function undispense(glasses: Glasses): Promise<SendResult> {
-      return sendOrQueue({ ...newEntry(), kind: 'undispense', payload: { glasses } })
+      return sendOrQueue({ kind: 'undispense', glasses })
     }
-    async function editGlasses(newGlasses: Glasses): Promise<SendResult> {
-      return sendOrQueue({ ...newEntry(), kind: 'edit', payload: { glasses: newGlasses } })
+    async function editGlasses(glasses: Glasses): Promise<SendResult> {
+      return sendOrQueue({ kind: 'edit', glasses })
     }
-    function newEntry() {
-      return { site: rootStore.reimsSite, createdAt: Date.now() }
-    }
-    async function sendOrQueue(entry: outbox.OutboxEntry): Promise<SendResult> {
+    async function sendOrQueue(change: outbox.Change): Promise<SendResult> {
       // abort running fetch all request, since the fetch all will change after this request
-      if (entry.kind !== 'searchLog') controllerGetAll.abort()
-      // a glasses change waits behind queued ones so the server gets them in order
-      if (entry.kind === 'searchLog' || (await outbox.count()) === 0) {
+      controllerGetAll.abort()
+      // a change waits behind queued ones so the server gets them in order
+      if (outbox.queue.value.length === 0) {
         try {
-          updateCache(entry, await send(entry))
+          updateCache(change, await send(change))
           return 'sent'
         } catch (e) {
           if (!(e instanceof ReimsAxiosError && e.isNetwork)) throw e
         }
       }
-      await outbox.add(entry)
-      updateCache(entry, expectedInStock(entry))
-      await refreshPendingCount()
+      outbox.add(change)
+      updateCache(change, expectedInStock(change))
       return 'queued'
     }
     /** Returns the pair the server now has in stock, if it sent one */
-    async function send(entry: outbox.OutboxEntry): Promise<Glasses | undefined> {
-      switch (entry.kind) {
-        case 'dispense': {
-          const { glasses, reason } = entry.payload
-          await axiosInstance.put(`/api/glasses/${glasses.id}/dispense?reason=${reason}`, {})
+    async function send(change: outbox.Change): Promise<Glasses | undefined> {
+      const { id } = change.glasses
+      switch (change.kind) {
+        case 'dispense':
+          await axiosInstance.put(`/api/glasses/${id}/dispense?reason=${change.reason}`, {})
           return
-        }
         case 'undispense': {
           const response = await axiosInstance.put<GlassesResponse>(
-            `/api/glasses/${entry.payload.glasses.id}/undispense`,
+            `/api/glasses/${id}/undispense`,
             {},
           )
           // a 204 means it was already in stock and changed nothing
           return response.status === 200 ? response.data : undefined
         }
         case 'edit': {
-          const request: GlassesRequest = entry.payload.glasses
-          const response = await axiosInstance.put<GlassesResponse>(
-            `/api/glasses/${entry.payload.glasses.id}`,
-            request,
-          )
-          return response.data
+          const request: GlassesRequest = change.glasses
+          return (await axiosInstance.put<GlassesResponse>(`/api/glasses/${id}`, request)).data
         }
-        case 'searchLog':
-          await axiosInstance.post(`/api/glasses/${entry.site}/searchLog`, entry.payload.request)
       }
     }
-    function updateCache(entry: outbox.OutboxEntry, inStock?: Glasses) {
-      if (entry.kind === 'dispense') deleteOfflineGlassesById(entry.payload.glasses.id)
+    function updateCache(change: outbox.Change, inStock?: Glasses) {
+      if (change.kind === 'dispense') deleteOfflineGlassesById(change.glasses.id)
       else if (inStock) addOfflineGlasses(inStock)
     }
     /** The pair the server will have in stock once a queued change uploads */
-    function expectedInStock(entry: outbox.OutboxEntry): Glasses | undefined {
-      if (entry.kind === 'edit') return entry.payload.glasses
-      if (entry.kind !== 'undispense') return
-      const { glasses } = entry.payload
+    function expectedInStock({ kind, glasses }: outbox.Change): Glasses | undefined {
+      if (kind === 'edit') return glasses
+      if (kind !== 'undispense') return
       const sku = glasses.dispense?.previousSku ?? glasses.sku
       return { ...glasses, sku, dispensed: false, dispense: undefined }
     }
-    async function refreshPendingCount() {
-      pendingCount.value = await outbox.count()
-    }
     async function uploadPending() {
-      try {
-        if (authStore.isLoggedIn) await outbox.flush(send)
-      } finally {
-        await refreshPendingCount()
-      }
+      if (!authStore.isLoggedIn) return
+      // a dropped change was already applied to the cache, the next poll reloads it
+      if (await outbox.flush(send)) allGlassesHash.value = ''
     }
     async function loadSearchesCsv(): Promise<Blob> {
       const response = await axiosInstance.get(
@@ -275,7 +258,6 @@ export const useGlassesStore = defineStore(
       dispense,
       undispense,
       editGlasses,
-      refreshPendingCount,
       uploadPending,
       loadSearchesCsv,
       loadDispensedCsv,
