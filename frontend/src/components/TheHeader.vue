@@ -53,5 +53,4 @@ const isOnline = useOnline()
 const route = useRoute()
 const { mobile } = useDisplay()
 const glassesStore = useGlassesStore()
-onMounted(() => glassesStore.refreshPendingCount())
 </script>

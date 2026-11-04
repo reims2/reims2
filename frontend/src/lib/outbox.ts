@@ -4,7 +4,7 @@ import type { components } from '@/model/api'
 import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
 import { ReimsAxiosError } from '@/lib/axios'
 import { useToast } from '@/composables/toast'
-import { formatSku } from '@/util/format-glasses'
+import { getAndConvertSku } from '@/util/format-glasses'
 
 type Payloads = {
   dispense: { glasses: Glasses; reason: DeletionReason }
@@ -17,7 +17,7 @@ export type OutboxEntry = {
   [K in keyof Payloads]: { kind: K; site: ReimsSite; createdAt: number; payload: Payloads[K] }
 }[keyof Payloads]
 
-export type SendFn = (entry: OutboxEntry) => Promise<unknown>
+type SendFn = (entry: OutboxEntry) => Promise<unknown>
 
 interface OutboxSchema extends DBSchema {
   entries: { key: number; value: OutboxEntry }
@@ -49,8 +49,7 @@ const MAX_CHANGE_AGE = 30 * 24 * 60 * 60 * 1000
 
 function label(entry: OutboxEntry) {
   if (entry.kind === 'searchLog') return 'search log'
-  const { glasses } = entry.payload
-  return `${entry.kind} of SKU ${formatSku(glasses.dispense?.previousSku ?? glasses.sku)}`
+  return `${entry.kind} of SKU ${getAndConvertSku(entry.payload.glasses)}`
 }
 
 /** Returns false if the entry stays queued */

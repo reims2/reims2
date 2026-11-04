@@ -5,7 +5,6 @@ import { useRootStore } from './root'
 import { useAuthStore } from './auth'
 import { ReimsAxiosError, useAxios } from '@/lib/axios'
 import * as outbox from '@/lib/outbox'
-import { OutboxEntry } from '@/lib/outbox'
 import { DeletionReason } from '@/model/ReimsModel'
 import { Dayjs } from 'dayjs'
 
@@ -111,24 +110,25 @@ export const useGlassesStore = defineStore(
     function newEntry() {
       return { site: rootStore.reimsSite, createdAt: Date.now() }
     }
-    async function sendOrQueue(entry: OutboxEntry): Promise<SendResult> {
+    async function sendOrQueue(entry: outbox.OutboxEntry): Promise<SendResult> {
       // abort running fetch all request, since the fetch all will change after this request
       if (entry.kind !== 'searchLog') controllerGetAll.abort()
       // a glasses change waits behind queued ones so the server gets them in order
       if (entry.kind === 'searchLog' || (await outbox.count()) === 0) {
         try {
-          applyLocal(entry, (await send(entry)) ?? null)
+          updateCache(entry, await send(entry))
           return 'sent'
         } catch (e) {
           if (!(e instanceof ReimsAxiosError && e.isNetwork)) throw e
         }
       }
       await outbox.add(entry)
-      applyLocal(entry)
+      updateCache(entry, expectedInStock(entry))
       await refreshPendingCount()
       return 'queued'
     }
-    async function send(entry: OutboxEntry): Promise<Glasses | undefined> {
+    /** Returns the pair the server now has in stock, if it sent one */
+    async function send(entry: outbox.OutboxEntry): Promise<Glasses | undefined> {
       switch (entry.kind) {
         case 'dispense': {
           const { glasses, reason } = entry.payload
@@ -155,35 +155,24 @@ export const useGlassesStore = defineStore(
           await axiosInstance.post(`/api/glasses/${entry.site}/searchLog`, entry.payload.request)
       }
     }
-    /**
-     * Changes the local list like the server will, also while the change is still queued.
-     * serverGlasses is the server's answer, null if it sent none and undefined while queued.
-     */
-    function applyLocal(entry: OutboxEntry, serverGlasses?: Glasses | null) {
-      switch (entry.kind) {
-        case 'dispense':
-          deleteOfflineGlassesById(entry.payload.glasses.id)
-          break
-        case 'undispense': {
-          if (serverGlasses === null) break
-          const { glasses } = entry.payload
-          const sku = glasses.dispense?.previousSku ?? glasses.sku
-          addOfflineGlasses(
-            serverGlasses ?? { ...glasses, sku, dispensed: false, dispense: undefined },
-          )
-          break
-        }
-        case 'edit':
-          addOfflineGlasses(serverGlasses ?? entry.payload.glasses)
-      }
+    function updateCache(entry: outbox.OutboxEntry, inStock?: Glasses) {
+      if (entry.kind === 'dispense') deleteOfflineGlassesById(entry.payload.glasses.id)
+      else if (inStock) addOfflineGlasses(inStock)
+    }
+    /** The pair the server will have in stock once a queued change uploads */
+    function expectedInStock(entry: outbox.OutboxEntry): Glasses | undefined {
+      if (entry.kind === 'edit') return entry.payload.glasses
+      if (entry.kind !== 'undispense') return
+      const { glasses } = entry.payload
+      const sku = glasses.dispense?.previousSku ?? glasses.sku
+      return { ...glasses, sku, dispensed: false, dispense: undefined }
     }
     async function refreshPendingCount() {
       pendingCount.value = await outbox.count()
     }
     async function uploadPending() {
-      if (!authStore.isLoggedIn) return
       try {
-        await outbox.flush(send)
+        if (authStore.isLoggedIn) await outbox.flush(send)
       } finally {
         await refreshPendingCount()
       }
