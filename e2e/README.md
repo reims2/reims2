@@ -21,10 +21,9 @@ don't rely on the seeded rows.
 `docs/src/public/screenshots/`. Run it against a fresh `./stack.sh up` and commit the images that changed.
 The weekly CI run also runs it, only to check that it still passes.
 
-With `VISUAL=1` set, the `visual` project takes the same screenshots but compares them with reference images
-in `visual/`, which `--update-snapshots=all` writes. The Visual workflow (`.github/workflows/visual.yml`) does
-this for Renovate PRs that change the frontend: reference images from the PR's base, then a comparison
-against the PR.
+With `VISUAL=1` set, the `screenshots` project compares the screenshots with reference images in `visual/`
+instead, which `--update-snapshots=all` writes. The Visual workflow (`.github/workflows/visual.yml`) does this
+for Renovate PRs that change the frontend: reference images from the PR's base, then a comparison against the PR.
 
 ## Optionally
 

@@ -28,6 +28,9 @@ jobs:
     timeout-minutes: 30
     env:
       VISUAL: "1"
+    defaults:
+      run:
+        working-directory: e2e
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -69,26 +72,25 @@ jobs:
           cache: true
           cache_dependency_path: "e2e/pnpm-lock.yaml"
       - name: Install dependencies
-        working-directory: ./e2e
         run: |
           pnpm install --frozen-lockfile
           pnpm playwright install chromium
 
       - name: Screenshot the base
         run: |
-          TAG=base e2e/stack.sh up
-          (cd e2e && pnpm playwright test --project visual --update-snapshots=all)
-          e2e/stack.sh down
+          TAG=base ./stack.sh up
+          pnpm playwright test --project screenshots --update-snapshots=all
+          ./stack.sh down
       - name: Compare the PR
         env:
           PLAYWRIGHT_HTML_OPEN: never
         run: |
-          TAG=pr e2e/stack.sh up
-          cd e2e && pnpm playwright test --project visual --reporter=github,html
+          TAG=pr ./stack.sh up
+          pnpm playwright test --project screenshots --reporter=github,html
 
       - name: Stack logs
         if: failure()
-        run: e2e/stack.sh logs --no-color --tail 200
+        run: ./stack.sh logs --no-color --tail 200
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: failure()
         with:
