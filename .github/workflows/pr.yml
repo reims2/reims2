@@ -27,4 +27,7 @@ jobs:
   e2e:
     name: "E2E"
     uses: ./.github/workflows/e2e.yml
+  visual:
+    name: "Visual"
+    uses: ./.github/workflows/visual.yml
 

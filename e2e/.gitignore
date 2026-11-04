@@ -98,3 +98,4 @@ sw.*
 /blob-report/
 /playwright/.cache/
 .auth/
+/visual/

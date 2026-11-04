@@ -78,6 +78,25 @@ export default defineConfig({
       },
       dependencies: ['setup'],
     },
+    // the Visual CI job compares the screenshots of a PR with its base, in order so SKUs match
+    ...(process.env.VISUAL
+      ? [
+          {
+            name: 'visual',
+            testMatch: /screenshots\.spec\.ts/,
+            use: {
+              ...devices['Desktop Chrome'],
+              storageState: '.auth/user.json',
+            },
+            dependencies: ['setup'],
+            fullyParallel: false,
+            retries: 0,
+            snapshotPathTemplate: '{testDir}/../visual/{arg}{ext}',
+            // the default 0.2 missed bolder button text in Vuetify 4.3, rendering noise stays far below 0.05
+            expect: { toHaveScreenshot: { threshold: 0.05 } },
+          },
+        ]
+      : []),
   ],
 
   /* Run your local dev server before starting the tests */

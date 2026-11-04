@@ -1,0 +1,99 @@
+name: Visual check
+
+# Renovate PRs that change the frontend get screenshot-compared with their base.
+# A difference fails the check, merge by hand if the new look is fine.
+on:
+  workflow_call:
+
+jobs:
+  changes:
+    name: "Changes"
+    runs-on: ubuntu-latest
+    if: startsWith(github.head_ref, 'renovate/')
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - "frontend/**"
+
+  compare:
+    name: "Compare screenshots"
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      VISUAL: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - name: Build base images
+        uses: docker/bake-action@59cb1203cd42bcefd40a1b6d73b589e48c86040e # v7.5.0
+        env:
+          TAG: base
+        with:
+          source: .
+          files: compose.yaml
+          load: true
+          set: |
+            backend.cache-from=type=gha,scope=backend
+            frontend.cache-from=type=gha,scope=frontend
+            docs.cache-from=type=gha,scope=docs
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Build PR images
+        uses: docker/bake-action@59cb1203cd42bcefd40a1b6d73b589e48c86040e # v7.5.0
+        env:
+          TAG: pr
+        with:
+          source: .
+          files: compose.yaml
+          load: true
+          set: |
+            backend.cache-from=type=gha,scope=backend
+            frontend.cache-from=type=gha,scope=frontend
+            docs.cache-from=type=gha,scope=docs
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: "e2e/.nvmrc"
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: "e2e/package.json"
+          cache: true
+          cache_dependency_path: "e2e/pnpm-lock.yaml"
+      - name: Install dependencies
+        working-directory: ./e2e
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm playwright install chromium
+
+      - name: Screenshot the base
+        run: |
+          TAG=base e2e/stack.sh up
+          (cd e2e && pnpm playwright test --project visual --update-snapshots=all)
+          e2e/stack.sh down
+      - name: Compare the PR
+        env:
+          PLAYWRIGHT_HTML_OPEN: never
+        run: |
+          TAG=pr e2e/stack.sh up
+          cd e2e && pnpm playwright test --project visual --reporter=github,html
+
+      - name: Stack logs
+        if: failure()
+        run: e2e/stack.sh logs --no-color --tail 200
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: failure()
+        with:
+          name: visual-report
+          path: |
+            e2e/playwright-report/
+            e2e/test-results/
+          retention-days: 14
