@@ -38,8 +38,6 @@ const glassesStore = useGlassesStore()
 const isOnline = useOnline()
 const toast = useToast()
 
-onMounted(() => glassesStore.refreshPendingCount())
-
 async function sync() {
   if (!isOnline.value) return
   try {

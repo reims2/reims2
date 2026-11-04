@@ -1,4 +1,4 @@
-import { useEventListener, useIntervalFn, useNow, useOnline, watchThrottled } from '@vueuse/core'
+import { useIntervalFn, useNow, useOnline, watchThrottled } from '@vueuse/core'
 import { useGlassesStore } from '@/stores/glasses'
 import { useToast } from '@/composables/toast'
 import dayjs from 'dayjs'
@@ -14,8 +14,8 @@ export const useUpdatesGlassesInterval = () => {
     updateGlasses(true)
   })
 
-  useIntervalFn(uploadPending, 10 * 1000)
-  useEventListener('online', uploadPending)
+  useIntervalFn(() => isOnline.value && uploadPending(), 10 * 1000)
+  watch(isOnline, (online) => online && uploadPending())
 
   watchThrottled(
     [isOnline, now],
