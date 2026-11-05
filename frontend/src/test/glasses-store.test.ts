@@ -130,10 +130,10 @@ describe('glasses store', () => {
     expect(api.put).toHaveBeenLastCalledWith('/api/glasses/1/undispense', {})
     expect(store.allGlasses).toEqual([pair(1, 5)])
 
-    // already in stock
+    // already in stock, so the cache gets the pair back under its previous SKU
     api.put.mockResolvedValue({ status: 204, data: '' })
-    await store.undispense(pair(2, null))
-    expect(store.allGlasses).toEqual([pair(1, 5)])
+    await store.undispense({ ...pair(2, null), dispense: dispenseOf(6) })
+    expect(store.getGlassLocal(6)?.id).toBe(2)
   })
 
   it('queues a change without a response and applies it locally', async () => {
