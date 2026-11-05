@@ -1,32 +1,51 @@
-import { defineConfig, devices } from '@playwright/test'
-import dotenv from 'dotenv'
+import { defineConfig, devices, Project } from '@playwright/test'
 
-dotenv.config()
+try {
+  process.loadEnvFile()
+} catch {
+  // .env is optional
+}
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+export const authFile = '.auth/user.json'
+
+const browsers = {
+  chromium: 'Desktop Chrome',
+  firefox: 'Desktop Firefox',
+  webkit: 'Desktop Safari',
+}
+
+// opt-in, so a plain `playwright test` doesn't overwrite the guide's images
+const screenshots: Project | undefined =
+  process.env.SCREENSHOTS || process.env.VISUAL
+    ? {
+        name: 'screenshots',
+        testMatch: /screenshots\.spec\.ts/,
+        use: { ...devices['Desktop Chrome'], storageState: authFile },
+        dependencies: ['setup'],
+        // VISUAL=1 compares with the images in visual/ instead, in order so SKUs match (visual.yml)
+        ...(process.env.VISUAL && {
+          fullyParallel: false,
+          retries: 0,
+          snapshotPathTemplate: '{testDir}/../visual/{arg}{ext}',
+          // the default 0.2 missed bolder button text in Vuetify 4.3, rendering noise stays far below 0.05
+          expect: { toHaveScreenshot: { threshold: 0.05 } },
+        }),
+      }
+    : undefined
+
 export default defineConfig({
   testDir: './tests',
-  /* Run tests in files in parallel */
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* A test that only passes on retry still fails the run. */
+  // a test that only passes on retry still fails the run, so one retry only labels it flaky
+  retries: process.env.CI ? 1 : 0,
   failOnFlakyTests: !!process.env.CI,
-  /* Tests create their own data, so they can share the stack. */
+  // tests create their own data, so they can share the stack
   workers: process.env.CI ? 2 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI ? 'github' : 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'retain-on-failure',
+    trace: process.env.CI ? 'on-first-retry' : 'retain-on-failure',
     actionTimeout: 5000,
     navigationTimeout: 5000,
   },
@@ -34,64 +53,19 @@ export default defineConfig({
     timeout: 8000,
   },
 
-  /* Configure projects for major browsers */
   projects: [
     {
       name: 'setup',
       testMatch: /.*\.setup\.ts/,
     },
-    {
-      name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: '.auth/user.json',
-      },
+    ...Object.entries(browsers).map(([name, device]) => ({
+      name,
+      use: { ...devices[device], storageState: authFile },
       testIgnore: /screenshots\.spec\.ts/,
+      // tests that free SKUs on sm, other browsers would add to sm concurrently
+      grepInvert: name === 'chromium' ? undefined : /@one-browser/,
       dependencies: ['setup'],
-    },
-
-    {
-      name: 'firefox',
-      use: {
-        ...devices['Desktop Firefox'],
-        storageState: '.auth/user.json',
-      },
-      testIgnore: /screenshots\.spec\.ts/,
-      dependencies: ['setup'],
-    },
-
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari'],
-        storageState: '.auth/user.json',
-      },
-      testIgnore: /screenshots\.spec\.ts/,
-      dependencies: ['setup'],
-    },
-    {
-      name: 'screenshots',
-      testMatch: /screenshots\.spec\.ts/,
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: '.auth/user.json',
-      },
-      dependencies: ['setup'],
-      // VISUAL=1 compares with the images in visual/ instead, in order so SKUs match (visual.yml)
-      ...(process.env.VISUAL && {
-        fullyParallel: false,
-        retries: 0,
-        snapshotPathTemplate: '{testDir}/../visual/{arg}{ext}',
-        // the default 0.2 missed bolder button text in Vuetify 4.3, rendering noise stays far below 0.05
-        expect: { toHaveScreenshot: { threshold: 0.05 } },
-      }),
-    },
+    })),
+    ...(screenshots ? [screenshots] : []),
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 })

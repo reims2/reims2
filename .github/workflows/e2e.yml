@@ -78,7 +78,7 @@ jobs:
         working-directory: ./e2e
         run: |
           if [ "$FULL" = true ]; then
-            pnpm playwright test
+            SCREENSHOTS=1 pnpm playwright test
           else
             pnpm playwright test --project chromium
           fi

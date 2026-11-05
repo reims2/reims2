@@ -19,7 +19,8 @@ don't rely on the seeded rows.
 
 `pnpm screenshots` saves the screenshots for the user guide and the root README to
 `docs/src/public/screenshots/`. Run it against a fresh `./stack.sh up` and commit the images that changed.
-The weekly CI run also runs it, only to check that it still passes.
+The `screenshots` project only exists with `SCREENSHOTS=1` or `VISUAL=1` set, so a plain `pnpm test` leaves the
+images alone. The weekly CI run sets it, only to check that it still passes.
 
 With `VISUAL=1` set, the `screenshots` project compares the screenshots with reference images in `visual/`
 instead, which `--update-snapshots=all` writes. The Visual workflow (`.github/workflows/visual.yml`) does this
