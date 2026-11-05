@@ -210,6 +210,27 @@ describe('glasses store', () => {
     expect(store.getGlassLocal(5)?.glassesSize).toBe('large')
   })
 
+  it('evicts a pair the server says was dispensed or is gone', async () => {
+    const store = useGlassesStore()
+    store.allGlasses = [pair(1, 5), pair(2, 6)]
+    api.put.mockRejectedValue(new ReimsAxiosError('Error 409', false, false, 'dispensed', 409))
+    await expect(store.editGlasses(pair(1, 5))).rejects.toThrow('dispensed')
+    expect(store.allGlasses).toEqual([pair(2, 6)])
+  })
+
+  it('keeps queued changes applied after a full load', async () => {
+    const store = useGlassesStore()
+    store.allGlasses = [pair(1, 5), pair(2, 6)]
+    api.put.mockRejectedValue(new ReimsAxiosError('Network error', true))
+    await store.dispense(pair(1, 5), 'DISPENSED')
+
+    api.get
+      .mockResolvedValueOnce({ data: { hashValue: 'def' } })
+      .mockResolvedValueOnce({ data: [pair(1, 5), pair(2, 6)] })
+    await store.loadGlasses()
+    expect(store.allGlasses).toEqual([pair(2, 6)])
+  })
+
   describe('search log', () => {
     const od = { sphere: -2, cylinder: -0.5, axis: 90, add: 0, isBAL: false }
     const os = { sphere: 1, cylinder: 0, axis: 0, add: 0, isBAL: false }

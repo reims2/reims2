@@ -54,7 +54,6 @@ export const useTableFilter = (
     eyeFilters.os.cylinder = {}
   }
   return {
-    glassesTypeFilter,
     filteredGlasses,
     resetFilters,
     eyeFilters,

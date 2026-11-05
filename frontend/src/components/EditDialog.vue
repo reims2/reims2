@@ -84,9 +84,7 @@ async function updateGlasses() {
       error instanceof ReimsAxiosError &&
       (error.statusCode === 404 || error.statusCode === 409)
     ) {
-      // dispensed or gone on the server, a retry can't help
-      glassesStore.deleteOfflineGlassesById(originalGlasses.value.id)
-      toast.error(`Glasses can't be edited (${error.apiMessage ?? error.message})`)
+      toast.error(`Glasses can't be edited (${error.message})`)
     } else {
       toast.error(`Glasses can't be edited (${(error as Error).message}). Please retry later`)
       return

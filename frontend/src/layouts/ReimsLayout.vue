@@ -31,7 +31,6 @@ import {
   mdiPlusCircleOutline,
 } from '@mdi/js'
 import { useDisplay } from 'vuetify'
-import dayjs from 'dayjs'
 
 import TheHeader from '@/components/TheHeader.vue'
 import TheRail from '@/components/TheRail.vue'
@@ -84,13 +83,6 @@ const secondaryNavItems = computed<NavItem[]>(() => [
 ])
 
 const isOnline = useOnline()
-
-onMounted(() => {
-  if (authStore.expirationTime && dayjs().diff(authStore.expirationTime, 'days') > -7) {
-    // Use 7 days as a safety because of service worker retries
-    authStore.logout()
-  }
-})
 
 // Auto redirect to the start page when logged out
 watch(

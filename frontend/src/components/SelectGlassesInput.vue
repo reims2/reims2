@@ -35,26 +35,23 @@ const errorMessage = defineModel<string>('errorMessage', { default: '' })
 const { mobile } = useDisplay()
 const glassesStore = useGlassesStore()
 
-const selected = ref<Glasses | null>(null)
 const input = useTemplateRef('input')
 
 watch(
   () => sku.value,
   async (newSku) => {
-    if (newSku != null && !isNaN(newSku)) {
-      errorMessage.value = ''
-      selected.value = glassesStore.getGlassLocal(newSku)
-      emit('change', selected.value)
-      // also fetch glasses in background to update database
-      try {
-        selected.value = await glassesStore.fetchSingle(newSku)
-      } catch {
-        // do nothing, we fallback to local DB cache
-      }
-    } else {
-      selected.value = null
+    if (newSku == null || isNaN(newSku)) {
+      emit('change', null)
+      return
     }
-    emit('change', selected.value)
+    errorMessage.value = ''
+    emit('change', glassesStore.getGlassLocal(newSku))
+    // also fetch glasses in background to update database
+    try {
+      emit('change', await glassesStore.fetchSingle(newSku))
+    } catch {
+      // the local DB cache was already emitted
+    }
   },
   // A pre-flush emit changes the parent's state mid-patch, its slots then render past their v-if.
   { flush: 'post' },
@@ -62,11 +59,7 @@ watch(
 
 watch(
   () => glassesStore.allGlasses,
-  () => {
-    if (sku.value == null) selected.value = null
-    else selected.value = glassesStore.getGlassLocal(sku.value)
-    emit('change', selected.value)
-  },
+  () => emit('change', sku.value == null ? null : glassesStore.getGlassLocal(sku.value)),
 )
 
 function focus() {

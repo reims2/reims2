@@ -21,7 +21,6 @@ export default function calculateAllPhilscore(
   const isHighTolerance = terms.highTolerance ?? false
 
   return glasses
-    .slice()
     .filter((glass) => terms.glassesType === glass.glassesType)
     .filter((glass) => filterLens(rxOd, glass.od, isHighTolerance, isSinglefocal, rxOs))
     .filter((glass) => filterLens(rxOs, glass.os, isHighTolerance, isSinglefocal, rxOd))

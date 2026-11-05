@@ -20,7 +20,7 @@
 
         <div class="pt-2 text-medium-emphasis">
           Version:
-          <a :href="commitUrl" target="_blank" rel="noopener" style="text-decoration: none">
+          <a :href="commitUrl" target="_blank" rel="noopener" class="text-decoration-none">
             <code>{{ gitHash }}</code>
           </a>
           <br />
@@ -61,6 +61,6 @@ const lastRefresh = computed(() => {
 
 const gitHash = computed(() => {
   if (!rootStore.version) return 'development'
-  return rootStore.version.length > 7 ? rootStore.version.substring(0, 7) : rootStore.version
+  return rootStore.version.slice(0, 7)
 })
 </script>

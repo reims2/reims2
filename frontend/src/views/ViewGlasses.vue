@@ -89,7 +89,7 @@
               size="small"
               class="text-medium-emphasis"
               :aria-label="`Edit SKU ${item.sku}`"
-              :to="{ name: 'Edit', query: { sku: Number(item.sku) } }"
+              :to="{ name: 'Edit', query: { sku: item.glasses.sku } }"
             />
           </template>
         </v-data-table>
@@ -99,7 +99,6 @@
 </template>
 
 <script setup lang="ts">
-import dayjs from 'dayjs'
 import { mdiPencilOutline } from '@mdi/js'
 import PageLayout from '@/components/PageLayout.vue'
 import MinMaxInput from '@/components/MinMaxInput.vue'
@@ -145,8 +144,7 @@ const headers = [
     key: 'creationDate',
     title: 'Added',
     cellProps: { class: 'text-medium-emphasis' },
-    sortRaw: (a: TableItem, b: TableItem) =>
-      dayjs(a.glasses.creationDate).diff(b.glasses.creationDate),
+    sortRaw: (a: TableItem, b: TableItem) => a.addedAt - b.addedAt,
   },
   { key: 'edit', title: 'Actions', sortable: false, width: 48 },
 ]
@@ -169,13 +167,7 @@ function summary({ eye, value }: (typeof filters)[number]) {
   return 'any'
 }
 
-const itemsPerPageOptions = [
-  { value: 10, title: '10' },
-  { value: 20, title: '20' },
-  { value: 50, title: '50' },
-  { value: 100, title: '100' },
-  { value: 250, title: '250' },
-]
+const itemsPerPageOptions = [10, 20, 50, 100, 250]
 
 const page = ref(1)
 const itemsPerPage = ref(20)
@@ -192,7 +184,11 @@ const { filteredGlasses, resetFilters, eyeFilters } = useTableFilter(
 
 // keep the raw glasses so the formatted date column can sort chronologically
 const formattedItems = computed(() =>
-  filteredGlasses.value.map((glasses) => ({ ...formatGlassesForDisplay(glasses), glasses })),
+  filteredGlasses.value.map((glasses) => ({
+    ...formatGlassesForDisplay(glasses),
+    glasses,
+    addedAt: Date.parse(glasses.creationDate),
+  })),
 )
 type TableItem = (typeof formattedItems.value)[number]
 

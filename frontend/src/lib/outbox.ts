@@ -37,9 +37,7 @@ async function attempt(
   } catch (error) {
     if (!(error instanceof ReimsAxiosError) || error.isNetwork || error.isServerSide) return 'kept'
     if (error.statusCode === 401) return 'kept'
-    toast.error(
-      `A queued ${label} was rejected by the server (${error.apiMessage ?? error.message}), please check it`,
-    )
+    toast.error(`A queued ${label} was rejected by the server (${error.message}), please check it`)
     return 'dropped'
   }
 }

@@ -4,36 +4,29 @@ import { Glasses } from '@/model/GlassesModel'
 
 import { useToast } from '@/composables/toast'
 import { ReimsAxiosError } from '@/lib/axios'
-import { MaybeRefOrGetter } from 'vue'
 import { DeletionReason } from '@/model/ReimsModel'
 import dayjs from 'dayjs'
 import { useIntervalFn } from '@vueuse/core'
 import { formatSku } from '@/util/format-glasses'
 
-export const useEditGlasses = (
-  selected: MaybeRefOrGetter<Glasses | null>,
-  onDeletedFn?: () => void,
-) => {
+export const useEditGlasses = (selected: Ref<Glasses | null>, onDeletedFn?: () => void) => {
   const {
     lastDispensed,
     isLoading: isLastDispensedLoading,
     updateLastDispensed,
   } = useLastDispensed()
 
-  const { isLoading: isDeletionLoading, deleteGlasses: submitDeletion } = useDeleteGlasses(
-    selected,
-    () => {
-      updateLastDispensed()
-      onDeletedFn?.()
-    },
-  )
+  const { isLoading: isDeletionLoading, deleteGlasses } = useDeleteGlasses(() => {
+    updateLastDispensed()
+    onDeletedFn?.()
+  })
 
   const { isLoading: isUndoLoading, undo: undoDispension } = useUndoDispension(() => {
     updateLastDispensed()
   })
 
-  function submitDispension() {
-    submitDeletion('DISPENSED')
+  function submitDeletion(reason: DeletionReason) {
+    if (selected.value) deleteGlasses(selected.value, reason)
   }
 
   const isLoading = computed(() => isUndoLoading.value || isDeletionLoading.value)
@@ -41,7 +34,6 @@ export const useEditGlasses = (
     isLoading,
     lastDispensed,
     isLastDispensedLoading,
-    submitDispension,
     submitDeletion,
     undoDispension,
   }
@@ -57,36 +49,36 @@ export const useLastDispensed = () => {
     isLoading.value = true
     try {
       const glasses = await glassesStore.getDispensedGlasses(dayjs().subtract(3, 'days'), dayjs())
-      if (!glasses || !glasses.length) lastDispensed.value = []
-      else {
-        lastDispensed.value = glasses
-          .sort((a, b) => {
-            if (!a.dispense?.modifyDate) return 1
-            if (!b.dispense?.modifyDate) return -1
-            if (a.dispense.modifyDate > b.dispense.modifyDate) return -1
-            return 1
-          })
-          .slice(0, 3)
-      }
+      lastDispensed.value = glasses
+        .sort((a, b) => {
+          if (!a.dispense?.modifyDate) return 1
+          if (!b.dispense?.modifyDate) return -1
+          if (a.dispense.modifyDate > b.dispense.modifyDate) return -1
+          return 1
+        })
+        .slice(0, 3)
     } finally {
       isLoading.value = false
     }
   }
 
+  const isActive = ref(true)
   watch(
     () => glassesStore.allGlassesHash,
     () => {
-      updateLastDispensed()
+      if (isActive.value) updateLastDispensed()
     },
   )
 
   // additional interval, but shoudn't really be required due to watching for allGlassesHash above
   const { pause, resume } = useIntervalFn(updateLastDispensed, 1000 * 60 * 10)
   onActivated(() => {
+    isActive.value = true
     resume()
     updateLastDispensed()
   })
   onDeactivated(() => {
+    isActive.value = false
     pause()
   })
 
@@ -102,24 +94,17 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
   const isLoading = ref(false)
   const glassesStore = useGlassesStore()
 
-  async function undo(glassesInput: MaybeRefOrGetter<Glasses>): Promise<void> {
-    const glasses = toValue(glassesInput)
-    if (isLoading.value || !glasses) return
+  async function undo(glasses: Glasses): Promise<void> {
+    if (isLoading.value) return
     isLoading.value = true
     let result
     try {
       result = await glassesStore.undispense(glasses)
     } catch (error) {
-      if (error instanceof ReimsAxiosError) {
-        if (error.statusCode === 400) {
-          toast.error(
-            `Reverting is not possible here, please readd glasses manually (Error: ${error.apiMessage}).`,
-          )
-        } else {
-          toast.error(
-            `Could not undo dispension/deletion of glasses, please retry (${error.apiMessage ?? error.message}).`,
-          )
-        }
+      if (error instanceof ReimsAxiosError && error.statusCode === 400) {
+        toast.error(
+          `Reverting is not possible here, please readd glasses manually (Error: ${error.message}).`,
+        )
       } else {
         toast.error(
           `Could not undo dispension/deletion of glasses, please retry (${(error as Error).message}).`,
@@ -147,38 +132,28 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
   }
 }
 
-export const useDeleteGlasses = (
-  glassesInput: MaybeRefOrGetter<Glasses | null>,
-  onSuccessFn?: () => void,
-) => {
+export const useDeleteGlasses = (onSuccessFn?: () => void) => {
   const isLoading = ref(false)
   const glassesStore = useGlassesStore()
 
   const toast = useToast()
 
-  async function deleteGlasses(reason: DeletionReason | null): Promise<void> {
-    const glasses = toValue(glassesInput)
-    if (isLoading.value || !glasses) return
+  async function deleteGlasses(glasses: Glasses, reason: DeletionReason): Promise<void> {
+    if (isLoading.value) return
     const sku = glasses.sku
     // show user the correct action string, even though it's the same in the backend
     const actionString = reason === 'DISPENSED' ? 'dispense' : 'delete'
     isLoading.value = true
     let result
     try {
-      result = await glassesStore.dispense(glasses, reason ?? 'OTHER')
+      result = await glassesStore.dispense(glasses, reason)
     } catch (error) {
-      if (error instanceof ReimsAxiosError) {
-        if (error.statusCode === 404) {
-          toast.warning(`SKU ${formatSku(sku)} not found on server, please reload.`)
-        } else if (error.isServerSide) {
-          toast.error(
-            `Could not ${actionString} glasses because of a server error. Please retry later (Error ${error.statusCode})`,
-          )
-        } else {
-          toast.error(
-            `Could not ${actionString} glasses, please retry (${error.apiMessage ?? error.message})`,
-          )
-        }
+      if (error instanceof ReimsAxiosError && error.statusCode === 404) {
+        toast.warning(`SKU ${formatSku(sku)} not found on server.`)
+      } else if (error instanceof ReimsAxiosError && error.isServerSide) {
+        toast.error(
+          `Could not ${actionString} glasses because of a server error. Please retry later (Error ${error.statusCode})`,
+        )
       } else {
         toast.error(`Could not ${actionString} glasses, please retry (${(error as Error).message})`)
       }
