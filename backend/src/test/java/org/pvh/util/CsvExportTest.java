@@ -1,7 +1,6 @@
 package org.pvh.util;
 
 import org.junit.jupiter.api.Test;
-import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
@@ -48,14 +47,8 @@ public class CsvExportTest {
     @Test
     public void glasses_dispensed() {
         Glasses dispensed = glasses();
-        dispensed.setSku(null);
-        dispensed.setDispensed(true);
-        Dispense dispense = new Dispense();
-        dispense.setPreviousSku(12);
         // UTC is already the next day
-        dispense.setModifyDate(Instant.parse("2026-01-16T02:00:00Z"));
-        dispense.setDispenseReason(DispenseReasonEnum.DISPENSED);
-        dispensed.setDispense(dispense);
+        dispensed.dispense(DispenseReasonEnum.DISPENSED, Instant.parse("2026-01-16T02:00:00Z"));
 
         String csv = CsvExport.glasses(List.of(dispensed));
 
@@ -63,7 +56,7 @@ public class CsvExportTest {
             + "\"\",\"sa\",\"multifocal\",\"feminine\",\"small\",\"2026-01-15 12:30:00\",\"true\",\"12\",\"2026-01-15 20:00:00\","
             + "\"DISPENSED\",\"\",\"\",\"-2.25\",\"-0.50\",\"90\",\"2.50\",\"1.50\",\"0.00\",\"0\",\"2.00\"\n", csv);
 
-        dispense.setDispenseReason(null);
+        dispensed.getDispense().setDispenseReason(null);
         String withoutReason = CsvExport.glasses(List.of(dispensed));
         assertEquals(csv.replace("\"DISPENSED\"", "\"\""), withoutReason);
     }

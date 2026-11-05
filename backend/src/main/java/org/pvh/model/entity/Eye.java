@@ -65,9 +65,4 @@ public class Eye extends BaseEntity {
         this.add = add;
     }
 
-    @Override
-    public String toString() {
-        return "Eye [sphere=" + sphere + ", cylinder=" + cylinder + ", axis=" + axis + ", add=" + add + "]";
-    }
-
 }

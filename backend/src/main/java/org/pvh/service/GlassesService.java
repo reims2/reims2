@@ -4,7 +4,6 @@ import org.pvh.error.BadRequestException;
 import org.pvh.error.ConflictException;
 import org.pvh.error.NotFoundException;
 import org.pvh.model.dto.GlassesRequestDTO;
-import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.LocationEnum;
@@ -46,8 +45,6 @@ public class GlassesService {
         LocationEnum location = glasses.getLocation();
         // first statement, so the changevalue row lock is held before InnoDB takes its snapshot
         changeService.setNewHashValue(location);
-        if (glasses.getDispense() == null)
-            glasses.setDispense(new Dispense());
         glasses.setSku(nextFreeSku(location));
         glasses.setCreationDate(now());
         return glassesRepository.saveAndFlush(glasses);
@@ -70,12 +67,7 @@ public class GlassesService {
             return Optional.empty();
 
         changeService.setNewHashValue(glasses.getLocation());
-        Dispense dispense = glasses.getDispense();
-        dispense.setPreviousSku(glasses.getSku());
-        dispense.setModifyDate(now());
-        dispense.setDispenseReason(reason);
-        glasses.setDispensed(true);
-        glasses.setSku(null);
+        glasses.dispense(reason, now());
         return Optional.of(glasses);
     }
 
@@ -85,8 +77,7 @@ public class GlassesService {
         Glasses glasses = lock(id);
         if (!glasses.isDispensed())
             return Optional.empty();
-        Dispense dispense = glasses.getDispense();
-        Integer previousSku = dispense.getPreviousSku();
+        Integer previousSku = glasses.getDispense().getPreviousSku();
         if (previousSku == null)
             throw new BadRequestException("These glasses have no previous SKU to restore.");
 
@@ -95,11 +86,7 @@ public class GlassesService {
         if (glassesRepository.existsBySku(previousSku))
             throw new BadRequestException("SKU " + formatSku(previousSku) + " is already used by other glasses.");
 
-        glasses.setDispensed(false);
-        glasses.setSku(previousSku);
-        dispense.setModifyDate(now());
-        dispense.setPreviousSku(null);
-        dispense.setDispenseReason(null);
+        glasses.undispense(now());
         return Optional.of(glasses);
     }
 
