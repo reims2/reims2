@@ -4,13 +4,11 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.pvh.IntegrationTest;
-import org.pvh.repository.RoleRepository;
 import org.pvh.repository.UserRepository;
-import org.pvh.model.entity.User;
+import org.pvh.service.UserService;
 import org.pvh.model.enums.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Set;
@@ -31,10 +29,7 @@ public class SecurityIntegrationTest {
     private UserRepository userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private PasswordEncoder encoder;
+    private UserService userService;
 
     @BeforeEach
     void createUsers() {
@@ -43,11 +38,8 @@ public class SecurityIntegrationTest {
     }
 
     private void createUser(String username, RoleEnum role) {
-        if (userRepository.existsByUsername(username))
-            return;
-        User user = new User(username, encoder.encode("password"));
-        user.setRoles(Set.of(roleRepository.findByName(role).orElseThrow()));
-        userRepository.save(user);
+        if (!userRepository.existsByUsername(username))
+            userService.register(username, "password", Set.of(role));
     }
 
     private String login(String username) throws Exception {
