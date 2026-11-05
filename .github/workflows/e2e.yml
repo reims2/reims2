@@ -45,8 +45,9 @@ jobs:
             frontend.cache-from=type=gha,scope=frontend
             docs.cache-from=type=gha,scope=docs
 
+      # boots while the steps below install, `stack.sh up` then waits for it and seeds
       - name: Start stack
-        run: e2e/stack.sh up
+        run: e2e/stack.sh up -d
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
@@ -74,6 +75,8 @@ jobs:
             # the runner image already has chromium's system libraries
             pnpm playwright install chromium
           fi
+      - name: Wait for stack and seed it
+        run: e2e/stack.sh up
       - name: Run tests
         working-directory: ./e2e
         run: |

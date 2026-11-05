@@ -1,8 +1,8 @@
 #!/bin/sh
 # Runs the app stack for e2e on http://localhost:${E2E_PORT:-3000}.
-#   stack.sh up      start (or restart) the stack and reseed the test data
+#   stack.sh up      start (or restart) the stack, wait until it's healthy and reseed the test data
 #   stack.sh down    stop it and delete its data
-#   stack.sh <cmd>   any other docker compose command, e.g. build, pull, logs
+#   stack.sh <cmd>   any other docker compose command, e.g. build, pull, logs or `up -d` without waiting
 set -eu
 cd "$(dirname "$0")/.."
 
@@ -10,7 +10,7 @@ compose() {
   docker compose -p reims2-e2e --env-file e2e/e2e.env -f compose.yaml -f e2e/compose.e2e.yaml "$@"
 }
 
-case "${1:-up}" in
+case "${*:-up}" in
   up)
     compose up -d --wait
     # schema comes from Flyway on backend start, so the data-only dump goes in afterwards
