@@ -1,7 +1,7 @@
 import { test, expect, formatSku } from './fixtures'
 
 test('Filter table and open glasses for editing', async ({ page, createGlasses }) => {
-  const eye = { sphere: 9.75, cylinder: -0.25, axis: 45, add: 0 }
+  const eye = { sphere: 9.75, cylinder: -0.25, axis: 45 }
   const sku = formatSku((await createGlasses({ od: eye, os: eye })).sku)
   await page.goto('/view')
 

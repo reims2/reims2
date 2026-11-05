@@ -1,23 +1,21 @@
 import { EyeInput } from './eye-input.po'
-import { test, expect, formatSku } from './fixtures'
+import { test, expect, formatSku, lookUpSku, open } from './fixtures'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/edit')
-  await expect(page.getByText('Setting up REIMS2')).toHaveCount(0)
+  await open(page, '/edit')
 })
 
 test('Dispense glasses with button', async ({ page, createGlasses }) => {
-  const sku = formatSku((await createGlasses()).sku)
-  await page.getByLabel('SKU', { exact: true }).fill(sku)
-  await expect(page.getByLabel('Glasses result')).toBeVisible()
+  const { sku } = await createGlasses()
+  await lookUpSku(page, sku)
   await page.getByRole('button', { name: 'Dispense' }).click()
-  await expect(page.getByText(`Successfully dispensed glasses with SKU ${sku}`)).toBeVisible()
+  await expect(
+    page.getByText(`Successfully dispensed glasses with SKU ${formatSku(sku)}`),
+  ).toBeVisible()
 })
 
 test('Typing on to an unknown SKU clears the result', async ({ page, createGlasses }) => {
-  const sku = formatSku((await createGlasses()).sku)
-  await page.getByLabel('SKU', { exact: true }).fill(sku)
-  await expect(page.getByLabel('Glasses result')).toBeVisible()
+  await lookUpSku(page, (await createGlasses()).sku)
   await page.getByLabel('SKU', { exact: true }).fill('99999')
   await expect(page.getByLabel('Glasses result')).toHaveCount(0)
   await page.getByRole('button', { name: 'Dispense' }).click()
@@ -28,11 +26,9 @@ test.describe('Undo', () => {
   // a freed SKU goes to the next added pair, so this needs a site no other test adds to
   test.use({ location: 'sm' })
 
-  test('Undo dispension', async ({ page, createGlasses, api }, testInfo) => {
-    test.skip(testInfo.project.name !== 'chromium', 'other browsers would add to sm concurrently')
+  test('Undo dispension', { tag: '@one-browser' }, async ({ page, createGlasses, api }) => {
     const { sku } = await createGlasses()
-    await page.getByLabel('SKU', { exact: true }).fill(formatSku(sku))
-    await expect(page.getByLabel('Glasses result')).toBeVisible()
+    await lookUpSku(page, sku)
     await page.getByRole('button', { name: 'Dispense' }).click()
     await expect(page.getByText(`Successfully dispensed glasses`)).toBeVisible()
 
@@ -48,24 +44,25 @@ test.describe('Undo', () => {
 })
 
 test('Delete glasses', async ({ page, createGlasses }) => {
-  const sku = formatSku((await createGlasses()).sku)
-  await page.getByLabel('SKU', { exact: true }).fill(sku)
+  const { sku } = await createGlasses()
+  await lookUpSku(page, sku)
   await page.getByRole('button', { name: 'Delete' }).click()
   await page.getByRole('combobox').first().click()
   await page.getByRole('option', { name: 'Not found in storage' }).click()
   await page.getByRole('button', { name: 'Confirm deletion' }).click()
-  await expect(page.getByText(`Successfully deleted glasses with SKU ${sku}`)).toBeVisible()
+  await expect(
+    page.getByText(`Successfully deleted glasses with SKU ${formatSku(sku)}`),
+  ).toBeVisible()
 })
 
 test('Edit glasses', async ({ page, createGlasses }) => {
-  const sku = formatSku((await createGlasses()).sku)
-  await page.getByLabel('SKU', { exact: true }).fill(sku)
+  await lookUpSku(page, (await createGlasses()).sku)
   await page.getByRole('button', { name: 'Edit' }).click()
 
   const eyeInput = new EyeInput(page)
   await eyeInput.waitForAutofocus()
   await eyeInput.appearance.fill('f')
-  await eyeInput.odSphere.fill('7')
+  await eyeInput.od.sphere.fill('7')
   await page.getByRole('button', { name: 'Save' }).click()
   await expect(page.getByText('Editing SKU')).toBeHidden()
 
@@ -76,7 +73,7 @@ test('Edit glasses', async ({ page, createGlasses }) => {
 
 test('Editing glasses another device dispensed', async ({ page, createGlasses, api }) => {
   const glasses = await createGlasses()
-  await page.getByLabel('SKU', { exact: true }).fill(formatSku(glasses.sku))
+  await lookUpSku(page, glasses.sku)
   await page.getByRole('button', { name: 'Edit' }).click()
   await new EyeInput(page).waitForAutofocus()
   await api.put(`/api/glasses/${glasses.id}/dispense`)

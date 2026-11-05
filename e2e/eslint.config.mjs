@@ -16,17 +16,16 @@ export default tseslint.config(
     ],
     files: ['**/*.ts'],
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
       globals: globals.node,
-      parserOptions: {
-        parser: tseslint.parser,
-        projectService: true,
-      },
+      parserOptions: { projectService: true },
     },
     rules: {
       '@typescript-eslint/no-floating-promises': 'error',
       'playwright/no-skipped-test': ['warn', { allowConditional: true }],
+      'playwright/expect-expect': [
+        'warn',
+        { assertFunctionNames: ['lookUpSku'] },
+      ],
       'spaced-comment': 'warn',
       'no-warning-comments': 'warn',
       'no-console': ['warn', { allow: ['warn', 'error'] }],

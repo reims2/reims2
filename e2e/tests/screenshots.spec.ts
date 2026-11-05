@@ -1,17 +1,12 @@
 import path from 'node:path'
 import { Locator, Page } from '@playwright/test'
 import { EyeInput } from './eye-input.po'
-import { test, expect, formatSku } from './fixtures'
+import { test, expect, lookUpSku, open, searchGlasses } from './fixtures'
 
 // images for the user guide, run with `pnpm screenshots` and commit the ones that changed
 const outDir = path.join(__dirname, '../../docs/src/public/screenshots')
 
 test.use({ viewport: { width: 1280, height: 880 } })
-
-async function open(page: Page, url: string) {
-  await page.goto(url)
-  await expect(page.getByText('Setting up REIMS2')).toHaveCount(0)
-}
 
 // marks a control that is easy to miss, only where the guide needs it
 async function highlight(locator: Locator) {
@@ -39,8 +34,8 @@ async function shoot(page: Page, name: string, blur = true) {
 test('find', async ({ page, createGlasses }) => {
   for (const sphere of [-7.25, -7.5, -7]) {
     await createGlasses({
-      od: { sphere, cylinder: -0.75, axis: 90, add: 0 },
-      os: { sphere: -7.25, cylinder: -0.5, axis: 85, add: 0 },
+      od: { sphere, cylinder: -0.75, axis: 90 },
+      os: { sphere: -7.25, cylinder: -0.5, axis: 85 },
     })
   }
   await open(page, '/find')
@@ -49,7 +44,7 @@ test('find', async ({ page, createGlasses }) => {
     od: { sphere: '-7.25', cylinder: '-0.75', axis: '090' },
     os: { sphere: '-7.25', cylinder: '-0.5', axis: '085' },
   })
-  await page.getByRole('button', { name: 'earch glasses' }).click()
+  await searchGlasses(page)
   await expect(page.getByText(/^3 matches/)).toBeVisible()
   await shoot(page, 'find.png')
 })
@@ -57,15 +52,14 @@ test('find', async ({ page, createGlasses }) => {
 test('dispense', async ({ page, createGlasses }) => {
   const { sku } = await createGlasses()
   await open(page, '/edit')
-  await page.getByLabel('SKU', { exact: true }).fill(formatSku(sku))
-  await expect(page.getByLabel('Glasses result')).toBeVisible()
+  await lookUpSku(page, sku)
   await shoot(page, 'dispense.png')
 })
 
 test('edit and delete dialogs', async ({ page, createGlasses }) => {
   const { sku } = await createGlasses()
   await open(page, '/edit')
-  await page.getByLabel('SKU', { exact: true }).fill(formatSku(sku))
+  await lookUpSku(page, sku)
   await page.getByRole('button', { name: 'Edit' }).click()
   await new EyeInput(page).waitForAutofocus()
   await shoot(page, 'edit-dialog.png')
@@ -88,7 +82,7 @@ test('add', async ({ page }) => {
     od: { sphere: '1.5', cylinder: '-0.5', axis: '170', add: '2' },
     os: { sphere: '1.75', cylinder: '0' },
   })
-  await expect(eyeInput.osAdditional).toHaveValue('2.00')
+  await expect(eyeInput.os.add).toHaveValue('2.00')
   await shoot(page, 'add.png')
 })
 
