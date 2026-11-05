@@ -2,7 +2,7 @@
   <page-layout title="Find glasses" @keydown.s.exact.prevent="$event.repeat || search()">
     <v-col cols="12" md="5">
       <v-form ref="form" v-model="valid" @submit.prevent>
-        <page-card title="Prescription">
+        <page-card title="Prescription" :icon="mdiEyeOutline">
           <template #header>
             <v-btn
               v-prevent-enter-tab
@@ -57,7 +57,7 @@
     </v-col>
 
     <v-col cols="12" md="7">
-      <page-card ref="results" title="Results">
+      <page-card ref="results" title="Results" :icon="mdiGlasses" tone="marigold">
         <template #header>
           <span v-if="matches?.length" class="text-body-medium text-medium-emphasis text-tabular">
             {{ matches.length }}
@@ -66,15 +66,11 @@
           <span v-else-if="matches" class="text-body-medium text-medium-emphasis">No matches</span>
         </template>
 
-        <v-empty-state
-          v-if="matches == null"
-          :icon="mdiMagnify"
-          title="Search to see matches"
-          class="py-12"
-        />
+        <v-empty-state v-if="matches == null" title="Search to see matches" class="py-12">
+          <template #media><eye-chart class="mb-6" /></template>
+        </v-empty-state>
         <v-empty-state
           v-else-if="matches.length === 0"
-          :icon="mdiMagnifyRemoveOutline"
           title="No close matches in stock"
           :text="
             (highTolerance
@@ -84,13 +80,17 @@
           "
           text-width="320"
           class="py-12"
-        />
+        >
+          <template #media><eye-chart variant="blurred" class="mb-6" /></template>
+        </v-empty-state>
 
         <template v-else>
           <div
             v-for="(item, idx) in paginatedMatches"
             :key="item.id"
             :data-testid="'result-' + idx"
+            class="row-in"
+            :style="{ animationDelay: `${idx * 70}ms` }"
           >
             <v-divider v-if="idx > 0" />
             <glasses-row :glasses="item">
@@ -141,8 +141,9 @@
 </template>
 
 <script setup lang="ts">
-import { mdiRestore, mdiMagnify, mdiMagnifyRemoveOutline } from '@mdi/js'
+import { mdiRestore, mdiMagnify, mdiEyeOutline, mdiGlasses } from '@mdi/js'
 
+import EyeChart from '@/components/EyeChart.vue'
 import GlassInput from '@/components/GlassInput.vue'
 import GlassesRow from '@/components/GlassesRow.vue'
 import PageLayout from '@/components/PageLayout.vue'

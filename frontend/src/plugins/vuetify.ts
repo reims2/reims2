@@ -43,16 +43,26 @@ export const vuetifyOptions: VuetifyOptions = {
         colors: {
           primary: '#005c66',
           secondary: '#4f6366',
-          background: '#f3f6f6',
+          // warm sand behind teal, taken from the campaign photos
+          background: '#f6f3ec',
           'on-background': '#191c1d',
           surface: '#ffffff',
           'on-surface': '#191c1d',
-          'surface-light': '#f5f8f8',
+          'surface-light': '#faf7f1',
           'on-surface-light': '#191c1d',
-          'surface-muted': '#eaf0f0',
-          'on-surface-muted': '#3d4647',
+          'surface-muted': '#efeae1',
+          'on-surface-muted': '#4a443b',
           'primary-tonal': '#e0eff1',
           'on-primary-tonal': '#00474f',
+          'od-tonal': '#d7eaed',
+          'success-tonal': '#d2efdc',
+          'on-success-tonal': '#00391d',
+          // marigold, only where something happens: OS, results, hover, the dispense moment
+          marigold: '#9a5b00',
+          'marigold-tonal': '#fcefd3',
+          'on-marigold-tonal': '#7a4700',
+          'marigold-light': '#fff8ea',
+          'marigold-bright': '#f7c35c',
           error: '#ba1a1a',
           info: '#1a57c7',
           success: '#006d3c',
@@ -63,9 +73,10 @@ export const vuetifyOptions: VuetifyOptions = {
           'rail-warn': '#ffcf7a',
         },
         variables: {
-          // borders and dividers come out as #dbe3e4, tinted toward the teal
-          'border-color': '#00363d',
-          'border-opacity': 0.14,
+          // borders and dividers come out as #e7e1d6, warm like the background
+          'border-color': '#694300',
+          'border-opacity': 0.16,
+          'shadow-color': '#3c2d10',
           'high-emphasis-opacity': 1,
           // #4e5859 on white, 7:1
           'medium-emphasis-opacity': 0.78,

@@ -4,12 +4,14 @@
     :aria-label="`SKU ${displayed.sku}`"
     :color="isDone || selected ? 'surface-light' : 'surface'"
     class="d-flex flex-wrap align-center ga-4 pa-4"
+    :class="{ 'row-hover': !selected }"
   >
     <sku-tag
       :sku="displayed.sku ?? '????'"
       :state="state"
       :score="glasses.score"
       :blur-score="glasses.blurScore"
+      :celebrate="celebrate"
     />
     <div class="d-flex flex-column ga-2 flex-1-1" :class="{ 'text-medium-emphasis': isDone }">
       <div
@@ -28,7 +30,9 @@
           <th
             scope="row"
             class="text-left text-label-medium font-weight-bold pr-3"
-            :class="isDone ? 'text-medium-emphasis' : 'text-primary'"
+            :class="
+              isDone ? 'text-medium-emphasis' : eye.key === 'os' ? 'text-marigold' : 'text-primary'
+            "
           >
             {{ eye.text }}
           </th>
@@ -86,11 +90,14 @@ const {
   glasses,
   editable = false,
   selected = false,
+  celebrate = false,
 } = defineProps<{
   glasses: Glasses & { score?: number; blurScore?: number }
   editable?: boolean
   // the glasses loaded into a form, not a list entry
   selected?: boolean
+  // play the dispense animation when the row appears already dispensed
+  celebrate?: boolean
 }>()
 
 const eyes: { text: string; key: GlassesEyeIndex }[] = [

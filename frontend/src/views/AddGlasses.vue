@@ -7,7 +7,7 @@
     </template>
     <v-col cols="12" md="5">
       <v-form ref="form" v-model="valid" @submit.prevent>
-        <page-card title="Glasses">
+        <page-card title="Glasses" :icon="mdiGlasses">
           <template #header>
             <v-btn
               v-prevent-enter-tab
@@ -55,20 +55,26 @@
     </v-col>
 
     <v-col cols="12" md="7">
-      <page-card ref="results" title="Recently added">
+      <page-card ref="results" title="Recently added" :icon="mdiHistory" tone="marigold">
         <template #header>
           <span v-if="lastAdded.length" class="text-body-medium text-medium-emphasis">
             Last {{ Math.min(lastAdded.length, 3) }}, newest first
           </span>
         </template>
-        <p v-if="lastAdded.length === 0" class="pa-6 ma-0 text-body-medium text-medium-emphasis">
-          Glasses you add show up here with their new SKU.
-        </p>
+        <v-empty-state
+          v-if="lastAdded.length === 0"
+          text="Glasses you add show up here with their new SKU."
+          text-width="300"
+          class="py-10"
+        >
+          <template #media><eye-chart variant="faded" class="mb-4" /></template>
+        </v-empty-state>
         <div v-else>
           <div
             v-for="(item, idx) in lastAdded.slice(0, 3)"
             :key="item.id"
             :data-testid="'result-' + idx"
+            class="row-in"
           >
             <v-divider v-if="idx > 0" />
             <glasses-row :glasses="item" editable>
@@ -93,7 +99,8 @@ import GlassesRow from '@/components/GlassesRow.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
 import PageLayout from '@/components/PageLayout.vue'
 import PageCard from '@/components/PageCard.vue'
-import { mdiRestore, mdiPlus } from '@mdi/js'
+import EyeChart from '@/components/EyeChart.vue'
+import { mdiRestore, mdiPlus, mdiGlasses, mdiHistory } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
 import { useEnterToTab } from 'vue3-enter-to-tab'
 

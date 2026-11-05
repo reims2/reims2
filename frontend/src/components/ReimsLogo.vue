@@ -29,7 +29,7 @@
       <span
         v-for="(size, index) in letterSizes"
         :key="index"
-        :style="{ fontSize: `${size}em`, color: index === 5 ? lens : undefined }"
+        :style="{ fontSize: `${size}em`, color: index === 5 ? two : undefined }"
       >
         {{ 'REIMS2'[index] }}
       </span>
@@ -42,6 +42,7 @@
 const { stacked = false } = defineProps<{ stacked?: boolean }>()
 
 const lens = '#8fd6dd'
+const two = '#f7c35c'
 
 const letterSizes = [1, 0.86, 0.75, 0.66, 0.59, 0.53]
 </script>

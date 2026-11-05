@@ -2,7 +2,7 @@
   <page-layout title="Dispense or edit">
     <v-col cols="12" md="5">
       <v-form ref="form" v-model="valid" @submit.prevent="startDispension">
-        <page-card title="Glasses by SKU">
+        <page-card title="Glasses by SKU" :icon="mdiGlasses">
           <div class="px-6 pt-6 pb-5">
             <select-glasses-input
               ref="firstInput"
@@ -58,7 +58,7 @@
     <edit-dialog v-if="selected" v-model:open="editDialogOpen" :glasses="selected" />
 
     <v-col cols="12" md="7">
-      <page-card title="Recently dispensed or deleted">
+      <page-card title="Recently dispensed or deleted" :icon="mdiHistory" tone="marigold">
         <template #header>
           <v-progress-circular
             v-if="isLastDispensedLoading"
@@ -74,12 +74,14 @@
             Go online to view recently dispensed glasses
           </v-alert>
         </div>
-        <p
+        <v-empty-state
           v-else-if="lastDispensed.length == 0"
-          class="pa-6 ma-0 text-body-medium text-medium-emphasis"
+          text="No glasses were dispensed or deleted recently."
+          text-width="300"
+          class="py-10"
         >
-          No glasses were dispensed or deleted recently.
-        </p>
+          <template #media><eye-chart variant="faded" class="mb-4" /></template>
+        </v-empty-state>
         <div v-else>
           <div
             v-for="(glasses, idx) in lastDispensed"
@@ -87,7 +89,7 @@
             :data-testid="'result-' + idx"
           >
             <v-divider v-if="idx > 0" />
-            <glasses-row :glasses="glasses">
+            <glasses-row :glasses="glasses" :celebrate="glasses.id === justDispensedId">
               <template #actions>
                 <v-btn variant="text" color="primary" @click="undoDispension(glasses)">Undo</v-btn>
               </template>
@@ -100,8 +102,9 @@
 </template>
 
 <script setup lang="ts">
-import { mdiCheck, mdiCloudOffOutline, mdiPencilOutline } from '@mdi/js'
+import { mdiCheck, mdiCloudOffOutline, mdiGlasses, mdiHistory, mdiPencilOutline } from '@mdi/js'
 
+import EyeChart from '@/components/EyeChart.vue'
 import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
 import GlassesRow from '@/components/GlassesRow.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
@@ -138,11 +141,15 @@ onActivated(() => {
   }
 })
 
+// the pair that lands at the top of the list gets the dispense animation
+const justDispensedId = ref<number | null>(null)
+
 function startDispension() {
   if (!selected.value) {
     errorMessage.value = 'SKU not found'
     return
   }
+  justDispensedId.value = selected.value.id
   submitDeletion('DISPENSED')
 }
 

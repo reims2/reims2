@@ -1,10 +1,11 @@
 <template>
   <v-sheet
-    :color="struck ? 'surface-muted' : 'primary-tonal'"
+    :color="struck ? (state === 'dispensed' ? 'success-tonal' : 'surface-muted') : 'primary-tonal'"
     width="72"
     height="76"
     rounded="lg"
-    class="d-flex flex-column align-center justify-center flex-shrink-0 text-tabular"
+    class="position-relative d-flex flex-column align-center justify-center flex-shrink-0 text-tabular"
+    :class="{ 'sku-celebrate': playing }"
   >
     <span class="text-label-small font-weight-bold" style="letter-spacing: 0.1em">SKU</span>
     <span
@@ -46,6 +47,25 @@
         <v-icon size="14" :icon="mdiFlaskOutline" />
       </span>
     </div>
+    <v-avatar
+      v-if="state === 'dispensed'"
+      color="success"
+      size="22"
+      class="sku-check"
+      :class="{ 'sku-check-pop': playing }"
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none">
+        <path
+          d="m5 12.5 4.5 4.5L19 7.5"
+          stroke="currentColor"
+          stroke-width="3.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          pathLength="24"
+        />
+      </svg>
+    </v-avatar>
   </v-sheet>
 </template>
 
@@ -59,12 +79,34 @@ const {
   state = 'stock',
   score = null,
   blurScore = null,
+  celebrate = false,
 } = defineProps<{
   sku: string
   state?: 'stock' | 'dispensed' | 'deleted'
   score?: number | null
   blurScore?: number | null
+  // play the dispense animation on mount, for a row that just arrived dispensed
+  celebrate?: boolean
 }>()
 
 const struck = computed(() => state === 'dispensed' || state === 'deleted')
+
+// the flip plays when a pair gets dispensed while on screen, or arrives dispensed with celebrate
+const playing = ref(false)
+let timer: ReturnType<typeof setTimeout> | undefined
+function play() {
+  playing.value = true
+  clearTimeout(timer)
+  timer = setTimeout(() => (playing.value = false), 1000)
+}
+watch(
+  () => state,
+  (now, before) => {
+    if (now === 'dispensed' && before === 'stock') play()
+  },
+)
+onMounted(() => {
+  if (celebrate && state === 'dispensed') play()
+})
+onBeforeUnmount(() => clearTimeout(timer))
 </script>

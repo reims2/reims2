@@ -1,10 +1,11 @@
-/* roboto-flex-latin-wght-normal */
+/* roboto-flex-latin-wdth-normal: weight and width, for wide titles and narrow prescriptions */
 @font-face {
   font-family: 'Roboto Flex Variable';
   font-style: normal;
   font-display: block;
   font-weight: 100 1000;
-  src: url(@fontsource-variable/roboto-flex/files/roboto-flex-latin-wght-normal.woff2)
+  font-stretch: 25% 151%;
+  src: url(@fontsource-variable/roboto-flex/files/roboto-flex-latin-wdth-normal.woff2)
     format('woff2-variations');
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -53,4 +54,93 @@
 .text-rx {
   font-weight: 550;
   font-variant-numeric: tabular-nums;
+  font-stretch: 88%;
+}
+
+// page titles go wide and heavy like the wordmark
+.text-title-wide {
+  font-weight: 780;
+  font-stretch: 118%;
+  letter-spacing: -0.015em !important;
+}
+
+.row-hover:hover,
+.v-data-table__tr:hover > td {
+  background-color: rgb(var(--v-theme-marigold-light));
+}
+
+// motion: rows arrive, pairs get dispensed, buttons give under the finger
+.v-btn {
+  transition-property: transform, box-shadow, background-color, opacity;
+  transition-duration: 120ms;
+}
+.v-btn:active {
+  transform: scale(0.97);
+}
+
+.row-in {
+  animation: row-in 440ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.sku-check {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  box-shadow: 0 0 0 2px rgb(var(--v-theme-surface));
+}
+.sku-celebrate {
+  animation:
+    sku-flip 560ms cubic-bezier(0.2, 0.7, 0.2, 1) both,
+    sku-glow 800ms ease-out 220ms;
+}
+.sku-check-pop {
+  animation: sku-pop 360ms cubic-bezier(0.2, 0.7, 0.2, 1) 300ms both;
+}
+.sku-check-pop path {
+  stroke-dasharray: 24;
+  animation: sku-check 380ms ease-out 260ms both;
+}
+@keyframes sku-flip {
+  0% {
+    transform: perspective(300px) rotateY(90deg) scale(0.92);
+  }
+  60% {
+    transform: perspective(300px) rotateY(-10deg) scale(1.04);
+  }
+}
+@keyframes sku-glow {
+  from {
+    box-shadow: 0 0 0 0 rgb(238 164 23 / 60%);
+  }
+  to {
+    box-shadow: 0 0 0 16px rgb(238 164 23 / 0%);
+  }
+}
+@keyframes sku-pop {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+}
+@keyframes sku-check {
+  from {
+    stroke-dashoffset: 24;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
