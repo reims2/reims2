@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.pvh.model.enums.LocationEnum;
 
+// only read and written through ChangeValueRepository's queries
 @Entity
 @Table(name = "changevalue")
 public class ChangeValue {
@@ -18,32 +19,4 @@ public class ChangeValue {
 
     @Column(name = "hash_value")
     private String hashValue;
-
-    public ChangeValue(String hashValue, LocationEnum location) {
-        this.hashValue = hashValue;
-        this.location = location;
-    }
-
-    public ChangeValue() {
-
-    }
-
-
-    public String getHashValue() {
-        return hashValue;
-    }
-
-    public void setHashValue(String hashValue) {
-        this.hashValue = hashValue;
-    }
-
-    public LocationEnum getLocation() {
-        return location;
-    }
-
-    public void setLocation(LocationEnum location) {
-        this.location = location;
-    }
-
-
 }

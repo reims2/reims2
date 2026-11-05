@@ -15,7 +15,6 @@ import org.pvh.model.enums.LocationEnum;
 import org.pvh.service.ChangeService;
 import org.pvh.service.GlassesService;
 import org.pvh.service.SearchLogService;
-import org.pvh.util.CampaignZone;
 import org.pvh.util.CsvExport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +30,11 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @RestController
 @RequestMapping("api/glasses")
@@ -60,11 +59,15 @@ public class GlassesRestController {
     private @interface CsvResponses {
     }
 
-    private static ResponseEntity<String> csv(String filename, String body) {
+    private static <T> ResponseEntity<String> csv(String filename, List<T> rows, Comparator<? super T> order,
+                                                  Function<List<T>, String> render) {
+        if (rows.isEmpty())
+            return ResponseEntity.noContent().build();
+        rows.sort(order);
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(filename).build().toString())
             .header(HttpHeaders.CONTENT_TYPE, "text/csv")
-            .body(body);
+            .body(render.apply(rows));
     }
 
     @GetMapping(path = "/{location}/all")
@@ -75,11 +78,8 @@ public class GlassesRestController {
     @CsvResponses
     @GetMapping(path = "/{location}.csv")
     public ResponseEntity<String> getAllGlassesCsv(@PathVariable("location") LocationEnum location) {
-        List<Glasses> glasses = glassesService.findByDispensedAndLocation(false, location);
-        if (glasses.isEmpty())
-            return ResponseEntity.noContent().build();
-        glasses.sort(Comparator.comparing(Glasses::getSku));
-        return csv("glasses.csv", CsvExport.glasses(glasses));
+        return csv("glasses.csv", glassesService.findByDispensedAndLocation(false, location), Comparator.comparing(Glasses::getSku),
+            CsvExport::glasses);
     }
 
     @GetMapping(path = "/dispensed/{location}")
@@ -87,31 +87,21 @@ public class GlassesRestController {
         @RequestParam(required = false) @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate endDate,
         @PathVariable("location") LocationEnum location) {
-        Instant from = startDate == null ? Instant.EPOCH : startDate.atStartOfDay(CampaignZone.ZONE).toInstant();
-        LocalDate lastDay = endDate == null ? LocalDate.now(CampaignZone.ZONE) : endDate;
-        Instant to = lastDay.plusDays(1).atStartOfDay(CampaignZone.ZONE).toInstant();
-
-        return glassesService.findDispensedBetween(from, to, location).stream().map(GlassesResponseDTO::from).toList();
+        return glassesService.findDispensedBetween(startDate, endDate, location).stream().map(GlassesResponseDTO::from).toList();
     }
 
     @CsvResponses
     @GetMapping(path = "/dispensed/{location}.csv")
     public ResponseEntity<String> getAllDispensedGlassesCsv(@PathVariable("location") LocationEnum location) {
-        List<Glasses> glasses = glassesService.findByDispensedAndLocation(true, location);
-        if (glasses.isEmpty())
-            return ResponseEntity.noContent().build();
-        glasses.sort(Comparator.comparing(g -> g.getDispense().getModifyDate()));
-        return csv("glasses.csv", CsvExport.glasses(glasses));
+        return csv("glasses.csv", glassesService.findByDispensedAndLocation(true, location),
+            Comparator.comparing(g -> g.getDispense().getModifyDate()), CsvExport::glasses);
     }
 
     @CsvResponses
     @GetMapping(path = "/unsuccessful/{location}.csv")
     public ResponseEntity<String> getAllUnsuccessfulSearchesCsv(@PathVariable("location") LocationEnum location) {
-        List<SearchLog> searches = searchLogService.findUnsuccessful(location);
-        if (searches.isEmpty())
-            return ResponseEntity.noContent().build();
-        searches.sort(Comparator.comparing(SearchLog::getSearchDate));
-        return csv("unsuccessful_searches.csv", CsvExport.searches(searches));
+        return csv("unsuccessful_searches.csv", searchLogService.findUnsuccessful(location), Comparator.comparing(SearchLog::getSearchDate),
+            CsvExport::searches);
     }
 
     @GetMapping(path = "/{location}/{sku}", produces = "application/json")

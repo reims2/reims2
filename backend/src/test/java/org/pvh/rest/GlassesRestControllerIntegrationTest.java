@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.pvh.IntegrationTest;
 import org.pvh.model.dto.EyeDTO;
 import org.pvh.model.dto.GlassesRequestDTO;
-import org.pvh.model.entity.ChangeValue;
 import org.pvh.model.entity.Eye;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
@@ -27,7 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -46,7 +44,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -97,25 +95,9 @@ public class GlassesRestControllerIntegrationTest {
         return mainService.saveGlasses(newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.medium, AppearanceEnum.neutral, location));
     }
 
-    private ChangeValue callChangeValueAndReturnHash(String location) throws Exception {
-
-        MvcResult changeValue = this.mockMvc.perform(get(String.format("/api/glasses/%s/changes", location)))
-            .andReturn();
-        ChangeValue cv = objectMapper.readValue(changeValue.getResponse().getContentAsByteArray(),
-            ChangeValue.class);
-
-        return cv;
-    }
-
-    private boolean isChangeValueEqualNewChangeValue(ChangeValue cv, String location) throws Exception {
-
-        MvcResult changeValueMvc = this.mockMvc.perform(get(String.format("/api/glasses/%s/changes", location)))
-            .andReturn();
-        ChangeValue changeValue2 = objectMapper.readValue(changeValueMvc.getResponse().getContentAsByteArray(),
-            ChangeValue.class);
-
-        return cv.getHashValue().equals(changeValue2.getHashValue());
-
+    private String hash(String location) throws Exception {
+        String body = mockMvc.perform(get("/api/glasses/" + location + "/changes")).andReturn().getResponse().getContentAsString();
+        return JsonPath.read(body, "$.hashValue");
     }
 
     @Test
@@ -124,7 +106,7 @@ public class GlassesRestControllerIntegrationTest {
 
         Glasses saveEntitySa = saveGlasses(LocationEnum.sa);
 
-        ChangeValue cv = callChangeValueAndReturnHash("sa");
+        String cv = hash("sa");
         // Get create Glasses
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa.getSku()))
             .andExpect(status().isOk())
@@ -148,19 +130,19 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(status().isOk())
             .andDo(print());
 
-        assertFalse(isChangeValueEqualNewChangeValue(cv, "sa"));
+        assertNotEquals(cv, hash("sa"));
 
         // Dispense created Glasses for second time --> nothing to change
-        cv = callChangeValueAndReturnHash("sa");
+        cv = hash("sa");
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa.getId() + "/dispense"))
             .andExpect(status().isNoContent())
             .andDo(print());
-        assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
+        assertEquals(cv, hash("sa"));
         // Dispense non existing Glasses
         this.mockMvc.perform(put("/api/glasses/-1/dispense"))
             .andExpect(status().isNotFound())
             .andDo(print());
-        assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
+        assertEquals(cv, hash("sa"));
 
         // try to get created Glasses
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa.getSku()))
@@ -192,48 +174,48 @@ public class GlassesRestControllerIntegrationTest {
 
         Glasses saveEntitySa2 = saveGlasses(LocationEnum.sa);
 
-        cv = callChangeValueAndReturnHash("sa");
+        cv = hash("sa");
         // Try to Undispense firstly created glass -> not possible because of secondly
         // created glass
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa.getId() + "/undispense"))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.detail", Matchers.is("SKU %04d is already used by other glasses.".formatted(saveEntitySa.getSku()))))
             .andDo(print());
-        assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
+        assertEquals(cv, hash("sa"));
 
         // dispense secondly created glass
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa2.getId() + "/dispense"))
             .andExpect(status().isOk())
             .andDo(print());
-        assertFalse(isChangeValueEqualNewChangeValue(cv, "sa"));
+        assertNotEquals(cv, hash("sa"));
 
         // undispense secondly created glass
-        cv = callChangeValueAndReturnHash("sa");
+        cv = hash("sa");
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa2.getId() + "/undispense"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.sku", Matchers.is(saveEntitySa2.getSku())))
             .andExpect(jsonPath("$.dispensed", Matchers.is(false)))
             .andDo(print());
-        assertFalse(isChangeValueEqualNewChangeValue(cv, "sa"));
+        assertNotEquals(cv, hash("sa"));
         // undispense must not leave the old reason behind
         assertNull(glassesRepository.findById(saveEntitySa2.getId()).orElseThrow().getDispense().getDispenseReason());
 
         // undispense secondly created glass second time
-        cv = callChangeValueAndReturnHash("sa");
+        cv = hash("sa");
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa2.getId() + "/undispense"))
             .andExpect(status().isNoContent())
             .andDo(print());
-        assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
+        assertEquals(cv, hash("sa"));
         // undispense empty glasss
         this.mockMvc.perform(put("/api/glasses/fsdg/undispense"))
             .andExpect(status().isBadRequest())
             .andDo(print());
-        assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
+        assertEquals(cv, hash("sa"));
         // undispense wrong id glasss
         this.mockMvc.perform(put("/api/glasses/-1/undispense"))
             .andExpect(status().isNotFound())
             .andDo(print());
-        assertTrue(isChangeValueEqualNewChangeValue(cv, "sa"));
+        assertEquals(cv, hash("sa"));
 
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa2.getSku()))
             .andExpect(status().isOk())
@@ -276,7 +258,7 @@ public class GlassesRestControllerIntegrationTest {
 
         Glasses failGlasses = newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm);
 
-        ChangeValue cv = callChangeValueAndReturnHash("sm");
+        String cv = hash("sm");
 
         for (int i = 0; i < 2; i++) {
             this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON).content(
@@ -295,20 +277,20 @@ public class GlassesRestControllerIntegrationTest {
                     Matchers.is(glasses.getOd().getCylinder().intValue())))
                 .andDo(print());
 
-            assertFalse(isChangeValueEqualNewChangeValue(cv, "sm"));
-            cv = callChangeValueAndReturnHash("sm");
+            assertNotEquals(cv, hash("sm"));
+            cv = hash("sm");
         }
 
         this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON).content(
                 objectMapper.writeValueAsString(request(failGlasses)).replace("\"sm\"", "\"ss\"")))
             .andExpect(status().isBadRequest())
             .andDo(print());
-        assertTrue(isChangeValueEqualNewChangeValue(cv, "sm"));
+        assertEquals(cv, hash("sm"));
 
         this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andDo(print());
-        assertTrue(isChangeValueEqualNewChangeValue(cv, "sm"));
+        assertEquals(cv, hash("sm"));
     }
 
     @Test
@@ -392,7 +374,7 @@ public class GlassesRestControllerIntegrationTest {
 
         Glasses glasses = newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm);
 
-        ChangeValue cv = callChangeValueAndReturnHash("sm");
+        String cv = hash("sm");
         String added = this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON).content(
                 objectMapper.writeValueAsBytes(request(glasses))))
             .andExpect(status().isCreated())
@@ -401,9 +383,9 @@ public class GlassesRestControllerIntegrationTest {
             .andReturn().getResponse().getContentAsString();
         int sku = JsonPath.read(added, "$.sku");
         int id = JsonPath.read(added, "$.id");
-        assertFalse(isChangeValueEqualNewChangeValue(cv, "sm"));
+        assertNotEquals(cv, hash("sm"));
 
-        cv = callChangeValueAndReturnHash("sm");
+        cv = hash("sm");
         Glasses glassesToUpdate = new Glasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.medium, AppearanceEnum.feminine, LocationEnum.sm,
             new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)),
             new Eye(BigDecimal.valueOf(2), BigDecimal.valueOf(-5), 3, BigDecimal.valueOf(2)));
@@ -426,9 +408,9 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder",
                 Matchers.is(glassesToUpdate.getOd().getCylinder().intValue())))
             .andDo(print());
-        assertFalse(isChangeValueEqualNewChangeValue(cv, "sm"));
+        assertNotEquals(cv, hash("sm"));
 
-        cv = callChangeValueAndReturnHash("sm");
+        cv = hash("sm");
         this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"glassesType\":\"multifocal\",\"glassesSize\":\"medium\",\"appearance\":\"test\",\"location\":\"sm\","
@@ -437,7 +419,7 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.content()
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON))
             .andDo(print());
-        assertTrue(isChangeValueEqualNewChangeValue(cv, "sm"));
+        assertEquals(cv, hash("sm"));
     }
 
     @Test

@@ -8,10 +8,12 @@ import org.pvh.model.entity.Glasses;
 import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.LocationEnum;
 import org.pvh.repository.GlassesRepository;
+import org.pvh.util.CampaignZone;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -36,8 +38,11 @@ public class GlassesService {
         return glassesRepository.findByDispensedAndLocation(dispensed, location);
     }
 
-    public List<Glasses> findDispensedBetween(Instant from, Instant to, LocationEnum location) {
-        return glassesRepository.findDispensedBetween(location, from, to);
+    // campaign days, both inclusive, an open start means since ever and an open end means until today
+    public List<Glasses> findDispensedBetween(LocalDate firstDay, LocalDate lastDay, LocationEnum location) {
+        Instant from = firstDay == null ? Instant.EPOCH : firstDay.atStartOfDay(CampaignZone.ZONE).toInstant();
+        LocalDate end = lastDay == null ? LocalDate.now(CampaignZone.ZONE) : lastDay;
+        return glassesRepository.findDispensedBetween(location, from, end.plusDays(1).atStartOfDay(CampaignZone.ZONE).toInstant());
     }
 
     @Transactional
