@@ -4,15 +4,16 @@ import org.pvh.error.BadRequestException;
 import org.pvh.error.ConflictException;
 import org.pvh.error.NotFoundException;
 import org.pvh.model.dto.GlassesRequestDTO;
-import org.pvh.model.entity.Dispense;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.LocationEnum;
 import org.pvh.repository.GlassesRepository;
+import org.pvh.util.CampaignZone;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -37,8 +38,11 @@ public class GlassesService {
         return glassesRepository.findByDispensedAndLocation(dispensed, location);
     }
 
-    public List<Glasses> findDispensedBetween(Instant from, Instant to, LocationEnum location) {
-        return glassesRepository.findDispensedBetween(location, from, to);
+    // campaign days, both inclusive, an open start means since ever and an open end means until today
+    public List<Glasses> findDispensedBetween(LocalDate firstDay, LocalDate lastDay, LocationEnum location) {
+        Instant from = firstDay == null ? Instant.EPOCH : firstDay.atStartOfDay(CampaignZone.ZONE).toInstant();
+        LocalDate end = lastDay == null ? LocalDate.now(CampaignZone.ZONE) : lastDay;
+        return glassesRepository.findDispensedBetween(location, from, end.plusDays(1).atStartOfDay(CampaignZone.ZONE).toInstant());
     }
 
     @Transactional
@@ -46,8 +50,6 @@ public class GlassesService {
         LocationEnum location = glasses.getLocation();
         // first statement, so the changevalue row lock is held before InnoDB takes its snapshot
         changeService.setNewHashValue(location);
-        if (glasses.getDispense() == null)
-            glasses.setDispense(new Dispense());
         glasses.setSku(nextFreeSku(location));
         glasses.setCreationDate(now());
         return glassesRepository.saveAndFlush(glasses);
@@ -70,12 +72,7 @@ public class GlassesService {
             return Optional.empty();
 
         changeService.setNewHashValue(glasses.getLocation());
-        Dispense dispense = glasses.getDispense();
-        dispense.setPreviousSku(glasses.getSku());
-        dispense.setModifyDate(now());
-        dispense.setDispenseReason(reason);
-        glasses.setDispensed(true);
-        glasses.setSku(null);
+        glasses.dispense(reason, now());
         return Optional.of(glasses);
     }
 
@@ -85,8 +82,7 @@ public class GlassesService {
         Glasses glasses = lock(id);
         if (!glasses.isDispensed())
             return Optional.empty();
-        Dispense dispense = glasses.getDispense();
-        Integer previousSku = dispense.getPreviousSku();
+        Integer previousSku = glasses.getDispense().getPreviousSku();
         if (previousSku == null)
             throw new BadRequestException("These glasses have no previous SKU to restore.");
 
@@ -95,11 +91,7 @@ public class GlassesService {
         if (glassesRepository.existsBySku(previousSku))
             throw new BadRequestException("SKU " + formatSku(previousSku) + " is already used by other glasses.");
 
-        glasses.setDispensed(false);
-        glasses.setSku(previousSku);
-        dispense.setModifyDate(now());
-        dispense.setPreviousSku(null);
-        dispense.setDispenseReason(null);
+        glasses.undispense(now());
         return Optional.of(glasses);
     }
 

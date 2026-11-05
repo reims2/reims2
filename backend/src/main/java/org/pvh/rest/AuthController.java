@@ -2,7 +2,6 @@ package org.pvh.rest;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
-import org.pvh.error.NotFoundException;
 import org.pvh.model.dto.JwtResponse;
 import org.pvh.model.dto.LoginRequest;
 import org.pvh.model.dto.MessageResponse;
@@ -47,8 +46,7 @@ public class AuthController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/user", produces = "application/json")
     public UserResponse getCurrentUserInfo(Principal userPrincipal) {
-        return userService.findByUsername(userPrincipal.getName()).map(UserResponse::from)
-            .orElseThrow(() -> new NotFoundException("User not found."));
+        return UserResponse.from(userService.getByUsername(userPrincipal.getName()));
     }
 
     @PostMapping("/signup")

@@ -41,10 +41,4 @@ public class Dispense extends BaseEntity {
         this.dispenseReason = dispenseReason;
     }
 
-    @Override
-    public String toString() {
-        return "Dispense [modifyDate=" + modifyDate + ", previousSku=" + previousSku + ", dispenseReason="
-            + dispenseReason + "]";
-    }
-
 }

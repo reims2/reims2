@@ -35,23 +35,22 @@ public class DtoMappingTest {
         assertEquals(OD, EyeDTO.from(glasses.getOd()));
         assertFalse(glasses.isDispensed());
         assertNull(glasses.getSku());
-        assertNull(glasses.getDispense());
+        assertNull(glasses.getDispense().getPreviousSku());
         assertNull(glasses.getCreationDate());
         assertNull(glasses.getId());
     }
 
     @Test
     public void glassesToResponse() {
-        Dispense dispense = new Dispense();
-        dispense.setPreviousSku(22);
-        dispense.setModifyDate(Instant.now());
-        dispense.setDispenseReason(DispenseReasonEnum.BROKEN);
         Glasses glasses = new GlassesRequestDTO(GlassesTypeEnum.single, GlassesSizeEnum.small, AppearanceEnum.neutral, LocationEnum.sm,
             OS, OD).toGlasses();
         glasses.setId(7L);
         glasses.setSku(5005);
         glasses.setCreationDate(Instant.now());
-        glasses.setDispense(dispense);
+        Dispense dispense = glasses.getDispense();
+        dispense.setPreviousSku(22);
+        dispense.setModifyDate(Instant.now());
+        dispense.setDispenseReason(DispenseReasonEnum.BROKEN);
 
         GlassesResponseDTO response = GlassesResponseDTO.from(glasses);
 
