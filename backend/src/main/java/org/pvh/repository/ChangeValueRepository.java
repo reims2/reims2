@@ -5,6 +5,7 @@ import org.pvh.model.enums.LocationEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -13,7 +14,8 @@ public interface ChangeValueRepository extends JpaRepository<ChangeValue, Locati
     @Query("SELECT c.hashValue FROM ChangeValue c WHERE c.location = :location")
     Optional<String> findHashValue(LocationEnum location);
 
-    @Transactional
+    // part of the write it marks, see GlassesService
+    @Transactional(propagation = Propagation.MANDATORY)
     @Modifying
     @Query("UPDATE ChangeValue SET hashValue = :hashValue WHERE location = :location")
     void updateHashValue(LocationEnum location, String hashValue);

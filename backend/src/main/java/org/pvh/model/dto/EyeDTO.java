@@ -5,6 +5,8 @@ import org.pvh.model.entity.Eye;
 
 import java.math.BigDecimal;
 
+import static java.util.Objects.requireNonNullElse;
+
 public record EyeDTO(
     @NotNull
     @DecimalMin(value = "-30.0")
@@ -31,14 +33,10 @@ public record EyeDTO(
     }
 
     public Eye applyTo(Eye eye) {
-        eye.setSphere(orZero(sphere));
-        eye.setCylinder(orZero(cylinder));
+        eye.setSphere(requireNonNullElse(sphere, BigDecimal.ZERO));
+        eye.setCylinder(requireNonNullElse(cylinder, BigDecimal.ZERO));
         eye.setAxis(axis);
-        eye.setAdd(orZero(add));
+        eye.setAdd(requireNonNullElse(add, BigDecimal.ZERO));
         return eye;
-    }
-
-    private static BigDecimal orZero(BigDecimal value) {
-        return value != null ? value : BigDecimal.ZERO;
     }
 }

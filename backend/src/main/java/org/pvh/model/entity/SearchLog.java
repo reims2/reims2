@@ -10,7 +10,6 @@ import org.pvh.model.enums.LocationEnum;
 import java.time.Instant;
 import java.util.List;
 
-
 @Entity
 @Table(name = "search_log")
 public class SearchLog extends BaseEntity {
@@ -47,7 +46,6 @@ public class SearchLog extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "OD_ID")
     private Eye od;
-
 
     public BalLensEnum getBalLens() {
         return balLens;
@@ -111,10 +109,6 @@ public class SearchLog extends BaseEntity {
 
     public void setResultCount(int resultCount) {
         this.resultCount = resultCount;
-    }
-
-    public List<SearchResult> getResults() {
-        return results;
     }
 
     public void setResults(List<SearchResult> results) {
