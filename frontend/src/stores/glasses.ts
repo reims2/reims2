@@ -25,7 +25,8 @@ export const useGlassesStore = defineStore(
     const rootStore = useRootStore()
     const authStore = useAuthStore()
     const axiosInstance = useAxios()
-    const allGlasses = ref([] as Glasses[])
+    // only ever replaced whole, so consumers track one dependency instead of every field
+    const allGlasses = shallowRef<Glasses[]>([])
     const allGlassesHash = ref('')
     const lastRefresh = ref(null as string | null)
     const isOutdated = ref(false)
@@ -97,7 +98,11 @@ export const useGlassesStore = defineStore(
           updateCache(change, await send(change))
           return 'sent'
         } catch (e) {
-          if (!(e instanceof ReimsAxiosError && e.isNetwork)) throw e
+          if (!(e instanceof ReimsAxiosError)) throw e
+          // dispensed or gone on the server, a retry can't help
+          if (e.statusCode === 404 || e.statusCode === 409)
+            removeCached((g) => g.id === change.glasses.id)
+          if (!e.isNetwork) throw e
         }
       }
       outbox.add(change)
@@ -177,6 +182,9 @@ export const useGlassesStore = defineStore(
             signal: controller.signal,
           })
           allGlasses.value = response.data
+          // queued changes aren't on the server yet
+          for (const entry of outbox.queue.value)
+            if (entry.glasses.location === site) updateCache(entry)
         }
         allGlassesHash.value = change.data.hashValue
         lastRefresh.value = new Date().toISOString()
@@ -187,6 +195,8 @@ export const useGlassesStore = defineStore(
     }
     // the server's version replaces the cached copy and a pair that held its SKU before
     function addOfflineGlasses(glasses: Glasses) {
+      const cached = allGlasses.value.find((el) => el.id === glasses.id)
+      if (cached && JSON.stringify(cached) === JSON.stringify(glasses)) return
       allGlasses.value = [
         ...allGlasses.value.filter((el) => el.id !== glasses.id && el.sku !== glasses.sku),
         glasses,
@@ -196,7 +206,6 @@ export const useGlassesStore = defineStore(
     function removeCached(match: (glasses: Glasses) => boolean) {
       if (allGlasses.value.some(match)) allGlasses.value = allGlasses.value.filter((g) => !match(g))
     }
-    const deleteOfflineGlassesById = (id: number) => removeCached((g) => g.id === id)
 
     return {
       allGlasses,
@@ -220,7 +229,6 @@ export const useGlassesStore = defineStore(
       getDispensedGlasses,
       loadGlassesIfChanged,
       loadGlasses,
-      deleteOfflineGlassesById,
     }
   },
   { persist: { pick: ['allGlasses', 'lastRefresh', 'allGlassesHash', 'isOutdated'] } },

@@ -5,7 +5,6 @@ import { useToast } from '@/composables/toast'
 export class ReimsAxiosError extends Error {
   isNetwork: boolean
   isServerSide: boolean
-  isClientSide: boolean
   statusCode: number | null
   apiMessage: string | null
   constructor(
@@ -15,12 +14,12 @@ export class ReimsAxiosError extends Error {
     apiMessage: string | null = null,
     statusCode: number | null = null,
   ) {
-    super(message)
+    // the server's problem detail says more than the generic message
+    super(apiMessage ?? message)
     this.name = 'ReimsAxiosError'
     this.isNetwork = isNetwork
     this.isServerSide = isServer
     this.apiMessage = apiMessage
-    this.isClientSide = !isNetwork && !isServer
     this.statusCode = statusCode
   }
 }

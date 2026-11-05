@@ -40,7 +40,6 @@ describe('axios error mapping', () => {
     expect(error).toMatchObject({
       isNetwork: false,
       isServerSide: true,
-      isClientSide: false,
       statusCode: 503,
       apiMessage: 'Database error',
     })
@@ -49,9 +48,10 @@ describe('axios error mapping', () => {
   it('maps a 4xx to a client error with the problem detail', async () => {
     const error = await failWith(409, undefined, 'No free SKUs left in this location.')
     expect(error).toMatchObject({
-      isClientSide: true,
+      isNetwork: false,
+      isServerSide: false,
       statusCode: 409,
-      apiMessage: 'No free SKUs left in this location.',
+      message: 'No free SKUs left in this location.',
     })
   })
 
