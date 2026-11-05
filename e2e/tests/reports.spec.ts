@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test'
-import fs from 'fs'
+import fs from 'node:fs'
 import { test, expect } from './fixtures'
 
 async function downloadCsv(page: Page, buttonIndex: number): Promise<string[]> {
@@ -10,21 +10,25 @@ async function downloadCsv(page: Page, buttonIndex: number): Promise<string[]> {
 }
 
 test('Download reports', async ({ page, api, createGlasses }) => {
-  const { sku: inStock } = await createGlasses()
-  const { id: dispensedId, sku: dispensed } = await createGlasses()
-  expect((await api.put(`/api/glasses/${dispensedId}/dispense?reason=DISPENSED`)).ok()).toBe(true)
   const eye = { sphere: 25, cylinder: 0, axis: 0, add: 0 }
-  const searchLog = await api.post('/api/glasses/sa/searchLog', {
-    data: {
-      glassesType: 'single',
-      balLens: 'DISABLE_NONE',
-      searchDate: Date.now(),
-      increaseSearchTolerance: false,
-      resultCount: 0,
-      od: eye,
-      os: eye,
-    },
-  })
+  const [{ sku: inStock }, dispensed, searchLog] = await Promise.all([
+    createGlasses(),
+    createGlasses().then(async ({ id, sku }) => {
+      expect((await api.put(`/api/glasses/${id}/dispense?reason=DISPENSED`)).ok()).toBe(true)
+      return sku
+    }),
+    api.post('/api/glasses/sa/searchLog', {
+      data: {
+        glassesType: 'single',
+        balLens: 'DISABLE_NONE',
+        searchDate: Date.now(),
+        increaseSearchTolerance: false,
+        resultCount: 0,
+        od: eye,
+        os: eye,
+      },
+    }),
+  ])
   expect(searchLog.ok()).toBe(true)
 
   await page.goto('/manage/reports')

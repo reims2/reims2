@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test'
 import { EyeInput } from './eye-input.po'
+import { test, expect } from './fixtures'
 
 test('Add glasses', async ({ page }) => {
   const eyeInput = new EyeInput(page)
@@ -39,12 +39,12 @@ test('A adds glasses but Ctrl+A only selects the field', async ({ page }) => {
     os: { sphere: '6.5', cylinder: '0' },
   })
 
-  await eyeInput.osSphere.press('ControlOrMeta+a')
-  await eyeInput.osSphere.pressSequentially('6.75')
-  await expect(eyeInput.osSphere).toHaveValue('6.75')
+  await eyeInput.os.sphere.press('ControlOrMeta+a')
+  await eyeInput.os.sphere.pressSequentially('6.75')
+  await expect(eyeInput.os.sphere).toHaveValue('6.75')
   expect(adds).toBe(0)
 
-  await eyeInput.osSphere.press('a')
+  await eyeInput.os.sphere.press('a')
 
   await expect(
     page.getByTestId('result-0').getByRole('row', { name: 'OS +6.75 +0.00' }),

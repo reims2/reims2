@@ -1,54 +1,41 @@
+import { BrowserContext, Page } from '@playwright/test'
 import { EyeInput } from './eye-input.po'
-import { test, expect, formatSku } from './fixtures'
+import { test, expect, formatSku, lookUpSku, open, searchGlasses, searchResult } from './fixtures'
 
-test('Search works offline', async ({ page, context, createGlasses }) => {
-  const eye = { sphere: -7.25, cylinder: 0, axis: 0, add: 0 }
-  const sku = formatSku((await createGlasses({ od: eye, os: eye })).sku)
-
-  const glassesLoaded = page.waitForResponse((r) => r.url().endsWith('/all') && r.ok())
-  await page.goto('/find')
-  await glassesLoaded
+async function reloadOffline(page: Page, context: BrowserContext) {
+  await open(page, '/find')
   // the app shell is only cached once the service worker controls the page
   await page.waitForFunction(() => navigator.serviceWorker.controller !== null)
-
   await context.setOffline(true)
   await page.reload()
   await expect(page.getByText('You are offline')).toBeVisible()
+}
 
-  const eyeInput = new EyeInput(page)
-  await eyeInput.fill({
+test('Search works offline', async ({ page, context, createGlasses }) => {
+  const { sku } = await createGlasses({ od: { sphere: -7.25 }, os: { sphere: -7.25 } })
+  await reloadOffline(page, context)
+
+  await new EyeInput(page).fill({
     category: 's',
     od: { sphere: '-7.25', cylinder: '0' },
     os: { sphere: '-7.25', cylinder: '0' },
   })
-  await page.getByRole('button', { name: 'earch glasses' }).click()
-  await expect(page.getByLabel('Results').getByRole('group', { name: `SKU ${sku}` })).toBeVisible()
+  await searchGlasses(page)
+  await expect(searchResult(page, sku)).toBeVisible()
 })
 
 test('Inventory works offline', async ({ page, context, createGlasses }) => {
-  const eye = { sphere: -7.5, cylinder: 0, axis: 0, add: 0 }
-  const sku = formatSku((await createGlasses({ od: eye, os: eye })).sku)
-
-  const glassesLoaded = page.waitForResponse((r) => r.url().endsWith('/all') && r.ok())
-  await page.goto('/find')
-  await glassesLoaded
-  await page.waitForFunction(() => navigator.serviceWorker.controller !== null)
-
-  await context.setOffline(true)
-  await page.reload()
-  await expect(page.getByText('You are offline')).toBeVisible()
+  const { sku } = await createGlasses({ od: { sphere: -7.5 }, os: { sphere: -7.5 } })
+  await reloadOffline(page, context)
 
   await page.getByRole('link', { name: 'Inventory' }).click()
-  await expect(page.getByRole('row').filter({ hasText: sku })).toBeVisible()
+  await expect(page.getByRole('row').filter({ hasText: formatSku(sku) })).toBeVisible()
 })
 
 test('Dispense offline uploads once back online', async ({ page, context, createGlasses, api }) => {
   const { id, sku } = await createGlasses()
-  await page.goto('/edit')
-  await expect(page.getByText('Setting up REIMS2')).toHaveCount(0)
-  const skuInput = page.getByLabel('SKU', { exact: true })
-  await skuInput.fill(formatSku(sku))
-  await expect(page.getByLabel('Glasses result')).toBeVisible()
+  await open(page, '/edit')
+  await lookUpSku(page, sku)
 
   await context.setOffline(true)
   await page.getByRole('button', { name: 'Dispense' }).click()
@@ -56,7 +43,7 @@ test('Dispense offline uploads once back online', async ({ page, context, create
     page.getByText(`Glasses with SKU ${formatSku(sku)} will be dispensed when you're back online`),
   ).toBeVisible()
   await expect(page.getByRole('button', { name: 'Sync status: 1 waiting' })).toBeVisible()
-  await skuInput.fill(formatSku(sku))
+  await page.getByLabel('SKU', { exact: true }).fill(formatSku(sku))
   await expect(page.getByLabel('Glasses result')).toBeHidden()
 
   await context.setOffline(false)
