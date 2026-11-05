@@ -66,11 +66,15 @@
           <span v-else-if="matches" class="text-body-medium text-medium-emphasis">No matches</span>
         </template>
 
-        <v-empty-state v-if="matches == null" title="Search to see matches" class="py-12">
-          <template #media><eye-chart class="mb-6" /></template>
-        </v-empty-state>
+        <v-empty-state
+          v-if="matches == null"
+          :icon="mdiMagnify"
+          title="Search to see matches"
+          class="py-12"
+        />
         <v-empty-state
           v-else-if="matches.length === 0"
+          :icon="mdiMagnifyRemoveOutline"
           title="No close matches in stock"
           :text="
             (highTolerance
@@ -80,9 +84,7 @@
           "
           text-width="320"
           class="py-12"
-        >
-          <template #media><eye-chart variant="blurred" class="mb-6" /></template>
-        </v-empty-state>
+        />
 
         <template v-else>
           <div
@@ -141,9 +143,8 @@
 </template>
 
 <script setup lang="ts">
-import { mdiRestore, mdiMagnify, mdiEyeOutline, mdiGlasses } from '@mdi/js'
+import { mdiRestore, mdiMagnify, mdiMagnifyRemoveOutline, mdiEyeOutline, mdiGlasses } from '@mdi/js'
 
-import EyeChart from '@/components/EyeChart.vue'
 import GlassInput from '@/components/GlassInput.vue'
 import GlassesRow from '@/components/GlassesRow.vue'
 import PageLayout from '@/components/PageLayout.vue'

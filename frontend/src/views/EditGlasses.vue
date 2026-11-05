@@ -74,14 +74,12 @@
             Go online to view recently dispensed glasses
           </v-alert>
         </div>
-        <v-empty-state
+        <p
           v-else-if="lastDispensed.length == 0"
-          text="No glasses were dispensed or deleted recently."
-          text-width="300"
-          class="py-10"
+          class="pa-6 ma-0 text-body-medium text-medium-emphasis"
         >
-          <template #media><eye-chart variant="faded" class="mb-4" /></template>
-        </v-empty-state>
+          No glasses were dispensed or deleted recently.
+        </p>
         <div v-else>
           <div
             v-for="(glasses, idx) in lastDispensed"
@@ -104,7 +102,6 @@
 <script setup lang="ts">
 import { mdiCheck, mdiCloudOffOutline, mdiGlasses, mdiHistory, mdiPencilOutline } from '@mdi/js'
 
-import EyeChart from '@/components/EyeChart.vue'
 import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
 import GlassesRow from '@/components/GlassesRow.vue'
 import DeleteButton from '@/components/DeleteButton.vue'
