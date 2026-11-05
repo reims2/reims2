@@ -2,6 +2,7 @@ package org.pvh.model.entity;
 
 import jakarta.persistence.*;
 import org.pvh.model.enums.AppearanceEnum;
+import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.GlassesSizeEnum;
 import org.pvh.model.enums.GlassesTypeEnum;
 import org.pvh.model.enums.LocationEnum;
@@ -49,7 +50,7 @@ public class Glasses extends BaseEntity {
     @JoinColumn(name = "OD_ID")
     private Eye od;
 
-    public Glasses() {
+    protected Glasses() {
     }
 
     public Glasses(GlassesTypeEnum glassesType, GlassesSizeEnum glassesSize, AppearanceEnum appearance, LocationEnum location, Eye os,
@@ -60,14 +61,27 @@ public class Glasses extends BaseEntity {
         this.location = location;
         this.os = os;
         this.od = od;
+        this.dispense = new Dispense();
+    }
+
+    public void dispense(DispenseReasonEnum reason, Instant at) {
+        dispense.setPreviousSku(sku);
+        dispense.setModifyDate(at);
+        dispense.setDispenseReason(reason);
+        dispensed = true;
+        sku = null;
+    }
+
+    public void undispense(Instant at) {
+        sku = dispense.getPreviousSku();
+        dispensed = false;
+        dispense.setModifyDate(at);
+        dispense.setPreviousSku(null);
+        dispense.setDispenseReason(null);
     }
 
     public boolean isDispensed() {
         return dispensed;
-    }
-
-    public void setDispensed(boolean dispensed) {
-        this.dispensed = dispensed;
     }
 
     public Integer getSku() {
@@ -82,32 +96,16 @@ public class Glasses extends BaseEntity {
         return os;
     }
 
-    public void setOs(Eye os) {
-        this.os = os;
-    }
-
     public Eye getOd() {
         return od;
-    }
-
-    public void setOd(Eye od) {
-        this.od = od;
     }
 
     public LocationEnum getLocation() {
         return location;
     }
 
-    public void setLocation(LocationEnum location) {
-        this.location = location;
-    }
-
     public Dispense getDispense() {
         return dispense;
-    }
-
-    public void setDispense(Dispense dispense) {
-        this.dispense = dispense;
     }
 
     public Instant getCreationDate() {
@@ -140,13 +138,6 @@ public class Glasses extends BaseEntity {
 
     public void setGlassesType(GlassesTypeEnum glassesType) {
         this.glassesType = glassesType;
-    }
-
-    @Override
-    public String toString() {
-        return "Glasses [sku=" + sku + ", glassesType=" + glassesType + ", glassesSize=" + glassesSize + ", appearance="
-            + appearance + ", location=" + location + ", dispensed=" + dispensed + ", creationDate=" + creationDate
-            + ", dispense=" + dispense + ", os=" + os + ", od=" + od + "]";
     }
 
 }
