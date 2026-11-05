@@ -27,7 +27,7 @@
           eye-name="OD"
           :model-value="modelValue.od"
           :add-enabled="isMultifocal"
-          @update:model-value="(val) => updateOdEye(val)"
+          @update:model-value="(val) => updateEye('od', val)"
         />
       </v-col>
       <v-col cols="12" md="6" class="px-0 pl-md-3 py-0">
@@ -35,7 +35,7 @@
           eye-name="OS"
           :model-value="modelValue.os"
           :add-enabled="isMultifocal"
-          @update:model-value="(val) => updateOsEye(val)"
+          @update:model-value="(val) => updateEye('os', val)"
         />
       </v-col>
     </v-row>
@@ -50,7 +50,9 @@ import {
   GlassesInput,
   DisplayedEye,
   GeneralGlassesDataKey,
+  GlassesEyeIndex,
   EyeSearch,
+  generalGlassesDataKeys,
   isEyeSearch,
 } from '@/model/GlassesModel'
 
@@ -59,8 +61,8 @@ const modelValue = defineModel<GlassesInput>({ required: true })
 const syncEyes = defineModel<boolean>('syncEyes', { default: false })
 
 const firstInput = ref<HTMLElement[] | null>(null)
-const metadataToShow = computed<GeneralGlassesDataKey[]>(() =>
-  glassesTypeOnly ? ['glassesType'] : ['glassesType', 'appearance', 'glassesSize'],
+const metadataToShow = computed<readonly GeneralGlassesDataKey[]>(() =>
+  glassesTypeOnly ? ['glassesType'] : generalGlassesDataKeys,
 )
 
 const isMultifocal = computed(() => modelValue.value.glassesType !== 'single')
@@ -78,39 +80,20 @@ function resetBalEye(nonBalEye: EyeSearch, balEye: EyeSearch) {
   nonBalEye.isBAL = false
 }
 
-function updateOdEye(newOd: DisplayedEye) {
-  const newOs = modelValue.value.os
-  if (syncEyes.value) newOs.add = newOd.add
-  if (isEyeSearch(newOd) && isEyeSearch(newOs)) {
-    if (newOd.isBAL) {
-      resetBalEye(newOs, newOd)
-    } else if (newOs.isBAL) {
-      resetBalEye(newOd, newOs)
-    }
+function updateEye(key: GlassesEyeIndex, eye: DisplayedEye | EyeSearch) {
+  const other = modelValue.value[key === 'od' ? 'os' : 'od']
+  // OS follows OD's add until OS's add is changed itself
+  if (key === 'od' && syncEyes.value) other.add = eye.add
+  if (key === 'os' && eye.add !== modelValue.value.os.add) syncEyes.value = false
+  if (isEyeSearch(eye) && isEyeSearch(other)) {
+    if (eye.isBAL) resetBalEye(other, eye)
+    else if (other.isBAL) resetBalEye(eye, other)
   }
-
-  modelValue.value.od = newOd
-  modelValue.value.os = newOs
-}
-
-function updateOsEye(newOs: DisplayedEye | EyeSearch) {
-  if (newOs.add !== modelValue.value.os.add) syncEyes.value = false
-  const newOd = modelValue.value.od
-  if (isEyeSearch(newOd) && isEyeSearch(newOs)) {
-    if (newOs.isBAL) {
-      resetBalEye(newOd, newOs)
-    } else if (newOd.isBAL) {
-      resetBalEye(newOs, newOd)
-    }
-  }
-  modelValue.value.os = newOs
-  modelValue.value.od = newOd
+  modelValue.value[key] = eye
 }
 
 function focus() {
-  if (firstInput.value && firstInput.value.length) {
-    firstInput.value[0]?.focus()
-  }
+  firstInput.value?.[0]?.focus()
 }
 defineExpose({ focus })
 </script>

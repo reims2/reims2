@@ -27,7 +27,7 @@ export interface EyeSearch extends DisplayedEye {
   isBAL: boolean
 }
 
-export function isEyeSearch(value: DisplayedEye | EyeSearch): value is EyeSearch {
+export function isEyeSearch(value: OptionalEye | DisplayedEye | EyeSearch): value is EyeSearch {
   return 'isBAL' in value
 }
 

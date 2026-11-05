@@ -3,12 +3,11 @@ import { Glasses, GeneralGlassesData, GeneralGlassesDataKey } from '@/model/Glas
 import { ValidationRule, isNumber, isString } from '@/model/ReimsModel'
 
 const isAllowedStep = (number: number) => {
-  if (number == null || !number) return true // we don't handle that
+  if (!number) return true // we don't handle that
   if (Number.isInteger(number)) return true
   const allowed = [0, 0.2, 0.25, 0.5, 0.7, 0.75]
   const decimalPart = Math.abs(parseFloat((number % 1).toFixed(2))) // thanks agaiun JS, this is next level stupid
-  if (allowed.includes(decimalPart)) return true
-  return false
+  return allowed.includes(decimalPart)
 }
 
 const requiredRule = (v: unknown) => (v != null && v !== '') || 'Required'
@@ -119,12 +118,5 @@ export function deepCopyGlasses(oldGlasses: Glasses): Glasses {
 }
 
 export function isValidForRules(value: unknown, rules: ValidationRule[]): boolean {
-  // run rules manually
-  for (let index = 0; index < rules.length; index++) {
-    const rule = rules[index]
-    if (rule(value) !== true) {
-      return false
-    }
-  }
-  return true
+  return rules.every((rule) => rule(value) === true)
 }
