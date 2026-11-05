@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import dayjs from 'dayjs'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -23,7 +24,11 @@ const routes: RouteRecordRaw[] = [
         },
       },
       { path: '/login', redirect: (to) => ({ name: 'Home', query: to.query }) },
-      { path: '/:catchAll(.*)', component: () => import('@/views/404Error.vue') },
+      {
+        path: '/:catchAll(.*)',
+        component: () => import('@/views/404Error.vue'),
+        meta: { title: 'Page not found' },
+      },
     ],
   },
   {
@@ -76,6 +81,10 @@ const router = createRouter({
 })
 router.beforeEach((to) => {
   const authStore = useAuthStore()
+  // Use 7 days as a safety because of service worker retries
+  if (authStore.expirationTime && dayjs().diff(authStore.expirationTime, 'days') > -7) {
+    authStore.logout()
+  }
   if (!authStore.isLoggedIn && to.meta.auth !== false) {
     return { name: 'Home', query: { redirect: to.fullPath } }
   }

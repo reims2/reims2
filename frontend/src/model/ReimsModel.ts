@@ -16,8 +16,6 @@ export interface NavItem {
 
 export type ValidationRule = (v: unknown) => boolean | string
 
-export type Nullable<T> = { [K in keyof T]: T[K] | null }
-
 export function isString(data: unknown): data is string {
   return typeof data === 'string'
 }

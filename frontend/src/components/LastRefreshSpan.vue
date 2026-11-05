@@ -1,8 +1,7 @@
 <template>
   <div
     v-if="showSpinner"
-    class="d-flex align-center"
-    style="cursor: pointer"
+    class="d-flex align-center cursor-pointer"
     role="button"
     tabindex="0"
     @click="glassesStore.loadGlasses()"

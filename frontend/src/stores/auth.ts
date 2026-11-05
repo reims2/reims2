@@ -12,19 +12,15 @@ export const useAuthStore = defineStore(
     const user = ref(null as string | null)
 
     const expirationTime = computed(() => {
-      type Token = {
-        exp: number
-        iat: number
-        sub: string
-      }
       if (!accessToken.value) return null
-      const token = jwtDecode(accessToken.value) as Token
-      if (!token) return null
-      return new Date(token.exp * 1000)
+      try {
+        return new Date(jwtDecode<{ exp: number }>(accessToken.value).exp * 1000)
+      } catch {
+        // an unreadable token counts as expired, so the router logs out instead of throwing
+        return new Date(0)
+      }
     })
-    const isLoggedIn = computed(() => {
-      return !!accessToken.value
-    })
+    const isLoggedIn = computed(() => !!accessToken.value)
 
     async function login(username: string, password: string): Promise<void> {
       const response = await axiosInstance.post('/api/auth/signin', { username, password })
