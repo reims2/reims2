@@ -1,9 +1,9 @@
-import { sanitizeEyeValues, resetEyeInput } from '@/util/eye-utils'
+import { sanitizeEyeValues } from '@/util/eye-utils'
 
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
 
-import { Glasses, GlassesInput, SanitizedGlassesInput } from '@/model/GlassesModel'
+import { GlassesInput, SanitizedGlassesInput } from '@/model/GlassesModel'
 
 import { useToast } from '@/composables/toast'
 import { ReimsAxiosError } from '@/lib/axios'
@@ -13,24 +13,20 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
 
   const glassesStore = useGlassesStore()
   const rootStore = useRootStore()
-  const allGlasses = computed(() => glassesStore.allGlasses)
 
   const loading = ref(false)
 
-  const lastAdded = computed(() => {
-    return rootStore.lastAddedSkus
-      .map((sku) => allGlasses.value.find((g) => g.sku === sku))
-      .filter((itm) => itm != null) as Glasses[]
-  })
+  const bySku = computed(() => new Map(glassesStore.allGlasses.map((g) => [g.sku, g])))
+  const lastAdded = computed(() =>
+    rootStore.lastAddedSkus.map((sku) => bySku.value.get(sku)).filter((g) => g != null),
+  )
   // matches the SKU range per location in the backend's LocationEnum
   const skusPerLocation = 5000
-  const freeSlots = computed(() => skusPerLocation - allGlasses.value.length)
+  const freeSlots = computed(() => skusPerLocation - glassesStore.allGlasses.length)
 
-  watch(allGlasses, () => {
+  watch(bySku, (glasses) => {
     // Filter out deleted glasses
-    rootStore.lastAddedSkus = rootStore.lastAddedSkus.filter((sku) =>
-      allGlasses.value.find((g) => g.sku === sku),
-    )
+    rootStore.lastAddedSkus = rootStore.lastAddedSkus.filter((sku) => glasses.has(sku))
   })
 
   async function submit() {
@@ -54,7 +50,7 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
     } catch (error) {
       if (error instanceof ReimsAxiosError && error.statusCode === 409) {
         // no free skus left.
-        toast.error(error.apiMessage ?? error.message)
+        toast.error(error.message)
       } else {
         toast.error(`Could not add glasses, please retry (${(error as Error).message})`)
       }
@@ -64,16 +60,11 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
     }
     onSuccessFn?.()
   }
-  function reset() {
-    resetEyeInput(glasses.value.od)
-    resetEyeInput(glasses.value.os)
-  }
 
   return {
     loading,
     lastAdded,
     freeSlots,
     submit,
-    reset,
   }
 }

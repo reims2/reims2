@@ -1,4 +1,4 @@
-import { GlassesInput, GlassesSearch, GlassesType, SanitizedEyeSearch } from '@/model/GlassesModel'
+import { EyeSearch, GlassesInput, GlassesSearch, GlassesType } from '@/model/GlassesModel'
 import { sanitizeEyeValues } from '@/util/eye-utils'
 import { MaybeRefOrGetter } from 'vue'
 import calculateAllPhilscore from '@/lib/philscore'
@@ -16,18 +16,16 @@ export const useFindGlasses = (
   const matches = ref<null | MatchResult[]>(null)
   const glassesStore = useGlassesStore()
   const rootStore = useRootStore()
-  const allGlasses = computed(() => glassesStore.allGlasses)
-  const reimsSite = computed(() => rootStore.reimsSite)
 
   function startSearch(isUserSubmitted = true) {
     if (!toValue(isValid)) return
     const eyeModel: GlassesSearch = {
       glassesType: glasses.value.glassesType as GlassesType,
-      os: sanitizeEyeValues(glasses.value.os) as SanitizedEyeSearch,
-      od: sanitizeEyeValues(glasses.value.od) as SanitizedEyeSearch,
+      os: sanitizeEyeValues(glasses.value.os as EyeSearch),
+      od: sanitizeEyeValues(glasses.value.od as EyeSearch),
       highTolerance: toValue(highTolerance),
     }
-    const stock = allGlasses.value
+    const stock = glassesStore.allGlasses
     const philscore = calculateAllPhilscore(eyeModel, stock)
     matches.value = interleave(philscore, calculateAllBlurscore(eyeModel, stock))
     if (isUserSubmitted) {
@@ -37,21 +35,14 @@ export const useFindGlasses = (
     }
   }
 
-  function reset() {
-    matches.value = null
-  }
-
   watch(
-    () => [glasses, highTolerance, reimsSite],
-    () => {
-      reset()
-    },
+    [glasses, () => toValue(highTolerance), () => rootStore.reimsSite],
+    () => (matches.value = null),
     { deep: true },
   )
   return {
     matches,
     startSearch,
-    reset,
   }
 }
 
@@ -61,12 +52,9 @@ export const useDispenseResult = (matches: Ref<MatchResult[] | null>) => {
   const current = ref<MatchResult | null>(null)
   watch(matches, () => (dispensedIds.value = []))
 
-  const { isLoading: isDispensing, deleteGlasses } = useDeleteGlasses(
-    () => current.value,
-    () => {
-      if (current.value) dispensedIds.value.push(current.value.id)
-    },
-  )
+  const { isLoading: isDispensing, deleteGlasses } = useDeleteGlasses(() => {
+    if (current.value) dispensedIds.value.push(current.value.id)
+  })
   const { isLoading: isUndoing, undo: undoDispension } = useUndoDispension(() => {
     dispensedIds.value = dispensedIds.value.filter((id) => id !== current.value?.id)
   })
@@ -86,7 +74,7 @@ export const useDispenseResult = (matches: Ref<MatchResult[] | null>) => {
   async function dispense(item: MatchResult) {
     if (isLoading.value) return
     current.value = item
-    await deleteGlasses('DISPENSED')
+    await deleteGlasses(item, 'DISPENSED')
   }
 
   async function undo(item: MatchResult) {
