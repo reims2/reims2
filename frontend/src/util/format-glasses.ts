@@ -28,11 +28,7 @@ export function formatAxis(val: number | undefined) {
 }
 
 export function getAndConvertSku(glasses: Glasses): string {
-  if (glasses.sku != null) {
-    return formatSku(glasses.sku)
-  } else if (glasses.dispense?.previousSku != null) {
-    return formatSku(glasses.dispense.previousSku)
-  } else return '????'
+  return formatSku(glasses.sku ?? glasses.dispense?.previousSku)
 }
 
 export function formatSku(value?: number | null): string {
