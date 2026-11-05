@@ -9,7 +9,7 @@
       </v-card-title>
       <v-card-text class="pb-0">
         <div class="pb-3">
-          Glasses with SKU {{ glass.sku }} will be deleted.
+          Glasses with SKU {{ formatSku(glass.sku) }} will be deleted.
           <span v-if="!fixedReason">
             Please select a reason. This is later visible in campaign reports.
           </span>
@@ -41,22 +41,22 @@ const { fixedReason = null } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  delete: [DeletionReason | null]
+  delete: [DeletionReason]
 }>()
 
 const deleteDialog = ref(false)
 const deleteReason = ref<DeletionReason>('TOO_HIGH_VALUES') // preselect most common reason for doing mass removals
-const reasons: Ref<{ title: string; value: DeletionReason }[]> = ref([
+const reasons: { title: string; value: DeletionReason }[] = [
   { title: 'Glasses have too high values', value: 'TOO_HIGH_VALUES' },
   { title: 'Not found in storage', value: 'NOT_FOUND' },
   { title: 'Glasses damaged / broken', value: 'BROKEN' },
   { title: 'Other reason', value: 'OTHER' },
   // can only be selected via this.fixedReason
   // { title: 'Wrongly added', value: 'WRONGLY_ADDED' },
-])
+]
 
 function startDelete() {
   deleteDialog.value = false
-  emit('delete', !fixedReason ? deleteReason.value : null)
+  emit('delete', fixedReason ?? deleteReason.value)
 }
 </script>

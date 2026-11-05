@@ -20,7 +20,7 @@ describe('dispense errors', () => {
   it('shows a 400 on dispense', async () => {
     vi.mocked(useGlassesStore().dispense).mockRejectedValue(badRequest())
     const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
-    await useDeleteGlasses(glasses).deleteGlasses('DISPENSED')
+    await useDeleteGlasses().deleteGlasses(glasses, 'DISPENSED')
     expect(toastQueue.value).toEqual([
       { color: 'error', timeout: -1, text: expect.stringContaining('database down') },
     ])
@@ -31,7 +31,7 @@ describe('dispense errors', () => {
       new ReimsAxiosError('Server error', false, true, null, 502),
     )
     const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
-    await useDeleteGlasses(glasses).deleteGlasses('DISPENSED')
+    await useDeleteGlasses().deleteGlasses(glasses, 'DISPENSED')
     expect(toastQueue.value).toEqual([
       { color: 'error', timeout: -1, text: expect.stringContaining('retry later (Error 502)') },
     ])
@@ -61,7 +61,7 @@ describe('dispense errors', () => {
 
   it('confirms a sent dispense', async () => {
     vi.mocked(useGlassesStore().dispense).mockResolvedValue('sent')
-    await useDeleteGlasses(pairWithSku(1234)).deleteGlasses('DISPENSED')
+    await useDeleteGlasses().deleteGlasses(pairWithSku(1234), 'DISPENSED')
     expect(toastQueue.value).toEqual([
       { color: 'info', text: 'Successfully dispensed glasses with SKU 1234' },
     ])
@@ -70,7 +70,7 @@ describe('dispense errors', () => {
   it('warns that a queued dispense uploads later', async () => {
     const onSuccess = vi.fn()
     vi.mocked(useGlassesStore().dispense).mockResolvedValue('queued')
-    await useDeleteGlasses(pairWithSku(1234), onSuccess).deleteGlasses('DISPENSED')
+    await useDeleteGlasses(onSuccess).deleteGlasses(pairWithSku(1234), 'DISPENSED')
     expect(toastQueue.value).toEqual([
       { color: 'warning', text: "Glasses with SKU 1234 will be dispensed when you're back online" },
     ])

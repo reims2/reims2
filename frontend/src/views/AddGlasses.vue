@@ -76,7 +76,7 @@
                 <delete-button
                   :glass="item"
                   fixed-reason="WRONGLY_ADDED"
-                  @delete="submitDeletion(item)"
+                  @delete="(reason) => deleteGlasses(item, reason)"
                 />
               </template>
             </glasses-row>
@@ -97,7 +97,8 @@ import { mdiRestore, mdiPlus } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
 import { useEnterToTab } from 'vue3-enter-to-tab'
 
-import { Glasses, GlassesInput as GlassesInputType } from '@/model/GlassesModel'
+import { GlassesInput as GlassesInputType } from '@/model/GlassesModel'
+import { resetEyeInput } from '@/util/eye-utils'
 
 import { useDisplay } from 'vuetify'
 import { useAddGlasses } from '@/composables/add'
@@ -122,18 +123,11 @@ const glasses: Ref<GlassesInputType> = ref({
   appearance: '',
 })
 
-const {
-  loading,
-  lastAdded,
-  freeSlots,
-  submit: submitAdd,
-  reset: resetAdd,
-} = useAddGlasses(glasses, onSuccess)
+const { loading, lastAdded, freeSlots, submit: submitAdd } = useAddGlasses(glasses, onSuccess)
 
 const { vPreventEnterTab } = useEnterToTab(form)
 
-const glassesToDelete = ref<Glasses | null>(null)
-const { deleteGlasses } = useDeleteGlasses(glassesToDelete)
+const { deleteGlasses } = useDeleteGlasses()
 
 function add() {
   if (valid.value) submitAdd()
@@ -145,13 +139,10 @@ async function onSuccess() {
   await nextTick()
   if (mobile.value) results.value?.$el.scrollIntoView(true)
 }
-async function submitDeletion(glasses: Glasses) {
-  glassesToDelete.value = glasses
-  await deleteGlasses('WRONGLY_ADDED')
-}
 
 function reset() {
-  resetAdd()
+  resetEyeInput(glasses.value.od)
+  resetEyeInput(glasses.value.os)
   form.value?.reset()
   if (!mobile.value) inputComponent.value?.focus()
   syncEyeAdd.value = true
