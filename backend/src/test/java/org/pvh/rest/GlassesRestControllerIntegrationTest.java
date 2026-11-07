@@ -95,6 +95,12 @@ public class GlassesRestControllerIntegrationTest {
         return mainService.saveGlasses(newGlasses(GlassesTypeEnum.multifocal, GlassesSizeEnum.medium, AppearanceEnum.neutral, location));
     }
 
+    // as if the pair was dispensed before the freed SKU hold
+    private void endHold(Glasses dispensed) {
+        jdbcTemplate.update("UPDATE dispense SET modify_date = modify_date - INTERVAL 11 MINUTE WHERE id = ?",
+            dispensed.getDispense().getId());
+    }
+
     private String hash(String location) throws Exception {
         String body = mockMvc.perform(get("/api/glasses/" + location + "/changes")).andReturn().getResponse().getContentAsString();
         return JsonPath.read(body, "$.hashValue");
@@ -172,7 +178,9 @@ public class GlassesRestControllerIntegrationTest {
                         .doubleValue())))
             .andDo(print());
 
+        endHold(saveEntitySa);
         Glasses saveEntitySa2 = saveGlasses(LocationEnum.sa);
+        assertEquals(saveEntitySa.getSku(), saveEntitySa2.getSku());
 
         cv = hash("sa");
         // Try to Undispense firstly created glass -> not possible because of secondly
@@ -470,6 +478,16 @@ public class GlassesRestControllerIntegrationTest {
         assertTrue(glassesRepository.findById(glasses.getId()).orElseThrow().isDispensed());
         // the database is shared, and real dispensed rows always have one
         jdbcTemplate.update("UPDATE dispense SET previous_sku = ? WHERE id = ?", glasses.getSku(), glasses.getDispense().getId());
+    }
+
+    @Test
+    public void freedSku_isHeldBeforeAddHandsItOutAgain() {
+        Glasses glasses = saveGlasses(LocationEnum.sa);
+        mainService.dispense(glasses.getId(), DispenseReasonEnum.DISPENSED);
+        assertNotEquals(glasses.getSku(), saveGlasses(LocationEnum.sa).getSku());
+
+        endHold(glasses);
+        assertEquals(glasses.getSku(), saveGlasses(LocationEnum.sa).getSku());
     }
 
     @Test

@@ -13,5 +13,5 @@ Press Enter to dispense.
 
 ## Wrong pair?
 
-Click **Undo** on the result, or under **Recently dispensed or deleted** in Edit. This works until the SKU
-is given to a new pair.
+Click **Undo** on the result, or under **Recently dispensed or deleted** in Edit. A freed SKU goes to no new
+pair for 10 minutes, so an undo right away always works. Later, it works until the SKU is given to a new pair.
