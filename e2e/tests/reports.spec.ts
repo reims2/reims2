@@ -14,7 +14,7 @@ test('Download reports', async ({ page, api, createGlasses }) => {
   const [{ sku: inStock }, dispensed, searchLog] = await Promise.all([
     createGlasses(),
     createGlasses().then(async ({ id, sku }) => {
-      expect((await api.put(`/api/glasses/${id}/dispense?reason=DISPENSED`)).ok()).toBe(true)
+      await expect(await api.put(`/api/glasses/${id}/dispense?reason=DISPENSED`)).toBeOK()
       return sku
     }),
     api.post('/api/glasses/sa/searchLog', {
@@ -29,7 +29,7 @@ test('Download reports', async ({ page, api, createGlasses }) => {
       },
     }),
   ])
-  expect(searchLog.ok()).toBe(true)
+  await expect(searchLog).toBeOK()
 
   await page.goto('/manage/reports')
 

@@ -27,7 +27,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -49,7 +48,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -116,67 +114,49 @@ public class GlassesRestControllerIntegrationTest {
         // Get create Glasses
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa.getSku()))
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(saveEntitySa.getSku())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType",
-                Matchers.is(saveEntitySa.getGlassesType().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesSize",
-                Matchers.is(saveEntitySa.getGlassesSize().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.dispensed", Matchers.is(false)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.appearance",
-                Matchers.is(saveEntitySa.getAppearance().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.os.cylinder",
-                Matchers.is(saveEntitySa.getOs().getCylinder().doubleValue())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder",
-                Matchers.is(saveEntitySa.getOd().getCylinder().doubleValue())))
-            .andDo(print());
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.sku", Matchers.is(saveEntitySa.getSku())))
+            .andExpect(jsonPath("$.glassesType", Matchers.is(saveEntitySa.getGlassesType().name())))
+            .andExpect(jsonPath("$.glassesSize", Matchers.is(saveEntitySa.getGlassesSize().name())))
+            .andExpect(jsonPath("$.dispensed", Matchers.is(false)))
+            .andExpect(jsonPath("$.appearance", Matchers.is(saveEntitySa.getAppearance().name())))
+            .andExpect(jsonPath("$.os.cylinder", Matchers.is(saveEntitySa.getOs().getCylinder().doubleValue())))
+            .andExpect(jsonPath("$.od.cylinder", Matchers.is(saveEntitySa.getOd().getCylinder().doubleValue())));
 
         // Dispense created Glasses for first time
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa.getId() + "/dispense"))
-            .andExpect(status().isOk())
-            .andDo(print());
+            .andExpect(status().isOk());
 
         assertNotEquals(cv, hash("sa"));
 
         // Dispense created Glasses for second time --> nothing to change
         cv = hash("sa");
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa.getId() + "/dispense"))
-            .andExpect(status().isNoContent())
-            .andDo(print());
+            .andExpect(status().isNoContent());
         assertEquals(cv, hash("sa"));
         // Dispense non existing Glasses
         this.mockMvc.perform(put("/api/glasses/-1/dispense"))
-            .andExpect(status().isNotFound())
-            .andDo(print());
+            .andExpect(status().isNotFound());
         assertEquals(cv, hash("sa"));
 
         // try to get created Glasses
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa.getSku()))
             .andExpect(status().isNotFound())
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andDo(print());
+            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON));
 
         // check if created Glasses is dispensed
         this.mockMvc.perform(get("/api/glasses/dispensed/sa"))
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].location", Matchers.is("sa")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].glassesType",
-                Matchers.is(saveEntitySa.getGlassesType().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].glassesSize",
-                Matchers.is(saveEntitySa.getGlassesSize().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].dispensed", Matchers.is(true)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.[0].appearance",
-                Matchers.is(saveEntitySa.getAppearance().name())))
-            .andExpect(
-                MockMvcResultMatchers.jsonPath("$.[0].os.cylinder",
-                    Matchers.is(saveEntitySa.getOs().getCylinder()
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.[0].location", Matchers.is("sa")))
+            .andExpect(jsonPath("$.[0].glassesType", Matchers.is(saveEntitySa.getGlassesType().name())))
+            .andExpect(jsonPath("$.[0].glassesSize", Matchers.is(saveEntitySa.getGlassesSize().name())))
+            .andExpect(jsonPath("$.[0].dispensed", Matchers.is(true)))
+            .andExpect(jsonPath("$.[0].appearance", Matchers.is(saveEntitySa.getAppearance().name())))
+            .andExpect(jsonPath("$.[0].os.cylinder", Matchers.is(saveEntitySa.getOs().getCylinder()
                         .doubleValue())))
-            .andExpect(
-                MockMvcResultMatchers.jsonPath("$.[0].od.cylinder",
-                    Matchers.is(saveEntitySa.getOd().getCylinder()
-                        .doubleValue())))
-            .andDo(print());
+            .andExpect(jsonPath("$.[0].od.cylinder", Matchers.is(saveEntitySa.getOd().getCylinder()
+                        .doubleValue())));
 
         endHold(saveEntitySa);
         Glasses saveEntitySa2 = saveGlasses(LocationEnum.sa);
@@ -187,14 +167,12 @@ public class GlassesRestControllerIntegrationTest {
         // created glass
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa.getId() + "/undispense"))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.detail", Matchers.is("SKU %04d is already used by other glasses.".formatted(saveEntitySa.getSku()))))
-            .andDo(print());
+            .andExpect(jsonPath("$.detail", Matchers.is("SKU %04d is already used by other glasses.".formatted(saveEntitySa.getSku()))));
         assertEquals(cv, hash("sa"));
 
         // dispense secondly created glass
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa2.getId() + "/dispense"))
-            .andExpect(status().isOk())
-            .andDo(print());
+            .andExpect(status().isOk());
         assertNotEquals(cv, hash("sa"));
 
         // undispense secondly created glass
@@ -202,8 +180,7 @@ public class GlassesRestControllerIntegrationTest {
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa2.getId() + "/undispense"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.sku", Matchers.is(saveEntitySa2.getSku())))
-            .andExpect(jsonPath("$.dispensed", Matchers.is(false)))
-            .andDo(print());
+            .andExpect(jsonPath("$.dispensed", Matchers.is(false)));
         assertNotEquals(cv, hash("sa"));
         // undispense must not leave the old reason behind
         assertNull(glassesRepository.findById(saveEntitySa2.getId()).orElseThrow().getDispense().getDispenseReason());
@@ -211,36 +188,27 @@ public class GlassesRestControllerIntegrationTest {
         // undispense secondly created glass second time
         cv = hash("sa");
         this.mockMvc.perform(put("/api/glasses/" + saveEntitySa2.getId() + "/undispense"))
-            .andExpect(status().isNoContent())
-            .andDo(print());
+            .andExpect(status().isNoContent());
         assertEquals(cv, hash("sa"));
         // undispense empty glasss
         this.mockMvc.perform(put("/api/glasses/fsdg/undispense"))
-            .andExpect(status().isBadRequest())
-            .andDo(print());
+            .andExpect(status().isBadRequest());
         assertEquals(cv, hash("sa"));
         // undispense wrong id glasss
         this.mockMvc.perform(put("/api/glasses/-1/undispense"))
-            .andExpect(status().isNotFound())
-            .andDo(print());
+            .andExpect(status().isNotFound());
         assertEquals(cv, hash("sa"));
 
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa2.getSku()))
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(saveEntitySa2.getSku())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType",
-                Matchers.is(saveEntitySa2.getGlassesType().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesSize",
-                Matchers.is(saveEntitySa2.getGlassesSize().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.dispensed", Matchers.is(false)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.appearance",
-                Matchers.is(saveEntitySa2.getAppearance().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.os.cylinder",
-                Matchers.is(saveEntitySa2.getOs().getCylinder().doubleValue())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder",
-                Matchers.is(saveEntitySa2.getOd().getCylinder().doubleValue())))
-            .andDo(print());
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.sku", Matchers.is(saveEntitySa2.getSku())))
+            .andExpect(jsonPath("$.glassesType", Matchers.is(saveEntitySa2.getGlassesType().name())))
+            .andExpect(jsonPath("$.glassesSize", Matchers.is(saveEntitySa2.getGlassesSize().name())))
+            .andExpect(jsonPath("$.dispensed", Matchers.is(false)))
+            .andExpect(jsonPath("$.appearance", Matchers.is(saveEntitySa2.getAppearance().name())))
+            .andExpect(jsonPath("$.os.cylinder", Matchers.is(saveEntitySa2.getOs().getCylinder().doubleValue())))
+            .andExpect(jsonPath("$.od.cylinder", Matchers.is(saveEntitySa2.getOd().getCylinder().doubleValue())));
     }
 
     // a dispense queued offline may replay after another device dispensed the same pair
@@ -273,17 +241,11 @@ public class GlassesRestControllerIntegrationTest {
                     objectMapper.writeValueAsBytes(request(glasses))))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType",
-                    Matchers.is(glasses.getGlassesType().name())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.glassesSize",
-                    Matchers.is(glasses.getGlassesSize().name())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.appearance",
-                    Matchers.is(glasses.getAppearance().name())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.os.cylinder",
-                    Matchers.is(glasses.getOs().getCylinder().intValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder",
-                    Matchers.is(glasses.getOd().getCylinder().intValue())))
-                .andDo(print());
+                .andExpect(jsonPath("$.glassesType", Matchers.is(glasses.getGlassesType().name())))
+                .andExpect(jsonPath("$.glassesSize", Matchers.is(glasses.getGlassesSize().name())))
+                .andExpect(jsonPath("$.appearance", Matchers.is(glasses.getAppearance().name())))
+                .andExpect(jsonPath("$.os.cylinder", Matchers.is(glasses.getOs().getCylinder().intValue())))
+                .andExpect(jsonPath("$.od.cylinder", Matchers.is(glasses.getOd().getCylinder().intValue())));
 
             assertNotEquals(cv, hash("sm"));
             cv = hash("sm");
@@ -291,13 +253,11 @@ public class GlassesRestControllerIntegrationTest {
 
         this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON).content(
                 objectMapper.writeValueAsString(request(failGlasses)).replace("\"sm\"", "\"ss\"")))
-            .andExpect(status().isBadRequest())
-            .andDo(print());
+            .andExpect(status().isBadRequest());
         assertEquals(cv, hash("sm"));
 
         this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isBadRequest())
-            .andDo(print());
+            .andExpect(status().isBadRequest());
         assertEquals(cv, hash("sm"));
     }
 
@@ -331,49 +291,33 @@ public class GlassesRestControllerIntegrationTest {
 
         this.mockMvc.perform(get("/api/glasses/sa/" + saveEntitySa.getSku()))
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.content()
+            .andExpect(content()
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sku",
-                Matchers.is(saveEntitySa.getSku())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType",
-                Matchers.is(saveEntitySa.getGlassesType().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesSize",
-                Matchers.is(saveEntitySa.getGlassesSize().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.appearance",
-                Matchers.is(saveEntitySa.getAppearance().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.os.cylinder",
-                Matchers.is(saveEntitySa.getOs().getCylinder().doubleValue())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder",
-                Matchers.is(saveEntitySa.getOd().getCylinder().doubleValue())))
-            .andDo(print());
+            .andExpect(jsonPath("$.sku", Matchers.is(saveEntitySa.getSku())))
+            .andExpect(jsonPath("$.glassesType", Matchers.is(saveEntitySa.getGlassesType().name())))
+            .andExpect(jsonPath("$.glassesSize", Matchers.is(saveEntitySa.getGlassesSize().name())))
+            .andExpect(jsonPath("$.appearance", Matchers.is(saveEntitySa.getAppearance().name())))
+            .andExpect(jsonPath("$.os.cylinder", Matchers.is(saveEntitySa.getOs().getCylinder().doubleValue())))
+            .andExpect(jsonPath("$.od.cylinder", Matchers.is(saveEntitySa.getOd().getCylinder().doubleValue())));
 
         Glasses saveEntitySm = saveGlasses(LocationEnum.sm);
 
         this.mockMvc.perform(get("/api/glasses/sm/" + saveEntitySm.getSku()))
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.content()
+            .andExpect(content()
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sku",
-                Matchers.is(saveEntitySm.getSku())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType",
-                Matchers.is(saveEntitySm.getGlassesType().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesSize",
-                Matchers.is(saveEntitySm.getGlassesSize().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.appearance",
-                Matchers.is(saveEntitySm.getAppearance().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.os.cylinder",
-                Matchers.is(saveEntitySm.getOs().getCylinder().doubleValue())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder",
-                Matchers.is(saveEntitySm.getOd().getCylinder().doubleValue())))
-            .andDo(print());
+            .andExpect(jsonPath("$.sku", Matchers.is(saveEntitySm.getSku())))
+            .andExpect(jsonPath("$.glassesType", Matchers.is(saveEntitySm.getGlassesType().name())))
+            .andExpect(jsonPath("$.glassesSize", Matchers.is(saveEntitySm.getGlassesSize().name())))
+            .andExpect(jsonPath("$.appearance", Matchers.is(saveEntitySm.getAppearance().name())))
+            .andExpect(jsonPath("$.os.cylinder", Matchers.is(saveEntitySm.getOs().getCylinder().doubleValue())))
+            .andExpect(jsonPath("$.od.cylinder", Matchers.is(saveEntitySm.getOd().getCylinder().doubleValue())));
 
         this.mockMvc.perform(get("/api/glasses/sa/" + -10))
             .andExpect(status().isNotFound())
-            .andExpect(MockMvcResultMatchers.content()
+            .andExpect(content()
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.detail",
-                Matchers.is(notNullValue())))
-            .andDo(print());
+            .andExpect(jsonPath("$.detail", Matchers.is(notNullValue())));
     }
 
     @Test
@@ -386,8 +330,7 @@ public class GlassesRestControllerIntegrationTest {
         String added = this.mockMvc.perform(post("/api/glasses").contentType(MediaType.APPLICATION_JSON).content(
                 objectMapper.writeValueAsBytes(request(glasses))))
             .andExpect(status().isCreated())
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andReturn().getResponse().getContentAsString();
         int sku = JsonPath.read(added, "$.sku");
         int id = JsonPath.read(added, "$.id");
@@ -400,22 +343,15 @@ public class GlassesRestControllerIntegrationTest {
 
         this.mockMvc.perform(MockMvcRequestBuilders.put("/api/glasses/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(
-                    objectMapper.writeValueAsBytes(request(glassesToUpdate))))
+                .content(objectMapper.writeValueAsBytes(request(glassesToUpdate))))
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sku", Matchers.is(sku)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.appearance",
-                Matchers.is(glassesToUpdate.getAppearance().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesType",
-                Matchers.is(glassesToUpdate.getGlassesType().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.glassesSize",
-                Matchers.is(glassesToUpdate.getGlassesSize().name())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.os.cylinder",
-                Matchers.is(glassesToUpdate.getOs().getCylinder().intValue())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.od.cylinder",
-                Matchers.is(glassesToUpdate.getOd().getCylinder().intValue())))
-            .andDo(print());
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.sku", Matchers.is(sku)))
+            .andExpect(jsonPath("$.appearance", Matchers.is(glassesToUpdate.getAppearance().name())))
+            .andExpect(jsonPath("$.glassesType", Matchers.is(glassesToUpdate.getGlassesType().name())))
+            .andExpect(jsonPath("$.glassesSize", Matchers.is(glassesToUpdate.getGlassesSize().name())))
+            .andExpect(jsonPath("$.os.cylinder", Matchers.is(glassesToUpdate.getOs().getCylinder().intValue())))
+            .andExpect(jsonPath("$.od.cylinder", Matchers.is(glassesToUpdate.getOd().getCylinder().intValue())));
         assertNotEquals(cv, hash("sm"));
 
         cv = hash("sm");
@@ -424,9 +360,8 @@ public class GlassesRestControllerIntegrationTest {
                 .content("{\"glassesType\":\"multifocal\",\"glassesSize\":\"medium\",\"appearance\":\"test\",\"location\":\"sm\","
                     + "\"os\":" + VALID_EYE + ",\"od\":" + VALID_EYE + "}"))
             .andExpect(status().isBadRequest())
-            .andExpect(MockMvcResultMatchers.content()
-                .contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andDo(print());
+            .andExpect(content()
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON));
         assertEquals(cv, hash("sm"));
     }
 
@@ -514,8 +449,7 @@ public class GlassesRestControllerIntegrationTest {
         mainService.dispense(glasses.getId(), DispenseReasonEnum.DISPENSED);
         this.mockMvc.perform(get("/api/glasses/dispensed/sa.csv"))
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType("text/csv"))
-            .andDo(print());
+            .andExpect(content().contentType("text/csv"));
     }
 
     @Test
@@ -524,8 +458,7 @@ public class GlassesRestControllerIntegrationTest {
         saveGlasses(LocationEnum.sa);
         this.mockMvc.perform(get("/api/glasses/sa.csv"))
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType("text/csv"))
-            .andDo(print());
+            .andExpect(content().contentType("text/csv"));
     }
 
     @Test
