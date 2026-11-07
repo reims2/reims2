@@ -69,6 +69,7 @@
             v-for="(item, idx) in lastAdded.slice(0, 3)"
             :key="item.id"
             :data-testid="'result-' + idx"
+            class="row-in"
           >
             <v-divider v-if="idx > 0" />
             <glasses-row :glasses="item" editable>
