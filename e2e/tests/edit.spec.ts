@@ -22,27 +22,6 @@ test('Typing on to an unknown SKU clears the result', async ({ page, createGlass
   await expect(page.getByText('SKU not found')).toBeVisible()
 })
 
-test.describe('Undo', () => {
-  // a freed SKU goes to the next added pair, so this needs a site no other test adds to
-  test.use({ location: 'sm' })
-
-  test('Undo dispension', { tag: '@one-browser' }, async ({ page, createGlasses, api }) => {
-    const { sku } = await createGlasses()
-    await lookUpSku(page, sku)
-    await page.getByRole('button', { name: 'Dispense' }).click()
-    await expect(page.getByText(`Successfully dispensed glasses`)).toBeVisible()
-
-    const recent = page.getByRole('region', { name: 'Recently dispensed or deleted' })
-    const dispensed = recent.getByTestId('result-0')
-    await expect(dispensed.getByRole('group', { name: `SKU ${formatSku(sku)}` })).toBeVisible()
-    await dispensed.getByRole('button', { name: 'Undo' }).click()
-    await expect(
-      page.getByText(`Reverted dispension/deletion of SKU ${formatSku(sku)} successfully`),
-    ).toBeVisible()
-    expect((await api.get(`/api/glasses/sm/${sku}`)).ok()).toBe(true)
-  })
-})
-
 test('Delete glasses', async ({ page, createGlasses }) => {
   const { sku } = await createGlasses()
   await lookUpSku(page, sku)

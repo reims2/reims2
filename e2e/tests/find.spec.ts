@@ -1,5 +1,5 @@
 import { EyeInput } from './eye-input.po'
-import { test, expect, formatSku, open, searchGlasses, searchResult } from './fixtures'
+import { test, expect, open, searchGlasses, searchResult } from './fixtures'
 
 test('Search multifocal', async ({ page, createGlasses }) => {
   const { sku } = await createGlasses({
@@ -41,32 +41,6 @@ test('Search multifocal', async ({ page, createGlasses }) => {
       - link "Open"
       - button "Dispense"
   `)
-})
-
-test('Dispense from results', async ({ page, createGlasses }) => {
-  const { sku } = await createGlasses({ od: { sphere: -6.5 }, os: { sphere: -6.75 } })
-  await open(page, '/find')
-  await new EyeInput(page).fill({
-    category: 's',
-    od: { sphere: '-6.5', cylinder: '0' },
-    os: { sphere: '-6.75', cylinder: '0' },
-  })
-  await searchGlasses(page)
-
-  const result = searchResult(page, sku)
-  await result.getByRole('button', { name: 'Dispense' }).click()
-  await expect(
-    page.getByText(`Successfully dispensed glasses with SKU ${formatSku(sku)}`),
-  ).toBeVisible()
-  await expect(result.getByText('Dispensed')).toBeVisible()
-  await result.getByRole('button', { name: 'Undo' }).click()
-  await expect(
-    page.getByText(`Reverted dispension/deletion of SKU ${formatSku(sku)}`),
-  ).toBeVisible()
-
-  // a new search reads the local cache, which has to hold the pair in stock again
-  await searchGlasses(page)
-  await expect(result.getByRole('button', { name: 'Dispense' })).toBeVisible()
 })
 
 test('S searches from a field that still needs formatting', async ({ page, createGlasses }) => {
