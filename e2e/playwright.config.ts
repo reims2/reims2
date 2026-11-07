@@ -62,8 +62,6 @@ export default defineConfig({
       name,
       use: { ...devices[device], storageState: authFile },
       testIgnore: /screenshots\.spec\.ts/,
-      // tests that free SKUs on sm, other browsers would add to sm concurrently
-      grepInvert: name === 'chromium' ? undefined : /@one-browser/,
       dependencies: ['setup'],
     })),
     ...(screenshots ? [screenshots] : []),

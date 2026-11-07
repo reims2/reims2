@@ -31,8 +31,11 @@ public interface GlassesRepository extends JpaRepository<Glasses, Long> {
 
     boolean existsBySku(int sku);
 
-    // only finds SKUs right after a used one, so a free minimum has to be checked separately
-    @NativeQuery("SELECT g.sku + 1 FROM glasses g LEFT JOIN glasses g1 ON g1.sku = g.sku + 1 "
-        + "WHERE g1.sku IS NULL AND g.sku >= :min AND g.sku < :max ORDER BY g.sku LIMIT 1")
-    Optional<Integer> findFirstFreeSkuAfterUsed(int min, int max);
+    // SKUs in use or freed after heldSince count as taken, min - 1 lets the gap search find a free min
+    @NativeQuery("WITH taken AS (SELECT sku FROM glasses WHERE sku BETWEEN :min AND :max "
+        + "UNION SELECT previous_sku FROM dispense WHERE modify_date > :heldSince AND previous_sku BETWEEN :min AND :max "
+        + "UNION SELECT :min - 1) "
+        + "SELECT t.sku + 1 FROM taken t LEFT JOIN taken t1 ON t1.sku = t.sku + 1 "
+        + "WHERE t1.sku IS NULL AND t.sku < :max ORDER BY t.sku LIMIT 1")
+    Optional<Integer> findFirstFreeSku(int min, int max, Instant heldSince);
 }

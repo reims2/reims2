@@ -111,8 +111,9 @@ forces it to 0 then (`sanitizeEyeValues`), but code reading stored data should c
 
 Glasses are never deleted. Dispensing, also with a deletion reason, clears the SKU and stamps a `Dispense`
 record (reason, previous SKU), so `PUT /{id}/undispense` can restore it unless the SKU went to a new pair
-since. Add hands out the lowest free SKU, so a freed one comes back with the next pair. Writes address
-glasses by id, so a queued change can't hit a pair that got the SKU later.
+since. Add hands out the lowest free SKU but skips ones freed in the last 10 minutes, so an undo right after
+a dispense still finds its SKU free. Writes address glasses by id, so a queued change can't hit a pair that got
+the SKU later.
 
 ### Backend (`backend/src/main/java/org/pvh/`)
 

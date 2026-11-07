@@ -12,6 +12,7 @@ import org.pvh.util.CampaignZone;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -20,6 +21,9 @@ import java.util.Optional;
 
 @Service
 public class GlassesService {
+
+    // Add skips a SKU this long after it was freed, so an undo right after a dispense finds it free
+    private static final Duration FREED_SKU_HOLD = Duration.ofMinutes(10);
 
     private final GlassesRepository glassesRepository;
     private final ChangeService changeService;
@@ -101,9 +105,7 @@ public class GlassesService {
     }
 
     private int nextFreeSku(LocationEnum location) {
-        if (!glassesRepository.existsBySku(location.getMinSku()))
-            return location.getMinSku();
-        return glassesRepository.findFirstFreeSkuAfterUsed(location.getMinSku(), location.getMaxSku())
+        return glassesRepository.findFirstFreeSku(location.getMinSku(), location.getMaxSku(), now().minus(FREED_SKU_HOLD))
             .orElseThrow(() -> new ConflictException("No free SKUs left in this location."));
     }
 
