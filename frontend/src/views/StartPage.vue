@@ -14,7 +14,7 @@
             <p class="text-label-large text-uppercase text-marigold-bright mb-5">
               Partners for Visual Health
             </p>
-            <h1 class="text-display-small text-lg-display-medium font-weight-bold mb-5">
+            <h1 class="text-display-small text-lg-display-medium text-title-wide mb-5">
               Donated glasses, matched to each prescription
             </h1>
             <p class="text-body-large text-md-title-medium text-on-rail ma-0">
@@ -43,7 +43,7 @@
       <v-card border elevation="1" width="100%" max-width="400" class="pa-6 pa-sm-8">
         <v-form v-model="valid" @submit.prevent="userLogin">
           <template v-if="!authStore.isLoggedIn">
-            <h2 class="text-headline-medium font-weight-bold mb-6">Sign in</h2>
+            <h2 class="text-headline-medium text-title-wide mb-6">Sign in</h2>
             <v-text-field
               v-model="username"
               label="Username"
@@ -67,7 +67,7 @@
             />
           </template>
           <template v-else>
-            <h2 class="text-headline-medium font-weight-bold mb-1">Welcome back</h2>
+            <h2 class="text-headline-medium text-title-wide mb-1">Welcome back</h2>
             <p class="text-body-medium text-medium-emphasis mb-6">
               Signed in as
               <strong class="text-high-emphasis font-weight-semibold">{{ authStore.user }}</strong>
