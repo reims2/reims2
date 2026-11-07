@@ -101,3 +101,7 @@ sw.*
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# mutation testing
+reports/
+.stryker-tmp/

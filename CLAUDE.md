@@ -37,7 +37,8 @@ docker run --detach --name reims-db --env MARIADB_USER=reims2 --env MARIADB_PASS
 
 Tests start MariaDB through Testcontainers, so they need Docker. `@IntegrationTest` classes share one Spring
 context and database that nothing cleans up, so a test that breaks a row's invariants has to restore it.
-They run with security on and sign in with `@WithMockUser`. `OpenApiSpecTest` rewrites `backend/openapi.json`
+They run with security on and sign in with `@WithMockUser`. `ConcurrencyIntegrationTest` races real transactions against
+each other, and JaCoCo fails the build below 95% line or 90% branch coverage. `OpenApiSpecTest` rewrites `backend/openapi.json`
 and fails when the API changed: commit it and run `pnpm generate:api` in `frontend/` to regenerate
 `src/model/api.d.ts`. CI checks both.
 
@@ -49,6 +50,7 @@ pnpm lint          # eslint --fix
 pnpm format:check
 pnpm test          # vitest with coverage
 pnpm vitest run src/test/philscore_score.test.ts
+pnpm test:mutation # Stryker on lib/philscore, blurscore and interleave, CI runs it when they change
 pnpm build         # vue-tsc + vite build, what CI runs
 ```
 

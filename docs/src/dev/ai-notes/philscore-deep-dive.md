@@ -10,8 +10,8 @@ no first-hand rationale survives. Sources are the decompiled FoxPro in the sibli
 [Working with REIMS](/working-with-reims.pdf) handout and the
 [PhilScore breakdown](/philscore-breakdown.pdf). Claims are tagged **source** (read from REIMS1 code
 or docs), **measured** (checked by running `philscore.ts` against the FoxPro: `ATOLTF` and `RANK`
-compiled unmodified with the Harbour xBase compiler, the SQL filter through a TypeScript port) or
-**inferred**.
+compiled unmodified with the Harbour xBase compiler, the SQL filter through a TypeScript port, now
+`oracle/run.sh` in that repo, which also runs ASEARCH's SQL clauses as they are) or **inferred**.
 
 The only stated intent, from the manual: rank candidates "by recognizing spherical equivalents,
 sphere and cylinder differences and cylinder-driven axis tolerances."
