@@ -169,6 +169,27 @@
         }
       }
     },
+    "/api/clientErrors" : {
+      "post" : {
+        "tags" : [ "client-error-controller" ],
+        "operationId" : "reportClientError",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ClientErrorDTO"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          }
+        }
+      }
+    },
     "/api/auth/signup" : {
       "post" : {
         "tags" : [ "auth-controller" ],
@@ -701,6 +722,22 @@
             "type" : "string"
           }
         }
+      },
+      "ClientErrorDTO" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "maxLength" : 2000,
+            "minLength" : 0
+          },
+          "version" : {
+            "type" : "string",
+            "maxLength" : 64,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "message" ]
       },
       "RoleName" : {
         "type" : "object",

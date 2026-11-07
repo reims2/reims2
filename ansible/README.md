@@ -86,7 +86,9 @@ UI edits and Grafana users live in `grafana.db`, which the backup includes. The 
 `monitoring` database user that Grafana and the MySQL exporter use.
 
 The alert rules come from `roles/monitoring/templates/grafana-alerting.yml.j2` and load when Grafana starts, so
-change them there, the UI can't. They cover the server (CPU, disk, API latency, backend down) and 5xx responses.
+change them there, the UI can't. They cover the server (CPU, disk, API latency, backend down) and the app: 5xx
+responses and errors in browsers. The frontend reports the latter to `POST /api/clientErrors`, which counts them
+in Prometheus and logs the details as `Client error` in the backend log.
 The rules name no receiver, so they follow the default notification policy to the `Telegram Thomas` contact point,
 both kept in `grafana.db`.
 
