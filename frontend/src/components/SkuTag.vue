@@ -1,10 +1,10 @@
 <template>
   <v-sheet
-    :color="struck ? 'surface-muted' : 'primary-tonal'"
+    :color="tagColors[state]"
     width="72"
     height="76"
     rounded="lg"
-    class="d-flex flex-column align-center justify-center flex-shrink-0 text-tabular"
+    class="position-relative d-flex flex-column align-center justify-center flex-shrink-0 text-tabular"
   >
     <span class="text-label-small font-weight-bold" style="letter-spacing: 0.1em">SKU</span>
     <span
@@ -46,11 +46,21 @@
         <v-icon size="14" :icon="mdiFlaskOutline" />
       </span>
     </div>
+    <v-avatar
+      v-if="state === 'dispensed'"
+      color="success"
+      size="26"
+      border="md surface opacity-100"
+      class="position-absolute top-0 right-0 mt-n2 mr-n2"
+      aria-hidden="true"
+    >
+      <v-icon :icon="mdiCheckBold" size="14" />
+    </v-avatar>
   </v-sheet>
 </template>
 
 <script setup lang="ts">
-import { mdiFlaskOutline } from '@mdi/js'
+import { mdiCheckBold, mdiFlaskOutline } from '@mdi/js'
 import { scoreColor } from '@/lib/color'
 
 const experimentalText = 'Experimental suggestion from a new matching method. Try it!'
@@ -65,6 +75,8 @@ const {
   score?: number | null
   blurScore?: number | null
 }>()
+
+const tagColors = { stock: 'primary-tonal', dispensed: 'success-tonal', deleted: 'surface-muted' }
 
 const struck = computed(() => state === 'dispensed' || state === 'deleted')
 </script>

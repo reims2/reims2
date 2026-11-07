@@ -2,7 +2,7 @@
   <page-layout title="Dispense or edit">
     <v-col cols="12" md="5">
       <v-form ref="form" v-model="valid" @submit.prevent="startDispension">
-        <page-card title="Glasses by SKU">
+        <page-card title="Glasses by SKU" :icon="mdiGlasses">
           <div class="px-6 pt-6 pb-5">
             <select-glasses-input
               ref="firstInput"
@@ -58,7 +58,7 @@
     <edit-dialog v-if="selected" v-model:open="editDialogOpen" :glasses="selected" />
 
     <v-col cols="12" md="7">
-      <page-card title="Recently dispensed or deleted">
+      <page-card title="Recently dispensed or deleted" :icon="mdiHistory" tone="marigold">
         <template #header>
           <v-progress-circular
             v-if="isLastDispensedLoading"
@@ -100,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import { mdiCheck, mdiCloudOffOutline, mdiPencilOutline } from '@mdi/js'
+import { mdiCheck, mdiCloudOffOutline, mdiGlasses, mdiHistory, mdiPencilOutline } from '@mdi/js'
 
 import SelectGlassesInput from '@/components/SelectGlassesInput.vue'
 import GlassesRow from '@/components/GlassesRow.vue'

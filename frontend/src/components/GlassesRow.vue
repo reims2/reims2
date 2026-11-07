@@ -28,7 +28,7 @@
           <th
             scope="row"
             class="text-left text-label-medium font-weight-bold pr-3"
-            :class="isDone ? 'text-medium-emphasis' : 'text-primary'"
+            :class="isDone ? 'text-medium-emphasis' : eye.color"
           >
             {{ eye.text }}
           </th>
@@ -93,9 +93,9 @@ const {
   selected?: boolean
 }>()
 
-const eyes: { text: string; key: GlassesEyeIndex }[] = [
-  { text: 'OD', key: 'od' },
-  { text: 'OS', key: 'os' },
+const eyes: { text: string; key: GlassesEyeIndex; color: string }[] = [
+  { text: 'OD', key: 'od', color: 'text-primary' },
+  { text: 'OS', key: 'os', color: 'text-marigold' },
 ]
 
 const diopterFields = [

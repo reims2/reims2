@@ -11,7 +11,7 @@
         <div class="d-flex flex-column h-100 pa-6 pa-sm-10 pa-lg-16">
           <reims-logo class="text-headline-medium" />
           <v-sheet color="transparent" max-width="640" class="my-auto pt-12">
-            <p class="text-label-large text-uppercase text-on-rail mb-5">
+            <p class="text-label-large text-uppercase text-marigold-bright mb-5">
               Partners for Visual Health
             </p>
             <h1 class="text-display-small text-lg-display-medium font-weight-bold mb-5">

@@ -1,16 +1,15 @@
 <template>
   <v-row class="pb-4" no-gutters role="group" :aria-labelledby="'eye-heading-' + eyeName">
     <v-col cols="12" class="pa-0 pb-5">
-      <v-chip
+      <span
         :id="'eye-heading-' + eyeName"
-        size="small"
-        label
-        variant="flat"
-        :color="isBAL ? 'surface-muted' : 'primary'"
-        class="font-weight-bold"
+        class="text-label-large font-weight-bold"
+        :class="
+          isBAL ? 'text-medium-emphasis' : eyeName === 'OS' ? 'text-marigold' : 'text-primary'
+        "
       >
         {{ eyeName }}
-      </v-chip>
+      </span>
     </v-col>
     <v-col v-for="eyeKey in eyeKeys" :key="eyeKey" cols="12" class="py-0 pl-0">
       <v-text-field
