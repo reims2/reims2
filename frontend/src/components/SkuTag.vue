@@ -1,15 +1,18 @@
 <template>
   <v-sheet
     :color="tagColors[state]"
-    width="72"
-    height="76"
+    :width="large ? 144 : 72"
+    :height="large ? 124 : 76"
     rounded="lg"
     class="position-relative d-flex flex-column align-center justify-center flex-shrink-0 text-tabular"
   >
     <span class="text-label-small font-weight-bold" style="letter-spacing: 0.1em">SKU</span>
     <span
-      class="text-title-large font-weight-bold"
-      :class="{ 'text-decoration-line-through': struck }"
+      class="font-weight-bold"
+      :class="[
+        large ? 'text-display-small' : 'text-title-large',
+        { 'text-decoration-line-through': struck },
+      ]"
     >
       {{ sku }}
     </span>
@@ -71,11 +74,13 @@ const {
   state = 'stock',
   score = null,
   blurScore = null,
+  large = false,
 } = defineProps<{
   sku: string
   state?: 'stock' | 'dispensed' | 'deleted'
   score?: number | null
   blurScore?: number | null
+  large?: boolean
 }>()
 
 const tagColors = { stock: 'primary-tonal', dispensed: 'success-tonal', deleted: 'surface-muted' }
