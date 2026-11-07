@@ -68,3 +68,6 @@ groups:
 {{ rule('reims2-server-errors', 'Backend server errors',
     new_since('http_server_requests_seconds_count{job="spring",status=~"5.."}'),
     '{{ $values.A.Value }} requests failed with a 5xx in the last 10 minutes, see the backend logs') }}
+{{ rule('reims2-client-errors', 'App errors in browsers',
+    new_since('reims_client_errors_total{job="spring"}'),
+    '{{ $values.A.Value }} errors in the app in the last 10 minutes, the backend logs them as Client error') }}
