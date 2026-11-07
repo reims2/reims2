@@ -91,6 +91,8 @@
             v-for="(item, idx) in paginatedMatches"
             :key="item.id"
             :data-testid="'result-' + idx"
+            class="row-in"
+            :style="{ animationDelay: `${idx * 70}ms` }"
           >
             <v-divider v-if="idx > 0" />
             <glasses-row :glasses="item">

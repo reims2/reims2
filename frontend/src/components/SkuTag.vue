@@ -46,16 +46,18 @@
         <v-icon size="14" :icon="mdiFlaskOutline" />
       </span>
     </div>
-    <v-avatar
-      v-if="state === 'dispensed'"
-      color="success"
-      size="26"
-      border="md surface opacity-100"
-      class="position-absolute top-0 right-0 mt-n2 mr-n2"
-      aria-hidden="true"
-    >
-      <v-icon :icon="mdiCheckBold" size="14" />
-    </v-avatar>
+    <v-scale-transition>
+      <v-avatar
+        v-if="state === 'dispensed'"
+        color="success"
+        size="26"
+        border="md surface opacity-100"
+        class="position-absolute top-0 right-0 mt-n2 mr-n2"
+        aria-hidden="true"
+      >
+        <v-icon :icon="mdiCheckBold" size="14" />
+      </v-avatar>
+    </v-scale-transition>
   </v-sheet>
 </template>
 
