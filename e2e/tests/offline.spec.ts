@@ -29,7 +29,7 @@ test('Inventory works offline', async ({ page, context, createGlasses }) => {
   await reloadOffline(page, context)
 
   await page.getByRole('link', { name: 'Inventory' }).click()
-  await expect(page.getByRole('row').filter({ hasText: formatSku(sku) })).toBeVisible()
+  await expect(page.getByRole('link', { name: `Edit SKU ${formatSku(sku)}` })).toBeVisible()
 })
 
 test('Dispense offline uploads once back online', async ({ page, context, createGlasses, api }) => {

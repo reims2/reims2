@@ -10,11 +10,11 @@ test('Filter table and open glasses for editing', async ({ page, createGlasses }
   const odSphere = page.getByRole('group', { name: 'OD SPH' })
   await odSphere.getByRole('spinbutton', { name: 'From', exact: true }).fill('9.75')
   await odSphere.getByRole('spinbutton', { name: 'To', exact: true }).fill('9.75')
-  const row = page.getByRole('row').filter({ hasText: sku })
-  await expect(row).toBeVisible()
-  await expect(row).toContainText('+9.75')
+  // the SKU alone could also match a row's text, like -0.50 next to axis 101
+  const edit = page.getByRole('link', { name: `Edit SKU ${sku}` })
+  await expect(page.getByRole('row').filter({ has: edit })).toContainText('+9.75')
 
-  await row.getByRole('link').click()
+  await edit.click()
   await expect(page).toHaveURL(new RegExp(`/edit\\?sku=${Number(sku)}$`))
   await expect(
     page.getByLabel('Glasses result').getByRole('group', { name: `SKU ${sku}` }),
