@@ -10,6 +10,7 @@
       :state="state"
       :score="glasses.score"
       :blur-score="glasses.blurScore"
+      :large="large"
     />
     <div class="d-flex flex-column ga-2 flex-1-1" :class="{ 'text-medium-emphasis': isDone }">
       <div
@@ -23,7 +24,11 @@
           {{ glasses[key] }}
         </span>
       </div>
-      <table class="align-self-start text-body-large text-rx" style="border-collapse: collapse">
+      <table
+        class="align-self-start text-rx"
+        :class="large ? 'text-title-large' : 'text-body-large'"
+        style="border-collapse: collapse"
+      >
         <tr v-for="eye in eyes" :key="eye.key">
           <th
             scope="row"
@@ -86,11 +91,13 @@ const {
   glasses,
   editable = false,
   selected = false,
+  large = false,
 } = defineProps<{
   glasses: Glasses & { score?: number; blurScore?: number }
   editable?: boolean
   // the glasses loaded into a form, not a list entry
   selected?: boolean
+  large?: boolean
 }>()
 
 const eyes: { text: string; key: GlassesEyeIndex; color: string }[] = [

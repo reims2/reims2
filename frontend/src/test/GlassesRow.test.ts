@@ -26,3 +26,8 @@ test('shows no marker for a PhilScore pick', () => {
   expect(row.queryByLabelText(marker)).toBeNull()
   expect(row.getByText('0.25')).toBeTruthy()
 })
+
+test('shows a large SKU', () => {
+  const row = renderWithVuetify(GlassesRow, { props: { glasses: pair, large: true } })
+  expect(row.getByText('0001').classList).toContain('text-display-small')
+})

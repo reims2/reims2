@@ -57,8 +57,11 @@
     <v-col cols="12" md="7">
       <page-card ref="results" title="Recently added" :icon="mdiHistory" tone="marigold">
         <template #header>
-          <span v-if="lastAdded.length" class="text-body-medium text-medium-emphasis">
-            Last {{ Math.min(lastAdded.length, 3) }}, newest first
+          <span
+            v-if="lastAdded.length"
+            class="d-none d-sm-inline text-body-medium text-medium-emphasis"
+          >
+            Write the SKU on the bag
           </span>
         </template>
         <p v-if="lastAdded.length === 0" class="pa-6 ma-0 text-body-medium text-medium-emphasis">
@@ -66,13 +69,13 @@
         </p>
         <div v-else>
           <div
-            v-for="(item, idx) in lastAdded.slice(0, 3)"
+            v-for="(item, idx) in lastAdded.slice(0, 4)"
             :key="item.id"
             :data-testid="'result-' + idx"
             class="row-in"
           >
             <v-divider v-if="idx > 0" />
-            <glasses-row :glasses="item" editable>
+            <glasses-row :glasses="item" editable :large="idx === 0">
               <template #actions>
                 <delete-button
                   :glass="item"
