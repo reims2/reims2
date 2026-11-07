@@ -1,10 +1,11 @@
-/* roboto-flex-latin-wght-normal */
+/* roboto-flex-latin-wdth-normal: weight and width, for wide titles and narrow prescriptions */
 @font-face {
   font-family: 'Roboto Flex Variable';
   font-style: normal;
   font-display: block;
   font-weight: 100 1000;
-  src: url(@fontsource-variable/roboto-flex/files/roboto-flex-latin-wght-normal.woff2)
+  font-stretch: 25% 151%;
+  src: url(@fontsource-variable/roboto-flex/files/roboto-flex-latin-wdth-normal.woff2)
     format('woff2-variations');
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -53,4 +54,11 @@
 .text-rx {
   font-weight: 550;
   font-variant-numeric: tabular-nums;
+  font-stretch: 88%;
+}
+
+// page titles go wide and heavy like the wordmark
+.text-title-wide {
+  font-weight: 780;
+  font-stretch: 118%;
 }
