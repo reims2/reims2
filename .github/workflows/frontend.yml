@@ -20,6 +20,14 @@ jobs:
               - ".github/**"
               - "frontend/**"
               - "backend/openapi.json"
+            matching:
+              - "frontend/src/lib/philscore.ts"
+              - "frontend/src/lib/blurscore.ts"
+              - "frontend/src/lib/interleave.ts"
+              - "frontend/src/test/philscore*"
+              - "frontend/src/test/blurscore*"
+              - "frontend/src/test/interleave*"
+              - "frontend/stryker.config.mjs"
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         if: steps.filter.outputs.src == 'true'
         with:
@@ -49,3 +57,7 @@ jobs:
       - name: Run build
         if: steps.filter.outputs.src == 'true'
         run: pnpm build
+      # a few minutes, so only when the matching code or its tests change
+      - name: Mutation test matching
+        if: steps.filter.outputs.matching == 'true'
+        run: pnpm test:mutation

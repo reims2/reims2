@@ -15,7 +15,8 @@
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "test": "vitest run --coverage",
-    "test:watch": "vitest --ui --coverage"
+    "test:watch": "vitest --ui --coverage",
+    "test:mutation": "stryker run"
   },
   "engines": {
     "node": "24.22.1"
@@ -38,6 +39,8 @@
     "@eslint/js": "10.0.1",
     "@mdi/js": "7.4.47",
     "@pinia/testing": "2.0.2",
+    "@stryker-mutator/core": "10.1.1",
+    "@stryker-mutator/vitest-runner": "10.1.1",
     "@testing-library/vue": "8.1.0",
     "@types/eslint": "9.6.1",
     "@types/node": "26.6.5",
