@@ -5,15 +5,6 @@ test.beforeEach(async ({ page }) => {
   await open(page, '/edit')
 })
 
-test('Dispense glasses with button', async ({ page, createGlasses }) => {
-  const { sku } = await createGlasses()
-  await lookUpSku(page, sku)
-  await page.getByRole('button', { name: 'Dispense' }).click()
-  await expect(
-    page.getByText(`Successfully dispensed glasses with SKU ${formatSku(sku)}`),
-  ).toBeVisible()
-})
-
 test('Typing on to an unknown SKU clears the result', async ({ page, createGlasses }) => {
   await lookUpSku(page, (await createGlasses()).sku)
   await page.getByLabel('SKU', { exact: true }).fill('99999')
@@ -22,11 +13,13 @@ test('Typing on to an unknown SKU clears the result', async ({ page, createGlass
   await expect(page.getByText('SKU not found')).toBeVisible()
 })
 
-test('Undo dispension', async ({ page, createGlasses, api }) => {
+test('Dispense and undo', async ({ page, createGlasses, api }) => {
   const { sku } = await createGlasses()
   await lookUpSku(page, sku)
   await page.getByRole('button', { name: 'Dispense' }).click()
-  await expect(page.getByText(`Successfully dispensed glasses`)).toBeVisible()
+  await expect(
+    page.getByText(`Successfully dispensed glasses with SKU ${formatSku(sku)}`),
+  ).toBeVisible()
 
   // other tests dispense on this site too, so find the pair by its SKU, not as the newest
   await page
@@ -37,7 +30,7 @@ test('Undo dispension', async ({ page, createGlasses, api }) => {
   await expect(
     page.getByText(`Reverted dispension/deletion of SKU ${formatSku(sku)} successfully`),
   ).toBeVisible()
-  expect((await api.get(`/api/glasses/sa/${sku}`)).ok()).toBe(true)
+  await expect(await api.get(`/api/glasses/sa/${sku}`)).toBeOK()
 })
 
 test('Delete glasses', async ({ page, createGlasses }) => {

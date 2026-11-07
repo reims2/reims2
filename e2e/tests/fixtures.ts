@@ -1,6 +1,5 @@
 import { test as base, expect, APIRequestContext, Page } from '@playwright/test'
 
-type ReimsSite = 'sa' | 'sm'
 type Eye = { sphere: number; cylinder: number; axis: number; add: number }
 type Glasses = {
   id: number
@@ -36,14 +35,11 @@ export const searchResult = (page: Page, sku: number) =>
 
 export const test = base.extend<
   {
-    location: ReimsSite
     addedIds: number[]
     createGlasses: (glasses?: NewGlasses) => Promise<Glasses>
   },
   { api: APIRequestContext }
 >({
-  location: ['sa', { option: true }],
-
   // results are paginated, so leftovers from earlier runs could push a test's pair off page 1.
   // There's no hard delete, and a pair a test already dispensed is left as it is.
   addedIds: async ({ api }, use) => {
@@ -52,13 +48,7 @@ export const test = base.extend<
     await Promise.all(ids.map((id) => api.put(`/api/glasses/${id}/dispense?reason=WRONGLY_ADDED`)))
   },
 
-  page: async ({ page, location, addedIds }, use) => {
-    if (location !== 'sa') {
-      await page.addInitScript((site) => {
-        const root = JSON.parse(localStorage.getItem('root') ?? '{}')
-        localStorage.setItem('root', JSON.stringify({ ...root, reimsSite: site }))
-      }, location)
-    }
+  page: async ({ page, addedIds }, use) => {
     const added: Promise<void>[] = []
     page.on('response', (r) => {
       if (r.request().method() === 'POST' && r.url().endsWith('/api/glasses') && r.ok()) {
@@ -90,7 +80,7 @@ export const test = base.extend<
     { scope: 'worker' },
   ],
 
-  createGlasses: async ({ api, location, addedIds }, use) => {
+  createGlasses: async ({ api, addedIds }, use) => {
     await use(async ({ od, os, ...glasses } = {}) => {
       const eye = { sphere: 0.75, cylinder: 0, axis: 0, add: 0 }
       const response = await api.post('/api/glasses', {
@@ -101,7 +91,7 @@ export const test = base.extend<
           ...glasses,
           od: { ...eye, ...od },
           os: { ...eye, ...os },
-          location,
+          location: 'sa',
         },
       })
       if (!response.ok()) throw new Error(`Creating glasses failed: ${await response.text()}`)
