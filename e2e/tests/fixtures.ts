@@ -8,7 +8,12 @@ type Glasses = {
   od: Eye
   os: Eye
 }
-type NewGlasses = { glassesType?: Glasses['glassesType']; od?: Partial<Eye>; os?: Partial<Eye> }
+type NewGlasses = {
+  glassesType?: Glasses['glassesType']
+  location?: 'sa' | 'sm'
+  od?: Partial<Eye>
+  os?: Partial<Eye>
+}
 
 export const formatSku = (sku: number) => sku.toString().padStart(4, '0')
 
@@ -88,10 +93,10 @@ export const test = base.extend<
           glassesType: 'single',
           appearance: 'neutral',
           glassesSize: 'medium',
+          location: 'sa',
           ...glasses,
           od: { ...eye, ...od },
           os: { ...eye, ...os },
-          location: 'sa',
         },
       })
       if (!response.ok()) throw new Error(`Creating glasses failed: ${await response.text()}`)
