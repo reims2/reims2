@@ -56,7 +56,7 @@ export const useLastDispensed = () => {
           if (a.dispense.modifyDate > b.dispense.modifyDate) return -1
           return 1
         })
-        .slice(0, 3)
+        .slice(0, 5)
     } finally {
       isLoading.value = false
     }
