@@ -22,6 +22,7 @@
     - "{{ monitoring_install_location }}/grafana/data"
     - "{{ monitoring_install_location }}/prometheus/data"
     - "{{ monitoring_install_location }}/grafana/provisioning/datasources"
+    - "{{ monitoring_install_location }}/grafana/provisioning/alerting"
     - "{{ monitoring_install_location }}/grafana/provisioning/dashboards"
     - "{{ monitoring_install_location }}/grafana/provisioning/dashboards/json"
   become: true
@@ -65,6 +66,16 @@
   ansible.builtin.template:
     src: grafana-dashboards.yml.j2
     dest: "{{ monitoring_install_location }}/grafana/provisioning/dashboards/reims2.yaml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart grafana
+
+# alert rules only load on start, the contact point and notification policy stay in grafana.db
+- name: Copy grafana alert rules
+  ansible.builtin.template:
+    src: grafana-alerting.yml.j2
+    dest: "{{ monitoring_install_location }}/grafana/provisioning/alerting/reims2.yaml"
     owner: root
     group: root
     mode: "0644"
