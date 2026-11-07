@@ -85,6 +85,11 @@ Edit and save them in Grafana as usual, then copy the JSON from the save dialog 
 UI edits and Grafana users live in `grafana.db`, which the backup includes. The `app` role creates the
 `monitoring` database user that Grafana and the MySQL exporter use.
 
+The alert rules come from `roles/monitoring/templates/grafana-alerting.yml.j2` and load when Grafana starts, so
+change them there, the UI can't. They cover the server (CPU, disk, API latency, backend down) and 5xx responses.
+The rules name no receiver, so they follow the default notification policy to the `Telegram Thomas` contact point,
+both kept in `grafana.db`.
+
 ## Variables
 
 | Variable                                                             | Description                                                         | Default                         |

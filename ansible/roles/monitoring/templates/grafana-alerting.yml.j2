@@ -1,0 +1,70 @@
+{{ ansible_managed | comment }}
+
+# no receiver, so these follow the default notification policy, which sends to Telegram
+# the server rules started in the UI and keep their uids, so provisioning took them over
+
+# counters only appear with their first increment, which increase() can't see, so these compare against 10 minutes ago
+{% macro new_since(metric) -%}
+sum({{ metric }}) - (sum({{ metric }} offset 10m) or vector(0))
+{%- endmacro %}
+{% macro rule(uid, title, expr, summary, above=0, below=none, for='0s', no_data='OK', panel=none) %}
+      - uid: {{ uid }}
+        title: {{ title }}
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus_reims
+            model:
+              refId: A
+              instant: true
+              expr: '{{ expr }}'
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: { type: gt, params: [{{ above }}] }
+{% if below is not none %}
+                  unloadEvaluator: { type: lt, params: [{{ below }}] }
+{% endif %}
+        noDataState: {{ no_data }}
+        execErrState: Error
+        for: {{ for }}
+        annotations:
+          summary: '{{ summary }}'
+{% if panel %}
+          __dashboardUid__: rYdddlPWk
+          __panelId__: '{{ panel }}'
+{% endif %}
+{% endmacro %}
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: server
+    folder: REIMS2
+    interval: 30s
+    rules:
+{{ rule('a2d6e194-6894-4ed4-be3a-3b36d1bb7c45', 'High CPU',
+    '100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)',
+    'CPU on the REIMS2 server above 90% for 5 minutes', above=90, below=80, for='5m', no_data='NoData', panel=3) }}
+{{ rule('cbb73351-78e3-4703-b65f-b5daf63136ef', 'High disk usage',
+    'max by (mountpoint) (100 - node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs"} * 100 / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs"})',
+    '{{ $labels.mountpoint }} on the REIMS2 server is {{ humanize $values.A.Value }}% full', above=90, for='15m', panel=156) }}
+{{ rule('bdv0wkrsr8zcwb', 'High Spring response time',
+    'max(http_server_requests_seconds_max{job="spring",uri=~"/api/.+",status!~"5.."})',
+    'The slowest API request took {{ humanize $values.A.Value }}s, above 1.5s for 5 minutes', above=1.5, below=1, for='5m') }}
+{{ rule('reims2-backend-down', 'Backend down', '1 - (max(up{job="spring"}) or vector(0))',
+    'Prometheus could not reach the backend for 2 minutes', for='2m') }}
+
+  - orgId: 1
+    name: app
+    folder: REIMS2
+    interval: 1m
+    rules:
+{{ rule('reims2-server-errors', 'Backend server errors',
+    new_since('http_server_requests_seconds_count{job="spring",status=~"5.."}'),
+    '{{ $values.A.Value }} requests failed with a 5xx in the last 10 minutes, see the backend logs') }}
