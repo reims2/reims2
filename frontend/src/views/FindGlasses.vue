@@ -2,7 +2,7 @@
   <page-layout title="Find glasses" @keydown.s.exact.prevent="$event.repeat || search()">
     <v-col cols="12" md="5">
       <v-form ref="form" v-model="valid" @submit.prevent>
-        <page-card title="Prescription">
+        <page-card title="Prescription" :icon="mdiEyeOutline">
           <template #header>
             <v-btn
               v-prevent-enter-tab
@@ -57,7 +57,7 @@
     </v-col>
 
     <v-col cols="12" md="7">
-      <page-card ref="results" title="Results">
+      <page-card ref="results" title="Results" :icon="mdiGlasses" tone="marigold">
         <template #header>
           <span v-if="matches?.length" class="text-body-medium text-medium-emphasis text-tabular">
             {{ matches.length }}
@@ -141,7 +141,7 @@
 </template>
 
 <script setup lang="ts">
-import { mdiRestore, mdiMagnify, mdiMagnifyRemoveOutline } from '@mdi/js'
+import { mdiRestore, mdiMagnify, mdiMagnifyRemoveOutline, mdiEyeOutline, mdiGlasses } from '@mdi/js'
 
 import GlassInput from '@/components/GlassInput.vue'
 import GlassesRow from '@/components/GlassesRow.vue'

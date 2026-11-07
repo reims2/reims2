@@ -113,16 +113,19 @@ const capitalize = { class: 'text-capitalize' }
 
 const rxColumns = { sphere: 'SPH', cylinder: 'CYL', axis: 'Axis', add: 'Add' } as const
 
+// OD reads teal and OS marigold, like their labels everywhere else
 function eyeHeader(eye: GlassesEyeIndex) {
+  const color = eye === 'os' ? 'marigold' : 'primary'
+  const tint = `bg-${color}-tonal`
   return {
     title: eye.toUpperCase(),
     align: 'center' as const,
-    headerProps: { class: 'border-s text-primary font-weight-bold' },
+    headerProps: { class: `border-s font-weight-bold ${tint} text-${color}` },
     children: Object.entries(rxColumns).map(([value, title], idx) => ({
       key: `${eye}.${value}`,
       title,
       align: 'end' as const,
-      headerProps: idx === 0 ? groupStart : undefined,
+      headerProps: { class: idx === 0 ? `border-s ${tint}` : tint },
       cellProps: { class: idx === 0 ? 'border-s text-rx' : 'text-rx' },
     })),
   }
