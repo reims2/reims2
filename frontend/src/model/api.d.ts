@@ -164,22 +164,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/glasses/{location}/changes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["getGlassesChange"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/glasses/{location}/all": {
         parameters: {
             query?: never;
@@ -405,9 +389,6 @@ export interface components {
             id: number;
             username: string;
             roles: string[];
-        };
-        ChangeValueDTO: {
-            hashValue: string;
         };
         RoleResponse: {
             /** Format: int64 */
@@ -675,28 +656,6 @@ export interface operations {
             };
         };
     };
-    getGlassesChange: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                location: "sa" | "sm";
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ChangeValueDTO"];
-                };
-            };
-        };
-    };
     getAllGlasses: {
         parameters: {
             query?: never;
@@ -711,11 +670,19 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
+                    ETag?: string;
                     [name: string]: unknown;
                 };
                 content: {
                     "*/*": components["schemas"]["GlassesResponseDTO"][];
                 };
+            };
+            /** @description Unchanged since the ETag in If-None-Match */
+            304: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

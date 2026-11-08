@@ -12,7 +12,6 @@ import { Dayjs } from 'dayjs'
 type GlassesRequest = components['schemas']['GlassesRequestDTO']
 type GlassesResponse = components['schemas']['GlassesResponseDTO']
 type SearchLogRequest = components['schemas']['SearchLogDTO']
-type ChangeValue = components['schemas']['ChangeValueDTO']
 
 export type SendResult = 'sent' | 'queued'
 
@@ -165,7 +164,7 @@ export const useGlassesStore = defineStore(
     async function loadGlasses() {
       await refreshGlasses(true)
     }
-    // the hash goes first, so a write in between only causes another load later
+    // the ETag is the server's change hash, a 304 means the cached list is still current
     async function refreshGlasses(force: boolean) {
       controllerGetAll.abort()
       const controller = new AbortController()
@@ -173,20 +172,20 @@ export const useGlassesStore = defineStore(
       const site = rootStore.reimsSite
       isRefreshingGlasses.value = true
       try {
-        const change = await axiosInstance.get<ChangeValue>(`/api/glasses/${site}/changes`, {
+        const known = force ? '' : allGlassesHash.value
+        const response = await axiosInstance.get<GlassesResponse[]>(`/api/glasses/${site}/all`, {
+          timeout: 60000,
           signal: controller.signal,
+          headers: known ? { 'If-None-Match': known } : {},
+          validateStatus: (status) => status === 304 || (status >= 200 && status < 300),
         })
-        if (force || change.data.hashValue !== allGlassesHash.value) {
-          const response = await axiosInstance.get<GlassesResponse[]>(`/api/glasses/${site}/all`, {
-            timeout: 60000,
-            signal: controller.signal,
-          })
+        if (response.status !== 304) {
           allGlasses.value = response.data
           // queued changes aren't on the server yet
           for (const entry of outbox.queue.value)
             if (entry.glasses.location === site) updateCache(entry)
         }
-        allGlassesHash.value = change.data.hashValue
+        allGlassesHash.value = (response.headers.etag as string | undefined) ?? ''
         lastRefresh.value = new Date().toISOString()
         isOutdated.value = false
       } finally {

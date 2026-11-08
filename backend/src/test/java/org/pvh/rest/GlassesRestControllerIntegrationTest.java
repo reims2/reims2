@@ -22,6 +22,7 @@ import org.pvh.model.enums.LocationEnum;
 import org.pvh.util.CampaignZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -49,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -100,8 +102,30 @@ public class GlassesRestControllerIntegrationTest {
     }
 
     private String hash(String location) throws Exception {
-        String body = mockMvc.perform(get("/api/glasses/" + location + "/changes")).andReturn().getResponse().getContentAsString();
-        return JsonPath.read(body, "$.hashValue");
+        return mockMvc.perform(get("/api/glasses/" + location + "/all")).andReturn().getResponse().getHeader(HttpHeaders.ETAG);
+    }
+
+    @Test
+    public void allGlasses_NotModified_WhileETagIsCurrent() throws Exception {
+        saveGlasses(LocationEnum.sa);
+        String etag = hash("sa");
+
+        mockMvc.perform(get("/api/glasses/sa/all").header(HttpHeaders.IF_NONE_MATCH, etag))
+            .andExpect(status().isNotModified())
+            .andExpect(header().string(HttpHeaders.ETAG, etag))
+            .andExpect(content().string(""));
+        // proxies that compress may weaken the tag
+        mockMvc.perform(get("/api/glasses/sa/all").header(HttpHeaders.IF_NONE_MATCH, "W/" + etag))
+            .andExpect(status().isNotModified());
+        mockMvc.perform(get("/api/glasses/sa/all").header(HttpHeaders.IF_NONE_MATCH, "\"stale\""))
+            .andExpect(status().isOk())
+            .andExpect(header().string(HttpHeaders.ETAG, etag))
+            .andExpect(jsonPath("$").isArray());
+
+        saveGlasses(LocationEnum.sa);
+        mockMvc.perform(get("/api/glasses/sa/all").header(HttpHeaders.IF_NONE_MATCH, etag))
+            .andExpect(status().isOk())
+            .andExpect(header().string(HttpHeaders.ETAG, not(etag)));
     }
 
     @Test

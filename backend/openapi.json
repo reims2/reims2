@@ -301,33 +301,6 @@
         }
       }
     },
-    "/api/glasses/{location}/changes" : {
-      "get" : {
-        "tags" : [ "glasses-rest-controller" ],
-        "operationId" : "getGlassesChange",
-        "parameters" : [ {
-          "name" : "location",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "enum" : [ "sa", "sm" ]
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ChangeValueDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/glasses/{location}/all" : {
       "get" : {
         "tags" : [ "glasses-rest-controller" ],
@@ -344,6 +317,14 @@
         "responses" : {
           "200" : {
             "description" : "OK",
+            "headers" : {
+              "ETag" : {
+                "style" : "simple",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "*/*" : {
                 "schema" : {
@@ -354,6 +335,9 @@
                 }
               }
             }
+          },
+          "304" : {
+            "description" : "Unchanged since the ETag in If-None-Match"
           }
         }
       }
@@ -814,14 +798,6 @@
             "items" : {
               "type" : "string"
             }
-          }
-        }
-      },
-      "ChangeValueDTO" : {
-        "type" : "object",
-        "properties" : {
-          "hashValue" : {
-            "type" : "string"
           }
         }
       },
