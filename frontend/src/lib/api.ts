@@ -31,6 +31,12 @@ async function problemDetail(response: Response): Promise<string | null> {
   }
 }
 
+/** The token Spring Security also set as a cookie, a cross-site page can't read it */
+function csrfToken(): string | undefined {
+  const token = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/)?.[1]
+  return token ? decodeURIComponent(token) : undefined
+}
+
 /** Fails a request whose response headers take longer than ms, like an aborted one. */
 export function fetchWithin(ms: number) {
   return (request: Request) => {
@@ -48,8 +54,8 @@ export const useApi = () => {
 
   const middleware: Middleware = {
     onRequest({ request }) {
-      const token = authStore.accessToken
-      if (token != null) request.headers.set('Authorization', `Bearer ${token}`)
+      const token = csrfToken()
+      if (request.method !== 'GET' && token) request.headers.set('X-XSRF-TOKEN', token)
     },
     // only fetch itself fails here: offline, aborted or timed out
     onError() {

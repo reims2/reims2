@@ -130,9 +130,11 @@ the SKU later.
   from March 2024, so a push to `main` tries new migrations on real data before prod.
 - Errors are RFC 9457 problem details. `error/ApiExceptionHandler.java` maps the domain exceptions in
   `error/` to status codes, services never pick one.
-- Auth is JWT via Spring Security's OAuth2 resource server (`security/WebSecurityConfig.java`, `TokenService`,
-  `pvh.jwt.*`), with roles read from the database on every request. `@PreAuthorize` enforces `ROLE_USER` and
-  `ROLE_ADMIN`, a role hierarchy gives admins every user right, and user management is admin-only.
+- Auth is an HttpOnly `SESSION` cookie from Spring Session JDBC (`security/WebSecurityConfig.java`) that
+  ends after 90 days without use. The session holds only the username (`SessionUserRepository`), so roles
+  come from the database on every request, and deleting a user also deletes their sessions. Writes need the
+  `XSRF-TOKEN` cookie echoed as an `X-XSRF-TOKEN` header, which `lib/api.ts` adds. `@PreAuthorize` enforces
+  `ROLE_USER` and `ROLE_ADMIN`, a role hierarchy gives admins every user right, and user management is admin-only.
 
 ### Frontend (`frontend/src/`)
 

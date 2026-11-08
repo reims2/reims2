@@ -116,6 +116,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/auth/signout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["signOut"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/auth/signin": {
         parameters: {
             query?: never;
@@ -382,9 +398,7 @@ export interface components {
             username: string;
             password: string;
         };
-        JwtResponse: {
-            accessToken: string;
-            tokenType: string;
+        LoginResponse: {
             /** Format: int64 */
             id: number;
             username: string;
@@ -589,6 +603,24 @@ export interface operations {
             };
         };
     };
+    signOut: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     authenticateUser: {
         parameters: {
             query?: never;
@@ -608,7 +640,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["JwtResponse"];
+                    "*/*": components["schemas"]["LoginResponse"];
                 };
             };
         };

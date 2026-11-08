@@ -21,6 +21,16 @@ export const formatSku = (sku: number) => sku.toString().padStart(4, '0')
 export const glassesLoaded = (page: Page) =>
   page.waitForResponse((r) => r.url().endsWith('/all') && r.ok())
 
+export async function logIn(page: Page) {
+  await page.goto('/')
+  await page.getByLabel('Username').fill('test')
+  await page.getByLabel('Password').fill('testtest')
+  const loaded = glassesLoaded(page)
+  await page.getByLabel('Password').press('Enter')
+  await page.waitForURL('**/find')
+  await loaded
+}
+
 export async function open(page: Page, path: string) {
   const loaded = glassesLoaded(page)
   await page.goto(path)
@@ -68,16 +78,21 @@ export const test = base.extend<
   api: [
     async ({ playwright }, use, workerInfo) => {
       const baseURL = workerInfo.project.use.baseURL
-      const login = await playwright.request.newContext({ baseURL })
-      const response = await login.post('/api/auth/signin', {
-        data: { username: 'test', password: 'testtest' },
+      // without the project's storageState, else signing in would replace the session the pages share
+      const login = await playwright.request.newContext({
+        baseURL,
+        storageState: { cookies: [], origins: [] },
       })
-      const { accessToken } = await response.json()
+      await login.post('/api/auth/signin', { data: { username: 'test', password: 'testtest' } })
+      // the session cookie plus the CSRF token as a header, like the frontend sends it
+      const storageState = await login.storageState()
+      const csrf = storageState.cookies.find((cookie) => cookie.name === 'XSRF-TOKEN')!.value
       await login.dispose()
 
       const api = await playwright.request.newContext({
         baseURL,
-        extraHTTPHeaders: { Authorization: `Bearer ${accessToken}` },
+        storageState,
+        extraHTTPHeaders: { 'X-XSRF-TOKEN': csrf },
       })
       await use(api)
       await api.dispose()

@@ -1,15 +1,14 @@
 package org.pvh.security;
 
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,28 +16,17 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableConfigurationProperties(JwtProperties.class)
-@SecurityScheme(name = "bearer", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
-@OpenAPIDefinition(info = @Info(title = "REIMS2", version = "v0"), security = @SecurityRequirement(name = "bearer"))
+@SecurityScheme(name = "session", type = SecuritySchemeType.APIKEY, in = SecuritySchemeIn.COOKIE, paramName = "SESSION")
+@OpenAPIDefinition(info = @Info(title = "REIMS2", version = "v0"), security = @SecurityRequirement(name = "session"))
 public class WebSecurityConfig {
 
     @Bean
@@ -58,38 +46,18 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecretKey jwtKey(JwtProperties properties) {
-        return new SecretKeySpec(properties.secret().getBytes(StandardCharsets.UTF_8), "HmacSHA512");
+    public SessionUserRepository sessionUserRepository(UserDetailsService userDetailsService) {
+        return new SessionUserRepository(userDetailsService);
     }
 
     @Bean
-    public JwtEncoder jwtEncoder(SecretKey jwtKey) {
-        return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey));
-    }
-
-    @Bean
-    public JwtDecoder jwtDecoder(SecretKey jwtKey) {
-        return NimbusJwtDecoder.withSecretKey(jwtKey).macAlgorithm(TokenService.ALGORITHM).build();
-    }
-
-    // no resource server here: the frontend sends its stored token with the login request too, even an expired one
-    @Bean
-    @Order(1)
-    public SecurityFilterChain signinFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, SessionUserRepository sessionUserRepository) throws Exception {
         http
-            .securityMatcher("/api/auth/signin")
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(request -> request.anyRequest().permitAll())
-            .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        return http.build();
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
+            // spa() writes the XSRF-TOKEN cookie on every response to a request without one
+            .csrf(csrf -> csrf.spa().ignoringRequestMatchers("/api/auth/signin"))
+            .securityContext(context -> context.securityContextRepository(sessionUserRepository))
             .authorizeHttpRequests(request -> request
-                .requestMatchers("/api").permitAll()
+                .requestMatchers("/api", "/api/auth/signin", "/api/auth/signout").permitAll()
                 .requestMatchers("/error").permitAll()
                 // only /api is routed publicly, prod exposes no actuator endpoint that leaks secrets
                 .requestMatchers("/actuator/**").permitAll()
@@ -100,13 +68,10 @@ public class WebSecurityConfig {
                     "/webjars/**")
                 .permitAll()
                 .anyRequest().authenticated())
-            .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .oauth2ResourceServer(oauth2 -> oauth2
-                // roles come from the database on every request, so deleting a user or changing roles applies right away
-                .jwt(jwt -> jwt.jwtAuthenticationConverter(token -> {
-                    UserDetails user = userDetailsService.loadUserByUsername(token.getSubject());
-                    return new JwtAuthenticationToken(token, user.getAuthorities(), user.getUsername());
-                })));
+            .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+            .requestCache(cache -> cache.disable())
+            // AuthController's signout instead
+            .logout(logout -> logout.disable());
         return http.build();
     }
 

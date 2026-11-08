@@ -79,7 +79,7 @@ describe('api client', () => {
   })
 
   it('logs out on a 401 while logged in', async () => {
-    useAuthStore().accessToken = 'token'
+    useAuthStore().user = 'ana'
     respondWith(401)
     const error = await failure(getGlasses())
     expect(error.message).toBe('Unauthorized')
@@ -99,15 +99,14 @@ describe('api client', () => {
     expect(toastQueue.value).toEqual([])
   })
 
-  it('sends the token only when logged in', async () => {
-    const authStore = useAuthStore()
+  it('sends the CSRF cookie as a header with changes only', async () => {
+    document.cookie = 'XSRF-TOKEN=a%2Fb'
     fetchMock.mockImplementation(async () => Response.json({}))
-    authStore.accessToken = 'abc'
     await getGlasses()
-    authStore.accessToken = null
-    await getGlasses()
-    const headers = fetchMock.mock.calls.map(([request]) => request.headers.get('Authorization'))
-    expect(headers).toEqual(['Bearer abc', null])
+    await useApi().PUT('/api/glasses/{id}/dispense', { params: { path: { id: 1 } } })
+    const headers = fetchMock.mock.calls.map(([request]) => request.headers.get('X-XSRF-TOKEN'))
+    expect(headers).toEqual([null, 'a/b'])
+    document.cookie = 'XSRF-TOKEN=; max-age=0'
   })
 
   it('aborts a request that takes too long', async () => {

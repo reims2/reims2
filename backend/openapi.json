@@ -9,7 +9,7 @@
     "description" : "Generated server url"
   } ],
   "security" : [ {
-    "bearer" : [ ]
+    "session" : [ ]
   } ],
   "paths" : {
     "/api/glasses/{id}" : {
@@ -218,6 +218,18 @@
         }
       }
     },
+    "/api/auth/signout" : {
+      "post" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "signOut",
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          }
+        },
+        "security" : [ ]
+      }
+    },
     "/api/auth/signin" : {
       "post" : {
         "tags" : [ "auth-controller" ],
@@ -238,7 +250,7 @@
             "content" : {
               "*/*" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/JwtResponse"
+                  "$ref" : "#/components/schemas/LoginResponse"
                 }
               }
             }
@@ -777,15 +789,9 @@
         },
         "required" : [ "password", "username" ]
       },
-      "JwtResponse" : {
+      "LoginResponse" : {
         "type" : "object",
         "properties" : {
-          "accessToken" : {
-            "type" : "string"
-          },
-          "tokenType" : {
-            "type" : "string"
-          },
           "id" : {
             "type" : "integer",
             "format" : "int64"
@@ -834,10 +840,10 @@
       }
     },
     "securitySchemes" : {
-      "bearer" : {
-        "type" : "http",
-        "scheme" : "bearer",
-        "bearerFormat" : "JWT"
+      "session" : {
+        "type" : "apiKey",
+        "name" : "SESSION",
+        "in" : "cookie"
       }
     }
   }

@@ -22,6 +22,8 @@ The API runs on http://localhost:9966/api, Swagger UI on http://localhost:9966/s
 
 ## Authentication
 
-`POST /api/auth/signin` with `{"username": "test", "password": "testtest"}` (the user in the local database) returns a JWT
-as `accessToken`. Send it as `Authorization: Bearer <token>` with every other request. Admins create further users via
+`POST /api/auth/signin` with `{"username": "test", "password": "testtest"}` (the user in the local database) starts a
+session: the `SESSION` cookie authenticates every other request until `POST /api/auth/signout` or 90 days without
+use. Requests that change something also need the `XSRF-TOKEN` cookie's value in an `X-XSRF-TOKEN` header, Swagger UI
+sends it by itself. Admins create further users via
 `POST /api/auth/signup` with `{"username": "...", "password": "...", "roles": [{"name": "ROLE_USER"}]}`.

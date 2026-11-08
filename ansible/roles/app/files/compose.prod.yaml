@@ -9,12 +9,15 @@ services:
     labels:
       # run by offen (roles/s3backup) before each backup, fails on a fresh box so no empty backup gets uploaded
       # offen splits this itself, not a shell: no backticks and no single quotes inside the script
+      # logins stay out of the backup, a session id works like a password
       docker-volume-backup.archive-pre: >-
         /bin/sh -c 'set -e;
         glasses=$$(mariadb -uroot -p"$$MARIADB_ROOT_PASSWORD" "$$MARIADB_DATABASE" -N -e "select count(*) from glasses");
         if [ "$$glasses" -eq 0 ]; then echo "glasses is empty, refusing to back up" >&2; exit 1; fi;
         exec mariadb-dump -uroot -p"$$MARIADB_ROOT_PASSWORD" "$$MARIADB_DATABASE" --single-transaction
-        --no-create-info --complete-insert --ignore-table="$$MARIADB_DATABASE.roles" > /backup/dump.sql'
+        --no-create-info --complete-insert --ignore-table="$$MARIADB_DATABASE.roles"
+        --ignore-table="$$MARIADB_DATABASE.SPRING_SESSION" --ignore-table="$$MARIADB_DATABASE.SPRING_SESSION_ATTRIBUTES"
+        > /backup/dump.sql'
   backend:
     networks:
       - default

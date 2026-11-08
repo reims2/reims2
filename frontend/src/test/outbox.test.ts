@@ -56,6 +56,7 @@ describe('outbox', () => {
     ['no response', networkError()],
     ['a 5xx', serverError()],
     ['a 401', unauthorized()],
+    ['a 403', clientError(403)],
   ])('keeps the entry and stops on %s', async (_, error) => {
     for (const sku of [1, 2, 3]) outbox.add(dispense(sku))
     const { sent, send } = sender({ 2: error })

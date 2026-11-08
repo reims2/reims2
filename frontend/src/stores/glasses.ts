@@ -176,7 +176,6 @@ export const useGlassesStore = defineStore(
     async function loadGlasses() {
       await refreshGlasses(true)
     }
-    // the ETag is the server's change hash, a 304 means the cached list is still current
     async function refreshGlasses(force: boolean) {
       controllerGetAll.abort()
       const controller = new AbortController()

@@ -98,7 +98,7 @@ both kept in `grafana.db`.
 | -------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------- |
 | `stack`                                                              | `prod` or `staging`, picks `vars/<stack>.yml`                       | required                        |
 | `app_tag`                                                            | image tag to deploy, e.g. `sha-abc1234`                             | the deployed tag, else `latest` |
-| `reims2_db_password`, `reims2_db_root_password`, `reims2_jwt_secret` | app secrets, no single quotes                                       | in `vars/`                      |
+| `reims2_db_password`, `reims2_db_root_password`                      | app secrets, no single quotes                                       | in `vars/`                      |
 | `monitoring_db_password`                                             | password of the `monitoring` DB user                                | `vars/prod.yml`                 |
 | `aws_key_id`, `aws_secret_key`                                       | S3 credentials for backups                                          | `vars/prod.yml`                 |
 | `s3backup_healthcheck_url`                                           | shoutrrr URL of the healthchecks.io check, empty disables it        | `vars/prod.yml`                 |

@@ -2,8 +2,8 @@
 # single quotes keep compose from interpolating $ in secrets, so they can't contain one
 - name: Check secrets fit into .env
   ansible.builtin.assert:
-    that: "\"'\" not in (reims2_db_password ~ reims2_db_root_password ~ reims2_jwt_secret)"
-    fail_msg: DB passwords and the JWT secret must not contain a single quote
+    that: "\"'\" not in (reims2_db_password ~ reims2_db_root_password)"
+    fail_msg: DB passwords must not contain a single quote
   no_log: true
 
 - name: Create the stack directory
