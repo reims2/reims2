@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Service
 public class GlassesService {
@@ -40,6 +41,13 @@ public class GlassesService {
 
     public List<Glasses> findByDispensedAndLocation(boolean dispensed, LocationEnum location) {
         return glassesRepository.findByDispensedAndLocation(dispensed, location);
+    }
+
+    // hash and list come from one snapshot, the list is null when the client already has this hash
+    @Transactional(readOnly = true)
+    public List<Glasses> findInStock(LocationEnum location, Predicate<String> clientHas) {
+        return clientHas.test(changeService.getHashValue(location)) ? null
+            : glassesRepository.findByDispensedAndLocation(false, location);
     }
 
     // campaign days, both inclusive, an open start means since ever and an open end means until today

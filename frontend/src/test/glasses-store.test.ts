@@ -19,6 +19,8 @@ const eye = { sphere: 1, cylinder: 0, axis: 0, add: 0 }
 function pair(id: number, sku: number | null): Glasses {
   return { ...createGlasses('single', eye, eye)[0], id, sku }
 }
+const allGlasses = (etag: string, data: Glasses[]) => ({ status: 200, data, headers: { etag } })
+const notModified = (etag: string) => ({ status: 304, data: '', headers: { etag } })
 const dispenseOf = (previousSku: number) => ({
   previousSku,
   modifyDate: null,
@@ -70,47 +72,61 @@ describe('glasses store', () => {
     expect(store.allGlasses).toHaveLength(1)
   })
 
-  it('only loads all glasses when the change hash moved', async () => {
+  it('sends its ETag and keeps the cache on a 304', async () => {
     const store = useGlassesStore()
-    store.allGlassesHash = 'abc'
-    api.get.mockResolvedValueOnce({ data: { hashValue: 'abc' } })
+    store.allGlasses = [pair(1, 5)]
+    store.allGlassesHash = '"abc"'
+    api.get.mockResolvedValueOnce(notModified('"abc"'))
     await store.loadGlassesIfChanged()
-    expect(api.get).toHaveBeenCalledTimes(1)
+    expect(api.get).toHaveBeenCalledWith(
+      '/api/glasses/sa/all',
+      expect.objectContaining({ headers: { 'If-None-Match': '"abc"' } }),
+    )
+    expect(store.allGlasses).toEqual([pair(1, 5)])
 
-    api.get
-      .mockResolvedValueOnce({ data: { hashValue: 'def' } })
-      .mockResolvedValueOnce({ data: [pair(1, 5)] })
+    api.get.mockResolvedValueOnce(allGlasses('"def"', [pair(2, 6)]))
     await store.loadGlassesIfChanged()
-    expect(api.get).toHaveBeenLastCalledWith('/api/glasses/sa/all', expect.anything())
-    expect(store.allGlasses).toHaveLength(1)
-    expect(store.allGlassesHash).toBe('def')
+    expect(store.allGlasses).toEqual([pair(2, 6)])
+    expect(store.allGlassesHash).toBe('"def"')
     expect(store.isOutdated).toBe(false)
     expect(store.isRefreshingGlasses).toBe(false)
   })
 
-  it('remembers the hash of a full load', async () => {
+  it('accepts a 304 but no other non-2xx status', async () => {
     const store = useGlassesStore()
-    store.allGlassesHash = 'abc'
-    api.get
-      .mockResolvedValueOnce({ data: { hashValue: 'def' } })
-      .mockResolvedValueOnce({ data: [pair(1, 5)] })
-    await store.loadGlasses()
-    expect(store.allGlasses).toHaveLength(1)
-    expect(store.allGlassesHash).toBe('def')
-
-    api.get.mockResolvedValueOnce({ data: { hashValue: 'def' } })
+    api.get.mockResolvedValueOnce(notModified('"abc"'))
     await store.loadGlassesIfChanged()
-    expect(api.get).toHaveBeenCalledTimes(3)
+    const { validateStatus } = api.get.mock.calls[0][1]
+    expect([200, 204, 304].map(validateStatus)).toEqual([true, true, true])
+    expect([301, 404, 500].map(validateStatus)).toEqual([false, false, false])
   })
 
-  it('keeps the old hash when loading all glasses fails', async () => {
+  it('loads everything without its ETag when forced', async () => {
     const store = useGlassesStore()
-    store.allGlassesHash = 'abc'
-    api.get
-      .mockResolvedValueOnce({ data: { hashValue: 'def' } })
-      .mockRejectedValueOnce(new ReimsAxiosError('Network error', true))
+    store.allGlassesHash = '"abc"'
+    api.get.mockResolvedValueOnce(allGlasses('"abc"', [pair(1, 5)]))
+    await store.loadGlasses()
+    expect(api.get).toHaveBeenCalledWith(
+      '/api/glasses/sa/all',
+      expect.objectContaining({ headers: {} }),
+    )
+    expect(store.allGlasses).toHaveLength(1)
+  })
+
+  it('reloads every time when the server sends no ETag', async () => {
+    const store = useGlassesStore()
+    store.allGlassesHash = '"abc"'
+    api.get.mockResolvedValueOnce({ status: 200, data: [pair(1, 5)], headers: {} })
+    await store.loadGlassesIfChanged()
+    expect(store.allGlassesHash).toBe('')
+  })
+
+  it('keeps the old ETag when loading all glasses fails', async () => {
+    const store = useGlassesStore()
+    store.allGlassesHash = '"abc"'
+    api.get.mockRejectedValueOnce(new ReimsAxiosError('Network error', true))
     await expect(store.loadGlassesIfChanged()).rejects.toThrow()
-    expect(store.allGlassesHash).toBe('abc')
+    expect(store.allGlassesHash).toBe('"abc"')
     expect(store.isRefreshingGlasses).toBe(false)
   })
 
@@ -224,9 +240,7 @@ describe('glasses store', () => {
     api.put.mockRejectedValue(new ReimsAxiosError('Network error', true))
     await store.dispense(pair(1, 5), 'DISPENSED')
 
-    api.get
-      .mockResolvedValueOnce({ data: { hashValue: 'def' } })
-      .mockResolvedValueOnce({ data: [pair(1, 5), pair(2, 6)] })
+    api.get.mockResolvedValueOnce(allGlasses('"def"', [pair(1, 5), pair(2, 6)]))
     await store.loadGlasses()
     expect(store.allGlasses).toEqual([pair(2, 6)])
   })

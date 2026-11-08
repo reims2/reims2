@@ -1,10 +1,10 @@
 package org.pvh.rest;
 
+import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.pvh.model.dto.ChangeValueDTO;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
 import org.pvh.model.dto.SearchLogDTO;
@@ -12,7 +12,6 @@ import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
 import org.pvh.model.enums.DispenseReasonEnum;
 import org.pvh.model.enums.LocationEnum;
-import org.pvh.service.ChangeService;
 import org.pvh.service.GlassesService;
 import org.pvh.service.SearchLogService;
 import org.pvh.util.CsvExport;
@@ -25,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -44,12 +44,10 @@ public class GlassesRestController {
 
     private final GlassesService glassesService;
     private final SearchLogService searchLogService;
-    private final ChangeService changeService;
 
-    public GlassesRestController(GlassesService glassesService, SearchLogService searchLogService, ChangeService changeService) {
+    public GlassesRestController(GlassesService glassesService, SearchLogService searchLogService) {
         this.glassesService = glassesService;
         this.searchLogService = searchLogService;
-        this.changeService = changeService;
     }
 
     @Target(ElementType.METHOD)
@@ -70,9 +68,13 @@ public class GlassesRestController {
             .body(render.apply(rows));
     }
 
+    // the ETag is the change hash, which every write to this location bumps
+    @ApiResponse(responseCode = "200", headers = @Header(name = HttpHeaders.ETAG, schema = @Schema(type = "string")))
+    @ApiResponse(responseCode = "304", description = "Unchanged since the ETag in If-None-Match", content = @Content)
     @GetMapping(path = "/{location}/all")
-    public List<GlassesResponseDTO> getAllGlasses(@PathVariable("location") LocationEnum location) {
-        return glassesService.findByDispensedAndLocation(false, location).stream().map(GlassesResponseDTO::from).toList();
+    public List<GlassesResponseDTO> getAllGlasses(@PathVariable("location") LocationEnum location, WebRequest request) {
+        List<Glasses> glasses = glassesService.findInStock(location, request::checkNotModified);
+        return glasses == null ? null : glasses.stream().map(GlassesResponseDTO::from).toList();
     }
 
     @CsvResponses
@@ -107,11 +109,6 @@ public class GlassesRestController {
     @GetMapping(path = "/{location}/{sku}", produces = "application/json")
     public GlassesResponseDTO getGlasses(@PathVariable("sku") int sku, @PathVariable("location") LocationEnum location) {
         return GlassesResponseDTO.from(glassesService.getBySkuAndLocation(sku, location));
-    }
-
-    @GetMapping(path = "/{location}/changes", produces = "application/json")
-    public ChangeValueDTO getGlassesChange(@PathVariable("location") LocationEnum location) {
-        return new ChangeValueDTO(changeService.getHashValue(location));
     }
 
     @PostMapping(path = "", produces = "application/json")

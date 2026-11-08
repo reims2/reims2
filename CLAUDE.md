@@ -97,8 +97,8 @@ scoring: any difference from REIMS1 not documented there is a bug.
 
 - The frontend keeps all in-stock glasses of the current site (`GET /api/glasses/{location}/all`) in a Pinia
   store persisted to local storage.
-- It polls `GET /api/glasses/{location}/changes` for a hash that `ChangeService` bumps on every write, and
-  refetches the full list only when the hash moved.
+- It polls that endpoint with `If-None-Match`. The ETag is a hash that `ChangeService` bumps on every write,
+  read in the same transaction as the list, so an unchanged site answers `304` without a body.
 - Dispenses, undos and edits that get no response are queued in a localStorage outbox
   (`frontend/src/lib/outbox.ts`) and upload in order while the app is open. Search logs aren't queued. A
   5xx on the first try isn't queued, the page shows it. A queued entry is retried on a 5xx and dropped on a
