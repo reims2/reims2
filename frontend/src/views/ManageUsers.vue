@@ -135,10 +135,9 @@ import { mdiAccountPlusOutline, mdiDeleteOutline, mdiPencilOutline } from '@mdi/
 import PageLayout from '@/components/PageLayout.vue'
 import PageCard from '@/components/PageCard.vue'
 
-import { User } from '@/model/UserModel'
-
-import { useUsersStore } from '@/stores/users'
+import { useUsersStore, type User } from '@/stores/users'
 import { useAuthStore } from '@/stores/auth'
+import type { UserRole } from '@/model/ReimsModel'
 
 import { useToast } from '@/composables/toast'
 const toast = useToast()
@@ -153,7 +152,7 @@ const passwordRules = [
   (v: string) => !!v || 'Item is required',
   (v: string) => new TextEncoder().encode(v ?? '').length <= 72 || 'Password is too long',
 ]
-const newRoles = ref<string[]>([])
+const newRoles = ref<UserRole[]>([])
 const newName = ref('')
 
 const valid = ref(false)

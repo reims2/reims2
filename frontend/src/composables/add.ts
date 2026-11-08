@@ -6,7 +6,7 @@ import { useRootStore } from '@/stores/root'
 import { GlassesInput, SanitizedGlassesInput } from '@/model/GlassesModel'
 
 import { useToast } from '@/composables/toast'
-import { ReimsAxiosError } from '@/lib/axios'
+import { ApiError } from '@/lib/api'
 
 export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => void) => {
   const toast = useToast()
@@ -48,7 +48,7 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
       const newGlasses = await glassesStore.addGlasses(requestGlasses)
       if (newGlasses.sku != null) rootStore.lastAddedSkus.unshift(newGlasses.sku)
     } catch (error) {
-      if (error instanceof ReimsAxiosError && error.statusCode === 409) {
+      if (error instanceof ApiError && error.statusCode === 409) {
         // no free skus left.
         toast.error(error.message)
       } else {

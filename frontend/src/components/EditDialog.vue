@@ -39,7 +39,7 @@
 import { DisplayedGlasses, Glasses } from '@/model/GlassesModel'
 import GlassInput from '@/components/GlassInput.vue'
 import { useGlassesStore } from '@/stores/glasses'
-import { ReimsAxiosError } from '@/lib/axios'
+import { ApiError } from '@/lib/api'
 import { useToast } from '@/composables/toast'
 import { sanitizeEyeValues } from '@/util/eye-utils'
 import { formatGlassesForDisplay } from '@/util/format-glasses'
@@ -80,10 +80,7 @@ async function updateGlasses() {
     }
     originalGlasses.value = newGlasses
   } catch (error) {
-    if (
-      error instanceof ReimsAxiosError &&
-      (error.statusCode === 404 || error.statusCode === 409)
-    ) {
+    if (error instanceof ApiError && (error.statusCode === 404 || error.statusCode === 409)) {
       toast.error(`Glasses can't be edited (${error.message})`)
     } else {
       toast.error(`Glasses can't be edited (${(error as Error).message}). Please retry later`)

@@ -132,7 +132,7 @@ import {
 } from '@mdi/js'
 import { useAuthStore } from '@/stores/auth'
 import { useRoute, useRouter } from 'vue-router'
-import { ReimsAxiosError } from '@/lib/axios'
+import { ApiError } from '@/lib/api'
 import { useToast } from '@/composables/toast'
 import { reimsSiteSelects } from '@/util/util'
 import { useRootStore } from '@/stores/root'
@@ -171,7 +171,7 @@ const userLogin = async () => {
     await authStore.login(username.value, password.value)
     await router.push(redirect.value)
   } catch (err) {
-    if (err instanceof ReimsAxiosError && err.statusCode === 401 && err.apiMessage != null) {
+    if (err instanceof ApiError && err.statusCode === 401 && err.apiMessage != null) {
       toast.error(err.apiMessage)
     } else {
       toast.error(`Login failed (${(err as Error).message})`)

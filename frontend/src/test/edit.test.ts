@@ -1,7 +1,7 @@
 import { createTestingPinia } from '@pinia/testing'
 import { useDeleteGlasses, useUndoDispension } from '@/composables/edit'
 import { toastQueue } from '@/composables/toast'
-import { ReimsAxiosError } from '@/lib/axios'
+import { ApiError } from '@/lib/api'
 import { useGlassesStore } from '@/stores/glasses'
 import { createGlassesEqualOdOs } from './util'
 
@@ -9,7 +9,7 @@ const pairWithSku = (sku: number) => ({
   ...createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })[0],
   sku,
 })
-const badRequest = () => new ReimsAxiosError('Error 400', false, false, 'database down', 400)
+const badRequest = () => new ApiError('Error 400', 400, 'database down')
 
 describe('dispense errors', () => {
   beforeEach(() => {
@@ -27,9 +27,7 @@ describe('dispense errors', () => {
   })
 
   it('shows a 502 on dispense', async () => {
-    vi.mocked(useGlassesStore().dispense).mockRejectedValue(
-      new ReimsAxiosError('Server error', false, true, null, 502),
-    )
+    vi.mocked(useGlassesStore().dispense).mockRejectedValue(new ApiError('Server error', 502))
     const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
     await useDeleteGlasses().deleteGlasses(glasses, 'DISPENSED')
     expect(toastQueue.value).toEqual([
@@ -39,7 +37,7 @@ describe('dispense errors', () => {
 
   it('shows a 404 on undo', async () => {
     vi.mocked(useGlassesStore().undispense).mockRejectedValue(
-      new ReimsAxiosError('Error 404', false, false, 'not found', 404),
+      new ApiError('Error 404', 404, 'not found'),
     )
     const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
     await useUndoDispension().undo(glasses)
@@ -50,7 +48,7 @@ describe('dispense errors', () => {
 
   it('shows a 502 on undo instead of promising a retry', async () => {
     vi.mocked(useGlassesStore().undispense).mockRejectedValue(
-      new ReimsAxiosError('Error 502', false, true, 'Bad Gateway', 502),
+      new ApiError('Error 502', 502, 'Bad Gateway'),
     )
     const [glasses] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
     await useUndoDispension().undo(glasses)
