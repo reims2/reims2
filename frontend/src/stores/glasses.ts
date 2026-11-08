@@ -3,14 +3,13 @@ import type { components } from '@/model/api'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useRootStore } from './root'
 import { useAuthStore } from './auth'
-import { ReimsAxiosError, useAxios } from '@/lib/axios'
+import { ApiError, fetchWithin, useApi } from '@/lib/api'
 import * as outbox from '@/lib/outbox'
 import { DeletionReason } from '@/model/ReimsModel'
 import { Dayjs } from 'dayjs'
 
 // the generated API types check requests and responses against backend/openapi.json
 type GlassesRequest = components['schemas']['GlassesRequestDTO']
-type GlassesResponse = components['schemas']['GlassesResponseDTO']
 type SearchLogRequest = components['schemas']['SearchLogDTO']
 
 export type SendResult = 'sent' | 'queued'
@@ -23,7 +22,7 @@ export const useGlassesStore = defineStore(
   () => {
     const rootStore = useRootStore()
     const authStore = useAuthStore()
-    const axiosInstance = useAxios()
+    const api = useApi()
     // only ever replaced whole, so consumers track one dependency instead of every field
     const allGlasses = shallowRef<Glasses[]>([])
     const allGlassesHash = ref('')
@@ -40,9 +39,9 @@ export const useGlassesStore = defineStore(
       // abort running fetch all request, since the fetch all will change after this request
       controllerGetAll.abort()
       const request: GlassesRequest = { ...newGlasses, location: rootStore.reimsSite }
-      const { data } = await axiosInstance.post<GlassesResponse>('/api/glasses', request)
-      addOfflineGlasses(data)
-      return data
+      const { data } = await api.POST('/api/glasses', { body: request })
+      addOfflineGlasses(data!)
+      return data!
     }
     async function logSearch(
       glassesSearch: GlassesSearch,
@@ -60,21 +59,24 @@ export const useGlassesStore = defineStore(
         resultCount,
         results,
       }
-      await axiosInstance.post(`/api/glasses/${rootStore.reimsSite}/searchLog`, request)
+      await api.POST('/api/glasses/{location}/searchLog', {
+        params: { path: { location: rootStore.reimsSite } },
+        body: request,
+      })
     }
     async function fetchSingle(sku: number): Promise<Glasses> {
       controllerFetchSingle.abort()
       controllerFetchSingle = new AbortController()
       try {
-        const { data } = await axiosInstance.get<GlassesResponse>(
-          `/api/glasses/${rootStore.reimsSite}/${sku}`,
-          { signal: controllerFetchSingle.signal },
-        )
-        addOfflineGlasses(data)
-        return data
+        const { data } = await api.GET('/api/glasses/{location}/{sku}', {
+          params: { path: { location: rootStore.reimsSite, sku } },
+          signal: controllerFetchSingle.signal,
+        })
+        addOfflineGlasses(data!)
+        return data!
       } catch (e) {
         // gone on the server, so drop the cached copy
-        if (e instanceof ReimsAxiosError && e.statusCode === 404) removeCached((g) => g.sku === sku)
+        if (e instanceof ApiError && e.statusCode === 404) removeCached((g) => g.sku === sku)
         throw e
       }
     }
@@ -97,7 +99,7 @@ export const useGlassesStore = defineStore(
           updateCache(change, await send(change))
           return 'sent'
         } catch (e) {
-          if (!(e instanceof ReimsAxiosError)) throw e
+          if (!(e instanceof ApiError)) throw e
           // dispensed or gone on the server, a retry can't help
           if (e.statusCode === 404 || e.statusCode === 409)
             removeCached((g) => g.id === change.glasses.id)
@@ -110,19 +112,19 @@ export const useGlassesStore = defineStore(
     }
     /** Returns the server's version of the pair, if it sent one */
     async function send(change: outbox.Change): Promise<Glasses | undefined> {
-      const url = `/api/glasses/${change.glasses.id}`
+      const path = { id: change.glasses.id }
       switch (change.kind) {
         case 'dispense':
-          await axiosInstance.put(`${url}/dispense?reason=${change.reason}`, {})
+          await api.PUT('/api/glasses/{id}/dispense', {
+            params: { path, query: { reason: change.reason } },
+          })
           return
-        case 'undispense': {
+        case 'undispense':
           // a 204 has no body, the pair was already in stock
-          const { data } = await axiosInstance.put<GlassesResponse | ''>(`${url}/undispense`, {})
-          return data || undefined
-        }
+          return (await api.PUT('/api/glasses/{id}/undispense', { params: { path } })).data
         case 'edit': {
           const request: GlassesRequest = change.glasses
-          return (await axiosInstance.put<GlassesResponse>(url, request)).data
+          return (await api.PUT('/api/glasses/{id}', { params: { path }, body: request })).data
         }
       }
     }
@@ -141,22 +143,32 @@ export const useGlassesStore = defineStore(
       // a dropped change was already applied to the cache, the next poll reloads it
       if (await outbox.flush(send)) allGlassesHash.value = ''
     }
-    async function loadCsv(path: string): Promise<Blob> {
-      return (await axiosInstance.get(`/api/glasses/${path}.csv`, { responseType: 'blob' })).data
+    type CsvPath =
+      | '/api/glasses/{location}.csv'
+      | '/api/glasses/dispensed/{location}.csv'
+      | '/api/glasses/unsuccessful/{location}.csv'
+    // a 204 means nothing to export
+    async function loadCsv(path: CsvPath): Promise<Blob> {
+      const { data } = await api.GET(path, {
+        params: { path: { location: rootStore.reimsSite } },
+        parseAs: 'blob',
+      })
+      return data ?? new Blob()
     }
-    const loadSearchesCsv = () => loadCsv(`unsuccessful/${rootStore.reimsSite}`)
-    const loadDispensedCsv = () => loadCsv(`dispensed/${rootStore.reimsSite}`)
-    const loadInventoryCsv = () => loadCsv(rootStore.reimsSite)
+    const loadSearchesCsv = () => loadCsv('/api/glasses/unsuccessful/{location}.csv')
+    const loadDispensedCsv = () => loadCsv('/api/glasses/dispensed/{location}.csv')
+    const loadInventoryCsv = () => loadCsv('/api/glasses/{location}.csv')
     async function getDispensedGlasses(startDate: Dayjs, endDate: Dayjs): Promise<Glasses[]> {
-      const params = {
-        startDate: startDate.format('MM/DD/YYYY'),
-        endDate: endDate.format('MM/DD/YYYY'),
-      }
-      const { data } = await axiosInstance.get<GlassesResponse[]>(
-        `/api/glasses/dispensed/${rootStore.reimsSite}`,
-        { params },
-      )
-      return data
+      const { data } = await api.GET('/api/glasses/dispensed/{location}', {
+        params: {
+          path: { location: rootStore.reimsSite },
+          query: {
+            startDate: startDate.format('MM/DD/YYYY'),
+            endDate: endDate.format('MM/DD/YYYY'),
+          },
+        },
+      })
+      return data!
     }
     async function loadGlassesIfChanged() {
       if (!isRefreshingGlasses.value) await refreshGlasses(false)
@@ -173,19 +185,19 @@ export const useGlassesStore = defineStore(
       isRefreshingGlasses.value = true
       try {
         const known = force ? '' : allGlassesHash.value
-        const response = await axiosInstance.get<GlassesResponse[]>(`/api/glasses/${site}/all`, {
-          timeout: 60000,
-          signal: controller.signal,
+        const { data, response } = await api.GET('/api/glasses/{location}/all', {
+          params: { path: { location: site } },
           headers: known ? { 'If-None-Match': known } : {},
-          validateStatus: (status) => status === 304 || (status >= 200 && status < 300),
+          signal: controller.signal,
+          fetch: fetchWithin(60000),
         })
         if (response.status !== 304) {
-          allGlasses.value = response.data
+          allGlasses.value = data!
           // queued changes aren't on the server yet
           for (const entry of outbox.queue.value)
             if (entry.glasses.location === site) updateCache(entry)
         }
-        allGlassesHash.value = (response.headers.etag as string | undefined) ?? ''
+        allGlassesHash.value = response.headers.get('ETag') ?? ''
         lastRefresh.value = new Date().toISOString()
         isOutdated.value = false
       } finally {

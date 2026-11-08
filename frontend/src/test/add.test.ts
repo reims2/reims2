@@ -1,7 +1,7 @@
 import { createTestingPinia } from '@pinia/testing'
 import { useAddGlasses } from '@/composables/add'
 import { toastQueue } from '@/composables/toast'
-import { ReimsAxiosError } from '@/lib/axios'
+import { ApiError } from '@/lib/api'
 import { GlassesInput } from '@/model/GlassesModel'
 import { useGlassesStore } from '@/stores/glasses'
 import { useRootStore } from '@/stores/root'
@@ -59,7 +59,7 @@ describe('useAddGlasses', () => {
 
   it('shows why the server refused the glasses', async () => {
     vi.mocked(useGlassesStore().addGlasses).mockRejectedValue(
-      new ReimsAxiosError('Error 409', false, false, 'No free SKUs left in this location.', 409),
+      new ApiError('Error 409', 409, 'No free SKUs left in this location.'),
     )
     const onSuccess = vi.fn()
     await useAddGlasses(input(), onSuccess).submit()
@@ -70,9 +70,7 @@ describe('useAddGlasses', () => {
   })
 
   it('asks to retry on a server error', async () => {
-    vi.mocked(useGlassesStore().addGlasses).mockRejectedValue(
-      new ReimsAxiosError('Server error', false, true, null, 500),
-    )
+    vi.mocked(useGlassesStore().addGlasses).mockRejectedValue(new ApiError('Server error', 500))
     const { submit, loading } = useAddGlasses(input())
     await submit()
     expect(loading.value).toBe(false)

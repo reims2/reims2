@@ -1,12 +1,12 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { jwtDecode } from 'jwt-decode'
-import { useAxios } from '@/lib/axios'
+import { useApi } from '@/lib/api'
 import { UserRole } from '@/model/ReimsModel'
 
 export const useAuthStore = defineStore(
   'auth',
   () => {
-    const axiosInstance = useAxios()
+    const api = useApi()
     const accessToken = ref(null as string | null)
     const roles = ref([] as UserRole[])
     const user = ref(null as string | null)
@@ -23,10 +23,10 @@ export const useAuthStore = defineStore(
     const isLoggedIn = computed(() => !!accessToken.value)
 
     async function login(username: string, password: string): Promise<void> {
-      const response = await axiosInstance.post('/api/auth/signin', { username, password })
-      accessToken.value = response.data.accessToken
-      roles.value = response.data.roles
-      user.value = response.data.username
+      const { data } = await api.POST('/api/auth/signin', { body: { username, password } })
+      accessToken.value = data!.accessToken
+      roles.value = data!.roles as UserRole[]
+      user.value = data!.username
     }
 
     function logout() {

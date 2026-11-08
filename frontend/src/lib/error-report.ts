@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import type { components } from '@/model/api'
-import { ReimsAxiosError } from '@/lib/axios'
+import { ApiError, useApi } from '@/lib/api'
 import { useAuthStore } from '@/stores/auth'
 
 // a page stuck in an error loop shouldn't flood the server
@@ -17,20 +17,16 @@ export function describeError(error: unknown): string {
 
 /** Sends a report in the background, only while logged in. */
 export function reportError(message: string) {
-  const token = useAuthStore().accessToken
-  if (!token || reports >= MAX_REPORTS) return
+  if (!useAuthStore().isLoggedIn || reports >= MAX_REPORTS) return
   if (IGNORED.some((pattern) => pattern.test(message))) return
   reports++
   const body: components['schemas']['ClientErrorDTO'] = {
     message: `${location.pathname}: ${message}`.slice(0, 2000),
     version: import.meta.env.VITE_GIT_VERSION,
   }
-  fetch('/api/clientErrors', {
-    method: 'POST',
-    keepalive: true,
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-    body: JSON.stringify(body),
-  }).catch(() => {})
+  useApi()
+    .POST('/api/clientErrors', { body, keepalive: true })
+    .catch(() => {})
 }
 
 export function installErrorReporting(app: App) {
@@ -40,6 +36,6 @@ export function installErrorReporting(app: App) {
   }
   // failed requests are the server's metrics or an offline device, not a bug here
   window.addEventListener('unhandledrejection', (event) => {
-    if (!(event.reason instanceof ReimsAxiosError)) reportError(describeError(event.reason))
+    if (!(event.reason instanceof ApiError)) reportError(describeError(event.reason))
   })
 }

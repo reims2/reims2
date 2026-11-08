@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@vueuse/core'
 import { Glasses } from '@/model/GlassesModel'
 import { DeletionReason } from '@/model/ReimsModel'
-import { ReimsAxiosError } from '@/lib/axios'
+import { ApiError } from '@/lib/api'
 import { useToast } from '@/composables/toast'
 import { deepCopyGlasses } from '@/util/glasses-utils'
 import { getAndConvertSku } from '@/util/format-glasses'
@@ -35,7 +35,7 @@ async function attempt(
     await send(entry)
     return 'sent'
   } catch (error) {
-    if (!(error instanceof ReimsAxiosError) || error.isNetwork || error.isServerSide) return 'kept'
+    if (!(error instanceof ApiError) || error.isNetwork || error.isServerSide) return 'kept'
     if (error.statusCode === 401) return 'kept'
     toast.error(`A queued ${label} was rejected by the server (${error.message}), please check it`)
     return 'dropped'

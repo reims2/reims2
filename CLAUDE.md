@@ -137,8 +137,9 @@ the SKU later.
 ### Frontend (`frontend/src/`)
 
 `views/` are routed pages, and `router/index.ts` puts all but the start page behind login. `composables/`
-hold per-page logic (`find.ts`, `add.ts`, `edit.ts`), `lib/` framework-agnostic core logic and the typed
-axios wrapper. `@/` resolves to `src/`. Build UI from Vuetify components, their props and utility classes, with
+hold per-page logic (`find.ts`, `add.ts`, `edit.ts`), `lib/` framework-agnostic core logic and the API client
+(`lib/api.ts`). It's openapi-fetch typed by `src/model/api.d.ts`, and its middleware turns every failed request into
+an `ApiError`. `@/` resolves to `src/`. Build UI from Vuetify components, their props and utility classes, with
 colors from the theme in `plugins/vuetify.ts`. Write custom CSS only when Vuetify has no way to get the look,
 and keep it small.
 

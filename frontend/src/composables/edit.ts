@@ -3,7 +3,7 @@ import { useGlassesStore } from '@/stores/glasses'
 import { Glasses } from '@/model/GlassesModel'
 
 import { useToast } from '@/composables/toast'
-import { ReimsAxiosError } from '@/lib/axios'
+import { ApiError } from '@/lib/api'
 import { DeletionReason } from '@/model/ReimsModel'
 import dayjs from 'dayjs'
 import { useIntervalFn } from '@vueuse/core'
@@ -101,7 +101,7 @@ export const useUndoDispension = (onSuccessFn?: () => void) => {
     try {
       result = await glassesStore.undispense(glasses)
     } catch (error) {
-      if (error instanceof ReimsAxiosError && error.statusCode === 400) {
+      if (error instanceof ApiError && error.statusCode === 400) {
         toast.error(
           `Reverting is not possible here, please readd glasses manually (Error: ${error.message}).`,
         )
@@ -148,9 +148,9 @@ export const useDeleteGlasses = (onSuccessFn?: () => void) => {
     try {
       result = await glassesStore.dispense(glasses, reason)
     } catch (error) {
-      if (error instanceof ReimsAxiosError && error.statusCode === 404) {
+      if (error instanceof ApiError && error.statusCode === 404) {
         toast.warning(`SKU ${formatSku(sku)} not found on server.`)
-      } else if (error instanceof ReimsAxiosError && error.isServerSide) {
+      } else if (error instanceof ApiError && error.isServerSide) {
         toast.error(
           `Could not ${actionString} glasses because of a server error. Please retry later (Error ${error.statusCode})`,
         )

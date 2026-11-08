@@ -1,6 +1,6 @@
 import * as outbox from '@/lib/outbox'
 import { Change, OutboxEntry } from '@/lib/outbox'
-import { ReimsAxiosError } from '@/lib/axios'
+import { ApiError } from '@/lib/api'
 import { toastQueue } from '@/composables/toast'
 import { createGlassesEqualOdOs, stubWebLocks } from './util'
 
@@ -13,11 +13,10 @@ const dispense = (sku: number): Change => ({
   reason: 'DISPENSED',
 })
 
-const networkError = () => new ReimsAxiosError('Network error', true)
-const serverError = () => new ReimsAxiosError('Server error', false, true, null, 502)
-const unauthorized = () => new ReimsAxiosError('Unauthorized', false, false, null, 401)
-const clientError = (status: number) =>
-  new ReimsAxiosError(`Error ${status}`, false, false, 'nope', status)
+const networkError = () => new ApiError('Network error')
+const serverError = () => new ApiError('Server error', 502)
+const unauthorized = () => new ApiError('Unauthorized', 401)
+const clientError = (status: number) => new ApiError(`Error ${status}`, status, 'nope')
 
 // sends everything and records the SKUs in order, failing entries with the given errors
 function sender(errors: Record<number, Error> = {}) {
