@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest
 @AutoConfigureMockMvc
-@Import(MariaDbTestConfiguration.class)
+@Import({MariaDbTestConfiguration.class, CsrfByDefaultConfiguration.class})
 @ActiveProfiles("test")
 public @interface IntegrationTest {
 }

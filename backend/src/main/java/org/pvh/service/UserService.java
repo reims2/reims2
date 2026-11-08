@@ -8,6 +8,8 @@ import org.pvh.model.enums.RoleEnum;
 import org.pvh.repository.RoleRepository;
 import org.pvh.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,11 +26,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FindByIndexNameSessionRepository<? extends Session> sessions;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder,
+                       FindByIndexNameSessionRepository<? extends Session> sessions) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.sessions = sessions;
     }
 
     public List<User> findAll() {
@@ -56,6 +61,9 @@ public class UserService {
 
     @Transactional
     public void delete(long id) {
-        userRepository.delete(userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found.")));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found."));
+        userRepository.delete(user);
+        // else a user created later under this name would inherit them
+        sessions.findByPrincipalName(user.getUsername()).keySet().forEach(sessions::deleteById);
     }
 }

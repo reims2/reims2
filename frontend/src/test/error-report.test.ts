@@ -9,25 +9,26 @@ const sentBodies = () => Promise.all(requests().map((request) => request.clone()
 const settled = () => new Promise((resolve) => setTimeout(resolve))
 
 // a fresh module per test resets the report cap
-async function setup(token: string | null = 'token') {
+async function setup(user: string | null = 'ana') {
   vi.resetModules()
   setActivePinia(createPinia())
   const { useAuthStore } = await import('@/stores/auth')
-  useAuthStore().accessToken = token
+  useAuthStore().user = user
+  document.cookie = 'XSRF-TOKEN=token'
   return import('@/lib/error-report')
 }
 
 describe('error report', () => {
   beforeEach(() => fetchMock.mockClear())
 
-  it('posts the page and message with the token', async () => {
+  it('posts the page and message with the CSRF token', async () => {
     const { reportError } = await setup()
     reportError('boom')
     await settled()
     const [request] = requests()
     expect(new URL(request!.url).pathname).toBe('/api/clientErrors')
     expect(request!.method).toBe('POST')
-    expect(request!.headers.get('Authorization')).toBe('Bearer token')
+    expect(request!.headers.get('X-XSRF-TOKEN')).toBe('token')
     expect((await sentBodies())[0]).toMatchObject({ message: '/: boom' })
   })
 

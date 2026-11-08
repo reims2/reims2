@@ -26,7 +26,6 @@
     "@vue/devtools-api": "8.2.1",
     "@vueuse/core": "15.0.0",
     "dayjs": "1.11.23",
-    "jwt-decode": "4.0.0",
     "openapi-fetch": "0.17.0",
     "pinia": "4.1.0",
     "pinia-plugin-persistedstate": "4.7.1",

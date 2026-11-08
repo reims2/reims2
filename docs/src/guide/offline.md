@@ -4,7 +4,7 @@ Find, dispense, edit and the inventory work without internet. Add, Reports, chan
 guide don't.
 
 This needs REIMS2 opened online on that device in the past month. Log in on every device before the
-campaign, a login lasts about 7 weeks.
+campaign, a login ends after 90 days without going online.
 
 ## Sync status
 

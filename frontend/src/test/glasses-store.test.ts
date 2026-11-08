@@ -171,7 +171,7 @@ describe('glasses store', () => {
   })
 
   it('uploads a queued dispense with the id it was queued for', async () => {
-    useAuthStore().accessToken = 'token'
+    useAuthStore().user = 'ana'
     const store = useGlassesStore()
     store.allGlasses = [pair(1, 5)]
     api.PUT.mockRejectedValueOnce(new ApiError('Network error'))
@@ -206,7 +206,7 @@ describe('glasses store', () => {
   })
 
   it('reloads everything at the next poll after a queued change was rejected', async () => {
-    useAuthStore().accessToken = 'token'
+    useAuthStore().user = 'ana'
     const store = useGlassesStore()
     store.allGlasses = [pair(1, 5)]
     store.allGlassesHash = 'abc'

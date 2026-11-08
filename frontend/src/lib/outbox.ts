@@ -36,7 +36,8 @@ async function attempt(
     return 'sent'
   } catch (error) {
     if (!(error instanceof ApiError) || error.isNetwork || error.isServerSide) return 'kept'
-    if (error.statusCode === 401) return 'kept'
+    // logged out, or the CSRF cookie went missing: fine again after a login or the next poll
+    if (error.statusCode === 401 || error.statusCode === 403) return 'kept'
     toast.error(`A queued ${label} was rejected by the server (${error.message}), please check it`)
     return 'dropped'
   }

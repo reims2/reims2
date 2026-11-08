@@ -1,20 +1,25 @@
 package org.pvh.rest;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.pvh.model.dto.JwtResponse;
+import org.pvh.model.dto.LoginResponse;
 import org.pvh.model.dto.LoginRequest;
 import org.pvh.model.dto.MessageResponse;
 import org.pvh.model.dto.SignupRequest;
 import org.pvh.model.dto.UserResponse;
-import org.pvh.security.TokenService;
+import org.pvh.security.SessionUserRepository;
 import org.pvh.security.UserDetailsImpl;
 import org.pvh.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -24,23 +29,39 @@ import java.util.List;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
+    private final SessionUserRepository sessionUserRepository;
     private final UserService userService;
 
-    public AuthController(AuthenticationManager authenticationManager, TokenService tokenService, UserService userService) {
+    public AuthController(AuthenticationManager authenticationManager, SessionUserRepository sessionUserRepository,
+                          UserService userService) {
         this.authenticationManager = authenticationManager;
-        this.tokenService = tokenService;
+        this.sessionUserRepository = sessionUserRepository;
         this.userService = userService;
     }
 
     @SecurityRequirements
     @PostMapping("/signin")
-    public JwtResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        UserDetailsImpl user = (UserDetailsImpl) authenticationManager
-            .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()))
-            .getPrincipal();
+    public LoginResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request,
+                                          HttpServletResponse response) {
+        Authentication authentication = authenticationManager
+            .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()));
+        // a session id known before the login can't be used after it
+        if (request.getSession(false) != null)
+            request.changeSessionId();
+        sessionUserRepository.saveContext(new SecurityContextImpl(authentication), request, response);
+
+        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        return new JwtResponse(tokenService.createToken(user.getUsername()), "Bearer", user.getId(), user.getUsername(), roles);
+        return new LoginResponse(user.getId(), user.getUsername(), roles);
+    }
+
+    @SecurityRequirements
+    @PostMapping("/signout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void signOut(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null)
+            session.invalidate();
     }
 
     @PreAuthorize("isAuthenticated()")
