@@ -1,6 +1,7 @@
 import calculateAllPhilscore from '../lib/philscore'
 import { Eye, Glasses, GlassesSearch, GlassesType } from '@/model/GlassesModel'
 import { formatAxis, formatDiopter, formatSku } from '@/util/format-glasses'
+import { inStock } from './util'
 
 /** Pins philscore.ts on a grid of searches, so any change in matching or ranking shows up here.
  * The output matched the REIMS1 oracle when this was written. If a change is a deliberate
@@ -34,6 +35,8 @@ const inventory: Glasses[] = types
     glassesSize: 'medium',
     location: 'sa',
     creationDate: '2024-01-01T00:00:00.000+00:00',
+    dispensed: false,
+    dispense: { ...inStock },
   }))
 
 const flags = ['none', 'high', 'BAL os'] as const
