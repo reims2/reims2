@@ -1,4 +1,7 @@
-import { DeletionReason, ReimsSite } from '@/model/ReimsModel'
+import type { components } from '@/model/api'
+
+// what the server sends and takes comes from backend/openapi.json, the rest is UI state
+type Schemas = components['schemas']
 
 export interface OptionalEye {
   add?: number | ''
@@ -7,12 +10,7 @@ export interface OptionalEye {
   sphere: number | ''
 }
 
-export interface Eye extends OptionalEye {
-  add?: number
-  axis: number
-  cylinder: number
-  sphere: number
-}
+export type Eye = Schemas['EyeDTO']
 
 export interface DisplayedEye {
   add: string
@@ -31,9 +29,7 @@ export function isEyeSearch(value: OptionalEye | DisplayedEye | EyeSearch): valu
   return 'isBAL' in value
 }
 
-export interface MultifocalEye extends Eye {
-  add: number
-}
+export type MultifocalEye = Eye & { add: number }
 
 export function hasAdd(data: Eye): data is MultifocalEye {
   return data.add !== undefined
@@ -44,22 +40,15 @@ export type EyeKey = (typeof eyeKeys)[number]
 
 export type GlassesEyeIndex = 'od' | 'os'
 
-export interface Dispense {
-  modifyDate: string | null
-  previousSku: number | null
-  dispenseReason: DeletionReason | null
-}
+export type Dispense = Schemas['DispenseResponseDTO']
 
-export type GlassesType = 'single' | 'multifocal'
-export type GlassesAppearance = 'masculine' | 'feminine' | 'neutral'
-export type GlassesSize = 'small' | 'medium' | 'large' | 'child'
+export type Glasses = Schemas['GlassesResponseDTO']
+export type GlassesType = Glasses['glassesType']
+export type GlassesAppearance = Glasses['appearance']
+export type GlassesSize = Glasses['glassesSize']
 export type GeneralGlassesData = GlassesType | GlassesAppearance | GlassesSize
 
-export type GlassesMeta = {
-  glassesType: GlassesType
-  appearance: GlassesAppearance
-  glassesSize: GlassesSize
-}
+export type GlassesMeta = Pick<Glasses, 'glassesType' | 'appearance' | 'glassesSize'>
 
 export interface GlassesInput {
   od: DisplayedEye | EyeSearch
@@ -77,19 +66,7 @@ export interface DisplayedGlasses extends GlassesInput {
   creationDate?: string
 }
 
-export interface SanitizedGlassesInput extends GlassesMeta {
-  od: Eye
-  os: Eye
-}
-
-export interface Glasses extends SanitizedGlassesInput {
-  id: number // backend ID
-  sku: number | null
-  creationDate: string
-  dispensed?: boolean
-  dispense?: Dispense
-  location: ReimsSite
-}
+export type SanitizedGlassesInput = Omit<Schemas['GlassesRequestDTO'], 'location'>
 
 export const generalGlassesDataKeys = ['glassesType', 'appearance', 'glassesSize'] as const
 export type GeneralGlassesDataKey = (typeof generalGlassesDataKeys)[number]

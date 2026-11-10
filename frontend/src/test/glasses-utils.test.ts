@@ -60,12 +60,13 @@ describe('glassesMetaUIData rules', () => {
 })
 
 describe('deepCopyGlasses', () => {
-  it('does not share eyes with the original', () => {
+  it('does not share eyes or dispense with the original', () => {
     const eye = { sphere: 1, cylinder: 0, axis: 0, add: 0 }
     const [original] = createGlasses('single', { ...eye }, { ...eye })
     const copy = deepCopyGlasses(original)
     copy.od.sphere = 5
+    copy.dispense.previousSku = 7
     expect(original.od.sphere).toBe(1)
-    expect(copy).not.toHaveProperty('dispense.previousSku')
+    expect(original.dispense.previousSku).toBeNull()
   })
 })

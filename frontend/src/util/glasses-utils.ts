@@ -113,7 +113,7 @@ export function deepCopyGlasses(oldGlasses: Glasses): Glasses {
     ...oldGlasses,
     od: { ...oldGlasses.od },
     os: { ...oldGlasses.os },
-    dispense: oldGlasses.dispense ? { ...oldGlasses.dispense } : undefined,
+    dispense: { ...oldGlasses.dispense },
   }
 }
 

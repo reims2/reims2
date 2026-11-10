@@ -34,4 +34,4 @@ export interface MinMaxObject {
   max?: string
 }
 
-export type UserRole = 'ROLE_ADMIN' | 'ROLE_USER'
+export type UserRole = components['schemas']['RoleResponse']['name']

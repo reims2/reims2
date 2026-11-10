@@ -135,7 +135,12 @@ export const useGlassesStore = defineStore(
       else if (kind === 'edit') addOfflineGlasses(glasses)
       else {
         const sku = glasses.dispense?.previousSku ?? glasses.sku
-        addOfflineGlasses({ ...glasses, sku, dispensed: false, dispense: undefined })
+        const dispense = {
+          modifyDate: new Date().toISOString(),
+          previousSku: null,
+          dispenseReason: null,
+        }
+        addOfflineGlasses({ ...glasses, sku, dispensed: false, dispense })
       }
     }
     async function uploadPending() {

@@ -38,6 +38,8 @@ export function createGlassesEqualOdOs(glassesType: GlassesType, eye: Eye): Glas
   return createGlasses(glassesType, eye, eye)
 }
 
+export const inStock = { modifyDate: null, previousSku: null, dispenseReason: null }
+
 export function createGlasses(glassesType: GlassesType, od: Eye, os: Eye): Glasses[] {
   return [
     {
@@ -50,6 +52,8 @@ export function createGlasses(glassesType: GlassesType, od: Eye, os: Eye): Glass
       sku: 1,
       location: 'sa',
       creationDate: '2024-01-01T00:00:00.000+00:00',
+      dispensed: false,
+      dispense: { ...inStock },
     },
   ]
 }
