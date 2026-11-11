@@ -76,6 +76,8 @@ runs one now, `docker compose logs backup` there shows past runs.
 
 `restore.sh [backup key]` restores the newest backup by default, into a database without glasses. To
 restore over live data, delete it with `cd /srv/prod && docker compose down -v` and deploy again first.
+The dump only fits the schema it was taken with, so `restore.sh` refuses a backup from before the deployed
+app's newest migration. Deploy an `app_tag` from before that migration, restore, then deploy `main` again.
 
 ## Grafana
 
