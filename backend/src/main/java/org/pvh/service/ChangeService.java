@@ -19,6 +19,7 @@ public class ChangeService {
         return changeValueRepository.findHashValue(location).orElseThrow();
     }
 
+    // the update locks the location's row until commit, so writes to a location also take turns
     public void setNewHashValue(LocationEnum location) {
         changeValueRepository.updateHashValue(location, UUID.randomUUID().toString());
     }
