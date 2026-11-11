@@ -32,10 +32,16 @@ tar -xzf "$work/$key" -C "$work"
 dump=$(find "$work" -name dump.sql)
 [ -n "$dump" ] || { echo "$key holds no dump.sql, pass an older key" >&2; exit 1; }
 grafana_db=$(find "$work" -name grafana.db)
+# its Flyway history replaces this one, so Flyway would rerun every newer migration on a schema that has them
+latest=$(db -N -e "select script from flyway_schema_history where version is not null order by installed_rank desc limit 1")
+if ! grep -qF "$latest" "$dump"; then
+  echo "$key predates $latest: deploy an app_tag from before it, restore, then deploy main again" >&2
+  exit 1
+fi
 
 docker compose stop backend
-# Flyway filled its history on first start, the dump brings the real rows
-db -e "delete from flyway_schema_history"
+# Flyway filled these on first start, the dump brings the real rows
+db -e "delete from flyway_schema_history; delete from changevalue"
 db < "$dump"
 docker compose up -d --wait backend
 
