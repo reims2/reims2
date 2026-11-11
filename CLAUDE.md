@@ -85,7 +85,8 @@ succeed, like editing a pair dispensed in the meantime.
   unless the SKU was reused. New pairs skip SKUs freed in the last 10 minutes so an undo finds its SKU free.
   Writes address glasses by id.
 - Each write is one transaction that bumps the change hash before any plain read, else InnoDB's snapshot
-  can predate the hash lock. Only a locking read of the changed row may come first.
+  can predate the hash lock. Only a locking read of the changed row may come first. The hash row's lock
+  also makes writes to a site take turns, so two adds can't pick the same SKU.
 - No server-side filtering or paging, the Inventory page does it in the browser.
 - Flyway owns the schema, Hibernate only validates. Staging reloads a March 2024 copy of prod on every
   deploy, so `main` tries new migrations on real data before prod.
