@@ -45,7 +45,7 @@ apiVersion: 1
 groups:
   - orgId: 1
     name: server
-    folder: REIMS2
+    folder: system
     interval: 30s
     rules:
 {{ rule('a2d6e194-6894-4ed4-be3a-3b36d1bb7c45', 'High CPU',
@@ -62,7 +62,7 @@ groups:
 
   - orgId: 1
     name: app
-    folder: REIMS2
+    folder: system
     interval: 1m
     rules:
 {{ rule('reims2-server-errors', 'Backend server errors',
