@@ -75,7 +75,7 @@
           "dataset": "dev_db",
           "datasource": {
             "type": "mysql",
-            "uid": "${Database}"
+            "uid": "mariadb_reims"
           },
           "editorMode": "code",
           "format": "table",
