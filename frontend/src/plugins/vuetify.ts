@@ -56,7 +56,7 @@ export const vuetifyOptions: VuetifyOptions = {
           'on-primary-tonal': '#00474f',
           'success-tonal': '#d2efdc',
           'on-success-tonal': '#00391d',
-          // marigold, only where something happens: OS, results, the dispense moment
+          // marigold, only where something happens: results and the dispense moment
           marigold: '#9a5b00',
           'marigold-tonal': '#fcefd3',
           'on-marigold-tonal': '#7a4700',

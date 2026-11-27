@@ -4,9 +4,7 @@
       <span
         :id="'eye-heading-' + eyeName"
         class="text-label-large font-weight-bold"
-        :class="
-          isBAL ? 'text-medium-emphasis' : eyeName === 'OS' ? 'text-marigold' : 'text-primary'
-        "
+        :class="isBAL ? 'text-medium-emphasis' : 'text-primary'"
       >
         {{ eyeName }}
       </span>
