@@ -2,16 +2,19 @@ import { DisplayedEye, DisplayedGlasses, Eye, Glasses, GlassesType } from '@/mod
 
 import dayjs from 'dayjs'
 
+// forInput keeps plain digits and a hyphen so the values can be edited and parsed again
 export function formatEyeForDisplay(
   eye: Eye,
   glassesType: GlassesType,
-  withPlusSign = true,
+  forInput = false,
 ): DisplayedEye {
+  const diopter = (val: number | undefined) =>
+    forInput ? formatDiopter(val, false) : displayDiopter(val)
   return {
-    sphere: formatDiopter(eye.sphere, withPlusSign),
-    cylinder: formatDiopter(eye.cylinder, withPlusSign),
+    sphere: diopter(eye.sphere),
+    cylinder: diopter(eye.cylinder),
     axis: formatAxis(eye.axis),
-    add: glassesType !== 'single' ? formatDiopter(eye.add, withPlusSign) : '',
+    add: glassesType !== 'single' ? diopter(eye.add) : '',
   }
 }
 
@@ -20,6 +23,13 @@ export function formatDiopter(val: number | undefined, withPlusSign = true) {
   const formatted = val.toFixed(2)
   if (withPlusSign && val >= 0) return '+' + formatted
   else return formatted
+}
+
+// read-only values: a true minus as wide as the plus, and zero without a sign
+export function displayDiopter(val: number | undefined) {
+  if (val === undefined) return ''
+  if (val === 0) return '0.00'
+  return (val > 0 ? '+' : '\u2212') + Math.abs(val).toFixed(2)
 }
 
 export function formatAxis(val: number | undefined) {
@@ -40,13 +50,10 @@ function formatDate(date: string) {
   return dayjs(date).format('DD.MM.YYYY')
 }
 
-export function formatGlassesForDisplay(
-  glasses: Glasses,
-  withPlusDiopterSign = true,
-): DisplayedGlasses {
+export function formatGlassesForDisplay(glasses: Glasses, forInput = false): DisplayedGlasses {
   return {
-    od: formatEyeForDisplay(glasses.od, glasses.glassesType, withPlusDiopterSign),
-    os: formatEyeForDisplay(glasses.os, glasses.glassesType, withPlusDiopterSign),
+    od: formatEyeForDisplay(glasses.od, glasses.glassesType, forInput),
+    os: formatEyeForDisplay(glasses.os, glasses.glassesType, forInput),
     glassesSize: glasses.glassesSize,
     glassesType: glasses.glassesType,
     appearance: glasses.appearance,

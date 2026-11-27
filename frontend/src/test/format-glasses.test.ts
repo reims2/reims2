@@ -1,5 +1,6 @@
 import {
   formatAxis,
+  displayDiopter,
   formatDiopter,
   formatGlassesForDisplay,
   formatSku,
@@ -17,6 +18,15 @@ describe('formatDiopter', () => {
     expect(formatDiopter(-0.25)).toBe('-0.25')
     expect(formatDiopter(1.5, false)).toBe('1.50')
     expect(formatDiopter(undefined)).toBe('')
+  })
+})
+
+describe('displayDiopter', () => {
+  it('uses a true minus and writes zero without a sign', () => {
+    expect(displayDiopter(1.5)).toBe('+1.50')
+    expect(displayDiopter(-0.25)).toBe('\u22120.25')
+    expect(displayDiopter(0)).toBe('0.00')
+    expect(displayDiopter(undefined)).toBe('')
   })
 })
 
@@ -53,10 +63,11 @@ describe('formatGlassesForDisplay', () => {
     const [single] = createGlasses('single', eye, eye)
     expect(formatGlassesForDisplay(single).od).toEqual({
       sphere: '+1.00',
-      cylinder: '-0.50',
+      cylinder: '\u22120.50',
       axis: '090',
       add: '',
     })
+    expect(formatGlassesForDisplay(single, true).od.cylinder).toBe('-0.50')
     const [multifocal] = createGlasses('multifocal', eye, eye)
     expect(formatGlassesForDisplay(multifocal).os.add).toBe('+2.00')
   })
