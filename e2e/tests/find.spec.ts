@@ -36,8 +36,8 @@ test('Search multifocal', async ({ page, createGlasses }) => {
     - group:
       - text: /multifocal.*medium.*neutral/
       - table:
-        - row "OD +4.25 +0.00 Add +2.50"
-        - row "OS +4.50 -1.00 × 150 Add +2.50"
+        - row "OD +4.25 0.00 Add +2.50"
+        - row "OS +4.50 \u22121.00 × 150 Add +2.50"
       - link "Open"
       - button "Dispense"
   `)
