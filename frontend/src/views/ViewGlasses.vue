@@ -113,27 +113,23 @@ const capitalize = { class: 'text-capitalize' }
 
 const rxColumns = { sphere: 'SPH', cylinder: 'CYL', axis: 'Axis', add: 'Add' } as const
 
-// OD reads teal and OS marigold, like their labels everywhere else
+// both eyes read teal like their labels, a wider border keeps OS apart from OD
 function eyeHeader(eye: GlassesEyeIndex) {
-  const color = eye === 'os' ? 'marigold' : 'primary'
-  const tint = `bg-${color}-tonal`
+  const tint = 'bg-primary-tonal'
+  const edge = eye === 'os' ? 'border-s-md' : 'border-s'
   return {
     title: eye.toUpperCase(),
     align: 'center' as const,
-    headerProps: { class: `border-s font-weight-bold ${tint} text-${color}` },
+    headerProps: { class: `${edge} font-weight-bold ${tint} text-primary` },
     children: (Object.keys(rxColumns) as (keyof typeof rxColumns)[]).map((value, idx) => ({
       key: `${eye}.${value}`,
       title: rxColumns[value],
       align: 'end' as const,
       sortRaw: (a: TableItem, b: TableItem) =>
         (a.glasses[eye][value] ?? 0) - (b.glasses[eye][value] ?? 0),
-      headerProps: { class: idx === 0 ? `border-s ${tint}` : tint },
+      headerProps: { class: idx === 0 ? `${edge} ${tint}` : tint },
       cellProps: (cell: { value: string }) => ({
-        class: [
-          idx === 0 && 'border-s',
-          'text-rx',
-          cell.value === '0.00' && 'text-medium-emphasis',
-        ],
+        class: [idx === 0 && edge, 'text-rx', cell.value === '0.00' && 'text-medium-emphasis'],
       }),
     })),
   }
