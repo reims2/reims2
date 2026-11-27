@@ -106,7 +106,7 @@ import { parseRange, useTableFilter } from '@/composables/table-filter'
 import { GlassesEyeIndex } from '@/model/GlassesModel'
 import { TableSortBy } from '@/model/ReimsModel'
 import { useGlassesStore } from '@/stores/glasses'
-import { formatDiopter, formatGlassesForDisplay } from '@/util/format-glasses'
+import { displayDiopter, formatGlassesForDisplay } from '@/util/format-glasses'
 
 const groupStart = { class: 'border-s' }
 const capitalize = { class: 'text-capitalize' }
@@ -121,12 +121,20 @@ function eyeHeader(eye: GlassesEyeIndex) {
     title: eye.toUpperCase(),
     align: 'center' as const,
     headerProps: { class: `border-s font-weight-bold ${tint} text-${color}` },
-    children: Object.entries(rxColumns).map(([value, title], idx) => ({
+    children: (Object.keys(rxColumns) as (keyof typeof rxColumns)[]).map((value, idx) => ({
       key: `${eye}.${value}`,
-      title,
+      title: rxColumns[value],
       align: 'end' as const,
+      sortRaw: (a: TableItem, b: TableItem) =>
+        (a.glasses[eye][value] ?? 0) - (b.glasses[eye][value] ?? 0),
       headerProps: { class: idx === 0 ? `border-s ${tint}` : tint },
-      cellProps: { class: idx === 0 ? 'border-s text-rx' : 'text-rx' },
+      cellProps: (cell: { value: string }) => ({
+        class: [
+          idx === 0 && 'border-s',
+          'text-rx',
+          cell.value === '0.00' && 'text-medium-emphasis',
+        ],
+      }),
     })),
   }
 }
@@ -162,7 +170,7 @@ const filters = [
 // the range the table filters on, so the chip can't disagree with it
 function summary({ eye, value }: (typeof filters)[number]) {
   const [from, to] = (parseRange(eyeFilters[eye][value]) ?? []).map((bound) =>
-    isFinite(bound) ? formatDiopter(bound, true) : null,
+    isFinite(bound) ? displayDiopter(bound) : null,
   )
   if (from && to) return from === to ? from : `${from} to ${to}`
   if (from) return `from ${from}`

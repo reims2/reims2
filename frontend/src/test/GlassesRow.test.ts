@@ -2,7 +2,7 @@ import GlassesRow from '@/components/GlassesRow.vue'
 import { MatchResult } from '@/lib/interleave'
 import { createGlassesEqualOdOs, renderWithVuetify } from './util'
 
-const [pair] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: 0, axis: 0 })
+const [pair] = createGlassesEqualOdOs('single', { sphere: -2, cylinder: -0.5, axis: 90 })
 const marker = 'Experimental suggestion from a new matching method. Try it! Blur score: 0.50'
 
 function renderRow(glasses: MatchResult) {
@@ -30,4 +30,11 @@ test('shows no marker for a PhilScore pick', () => {
 test('shows a large SKU', () => {
   const row = renderWithVuetify(GlassesRow, { props: { glasses: pair, large: true } })
   expect(row.getByText('0001').classList).toContain('text-display-small')
+})
+
+test('writes zero without a sign and mutes it', () => {
+  const [plano] = createGlassesEqualOdOs('single', { sphere: 0, cylinder: 0, axis: 0 })
+  const row = renderWithVuetify(GlassesRow, { props: { glasses: plano } })
+  for (const cell of row.getAllByText('0.00'))
+    expect(cell.classList).toContain('text-medium-emphasis')
 })

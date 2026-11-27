@@ -52,7 +52,7 @@ const dialogOpen = defineModel<boolean>('open', { required: true })
 const originalGlasses = defineModel<Glasses>('glasses', { required: true })
 
 const glassesInput: Ref<DisplayedGlasses> = ref(
-  formatGlassesForDisplay(originalGlasses.value, false),
+  formatGlassesForDisplay(originalGlasses.value, true),
 )
 const valid = ref(true)
 const loading = ref(false)
@@ -60,7 +60,7 @@ const form = useTemplateRef('form')
 const { vPreventEnterTab } = useEnterToTab(form)
 
 watch(dialogOpen, (open) => {
-  if (open) glassesInput.value = formatGlassesForDisplay(originalGlasses.value, false)
+  if (open) glassesInput.value = formatGlassesForDisplay(originalGlasses.value, true)
 })
 
 async function updateGlasses() {

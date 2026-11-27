@@ -41,6 +41,7 @@
             v-for="field in diopterFields"
             :key="field.key"
             class="text-right text-no-wrap pr-3"
+            :class="{ 'text-medium-emphasis': displayed[eye.key][field.key] === '0.00' }"
             style="min-width: 62px"
           >
             <v-tooltip
