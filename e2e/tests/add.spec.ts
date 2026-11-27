@@ -17,9 +17,9 @@ test('Add glasses', async ({ page }) => {
   const resultCard = page.getByTestId('result-0')
   await expect(resultCard).toBeVisible()
 
-  await expect(resultCard.getByRole('row', { name: 'OD +0.75 +0.00 Add +1.00' })).toBeVisible()
+  await expect(resultCard.getByRole('row', { name: 'OD +0.75 0.00 Add +1.00' })).toBeVisible()
   await expect(
-    resultCard.getByRole('row', { name: 'OS +1.00 -0.25 × 010 Add +2.00' }),
+    resultCard.getByRole('row', { name: 'OS +1.00 \u22120.25 × 010 Add +2.00' }),
   ).toBeVisible()
 })
 
@@ -47,7 +47,7 @@ test('A adds glasses but Ctrl+A only selects the field', async ({ page }) => {
   await eyeInput.os.sphere.press('a')
 
   await expect(
-    page.getByTestId('result-0').getByRole('row', { name: 'OS +6.75 +0.00' }),
+    page.getByTestId('result-0').getByRole('row', { name: 'OS +6.75 0.00' }),
   ).toBeVisible()
   expect(adds).toBe(1)
 })
