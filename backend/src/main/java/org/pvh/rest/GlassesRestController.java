@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.pvh.model.dto.GlassesRequestDTO;
 import org.pvh.model.dto.GlassesResponseDTO;
 import org.pvh.model.dto.SearchLogDTO;
+import org.pvh.model.dto.SearchLogResponseDTO;
 import org.pvh.model.entity.Glasses;
 import org.pvh.model.entity.SearchLog;
 import org.pvh.model.enums.DispenseReasonEnum;
@@ -97,6 +98,11 @@ public class GlassesRestController {
     public ResponseEntity<String> getAllDispensedGlassesCsv(@PathVariable("location") LocationEnum location) {
         return csv("glasses.csv", glassesService.findByDispensedAndLocation(true, location),
             Comparator.comparing(g -> g.getDispense().getModifyDate()), CsvExport::glasses);
+    }
+
+    @GetMapping(path = "/unsuccessful/{location}")
+    public List<SearchLogResponseDTO> getAllUnsuccessfulSearches(@PathVariable("location") LocationEnum location) {
+        return searchLogService.findUnsuccessful(location).stream().map(SearchLogResponseDTO::from).toList();
     }
 
     @CsvResponses

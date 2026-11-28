@@ -510,6 +510,20 @@ public class GlassesRestControllerIntegrationTest {
             .andExpect(content().string(not(containsString("\"7.75\""))));
     }
 
+    @Test
+    public void unsuccessfulSearches_onlyHasSearchesWithoutResultsAtThatLocation() throws Exception {
+        saveSearch(LocationEnum.sm, "6.25", 0);
+        saveSearch(LocationEnum.sm, "6.50", 3);
+        saveSearch(LocationEnum.sa, "6.75", 0);
+
+        this.mockMvc.perform(get("/api/glasses/unsuccessful/sm"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[?(@.od.sphere == 6.25)].resultCount").value(0))
+            .andExpect(jsonPath("$[?(@.od.sphere == 6.25)].glassesType").value("single"))
+            .andExpect(jsonPath("$[?(@.od.sphere == 6.5)]").isEmpty())
+            .andExpect(jsonPath("$[?(@.od.sphere == 6.75)]").isEmpty());
+    }
+
     private void saveSearch(LocationEnum location, String sphere, int resultCount) {
         SearchLog search = new SearchLog();
         search.setLocation(location);
