@@ -49,6 +49,7 @@ export type GlassesSize = Glasses['glassesSize']
 export type GeneralGlassesData = GlassesType | GlassesAppearance | GlassesSize
 
 export type GlassesMeta = Pick<Glasses, 'glassesType' | 'appearance' | 'glassesSize'>
+export type Pair = Pick<Glasses, 'glassesType' | 'od' | 'os'>
 
 export interface GlassesInput {
   od: DisplayedEye | EyeSearch
