@@ -4,7 +4,8 @@ Handover notes from a task analyzing what to restock each site with after a camp
 transferable knowledge doesn't have to be re-derived next time. This describes an analysis
 methodology, not code in this repository: the analysis code lives in the sibling
 [`reims2/data-analysis`](https://github.com/reims2/data-analysis) repo (`analysis.py`/`.ipynb` in its
-root). See
+root). The [refill planning](/dev/ai-notes/refill-planning) backtest tested this methodology against the five
+ranges the app now names, and the notes below say where its results differ. See
 [Optometry basics](/optometry-basics) for the domain background this leans on.
 
 ## The setting
@@ -12,18 +13,20 @@ root). See
 - Each site (`sa`/`sm`) holds a fixed ~5,000-pair stock and dispenses roughly 1,000 pairs a year at
   its annual campaign (~Jan/Feb). A refill decision follows each campaign and tops the site back up
   to 5,000.
-- Refill stock is hand-picked by staff from a US warehouse of tens of thousands of already-measured
-  donated glasses. Only the picked, entered glasses become visible in REIMS2, not the whole
-  warehouse. Warehouse availability can be assumed sufficient, so the question is what to pick, not
-  whether enough exists.
+- Refill stock is hand-picked in the US from an untracked inventory of tens of thousands of
+  already-measured donated glasses, by a few easily remembered criteria. The picked pairs arrive
+  labelled and are entered into REIMS2 on input day, so nothing in that inventory is visible
+  before. Supply can be assumed sufficient, so the question is what to pick, not whether enough
+  exists.
 - Culling of dead stock only happens on-site in San Salvador, every few years, usually by age.
-- Search runs client-side and offline (see the root `CLAUDE.md`), so until the `1.4` migration the
-  backend only learned of a search when it failed. A successful dispense record stores the dispensed item's own
+- Matching runs in the browser (see the root `CLAUDE.md`), so until the `1.4` migration the backend
+  only learned of a search when it failed. Every search is logged from the 2027 campaigns on. A successful dispense record stores the dispensed item's own
   sphere/cylinder/axis/add, never the prescription that was searched for. That asymmetry drives most
   of the statistical pitfalls below.
 - The database snapshots to S3 roughly every 3 hours, so historical inventory state is partly
   reconstructable (see [Validate any reimplementation](#validate-any-reimplementation-of-the-matching-rule)).
-- At the time of writing, three campaigns of data existed, one per year.
+- At the time of writing, three campaigns of data existed, one per year. The backtest used the 2024
+  to 2026 campaigns of both sites.
 
 ## It's not a clustering problem
 
@@ -69,7 +72,8 @@ For choosing what to add, a two-phase greedy is simple and effective:
 2. **Restock depth**: spend the remaining budget replacing what phase 1 consumed, prioritizing
    requests with the fewest eligible items in stock.
 
-Phase 1 is greedy max coverage, which has good known guarantees for this class of objective.
+Phase 1 is greedy max coverage, which has good known guarantees for this class of objective. In the
+backtest the replay gained nothing over a plain "no pair in stock fits" check.
 
 ### Check the turnover arithmetic first
 
@@ -140,11 +144,11 @@ Optimize first, then compress the chosen set into a small number of interpretabl
 call into a curve: five rules recover this much of the achievable gain, fifteen rules recover this
 much.
 
-The right output format follows from how the refill is physically executed. Someone walking a
-warehouse reading labels needs a short list of value ranges with target counts; axis is usually left
-unspecified, since it's uninformative for the low-cylinder stock that dominates demand. If items are
-entered into software one at a time, a per-item value score shown at entry time beats any periodic
-report and stays current automatically.
+The right output format follows from how the refill is physically executed. Someone going through
+the US inventory reading labels needs a short list of value ranges with target counts; axis is
+usually left unspecified, since it's uninformative for the low-cylinder stock that dominates demand.
+A per-item score at entry time doesn't help, because pairs are picked before input day. In the
+backtest five ranges recovered all of the full list's gain (56 against 54 extra patients).
 
 ## Evaluation
 
