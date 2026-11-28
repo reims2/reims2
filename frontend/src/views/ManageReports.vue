@@ -22,6 +22,25 @@
         </v-card-actions>
       </v-card>
     </v-col>
+    <v-col cols="12" md="6">
+      <v-card
+        border
+        elevation="1"
+        class="pa-3 h-100 d-flex flex-column"
+        title="What to refill"
+        text="Five kinds of glasses to look for when filling this location's free SKUs."
+      >
+        <template #append>
+          <v-chip size="small" variant="tonal" :prepend-icon="mdiFlaskOutline">Experimental</v-chip>
+        </template>
+        <v-spacer />
+        <v-card-actions class="px-4 pb-4">
+          <v-btn color="primary" variant="tonal" :append-icon="mdiArrowRight" to="/manage/refill">
+            Open list
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
     <v-col v-for="report in reports" :key="report.file" cols="12" md="6">
       <v-card
         border
@@ -51,7 +70,7 @@
 
 <script setup lang="ts">
 import PageLayout from '@/components/PageLayout.vue'
-import { mdiDownload, mdiOpenInNew } from '@mdi/js'
+import { mdiArrowRight, mdiDownload, mdiFlaskOutline, mdiOpenInNew } from '@mdi/js'
 import { useRootStore } from '@/stores/root'
 import { useGlassesStore } from '@/stores/glasses'
 

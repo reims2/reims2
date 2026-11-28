@@ -65,6 +65,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: 'Reports' },
       },
       {
+        path: '/manage/refill',
+        name: 'Refill',
+        component: () => import('@/views/RefillReport.vue'),
+        meta: { title: 'What to refill' },
+      },
+      {
         path: '/manage/users',
         name: 'Manage Users',
         component: () => import('@/views/ManageUsers.vue'),

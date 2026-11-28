@@ -14,6 +14,9 @@ type SearchLogRequest = components['schemas']['SearchLogDTO']
 
 export type SendResult = 'sent' | 'queued'
 
+// matches the SKU range per location in the backend's LocationEnum
+const skusPerLocation = 5000
+
 let controllerFetchSingle = new AbortController()
 let controllerGetAll = new AbortController()
 
@@ -32,6 +35,7 @@ export const useGlassesStore = defineStore(
     const pendingCount = computed(() => outbox.queue.value.length)
 
     const hasGlassesLoaded = computed(() => allGlasses.value.length > 0)
+    const freeSkus = computed(() => Math.max(0, skusPerLocation - allGlasses.value.length))
     const getGlassLocal = (sku: number): Glasses | null =>
       allGlasses.value.find((glass) => glass.sku === sku) ?? null
 
@@ -163,17 +167,32 @@ export const useGlassesStore = defineStore(
     const loadSearchesCsv = () => loadCsv('/api/glasses/unsuccessful/{location}.csv')
     const loadDispensedCsv = () => loadCsv('/api/glasses/dispensed/{location}.csv')
     const loadInventoryCsv = () => loadCsv('/api/glasses/{location}.csv')
-    async function getDispensedGlasses(startDate: Dayjs, endDate: Dayjs): Promise<Glasses[]> {
+    // without dates, everything ever dispensed or deleted
+    async function getDispensedGlasses(startDate?: Dayjs, endDate?: Dayjs): Promise<Glasses[]> {
       const { data } = await api.GET('/api/glasses/dispensed/{location}', {
         params: {
           path: { location: rootStore.reimsSite },
           query: {
-            startDate: startDate.format('MM/DD/YYYY'),
-            endDate: endDate.format('MM/DD/YYYY'),
+            startDate: startDate?.format('MM/DD/YYYY'),
+            endDate: endDate?.format('MM/DD/YYYY'),
           },
         },
       })
       return data!
+    }
+    async function getUnsuccessfulSearches() {
+      const { data } = await api.GET('/api/glasses/unsuccessful/{location}', {
+        params: { path: { location: rootStore.reimsSite } },
+      })
+      return data!.map((f) => ({
+        searchDate: f.searchDate,
+        search: {
+          glassesType: f.glassesType,
+          od: { ...f.od, isBAL: f.balLens === 'DISABLE_OD' },
+          os: { ...f.os, isBAL: f.balLens === 'DISABLE_OS' },
+          highTolerance: f.increaseSearchTolerance,
+        } satisfies GlassesSearch,
+      }))
     }
     async function loadGlassesIfChanged() {
       if (!isRefreshingGlasses.value) await refreshGlasses(false)
@@ -224,6 +243,7 @@ export const useGlassesStore = defineStore(
 
     return {
       allGlasses,
+      freeSkus,
       lastRefresh,
       isOutdated,
       allGlassesHash,
@@ -242,6 +262,7 @@ export const useGlassesStore = defineStore(
       loadDispensedCsv,
       loadInventoryCsv,
       getDispensedGlasses,
+      getUnsuccessfulSearches,
       loadGlassesIfChanged,
       loadGlasses,
     }
