@@ -384,6 +384,36 @@
         }
       }
     },
+    "/api/glasses/unsuccessful/{location}" : {
+      "get" : {
+        "tags" : [ "glasses-rest-controller" ],
+        "operationId" : "getAllUnsuccessfulSearches",
+        "parameters" : [ {
+          "name" : "location",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "sa", "sm" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/SearchLogResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/glasses/unsuccessful/{location}.csv" : {
       "get" : {
         "tags" : [ "glasses-rest-controller" ],
@@ -804,6 +834,36 @@
             "items" : {
               "type" : "string"
             }
+          }
+        }
+      },
+      "SearchLogResponseDTO" : {
+        "type" : "object",
+        "properties" : {
+          "glassesType" : {
+            "type" : "string",
+            "enum" : [ "single", "multifocal" ]
+          },
+          "balLens" : {
+            "type" : "string",
+            "enum" : [ "DISABLE_OD", "DISABLE_OS", "DISABLE_NONE" ]
+          },
+          "increaseSearchTolerance" : {
+            "type" : "boolean"
+          },
+          "searchDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "resultCount" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "os" : {
+            "$ref" : "#/components/schemas/EyeDTO"
+          },
+          "od" : {
+            "$ref" : "#/components/schemas/EyeDTO"
           }
         }
       },
