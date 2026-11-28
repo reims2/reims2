@@ -12,6 +12,8 @@ still worth keeping around.
   algorithm to run next to PhilScore, with replay results against real data.
 - [Inventory refill analysis](/dev/ai-notes/inventory-refill-analysis): methodology handover from an
   analysis of what to restock each site with after a campaign.
+- [Refill planning](/dev/ai-notes/refill-planning): how the refill page picks five ranges, and the
+  backtest over six campaigns that chose the method.
 - [GraalVM native image](/dev/ai-notes/graalvm-native): measurements from running the backend as a
   native image, and why it stays on the JVM.
 

@@ -98,6 +98,10 @@ export default defineConfig({
               text: 'Inventory refill analysis',
             },
             {
+              link: '/dev/ai-notes/refill-planning',
+              text: 'Refill planning',
+            },
+            {
               link: '/dev/ai-notes/graalvm-native',
               text: 'GraalVM native image',
             },
