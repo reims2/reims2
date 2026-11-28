@@ -4,6 +4,7 @@ import {
   GlassesSearch,
   GlassesResult,
   hasAdd,
+  Pair,
   SanitizedEyeSearch,
 } from '@/model/GlassesModel'
 
@@ -18,12 +19,9 @@ export default function calculateAllPhilscore(
   const rxOd = terms.od
   const rxOs = terms.os
   const isSinglefocal = terms.glassesType === 'single'
-  const isHighTolerance = terms.highTolerance ?? false
 
   return glasses
-    .filter((glass) => terms.glassesType === glass.glassesType)
-    .filter((glass) => filterLens(rxOd, glass.od, isHighTolerance, isSinglefocal, rxOs))
-    .filter((glass) => filterLens(rxOs, glass.os, isHighTolerance, isSinglefocal, rxOd))
+    .filter((glass) => fitsSearch(terms, glass))
     .map((glass) => {
       const odScore = rxOd.isBAL ? 0 : calcSingleEyePhilscore(rxOd, glass.od, isSinglefocal)
       const osScore = rxOs.isBAL ? 0 : calcSingleEyePhilscore(rxOs, glass.os, isSinglefocal)
@@ -37,6 +35,17 @@ export default function calculateAllPhilscore(
       return result
     })
     .sort((a, b) => (a.score > b.score ? 1 : -1))
+}
+
+// whether PhilScore would list a pair for a search at all, without scoring it
+export function fitsSearch(terms: GlassesSearch, glass: Pair): boolean {
+  const isSinglefocal = terms.glassesType === 'single'
+  const isHighTolerance = terms.highTolerance ?? false
+  return (
+    terms.glassesType === glass.glassesType &&
+    filterLens(terms.od, glass.od, isHighTolerance, isSinglefocal, terms.os) &&
+    filterLens(terms.os, glass.os, isHighTolerance, isSinglefocal, terms.od)
+  )
 }
 
 function filterLens(
