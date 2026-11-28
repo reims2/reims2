@@ -3,6 +3,7 @@ const guidePages: Record<string, string> = {
   '/edit': 'dispense',
   '/add': 'add',
   '/manage/reports': 'reports',
+  '/manage/refill': 'reports#what-to-refill',
 }
 
 export function helpUrl(path: string): string {

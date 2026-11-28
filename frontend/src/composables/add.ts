@@ -20,9 +20,7 @@ export const useAddGlasses = (glasses: Ref<GlassesInput>, onSuccessFn?: () => vo
   const lastAdded = computed(() =>
     rootStore.lastAddedSkus.map((sku) => bySku.value.get(sku)).filter((g) => g != null),
   )
-  // matches the SKU range per location in the backend's LocationEnum
-  const skusPerLocation = 5000
-  const freeSlots = computed(() => skusPerLocation - glassesStore.allGlasses.length)
+  const freeSlots = computed(() => glassesStore.freeSkus)
 
   watch(bySku, (glasses) => {
     // Filter out deleted glasses

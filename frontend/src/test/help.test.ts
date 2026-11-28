@@ -6,6 +6,7 @@ describe('helpUrl', () => {
     ['/edit', '/docs/guide/dispense'],
     ['/add', '/docs/guide/add'],
     ['/manage/reports', '/docs/guide/reports'],
+    ['/manage/refill', '/docs/guide/reports#what-to-refill'],
     ['/view', '/docs/guide/'],
     ['/', '/docs/guide/'],
   ])('maps %s to %s', (path, url) => {
